@@ -1,0 +1,113 @@
+'use strict';
+
+module.exports = function(grunt) {
+  require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
+
+  grunt.initConfig({
+    clean: {
+      build: ['build/']
+    },
+
+    watch: {
+      coffee: {
+        files: ['src/server/**/*', 'src/webapp/coffee/**/*'],
+        tasks: ['coffee', 'uglify']
+      },
+      css: {
+        files: ['src/webapp/sass/*.sass'],
+        tasks: ['sass', 'cssmin'],
+        options: {
+          livereload: true
+        }
+      },
+      haml: {
+        files: ['src/webapp/haml/**/*.haml'],
+        tasks: ['haml'],
+        options: {
+          livereload: true
+        }
+      }
+    },
+
+    sass: {
+      dist: {
+        options: {
+          sourceMap: false,
+          outputStyle: 'compact'
+        },
+        files: [{
+          expand: true,
+          flatten: true,
+          src: ['src/webapp/sass/*.sass'],
+          dest: 'build/tmp',
+          ext: '.css'
+        }]
+      }
+    },
+
+    cssmin: {
+      target: {
+        files: {
+          'build/public/assets/client-main.min.css': ['build/tmp/*.css']
+        }
+      }
+    },
+
+    coffee: {
+      asset_compile: {
+        expand: true,
+        flatten: true,
+        cwd: "src/",
+        src: ['webapp/coffee/**/*.coffee'],
+        dest: 'build/tmp/',
+        ext: '.js'
+      },
+      compile: {
+        expand: true,
+        flatten: true,
+        cwd: "src/",
+        src: ['server/**/*.coffee'],
+        dest: 'build',
+        ext: '.js'
+      }
+    },
+
+    uglify: {
+      dist: {
+        files: {
+          'build/public/assets/client-main.min.js': ['build/tmp/*.js']
+        }
+      }
+    },
+
+    copy: {
+      assets: {
+        files: [
+          {expand: true, flatten: true, src: ['src/webapp/assets/**'], dest: 'build/public/assets/client', filter: 'isFile'}
+        ]
+      }
+    },
+
+    haml: {
+      compile: {
+        files: {
+          'build/public/demo/index.html': 'src/webapp/haml/demo/index.haml',
+          'build/public/login.html': 'src/webapp/haml/login.haml'
+        }
+      }
+    },
+
+    run: {
+      server: {
+        cmd: 'node',
+        args: [
+          'build/server.js'
+        ]
+      }
+    }
+  });
+
+  grunt.registerTask('build', ['clean', 'haml', 'sass', 'cssmin', 'coffee', 'uglify', 'copy']);
+  grunt.registerTask('default', ['build']);
+  grunt.registerTask('server', ['build', 'run:server']);
+}
