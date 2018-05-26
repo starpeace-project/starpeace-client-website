@@ -83,7 +83,7 @@ module.exports = function(grunt) {
     copy: {
       assets: {
         files: [
-          {expand: true, flatten: true, src: ['src/webapp/assets/**'], dest: 'build/public/assets/client', filter: 'isFile'}
+          {expand: true, flatten: true, src: ['src/webapp/assets/**'], dest: 'build/public/assets', filter: 'isFile'}
         ]
       }
     },
@@ -91,7 +91,7 @@ module.exports = function(grunt) {
     haml: {
       compile: {
         files: {
-          'build/public/demo/index.html': 'src/webapp/haml/demo/index.haml',
+          'build/public/index.html': 'src/webapp/haml/index.haml',
           'build/public/login.html': 'src/webapp/haml/login.haml'
         }
       }
