@@ -1,7 +1,7 @@
 !!! 5
 %html
   %head
-    %title Demo - STARPEACE
+    %title Client - STARPEACE
     %meta{charset: 'utf-8'}
     %meta{viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no'}
 
@@ -13,35 +13,161 @@
     %link{rel: 'stylesheet', type: 'text/css', href: '/assets/client-main.min.css'}
 
     %script{type: 'text/javascript', src: 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'}
+    %script{type: 'text/javascript', src: 'https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.10/lodash.min.js'}
     %script{type: 'text/javascript', src: 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js'}
     %script{type: 'text/javascript', src: 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.0/js/bootstrap.min.js'}
+    %script{type: 'text/javascript', src: 'https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js'}
+    %script{type: 'text/javascript', src: 'https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.8.0/pixi.min.js'}
     %script{type: 'text/javascript', src: 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js'}
     %script{type: 'text/javascript', src: 'https://cdnjs.cloudflare.com/ajax/libs/fpsmeter/0.3.1/fpsmeter.min.js'}
+    %script{type: 'text/javascript', src: 'https://cdnjs.cloudflare.com/ajax/libs/css-element-queries/1.0.2/ElementQueries.min.js'}
+    %script{type: 'text/javascript', src: 'https://cdnjs.cloudflare.com/ajax/libs/css-element-queries/1.0.2/ResizeSensor.min.js'}
 
-    %script{crossorigin: 'anonymous', defer, src: 'https://use.fontawesome.com/releases/v5.0.10/js/solid.js'}
-    %script{crossorigin: 'anonymous', defer, src: 'https://use.fontawesome.com/releases/v5.0.10/js/regular.js'}
-    %script{crossorigin: 'anonymous', defer, src: 'https://use.fontawesome.com/releases/v5.0.10/js/fontawesome.js'}
+    %script{crossorigin: 'anonymous', defer, src: 'https://use.fontawesome.com/releases/v5.0.13/js/solid.js'}
+    %script{crossorigin: 'anonymous', defer, src: 'https://use.fontawesome.com/releases/v5.0.13/js/regular.js'}
+    %script{crossorigin: 'anonymous', defer, src: 'https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js'}
 
     %script{type: 'text/javascript', src: '/assets/client-main.min.js'}
 
   %body
-    #common-header.clearfix
-      .common-logo
-        %a.logo{href: '/'}
-          %h1 STAR
-          %img{src: '/assets/logo.png'}
-          %h1 PEACE
+    #application
+      #common-header.clearfix
+        .common-logo
+          %a.logo{href: '/'}
+            %h1 STAR
+            %img{src: '/assets/logo.png'}
+            %h1 PEACE
 
-      .welcome
-        %span.message Welcome, Visitor!
-        %a.login-header{href: '/login.html'} Sign In
+        .welcome
+          %span.message Welcome, Visitor!
+          %a.login-header{href: '/login.html'} Sign In
 
-      .development
-        %a.documentation{href: 'https://docs.starpeace.io'} Documentation
-        %a.community{href: 'https://starpeace.ovh/'} Development Community
-        %a.github{href: 'https://github.com/ronappleton/starpeace-website'}
-          %img{src: '/assets/github.png'}
+        .development
+          %a.documentation{href: 'https://docs.starpeace.io'} Documentation
+          %a.community{href: 'https://starpeace.ovh/'} Development Community
+          %a.github{href: 'https://github.com/ronappleton/starpeace-website'}
+            %img{src: '/assets/github.png'}
 
-    #render-container
+      #loading-modal{v-show:'is_loading && is_ready', v-cloak:true}
+      #loading-container{v-show:'is_loading', v-cloak:true}
+        .card
+          .card-body
+            %img.logo-loading
+            .label-loading Loading...
+            .progress{v-show:'loading_has_subprogress'}
+              .progress-bar{v-bind:style:"{width: client.loading_progress + '%'}"}
 
-    #footer-container
+      %transition{name:'fade', mode:'out-in'}
+        #workflow-container{v-show:"status != 'ready'", v-bind:class:'[status, {visitor:is_visitor}]', v-cloak:true}
+          .card
+            .card-header{v-show:"status == 'pending_planetary_system'", v-cloak:true}
+              Planetary Systems
+            .card-header{v-show:"status == 'pending_planet'", v-cloak:true}
+              %a{v-on:click.stop.prevent:'client.reset_planetary_system()', href: '#'} Planetary Systems
+              &nbsp;/&nbsp;{{ planetary_system_name }}
+
+            .card-body
+              .workflow-step{v-show:"status == 'pending_identity_authentication'", v-cloak:true}
+                %img.logo-loading
+                .label-loading Authenticating identity with provider...
+
+              .workflow-step{v-show:"status == 'pending_identity'", v-cloak:true}
+                .workflow-description
+                  %p
+                    %span.salut Welcome, Visitor!
+                    &nbsp;&nbsp;Please select a visa option to begin your STARPEACE adventure!&nbsp;&nbsp;
+                    %a{href: 'https://docs.starpeace.io'} Learn more
+                .row
+                  .col
+                    %h3 Visitor Visa
+                    %i.fas.fa-user-secret
+                    %ul
+                      %li Meet new people
+                      %li See what's happening
+                      %li Become a Tycoon later
+                    %a.btn.btn-primary.btn-lg.demo{v-on:click.stop.prevent:'client.proceed_as_visitor()', href: '#', role: 'button', data-toggle:'tooltip', data-placement:'left', title: 'Sign In and registration not required'} Visitor Visa
+                  .col
+                    %h3 Tycoon Visa
+                    %i.fas.fa-user-tie
+                    %ul
+                      %li Get $100,000,000
+                      %li Create a company
+                      %li Build an Empire!
+                    %a.btn.btn-secondary.btn-lg.login{href:'/login.html', role:'button', data-toggle:'tooltip', data-placement:'right', title: 'Proceed to Sign In'} Tycoon Visa
+
+              .workflow-step{v-show:"status == 'pending_account'", v-cloak:true}
+                %img.logo-loading
+                .label-loading Authorizing session for identity...
+
+              .workflow-step{v-show:"status == 'pending_planetary_metadata'", v-cloak:true}
+                %img.logo-loading
+                .label-loading Retrieving planetary information...
+
+              .workflow-step{v-show:"status == 'pending_planetary_system'", v-cloak:true}
+                .row
+                  .col
+                    %ul.list-group
+                      %li.list-group-item{v-for:'system in planetary_systems'}
+                        %table.table.system-table
+                          %tbody
+                            %tr
+                              %td.system-image{rowspan:4}
+                                %img.system-image.logo-loading{v-bind:src:"system_animation_url(planet)", v-on:load:"$event.target.classList.remove('logo-loading')"}
+                              %td{colspan:3}
+                                %h3 {{system.name}}
+                              %td.system-select{rowspan:4}
+                                %a.btn.btn-outline-primary.btn-lg.btn-block.choose-system.float-right{v-on:click.stop.prevent:'client.select_planetary_system(system.id)', href:'#', role:'button'} Inspect
+                            %tr.system-info-row
+                              %td Population:
+                              %td.planet-value {{0}}
+                            %tr.system-info-row
+                              %td Planets:
+                              %td.planet-value {{system.planets.length}}
+                            %tr.system-info-row
+                              %td Online:
+                              %td.planet-value {{0}}
+
+              .workflow-step{v-show:"status == 'pending_planet'", v-cloak:true}
+                .row
+                  .col
+                    %ul.list-group
+                      %li.list-group-item{v-for:'planet in planets_for_system'}
+                        %table.table.planet-table
+                          %tbody
+                            %tr
+                              %td.planet-image{rowspan:5}
+                                %img.planet-image.logo-loading{v-bind:src:"planet_animation_url(planet)", v-on:load:"$event.target.classList.remove('logo-loading')"}
+                              %td{colspan:3}
+                                %h3 {{planet.name}}
+                              %td.planet-select{rowspan:5}
+                                %a.btn.btn-primary.btn-lg.btn-block.choose-system{v-on:click.stop.prevent:'client.select_planet(planet.id)', href:'#', role:'button'} Select
+                            %tr.planet-info-row
+                              %td Population:
+                              %td.planet-value {{0}}
+                              %td.planet-description{rowspan:4}
+                                {{planet_description(planet)}}
+                            %tr.planet-info-row
+                              %td Investments:
+                              %td.planet-value ${{0}}
+                            %tr.planet-info-row
+                              %td Tycoons:
+                              %td.planet-value {{0}}
+                            %tr.planet-info-row
+                              %td Online:
+                              %td.planet-value {{0}}
+
+
+              .workflow-step{v-show:"status == 'pending_assets'", v-cloak:true}
+                %img.logo-loading
+                .label-loading Loading assets and resources...
+
+              .workflow-step{v-show:"status == 'pending_initialization'", v-cloak:true}
+                %img.logo-loading
+                .label-loading Initializing client environment...
+
+
+      %transition{name:'fade'}
+        #render-container{v-show:'is_ready', v-cloak:true}
+
+      %transition{name:'fade'}
+        #footer-container{v-show:'is_ready', v-cloak:true}
