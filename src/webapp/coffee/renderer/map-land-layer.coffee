@@ -92,7 +92,7 @@ window.starpeace.renderer.MapLandLayer = class MapLandLayer
         canvas_y = (x + j) * half_tile_height - view_y - tile_height
 
         if canvas_x >= -tile_width && (canvas_x < canvas_width + tile_width) && canvas_y >= -tile_height && (canvas_y < canvas_height + tile_height)
-          land_texture = @game_state.game_map.texture_for(x, j)
+          land_texture = @game_state.game_map.texture_for(j, x)
           land_sprite = @sprite(sprite_index, land_texture)
           land_sprite.visible = true
           land_sprite.x = canvas_x

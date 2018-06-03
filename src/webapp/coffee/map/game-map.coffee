@@ -13,11 +13,12 @@ window.starpeace.map.GameMap = class GameMap
   texture_for: (x, y) ->
     texture = PIXI.utils.TextureCache['fall.255.border.center.1']
     unless x < 0 || x > @width || y < 0 || y > @height
-      tile = @tile_for(x, y)
+      tile = @tile_for(@width - x, @height - y)
       texture_id = _.values(tile?.textures?['0deg']?.fall)[0]
       texture = PIXI.utils.TextureCache[texture_id] if texture_id?.length
       console.debug "[STARPEACE] unable to find land texture <#{texture_id}> for coord <#{x}>x<#{y}>, will fall back to default" unless texture?
     texture
+
 
   @pixels_for_image: (image) ->
     canvas = document.createElement('canvas')
