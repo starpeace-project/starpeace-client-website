@@ -33,7 +33,10 @@ window.starpeace.renderer.MapLandLayer = class MapLandLayer
     @tile_sprites[index]
 
   hide_sprites: (from_index) ->
-    @tile_sprites[index].visible = false for index in [from_index...@tile_sprites.length]
+    for index in [from_index...@tile_sprites.length]
+      @tile_sprites[index].visible = false
+      @tile_sprites[index].x = -100
+      @tile_sprites[index].y = -100
 
   refresh: () ->
     @needs_refresh = false
@@ -76,7 +79,7 @@ window.starpeace.renderer.MapLandLayer = class MapLandLayer
     n = 0
     n_buffer = 4
     m = 1
-    m_buffer = 0
+    m_buffer = 1
 
     sprite_index = 0
     skip = 0
