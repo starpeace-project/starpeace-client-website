@@ -24,7 +24,7 @@ window.starpeace.planet.PlanetarySystem = class PlanetarySystem
               id: '1'
               name: 'Mercury'
               map_id: 'aries'
-              land_id: 'earth'
+              planet_type: 'earth'
               width: 1000
               height: 1000
               temperature_baseline: 50
@@ -34,7 +34,7 @@ window.starpeace.planet.PlanetarySystem = class PlanetarySystem
               id: '2'
               name: 'Venus'
               map_id: 'ancoeus'
-              land_id: 'earth'
+              planet_type: 'earth'
               width: 1000
               height: 1000
               temperature_baseline: 75
@@ -44,7 +44,7 @@ window.starpeace.planet.PlanetarySystem = class PlanetarySystem
               id: '3'
               name: 'Earth'
               map_id: 'mondronia'
-              land_id: 'earth'
+              planet_type: 'earth'
               width: 1000
               height: 1000
               temperature_baseline: 50
@@ -56,7 +56,7 @@ window.starpeace.planet.PlanetarySystem = class PlanetarySystem
               id: '4'
               name: 'Mars'
               map_id: 'darkadia'
-              land_id: 'earth'
+              planet_type: 'earth'
               width: 1000
               height: 1000
               temperature_baseline: 50
@@ -66,7 +66,7 @@ window.starpeace.planet.PlanetarySystem = class PlanetarySystem
               id: '5'
               name: 'Jupiter'
               map_id: 'cymoril'
-              land_id: 'earth'
+              planet_type: 'earth'
               width: 1000
               height: 1000
               temperature_baseline: 50

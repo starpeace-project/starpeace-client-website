@@ -11,18 +11,44 @@ window.starpeace.UIState = class UIState
       data: {
         client: @client
         game_state: @client.game_state
+        planetary_metadata_manager: @client.planetary_metadata_manager
+        asset_manager: @client.asset_manager
         ui_state: @
       }
+#       watch: {
+#         ui_state: () ->
+#           console.log "ui_state changed"
+#       }
       computed: {
         is_visitor: () -> @client.identity?.is_visitor()
 
-        status: () -> @client.status()
-        is_loading: () -> @game_state.is_loading()
+        has_planet_assets: () ->
+          @client.planet?.planet_type?.length &&
+            @asset_manager.planet_type_metadata[@client.planet.planet_type]? &&
+            @asset_manager.planet_type_atlas[@client.planet.planet_type]?.length &&
+            @asset_manager.map_id_texture[@client.planet.map_id]?
+
+        status: () ->
+          return 'pending_identity' unless @client.identity?
+          return 'pending_identity_authentication' unless @client.identity?.is_authenticated()
+          return 'pending_account' unless @client.account?
+          return 'pending_account_registration' unless @client.account?.is_registered()
+
+          return 'pending_planetary_metadata' unless @planetary_metadata_manager?.has_planetary_metadata()
+          return 'pending_planetary_system' unless @client.planetary_system?
+          return 'pending_planet' unless @client.planet?
+
+          return 'pending_assets' unless @has_planet_assets
+          return 'pending_initialization' unless @game_state.initialized
+
+          'ready'
+
+        is_loading: () -> @game_state.loading
         is_ready: () -> @status == 'ready'
 
         loading_has_subprogress: () -> false # FIXME: TODO: might be useful with asset loading
 
-        planetary_systems: () -> @client.metadata_manager.planetary_systems()
+        planetary_systems: () -> @planetary_metadata_manager.planetary_systems()
         planetary_system: () -> @client.planetary_system
         planetary_system_name: () -> @planetary_system?.name
         planets_for_system: () -> @planetary_system?.planets || []
@@ -43,5 +69,4 @@ window.starpeace.UIState = class UIState
           "#{size} sized #{planet_modifier}planet with #{seasons} seasons"
       }
     })
-
 

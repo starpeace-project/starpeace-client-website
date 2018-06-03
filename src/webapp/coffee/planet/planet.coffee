@@ -14,7 +14,7 @@ window.starpeace.planet.Planet = class Planet
     planet = new Planet(json.id, json.name)
 
     planet.map_id = json.map_id
-    planet.land_id = json.land_id || 'earth'
+    planet.planet_type = json.planet_type || 'earth'
     planet.width = json.width || 1000
     planet.height = json.height || 1000
     planet.temperature_baseline = json.temperature_baseline || 50

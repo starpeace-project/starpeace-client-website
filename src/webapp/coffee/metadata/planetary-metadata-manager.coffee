@@ -2,7 +2,7 @@
 
 window.starpeace ||= {}
 window.starpeace.metadata ||= {}
-window.starpeace.metadata.MetadataManager = class MetadataManager
+window.starpeace.metadata.PlanetaryMetadataManager = class PlanetaryMetadataManager
 
   constructor: (@client) ->
     @systems_metadata = null

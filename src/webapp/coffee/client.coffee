@@ -10,31 +10,22 @@ window.starpeace.Client = class Client
     @planetary_system = null
     @planet = null
 
-    @metadata_manager = new starpeace.metadata.MetadataManager(@)
+    @planetary_metadata_manager = new starpeace.metadata.PlanetaryMetadataManager(@)
+    @land_metadata_manager = new starpeace.metadata.LandMetadataManager(@)
+
     @asset_manager = new starpeace.asset.AssetManager(@)
 
     @game_state = new starpeace.GameState(@)
     @ui_state = new starpeace.UIState(@)
 
-    @renderer = new starpeace.renderer.Renderer()
+    @renderer = new starpeace.renderer.Renderer(@)
+
+    @reload = false
 
     # FIXME: TODO: consider loading state from url parameters (planet_id)
 
-
-  status: () ->
-    return 'pending_identity' unless @identity?
-    return 'pending_identity_authentication' unless @identity?.is_authenticated()
-    return 'pending_account' unless @account?
-    return 'pending_account_registration' unless @account?.is_registered()
-
-    return 'pending_planetary_metadata' unless @metadata_manager?.has_planetary_metadata()
-    return 'pending_planetary_system' unless @planetary_system?
-    return 'pending_planet' unless @planet?
-
-    return 'pending_assets' unless @asset_manager.is_loaded()
-    return 'pending_initialization' unless @game_state.is_initialized()
-
-    'ready'
+  land_metadata_for_planet_by_color: () ->
+    @land_metadata_manager.planet_type_metadata_by_color[@planet.planet_type] || {}
 
 
   proceed_as_visitor: () ->
@@ -51,21 +42,29 @@ window.starpeace.Client = class Client
         # FIXME: TODO: figure out error handling
 
   select_planetary_system: (planetary_system_id) ->
-    system = @metadata_manager.planetary_system_for_id(planetary_system_id)
+    system = @planetary_metadata_manager.planetary_system_for_id(planetary_system_id)
     throw "unknown planetary system id <#{planetary_system_id}>" unless system?
     @planetary_system = system
     console.debug "[starpeace] proceeding with planetary system <#{@planetary_system}>"
+
   reset_planetary_system: () ->
     @planetary_system = null
     @planet = null
+    @game_state.initialized = false
     # FIXME: TODO: what other state should be reset?
     console.debug "[starpeace] resetting planetary system back to empty, will need to re-select"
 
   select_planet: (planet_id) ->
-    planet = @metadata_manager.planet_for_id(planet_id)
+    planet = @planetary_metadata_manager.planet_for_id(planet_id)
     throw "unknown planet id <#{planetary_system_id}>" unless planet?
     @planet = planet
     console.debug "[starpeace] proceeding with planet <#{@planet}>"
+    @asset_manager.load_planet_assets(@planet.planet_type, @planet.map_id)
+
+
+  notify_assets_changed: () ->
+    return unless @ui_state.vue_application.has_planet_assets
+    @renderer.initialize()
 
   tick: () ->
 
