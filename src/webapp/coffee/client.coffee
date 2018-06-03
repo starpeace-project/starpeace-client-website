@@ -11,7 +11,7 @@ window.starpeace.Client = class Client
     @planet = null
 
     @planetary_metadata_manager = new starpeace.metadata.PlanetaryMetadataManager(@)
-    @land_metadata_manager = new starpeace.metadata.LandMetadataManager(@)
+    @land_manifest_manager = new starpeace.metadata.LandManifestManager(@)
 
     @asset_manager = new starpeace.asset.AssetManager(@)
 
@@ -24,9 +24,8 @@ window.starpeace.Client = class Client
 
     # FIXME: TODO: consider loading state from url parameters (planet_id)
 
-  land_metadata_for_planet_by_color: () ->
-    @land_metadata_manager.planet_type_metadata_by_color[@planet.planet_type] || {}
-
+  land_manifest_for_planet: () ->
+    @land_manifest_manager.planet_type_manifest[@planet.planet_type]
 
   proceed_as_visitor: () ->
     @identity.reset_and_destroy() if @identity?
@@ -45,9 +44,11 @@ window.starpeace.Client = class Client
     system = @planetary_metadata_manager.planetary_system_for_id(planetary_system_id)
     throw "unknown planetary system id <#{planetary_system_id}>" unless system?
     @planetary_system = system
+    document.title = "#{@planetary_system.name} - STARPEACE" if document?
     console.debug "[starpeace] proceeding with planetary system <#{@planetary_system}>"
 
   reset_planetary_system: () ->
+    document.title = "STARPEACE" if document?
     @planetary_system = null
     @planet = null
     @game_state.initialized = false
@@ -58,6 +59,7 @@ window.starpeace.Client = class Client
     planet = @planetary_metadata_manager.planet_for_id(planet_id)
     throw "unknown planet id <#{planetary_system_id}>" unless planet?
     @planet = planet
+    document.title = "#{@planet.name} - STARPEACE" if document?
     console.debug "[starpeace] proceeding with planet <#{@planet}>"
     @asset_manager.load_planet_assets(@planet.planet_type, @planet.map_id)
 
@@ -67,5 +69,5 @@ window.starpeace.Client = class Client
     @renderer.initialize()
 
   tick: () ->
-
+    @renderer.tick() if @renderer.initialized
   

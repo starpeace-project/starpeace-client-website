@@ -7,3 +7,5 @@ window.starpeace.GameState = class GameState
     @initialized = false
     @loading = false
 
+    @view_offset_x = 3600
+    @view_offset_y = 4250
