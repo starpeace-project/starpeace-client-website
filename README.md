@@ -11,11 +11,11 @@ Documentation for client gameplay can be found on the [Starpeace website](https:
 
 ## Roadmap
 
-Development and gameplay roadmap can be found on the [Starpeace Community Development website](https://www.starpeace.ovh/).
+Development and gameplay roadmap can be found on the [Starpeace Community Development website](https://starpeaceproject.com/).
 
 ## Security Vulnerabilities
 
-If you discover a security vulnerability within Starpeace website, please send an e-mail to admin@starpeace.ovh or open a [GitHub issue](https://github.com/ronappleton/starpeace-website-client/issues). All security vulnerabilities will be promptly addressed.
+If you discover a security vulnerability within Starpeace website, please send an e-mail to admin@starpeaceproject.com or open a [GitHub issue](https://github.com/ronappleton/starpeace-website-client/issues). All security vulnerabilities will be promptly addressed.
 
 ## Development
 
