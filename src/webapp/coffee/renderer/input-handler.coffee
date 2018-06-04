@@ -123,7 +123,7 @@ window.starpeace.renderer.InputHandler = class InputHandler
 #       @client.game_state.view_offset_x -= (scale_delta * 3000)
 #       @client.game_state.view_offset_y -= (scale_delta * 3000)
 
-      @renderer.map_land_layer.needs_refresh = true if @renderer.map_land_layer?
+      @renderer.initialize_map() if @renderer.map_land_layer?
 
     document.addEventListener('mousewheel', do_scale, false)
 

@@ -16,8 +16,6 @@ window.starpeace.renderer.MapLandLayer = class MapLandLayer
     @max_sprite_count = Math.round(@tile_sprites.length * 5)
     console.debug "[STARPEACE] configuring map land layer for up to #{@max_sprite_count} tiles"
     @container = new PIXI.particles.ParticleContainer(@max_sprite_count, {
-      scale: true
-      position: true
       uvs: true
     })
 
