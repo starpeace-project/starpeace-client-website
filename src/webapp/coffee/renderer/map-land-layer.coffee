@@ -13,7 +13,7 @@ window.starpeace.renderer.MapLandLayer = class MapLandLayer
     @refresh()
     console.debug "[STARPEACE] created #{@tile_sprites.length} sprites for map land layere"
 
-    @max_sprite_count = Math.round(@tile_sprites.length * 1.2)
+    @max_sprite_count = Math.round(@tile_sprites.length * 5)
     console.debug "[STARPEACE] configuring map land layer for up to #{@max_sprite_count} tiles"
     @container = new PIXI.particles.ParticleContainer(@max_sprite_count, {
       scale: true
@@ -41,16 +41,18 @@ window.starpeace.renderer.MapLandLayer = class MapLandLayer
   refresh: () ->
     @needs_refresh = false
 
+    scale = new PIXI.Point(@game_state.game_scale, @game_state.game_scale)
+
     map_width = @game_state.game_map.width
     map_height = @game_state.game_map.height
 
-    canvas_width = Math.round(@renderer.renderer_width || 0)
-    canvas_height = Math.round(@renderer.renderer_height || 0)
+    canvas_width = Math.ceil(@renderer.renderer_width || 0)
+    canvas_height = Math.ceil(@renderer.renderer_height || 0)
 
-    tile_width = starpeace.metadata.LandManifest.DEFAULT_TILE_WIDTH
-    tile_height = starpeace.metadata.LandManifest.DEFAULT_TILE_HEIGHT
-    half_tile_width = Math.round(tile_width / 2)
-    half_tile_height = Math.round(tile_height / 2)
+    tile_width = Math.ceil(starpeace.metadata.LandManifest.DEFAULT_TILE_WIDTH * @game_state.game_scale)
+    tile_height = Math.ceil(starpeace.metadata.LandManifest.DEFAULT_TILE_HEIGHT * @game_state.game_scale)
+    half_tile_width = Math.ceil(tile_width / 2)
+    half_tile_height = Math.ceil(tile_height / 2)
 
     width_in_tiles = Math.ceil(canvas_width / tile_width) + 4
     fixed_y = half_tile_height * width_in_tiles
@@ -62,8 +64,8 @@ window.starpeace.renderer.MapLandLayer = class MapLandLayer
     C = 2 * tile_height
     initial_x = @game_state.view_offset_x
 
-    min_x = Math.round(-4.0 / 2.0 * view_y + 4.0 / 2.0 * C)
-    max_x = Math.round(4.0 / 2.0 * view_y - 4.0 / 2.0 * C) - canvas_width
+    min_x = Math.ceil(-4.0 / 2.0 * view_y + 4.0 / 2.0 * C)
+    max_x = Math.ceil(4.0 / 2.0 * view_y - 4.0 / 2.0 * C) - canvas_width
     view_x = @game_state.view_offset_x #Math.round(Math.min(max_x, Math.max(min_x, initial_x)))
 
 #     console.log "(#{min_x} to #{max_x}) #{view_x}  #{view_y}"
@@ -91,12 +93,13 @@ window.starpeace.renderer.MapLandLayer = class MapLandLayer
         canvas_x = (x - j) * half_tile_width - view_x - 1 - tile_width
         canvas_y = (x + j) * half_tile_height - view_y - tile_height
 
-        if canvas_x >= -tile_width && (canvas_x < canvas_width + tile_width) && canvas_y >= -tile_height && (canvas_y < canvas_height + tile_height)
+        if j > 0 && j < map_height && x > 0 && x < map_width && canvas_x >= -tile_width && (canvas_x < canvas_width + tile_width) && canvas_y >= -tile_height && (canvas_y < canvas_height + tile_height)
           land_texture = @game_state.game_map.texture_for(j, x)
           land_sprite = @sprite(sprite_index, land_texture)
           land_sprite.visible = true
           land_sprite.x = canvas_x
           land_sprite.y = canvas_y
+          land_sprite.scale = scale
           sprite_index += 1
         else
 #           console.log "skip at #{x} #{j} @ #{canvas_x} #{canvas_y}"
