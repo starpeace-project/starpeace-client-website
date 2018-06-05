@@ -115,7 +115,7 @@ window.starpeace.renderer.InputHandler = class InputHandler
       return unless event?.deltaY?
 
       before_scale = @client.game_state.game_scale
-      @client.game_state.game_scale -= (event.deltaY / 600)
+      @client.game_state.game_scale -= (event.deltaY / 1200)
       @client.game_state.game_scale = 1.5 if @client.game_state.game_scale > 1.5
       @client.game_state.game_scale = 0.5 if @client.game_state.game_scale < 0.5
 
@@ -123,7 +123,7 @@ window.starpeace.renderer.InputHandler = class InputHandler
 #       @client.game_state.view_offset_x -= (scale_delta * 3000)
 #       @client.game_state.view_offset_y -= (scale_delta * 3000)
 
-      @renderer.initialize_map() if @renderer.map_land_layer?
+      @renderer.initialize_map() if scale_delta != 0 && @renderer.map_land_layer?
 
     document.addEventListener('mousewheel', do_scale, false)
 
