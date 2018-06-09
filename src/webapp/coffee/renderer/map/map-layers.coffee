@@ -40,8 +40,8 @@ window.starpeace.renderer.map.MapLayers = class MapLayers
     canvas_width = Math.ceil(@renderer.renderer_width || 0)
     canvas_height = Math.ceil(@renderer.renderer_height || 0)
 
-    tile_width = Math.ceil(starpeace.metadata.GroundManifest.DEFAULT_TILE_WIDTH * @game_state.game_scale)
-    tile_height = Math.ceil(starpeace.metadata.GroundManifest.DEFAULT_TILE_HEIGHT * @game_state.game_scale)
+    tile_width = Math.ceil(starpeace.metadata.PlanetTypeManifest.DEFAULT_TILE_WIDTH * @game_state.game_scale)
+    tile_height = Math.ceil(starpeace.metadata.PlanetTypeManifest.DEFAULT_TILE_HEIGHT * @game_state.game_scale)
     half_tile_width = Math.ceil(tile_width / 2)
     half_tile_height = Math.ceil(tile_height / 2)
 

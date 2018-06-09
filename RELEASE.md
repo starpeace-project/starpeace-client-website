@@ -17,19 +17,19 @@ Some of the tentative future features and rough planned version are outlined bel
 
 ### v0.2 - in progress
 #### platform
+* [in progress] main gameplay UI menu layout
+* [in progress] more client/vue internal state separation
 * [pending] camera rotation perspectives
-* [pending] main gameplay UI menu layout
-* [pending] more client/vue internal state separation
 * [pending] building asset and resource loader
 
 #### assets
-* [pending] tree cleanup and spritesheet generation
+* [done] tree cleanup and spritesheet generation
 * [pending] buildings cleanup and spritesheet generation
 
 #### gameplay
+* [done] tree rendering
 * [pending] seasons support
 * [pending] building rendering and animations
-* [pending] tree rendering
 * [pending] overlay rendering
 
 
