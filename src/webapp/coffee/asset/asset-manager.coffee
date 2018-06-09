@@ -17,7 +17,7 @@ window.starpeace.asset.AssetManager = class AssetManager
 
   set_planet_metadata: (planet_type, resource) ->
     @client.ui_state.vue_application.$set(@client.ui_state.vue_application.asset_manager.planet_type_metadata, planet_type, resource.data)
-    @client.land_manifest_manager.set_land_metadata(planet_type, resource.data.metadata)
+    @client.land_manifest_manager.set_land_metadata(planet_type, resource.data.ground_definitions)
     @load_planet_atlas(planet_type, resource.data.atlas)
 
   set_map_texture: (map_id, resource) ->

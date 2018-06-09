@@ -84,11 +84,11 @@ window.starpeace.renderer.InputHandler = class InputHandler
         counter = 0
         @auto_scroll = setInterval(=>
           counter += 1
-          if counter > 3
-            @client.game_state.view_offset_x += (delta_x * 50)
-            @client.game_state.view_offset_y += (delta_y * 50)
+          if counter > 6
+            @client.game_state.view_offset_x += (delta_x * 25)
+            @client.game_state.view_offset_y += (delta_y * 25)
             @renderer.map_land_layer.needs_refresh = true if @renderer.map_land_layer?
-        , 50)
+        , 25)
 
       @auto_scroll_x = delta_x
       @auto_scroll_y = delta_y
