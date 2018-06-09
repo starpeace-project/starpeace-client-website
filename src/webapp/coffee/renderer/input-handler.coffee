@@ -48,7 +48,7 @@ window.starpeace.renderer.InputHandler = class InputHandler
 
 #       console.log "#{@last_x} #{@last_y}"
 
-      @renderer.map_land_layer.needs_refresh = true if @renderer.map_land_layer?
+      @renderer.map_layers.needs_refresh = true if @renderer.map_layers?
 
     stop_auto_scroll = (event) =>
       clearInterval(@auto_scroll) if @auto_scroll?
@@ -87,7 +87,7 @@ window.starpeace.renderer.InputHandler = class InputHandler
           if counter > 6
             @client.game_state.view_offset_x += (delta_x * 25)
             @client.game_state.view_offset_y += (delta_y * 25)
-            @renderer.map_land_layer.needs_refresh = true if @renderer.map_land_layer?
+            @renderer.map_layers.needs_refresh = true if @renderer.map_layers?
         , 25)
 
       @auto_scroll_x = delta_x
@@ -123,7 +123,7 @@ window.starpeace.renderer.InputHandler = class InputHandler
 #       @client.game_state.view_offset_x -= (scale_delta * 3000)
 #       @client.game_state.view_offset_y -= (scale_delta * 3000)
 
-      @renderer.initialize_map() if scale_delta != 0 && @renderer.map_land_layer?
+      @renderer.initialize_map() if scale_delta != 0 && @renderer.map_layers?
 
     document.addEventListener('mousewheel', do_scale, false)
 

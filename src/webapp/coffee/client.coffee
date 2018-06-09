@@ -11,7 +11,7 @@ window.starpeace.Client = class Client
     @planet = null
 
     @planetary_metadata_manager = new starpeace.metadata.PlanetaryMetadataManager(@)
-    @land_manifest_manager = new starpeace.metadata.LandManifestManager(@)
+    @planet_type_manifest_manager = new starpeace.metadata.PlanetTypeManifestManager(@)
 
     @asset_manager = new starpeace.asset.AssetManager(@)
 
@@ -25,7 +25,7 @@ window.starpeace.Client = class Client
     # FIXME: TODO: consider loading state from url parameters (planet_id)
 
   land_manifest_for_planet: () ->
-    @land_manifest_manager.planet_type_manifest[@planet.planet_type]
+    @planet_type_manifest_manager.planet_type_manifest[@planet.planet_type]
 
   proceed_as_visitor: () ->
     @identity.reset_and_destroy() if @identity?

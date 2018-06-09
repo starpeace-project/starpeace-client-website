@@ -2,39 +2,32 @@
 
 window.starpeace ||= {}
 window.starpeace.renderer ||= {}
-window.starpeace.renderer.MapLandLayer = class MapLandLayer
+window.starpeace.renderer.map ||= {}
+window.starpeace.renderer.map.MapLayers = class MapLayers
 
-  constructor: (@renderer, @land_manifest, @game_state) ->
+  constructor: (@renderer, @game_state) ->
     @needs_refresh = false
 
-    throw "attempting to create MapLandLayer without map" unless @game_state.game_map?
+    @ground_layer = new starpeace.renderer.map.LayerGround(@renderer, @game_state)
+    @tree_layer = new starpeace.renderer.map.LayerTree(@renderer, @game_state)
 
-    @tile_sprites = []
     @refresh()
-    console.debug "[STARPEACE] created #{@tile_sprites.length} sprites for map land layere"
 
-    @max_sprite_count = Math.round(@tile_sprites.length * 5)
-    console.debug "[STARPEACE] configuring map land layer for up to #{@max_sprite_count} tiles"
-    @container = new PIXI.particles.ParticleContainer(@max_sprite_count, {
-      uvs: true
-    })
+  remove_layers: (stage) ->
+    stage.removeChild(@ground_layer.container)
+    stage.removeChild(@tree_layer.container)
 
-    @container.addChild(sprite) for sprite in @tile_sprites
+  add_layers: (stage) ->
+    stage.addChild(@ground_layer.container)
+    stage.addChild(@tree_layer.container)
 
-  sprite: (index, land_texture) ->
-    throw "maximum number of tile particles reached" if @max_sprite_count? && index >= @max_sprite_count
-    if index >= @tile_sprites.length
-      @tile_sprites[index] = new PIXI.Sprite(land_texture)
-      @container.addChild(@tile_sprites[index]) if @container?
+  sprite_at: (indices, x, y) ->
+    if @game_state.game_map.has_tree_at(y, x)
+      { type: 'tree', sprite: @tree_layer.sprite_for(indices.tree, x, y) }
+    else if @game_state.game_map.has_ground_at(y, x)
+      { type: 'ground', sprite: @ground_layer.sprite_for(indices.ground, x, y) }
     else
-      @tile_sprites[index].texture = land_texture
-    @tile_sprites[index]
-
-  hide_sprites: (from_index) ->
-    for index in [from_index...@tile_sprites.length]
-      @tile_sprites[index].visible = false
-      @tile_sprites[index].x = -100
-      @tile_sprites[index].y = -100
+      null
 
   refresh: () ->
     @needs_refresh = false
@@ -47,8 +40,8 @@ window.starpeace.renderer.MapLandLayer = class MapLandLayer
     canvas_width = Math.ceil(@renderer.renderer_width || 0)
     canvas_height = Math.ceil(@renderer.renderer_height || 0)
 
-    tile_width = Math.ceil(starpeace.metadata.LandManifest.DEFAULT_TILE_WIDTH * @game_state.game_scale)
-    tile_height = Math.ceil(starpeace.metadata.LandManifest.DEFAULT_TILE_HEIGHT * @game_state.game_scale)
+    tile_width = Math.ceil(starpeace.metadata.GroundManifest.DEFAULT_TILE_WIDTH * @game_state.game_scale)
+    tile_height = Math.ceil(starpeace.metadata.GroundManifest.DEFAULT_TILE_HEIGHT * @game_state.game_scale)
     half_tile_width = Math.ceil(tile_width / 2)
     half_tile_height = Math.ceil(tile_height / 2)
 
@@ -81,27 +74,26 @@ window.starpeace.renderer.MapLandLayer = class MapLandLayer
     m = 1
     m_buffer = 1
 
-    sprite_index = 0
-    skip = 0
+    sprite_indices = { tree: 0, ground: 0 }
     x = i_start
     while x < i_max
       j = j_start - n
       while j < (j_start + m)
 
-        canvas_x = (x - j) * half_tile_width - view_x - 1 - tile_width
-        canvas_y = (x + j) * half_tile_height - view_y - tile_height
+        if j > 0 && j < map_height && x > 0 && x < map_width
+          canvas_x = (x - j) * half_tile_width - view_x - 1 - tile_width
+          canvas_y = (x + j) * half_tile_height - view_y - tile_height
 
-        if j > 0 && j < map_height && x > 0 && x < map_width && canvas_x >= -tile_width && (canvas_x < canvas_width + tile_width) && canvas_y >= -tile_height && (canvas_y < canvas_height + tile_height)
-          land_texture = @game_state.game_map.texture_for(j, x)
-          land_sprite = @sprite(sprite_index, land_texture)
-          land_sprite.visible = true
-          land_sprite.x = canvas_x
-          land_sprite.y = canvas_y
-          land_sprite.scale = scale
-          sprite_index += 1
-        else
-#           console.log "skip at #{x} #{j} @ #{canvas_x} #{canvas_y}"
-          skip += 1
+          sprite_info = @sprite_at(sprite_indices, x, j)
+          if sprite_info?.sprite? &&
+              canvas_x >= -sprite_info.sprite.width && (canvas_x < canvas_width + sprite_info.sprite.width) &&
+              canvas_y >= -sprite_info.sprite.height && (canvas_y < canvas_height + sprite_info.sprite.height)
+            sprite_info.sprite.visible = true
+            sprite_info.sprite.x = canvas_x
+            sprite_info.sprite.y = canvas_y - (@game_state.game_scale * sprite_info.sprite.texture.height - tile_height)
+            sprite_info.sprite.scale = scale
+            sprite_indices[sprite_info.type] += 1
+
 
         j += 1
 
@@ -126,5 +118,7 @@ window.starpeace.renderer.MapLandLayer = class MapLandLayer
 
       x += 1
 
-    @hide_sprites(sprite_index)
+    @ground_layer.hide_sprites(sprite_indices.ground)
+    @tree_layer.hide_sprites(sprite_indices.tree)
+
 
