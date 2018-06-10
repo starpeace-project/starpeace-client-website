@@ -10,7 +10,10 @@ window.starpeace.UIManager = class UIManager
       el: '#application'
       data: {
         client: @client
+
         game_state: @client.game_state
+        ui_state: @client.ui_state
+
         planetary_metadata_manager: @client.planetary_metadata_manager
         asset_manager: @client.asset_manager
         camera_manager: @client.camera_manager

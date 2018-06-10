@@ -5,6 +5,7 @@ window.starpeace.asset ||= {}
 window.starpeace.asset.AssetManager = class AssetManager
 
   constructor: (@client) ->
+    @static_news = []
     @planet_type_metadata = {}
     @planet_type_atlas = {}
     @map_id_texture = {}
@@ -26,10 +27,12 @@ window.starpeace.asset.AssetManager = class AssetManager
   load_planet_assets: (planet_type, map_id) ->
     return unless planet_type?.length
 
+    PIXI.loader.add 'news.static.en', './news.static.en.json' unless @static_news?.length
     PIXI.loader.add "metadata.#{planet_type}", "./land.#{planet_type}.metadata.json" unless @planet_type_metadata[planet_type]?
     PIXI.loader.add "map.#{map_id}", "./map.#{map_id}.texture.bmp" unless @map_id_texture[map_id]?
 
     PIXI.loader.load (loader, resources) =>
+      @static_news = resources['news.static.en'].data unless @static_news?.length
       @set_planet_metadata(planet_type, resources["metadata.#{planet_type}"]) unless @planet_type_metadata[planet_type]?
       @set_map_texture(map_id, resources["map.#{map_id}"]) unless @map_id_texture[map_id]?
       @client.notify_assets_changed()

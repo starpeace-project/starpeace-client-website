@@ -17,6 +17,7 @@ Some of the tentative future features and rough planned version are outlined bel
 
 ### v0.2 - in progress
 #### platform
+* [done] basic event and news ticker
 * [in progress] main gameplay UI menu layout
 * [in progress] more client/vue internal state separation
 * [pending] camera rotation perspectives
@@ -24,10 +25,12 @@ Some of the tentative future features and rough planned version are outlined bel
 
 #### assets
 * [done] tree cleanup and spritesheet generation
+* [done] static news support
 * [pending] buildings cleanup and spritesheet generation
 
 #### gameplay
 * [done] tree rendering
+* [done] static news notifications
 * [pending] seasons support
 * [pending] building rendering and animations
 * [pending] overlay rendering

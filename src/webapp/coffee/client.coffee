@@ -16,12 +16,14 @@ window.starpeace.Client = class Client
     @asset_manager = new starpeace.asset.AssetManager(@)
 
     @game_state = new starpeace.state.GameState(@)
+    @ui_state = new starpeace.state.UIState()
 
     @renderer = new starpeace.renderer.Renderer(@)
     @camera_manager = new starpeace.renderer.CameraManager(@, @renderer)
     @input_handler = new starpeace.renderer.InputHandler(@camera_manager, @renderer)
 
     @ui_manager = new starpeace.UIManager(@)
+    @event_manager = new starpeace.EventManager(@)
 
     @reload = false
 
@@ -71,6 +73,7 @@ window.starpeace.Client = class Client
     return unless @ui_manager.vue_application.has_planet_assets
     @renderer.initialize()
     @input_handler.initialize()
+    @event_manager.update_message()
 
   tick: () ->
     @renderer.tick() if @renderer.initialized
