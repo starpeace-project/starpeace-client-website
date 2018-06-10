@@ -32,7 +32,7 @@ window.starpeace.asset.AssetManager = class AssetManager
     PIXI.loader.add "map.#{map_id}", "./map.#{map_id}.texture.bmp" unless @map_id_texture[map_id]?
 
     PIXI.loader.load (loader, resources) =>
-      @static_news = resources['news.static.en'].data unless @static_news?.length
+      @static_news = _.shuffle(resources['news.static.en'].data) unless @static_news?.length
       @set_planet_metadata(planet_type, resources["metadata.#{planet_type}"]) unless @planet_type_metadata[planet_type]?
       @set_map_texture(map_id, resources["map.#{map_id}"]) unless @map_id_texture[map_id]?
       @client.notify_assets_changed()

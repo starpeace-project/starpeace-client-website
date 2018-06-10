@@ -52,5 +52,5 @@ window.starpeace.renderer.Renderer = class Renderer
     unless @offset?
       $render_container = $('#render-container')
       @offset = $render_container.offset() if $render_container.is(":visible")
-    @map_layers.refresh() if @map_layers?.needs_refresh
+    @map_layers.refresh() if @map_layers?.should_refresh()
 

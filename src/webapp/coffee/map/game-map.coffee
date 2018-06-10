@@ -14,20 +14,20 @@ window.starpeace.map.GameMap = class GameMap
   has_ground_at: (x, y) -> @ground_map_tiles[@index_at(x, y)]?
   ground_at: (x, y) -> @ground_map_tiles[@index_at(x, y)]
 
-  tree_texture_for: (x, y) ->
+  tree_texture_for: (season, x, y) ->
     texture = null
     unless x < 0 || x > @width || y < 0 || y > @height
       tree_tile = @tree_at(x, y)
-      texture_id = tree_tile?.textures?.fall
+      texture_id = tree_tile?.textures?[season]
       texture = PIXI.utils.TextureCache[texture_id] if texture_id?.length
       console.debug "[STARPEACE] unable to find tree texture <#{texture_id}> for coord <#{x}>x<#{y}>" unless texture?
     texture
 
-  ground_texture_for: (x, y) ->
-    texture = PIXI.utils.TextureCache['fall.255.border.center.1']
+  ground_texture_for: (season, x, y) ->
+    texture = PIXI.utils.TextureCache["#{season}.255.border.center.1"]
     unless x < 0 || x > @width || y < 0 || y > @height
       tile = @ground_at(x, y)
-      texture_id = _.values(tile?.textures?['0deg']?.fall)[0]
+      texture_id = _.values(tile?.textures?['0deg']?[season] || {})[0]
       texture = PIXI.utils.TextureCache[texture_id] if texture_id?.length
       console.debug "[STARPEACE] unable to find ground texture <#{texture_id}> for coord <#{x}>x<#{y}>, will fall back to default" unless texture?
     texture

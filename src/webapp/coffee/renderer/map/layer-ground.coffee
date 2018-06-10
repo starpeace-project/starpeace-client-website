@@ -18,7 +18,7 @@ window.starpeace.renderer.map.LayerGround = class LayerGround
   sprite_for: (sprite_index, x, y) ->
     throw "maximum number of ground particles reached" if sprite_index >= MAX_GROUND_TILES
 
-    texture = @game_state.game_map.ground_texture_for(y, x)
+    texture = @game_state.game_map.ground_texture_for(@game_state.current_season, y, x)
     if sprite_index >= @sprites.length
       @sprites[sprite_index] = new PIXI.Sprite(texture)
       @container.addChild(@sprites[sprite_index]) if @container?

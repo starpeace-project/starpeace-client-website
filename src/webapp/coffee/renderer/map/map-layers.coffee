@@ -11,6 +11,8 @@ window.starpeace.renderer.map.MapLayers = class MapLayers
     @ground_layer = new starpeace.renderer.map.LayerGround(@renderer, @game_state)
     @tree_layer = new starpeace.renderer.map.LayerTree(@renderer, @game_state)
 
+    @last_season_rendered = null
+
     @refresh()
 
   remove_layers: (stage) ->
@@ -29,8 +31,12 @@ window.starpeace.renderer.map.MapLayers = class MapLayers
     else
       null
 
+  should_refresh: () ->
+    @needs_refresh || @game_state.current_season != @last_season_rendered
+
   refresh: () ->
     @needs_refresh = false
+    @last_season_rendered = @game_state.current_season
 
     scale = new PIXI.Point(@game_state.game_scale, @game_state.game_scale)
 

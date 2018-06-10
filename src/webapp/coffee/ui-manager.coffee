@@ -57,6 +57,8 @@ window.starpeace.UIManager = class UIManager
         planets_for_system: () -> @planetary_system?.planets || []
         planet: () -> @client.planet
         planet_name: () -> @planet?.name
+
+        current_date: () -> moment(@client.game_state.current_date).format('MMM D, YYYY')
       }
       methods: {
         system_animation_url: (system) -> ''

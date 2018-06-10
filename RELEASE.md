@@ -11,6 +11,7 @@ Some of the tentative future features and rough planned version are outlined bel
 * basic state API integration (new account setup, tycoon info, building data)
 * input interaction support for buildings (selection, rendering)
 
+* camera rotation perspectives
 * mini-map rendering
 * map interaction support (place buildings, favorites, city integration)
 
@@ -20,7 +21,6 @@ Some of the tentative future features and rough planned version are outlined bel
 * [done] basic event and news ticker
 * [in progress] main gameplay UI menu layout
 * [in progress] more client/vue internal state separation
-* [pending] camera rotation perspectives
 * [pending] building asset and resource loader
 
 #### assets
@@ -31,7 +31,7 @@ Some of the tentative future features and rough planned version are outlined bel
 #### gameplay
 * [done] tree rendering
 * [done] static news notifications
-* [pending] seasons support
+* [done] seasons support
 * [pending] building rendering and animations
 * [pending] overlay rendering
 
