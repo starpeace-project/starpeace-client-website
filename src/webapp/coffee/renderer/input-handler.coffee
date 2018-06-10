@@ -15,8 +15,14 @@ window.starpeace.renderer.InputHandler = class InputHandler
     @auto_scroll_x = 0
     @auto_scroll_y = 0
 
-    shift_map = (delta_x, delta_y) =>
+    within_screen = (x, y) =>
+      lhs_min = @renderer.offset?.left || 0
+      rhs_max = lhs_min + @renderer.renderer_width
 
+      ths_min = @renderer.offset?.top || 0
+      bhs_max = ths_min + @renderer.renderer_height
+
+      x >= lhs_min && x <= rhs_max && y >= ths_min && y <= bhs_max
 
     start_moving = (event) =>
       @is_moving = true
@@ -63,6 +69,8 @@ window.starpeace.renderer.InputHandler = class InputHandler
       event_x = Math.round(event.clientX)
       event_y = Math.round(event.clientY)
 
+      return unless within_screen(event_x, event_y)
+
       lhs_min = @renderer.offset?.left || 0
       lhs_max = lhs_min + 100
       rhs_max = lhs_min + @renderer.renderer_width
@@ -106,6 +114,7 @@ window.starpeace.renderer.InputHandler = class InputHandler
 
     do_scale = (event) =>
       return unless event?.deltaY?
+      return unless within_screen(event.clientX, event.clientY)
 
       before_scale = @client.game_state.game_scale
       @client.game_state.game_scale -= (event.deltaY / 1200)
