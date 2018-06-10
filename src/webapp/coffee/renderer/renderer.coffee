@@ -6,20 +6,7 @@ window.starpeace.renderer.Renderer = class Renderer
 
   constructor: (@client) ->
     @initialized = false
-
-    $render_container = $('#render-container')
-    @offset = if $render_container.is(":visible") then $render_container.offset() else null
-    @renderer_width = Math.ceil($render_container.outerWidth())
-    @renderer_height = Math.ceil($render_container.outerHeight())
-
     @client.game_state.initialized = false
-    @application = new PIXI.Application(@renderer_width, @renderer_height, {
-      backgroundColor : 0x000000
-    })
-    $render_container.append(@application.view)
-    new ResizeSensor($render_container, => @handle_resize())
-
-    @input_handler = new starpeace.renderer.InputHandler(@client, @)
 
   handle_resize: () ->
     $render_container = $('#render-container')
@@ -29,11 +16,17 @@ window.starpeace.renderer.Renderer = class Renderer
     @application.renderer.resize(@renderer_width, @renderer_height)
     @initialize_map()
 
+  initialize_application: () ->
+    $render_container = $('#render-container')
+    @offset = if $render_container.is(":visible") then $render_container.offset() else null
+    @renderer_width = Math.ceil($render_container.outerWidth())
+    @renderer_height = Math.ceil($render_container.outerHeight())
+    @application = new PIXI.Application(@renderer_width, @renderer_height, {
+      backgroundColor : 0x000000
+    })
+    $render_container.append(@application.view)
+    new ResizeSensor($render_container, => @handle_resize())
 
-#   pixels_for_texture: (texture) ->
-#     render_texture = PIXI.RenderTexture.create(texture.width, texture.height)
-#     @application.renderer.render(new PIXI.Sprite(texture), render_texture)
-#     @application.renderer.extract.pixels(render_texture)
 
   initialize_map: () ->
     @map_layers.remove_layers(@application.stage) if @map_layers?
@@ -41,6 +34,8 @@ window.starpeace.renderer.Renderer = class Renderer
     @map_layers.add_layers(@application.stage)
 
   initialize: () ->
+    @initialize_application() unless @application?
+
     land_manifest = @client.land_manifest_for_planet()
     map_texture = @client.asset_manager.map_id_texture[@client.planet.map_id]
 

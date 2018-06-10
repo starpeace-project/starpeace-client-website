@@ -175,10 +175,10 @@
             %tbody
               %tr
                 %td.column-camera-controls
-                  %a.btn.btn-outline-dark.btn-sm.btn-block
+                  %a.btn.btn-outline-dark.btn-sm.btn-block{v-on:click.stop.prevent:'camera_manager.zoom_in()', href: '#'}
                     %i.fas.fa-plus
                 %td.column-camera-controls
-                  %a.btn.btn-outline-dark.btn-sm.btn-block
+                  %a.btn.btn-outline-dark.btn-sm.btn-block{v-on:click.stop.prevent:'camera_manager.zoom_out()', href: '#'}
                     %i.fas.fa-minus
 
                 %td.column-overlays
@@ -256,5 +256,5 @@
 
               %tr
                 %td.column-news-ticker
-                  News and event ticker
+                  ECU continues purge: another former IFEL official tracked down and gifted expenses-paid holiday to sun.
 

@@ -1,7 +1,8 @@
 
 
 window.starpeace ||= {}
-window.starpeace.GameState = class GameState
+window.starpeace.state ||= {}
+window.starpeace.state.GameState = class GameState
 
   constructor: () ->
     @initialized = false

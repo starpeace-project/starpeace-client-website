@@ -4,7 +4,8 @@ window.starpeace ||= {}
 window.starpeace.renderer ||= {}
 window.starpeace.renderer.InputHandler = class InputHandler
 
-  constructor: (@client, @renderer) ->
+  constructor: (@camera_manager, @renderer) ->
+    @initialized = false
 
     @is_moving = false
 
@@ -14,6 +15,10 @@ window.starpeace.renderer.InputHandler = class InputHandler
     @auto_scroll = null
     @auto_scroll_x = 0
     @auto_scroll_y = 0
+
+
+  initialize: () ->
+    return unless @renderer?.initialized && !@initialized
 
     within_screen = (x, y) =>
       lhs_min = @renderer.offset?.left || 0
@@ -39,7 +44,7 @@ window.starpeace.renderer.InputHandler = class InputHandler
       @last_y = Math.round(event.clientY)
 
     do_move = (event) =>
-      return unless @is_moving
+      return unless @is_moving && @renderer?.initialized
       event = event?.data?.originalEvent
       return unless event? && event.isPrimary
 
@@ -51,10 +56,7 @@ window.starpeace.renderer.InputHandler = class InputHandler
       @last_x = event_x
       @last_y = event_y
 
-      @client.game_state.view_offset_x += delta_x unless delta_x == 0
-      @client.game_state.view_offset_y += delta_y unless delta_y == 0
-
-      @renderer.map_layers.needs_refresh = true if @renderer.map_layers? && (delta_x != 0 || delta_y != 0)
+      @camera_manager.pan_camera(delta_x, delta_y)
 
     stop_auto_scroll = (event) =>
       clearInterval(@auto_scroll) if @auto_scroll?
@@ -69,7 +71,7 @@ window.starpeace.renderer.InputHandler = class InputHandler
       event_x = Math.round(event.clientX)
       event_y = Math.round(event.clientY)
 
-      return unless within_screen(event_x, event_y)
+      return unless @renderer?.initialized && within_screen(event_x, event_y)
 
       lhs_min = @renderer.offset?.left || 0
       lhs_max = lhs_min + 100
@@ -92,10 +94,7 @@ window.starpeace.renderer.InputHandler = class InputHandler
         counter = 0
         @auto_scroll = setInterval(=>
           counter += 1
-          if counter > 6
-            @client.game_state.view_offset_x += (delta_x * 25)
-            @client.game_state.view_offset_y += (delta_y * 25)
-            @renderer.map_layers.needs_refresh = true if @renderer.map_layers?
+          @camera_manager.pan_camera(delta_x * 25, delta_y * 25) if counter > 6
         , 25)
 
       @auto_scroll_x = delta_x
@@ -116,17 +115,11 @@ window.starpeace.renderer.InputHandler = class InputHandler
       return unless event?.deltaY?
       return unless within_screen(event.clientX, event.clientY)
 
-      before_scale = @client.game_state.game_scale
-      @client.game_state.game_scale -= (event.deltaY / 1200)
-      @client.game_state.game_scale = 1.5 if @client.game_state.game_scale > 1.5
-      @client.game_state.game_scale = 0.5 if @client.game_state.game_scale < 0.5
-
-      scale_delta = @client.game_state.game_scale - before_scale
-#       @client.game_state.view_offset_x -= (scale_delta * 3000)
-#       @client.game_state.view_offset_y -= (scale_delta * 3000)
-
-      @renderer.initialize_map() if scale_delta != 0 && @renderer.map_layers?
+      if event.deltaY > 0
+        @camera_manager.zoom_out()
+      else if event.deltaY < 0
+        @camera_manager.zoom_in()
 
     document.addEventListener('mousewheel', do_scale, false)
 
-
+    @initialized = true

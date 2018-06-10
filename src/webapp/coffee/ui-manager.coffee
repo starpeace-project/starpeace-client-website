@@ -3,7 +3,7 @@
 ###
 
 window.starpeace ||= {}
-window.starpeace.UIState = class UIState
+window.starpeace.UIManager = class UIManager
 
   constructor: (@client) ->
     @vue_application = new Vue({
@@ -13,7 +13,7 @@ window.starpeace.UIState = class UIState
         game_state: @client.game_state
         planetary_metadata_manager: @client.planetary_metadata_manager
         asset_manager: @client.asset_manager
-        ui_state: @
+        camera_manager: @client.camera_manager
       }
 #       watch: {
 #         ui_state: () ->
