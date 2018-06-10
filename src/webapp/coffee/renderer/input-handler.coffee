@@ -15,40 +15,40 @@ window.starpeace.renderer.InputHandler = class InputHandler
     @auto_scroll_x = 0
     @auto_scroll_y = 0
 
+    shift_map = (delta_x, delta_y) =>
+
+
     start_moving = (event) =>
       @is_moving = true
       event = event?.data?.originalEvent
-      return unless event?
-      @last_x = Math.round(event.x)
-      @last_y = Math.round(event.y)
+      return unless event? && event.isPrimary
+      @last_x = Math.round(event.clientX)
+      @last_y = Math.round(event.clientY)
 
     finish_moving = (event) =>
       @is_moving = false
       event = event?.data?.originalEvent
-      return unless event?
-      @last_x = Math.round(event.x)
-      @last_y = Math.round(event.y)
+      return unless event? && event.isPrimary
+      @last_x = Math.round(event.clientX)
+      @last_y = Math.round(event.clientY)
 
     do_move = (event) =>
       return unless @is_moving
       event = event?.data?.originalEvent
-      return unless event?
+      return unless event? && event.isPrimary
 
-      event_x = Math.round(event.x)
-      event_y = Math.round(event.y)
+      event_x = Math.round(event.clientX)
+      event_y = Math.round(event.clientY)
 
       delta_x = if @last_x >= 0 then @last_x - event_x else 0
       delta_y = if @last_y >= 0 then @last_y - event_y else 0
+      @last_x = event_x
+      @last_y = event_y
 
       @client.game_state.view_offset_x += delta_x unless delta_x == 0
       @client.game_state.view_offset_y += delta_y unless delta_y == 0
 
-      @last_x = event_x
-      @last_y = event_y
-
-#       console.log "#{@last_x} #{@last_y}"
-
-      @renderer.map_layers.needs_refresh = true if @renderer.map_layers?
+      @renderer.map_layers.needs_refresh = true if @renderer.map_layers? && (delta_x != 0 || delta_y != 0)
 
     stop_auto_scroll = (event) =>
       clearInterval(@auto_scroll) if @auto_scroll?
@@ -60,8 +60,8 @@ window.starpeace.renderer.InputHandler = class InputHandler
 
       event = event?.data?.originalEvent
       return unless event?
-      event_x = Math.round(event.x)
-      event_y = Math.round(event.y)
+      event_x = Math.round(event.clientX)
+      event_y = Math.round(event.clientY)
 
       lhs_min = @renderer.offset?.left || 0
       lhs_max = lhs_min + 100
@@ -94,21 +94,14 @@ window.starpeace.renderer.InputHandler = class InputHandler
       @auto_scroll_y = delta_y
 
 
-    @renderer.application.renderer.plugins.interaction.on('mousedown', start_moving)
-    @renderer.application.renderer.plugins.interaction.on('touchstart', start_moving)
+    @renderer.application.renderer.plugins.interaction.on('pointerdown', start_moving)
+    @renderer.application.renderer.plugins.interaction.on('pointermove', do_move)
+    @renderer.application.renderer.plugins.interaction.on('pointerup', finish_moving)
+    @renderer.application.renderer.plugins.interaction.on('pointerout', finish_moving)
+    @renderer.application.renderer.plugins.interaction.on('pointercancel', finish_moving)
 
-    @renderer.application.renderer.plugins.interaction.on('mousemove', do_move)
-    @renderer.application.renderer.plugins.interaction.on('touchmove', do_move)
-
-    @renderer.application.renderer.plugins.interaction.on('mouseup', finish_moving)
-    @renderer.application.renderer.plugins.interaction.on('mouseout', finish_moving)
-    @renderer.application.renderer.plugins.interaction.on('mousecancel', finish_moving)
-    @renderer.application.renderer.plugins.interaction.on('touchend', finish_moving)
-
-    @renderer.application.renderer.plugins.interaction.on('mousemove', handle_auto_scroll)
-    @renderer.application.renderer.plugins.interaction.on('touchmove', handle_auto_scroll)
-
-    @renderer.application.renderer.plugins.interaction.on('mouseout', stop_auto_scroll)
+    @renderer.application.renderer.plugins.interaction.on('pointermove', handle_auto_scroll)
+    @renderer.application.renderer.plugins.interaction.on('pointerout', stop_auto_scroll)
 
 
     do_scale = (event) =>

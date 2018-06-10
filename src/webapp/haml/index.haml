@@ -30,7 +30,7 @@
     %script{type: 'text/javascript', src: '/assets/client-main.min.js'}
 
   %body
-    #application
+    #application.mineral
       #common-header.clearfix
         .common-logo
           %a.logo{href: '/'}
@@ -171,3 +171,90 @@
 
       %transition{name:'fade'}
         #footer-container{v-show:'is_ready', v-cloak:true}
+          %table.table.row-inspect
+            %tbody
+              %tr
+                %td.column-camera-controls
+                  %a.btn.btn-outline-dark.btn-sm.btn-block
+                    %i.fas.fa-plus
+                %td.column-camera-controls
+                  %a.btn.btn-outline-dark.btn-sm.btn-block
+                    %i.fas.fa-minus
+
+                %td.column-overlays
+                  %a.btn.btn-outline-dark.btn-sm.btn-block
+                    Overlay
+
+                %td.column-inspect{rowspan: 2}
+                  %a.btn.btn-outline-dark.btn-sm.btn-block
+                    Inspect
+
+                %td.column-details-ticker.primary
+                  Welcome to STARPEACE! If you enjoy your time as a Visitor, become a Tycoon!
+
+              %tr
+                %td.column-camera-controls
+                  %a.btn.btn-outline-dark.btn-sm.btn-block
+                    %i.fas.fa-redo-alt
+                %td.column-camera-controls
+                  %a.btn.btn-outline-dark.btn-sm.btn-block
+                    %i.fas.fa-undo-alt
+
+                %td.column-overlays
+                  %a.btn.btn-outline-dark.btn-sm.btn-block
+                    City Zones
+
+                %td.column-details-ticker.secondary
+                  HINT: Tycoons can start companies and invest in different industries and real estate.
+
+
+          .row.row-details
+            .col-2.column-detail-logo
+            .col-10.column-detail-container
+
+          %table.table.row-footer-primary
+            %tbody
+              %tr.row-menu
+                %td.column-menu
+                  %a.btn.btn-outline-dark.btn-sm
+                    %i.fas.fa-globe
+                  %a.btn.btn-outline-dark.btn-sm
+                    %i.fas.fa-map-pin
+                  %a.btn.btn-outline-dark.btn-sm
+                    %i.far.fa-eye
+                  %a.btn.btn-outline-dark.btn-sm
+                    %i.fas.fa-user-tie
+                  %a.btn.btn-outline-dark.btn-sm
+                    %i.fas.fa-toolbox
+                  %a.btn.btn-outline-dark.btn-sm
+                    %i.far.fa-envelope
+                  %a.btn.btn-outline-dark.btn-sm
+                    %i.far.fa-comments
+                  %a.btn.btn-outline-dark.btn-sm
+                    %i.fas.fa-cogs
+                  %a.btn.btn-outline-dark.btn-sm
+                    %i.far.fa-question-circle
+
+                %td.column-tycoon{rowspan: 2}
+                  %table
+                    %tbody
+                      %tr
+                        %td.column-tycoon-name
+                          Visitor
+                        %td.column-tycoon-buildings
+                          %span.count 0 / 0
+                          %i.far.fa-building
+                      %tr
+                        %td.column-tycoon-corporation
+                          [VISITOR VISA]
+                      %tr
+                        %td.column-tycoon-cashflow
+                          ($0/h)
+                      %tr
+                        %td.column-date
+                          Jan 1, 2235
+
+              %tr
+                %td.column-news-ticker
+                  News and event ticker
+
