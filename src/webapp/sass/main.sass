@@ -42,6 +42,16 @@ h3
   font-size: 2rem
   text-shadow: 0 0 .25rem rgba(0, 0, 0, .2)
 
+.card-close
+  cursor: pointer
+  font-size: 2rem
+  float: right
+  line-height: 1.5rem
+  opacity: .6
+
+  &:hover
+    opacity: 1
+
 #common-header
   color: $common-header-text-color
   font-size: 1.25rem
@@ -155,6 +165,7 @@ h3
     font-weight: bold
 
   a
+    color: #fff
     font-size: 1.25rem
 
 
@@ -182,6 +193,9 @@ h3
   &.pending_identity
     max-width: 800px
 
+    .card-body
+      color: #fff
+
     .col
       text-align: center
 
@@ -189,7 +203,7 @@ h3
         border-right: 1px solid #ddd
 
       svg
-        color: #333
+        color: #fff
         font-size: 4rem
         margin: .5rem 0 1rem
 
@@ -217,6 +231,7 @@ h3
       width: 125px
 
     .system-table
+      color: #000
       margin: 0
 
       tr
@@ -249,12 +264,14 @@ h3
 
     .card-header
       a
+        color: #fff
         font-weight: normal
 
     .planet-image
       width: 125px
 
     .planet-table
+      color: #000
       margin: 0
 
       tr
@@ -306,6 +323,46 @@ h3
   position: absolute
   top: 4rem
   width: 100%
+
+#fps-container
+  left: .5rem
+  position: absolute
+  top: 4.5rem
+
+.no-header
+  #render-container
+    height: calc(100vh - 200px)
+    top: 0
+
+  #fps-container
+    top: .5rem
+
+
+#menu-options-container
+  margin: 0 auto
+  max-width: 600px
+  padding-top: 2rem
+
+  .card-header
+    font-size: 1.25rem
+    font-weight: 1000
+
+  legend
+    color: #fff
+    font-weight: 1000
+
+  .label-column
+    color: #fff
+    font-weight: 1000
+
+  .toggle-icons
+    font-size: 1.5rem
+    line-height: 1.5rem
+    cursor: pointer
+
+    .fa-toggle-on
+      color: #fff
+      font-weight: 1000
 
 #footer-container
   position: fixed
@@ -451,9 +508,26 @@ h3
       padding: .5rem
 
 
+
+.card
+  border: 1px solid rgba(0, 0, 0, .8)
+
+  .card-header
+    border: 1px solid rgba(0, 0, 0, .2)
+    color: #fff
+
+
 .mineral
   .btn-outline-dark
     color: #6ea192
+
+  .card
+    .card-header
+      background-color: #395950
+
+    .card-body
+      background: linear-gradient(to bottom, #395950, #000)
+      color: #6ea192
 
   .row-inspect
     .column-camera-controls
@@ -490,6 +564,14 @@ h3
   .btn-outline-dark
     color: #a1926e
 
+  .card
+    .card-header
+      background-color: #595039
+
+    .card-body
+      background: linear-gradient(to bottom, #595039, #000)
+      color: #a1926e
+
   .row-inspect
     .column-camera-controls
       color: #a1926e
@@ -524,6 +606,14 @@ h3
 .voodoo
   .btn-outline-dark
     color: #926ea1
+
+  .card
+    .card-header
+      background-color: #3f2a45
+
+    .card-body
+      background: linear-gradient(to bottom, #3f2a45, #000)
+      color: #926ea1
 
   .row-inspect
     .column-camera-controls

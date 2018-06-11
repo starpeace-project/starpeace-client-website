@@ -25,6 +25,11 @@ window.starpeace.renderer.Renderer = class Renderer
       backgroundColor : 0x000000
     })
     $render_container.append(@application.view)
+
+    @fps_meter = new FPSMeter($('#fps-container')[0], {
+      theme: 'colorful'
+    })
+
     new ResizeSensor($render_container, => @handle_resize())
 
 
@@ -49,8 +54,12 @@ window.starpeace.renderer.Renderer = class Renderer
     @initialized = true
 
   tick: () ->
+    @fps_meter.tickStart() if @fps_meter?
+
     unless @offset?
       $render_container = $('#render-container')
       @offset = $render_container.offset() if $render_container.is(":visible")
     @map_layers.refresh() if @map_layers?.should_refresh()
+
+    @fps_meter.tick() if @fps_meter?
 

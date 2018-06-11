@@ -30,8 +30,8 @@
     %script{type: 'text/javascript', src: '/assets/client-main.min.js'}
 
   %body
-    #application.mineral
-      #common-header.clearfix
+    #application{v-bind:class:"[ui_state.theme, {'no-header':!ui_state.show_header}]"}
+      #common-header.clearfix{v-show:'ui_state.show_header'}
         .common-logo
           %a.logo{href: '/'}
             %h1 STAR
@@ -165,9 +165,46 @@
                 %img.logo-loading
                 .label-loading Initializing client environment...
 
+      #fps-container{v-show:'ui_state.show_fps', v-cloak:true}
 
       %transition{name:'fade'}
         #render-container{v-show:'is_ready', v-cloak:true}
+
+
+      #menu-options-container{v-show:"ui_state.main_menu == 'options'", v-cloak:true}
+        .card
+          .card-header
+            Client Options
+            .card-close{v-on:click.stop.prevent:'toggle_menu_options()'}
+              %i.fas.fa-times
+          .card-body
+            %form
+              .form-group.row
+                .col-sm-3.label-column Show Header:
+                .col-sm-9
+                  .toggle-icons
+                    %i.fas.fa-toggle-on{v-show:"ui_state.show_header", v-on:click.stop.prevent:'toggle_header()'}
+                    %i.fas.fa-toggle-off{v-show:"!ui_state.show_header", v-on:click.stop.prevent:'toggle_header()'}
+              .form-group.row
+                .col-sm-3.label-column Show FPS:
+                .col-sm-9
+                  .toggle-icons
+                    %i.fas.fa-toggle-on{v-show:"ui_state.show_fps", v-on:click.stop.prevent:'toggle_fps()'}
+                    %i.fas.fa-toggle-off{v-show:"!ui_state.show_fps", v-on:click.stop.prevent:'toggle_fps()'}
+              %fieldset.form-group
+                .row
+                  %legend.col-form-label.col-sm-3.pt-0 Color Theme:
+                  .col-sm-9
+                    .form-check
+                      %input#option-theme-1.form-check-input{type:'radio', name:'option-theme', value:'mineral', v-model:'ui_state.theme'}
+                      %label.form-check-label{for:'option-theme-1'} Mineral
+                    .form-check
+                      %input#option-theme-2.form-check-input{type:'radio', name:'option-theme', value:'hemlock', v-model:'ui_state.theme'}
+                      %label.form-check-label{for:'option-theme-2'} Hemlock
+                    .form-check
+                      %input#option-theme-3.form-check-input{type:'radio', name:'option-theme', value:'voodoo', v-model:'ui_state.theme'}
+                      %label.form-check-label{for:'option-theme-3'} Voodoo
+
 
       %transition{name:'fade'}
         #footer-container{v-show:'is_ready', v-cloak:true}
@@ -216,23 +253,23 @@
             %tbody
               %tr.row-menu
                 %td.column-menu
-                  %a.btn.btn-outline-dark.btn-sm
+                  %a.btn.btn-outline-dark.btn-sm{v-bind:class:"{active: ui_state.main_menu == 'planetary'}", v-on:click.stop.prevent:'toggle_menu_planetary()', href: '#'}
                     %i.fas.fa-globe
-                  %a.btn.btn-outline-dark.btn-sm
+                  %a.btn.btn-outline-dark.btn-sm{v-bind:class:"{active: ui_state.show_menu_favorites}", v-on:click.stop.prevent:'toggle_menu_favorites()', href: '#'}
                     %i.fas.fa-map-pin
-                  %a.btn.btn-outline-dark.btn-sm
+                  %a.btn.btn-outline-dark.btn-sm{v-on:click.stop.prevent:'hide_all_menus()', href: '#'}
                     %i.far.fa-eye
-                  %a.btn.btn-outline-dark.btn-sm
+                  %a.btn.btn-outline-dark.btn-sm{v-bind:class:"{active: ui_state.main_menu == 'tycoon'}", v-on:click.stop.prevent:'toggle_menu_tycoon()', href: '#'}
                     %i.fas.fa-user-tie
-                  %a.btn.btn-outline-dark.btn-sm
+                  %a.btn.btn-outline-dark.btn-sm{v-bind:class:"{active: ui_state.main_menu == 'building'}", v-on:click.stop.prevent:'toggle_menu_building()', href: '#'}
                     %i.far.fa-building
-                  %a.btn.btn-outline-dark.btn-sm
+                  %a.btn.btn-outline-dark.btn-sm{v-bind:class:"{active: ui_state.main_menu == 'mail'}", v-on:click.stop.prevent:'toggle_menu_mail()', href: '#'}
                     %i.far.fa-envelope
-                  %a.btn.btn-outline-dark.btn-sm
+                  %a.btn.btn-outline-dark.btn-sm{v-bind:class:"{active: ui_state.main_menu == 'chat'}", v-on:click.stop.prevent:'toggle_menu_chat()', href: '#'}
                     %i.far.fa-comments
-                  %a.btn.btn-outline-dark.btn-sm
+                  %a.btn.btn-outline-dark.btn-sm{v-bind:class:"{active: ui_state.main_menu == 'options'}", v-on:click.stop.prevent:'toggle_menu_options()', href: '#'}
                     %i.fas.fa-cogs
-                  %a.btn.btn-outline-dark.btn-sm
+                  %a.btn.btn-outline-dark.btn-sm{v-bind:class:"{active: ui_state.main_menu == 'help'}", v-on:click.stop.prevent:'toggle_menu_help()', href: '#'}
                     %i.far.fa-question-circle
 
                 %td.column-tycoon{rowspan: 2}

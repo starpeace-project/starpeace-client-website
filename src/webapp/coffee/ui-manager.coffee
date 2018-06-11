@@ -72,6 +72,33 @@ window.starpeace.UIManager = class UIManager
           planet_modifier = 'tropical ' if planet.moisture_baseline > 50 && planet.temperature_baseline > 50
 
           "#{size} sized #{planet_modifier}planet with #{seasons} seasons"
+
+        toggle_header: () ->
+          @ui_state.show_header = !@ui_state.show_header
+        toggle_fps: () ->
+          @ui_state.show_fps = !@ui_state.show_fps
+
+        hide_all_menus: () ->
+          @ui_state.show_menu_favorites = false
+          @ui_state.main_menu = null
+        toggle_menu_planetary: () ->
+          @ui_state.main_menu = if @ui_state.main_menu == 'planetary' then null else 'planetary'
+          @ui_state.show_menu_favorites = false
+        toggle_menu_favorites: () ->
+          @ui_state.show_menu_favorites = !@ui_state.show_menu_favorites
+        toggle_menu_tycoon: () ->
+          @ui_state.main_menu = if @ui_state.main_menu == 'tycoon' then null else 'tycoon'
+        toggle_menu_building: () ->
+          @ui_state.main_menu = if @ui_state.main_menu == 'building' then null else 'building'
+        toggle_menu_mail: () ->
+          @ui_state.main_menu = if @ui_state.main_menu == 'mail' then null else 'mail'
+        toggle_menu_chat: () ->
+          @ui_state.main_menu = if @ui_state.main_menu == 'chat' then null else 'chat'
+        toggle_menu_options: () ->
+          @ui_state.main_menu = if @ui_state.main_menu == 'options' then null else 'options'
+        toggle_menu_help: () ->
+          @ui_state.main_menu = if @ui_state.main_menu == 'help' then null else 'help'
+
       }
     })
 
