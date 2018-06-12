@@ -22,7 +22,7 @@ module.exports = function(grunt) {
       },
       haml: {
         files: ['src/webapp/haml/**/*.haml'],
-        tasks: ['haml'],
+        tasks: ['haml:compile'],
         options: {
           livereload: true
         }

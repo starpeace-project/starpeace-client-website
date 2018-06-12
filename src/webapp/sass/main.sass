@@ -11,6 +11,8 @@ $common-header-text-color: #fff
   100%
     transform: rotate(360deg)
 
+html
+  font-size: 12px
 
 body
   background: url("/assets/background.jpg") top center no-repeat
@@ -18,7 +20,7 @@ body
   box-sizing: border-box
   color: $text-color
   font-family: 'Open Sans', sans-serif
-  font-size: 14px
+  font-size: 12px
   height: 100vh
   margin: 0
   padding: 0
@@ -120,10 +122,10 @@ h3
 .logo-loading
   animation: spin 2s linear infinite
   background-image: url(/assets/logo-grey.png)
-  background-size: 125px
+  background-size: 10rem
   content: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAC0lEQVQI12NgAAIAAAUAAeImBZsAAAAASUVORK5CYII=')
-  height: 125px
-  width: 125px
+  height: 10rem
+  width: 10rem
 
 .label-loading
   color: #ccc
@@ -132,7 +134,7 @@ h3
 
 
 #loading-container
-  max-width: 500px
+  max-width: 30rem
   text-align: center
   margin: 6rem auto 0
 
@@ -184,14 +186,14 @@ h3
     margin: 1rem 0
 
   &.pending_identity_authentication
-    max-width: 500px
+    max-width: 50rem
     text-align: center
 
     img
       margin: 1rem 0
 
   &.pending_identity
-    max-width: 800px
+    max-width: 45rem
 
     .card-body
       color: #fff
@@ -211,24 +213,21 @@ h3
         text-align: left
 
   &.pending_account
-    max-width: 500px
+    max-width: 30rem
     text-align: center
 
     img
       margin: 1rem 0
 
   &.pending_planetary_metadata
-    max-width: 500px
+    max-width: 30rem
     text-align: center
 
     img
       margin: 1rem 0
 
   &.pending_planetary_system
-    max-width: 800px
-
-    .system-image
-      width: 125px
+    max-width: 50rem
 
     .system-table
       color: #000
@@ -247,7 +246,7 @@ h3
         vertical-align: middle
 
         &.system-image
-          width: 150px
+          width: 10rem
           padding-right: 1.5rem
           text-align: center
 
@@ -255,9 +254,9 @@ h3
         text-align: right
 
       .system-select
-        max-width: 125px
+        max-width: 10rem
         padding-left: 1rem
-        width: 125px
+        width: 10rem
 
   &.pending_planet
     max-width: 800px
@@ -266,9 +265,6 @@ h3
       a
         color: #fff
         font-weight: normal
-
-    .planet-image
-      width: 125px
 
     .planet-table
       color: #000
@@ -287,6 +283,7 @@ h3
         vertical-align: middle
 
         &.planet-image
+          width: 10rem
           padding-right: 1rem
 
       .planet-value
@@ -294,23 +291,25 @@ h3
 
       .planet-description
         border: 0
-        max-width: 125px
+        max-width: 10rem
         font-size: 1rem
         padding-left: 1.5rem
         vertical-align: top
 
       .planet-select
-        max-width: 125px
+        max-width: 10rem
         padding-left: 1rem
-        width: 125px
+        width: 10rem
 
   &.pending_assets
-    max-width: 500px
+    max-width: 30rem
     text-align: center
+    width: 30rem
 
   &.pending_initialization
-    max-width: 500px
+    max-width: 30rem
     text-align: center
+    width: 30rem
 
   &.ready
     display: none
@@ -318,8 +317,8 @@ h3
     width: 0
 
 #render-container
-  bottom: 200px
-  height: calc(100vh - 200px - 4rem)
+  bottom: 13rem
+  height: calc(100vh - 13rem - 4rem)
   position: absolute
   top: 4rem
   width: 100%
@@ -331,7 +330,7 @@ h3
 
 .no-header
   #render-container
-    height: calc(100vh - 200px)
+    height: calc(100vh - 13rem)
     top: 0
 
   #fps-container
@@ -340,7 +339,7 @@ h3
 
 #menu-options-container
   margin: 0 auto
-  max-width: 600px
+  max-width: 40rem
   padding-top: 2rem
 
   .card-header
@@ -368,7 +367,7 @@ h3
   position: fixed
   bottom: 0
   width: 100%
-  height: 200px
+  height: 13rem
 
   .row-inspect
     background-color: #000
@@ -410,6 +409,7 @@ h3
 
       .btn
         height: 2rem
+        padding-top: .3rem
 
     .column-inspect
       padding: .25rem .5rem .25rem .25rem
@@ -429,8 +429,11 @@ h3
       background-repeat: space
       font-weight: 1000
       letter-spacing: .05rem
-      padding: .5rem
-      vertical-align: bottom
+      overflow: hidden
+      padding: .25rem .5rem
+      text-overflow: ellipsis
+      vertical-align: middle
+      white-space: nowrap
 
       &.primary
         background-color: rgba(0, 255, 0, .5)
@@ -450,14 +453,14 @@ h3
       border-top: 0
 
     .column-detail-logo
-      max-width: 200px
+      max-width: 20rem
 
     .column-menu
       height: 3rem
-      max-width: 425px
+      max-width: 30rem
       padding: .25rem
       text-align: center
-      width: 425px
+      width: 30rem
 
       .btn-sm
         font-size: 1.25rem
@@ -516,6 +519,12 @@ h3
     border: 1px solid rgba(0, 0, 0, .2)
     color: #fff
 
+  .card-body
+
+    a
+      &:not(.btn)
+        &:active
+          color: #fff
 
 .mineral
   .btn-outline-dark
@@ -528,6 +537,13 @@ h3
     .card-body
       background: linear-gradient(to bottom, #395950, #000)
       color: #6ea192
+
+      a
+        &:not(.btn)
+          color: #6ea192
+
+          &:hover
+            color: #8bb3a7
 
   .row-inspect
     .column-camera-controls
@@ -572,6 +588,13 @@ h3
       background: linear-gradient(to bottom, #595039, #000)
       color: #a1926e
 
+      a
+        &:not(.btn)
+          color: #a1926e
+
+          &:hover
+            color: #b3a78b
+
   .row-inspect
     .column-camera-controls
       color: #a1926e
@@ -614,6 +637,13 @@ h3
     .card-body
       background: linear-gradient(to bottom, #3f2a45, #000)
       color: #926ea1
+
+      a
+        &:not(.btn)
+          color: #926ea1
+
+          &:hover
+            color: #a78bb3
 
   .row-inspect
     .column-camera-controls

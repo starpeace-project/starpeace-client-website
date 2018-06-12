@@ -184,21 +184,25 @@
           .card-body
             %form
               .form-group.row
-                .col-sm-3.label-column Show Header:
-                .col-sm-9
+                .col-sm-4.label-column Show Header:
+                .col-sm-8
                   .toggle-icons
-                    %i.fas.fa-toggle-on{v-show:"ui_state.show_header", v-on:click.stop.prevent:'toggle_header()'}
-                    %i.fas.fa-toggle-off{v-show:"!ui_state.show_header", v-on:click.stop.prevent:'toggle_header()'}
+                    %a{href:'#', v-show:"ui_state.show_header", v-on:click.stop.prevent:'toggle_header()'}
+                      %i.fas.fa-toggle-on
+                    %a{href:'#', v-show:"!ui_state.show_header", v-on:click.stop.prevent:'toggle_header()'}
+                      %i.fas.fa-toggle-off
               .form-group.row
-                .col-sm-3.label-column Show FPS:
-                .col-sm-9
+                .col-sm-4.label-column Show FPS:
+                .col-sm-8
                   .toggle-icons
-                    %i.fas.fa-toggle-on{v-show:"ui_state.show_fps", v-on:click.stop.prevent:'toggle_fps()'}
-                    %i.fas.fa-toggle-off{v-show:"!ui_state.show_fps", v-on:click.stop.prevent:'toggle_fps()'}
+                    %a{href:'#', v-show:"ui_state.show_fps", v-on:click.stop.prevent:'toggle_fps()'}
+                      %i.fas.fa-toggle-on
+                    %a{href:'#', v-show:"!ui_state.show_fps", v-on:click.stop.prevent:'toggle_fps()'}
+                      %i.fas.fa-toggle-off
               %fieldset.form-group
                 .row
-                  %legend.col-form-label.col-sm-3.pt-0 Color Theme:
-                  .col-sm-9
+                  %legend.col-form-label.col-sm-4.pt-0 Color Theme:
+                  .col-sm-8
                     .form-check
                       %input#option-theme-1.form-check-input{type:'radio', name:'option-theme', value:'mineral', v-model:'ui_state.theme'}
                       %label.form-check-label{for:'option-theme-1'} Mineral
