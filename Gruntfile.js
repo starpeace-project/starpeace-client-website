@@ -93,6 +93,22 @@ module.exports = function(grunt) {
         files: {
           'build/public/index.html': 'src/webapp/haml/index.haml',
           'build/public/login.html': 'src/webapp/haml/login.haml'
+        },
+        options: {
+          context: {
+            production_build: false
+          }
+        }
+      },
+      production_compile: {
+        files: {
+          'build/public/index.html': 'src/webapp/haml/index.haml',
+          'build/public/login.html': 'src/webapp/haml/login.haml'
+        },
+        options: {
+          context: {
+            production_build: true
+          }
         }
       }
     },
@@ -107,7 +123,8 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('build', ['clean', 'haml', 'sass', 'cssmin', 'coffee', 'uglify', 'copy']);
+  grunt.registerTask('build', ['clean', 'haml:compile', 'sass', 'cssmin', 'coffee', 'uglify', 'copy']);
+  grunt.registerTask('production_build', ['clean', 'haml:production_compile', 'sass', 'cssmin', 'coffee', 'uglify', 'copy']);
   grunt.registerTask('default', ['build']);
   grunt.registerTask('server', ['build', 'run:server']);
 }

@@ -27,7 +27,8 @@
     %script{crossorigin: 'anonymous', defer, src: 'https://use.fontawesome.com/releases/v5.0.13/js/regular.js'}
     %script{crossorigin: 'anonymous', defer, src: 'https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js'}
 
-    %script{async, src: 'https://www.googletagmanager.com/gtag/js?id=UA-120729341-2'}
+    :if production_build
+      %script{async, src: 'https://www.googletagmanager.com/gtag/js?id=UA-120729341-2'}
 
     %script{type: 'text/javascript', src: '/assets/client-main.min.js'}
 
