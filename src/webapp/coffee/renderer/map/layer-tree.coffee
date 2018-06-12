@@ -11,6 +11,7 @@ window.starpeace.renderer.map.LayerTree = class LayerTree
     @container = new PIXI.particles.ParticleContainer(MAX_GROUND_TILES, {
       uvs: true
       vertices: true
+      tint: true
     })
 
     console.debug "[STARPEACE] configured map tree layer for up to #{MAX_GROUND_TILES} sprites"

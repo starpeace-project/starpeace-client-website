@@ -10,6 +10,7 @@ window.starpeace.renderer.map.LayerGround = class LayerGround
     @sprites = []
     @container = new PIXI.particles.ParticleContainer(MAX_GROUND_TILES, {
       uvs: true
+      tint: true
     })
 
     console.debug "[STARPEACE] configured map ground layer for up to #{MAX_GROUND_TILES} sprites"

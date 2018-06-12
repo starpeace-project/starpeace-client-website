@@ -98,6 +98,7 @@ window.starpeace.renderer.map.MapLayers = class MapLayers
             sprite_info.sprite.x = canvas_x
             sprite_info.sprite.y = canvas_y - (@game_state.game_scale * sprite_info.sprite.texture.height - tile_height)
             sprite_info.sprite.scale = scale
+            sprite_info.sprite.tint = 0x555555
             sprite_indices[sprite_info.type] += 1
 
 

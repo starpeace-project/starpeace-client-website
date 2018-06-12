@@ -174,6 +174,37 @@
       %transition{name:'fade'}
         #render-container{v-show:'is_ready', v-cloak:true}
 
+      #menu-favorites-container{v-show:"ui_state.show_menu_favorites", v-cloak:true}
+        .card
+          .card-header
+            Map Locations
+            .card-close{v-on:click.stop.prevent:'toggle_menu_favorites()'}
+              %i.fas.fa-times
+          .card-body
+
+      #menu-building-container{v-show:"ui_state.main_menu == 'building'", v-cloak:true}
+        .card
+          .card-header
+            Construction
+            .card-close{v-on:click.stop.prevent:'toggle_menu_building()'}
+              %i.fas.fa-times
+          .card-body
+
+      #menu-mail-container{v-show:"ui_state.main_menu == 'mail'", v-cloak:true}
+        .card
+          .card-header
+            Mail
+            .card-close{v-on:click.stop.prevent:'toggle_menu_mail()'}
+              %i.fas.fa-times
+          .card-body
+
+      #menu-chat-container{v-show:"ui_state.main_menu == 'chat'", v-cloak:true}
+        .card
+          .card-header
+            Chat
+            .card-close{v-on:click.stop.prevent:'toggle_menu_chat()'}
+              %i.fas.fa-times
+          .card-body
 
       #menu-options-container{v-show:"ui_state.main_menu == 'options'", v-cloak:true}
         .card
@@ -213,6 +244,16 @@
                       %input#option-theme-3.form-check-input{type:'radio', name:'option-theme', value:'voodoo', v-model:'ui_state.theme'}
                       %label.form-check-label{for:'option-theme-3'} Voodoo
 
+      #menu-help-container{v-show:"ui_state.main_menu == 'help'", v-cloak:true}
+        .card
+          .card-header
+            Help
+            .card-close{v-on:click.stop.prevent:'toggle_menu_help()'}
+              %i.fas.fa-times
+          .card-body
+            Full documentation can be&nbsp;
+            %a{href:'https://docs.starpeace.io'} found in the user guide
+            .
 
       %transition{name:'fade'}
         #footer-container{v-show:'is_ready', v-cloak:true}
@@ -220,10 +261,10 @@
             %tbody
               %tr
                 %td.column-camera-controls
-                  %a.btn.btn-outline-dark.btn-sm.btn-block{v-on:click.stop.prevent:'camera_manager.zoom_in()', href: '#'}
+                  %a.btn.btn-outline-dark.btn-sm.btn-block{v-on:click.stop.prevent:'camera_manager.zoom_in()'}
                     %i.fas.fa-plus
                 %td.column-camera-controls
-                  %a.btn.btn-outline-dark.btn-sm.btn-block{v-on:click.stop.prevent:'camera_manager.zoom_out()', href: '#'}
+                  %a.btn.btn-outline-dark.btn-sm.btn-block{v-on:click.stop.prevent:'camera_manager.zoom_out()'}
                     %i.fas.fa-minus
 
                 %td.column-overlays
@@ -261,23 +302,23 @@
             %tbody
               %tr.row-menu
                 %td.column-menu
-                  %a.btn.btn-outline-dark.btn-sm{v-bind:class:"{active: ui_state.main_menu == 'planetary'}", v-on:click.stop.prevent:'toggle_menu_planetary()', href: '#'}
+                  %a.btn.btn-outline-dark.btn-sm{v-bind:class:"{active: ui_state.main_menu == 'planetary'}", v-on:click.stop.prevent:'toggle_menu_planetary()'}
                     %i.fas.fa-globe
-                  %a.btn.btn-outline-dark.btn-sm{v-bind:class:"{active: ui_state.show_menu_favorites}", v-on:click.stop.prevent:'toggle_menu_favorites()', href: '#'}
+                  %a.btn.btn-outline-dark.btn-sm{v-bind:class:"{active: ui_state.show_menu_favorites}", v-on:click.stop.prevent:'toggle_menu_favorites()'}
                     %i.fas.fa-map-pin
-                  %a.btn.btn-outline-dark.btn-sm{v-on:click.stop.prevent:'hide_all_menus()', href: '#'}
+                  %a.btn.btn-outline-dark.btn-sm{v-on:click.stop.prevent:'hide_all_menus()'}
                     %i.far.fa-eye
-                  %a.btn.btn-outline-dark.btn-sm{v-bind:class:"{active: ui_state.main_menu == 'tycoon'}", v-on:click.stop.prevent:'toggle_menu_tycoon()', href: '#'}
+                  %a.btn.btn-outline-dark.btn-sm{v-bind:class:"{active: ui_state.main_menu == 'tycoon'}", v-on:click.stop.prevent:'toggle_menu_tycoon()'}
                     %i.fas.fa-user-tie
-                  %a.btn.btn-outline-dark.btn-sm{v-bind:class:"{active: ui_state.main_menu == 'building'}", v-on:click.stop.prevent:'toggle_menu_building()', href: '#'}
+                  %a.btn.btn-outline-dark.btn-sm{v-bind:class:"{active: ui_state.main_menu == 'building'}", v-on:click.stop.prevent:'toggle_menu_building()'}
                     %i.far.fa-building
-                  %a.btn.btn-outline-dark.btn-sm{v-bind:class:"{active: ui_state.main_menu == 'mail'}", v-on:click.stop.prevent:'toggle_menu_mail()', href: '#'}
+                  %a.btn.btn-outline-dark.btn-sm{v-bind:class:"{active: ui_state.main_menu == 'mail'}", v-on:click.stop.prevent:'toggle_menu_mail()'}
                     %i.far.fa-envelope
-                  %a.btn.btn-outline-dark.btn-sm{v-bind:class:"{active: ui_state.main_menu == 'chat'}", v-on:click.stop.prevent:'toggle_menu_chat()', href: '#'}
+                  %a.btn.btn-outline-dark.btn-sm{v-bind:class:"{active: ui_state.main_menu == 'chat'}", v-on:click.stop.prevent:'toggle_menu_chat()'}
                     %i.far.fa-comments
-                  %a.btn.btn-outline-dark.btn-sm{v-bind:class:"{active: ui_state.main_menu == 'options'}", v-on:click.stop.prevent:'toggle_menu_options()', href: '#'}
+                  %a.btn.btn-outline-dark.btn-sm{v-bind:class:"{active: ui_state.main_menu == 'options'}", v-on:click.stop.prevent:'toggle_menu_options()'}
                     %i.fas.fa-cogs
-                  %a.btn.btn-outline-dark.btn-sm{v-bind:class:"{active: ui_state.main_menu == 'help'}", v-on:click.stop.prevent:'toggle_menu_help()', href: '#'}
+                  %a.btn.btn-outline-dark.btn-sm{v-bind:class:"{active: ui_state.main_menu == 'help'}", v-on:click.stop.prevent:'toggle_menu_help()'}
                     %i.far.fa-question-circle
 
                 %td.column-tycoon{rowspan: 2}
