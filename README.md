@@ -15,7 +15,7 @@ Development and gameplay roadmap can be found in [RELEASE.md](./RELEASE.md).
 
 ## Security Vulnerabilities
 
-If you discover a security vulnerability within Starpeace website, please send an e-mail to admin@starpeaceproject.com or open a [GitHub issue](https://github.com/ronappleton/starpeace-website-client/issues). All security vulnerabilities will be promptly addressed.
+If you discover a security vulnerability within Starpeace website, please send an e-mail to security@starpeace.io or open a [GitHub issue](https://github.com/ronappleton/starpeace-website-client/issues). All security vulnerabilities will be promptly addressed.
 
 ## Development
 

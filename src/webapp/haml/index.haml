@@ -29,6 +29,14 @@
 
     %script{type: 'text/javascript', src: '/assets/client-main.min.js'}
 
+    %script{async, src: 'https://www.googletagmanager.com/gtag/js?id=UA-120729341-2'}
+    :javascript
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', 'UA-120729341-2');
+
+
   %body
     #application{v-bind:class:"[ui_state.theme, {'no-header':!ui_state.show_header}]"}
       #common-header.clearfix{v-show:'ui_state.show_header'}
