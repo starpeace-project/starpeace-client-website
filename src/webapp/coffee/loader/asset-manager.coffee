@@ -1,8 +1,8 @@
 
 
 window.starpeace ||= {}
-window.starpeace.asset ||= {}
-window.starpeace.asset.AssetManager = class AssetManager
+window.starpeace.loader ||= {}
+window.starpeace.loader.AssetManager = class AssetManager
 
   constructor: (@client) ->
     @static_news = []

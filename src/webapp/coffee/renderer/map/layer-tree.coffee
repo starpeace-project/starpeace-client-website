@@ -20,7 +20,7 @@ window.starpeace.renderer.map.LayerTree = class LayerTree
   sprite_for: (sprite_index, x, y) ->
     throw "maximum number of tree particles reached" if sprite_index >= MAX_GROUND_TILES
 
-    texture = @game_state.game_map.tree_texture_for(@game_state.current_season, y, x)
+    texture = @game_state.game_map.ground_map.tree_texture_for(@game_state.current_season, y, x)
     return null unless texture?
 
     if sprite_index >= @sprites.length

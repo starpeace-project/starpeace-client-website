@@ -44,7 +44,7 @@ window.starpeace.renderer.Renderer = class Renderer
     land_manifest = @client.land_manifest_for_planet()
     map_texture = @client.asset_manager.map_id_texture[@client.planet.map_id]
 
-    @client.game_state.game_map = starpeace.map.GameMap.from_texture(land_manifest, map_texture)
+    @client.game_state.game_map = starpeace.map.GameMap.from_texture(@client, land_manifest, map_texture)
     @initialize_map()
 
     @client.game_state.loading = true

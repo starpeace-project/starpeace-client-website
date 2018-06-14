@@ -13,7 +13,8 @@ window.starpeace.Client = class Client
     @planetary_metadata_manager = new starpeace.metadata.PlanetaryMetadataManager(@)
     @planet_type_manifest_manager = new starpeace.metadata.PlanetTypeManifestManager(@)
 
-    @asset_manager = new starpeace.asset.AssetManager(@)
+    @asset_manager = new starpeace.loader.AssetManager(@)
+    @building_manager = new starpeace.loader.BuildingManager(@)
 
     @game_state = new starpeace.state.GameState(@)
     @ui_state = new starpeace.state.UIState()

@@ -24,9 +24,9 @@ window.starpeace.renderer.map.MapLayers = class MapLayers
     stage.addChild(@tree_layer.container)
 
   sprite_at: (indices, x, y) ->
-    if @game_state.game_map.has_tree_at(y, x)
+    if @game_state.game_map.ground_map.has_tree_at(y, x)
       new starpeace.renderer.map.MapSprite('tree', @tree_layer.sprite_for(indices.tree, x, y))
-    else if @game_state.game_map.has_ground_at(y, x)
+    else if @game_state.game_map.ground_map.has_ground_at(y, x)
       new starpeace.renderer.map.MapSprite('ground', @ground_layer.sprite_for(indices.ground, x, y))
     else
       null
@@ -63,7 +63,6 @@ window.starpeace.renderer.map.MapLayers = class MapLayers
     view_y = Math.floor(scale.y * @game_state.view_offset_y) - (offset * Math.cos(omega))
     view_x = Math.floor(scale.x * @game_state.view_offset_x) - (offset * Math.sin(omega))
 
-
     i_start = starpeace.renderer.Utils.iso_to_i(half_tile_height, half_tile_width, view_x, view_y)
     j_start = starpeace.renderer.Utils.iso_to_j(half_tile_height, half_tile_width, view_x, view_y)
     i_max = starpeace.renderer.Utils.iso_to_i(half_tile_height, half_tile_width, view_x + canvas_width, view_y + canvas_height) + 2
@@ -89,13 +88,18 @@ window.starpeace.renderer.map.MapLayers = class MapLayers
           canvas_x = (x - j) * half_tile_width - view_x - 1 - tile_width
           canvas_y = (x + j) * half_tile_height - view_y - tile_height
 
+          building_chunk_info = @game_state.game_map.building_chunk_info_at(x, j)
+          @game_state.game_map.update_building_chunk_at(x, j) unless building_chunk_info?.is_current()
+
+          building_info = @game_state.game_map.building_at(x, j) if building_chunk_info?
+
           sprite_info = @sprite_at(sprite_indices, x, j)
           if sprite_info?.sprite? && sprite_info.within_canvas(@game_state.game_scale, canvas_x, canvas_y, canvas_width, canvas_height)
             sprite_info.sprite.visible = true
             sprite_info.sprite.x = canvas_x
             sprite_info.sprite.y = canvas_y - (sprite_info.height(@game_state.game_scale) - tile_height)
             sprite_info.sprite.scale = scale
-            sprite_info.sprite.tint = 0x555555
+            sprite_info.sprite.tint = if building_chunk_info? then 0xFFFFFF else 0x555555
             sprite_indices[sprite_info.type] += 1
 
 
