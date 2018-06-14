@@ -25,9 +25,9 @@ window.starpeace.renderer.map.MapLayers = class MapLayers
 
   sprite_at: (indices, x, y) ->
     if @game_state.game_map.has_tree_at(y, x)
-      { type: 'tree', sprite: @tree_layer.sprite_for(indices.tree, x, y) }
+      new starpeace.renderer.map.MapSprite('tree', @tree_layer.sprite_for(indices.tree, x, y))
     else if @game_state.game_map.has_ground_at(y, x)
-      { type: 'ground', sprite: @ground_layer.sprite_for(indices.ground, x, y) }
+      new starpeace.renderer.map.MapSprite('ground', @ground_layer.sprite_for(indices.ground, x, y))
     else
       null
 
@@ -45,6 +45,8 @@ window.starpeace.renderer.map.MapLayers = class MapLayers
 
     canvas_width = Math.ceil(@renderer.renderer_width || 0)
     canvas_height = Math.ceil(@renderer.renderer_height || 0)
+    half_canvas_width = Math.ceil(canvas_width * 0.5)
+    half_canvas_height = Math.ceil(canvas_height * 0.5)
 
     tile_width = Math.ceil(starpeace.metadata.PlanetTypeManifest.DEFAULT_TILE_WIDTH * @game_state.game_scale)
     tile_height = Math.ceil(starpeace.metadata.PlanetTypeManifest.DEFAULT_TILE_HEIGHT * @game_state.game_scale)
@@ -55,23 +57,19 @@ window.starpeace.renderer.map.MapLayers = class MapLayers
     fixed_y = half_tile_height * width_in_tiles
     fixed_bottom_y = tile_height * map_width - canvas_height - fixed_y
 
-    initial_y = @game_state.view_offset_y
-    view_y = @game_state.view_offset_y #Math.round(Math.min(fixed_bottom_y, Math.max(fixed_y, initial_y)))
+    offset = Math.ceil(Math.sqrt(half_canvas_width * half_canvas_width + half_canvas_height * half_canvas_height))
 
-    C = 2 * tile_height
-    initial_x = @game_state.view_offset_x
+    view_y = Math.floor(scale.y * (@game_state.view_offset_y - offset))
+    view_x = Math.floor(scale.x * (@game_state.view_offset_x - offset))
 
-    min_x = Math.ceil(-4.0 / 2.0 * view_y + 4.0 / 2.0 * C)
-    max_x = Math.ceil(4.0 / 2.0 * view_y - 4.0 / 2.0 * C) - canvas_width
-    view_x = @game_state.view_offset_x #Math.round(Math.min(max_x, Math.max(min_x, initial_x)))
-
-#     console.log "(#{min_x} to #{max_x}) #{view_x}  #{view_y}"
 
     i_start = starpeace.renderer.Utils.iso_to_i(half_tile_height, half_tile_width, view_x, view_y)
     j_start = starpeace.renderer.Utils.iso_to_j(half_tile_height, half_tile_width, view_x, view_y)
     i_max = starpeace.renderer.Utils.iso_to_i(half_tile_height, half_tile_width, view_x + canvas_width, view_y + canvas_height) + 2
     j_max = starpeace.renderer.Utils.iso_to_j(half_tile_height, half_tile_width, view_x, view_y + canvas_height) + 2
     j_min = starpeace.renderer.Utils.iso_to_j(half_tile_height, half_tile_width, view_x + canvas_width, view_y)
+
+    #console.log "#{@game_state.view_offset_x} #{@game_state.view_offset_y} -> #{view_x}  #{view_y} -> #{i_start} to #{i_max} and #{j_start} to #{j_min}/#{j_max}"
 
     n_bump = false
     m_bump = false
@@ -91,12 +89,10 @@ window.starpeace.renderer.map.MapLayers = class MapLayers
           canvas_y = (x + j) * half_tile_height - view_y - tile_height
 
           sprite_info = @sprite_at(sprite_indices, x, j)
-          if sprite_info?.sprite? &&
-              canvas_x >= -sprite_info.sprite.width && (canvas_x < canvas_width + sprite_info.sprite.width) &&
-              canvas_y >= -sprite_info.sprite.height && (canvas_y < canvas_height + sprite_info.sprite.height)
+          if sprite_info?.sprite? && sprite_info.within_canvas(@game_state.game_scale, canvas_x, canvas_y, canvas_width, canvas_height)
             sprite_info.sprite.visible = true
             sprite_info.sprite.x = canvas_x
-            sprite_info.sprite.y = canvas_y - (@game_state.game_scale * sprite_info.sprite.texture.height - tile_height)
+            sprite_info.sprite.y = canvas_y - (sprite_info.height(@game_state.game_scale) - tile_height)
             sprite_info.sprite.scale = scale
             sprite_info.sprite.tint = 0x555555
             sprite_indices[sprite_info.type] += 1

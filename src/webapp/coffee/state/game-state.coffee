@@ -22,6 +22,9 @@ window.starpeace.state.GameState = class GameState
     @initialized = false
     @loading = false
 
+    @view_map_x = 512
+    @view_map_y = 512
+
     @view_offset_x = 3600
     @view_offset_y = 4250
 
