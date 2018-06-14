@@ -58,9 +58,10 @@ window.starpeace.renderer.map.MapLayers = class MapLayers
     fixed_bottom_y = tile_height * map_width - canvas_height - fixed_y
 
     offset = Math.ceil(Math.sqrt(half_canvas_width * half_canvas_width + half_canvas_height * half_canvas_height))
+    omega = Math.atan2(canvas_width / 4, canvas_height / 4)
 
-    view_y = Math.floor(scale.y * (@game_state.view_offset_y - offset))
-    view_x = Math.floor(scale.x * (@game_state.view_offset_x - offset))
+    view_y = Math.floor(scale.y * @game_state.view_offset_y) - (offset * Math.cos(omega))
+    view_x = Math.floor(scale.x * @game_state.view_offset_x) - (offset * Math.sin(omega))
 
 
     i_start = starpeace.renderer.Utils.iso_to_i(half_tile_height, half_tile_width, view_x, view_y)
