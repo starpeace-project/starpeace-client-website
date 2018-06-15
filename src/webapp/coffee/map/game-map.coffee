@@ -8,9 +8,12 @@ window.starpeace.map.GameMap = class GameMap
     @building_map = new starpeace.map.BuildingMap(@client, @width, @height)
 
   update_building_chunk_at: (x, y) -> @building_map.update_chunk_at(x, y)
-
   building_chunk_info_at: (x, y) -> @building_map.chunk_info_at(x, y)
   building_at: (x, y) -> @building_map.building_at(x, y)
+
+  update_zone_chunk_at: (x, y) -> @building_map.update_zone_chunk_at(x, y)
+  zone_chunk_info_at: (x, y) -> @building_map.zone_chunk_info_at(x, y)
+  zone_at: (x, y) -> @building_map.zone_at(x, y)
 
   @from_texture: (client, manifest, texture) ->
     map_width = texture.texture.width

@@ -1,4 +1,8 @@
 
+TREE_TYPE_PERCENTAGE = {}
+TREE_TYPE_PERCENTAGE.grass = .3
+TREE_TYPE_PERCENTAGE.midgrass = .2
+TREE_TYPE_PERCENTAGE.dryground = .1
 
 window.starpeace ||= {}
 window.starpeace.map ||= {}
@@ -55,7 +59,7 @@ window.starpeace.map.GroundMap = class GroundMap
 
         map_index = y * map_width + x
         ground_tiles[map_index] = manifest.ground_for_color(color) if manifest.has_ground_for_color(color)
-        tree_tiles[map_index] = manifest.random_tree_for_zone(ground_tiles[map_index].zone) if zones_with_trees.has(ground_tiles[map_index]?.zone) && Math.random() < 0.2
+        tree_tiles[map_index] = manifest.random_tree_for_zone(ground_tiles[map_index].zone) if zones_with_trees.has(ground_tiles[map_index]?.zone) && Math.random() < (TREE_TYPE_PERCENTAGE[ground_tiles[map_index]?.zone] || 0.2)
 
         true
 

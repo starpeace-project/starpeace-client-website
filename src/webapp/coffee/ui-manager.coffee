@@ -20,7 +20,6 @@ window.starpeace.UIManager = class UIManager
       }
 #       watch: {
 #         ui_state: () ->
-#           console.log "ui_state changed"
 #       }
       computed: {
         is_visitor: () -> @client.identity?.is_visitor()

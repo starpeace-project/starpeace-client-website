@@ -91,7 +91,18 @@ window.starpeace.renderer.map.MapLayers = class MapLayers
           building_chunk_info = @game_state.game_map.building_chunk_info_at(x, j)
           @game_state.game_map.update_building_chunk_at(x, j) unless building_chunk_info?.is_current()
 
-          building_info = @game_state.game_map.building_at(x, j) if building_chunk_info?
+          zone_color = 0xFFFFFF
+  
+          if building_chunk_info?
+            zone_chunk_info = @game_state.game_map.zone_chunk_info_at(x, j)
+            if zone_chunk_info?.is_current()
+              zone_info = @game_state.game_map.zone_at(x, j)
+              zone_color = (0xFFFFFF * zone_info.color) if zone_info?
+            else
+              @game_state.game_map.update_zone_chunk_at(x, j) 
+
+
+            building_info = @game_state.game_map.building_at(x, j)
 
           sprite_info = @sprite_at(sprite_indices, x, j)
           if sprite_info?.sprite? && sprite_info.within_canvas(@game_state.game_scale, canvas_x, canvas_y, canvas_width, canvas_height)
@@ -99,7 +110,7 @@ window.starpeace.renderer.map.MapLayers = class MapLayers
             sprite_info.sprite.x = canvas_x
             sprite_info.sprite.y = canvas_y - (sprite_info.height(@game_state.game_scale) - tile_height)
             sprite_info.sprite.scale = scale
-            sprite_info.sprite.tint = if building_chunk_info? then 0xFFFFFF else 0x555555
+            sprite_info.sprite.tint = if building_chunk_info? then zone_color else 0x555555
             sprite_indices[sprite_info.type] += 1
 
 
