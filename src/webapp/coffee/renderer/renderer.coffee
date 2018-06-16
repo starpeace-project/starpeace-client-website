@@ -35,7 +35,7 @@ window.starpeace.renderer.Renderer = class Renderer
 
   initialize_map: () ->
     @map_layers.remove_layers(@application.stage) if @map_layers?
-    @map_layers = new starpeace.renderer.map.MapLayers(@, @client.game_state)
+    @map_layers = new starpeace.renderer.map.MapLayers(@, @client.game_state, @client.ui_state)
     @map_layers.add_layers(@application.stage)
 
   initialize: () ->

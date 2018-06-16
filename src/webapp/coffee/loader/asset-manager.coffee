@@ -28,6 +28,7 @@ window.starpeace.loader.AssetManager = class AssetManager
     return unless planet_type?.length
 
     PIXI.loader.add 'news.static.en', './news.static.en.json' unless @static_news?.length
+    PIXI.loader.add 'overlay', './overlay.png'
     PIXI.loader.add "metadata.#{planet_type}", "./land.#{planet_type}.metadata.json" unless @planet_type_metadata[planet_type]?
     PIXI.loader.add "map.#{map_id}", "./map.#{map_id}.texture.bmp" unless @map_id_texture[map_id]?
 

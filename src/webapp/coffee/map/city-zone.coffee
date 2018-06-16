@@ -39,7 +39,7 @@ window.starpeace.map.CityZone = class CityZone
     CIVICS:
       value: 8
       type: 'CIVICS'
-      color: 0x111111
+      color: 0xFFFFFF
     OFFICES:
       value: 9
       type: 'OFFICES'

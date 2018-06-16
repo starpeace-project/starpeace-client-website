@@ -98,6 +98,8 @@ window.starpeace.UIManager = class UIManager
         toggle_menu_help: () ->
           @ui_state.main_menu = if @ui_state.main_menu == 'help' then null else 'help'
 
+        toggle_zones: () ->
+          @ui_state.show_zones = !@ui_state.show_zones
       }
     })
 

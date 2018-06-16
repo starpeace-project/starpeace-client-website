@@ -1,9 +1,9 @@
 
 SHADER = "precision mediump float;" +
-    "varying vec2 vTextureCoord; +"
+    "varying vec2 vTextureCoord;" +
     "uniform sampler2D uSampler;" +
     "uniform vec3 rgbColor;" +
-    "void main(void) {" + 
+    "void main(void) {" +
     "gl_FragColor = texture2D(uSampler, vTextureCoord);" +
     "gl_FragColor.r = rgbColor.r * gl_FragColor.a;" +
     "gl_FragColor.g = rgbColor.g * gl_FragColor.a;" +

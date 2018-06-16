@@ -15,3 +15,4 @@ window.starpeace.state.UIState = class UIState
     @show_menu_favorites = false
     @main_menu = null
 
+    @show_zones = false

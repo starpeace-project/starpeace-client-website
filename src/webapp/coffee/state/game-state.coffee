@@ -28,7 +28,7 @@ window.starpeace.state.GameState = class GameState
     @view_offset_x = 3600
     @view_offset_y = 4250
 
-    @game_scale = 1
+    @game_scale = 0.75
 
     @current_date = '2235-01-01'
     @current_season = 'winter'
