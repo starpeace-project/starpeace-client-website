@@ -79,6 +79,7 @@ export default
     padding-top: .25rem
 
     a
+      display: inline-block
       line-height: 3rem
       margin: 0 1rem
       vertical-align: bottom
@@ -87,4 +88,6 @@ export default
       &.github
         font-size: 1.4rem
 
+      &.discord
+        line-height: 2.8rem
 </style>

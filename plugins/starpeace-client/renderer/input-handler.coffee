@@ -1,4 +1,5 @@
 
+AUTO_SCROLL_DISABLED = true
 
 class InputHandler
   constructor: (@camera_manager, @renderer) ->
@@ -59,6 +60,7 @@ class InputHandler
       clearInterval(@auto_scroll) if @auto_scroll?
 
     handle_auto_scroll = (event) =>
+      return if AUTO_SCROLL_DISABLED
       if @is_moving
         clearInterval(@auto_scroll) if @auto_scroll?
         return

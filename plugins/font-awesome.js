@@ -7,6 +7,7 @@ import {
   faQuestionCircle
 } from '@fortawesome/free-regular-svg-icons'
 import {
+  faAngleUp,
   faCheck,
   faCogs,
   faGlobe,
@@ -23,8 +24,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { faDiscord, faGithub } from '@fortawesome/free-brands-svg-icons'
 
-library.add(faBuilding, faCheck, faCogs, faComments, faEnvelope, faEye, faGlobe,
-  faMapPin, faMinus, faPlus, faRedoAlt, faTimes, faToggleOff, faToggleOn,
+library.add(faAngleUp, faBuilding, faCheck, faCogs, faComments, faEnvelope, faEye,
+  faGlobe, faMapPin, faMinus, faPlus, faRedoAlt, faTimes, faToggleOff, faToggleOn,
   faUndoAlt, faQuestionCircle, faUserSecret, faUserTie, faDiscord, faGithub)
 
 

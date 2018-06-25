@@ -1,9 +1,8 @@
-@import '~bulma/sass/utilities/_all';
+@import '~bulma/sass/utilities/_all'
 
 /* https://bulma.io/documentation/overview/variables/ */
 
-@import '~bulma';
-@import '~buefy/src/scss/buefy';
+@import '~bulma'
 
 $sp-primary: #6ea192
 $sp-primary-bg: #395950
@@ -33,14 +32,14 @@ $sp-card-border-bottom: opacify(lighten(#000, 5%), .8)
       color: lighten($sp-primary, 3%)
 
     &:active,
-    &.active
+    &.is-active
       background-color: lighten($sp-primary-bg, 10%)
       border: 1px solid lighten($sp-primary-bg, 10%)
       color: #fff
 
   &.is-starpeace-light
     &:active,
-    &.active
+    &.is-active
       background-color: $sp-button-light-bg
       border: 1px solid $sp-button-light-bg
       color: #000
@@ -120,3 +119,19 @@ $sp-card-border-bottom: opacify(lighten(#000, 5%), .8)
 
         &:active
           color: #fff
+
+.dropdown
+  .dropdown-content
+    background-color: $sp-dark-bg
+
+  .dropdown-item
+    color: $sp-primary
+
+    &:hover
+      background-color: $sp-primary-bg
+      color: #fff
+
+    &:active,
+    &.is-active
+      background-color: $sp-button-light-bg
+      color: #000

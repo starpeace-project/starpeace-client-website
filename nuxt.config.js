@@ -19,9 +19,9 @@ module.exports = {
     fallback: false
   },
   build: {
-    // analyze: true,
+    analyze: true,
     publicPath: '/assets/',
-    vendor: ['lodash', 'javascript-detect-element-resize', 'buefy', 'pixi.js', 'interactjs', 'fpsmeter'],
+    vendor: ['lodash', 'javascript-detect-element-resize', 'pixi.js', 'interactjs', 'fpsmeter'],
     extend (config, { isDev, isClient }) {
       config.module.rules.push({
         test: /\.coffee$/,
@@ -44,7 +44,7 @@ module.exports = {
     '@nuxtjs/moment',
   ],
   plugins: [
-    { src: '~/plugins/buefy', ssr: false },
+    // { src: '~/plugins/buefy', ssr: false },
     { src: '~/plugins/element-queries', ssr: false },
     { src: '~/plugins/fpsmeter', ssr: false },
     { src: '~/plugins/font-awesome', ssr: false },

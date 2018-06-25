@@ -6,6 +6,7 @@
   %sp-workflow{'v-bind:client':'client'}
   %sp-menu{'v-bind:client':'client'}
   %sp-body{'v-bind:client':'client'}
+  %sp-footer-overlay-menu{'v-bind:client':'client'}
   %sp-footer{'v-bind:client':'client'}
 </template>
 
@@ -17,6 +18,7 @@ import Workflow from '~/components/workflow/workflow.vue'
 import Menus from '~/components/menu/menus.vue'
 import RenderContainer from '~/components/render-container.vue'
 import Footer from '~/components/footer/footer-container.vue'
+import FooterOverlayMenu from '~/components/footer/overlay-menu.vue'
 import Client from '~/plugins/starpeace-client/client.coffee'
 
 client = null
@@ -37,6 +39,7 @@ export default
     'sp-workflow': Workflow
     'sp-menu': Menus
     'sp-body': RenderContainer
+    'sp-footer-overlay-menu': FooterOverlayMenu
     'sp-footer': Footer
 
   data: ->
@@ -52,7 +55,7 @@ export default
 #application
   display: grid
   grid-template-columns: .5rem auto .5rem
-  grid-template-rows: 4rem auto 2rem 15.5rem
+  grid-template-rows: 4rem auto 3rem 15.5rem
   height: 100vh
 
 </style>

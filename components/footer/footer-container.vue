@@ -13,7 +13,7 @@ sp-primary-color<template lang='haml'>
                 %font-awesome-icon{':icon':"['fas', 'minus']"}
 
             %td.column-overlays
-              %a.button.is-starpeace.is-starpeace-light.is-small
+              %a.button.is-starpeace.is-starpeace-light.is-small{'v-bind:class':'menu_class_overlay', 'v-on:click.stop.prevent':'ui_state.toggle_overlay()'}
                 Overlay
 
             %td.column-inspect{rowspan: 2}
@@ -32,7 +32,7 @@ sp-primary-color<template lang='haml'>
                 %font-awesome-icon{':icon':"['fas', 'undo-alt']"}
 
             %td.column-overlays
-              %a.button.is-starpeace.is-starpeace-light.is-small{'v-bind:class':'menu_class_building_zones', 'v-on:click.stop.prevent':'toggle_zones()'}
+              %a.button.is-starpeace.is-starpeace-light.is-small{'v-bind:class':'menu_class_zones', 'v-on:click.stop.prevent':'ui_state.toggle_zones()'}
                 City Zones
 
             %td.column-details-ticker.secondary
@@ -108,15 +108,16 @@ export default
     ticker_message: -> @ui_state?.event_ticker_message || ''
     current_date: -> moment(@game_state?.current_date).format('MMM D, YYYY')
 
-    menu_class_building_zones: -> { active: @ui_state?.show_zones || false }
-    menu_class_planetary: -> { active: @menu_state?.main_menu == 'planetary' }
-    menu_class_favorites: -> { active: @menu_state?.show_menu_favorites || false }
-    menu_class_tycoon: -> { active: @menu_state?.main_menu == 'tycoon' }
-    menu_class_building: -> { active: @menu_state?.main_menu == 'building' }
-    menu_class_mail: -> { active: @menu_state?.main_menu == 'mail' }
-    menu_class_chat: -> { active: @menu_state?.main_menu == 'chat' }
-    menu_class_options: -> { active: @menu_state?.main_menu == 'options' }
-    menu_class_help: -> { active: @menu_state?.main_menu == 'help' }
+    menu_class_overlay: -> { 'is-active': @ui_state?.show_overlay || false }
+    menu_class_zones: -> { 'is-active': @ui_state?.show_zones || false }
+    menu_class_planetary: -> { 'is-active': @menu_state?.main_menu == 'planetary' }
+    menu_class_favorites: -> { 'is-active': @menu_state?.show_menu_favorites || false }
+    menu_class_tycoon: -> { 'is-active': @menu_state?.main_menu == 'tycoon' }
+    menu_class_building: -> { 'is-active': @menu_state?.main_menu == 'building' }
+    menu_class_mail: -> { 'is-active': @menu_state?.main_menu == 'mail' }
+    menu_class_chat: -> { 'is-active': @menu_state?.main_menu == 'chat' }
+    menu_class_options: -> { 'is-active': @menu_state?.main_menu == 'options' }
+    menu_class_help: -> { 'is-active': @menu_state?.main_menu == 'help' }
 
   methods:
     toggle_zones: -> @ui_state.show_zones = !@ui_state.show_zones

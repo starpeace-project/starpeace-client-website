@@ -9,7 +9,7 @@ class Overlay
     ZONES:
       value: 1
       type: 'ZONES'
-      label: 'Building Zones'
+      label: 'City Zones'
     TOWNS:
       value: 2
       type: 'TOWNS'
