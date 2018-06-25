@@ -1,0 +1,29 @@
+<template lang='haml'>
+#loading-modal{'v-show':'is_loading && is_ready'}
+</template>
+
+<script lang='coffee'>
+export default
+  props:
+    client: Object
+
+  computed:
+    is_ready: -> @client?.renderer.initialized || false
+    is_loading: -> (@client?.game_state?.initialized || false) && (@client?.game_state?.loading || false)
+</script>
+
+<style lang='sass' scoped>
+#loading-modal
+  background-color: #000
+  grid-column-start: 1
+  grid-column-end: 4
+  grid-row-start: 2
+  grid-row-end: 5
+  opacity: .5
+  z-index: 1045
+
+.no-header
+  #loading-modal
+    grid-row-start: 1
+
+</style>

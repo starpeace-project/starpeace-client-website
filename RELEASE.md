@@ -21,9 +21,12 @@ Some of the tentative future features and rough planned version are outlined bel
 ### v0.2 - in progress
 #### platform
 * [done] basic event and news ticker
+* [done] build and package framework migrating to nuxtjs
+* [done] client refactor to full native nuxtjs vue application and custom components
+* [done] more client/vue internal state separation
+* [done] migrate to bulma/buefy/interactjs from bootstrap
 * [in progress] main gameplay UI menu layout
-* [in progress] more client/vue internal state separation
-* [pending] city zone and overlay loader
+* [in progress] city zone and overlay loader
 * [pending] building asset and resource loader
 
 #### assets
@@ -57,4 +60,3 @@ Some of the tentative future features and rough planned version are outlined bel
 #### gameplay
 * [done] login and planetary selection UI workflows
 * [done] land tile rendering from game maps for 0deg perspective and fall season
-

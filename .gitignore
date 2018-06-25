@@ -1,5 +1,8 @@
-.settings/
+.nuxt
+.sass-cache
+.settings
+node_modules
+dist
+.editorconfig
 .project
-build
-node_modules/
-.sass-cache/
+npm-debug.log

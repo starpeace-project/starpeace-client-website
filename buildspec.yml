@@ -14,14 +14,13 @@ phases:
     commands:
       - echo Entered the build phase...
       - echo Build started on `date`
-      - grunt production_build
+      - npm run generate
   post_build:
     commands:
       - echo Entered the post_build phase...
-      - aws s3 sync --delete build/public "s3://client.starpeace.io/"
+      - aws s3 sync --delete dist "s3://client.starpeace.io/"
       - echo Build completed on `date`
 
 artifacts:
   files:
     - build/public/**/*
-
