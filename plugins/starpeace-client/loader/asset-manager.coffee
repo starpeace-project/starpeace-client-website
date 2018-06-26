@@ -27,6 +27,7 @@ class AssetManager
   load_planet_assets: (planet_type, map_id) ->
     return unless planet_type?.length
 
+    @client.game_state.start_ajax()
     PIXI.loader.add('news.static.en', './news.static.en.json') unless @static_news?.length
     PIXI.loader.add('overlay', './overlay.png') unless PIXI.utils.TextureCache['overlay']?
     PIXI.loader.add("metadata.#{planet_type}", "./land.#{planet_type}.metadata.json") unless @planet_type_metadata[planet_type]?
@@ -37,6 +38,7 @@ class AssetManager
       @set_planet_metadata(planet_type, resources["metadata.#{planet_type}"]) unless @planet_type_metadata[planet_type]?
       @set_map_texture(map_id, resources["map.#{map_id}"]) unless @map_id_texture[map_id]?
       @client.notify_assets_changed()
+      @client.game_state.finish_ajax()
 
 
   set_planet_atlas: (planet_type, resource) ->
@@ -45,8 +47,10 @@ class AssetManager
     @client.notify_assets_changed()
 
   load_planet_atlas: (planet_type, atlas_paths) ->
+    @client.game_state.start_ajax()
     PIXI.loader.add path for path in atlas_paths
     PIXI.loader.load (loader, resources, e) =>
       @set_planet_atlas(planet_type, resources[path]) for path in atlas_paths
+      @client.game_state.finish_ajax()
 
 export default AssetManager

@@ -25,6 +25,7 @@ class GameState
     @loading = false
     @has_assets = false
 
+    @ajax_requests = 0
 
     @current_identity_authentication = Identity.from_local_storage()
       .then (identity) =>
@@ -60,6 +61,9 @@ class GameState
       @current_date = date.format('YYYY-MM-DD')
       @current_season = MONTH_SEASONS[date.month()]
     , 250)
+
+  start_ajax: () -> @ajax_requests += 1
+  finish_ajax: () -> @ajax_requests -= 1
 
   proceed_as_visitor: () ->
     @current_identity.reset_and_destroy() if @current_identity?

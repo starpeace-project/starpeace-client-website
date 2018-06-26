@@ -72,6 +72,16 @@ sp-primary-color<template lang='haml'>
                 %span.count 0 / 0
                 %i.far.fa-building
 
+              .column-notification-icons.level
+                .level-item.client-version
+                  %a{'v-bind:class':'menu_class_release_notes', 'v-on:click.stop.prevent':'menu_state.toggle_menu_release_notes()'} {{client_version}}
+
+                .level-item.notification-mail.sp-primary-color
+                  %font-awesome-icon{':icon':"['far', 'envelope']"}
+
+                .level-item.notification-loading
+                  %img.starpeace-logo{'v-bind:class':'notification_loading_css_class'}
+
           %tr
             %td.column-news-ticker.sp-primary-color {{ ticker_message }}
 
@@ -98,6 +108,9 @@ export default
   props:
     client: Object
 
+  data: ->
+    client_version: process.env.CLIENT_VERSION
+
   computed:
     game_state: -> @client?.game_state
     menu_state: -> @client?.menu_state
@@ -118,6 +131,9 @@ export default
     menu_class_chat: -> { 'is-active': @menu_state?.main_menu == 'chat' }
     menu_class_options: -> { 'is-active': @menu_state?.main_menu == 'options' }
     menu_class_help: -> { 'is-active': @menu_state?.main_menu == 'help' }
+    menu_class_release_notes: -> { 'is-active': @menu_state?.show_menu_release_notes || false }
+
+    notification_loading_css_class: -> { 'ajax-loading': (@game_state?.ajax_requests || 0) > 0 }
 
   methods:
     toggle_zones: -> @ui_state.show_zones = !@ui_state.show_zones
@@ -266,6 +282,44 @@ export default
       .column-tycoon-buildings
         .count
           margin-right: .5rem
+
+      .column-notification-icons
+        float: right
+
+        .client-version
+          font-style: italic
+
+          a
+            color: #6ea192
+            opacity: .5
+
+            &:hover
+              color: #6ea192
+              opacity: .7
+
+            &:active,
+            &.is-active
+              color: #6ea192
+              opacity: 1
+
+        .notification-mail
+          font-size: 1.5rem
+          margin-left: 1rem
+          opacity: .5
+
+        .notification-loading
+          margin-left: .75rem
+          opacity: .5
+
+          .starpeace-logo
+            filter: invert(38%) sepia(9%) saturate(1145%) hue-rotate(112deg) brightness(101%) contrast(86%)
+            background-size: 1.4rem
+            height: 1.4rem
+            width: 1.4rem
+            vertical-align: middle
+
+            &.ajax-loading
+              animation: spin 1.5s linear infinite
 
     .column-tycoon-details
       background: linear-gradient(to right, #395950, #000)

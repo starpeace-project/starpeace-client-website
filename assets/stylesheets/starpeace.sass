@@ -24,3 +24,28 @@ $sp-filter-light: invert(8%) sepia(22%) saturate(305%) hue-rotate(100deg) bright
     animation: spin 1.5s linear infinite, pulse 2s linear infinite
     filter: $sp-filter-primary
     opacity: .7
+
+
+.release-notes
+  h2
+    border-bottom: 1px solid
+    font-family: 'Varela Round', sans-serif
+    font-size: 1.5rem
+    padding-bottom: .5rem
+
+    &:not(:first-child)
+      border-top: 1px solid
+      margin-top: 2rem
+      padding-top: .5rem
+
+  h3
+    border-bottom: 1px dashed
+    font-family: 'Varela Round', sans-serif
+    font-size: 1.25rem
+    margin: .75rem 0
+
+  .columns
+    margin-bottom: 0
+
+  .tag
+    display: flex

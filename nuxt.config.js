@@ -1,3 +1,19 @@
+const fs = require('fs')
+const moment = require('moment')
+const marked = require('marked')
+const webpack = require('webpack')
+const GitRevisionPlugin = require('git-revision-webpack-plugin')
+
+const gitRevisionPlugin = new GitRevisionPlugin({lightweightTags: true})
+const client_version = 'v' + gitRevisionPlugin.version() + '-' + moment().format('YYYY-MM-DD');
+
+var release_notes_html = marked(fs.readFileSync('./RELEASE.md').toString())
+release_notes_html = release_notes_html.replace(new RegExp(/\<li\>/, 'g'), "<li class='columns'>");
+release_notes_html = release_notes_html.replace(new RegExp(/\<\/li\>/, 'g'), "</span></li>");
+release_notes_html = release_notes_html.replace(new RegExp(/\[done\]/, 'g'), "<span class='column is-2'><span class='tag is-link'>done</span></span><span class='column is-10'>");
+release_notes_html = release_notes_html.replace(new RegExp(/\[in progress\]/, 'g'), "<span class='column is-2'><span class='tag is-success'>in progress</span></span><span class='column is-10'>");
+release_notes_html = release_notes_html.replace(new RegExp(/\[pending\]/, 'g'), "<span class='column is-2'><span class='tag is-warning'>pending</span></span><span class='column is-10'>");
+
 module.exports = {
   css: [
     { src: '~/assets/stylesheets/bulma-starpeace.sass', lang: 'sass' },
@@ -18,8 +34,12 @@ module.exports = {
   generate: {
     fallback: false
   },
+  env: {
+    CLIENT_VERSION: client_version,
+    RELEASE_NOTES_HTML: release_notes_html
+  },
   build: {
-    analyze: true,
+    // analyze: true,
     publicPath: '/assets/',
     vendor: ['lodash', 'javascript-detect-element-resize', 'pixi.js', 'interactjs', 'fpsmeter'],
     extend (config, { isDev, isClient }) {
@@ -41,10 +61,9 @@ module.exports = {
     }
   },
   modules: [
-    '@nuxtjs/moment',
+    '@nuxtjs/moment'
   ],
   plugins: [
-    // { src: '~/plugins/buefy', ssr: false },
     { src: '~/plugins/element-queries', ssr: false },
     { src: '~/plugins/fpsmeter', ssr: false },
     { src: '~/plugins/font-awesome', ssr: false },
