@@ -2,10 +2,14 @@ const fs = require('fs')
 const moment = require('moment')
 const marked = require('marked')
 const webpack = require('webpack')
-const GitRevisionPlugin = require('git-revision-webpack-plugin')
 
-const gitRevisionPlugin = new GitRevisionPlugin({lightweightTags: true})
-const client_version = 'v' + gitRevisionPlugin.version() + '-' + moment().format('YYYY-MM-DD');
+var git_version = process.env.GIT_VERSION;
+if (!git_version || !git_version.length) {
+  const GitRevisionPlugin = require('git-revision-webpack-plugin')
+  const gitRevisionPlugin = new GitRevisionPlugin({lightweightTags: true})
+  git_version = gitRevisionPlugin.version();
+}
+const client_version = 'v' + git_version + '-' + moment().format('YYYY-MM-DD');
 
 var release_notes_html = marked(fs.readFileSync('./RELEASE.md').toString())
 release_notes_html = release_notes_html.replace(new RegExp(/\<li\>/, 'g'), "<li class='columns'>");
