@@ -1,28 +1,28 @@
 
-## v0.2.0 - in progress - updated 2018-06-25
+## v0.2.0 - in progress - updated 2018-06-26
 ### platform
-* [done] basic event and news ticker
 * [done] build and package framework migrating to nuxtjs
-* [done] client refactor to full native nuxtjs vue application and custom components
+* [done] client refactor to full native vue application and custom components
 * [done] more client/vue internal state separation
-* [done] migrate to bulma/buefy/interactjs from bootstrap
+* [done] migrate from bootstrap to bulma and custom starpeace theme
 * [done] client version and release notes integrated in client
-* [in progress] main gameplay UI menu layout
-* [in progress] city zone and overlay loader
+* [done] basic event and news ticker
+* [done] main gameplay UI menu layout
+* [done] city zone and overlay loader
 * [pending] building asset and resource loader
 
 ### assets
 * [done] tree cleanup and spritesheet generation
 * [done] static news support
-* [pending] buildings cleanup and spritesheet generation
+* [in progress] buildings cleanup and spritesheet generation
 
 ### gameplay
 * [done] tree rendering
 * [done] static news notifications
 * [done] seasons support
 * [done] initial notifications UI (mail and ajax loading)
-* [in progress] city zones rendering
-* [in progress] overlay rendering
+* [done] city zones rendering
+* [done] overlay rendering
 * [pending] building rendering and animations
 
 ## v0.1.0 - 2018-06-03

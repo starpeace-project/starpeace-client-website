@@ -38,6 +38,7 @@
     "moment": "^2.22.2",
     "node-sass": "^4.9.0",
     "pixi.js": "^4.8.1",
-    "sass-loader": "^7.0.3"
+    "sass-loader": "^7.0.3",
+    "tinygradient": "^0.4.0"
   }
 }

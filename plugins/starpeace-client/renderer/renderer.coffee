@@ -6,7 +6,7 @@ global PIXI
 ###
 
 import GameMap from '~/plugins/starpeace-client/map/game-map.coffee'
-import MapLayers from '~/plugins/starpeace-client/renderer/map/map-layers.coffee'
+import Layers from '~/plugins/starpeace-client/renderer/map/layers.coffee'
 
 class Renderer
   constructor: (@client) ->
@@ -49,7 +49,7 @@ class Renderer
 
   initialize_map: () ->
     @map_layers.remove_layers(@application.stage) if @map_layers?
-    @map_layers = new MapLayers(@, @client.game_state, @client.ui_state)
+    @map_layers = new Layers(@, @client.game_state, @client.ui_state)
     @map_layers.add_layers(@application.stage)
 
   initialize: () ->

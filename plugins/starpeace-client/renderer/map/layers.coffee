@@ -12,7 +12,7 @@ import MapSprite from '~/plugins/starpeace-client/renderer/map/map-sprite.coffee
 
 import Utils from '~/plugins/starpeace-client/renderer/utils.coffee'
 
-class MapLayers
+class Layers
   constructor: (@renderer, @game_state, @ui_state) ->
     @needs_refresh = false
 
@@ -22,6 +22,8 @@ class MapLayers
 
     @last_season_rendered = null
     @last_rendered_zones = false
+    @last_rendered_overlay = false
+    @last_rendered_overlay_type = null
 
     @refresh()
 
@@ -44,12 +46,15 @@ class MapLayers
       null
 
   should_refresh: () ->
-    @needs_refresh || @game_state.current_season != @last_season_rendered || @ui_state.show_zones != @last_rendered_zones
+    @needs_refresh || @game_state.current_season != @last_season_rendered || @ui_state.show_zones != @last_rendered_zones ||
+      @ui_state.show_overlay != @last_rendered_overlay || @ui_state.current_overlay.type != @last_rendered_overlay_type
 
   refresh: () ->
     @needs_refresh = false
     @last_season_rendered = @game_state.current_season
     @last_rendered_zones = @ui_state.show_zones
+    @last_rendered_overlay = @ui_state.show_overlay
+    @last_rendered_overlay_type = @ui_state.current_overlay.type
 
     map_width = @game_state.game_map.width
     map_height = @game_state.game_map.height
@@ -102,15 +107,22 @@ class MapLayers
           building_chunk_info = @game_state.game_map.building_chunk_info_at(x, j)
           @game_state.game_map.update_building_chunk_at(x, j) unless building_chunk_info?.is_current()
 
-          zone_color = null
+          overlay_color = null
           if building_chunk_info?
             if @ui_state.show_zones
               zone_chunk_info = @game_state.game_map.zone_chunk_info_at(x, j)
               if zone_chunk_info?.is_current()
                 zone_info = @game_state.game_map.zone_at(x, j)
-                zone_color = zone_info.color if zone_info?
+                overlay_color = zone_info.color if zone_info?
               else
                 @game_state.game_map.update_zone_chunk_at(x, j)
+            else if @ui_state.show_overlay
+              overlay_chunk_info = @game_state.game_map.overlay_chunk_info_at(@ui_state.current_overlay.type, x, j)
+              if overlay_chunk_info?.is_current()
+                overlay_info = @game_state.game_map.overlay_at(@ui_state.current_overlay.type, x, j)
+                overlay_color = overlay_info.color if overlay_info?
+              else
+                @game_state.game_map.update_overlay_chunk_at(@ui_state.current_overlay.type, x, j)
 
             building_info = @game_state.game_map.building_at(x, j)
 
@@ -124,7 +136,7 @@ class MapLayers
             sprite_info.sprite.height = sprite_height + 1
             sprite_info.sprite.tint = if building_chunk_info? then 0xFFFFFF else 0x555555
 
-            if building_chunk_info? && zone_color?
+            if building_chunk_info? && overlay_color?
               overlay_sprite = @overlay_layer.sprite_for(sprite_indices.overlay, x, j)
               overlay_sprite.visible = true
               overlay_sprite.alpha = 0.5
@@ -132,7 +144,7 @@ class MapLayers
               overlay_sprite.y = canvas_y
               overlay_sprite.width = tile_width - 0.25
               overlay_sprite.height = tile_height - 0.25
-              overlay_sprite.tint = zone_color
+              overlay_sprite.tint = overlay_color
               sprite_indices.overlay += 1
 
             sprite_indices[sprite_info.type] += 1
@@ -165,4 +177,4 @@ class MapLayers
     @tree_layer.hide_sprites(sprite_indices.tree)
     @overlay_layer.hide_sprites(sprite_indices.overlay)
 
-export default MapLayers
+export default Layers

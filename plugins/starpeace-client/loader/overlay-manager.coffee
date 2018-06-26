@@ -27,8 +27,8 @@ for type in ['ZONES', 'BEAUTY', 'HC_RESIDENTIAL', 'MC_RESIDENTIAL', 'LC_RESIDENT
         for y in [0...20]
           for x in [0...20]
             distance = Math.sqrt((10 - x) * (10 - x) + (10 - y) * (10 - y))
-            info.data[y * 20 + x] = Math.round(255 * (1 - magnitude * (distance / 10))).toString(16).padStart(2, '0')
-
+            info.data[y * 20 + x] = Math.round(255 * (1 - Math.min(1, magnitude * (distance / 10)))).toString(16).padStart(2, '0')
+        info.data = info.data.join('')
 
 class OverlayManager
   constructor: (@client) ->
@@ -46,10 +46,8 @@ class OverlayManager
       chunk = DUMMY_ZONE_CHUNK_DATA[key]
       if type == 'ZONES'
         data = BuildingZone.deserialize_chunk(chunk.width, chunk.height, chunk.data) if chunk?
-      else if type == 'TOWNS'
-        data = data
-      else
-        data = Overlay.deserialize_chunk(chunk.width, chunk.height, chunk.data) if chunk?
+      else if type != 'NONE' && type != 'TOWNS'
+        data = Overlay.deserialize_chunk(type, chunk.width, chunk.height, chunk.data) if chunk?
 
       setTimeout(=>
         delete @chunk_promises[key]

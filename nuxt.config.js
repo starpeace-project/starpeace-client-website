@@ -45,7 +45,7 @@ module.exports = {
   build: {
     // analyze: true,
     publicPath: '/assets/',
-    vendor: ['lodash', 'javascript-detect-element-resize', 'pixi.js', 'interactjs', 'fpsmeter'],
+    vendor: ['lodash', 'javascript-detect-element-resize', 'pixi.js', 'interactjs', 'fpsmeter', 'tinygradient'],
     extend (config, { isDev, isClient }) {
       config.module.rules.push({
         test: /\.coffee$/,

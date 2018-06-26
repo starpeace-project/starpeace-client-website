@@ -16,6 +16,10 @@ class GameMap
   zone_chunk_info_at: (x, y) -> @overlay_map.chunk_info_at('ZONES', x, y)
   zone_at: (x, y) -> @overlay_map.overlay_at('ZONES', x, y)
 
+  update_overlay_chunk_at: (overlay_type, x, y) -> @overlay_map.chunk_update_at(overlay_type, x, y)
+  overlay_chunk_info_at: (overlay_type, x, y) -> @overlay_map.chunk_info_at(overlay_type, x, y)
+  overlay_at: (overlay_type, x, y) -> @overlay_map.overlay_at(overlay_type, x, y)
+
   @from_texture: (client, manifest, texture) ->
     map_width = texture.texture.width
     map_height = texture.texture.height

@@ -9,7 +9,7 @@ class UIState
     @show_fps = true
 
     @show_overlay = false
-    @current_overlay = Overlay.TYPES.NONE
+    @current_overlay = Overlay.TYPES.TOWNS
     @show_losing_facilities = false
 
     @show_zones = false
