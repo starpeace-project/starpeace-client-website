@@ -21,9 +21,9 @@
 * [done] static news notifications
 * [done] seasons support
 * [done] initial notifications UI (mail and ajax loading)
+* [in progress] city zones rendering
+* [in progress] overlay rendering
 * [pending] building rendering and animations
-* [pending] city zones rendering
-* [pending] overlay rendering
 
 ## v0.1.0 - 2018-06-03
 ### platform
