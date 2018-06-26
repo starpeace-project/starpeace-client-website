@@ -30,7 +30,7 @@ export default
 
 .card
   height: 100%
-  max-width: 40rem
+  max-width: 60rem
   width: 100%
   z-index: 1050
 

@@ -14,7 +14,7 @@ phases:
     commands:
       - echo Entered the build phase...
       - echo Build started on `date`
-      - cross-env npm run generate
+      - npm run generate
   post_build:
     commands:
       - echo Entered the post_build phase...
