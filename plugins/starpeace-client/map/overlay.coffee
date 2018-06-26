@@ -40,12 +40,12 @@ class Overlay
       value: 7
       type: 'QOL'
       label: 'QOL'
-      color_gradient: tinygradient([{pos: 0, color: '#010101'}, {pos: 1, color: 0x0000FF}])
+      color_gradient: tinygradient([{pos: 0, color: '#010101'}, {pos: 1, color: '#0000FF'}])
     CRIME:
       value: 8
       type: 'CRIME'
       label: 'Crime'
-      color_gradient: tinygradient([{pos: 0, color: 0x0000FF}, {pos: .5, color: '#010101'}, {pos: 1, color: '#FF0000'}])
+      color_gradient: tinygradient([{pos: 0, color: '#0000FF'}, {pos: .5, color: '#010101'}, {pos: 1, color: '#FF0000'}])
     POLLUTION:
       value: 9
       type: 'POLLUTION'
