@@ -8,7 +8,7 @@
     "dev": "cross-env PORT=11010 nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
-    "generate": "cross-env GIT_VERSION=$CODEBUILD_SOURCE_VERSION nuxt generate && del-cli ./dist/.nojekyll",
+    "generate": "cross-env GIT_VERSION='0.1.0' nuxt generate && del-cli ./dist/.nojekyll",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "precommit": "npm run lint"
   },
