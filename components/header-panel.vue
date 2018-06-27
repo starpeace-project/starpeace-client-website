@@ -14,7 +14,7 @@
     .development
       %a.documentation{href: 'https://docs.starpeace.io'} Documentation
       %a.community{href: 'https://starpeaceproject.com/'} Community
-      %a.discord{href: 'https://discord.gg/YQDmMch'}
+      %a.discord{href: 'https://discord.gg/TF9Bmsj'}
         %font-awesome-icon{':icon':"['fab', 'discord']"}
       %a.github{href: 'https://github.com/ronappleton/starpeace-website-client'}
         %font-awesome-icon{':icon':"['fab', 'github']"}
