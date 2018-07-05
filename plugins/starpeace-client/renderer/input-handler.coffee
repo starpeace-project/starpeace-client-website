@@ -1,8 +1,9 @@
 
+ZOOM_DISABLED = false
 AUTO_SCROLL_DISABLED = true
 
 class InputHandler
-  constructor: (@camera_manager, @renderer) ->
+  constructor: (@menu_state, @camera_manager, @renderer) ->
     @initialized = false
 
     @is_moving = false
@@ -29,25 +30,24 @@ class InputHandler
 
     start_moving = (event) =>
       @is_moving = true
-      event = event?.data?.originalEvent
-      return unless event? && event.isPrimary
-      @last_x = Math.round(event.clientX)
-      @last_y = Math.round(event.clientY)
+      event = event?.data
+      return unless @renderer?.initialized && event? && event.isPrimary
+      @last_x = Math.round(event.global.x)
+      @last_y = Math.round(event.global.y)
 
     finish_moving = (event) =>
       @is_moving = false
-      event = event?.data?.originalEvent
-      return unless event? && event.isPrimary
-      @last_x = Math.round(event.clientX)
-      @last_y = Math.round(event.clientY)
+      event = event?.data
+      return unless @renderer?.initialized && event? && event.isPrimary
+      @last_x = Math.round(event.global.x)
+      @last_y = Math.round(event.global.y)
 
     do_move = (event) =>
-      return unless @is_moving && @renderer?.initialized
-      event = event?.data?.originalEvent
-      return unless event? && event.isPrimary
+      event = event?.data
+      return unless @is_moving && @renderer?.initialized && event? && event.isPrimary
 
-      event_x = Math.round(event.clientX)
-      event_y = Math.round(event.clientY)
+      event_x = Math.round(event.global.x)
+      event_y = Math.round(event.global.y)
 
       delta_x = if @last_x >= 0 then @last_x - event_x else 0
       delta_y = if @last_y >= 0 then @last_y - event_y else 0
@@ -111,6 +111,7 @@ class InputHandler
 
 
     do_scale = (event) =>
+      return true if ZOOM_DISABLED || @menu_state.is_any_menu_open()
       return unless event?.deltaY?
       return unless within_screen(event.clientX, event.clientY)
 

@@ -38,7 +38,7 @@ class Client
 
     @renderer = new Renderer(@)
     @camera_manager = new CameraManager(@, @renderer)
-    @input_handler = new InputHandler(@camera_manager, @renderer)
+    @input_handler = new InputHandler(@menu_state, @camera_manager, @renderer)
 
     @initialize_callback = null
 

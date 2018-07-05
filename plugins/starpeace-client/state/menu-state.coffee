@@ -5,6 +5,8 @@ class MenuState
     @show_menu_favorites = false
     @main_menu = null
 
+  is_any_menu_open: () ->
+    @show_menu_favorites || @main_menu?.length || @show_menu_release_notes
 
   hide_all_menus: () ->
     @show_menu_favorites = false

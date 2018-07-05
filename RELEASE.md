@@ -9,6 +9,7 @@
 * [done] basic event and news ticker
 * [done] main gameplay UI menu layout
 * [done] city zone and overlay loader
+* [done] improved mobile pan controls
 * [in progress] building asset and resource loader
 
 ### assets
