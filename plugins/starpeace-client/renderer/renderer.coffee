@@ -46,10 +46,10 @@ class Renderer
 
     addResizeListener(render_container, => @handle_resize())
 
-
   initialize_map: () ->
     @map_layers.remove_layers(@application.stage) if @map_layers?
-    @map_layers = new Layers(@, @client.game_state, @client.ui_state)
+    @map_layers.destroy() if @map_layers?
+    @map_layers = new Layers(@client, @, @client.game_state, @client.ui_state)
     @map_layers.add_layers(@application.stage)
 
   initialize: () ->
@@ -57,7 +57,7 @@ class Renderer
 
     planet = @client.game_state.current_planet
     land_manifest = @client.planet_type_manifest_manager.planet_type_manifest[planet.planet_type]
-    map_texture = @client.asset_manager.map_id_texture[planet.map_id]
+    map_texture = @client.planetary_manager.map_id_texture[planet.map_id]
 
     @client.game_state.game_map = GameMap.from_texture(@client, land_manifest, map_texture)
     @initialize_map()

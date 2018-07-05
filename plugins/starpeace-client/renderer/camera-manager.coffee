@@ -7,12 +7,12 @@ class CameraManager
   constructor: (@client, @renderer) ->
 
   adjust_scale: (delta) ->
-    before_scale = @client.game_state.game_scale
+    # before_scale = @client.game_state.game_scale
     @client.game_state.game_scale -= delta
     @client.game_state.game_scale = 1.5 if @client.game_state.game_scale > 1.5
     @client.game_state.game_scale = 0.5 if @client.game_state.game_scale < 0.5
-    delta_change = @client.game_state.game_scale - before_scale
-    @renderer.initialize_map() if delta_change != 0 && @renderer.initialized
+    # delta_change = @client.game_state.game_scale - before_scale
+    # @renderer.initialize_map() if delta_change != 0 && @renderer.initialized
 
   zoom_in: () ->
     @renderer.initialized && @adjust_scale(-0.25) != 0

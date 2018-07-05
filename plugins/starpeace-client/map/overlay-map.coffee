@@ -1,4 +1,5 @@
 
+import Logger from '~/plugins/starpeace-client/logger.coffee'
 import ChunkMap from '~/plugins/starpeace-client/map/chunk/chunk-map.coffee'
 import Overlay from '~/plugins/starpeace-client/map/overlay.coffee'
 
@@ -14,7 +15,7 @@ class OverlayMap
         @overlay_chunks[type] = new ChunkMap(@client, @width, @height, true, (chunk_x, chunk_y, chunk_width, chunk_height) =>
           @client.overlay_manager.load_chunk(type, chunk_x, chunk_y, chunk_width, chunk_height)
         , (chunk_info, data) =>
-          console.debug "[STARPEACE] refreshing overlay chunk for #{type} at #{chunk_info.chunk_x}x#{chunk_info.chunk_y}"
+          Logger.debug "refreshing overlay chunk for #{type} at #{chunk_info.chunk_x}x#{chunk_info.chunk_y}"
 
           chunk_x_offset = chunk_info.x_offset()
           chunk_y_offset = chunk_info.y_offset()

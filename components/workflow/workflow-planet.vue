@@ -39,11 +39,8 @@ export default
     select_planet: (planet_id) ->
       planet = @client.planetary_metadata_manager.planet_for_id(planet_id)
       throw "unknown planet id <#{planetary_system_id}>" unless planet?
-      @client.game_state.current_planet = planet
+      @client.select_planet(planet)
       window.document.title = "#{@client.game_state.current_planet.name} - STARPEACE" if window?.document?
-      console.debug "[starpeace] proceeding with planet <#{@client.game_state.current_planet}>"
-      @client.asset_manager.load_planet_assets(@client.game_state.current_planet.planet_type, @client.game_state.current_planet.map_id)
-
 
     planet_animation_url: (planet) -> "https://cdn.starpeace.io/planet.#{planet.id}.animation.gif"
     planet_description: (planet) ->

@@ -1,6 +1,7 @@
 
 import moment from 'moment'
 
+import Logger from '~/plugins/starpeace-client/logger.coffee'
 import Identity from '~/plugins/starpeace-client/identity/identity.coffee'
 import Account from '~/plugins/starpeace-client/account/account.coffee'
 
@@ -31,7 +32,7 @@ class GameState
       .then (identity) =>
         @current_identity = identity
         @current_identity_authentication = null
-        console.debug "[starpeace] initialized identity <#{@current_identity}> from localStorage"
+        Logger.debug "initialized identity <#{@current_identity}> from localStorage"
       .catch (error) ->
         # FIXME: TODO: figure out error handling
     @current_identity = null
@@ -68,13 +69,13 @@ class GameState
   proceed_as_visitor: () ->
     @current_identity.reset_and_destroy() if @current_identity?
     @current_identity = Identity.visitor()
-    console.debug "[starpeace] proceeding with visitor identity <#{@current_identity}>"
+    Logger.debug "proceeding with visitor identity <#{@current_identity}>"
 
     @current_account_authorization = Account.for_identity(@current_identity)
       .then (account) =>
         @current_account = account
         @current_account_authorization = null
-        console.debug "[starpeace] successfully retrieved account <#{@current_account}> for identity"
+        Logger.debug "successfully retrieved account <#{@current_account}> for identity"
 
       .catch (error) ->
         # FIXME: TODO: figure out error handling

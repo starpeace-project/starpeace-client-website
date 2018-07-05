@@ -3,6 +3,8 @@
 global PIXI
 ###
 
+import Logger from '~/plugins/starpeace-client/logger.coffee'
+
 TREE_TYPE_PERCENTAGE = {}
 TREE_TYPE_PERCENTAGE.grass = .3
 TREE_TYPE_PERCENTAGE.midgrass = .2
@@ -25,7 +27,7 @@ class GroundMap
       tree_tile = @tree_at(x, y)
       texture_id = tree_tile?.textures?[season]
       texture = PIXI.utils.TextureCache[texture_id] if texture_id?.length
-      console.debug "[STARPEACE] unable to find tree texture <#{texture_id}> for coord <#{x}>x<#{y}>" unless texture?
+      Logger.debug("unable to find tree texture <#{texture_id}> for coord <#{x}>x<#{y}>") unless texture?
     texture
 
   ground_texture_for: (season, x, y) ->
@@ -34,7 +36,7 @@ class GroundMap
       tile = @ground_at(x, y)
       texture_id = _.values(tile?.textures?['0deg']?[season] || {})[0]
       texture = PIXI.utils.TextureCache[texture_id] if texture_id?.length
-      console.debug "[STARPEACE] unable to find ground texture <#{texture_id}> for coord <#{x}>x<#{y}>, will fall back to default" unless texture?
+      Logger.debug("unable to find ground texture <#{texture_id}> for coord <#{x}>x<#{y}>, will fall back to default") unless texture?
     texture
 
 

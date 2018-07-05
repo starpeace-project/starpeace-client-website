@@ -1,4 +1,6 @@
 
+import Logger from '~/plugins/starpeace-client/logger.coffee'
+
 import BuildingZone from '~/plugins/starpeace-client/map/building-zone.coffee'
 import Overlay from '~/plugins/starpeace-client/map/overlay.coffee'
 
@@ -32,13 +34,15 @@ for type in ['ZONES', 'BEAUTY', 'HC_RESIDENTIAL', 'MC_RESIDENTIAL', 'LC_RESIDENT
 
 class OverlayManager
   constructor: (@client) ->
+    @requested_overlay_asset = false
+    @has_overlay_asset = false
     @chunk_promises = {}
 
   load_chunk: (type, chunk_x, chunk_y, width, height) ->
     key = "#{type}x#{chunk_x}x#{chunk_y}"
     return if @chunk_promises[key]?
 
-    console.debug "[STARPEACE] attempting to load overlay chunk for #{type} at #{chunk_x}x#{chunk_y}"
+    Logger.debug("attempting to load overlay chunk for #{type} at #{chunk_x}x#{chunk_y}")
     @client.game_state.start_ajax()
     @chunk_promises[key] = new Promise (done) =>
       data = new Array(width, height).fill(Overlay.TYPES.NONE)
@@ -54,5 +58,15 @@ class OverlayManager
         done(data)
         @client.game_state.finish_ajax()
       , 500)
+
+  has_assets: () ->
+    @has_overlay_asset
+
+  queue_asset_load: () ->
+    return if @requested_overlay_asset
+    @requested_overlay_asset = true
+    @client.asset_manager.queue('overlay', './overlay.png', (resource) =>
+      @has_overlay_asset = true
+    )
 
 export default OverlayManager

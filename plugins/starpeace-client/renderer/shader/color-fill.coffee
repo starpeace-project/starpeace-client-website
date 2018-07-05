@@ -34,7 +34,7 @@ class ColorFill extends PIXI.Filter
       set: (value) -> @uniforms.rgbColor = value
 
     hexColor:
-      get: -> console.log(@hexColor); PIXI.utils.rgb2hex(@uniforms.rgbColor)
+      get: -> PIXI.utils.rgb2hex(@uniforms.rgbColor)
       set: (value) -> @uniforms.rgbColor = PIXI.utils.hex2rgb(value)
 
 export default ColorFill

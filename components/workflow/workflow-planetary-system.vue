@@ -24,6 +24,8 @@
 </template>
 
 <script lang='coffee'>
+import Logger from '~/plugins/starpeace-client/logger.coffee'
+
 export default
   props:
     client: Object
@@ -41,7 +43,7 @@ export default
       throw "unknown planetary system id <#{planetary_system_id}>" unless system?
       @client.game_state.current_planetary_system = system
       window.document.title = "#{@game_state.current_planetary_system.name} - STARPEACE" if window?.document?
-      console.debug "[starpeace] proceeding with planetary system <#{@game_state.current_planetary_system}>"
+      Logger.debug "proceeding with planetary system <#{@game_state.current_planetary_system}>"
 
     system_animation_url: (system) -> ''
 

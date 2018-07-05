@@ -25,6 +25,7 @@
 </template>
 
 <script lang='coffee'>
+import Logger from '~/plugins/starpeace-client/logger.coffee'
 import WorkflowLoading from '~/components/workflow/workflow-loading.vue'
 import WorkflowIdentity from '~/components/workflow/workflow-identity.vue'
 import WorkflowPlanetarySystem from '~/components/workflow/workflow-planetary-system.vue'
@@ -87,7 +88,7 @@ export default
       @client.game_state.current_planet = null
       @client.game_state.initialized = false
       # FIXME: TODO: what other state should be reset?
-      console.debug "[starpeace] resetting planetary system back to empty, will need to re-select"
+      Logger.debug "resetting planetary system back to empty, will need to re-select"
 
     current_planetary_system_name: -> @game_state?.current_planetary_system?.name
 </script>
