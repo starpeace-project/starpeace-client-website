@@ -1,5 +1,5 @@
 
-## v0.2.0 - in progress - updated 2018-07-05
+## v0.2.0 - in progress - updated 2018-07-06
 ### platform
 * [done] build and package framework migrating to nuxtjs
 * [done] client refactor to full native vue application and custom components
@@ -10,7 +10,8 @@
 * [done] main gameplay UI menu layout
 * [done] city zone and overlay loader
 * [done] improved mobile pan controls
-* [in progress] building asset and resource loader
+* [done] building asset and resource loader
+* [in progress] improved z-order rendering across layers
 
 ### assets
 * [done] tree cleanup and spritesheet generation
@@ -24,7 +25,7 @@
 * [done] initial notifications UI (mail and ajax loading)
 * [done] city zones rendering
 * [done] overlay rendering
-* [in progress] building rendering and animations
+* [done] building rendering and animations
 
 ## v0.1.0 - 2018-06-03
 ### platform

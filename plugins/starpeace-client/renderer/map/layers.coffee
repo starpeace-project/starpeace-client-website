@@ -5,7 +5,7 @@ global PIXI
 
 import PlanetTypeManifest from '~/plugins/starpeace-client/metadata/planet-type-manifest.coffee'
 
-import LayerBuilding from '~/plugins/starpeace-client/renderer/map/layer-building.coffee'
+import LayerBuildings from '~/plugins/starpeace-client/renderer/map/layer-buildings.coffee'
 import LayerGround from '~/plugins/starpeace-client/renderer/map/layer-ground.coffee'
 import LayerOverlay from '~/plugins/starpeace-client/renderer/map/layer-overlay.coffee'
 import LayerTree from '~/plugins/starpeace-client/renderer/map/layer-tree.coffee'
@@ -20,7 +20,7 @@ export default class Layers
     @ground_layer = new LayerGround(@renderer, @game_state)
     @tree_layer = new LayerTree(@renderer, @game_state)
     @underlay_layer = new LayerOverlay(@renderer, @game_state, true)
-    @building_layer = new LayerBuilding(@client, @renderer, @game_state)
+    @building_layer = new LayerBuildings(@client, @renderer, @game_state)
     @overlay_layer = new LayerOverlay(@renderer, @game_state, false)
 
     @last_scale_rendered = 0
@@ -38,14 +38,14 @@ export default class Layers
     stage.removeChild(@ground_layer.container)
     stage.removeChild(@tree_layer.container)
     stage.removeChild(@underlay_layer.container)
-    stage.removeChild(@building_layer.container)
+    stage.removeChild(container) for container in @building_layer.containers()
     stage.removeChild(@overlay_layer.container)
 
   add_layers: (stage) ->
     stage.addChild(@ground_layer.container)
     stage.addChild(@tree_layer.container)
     stage.addChild(@underlay_layer.container)
-    stage.addChild(@building_layer.container)
+    stage.addChild(container) for container in @building_layer.containers()
     stage.addChild(@overlay_layer.container)
 
   should_refresh: () ->

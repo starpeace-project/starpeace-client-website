@@ -32,7 +32,14 @@ class Renderer
     @initialize_map()
 
   initialize_application: () ->
-    render_container = document?.getElementById('render-container')
+    return unless document?
+
+    user_agent = navigator?.userAgent || 'unknown'
+    is_iphone = ~user_agent.indexOf('iPhone') || ~user_agent.indexOf('iPod')
+
+    setTimeout(scrollTo, 0, 0, 1)
+
+    render_container = document.getElementById('render-container')
     @update_offset(render_container)
     @renderer_width = Math.ceil(render_container.offsetWidth)
     @renderer_height = Math.ceil(render_container.offsetHeight)

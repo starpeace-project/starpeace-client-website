@@ -30,11 +30,13 @@ class PlanetaryManager
     ) unless @map_id_texture[map_id]?
 
   load_planet_atlas: (planet_type, atlas_paths) ->
-    @client.asset_manager.queue(path, path, (resource) =>
-      @planet_type_atlas[planet_type] = [] unless @planet_type_atlas[planet_type]?
-      @planet_type_atlas[planet_type].push resource
-      @client.notify_assets_changed()
-    ) for path in atlas_paths
+    for path in atlas_paths
+      do (path) =>
+        @client.asset_manager.queue(path, path, (resource) =>
+          @planet_type_atlas[planet_type] = [] unless @planet_type_atlas[planet_type]?
+          @planet_type_atlas[planet_type].push resource
+          @client.notify_assets_changed()
+        )
     @client.asset_manager.load_queued()
 
 export default PlanetaryManager

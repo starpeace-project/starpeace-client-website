@@ -2,62 +2,6 @@
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 
 MOCK_DATA = {}
-MOCK_DATA['9x4'] = [{
-  key: 'generic.portal.in'
-  x: 190
-  y: 90
-},
-{
-  key: 'generic.portal.out'
-  x: 192
-  y: 90
-},
-{
-  key: 'generic.portal.in'
-  x: 194
-  y: 90
-},
-{
-  key: 'generic.portal.out'
-  x: 196
-  y: 90
-},
-{
-  key: 'pgi.townhall'
-  x: 198
-  y: 90
-},
-{
-  key: 'generic.portal.out'
-  x: 190
-  y: 92
-},
-{
-  key: 'generic.portal.in'
-  x: 192
-  y: 92
-},
-{
-  key: 'generic.portal.out'
-  x: 194
-  y: 92
-},
-{
-  key: 'generic.portal.in'
-  x: 190
-  y: 94
-},
-{
-  key: 'generic.portal.out'
-  x: 192
-  y: 94
-},
-{
-  key: 'generic.portal.in'
-  x: 194
-  y: 94
-}]
-
 
 class BuildingManager
   constructor: (@client) ->
@@ -67,6 +11,41 @@ class BuildingManager
     @building_metadata = null
     @loaded_atlases = {}
     @building_textures = {}
+
+  setup_mocks: () ->
+    mock_map_buildings = []
+    can_place = (xt, yt, info) ->
+      for j in [0...info.h]
+        for i in [0...info.w]
+          return false if mock_map_buildings[1000 * (yt - j) + (xt - i)]?
+      true
+    place_mock = (xt, yt, info) ->
+      for j in [0...info.h]
+        for i in [0...info.w]
+          mock_map_buildings[1000 * (yt - j) + (xt - i)] = info
+
+    x = 195
+    y = 90
+    for key,info of @building_metadata.buildings
+      found_position = false
+      until found_position
+        if can_place(x, y, info)
+          found_position = true
+          place_mock(x, y, info)
+          chunk_key = "#{Math.floor(x/20)}x#{Math.floor(y/20)}"
+          MOCK_DATA[chunk_key] ||= []
+          MOCK_DATA[chunk_key].push {
+            key: key
+            x: x
+            y: y
+          }
+          x += info.w
+        else
+          x += 1
+
+        if x > 215
+          x = 195
+          y += 1
 
   load_chunk: (chunk_x, chunk_y, width, height) ->
     key = "#{chunk_x}x#{chunk_y}"
@@ -94,13 +73,16 @@ class BuildingManager
     @client.asset_manager.queue('metadata.building', './building.metadata.json', (resource) =>
       @building_metadata = resource.data
       building.key = key for key,building of @building_metadata.buildings
+      @setup_mocks()
       @load_building_atlas(resource.data.atlas)
     )
 
   load_building_atlas: (atlas_paths) ->
-    @client.asset_manager.queue(path, path, (resource) =>
-      @set_building_atlas(path, resource)
-    ) for path in atlas_paths
+    for path in atlas_paths
+      do (path) =>
+        @client.asset_manager.queue(path, path, (resource) =>
+          @set_building_atlas(path, resource)
+        )
     @client.asset_manager.load_queued()
 
   buildings_for_atlas: (atlas_key) ->
@@ -116,5 +98,8 @@ class BuildingManager
     for building in @buildings_for_atlas(key)
       @building_textures[building.key] = _.map(building.frames, (frame) -> PIXI.utils.TextureCache[frame])
     @client.notify_assets_changed()
+
+  atlas_for: (key) ->
+    @building_metadata.buildings[key].atlas
 
 export default BuildingManager

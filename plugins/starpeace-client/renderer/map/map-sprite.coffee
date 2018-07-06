@@ -1,5 +1,5 @@
 
-import LayerBuilding from '~/plugins/starpeace-client/renderer/map/layer-building.coffee'
+import LayerBuildings from '~/plugins/starpeace-client/renderer/map/layer-buildings.coffee'
 import LayerGround from '~/plugins/starpeace-client/renderer/map/layer-ground.coffee'
 import LayerOverlay from '~/plugins/starpeace-client/renderer/map/layer-overlay.coffee'
 import LayerTree from '~/plugins/starpeace-client/renderer/map/layer-tree.coffee'
@@ -38,13 +38,12 @@ class MapSprite
       @sprite.y = canvas_y
       @sprite.width = @target_width - 0.25
       @sprite.height = target_height - 0.25
-    else if @layer instanceof LayerBuilding
+    else if @layer instanceof LayerBuildings
       @sprite.visible = true
       @sprite.x = canvas_x
       @sprite.y = canvas_y - tile_height - (target_height - tile_height)
       @sprite.width = @target_width + 1
       @sprite.height = target_height + 1
-
 
     @layer.increment_counter(counter, tile_info)
 
