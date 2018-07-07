@@ -1,14 +1,15 @@
 
-## v0.3 - in progress - updated 2018-07-06
+## v0.3 - in progress - updated 2018-07-07
 ### platform
 * [done] improved building rendering around edges [v0.2.1]
-* [in progress] improved z-order rendering across layers
+* [done] improved z-order rendering across layers [v0.2.2]
 * [pending] input interaction support for buildings (selection, rendering)
 
 ### assets
 * [pending] game background music
 
 ### gameplay
+* [pending] improve building animation fluidity tying render frame to game clock
 * [pending] persist client options in localStorage
 * [pending] game music controls
 * [pending] camera rotation perspectives

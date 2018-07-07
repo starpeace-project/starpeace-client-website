@@ -5,11 +5,11 @@ const marked = require('marked')
 const webpack = require('webpack')
 
 var git_version = process.env.GIT_VERSION;
-if (!git_version || !git_version.length) {
-  const GitRevisionPlugin = require('git-revision-webpack-plugin')
-  const gitRevisionPlugin = new GitRevisionPlugin({lightweightTags: true})
-  git_version = gitRevisionPlugin.version();
-}
+// if (!git_version || !git_version.length) {
+//   const GitRevisionPlugin = require('git-revision-webpack-plugin')
+//   const gitRevisionPlugin = new GitRevisionPlugin({lightweightTags: true})
+//   git_version = gitRevisionPlugin.version();
+// }
 const client_version = 'v' + git_version + '-' + moment().tz('America/Los_Angeles').format('YYYY-MM-DD');
 
 var release_notes_html = marked(fs.readFileSync('./RELEASE.md').toString())

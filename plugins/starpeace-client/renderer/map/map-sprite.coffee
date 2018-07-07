@@ -1,5 +1,5 @@
 
-import LayerBuildings from '~/plugins/starpeace-client/renderer/map/layer-buildings.coffee'
+import LayerBuilding from '~/plugins/starpeace-client/renderer/map/layer-building.coffee'
 import LayerGround from '~/plugins/starpeace-client/renderer/map/layer-ground.coffee'
 import LayerOverlay from '~/plugins/starpeace-client/renderer/map/layer-overlay.coffee'
 import LayerTree from '~/plugins/starpeace-client/renderer/map/layer-tree.coffee'
@@ -14,17 +14,12 @@ class MapSprite
     Math.ceil(scale_y * (@sprite?.texture?.height || 0))
 
   within_canvas: (scale, canvas_x, canvas_y, tile_width, tile_height, canvas_width, canvas_height) ->
-    # width = @target_width
-    # height = if @target_height <= 0 then @height(scale) else @target_height
     target_height = if @target_height <= 0 then @height(scale) else @target_height
     x_min = canvas_x - (@target_width - tile_width) * .5
     x_max = x_min + @target_width
     y_min = canvas_y - (target_height - tile_height)
     y_max = y_min + target_height
     (x_min <= canvas_width || x_max >= 0) && (y_min <= canvas_height || y_max >= 0)
-    # x >= 0 && x <= canvas_width && y >= 0 && y <= canvas_height
-    # canvas_x >= -width && (canvas_x < canvas_width + width) &&
-    #   canvas_y >= -height && (canvas_y < canvas_height + height)
 
   should_render: (scale, canvas_x, canvas_y, tile_width, tile_height, canvas_width, canvas_height) ->
     @sprite? && @within_canvas(scale, canvas_x, canvas_y, tile_width, tile_height, canvas_width, canvas_height)
@@ -45,7 +40,7 @@ class MapSprite
       @sprite.y = canvas_y
       @sprite.width = @target_width - 0.25
       @sprite.height = target_height - 0.25
-    else if @layer instanceof LayerBuildings
+    else if @layer instanceof LayerBuilding
       @sprite.visible = true
       @sprite.x = canvas_x - (@target_width - tile_width) * .5
       @sprite.y = canvas_y - (target_height - tile_height)

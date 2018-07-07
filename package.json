@@ -1,14 +1,14 @@
 {
   "name": "starpeace-website-client",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Client website application for STARPEACE multiplayer economic simulation",
   "author": "ronappleton",
   "private": true,
   "scripts": {
-    "dev": "cross-env PORT=11010 nuxt",
+    "dev": "cross-env GIT_VERSION='0.2.2' PORT=11010 nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
-    "generate": "cross-env GIT_VERSION='0.2.1' nuxt generate && del-cli ./dist/.nojekyll",
+    "generate": "cross-env GIT_VERSION='0.2.2' nuxt generate && del-cli ./dist/.nojekyll",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "precommit": "npm run lint"
   },
