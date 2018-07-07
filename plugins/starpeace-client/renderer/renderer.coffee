@@ -46,6 +46,9 @@ class Renderer
     @application = new PIXI.Application(@renderer_width, @renderer_height, {
       backgroundColor : 0x000000
     })
+    @application.stage = new PIXI.display.Stage()
+    @application.stage.group.enableSort = true
+
     render_container.appendChild(@application.view)
 
     fps_el = document?.getElementById('fps-container')

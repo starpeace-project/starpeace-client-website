@@ -1,5 +1,20 @@
 
-## v0.2.0 - in progress - updated 2018-07-06
+### v0.3 - in progress - updated 2018-07-06
+### platform
+* [in progress] improved z-order rendering across layers
+* [pending] input interaction support for buildings (selection, rendering)
+
+### assets
+* [pending] game background music
+
+### gameplay
+* [pending] persist client options in localStorage
+* [pending] game music controls
+* [pending] camera rotation perspectives
+* [pending] mini-map rendering
+* [pending] map interaction support (place buildings, favorites, city integration)
+
+## v0.2.0 - 2018-07-06
 ### platform
 * [done] build and package framework migrating to nuxtjs
 * [done] client refactor to full native vue application and custom components
@@ -11,12 +26,11 @@
 * [done] city zone and overlay loader
 * [done] improved mobile pan controls
 * [done] building asset and resource loader
-* [in progress] improved z-order rendering across layers
 
 ### assets
 * [done] tree cleanup and spritesheet generation
 * [done] static news support
-* [in progress] buildings cleanup and spritesheet generation
+* [done] buildings cleanup and spritesheet generation
 
 ### gameplay
 * [done] tree rendering

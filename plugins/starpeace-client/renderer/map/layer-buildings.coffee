@@ -1,14 +1,23 @@
 
+###
+global PIXI
+###
+
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 import LayerBuilding from '~/plugins/starpeace-client/renderer/map/layer-building.coffee'
 
 
-MAX_GROUND_TILES = 10000
-
 class LayerBuildings
-  constructor: (@client, @renderer, @game_state) ->
+  constructor: (@client, @renderer, @game_state, @z_index) ->
     @atlas_layer = {}
     @initialized = false
+
+    @group = new PIXI.display.Group(@z_index, (sprite) ->
+      console.log "sort that hoe"
+      sprite.zOrder = -sprite.y
+    )
+    @layer = new PIXI.display.Layer(@group)
+
     @initialize()
 
   @safe_alias: (path) ->
@@ -21,7 +30,7 @@ class LayerBuildings
     atlases = Object.keys(@client.building_manager.loaded_atlases)
     return unless atlases.length
 
-    @atlas_layer[LayerBuildings.safe_alias(atlas)] = new LayerBuilding(@client, @renderer, @game_state) for atlas in atlases
+    @atlas_layer[LayerBuildings.safe_alias(atlas)] = new LayerBuilding(@client, @renderer, @game_state, @group) for atlas in atlases
     @initialized = true
 
   destroy: () ->

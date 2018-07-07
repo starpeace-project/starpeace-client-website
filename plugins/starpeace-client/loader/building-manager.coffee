@@ -43,7 +43,7 @@ class BuildingManager
         else
           x += 1
 
-        if x > 215
+        if x > 235
           x = 195
           y += 1
 

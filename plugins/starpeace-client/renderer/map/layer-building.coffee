@@ -1,7 +1,6 @@
 
 ###
 global PIXI
-global PIXI.extras
 ###
 
 import Logger from '~/plugins/starpeace-client/logger.coffee'
@@ -10,9 +9,10 @@ import Logger from '~/plugins/starpeace-client/logger.coffee'
 MAX_GROUND_TILES = 10000
 
 class LayerBuilding
-  constructor: (@client, @renderer, @game_state) ->
+  constructor: (@client, @renderer, @game_state, @layer_group) ->
     @static_sprites = []
     @animated_spites = []
+    # @container = new PIXI.Container()
     @container = new PIXI.particles.ParticleContainer(MAX_GROUND_TILES, {
       vertices: true
       position: true
@@ -38,6 +38,7 @@ class LayerBuilding
     if textures.length == 1
       if counter.static >= @static_sprites.length
         sprite = @static_sprites[counter.static] = new PIXI.Sprite(textures[0])
+        sprite.parentGroup = @layer_group
         @container.addChild(sprite)
       else
         sprite = @static_sprites[counter.static]
@@ -45,6 +46,7 @@ class LayerBuilding
     else
       if counter.animated >= @animated_spites.length
         sprite = @animated_spites[counter.animated] = new PIXI.extras.AnimatedSprite(textures)
+        sprite.parentGroup = @layer_group
         sprite.animationSpeed = .2
         @container.addChild(sprite)
       else

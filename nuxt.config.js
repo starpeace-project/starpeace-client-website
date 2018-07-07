@@ -1,5 +1,6 @@
 const fs = require('fs')
 const moment = require('moment')
+require('moment-timezone')
 const marked = require('marked')
 const webpack = require('webpack')
 
@@ -9,7 +10,7 @@ if (!git_version || !git_version.length) {
   const gitRevisionPlugin = new GitRevisionPlugin({lightweightTags: true})
   git_version = gitRevisionPlugin.version();
 }
-const client_version = 'v' + git_version + '-' + moment().format('YYYY-MM-DD');
+const client_version = 'v' + git_version + '-' + moment().tz('America/Los_Angeles').format('YYYY-MM-DD');
 
 var release_notes_html = marked(fs.readFileSync('./RELEASE.md').toString())
 release_notes_html = release_notes_html.replace(new RegExp(/\<li\>/, 'g'), "<li class='columns'>");

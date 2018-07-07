@@ -17,11 +17,11 @@ export default class Layers
   constructor: (@client, @renderer, @game_state, @ui_state) ->
     @needs_refresh = false
 
-    @ground_layer = new LayerGround(@renderer, @game_state)
-    @tree_layer = new LayerTree(@renderer, @game_state)
-    @underlay_layer = new LayerOverlay(@renderer, @game_state, true)
-    @building_layer = new LayerBuildings(@client, @renderer, @game_state)
-    @overlay_layer = new LayerOverlay(@renderer, @game_state, false)
+    @ground_layer = new LayerGround(@renderer, @game_state, 1)
+    @tree_layer = new LayerTree(@renderer, @game_state, 1)
+    @underlay_layer = new LayerOverlay(@renderer, @game_state, true, 2)
+    @building_layer = new LayerBuildings(@client, @renderer, @game_state, 3)
+    @overlay_layer = new LayerOverlay(@renderer, @game_state, false, 4)
 
     @last_scale_rendered = 0
     @last_season_rendered = null
@@ -35,6 +35,8 @@ export default class Layers
     layer.destroy() for layer in [@ground_layer, @tree_layer, @underlay_layer, @building_layer, @overlay_layer]
 
   remove_layers: (stage) ->
+    stage.removeChild(@building_layer.layer)
+
     stage.removeChild(@ground_layer.container)
     stage.removeChild(@tree_layer.container)
     stage.removeChild(@underlay_layer.container)
@@ -42,6 +44,8 @@ export default class Layers
     stage.removeChild(@overlay_layer.container)
 
   add_layers: (stage) ->
+    stage.addChild(@building_layer.layer)
+
     stage.addChild(@ground_layer.container)
     stage.addChild(@tree_layer.container)
     stage.addChild(@underlay_layer.container)
