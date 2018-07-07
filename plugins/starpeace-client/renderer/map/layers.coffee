@@ -127,17 +127,17 @@ export default class Layers
     view_y = Math.floor(@game_state.game_scale * @game_state.view_offset_y) - (offset * Math.cos(omega))
     view_x = Math.floor(@game_state.game_scale * @game_state.view_offset_x) - (offset * Math.sin(omega))
 
-    i_start = Utils.iso_to_i(half_tile_height, half_tile_width, view_x, view_y)
+    i_start = Utils.iso_to_i(half_tile_height, half_tile_width, view_x, view_y) - 8
     j_start = Utils.iso_to_j(half_tile_height, half_tile_width, view_x, view_y)
-    i_max = Utils.iso_to_i(half_tile_height, half_tile_width, view_x + canvas_width, view_y + canvas_height) + 2
-    j_max = Utils.iso_to_j(half_tile_height, half_tile_width, view_x, view_y + canvas_height) + 2
-    j_min = Utils.iso_to_j(half_tile_height, half_tile_width, view_x + canvas_width, view_y)
+    i_max = Utils.iso_to_i(half_tile_height, half_tile_width, view_x + canvas_width, view_y + canvas_height) + 12
+    j_max = Utils.iso_to_j(half_tile_height, half_tile_width, view_x, view_y + canvas_height) + 30
+    j_min = Utils.iso_to_j(half_tile_height, half_tile_width, view_x + canvas_width, view_y) - 6
 
     n_bump = false
     m_bump = false
     n = 0
     n_buffer = 4
-    m = 1
+    m = 10
     m_buffer = 6
 
     sprite_counter = {}
@@ -160,11 +160,11 @@ export default class Layers
           building_sprite = if tile_info.building_info? && tile_info.building_info.x == x && tile_info.building_info.y == j then new MapSprite(@building_layer, @building_layer.sprite_for(tile_info.building_info, sprite_counter, x, j), building_metadata.w * tile_width, -1) else null
           overlay_sprite = if tile_info.overlay_info? then new MapSprite(@overlay_layer, @overlay_layer.sprite_for(tile_info.overlay_info.color, sprite_counter, x, j), tile_width, tile_height) else null
 
-          tree_sprite.render(tile_info, sprite_counter, @game_state.game_scale, canvas_x, canvas_y, tile_width, tile_height) if tree_sprite?.should_render(@game_state.game_scale, canvas_x, canvas_y, canvas_width, canvas_height)
-          ground_sprite.render(tile_info, sprite_counter, @game_state.game_scale, canvas_x, canvas_y, tile_width, tile_height) if ground_sprite?.should_render(@game_state.game_scale, canvas_x, canvas_y, canvas_width, canvas_height)
-          underlay_sprite.render(tile_info, sprite_counter, @game_state.game_scale, canvas_x, canvas_y, tile_width, tile_height) if underlay_sprite?.should_render(@game_state.game_scale, canvas_x, canvas_y, canvas_width, canvas_height)
-          building_sprite.render(tile_info, sprite_counter, @game_state.game_scale, canvas_x, canvas_y, building_metadata.w * tile_width, (building_metadata.h - 1) * tile_height) if building_sprite?.should_render(@game_state.game_scale, canvas_x, canvas_y, canvas_width, canvas_height)
-          overlay_sprite.render(tile_info, sprite_counter, @game_state.game_scale, canvas_x, canvas_y, tile_width, tile_height) if overlay_sprite?.should_render(@game_state.game_scale, canvas_x, canvas_y, canvas_width, canvas_height)
+          tree_sprite.render(tile_info, sprite_counter, @game_state.game_scale, canvas_x, canvas_y, tile_width, tile_height) if tree_sprite?.should_render(@game_state.game_scale, canvas_x, canvas_y, tile_width, tile_height, canvas_width, canvas_height)
+          ground_sprite.render(tile_info, sprite_counter, @game_state.game_scale, canvas_x, canvas_y, tile_width, tile_height) if ground_sprite?.should_render(@game_state.game_scale, canvas_x, canvas_y, tile_width, tile_height, canvas_width, canvas_height)
+          underlay_sprite.render(tile_info, sprite_counter, @game_state.game_scale, canvas_x, canvas_y, tile_width, tile_height) if underlay_sprite?.should_render(@game_state.game_scale, canvas_x, canvas_y, tile_width, tile_height, canvas_width, canvas_height)
+          building_sprite.render(tile_info, sprite_counter, @game_state.game_scale, canvas_x, canvas_y, tile_width, tile_height) if building_sprite?.should_render(@game_state.game_scale, canvas_x, canvas_y, tile_width, tile_height, canvas_width, canvas_height)
+          overlay_sprite.render(tile_info, sprite_counter, @game_state.game_scale, canvas_x, canvas_y, tile_width, tile_height) if overlay_sprite?.should_render(@game_state.game_scale, canvas_x, canvas_y, tile_width, tile_height, canvas_width, canvas_height)
 
         j += 1
 

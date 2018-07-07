@@ -1,6 +1,7 @@
 
-### v0.3 - in progress - updated 2018-07-06
+## v0.3 - in progress - updated 2018-07-06
 ### platform
+* [done] improved building rendering around edges [v0.2.1]
 * [in progress] improved z-order rendering across layers
 * [pending] input interaction support for buildings (selection, rendering)
 
