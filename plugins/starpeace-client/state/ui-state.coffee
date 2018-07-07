@@ -5,14 +5,32 @@ class UIState
   constructor: () ->
     @event_ticker_message = ''
 
-    @show_header = true
-    @show_fps = true
+    @saved_show_header = @show_header = true
+    @saved_show_fps = @show_fps = true
 
     @show_overlay = false
     @current_overlay = Overlay.TYPES.TOWNS
     @show_losing_facilities = false
 
     @show_zones = false
+
+    @load_state()
+
+  load_state: () ->
+    @saved_show_header = @show_header = (localStorage.getItem('options.show_header') || 'true') == 'true'
+    @saved_show_fps = @show_fps = (localStorage.getItem('options.show_fps') || 'true') == 'true'
+
+  reset_state: () ->
+    localStorage.removeItem('options.show_header')
+    localStorage.removeItem('options.show_fps')
+    @show_header = true
+    @show_fps = true
+
+  save_state: () ->
+    localStorage.setItem('options.show_header', @show_header.toString())
+    localStorage.setItem('options.show_fps', @show_fps.toString())
+    @saved_show_header = @show_header
+    @saved_show_fps = @show_fps
 
   toggle_overlay: () ->
     if @show_overlay

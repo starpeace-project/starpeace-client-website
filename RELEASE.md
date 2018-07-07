@@ -6,15 +6,26 @@
 * [pending] input interaction support for buildings (selection, rendering)
 
 ### assets
+* [pending] plane assets
 * [pending] game background music
+* [pending] concrete and platform assets
+* [pending] road and bridge assets
+* [pending] car assets
 
 ### gameplay
-* [pending] improve building animation fluidity tying render frame to game clock
-* [pending] persist client options in localStorage
+* [done] persist client options in localStorage [v0.2.3]
+* [done] improve building animation tying render frame to game clock [v0.2.3]
+* [pending] plane rendering
+* [pending] improve tree layer rendering
+* [pending] concrete rendering
+* [pending] road rendering
+* [pending] car rendering
 * [pending] game music controls
 * [pending] camera rotation perspectives
 * [pending] mini-map rendering
-* [pending] map interaction support (place buildings, favorites, city integration)
+* [pending] map favorites integration
+* [pending] map city detection
+* [pending] map place building interaction support
 
 ## v0.2.0 - 2018-07-06
 ### platform

@@ -47,7 +47,7 @@ export default
 
   computed:
     ui_state: -> @client?.ui_state
-    application_css_class: -> [@ui_state?.theme, {'no-header':(if @ui_state?.show_header? then !@ui_state?.show_header else false)}]
+    application_css_class: -> [@ui_state?.theme, {'no-header':!@ui_state?.show_header}]
 
 </script>
 

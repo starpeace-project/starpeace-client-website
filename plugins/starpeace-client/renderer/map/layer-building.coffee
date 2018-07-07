@@ -57,7 +57,7 @@ class LayerBuilding
       else
         sprite = @animated_spites[counter.building.animated]
         sprite.textures = textures
-      sprite.play()
+      sprite.gotoAndPlay(Math.floor(new Date().getTime() / 200) % textures.length)
 
     sprite
 

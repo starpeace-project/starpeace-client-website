@@ -35,6 +35,12 @@
                   %a{href:'#', 'v-show':"!ui_state.show_fps", 'v-on:click.stop.prevent':'toggle_fps()'}
                     %font-awesome-icon{':icon':"['fas', 'toggle-off']"}
 
+    %footer.card-footer
+      .card-footer-item.reset-item
+        %a.button.is-primary.is-medium.is-outlined{'v-on:click.stop.prevent':'reset_options()', href: '#', ':disabled':'!can_reset'} Reset
+      .card-footer-item.save-item
+        %a.button.is-primary.is-medium{href:'#', 'v-on:click.stop.prevent':'save_options()', href: '#', ':disabled':'!is_dirty'} Save
+
 </template>
 
 <script lang='coffee'>
@@ -46,12 +52,21 @@ export default
     menu_state: -> @client?.menu_state
     ui_state: -> @client?.ui_state
 
+    can_reset: ->
+      @ui_state.show_header != true || @ui_state.show_fps != true
+    is_dirty: ->
+      @ui_state.saved_show_header != @ui_state.show_header || @ui_state.saved_show_fps != @ui_state.show_fps
+
   methods:
     toggle_header: () ->
       @ui_state.show_header = !@ui_state.show_header
     toggle_fps: () ->
       @ui_state.show_fps = !@ui_state.show_fps
 
+    reset_options: () ->
+      @ui_state.reset_state()
+    save_options: () ->
+      @ui_state.save_state()
 </script>
 
 <style lang='sass' scoped>
@@ -76,4 +91,10 @@ export default
     .fa-toggle-on
       color: #fff
       font-weight: 1000
+
+  .card-footer
+    .card-footer-item
+      a
+        width: 100%
+
 </style>

@@ -1,6 +1,6 @@
 <template lang='haml'>
 %no-ssr
-  #common-header{'v-show':'show_header'}
+  #common-header{'v-show':'show_header', 'v-cloak':true}
     .common-logo
       %a.logo{href: '/'}
         %h1 STAR
@@ -26,7 +26,7 @@ export default
     client: Object
 
   computed:
-    show_header: -> if @client?.ui_state?.show_header? then @client?.ui_state?.show_header else true
+    show_header: -> @client?.ui_state?.show_header
 
 </script>
 
