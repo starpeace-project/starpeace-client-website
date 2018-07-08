@@ -6,7 +6,7 @@
 * [pending] input interaction support for buildings (selection, rendering)
 
 ### assets
-* [pending] plane assets
+* [in progress] plane assets
 * [pending] game background music
 * [pending] concrete and platform assets
 * [pending] road and bridge assets
@@ -15,7 +15,7 @@
 ### gameplay
 * [done] persist client options in localStorage [v0.2.3]
 * [done] improve building animation tying render frame to game clock [v0.2.3]
-* [pending] plane rendering
+* [in progress] plane rendering
 * [pending] improve tree layer rendering
 * [pending] concrete rendering
 * [pending] road rendering

@@ -14,6 +14,7 @@ class LayerOverlay
       tint: true
       vertices: true
     })
+    @container.zIndex = if @is_underlay then 0 else 2
 
     Logger.debug "configured map overlay layer for up to #{MAX_TILES} sprites"
 
@@ -42,6 +43,7 @@ class LayerOverlay
     texture = PIXI.utils.TextureCache['overlay']
     if sprite_index >= @sprites.length
       @sprites[sprite_index] = new PIXI.Sprite(texture)
+      @sprites[sprite_index].parentGroup = @group
       @container.addChild(@sprites[sprite_index]) if @container?
 
     @sprites[sprite_index].tint = color
