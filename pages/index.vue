@@ -12,7 +12,6 @@
 </template>
 
 <script lang='coffee'>
-import _ from 'lodash'
 import Header from '~/components/header-panel.vue'
 import LoadingCard from '~/components/loading-card.vue'
 import LoadingModal from '~/components/loading-modal.vue'

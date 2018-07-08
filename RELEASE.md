@@ -1,11 +1,12 @@
 
-## v0.3 - in progress - updated 2018-07-07
+## v0.3 - in progress - updated 2018-07-08
 ### platform
 * [done] improved building rendering around edges [v0.2.1]
 * [done] improved z-order rendering across layers [v0.2.2]
 * [pending] input interaction support for buildings (selection, rendering)
 
 ### assets
+* [done] improved gameplay documentation
 * [in progress] plane assets
 * [pending] game background music
 * [pending] concrete and platform assets

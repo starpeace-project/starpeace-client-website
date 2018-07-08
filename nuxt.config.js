@@ -3,14 +3,15 @@ const moment = require('moment')
 require('moment-timezone')
 const marked = require('marked')
 const webpack = require('webpack')
+const pjson = require('./package.json')
 
-var git_version = process.env.GIT_VERSION;
+// var git_version = pjson.version;
 // if (!git_version || !git_version.length) {
 //   const GitRevisionPlugin = require('git-revision-webpack-plugin')
 //   const gitRevisionPlugin = new GitRevisionPlugin({lightweightTags: true})
 //   git_version = gitRevisionPlugin.version();
 // }
-const client_version = 'v' + git_version + '-' + moment().tz('America/Los_Angeles').format('YYYY-MM-DD');
+const client_version = 'v' + pjson.version + '-' + moment().tz('America/Los_Angeles').format('YYYY-MM-DD');
 
 var release_notes_html = marked(fs.readFileSync('./RELEASE.md').toString())
 release_notes_html = release_notes_html.replace(new RegExp(/\<li\>/, 'g'), "<li class='columns'>");
@@ -63,6 +64,13 @@ module.exports = {
         use: [ 'html-loader', 'markdown-loader' ],
         exclude: /(node_modules)/
       });
+
+      if (!isClient) {
+        if (!fs.existsSync('.nuxt/dist/')) {
+          fs.mkdirSync('.nuxt/dist/');
+        }
+        fs.writeFileSync('.nuxt/dist/client-version.json', "{\"version\":\"" + client_version + "\"}");
+      }
     }
   },
   modules: [
