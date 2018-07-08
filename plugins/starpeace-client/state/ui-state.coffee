@@ -17,8 +17,10 @@ class UIState
     @load_state()
 
   load_state: () ->
-    @saved_show_header = @show_header = (localStorage.getItem('options.show_header') || 'true') == 'true'
-    @saved_show_fps = @show_fps = (localStorage.getItem('options.show_fps') || 'true') == 'true'
+    show_header = localStorage.getItem('options.show_header')
+    show_fps = localStorage.getItem('options.show_fps')
+    @saved_show_header = @show_header = !show_header? || show_header == 'true'
+    @saved_show_fps = @show_fps = !show_fps? || show_fps == 'true'
 
   reset_state: () ->
     localStorage.removeItem('options.show_header')

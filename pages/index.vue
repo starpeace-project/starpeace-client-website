@@ -1,16 +1,18 @@
 <template lang='haml'>
-#application{'v-bind:class':'application_css_class', 'v-cloak':true}
-  %sp-header{'v-bind:client':'client'}
-  %sp-loading-card{'v-bind:client':'client'}
-  %sp-loading-modal{'v-bind:client':'client'}
-  %sp-workflow{'v-bind:client':'client'}
-  %sp-menu{'v-bind:client':'client'}
-  %sp-body{'v-bind:client':'client'}
-  %sp-footer-overlay-menu{'v-bind:client':'client'}
-  %sp-footer{'v-bind:client':'client'}
+%no-ssr
+  #application{'v-bind:class':'application_css_class', 'v-cloak':true}
+    %sp-header{'v-bind:client':'client'}
+    %sp-loading-card{'v-bind:client':'client'}
+    %sp-loading-modal{'v-bind:client':'client'}
+    %sp-workflow{'v-bind:client':'client'}
+    %sp-menu{'v-bind:client':'client'}
+    %sp-body{'v-bind:client':'client'}
+    %sp-footer-overlay-menu{'v-bind:client':'client'}
+    %sp-footer{'v-bind:client':'client'}
 </template>
 
 <script lang='coffee'>
+import _ from 'lodash'
 import Header from '~/components/header-panel.vue'
 import LoadingCard from '~/components/loading-card.vue'
 import LoadingModal from '~/components/loading-modal.vue'
@@ -47,7 +49,10 @@ export default
 
   computed:
     ui_state: -> @client?.ui_state
-    application_css_class: -> [@ui_state?.theme, {'no-header':!@ui_state?.show_header}]
+    application_css_class: ->
+      classes = []
+      classes.push('no-header') unless @ui_state?.show_header
+      classes
 
 </script>
 

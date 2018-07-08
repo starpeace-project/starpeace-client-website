@@ -13,7 +13,7 @@ export default
   computed:
     is_ready: -> @client?.renderer.initialized
 
-    show_fps: -> @client?.ui_state?.show_fps || false
+    show_fps: -> @client?.ui_state?.show_fps
 
 </script>
 
