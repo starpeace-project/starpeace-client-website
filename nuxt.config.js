@@ -5,6 +5,8 @@ const marked = require('marked')
 const webpack = require('webpack')
 const pjson = require('./package.json')
 
+const is_development = process.env.NODE_ENV === 'development'
+
 // var git_version = pjson.version;
 // if (!git_version || !git_version.length) {
 //   const GitRevisionPlugin = require('git-revision-webpack-plugin')
@@ -74,7 +76,7 @@ module.exports = {
     }
   },
   modules: [
-    '@nuxtjs/moment'
+    '@nuxtjs/moment', ['@nuxtjs/google-analytics', { id: 'UA-120729341-2', debug: { sendHitTask: !is_development } }]
   ],
   plugins: [
     { src: '~/plugins/element-queries', ssr: false },
