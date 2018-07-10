@@ -1,13 +1,14 @@
 
-## v0.3 - in progress - updated 2018-07-08
+## v0.3 - in progress - updated 2018-07-10
 ### platform
 * [done] improved building rendering around edges [v0.2.1]
 * [done] improved z-order rendering across layers [v0.2.2]
 * [pending] input interaction support for buildings (selection, rendering)
 
 ### assets
-* [done] improved gameplay documentation
-* [in progress] plane assets
+* [done] improved gameplay documentation [v0.2.4]
+* [done] improved asset versioning [v0.2.4]
+* [done] plane assets [v0.2.4]
 * [pending] game background music
 * [pending] concrete and platform assets
 * [pending] road and bridge assets
@@ -16,7 +17,7 @@
 ### gameplay
 * [done] persist client options in localStorage [v0.2.3]
 * [done] improve building animation tying render frame to game clock [v0.2.3]
-* [in progress] plane rendering
+* [in progress] plane rendering [v0.2.4]
 * [pending] improve tree layer rendering
 * [pending] concrete rendering
 * [pending] road rendering
