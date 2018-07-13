@@ -44,9 +44,6 @@ class GameState
     # FIXME: TODO: consider loading state from url parameters (planet_id)
 
 
-    @view_map_x = 512
-    @view_map_y = 512
-
     @view_offset_x = 3600
     @view_offset_y = 4250
 

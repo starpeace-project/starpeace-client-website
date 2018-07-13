@@ -3,9 +3,10 @@
 global PIXI
 ###
 
+import SpriteBuilding from '~/plugins/starpeace-client/renderer/sprite/sprite-building.coffee'
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 
-class LayerBuilding
+export default class LayerBuilding
   constructor: (@client, @renderer, @game_state) ->
     @static_sprites = []
     @animated_spites = []
@@ -27,17 +28,9 @@ class LayerBuilding
   reset_counter: (counter) ->
     counter.building = { static:0, animated:0 }
 
-  increment_counter: (counter, tile_info) ->
-    textures = @client.building_manager.building_textures[tile_info.building_info.key]
-    return unless textures?.length
-    if textures.length == 1
-      counter.building.static += 1
-    else
-      counter.building.animated += 1
-
-  sprite_for: (building_info, counter, x, y) ->
+  sprite_for: (building_info, counter, x, y, tile_width, tile_height) ->
     textures = @client.building_manager.building_textures[building_info.key]
-    return null unless textures?.length
+    return null unless textures?.length && textures[0]?
 
     sprite = null
     if textures.length == 1
@@ -59,7 +52,10 @@ class LayerBuilding
         sprite.textures = textures
       sprite.gotoAndPlay(Math.floor(new Date().getTime() / 200) % textures.length)
 
-    sprite
+    metadata = @client.building_manager.building_metadata.buildings[building_info.key]
+    width = metadata.w * tile_width
+    height = Math.ceil(textures[0].height * (width / textures[0].width))
+    new SpriteBuilding(width, height, sprite)
 
   hide_sprites: (counter) ->
     for index in [counter.building.static...@static_sprites.length]
@@ -71,6 +67,3 @@ class LayerBuilding
       @animated_spites[index].visible = false
       @animated_spites[index].x = -1000
       @animated_spites[index].y = -1000
-
-
-export default LayerBuilding

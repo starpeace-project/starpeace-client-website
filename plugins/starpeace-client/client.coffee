@@ -8,6 +8,7 @@ import AssetManager from '~/plugins/starpeace-client/loader/asset-manager.coffee
 import BuildingManager from '~/plugins/starpeace-client/loader/building-manager.coffee'
 import EventManager from '~/plugins/starpeace-client/loader/event-manager.coffee'
 import OverlayManager from '~/plugins/starpeace-client/loader/overlay-manager.coffee'
+import PlaneManager from '~/plugins/starpeace-client/loader/plane-manager.coffee'
 import PlanetaryManager from '~/plugins/starpeace-client/loader/planetary-manager.coffee'
 
 import GameState from '~/plugins/starpeace-client/state/game-state.coffee'
@@ -15,13 +16,11 @@ import MenuState from '~/plugins/starpeace-client/state/menu-state.coffee'
 import UIState from '~/plugins/starpeace-client/state/ui-state.coffee'
 
 import Renderer from '~/plugins/starpeace-client/renderer/renderer.coffee'
-import CameraManager from '~/plugins/starpeace-client/renderer/camera-manager.coffee'
-import InputHandler from '~/plugins/starpeace-client/renderer/input-handler.coffee'
+import CameraManager from '~/plugins/starpeace-client/renderer/camera/camera-manager.coffee'
+import InputHandler from '~/plugins/starpeace-client/renderer/input/input-handler.coffee'
 
 
-CLIENT_VERSION = "0.1.0"
-
-class Client
+export default class Client
   constructor: () ->
     @planetary_metadata_manager = new PlanetaryMetadataManager(@)
     @planet_type_manifest_manager = new PlanetTypeManifestManager(@)
@@ -30,6 +29,7 @@ class Client
     @building_manager = new BuildingManager(@)
     @event_manager = new EventManager(@)
     @overlay_manager = new OverlayManager(@)
+    @plane_manager = new PlaneManager(@)
     @planetary_manager = new PlanetaryManager(@)
 
     @game_state = new GameState()
@@ -51,13 +51,14 @@ class Client
     @building_manager.queue_asset_load()
     @event_manager.queue_asset_load()
     @overlay_manager.queue_asset_load()
+    @plane_manager.queue_asset_load()
     @planetary_manager.queue_asset_load(@game_state.current_planet.planet_type, @game_state.current_planet.map_id)
 
     @asset_manager.load_queued()
 
   notify_assets_changed: () ->
     return unless @game_state.current_planet? && @building_manager.has_assets() && @event_manager.has_assets() &&
-      @overlay_manager.has_assets() && @planetary_manager.has_assets(@game_state.current_planet)
+      @overlay_manager.has_assets() && @planetary_manager.has_assets(@game_state.current_planet) && @plane_manager.has_assets()
 
     @game_state.has_assets = true
 
@@ -70,5 +71,3 @@ class Client
 
   tick: () ->
     @renderer.tick() if @renderer.initialized
-
-export default Client

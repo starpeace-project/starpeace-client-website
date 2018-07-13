@@ -81,7 +81,9 @@ class BuildingManager
     for path in atlas_paths
       do (path) =>
         @client.asset_manager.queue(path, path, (resource) =>
-          @set_building_atlas(path, resource)
+          @loaded_atlases[path] = resource
+          @building_textures[building.key] = _.map(building.frames, (frame) -> PIXI.utils.TextureCache[frame]) for building in @buildings_for_atlas(path)
+          @client.notify_assets_changed()
         )
     @client.asset_manager.load_queued()
 
@@ -90,14 +92,7 @@ class BuildingManager
     buildings = []
     for key,building of @building_metadata.buildings
       buildings.push(building) if building.atlas == atlas_key
-      true
     buildings
-
-  set_building_atlas: (key, atlas) ->
-    @loaded_atlases[key] = atlas
-    for building in @buildings_for_atlas(key)
-      @building_textures[building.key] = _.map(building.frames, (frame) -> PIXI.utils.TextureCache[frame])
-    @client.notify_assets_changed()
 
   atlas_for: (key) ->
     @building_metadata.buildings[key].atlas

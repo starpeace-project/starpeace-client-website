@@ -29,7 +29,7 @@ class ChunkMap
 
         @handle_refresh_callback(@chunk_info[chunk_index], data)
 
-        @client.renderer.map_layers.needs_refresh = true if @refresh_on_load && @client.renderer.map_layers?
+        @client.renderer.layers.needs_refresh = true if @refresh_on_load && @client.renderer.layers?
 
 
   info_at: (x, y) ->

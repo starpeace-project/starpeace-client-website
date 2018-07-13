@@ -6,12 +6,17 @@ global PIXI
 ###
 
 import GameMap from '~/plugins/starpeace-client/map/game-map.coffee'
-import Layers from '~/plugins/starpeace-client/renderer/map/layers.coffee'
+import Viewport from '~/plugins/starpeace-client/renderer/camera/viewport.coffee'
+import Layers from '~/plugins/starpeace-client/renderer/layers.coffee'
 
 class Renderer
   constructor: (@client) ->
     @initialized = false
     @client.game_state.initialized = false
+
+  viewport: () ->
+    @_viewport = new Viewport(@client, @client.game_state, @renderer_width, @renderer_height) unless @_viewport?
+    @_viewport
 
   update_offset: (render_container) ->
     if render_container? && render_container.offsetParent != null
@@ -28,6 +33,7 @@ class Renderer
     @update_offset(render_container)
     @renderer_width = Math.ceil(render_container.offsetWidth)
     @renderer_height = Math.ceil(render_container.offsetHeight)
+    @_viewport = new Viewport(@client, @client.game_state, @renderer_width, @renderer_height)
     @application.renderer.resize(@renderer_width, @renderer_height)
     @initialize_map()
 
@@ -43,6 +49,7 @@ class Renderer
     @update_offset(render_container)
     @renderer_width = Math.ceil(render_container.offsetWidth)
     @renderer_height = Math.ceil(render_container.offsetHeight)
+    @_viewport = new Viewport(@client, @client.game_state, @renderer_width, @renderer_height)
     @application = new PIXI.Application(@renderer_width, @renderer_height, {
       backgroundColor : 0x000000
     })
@@ -57,10 +64,10 @@ class Renderer
     addResizeListener(render_container, => @handle_resize())
 
   initialize_map: () ->
-    @map_layers.remove_layers(@application.stage) if @map_layers?
-    @map_layers.destroy() if @map_layers?
-    @map_layers = new Layers(@client, @, @client.game_state, @client.ui_state)
-    @map_layers.add_layers(@application.stage)
+    @layers?.remove_layers(@application.stage)
+    @layers?.destroy()
+    @layers = new Layers(@client, @, @client.game_state, @client.ui_state)
+    @layers.add_layers(@application.stage)
 
   initialize: () ->
     @initialize_application() unless @application?
@@ -80,9 +87,11 @@ class Renderer
 
   tick: () ->
     @fps_meter.tickStart() if @fps_meter?
+    current_time = new Date().getTime()
 
     @update_offset(document?.getElementById('render-container')) unless @offset?
-    @map_layers.refresh() if @map_layers?.should_refresh()
+    @layers.refresh() if @layers?.should_refresh()
+    @layers?.plane_layer.refresh_sprites()# unless current_time % 10
 
     @fps_meter.tick() if @fps_meter?
 

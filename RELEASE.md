@@ -1,5 +1,5 @@
 
-## v0.3 - in progress - updated 2018-07-10
+## v0.3 - in progress - updated 2018-07-12
 ### platform
 * [done] improved building rendering around edges [v0.2.1]
 * [done] improved z-order rendering across layers [v0.2.2]
@@ -9,24 +9,24 @@
 * [done] improved gameplay documentation [v0.2.4]
 * [done] improved asset versioning [v0.2.4]
 * [done] plane assets [v0.2.4]
+* [in progress] effects assets and building metadata
 * [pending] game background music
 * [pending] concrete and platform assets
 * [pending] road and bridge assets
-* [pending] car assets
 
 ### gameplay
 * [done] persist client options in localStorage [v0.2.3]
 * [done] improve building animation tying render frame to game clock [v0.2.3]
-* [in progress] plane rendering [v0.2.4]
+* [done] plane rendering [v0.2.4]
+* [in progress] rendering options support
+* [in progress] building footprint layer rendering
+* [in progress] building effect layer rendering
 * [pending] improve tree layer rendering
-* [pending] concrete rendering
-* [pending] road rendering
-* [pending] car rendering
+* [pending] concrete and platform rendering
+* [pending] road and bridge rendering
 * [pending] game music controls
-* [pending] camera rotation perspectives
 * [pending] mini-map rendering
 * [pending] map favorites integration
-* [pending] map city detection
 * [pending] map place building interaction support
 
 ## v0.2.0 - 2018-07-06

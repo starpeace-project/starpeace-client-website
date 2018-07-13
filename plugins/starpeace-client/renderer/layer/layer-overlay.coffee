@@ -3,11 +3,12 @@
 global PIXI
 ###
 
+import SpriteOverlay from '~/plugins/starpeace-client/renderer/sprite/sprite-overlay.coffee'
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 
 MAX_TILES = 25000
 
-class LayerOverlay
+export default class LayerOverlay
   constructor: (@renderer, @game_state, @is_underlay) ->
     @sprites = []
     @container = new PIXI.particles.ParticleContainer(MAX_TILES, {
@@ -30,25 +31,17 @@ class LayerOverlay
     else
       counter.overlay = 0
 
-  increment_counter: (counter, tile_info) ->
-    if @is_underlay
-      counter.underlay += 1
-    else
-      counter.overlay += 1
-
-  sprite_for: (color, counter, x, y) ->
+  sprite_for: (color, counter, x, y, tile_width, tile_height) ->
     sprite_index = if @is_underlay then counter.underlay else counter.overlay
     throw "maximum number of overlay particles reached" if sprite_index >= MAX_TILES
 
     texture = PIXI.utils.TextureCache['overlay']
     if sprite_index >= @sprites.length
       @sprites[sprite_index] = new PIXI.Sprite(texture)
-      @sprites[sprite_index].parentGroup = @group
-      @container.addChild(@sprites[sprite_index]) if @container?
-
+      @container.addChild(@sprites[sprite_index])
     @sprites[sprite_index].tint = color
-    @sprites[sprite_index]
 
+    new SpriteOverlay(tile_width, tile_height, @sprites[sprite_index], @is_underlay)
 
   hide_sprites: (counter) ->
     from_index = if @is_underlay then counter.underlay else counter.overlay
@@ -56,5 +49,3 @@ class LayerOverlay
       @sprites[index].visible = false
       @sprites[index].x = -1000
       @sprites[index].y = -1000
-
-export default LayerOverlay
