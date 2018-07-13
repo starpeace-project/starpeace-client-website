@@ -39,6 +39,9 @@ module.exports = {
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Open+Sans|Varela+Round|Open+Sans+Condensed:300' }
     ]
   },
+  render: {
+    resourceHints: false
+  },
   generate: {
     fallback: false
   },

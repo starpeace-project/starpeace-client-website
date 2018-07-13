@@ -15,6 +15,6 @@ export default class SpriteOverlay extends Sprite
 
   increment_counter: (tile_info, counter) ->
     if @is_underlay
-      counter.underlay = 0
+      counter.underlay++
     else
-      counter.overlay = 0
+      counter.overlay++
