@@ -6,6 +6,7 @@ import PlanetTypeManifestManager from '~/plugins/starpeace-client/metadata/plane
 
 import AssetManager from '~/plugins/starpeace-client/loader/asset-manager.coffee'
 import BuildingManager from '~/plugins/starpeace-client/loader/building-manager.coffee'
+import EffectManager from '~/plugins/starpeace-client/loader/effect-manager.coffee'
 import EventManager from '~/plugins/starpeace-client/loader/event-manager.coffee'
 import OverlayManager from '~/plugins/starpeace-client/loader/overlay-manager.coffee'
 import PlaneManager from '~/plugins/starpeace-client/loader/plane-manager.coffee'
@@ -27,6 +28,7 @@ export default class Client
 
     @asset_manager = new AssetManager(@)
     @building_manager = new BuildingManager(@)
+    @effect_manager = new EffectManager(@)
     @event_manager = new EventManager(@)
     @overlay_manager = new OverlayManager(@)
     @plane_manager = new PlaneManager(@)
@@ -49,6 +51,7 @@ export default class Client
     Logger.debug "proceeding with planet <#{@game_state.current_planet}>"
 
     @building_manager.queue_asset_load()
+    @effect_manager.queue_asset_load()
     @event_manager.queue_asset_load()
     @overlay_manager.queue_asset_load()
     @plane_manager.queue_asset_load()
@@ -57,7 +60,7 @@ export default class Client
     @asset_manager.load_queued()
 
   notify_assets_changed: () ->
-    return unless @game_state.current_planet? && @building_manager.has_assets() && @event_manager.has_assets() &&
+    return unless @game_state.current_planet? && @building_manager.has_assets() && @effect_manager.has_assets() && @event_manager.has_assets() &&
       @overlay_manager.has_assets() && @planetary_manager.has_assets(@game_state.current_planet) && @plane_manager.has_assets()
 
     @game_state.has_assets = true

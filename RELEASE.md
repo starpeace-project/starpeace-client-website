@@ -11,7 +11,7 @@
 * [done] plane assets [v0.2.4]
 * [done] effects assets and building metadata [v0.2.5]
 * [pending] game background music
-* [pending] concrete and platform assets
+* [in progress] concrete and platform assets
 * [pending] road and bridge assets
 
 ### gameplay
@@ -20,9 +20,9 @@
 * [done] plane rendering [v0.2.4]
 * [done] rendering options support [v0.2.5]
 * [done] building footprint layer rendering [v0.2.5]
-* [in progress] building effect layer rendering [v0.2.5]
-* [pending] improve tree layer rendering
-* [pending] concrete and platform rendering
+* [done] building effect layer rendering [v0.2.5]
+* [in progress] improve tree layer rendering
+* [in progress] concrete and platform rendering
 * [pending] road and bridge rendering
 * [pending] game music controls
 * [pending] mini-map rendering
