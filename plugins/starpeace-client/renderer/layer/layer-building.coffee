@@ -7,7 +7,7 @@ import SpriteBuilding from '~/plugins/starpeace-client/renderer/sprite/sprite-bu
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 
 export default class LayerBuilding
-  constructor: (@client, @renderer, @game_state) ->
+  constructor: (@client, @game_state) ->
     @static_sprites = []
     @animated_spites = []
     @container = new PIXI.Container()
@@ -33,7 +33,7 @@ export default class LayerBuilding
     return null unless textures?.length && textures[0]?
 
     sprite = null
-    if textures.length == 1
+    if textures.length == 1 || !@client.ui_state.render_building_animations
       if counter.building.static >= @static_sprites.length
         sprite = @static_sprites[counter.building.static] = new PIXI.Sprite(textures[0])
         sprite.parentGroup = @group

@@ -24,7 +24,6 @@ export default class SpritePlane extends Sprite
     diff_x = @current_map_x - @target_map_x
     diff_y = @current_map_y - @target_map_y
 
-    # console.log "#{@direction} #{diff_x} #{diff_y} == #{diff_x >= 0 && diff_y >= 0}"
     return diff_x >= 0 && diff_y >= 0 if @direction == 'se'
     return diff_x <= 0 && diff_y <= 0 if @direction == 'nw'
 

@@ -9,12 +9,12 @@ import Logger from '~/plugins/starpeace-client/logger.coffee'
 MAX_TILES = 10000
 
 export default class LayerTree
-  constructor: (@renderer, @game_state) ->
+  constructor: (@game_state) ->
     @sprites = []
     @container = new PIXI.particles.ParticleContainer(MAX_TILES, {
+      tint: true
       uvs: true
       vertices: true
-      tint: true
     })
 
     Logger.debug "configured map tree layer for up to #{MAX_TILES} sprites"

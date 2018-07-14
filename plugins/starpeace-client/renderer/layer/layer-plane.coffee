@@ -9,13 +9,13 @@ import Logger from '~/plugins/starpeace-client/logger.coffee'
 export default class LayerPlane
   constructor: (@client, @renderer, @game_state) ->
     @container = new PIXI.particles.ParticleContainer(10, {
+      tint: true
       uvs: true
       vertices: true
-      tint: true
     })
     @container.zIndex = 5
 
-    @client.game_state.plane_sprite = @add_sprite_from_existing(@game_state.plane_sprite) if @game_state.plane_sprite?
+    @game_state.plane_sprite = @add_sprite_from_existing(@game_state.plane_sprite) if @game_state.plane_sprite?
     Logger.debug "configured map plane layer"
 
   destroy: () ->
@@ -50,7 +50,12 @@ export default class LayerPlane
     new SpritePlane(width, height, sprite, plane_info, direction, velocity, source_map_x, source_map_y, target_map_x, target_map_y)
 
   refresh_sprites: () ->
-    return unless @game_state.plane_sprite?.sprite?.texture?
+    return unless @game_state.plane_sprite?.sprite?
+    unless @game_state.plane_sprite?.sprite?.texture? && @client.ui_state.render_planes
+      # texture fails to load sometimes
+      @container.removeChild(@game_state.plane_sprite?.sprite)
+      @game_state.plane_sprite = null
+      return
 
     viewport = @renderer.viewport()
     view_center = viewport.map_center()

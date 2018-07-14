@@ -6,6 +6,7 @@ global PIXI
 import PlanetTypeManifest from '~/plugins/starpeace-client/metadata/planet-type-manifest.coffee'
 
 import LayerBuilding from '~/plugins/starpeace-client/renderer/layer/layer-building.coffee'
+import LayerBuildingFootprint from '~/plugins/starpeace-client/renderer/layer/layer-building-footprint.coffee'
 import LayerLand from '~/plugins/starpeace-client/renderer/layer/layer-land.coffee'
 import LayerOverlay from '~/plugins/starpeace-client/renderer/layer/layer-overlay.coffee'
 import LayerPlane from '~/plugins/starpeace-client/renderer/layer/layer-plane.coffee'
@@ -18,11 +19,12 @@ export default class Layers
   constructor: (@client, @renderer, @game_state, @ui_state) ->
     @needs_refresh = false
 
-    @land_layer = new LayerLand(@renderer, @game_state)
-    @tree_layer = new LayerTree(@renderer, @game_state)
-    @underlay_layer = new LayerOverlay(@renderer, @game_state, true)
-    @building_layer = new LayerBuilding(@client, @renderer, @game_state)
-    @overlay_layer = new LayerOverlay(@renderer, @game_state, false)
+    @land_layer = new LayerLand(@game_state)
+    @tree_layer = new LayerTree(@game_state)
+    @underlay_layer = new LayerOverlay(@game_state, true)
+    @building_layer = new LayerBuilding(@client, @game_state)
+    @building_footprint_layer = new LayerBuildingFootprint(@client, @game_state)
+    @overlay_layer = new LayerOverlay(@game_state, false)
     @plane_layer = new LayerPlane(@client, @renderer, @game_state)
 
     @last_scale_rendered = 0
@@ -30,13 +32,14 @@ export default class Layers
     @last_rendered_zones = false
     @last_rendered_overlay = false
     @last_rendered_overlay_type = null
+    @last_rendered_render_options = { trees: null, buildings: null, building_animations: null, building_effects: null, planes: null }
 
     # @plane_layer.container.addChild(@game_state.plane_sprite.sprite) if @game_state.plane_sprite?
 
     @refresh()
 
   destroy: () ->
-    layer.destroy() for layer in [@land_layer, @tree_layer, @underlay_layer, @building_layer, @overlay_layer, @plane_layer]
+    layer.destroy() for layer in [@land_layer, @tree_layer, @underlay_layer, @building_layer, @building_footprint_layer, @overlay_layer, @plane_layer]
 
   remove_layers: (stage) ->
     stage.removeChild(@building_layer.layer)
@@ -45,6 +48,7 @@ export default class Layers
     stage.removeChild(@tree_layer.container)
     stage.removeChild(@underlay_layer.container)
     stage.removeChild(@building_layer.container)
+    stage.removeChild(@building_footprint_layer.container)
     stage.removeChild(@overlay_layer.container)
     stage.removeChild(@plane_layer.container)
 
@@ -55,12 +59,16 @@ export default class Layers
     stage.addChild(@tree_layer.container)
     stage.addChild(@underlay_layer.container)
     stage.addChild(@building_layer.container)
+    stage.addChild(@building_footprint_layer.container)
     stage.addChild(@overlay_layer.container)
     stage.addChild(@plane_layer.container)
 
   should_refresh: () ->
     @needs_refresh || @game_state.game_scale != @last_scale_rendered || @game_state.current_season != @last_season_rendered ||
-      @ui_state.show_zones != @last_rendered_zones || @ui_state.show_overlay != @last_rendered_overlay || @ui_state.current_overlay.type != @last_rendered_overlay_type
+      @ui_state.show_zones != @last_rendered_zones || @ui_state.show_overlay != @last_rendered_overlay || @ui_state.current_overlay.type != @last_rendered_overlay_type ||
+      @ui_state.render_trees != @last_rendered_render_options.trees || @ui_state.render_buildings != @last_rendered_render_options.buildings ||
+      @ui_state.render_building_animations != @last_rendered_render_options.building_animations || @ui_state.render_building_effects != @last_rendered_render_options.building_effects ||
+      @ui_state.render_planes != @last_rendered_render_options.planes
 
   info_for_tile: (x, y) ->
     building_chunk_info = @game_state.game_map.building_chunk_info_at(x, y)
@@ -88,7 +96,7 @@ export default class Layers
 
       building_info = @game_state.game_map.building_at(x, y)
 
-    if !building_info? && @game_state.game_map.ground_map.has_tree_at(y, x)
+    if @ui_state.render_trees && !building_info? && @game_state.game_map.ground_map.has_tree_at(y, x)
       has_tree = true
     else if @game_state.game_map.ground_map.has_ground_at(y, x)
       has_ground = true
@@ -109,6 +117,13 @@ export default class Layers
     @last_rendered_zones = @ui_state.show_zones
     @last_rendered_overlay = @ui_state.show_overlay
     @last_rendered_overlay_type = @ui_state.current_overlay.type
+
+    @last_rendered_render_options.trees = @ui_state.render_trees
+    @last_rendered_render_options.buildings = @ui_state.render_buildings
+    @last_rendered_render_options.building_animations = @ui_state.render_building_animations
+    @last_rendered_render_options.building_effects = @ui_state.render_building_effects
+    @last_rendered_render_options.planes = @ui_state.render_planes
+
 
     map_width = @game_state.game_map.width
     map_height = @game_state.game_map.height
@@ -138,7 +153,7 @@ export default class Layers
     m_buffer = 6
 
     sprite_counter = {}
-    layer.reset_counter(sprite_counter) for layer in [@land_layer, @tree_layer, @underlay_layer, @building_layer, @overlay_layer]
+    layer.reset_counter(sprite_counter) for layer in [@land_layer, @tree_layer, @underlay_layer, @building_layer, @building_footprint_layer, @overlay_layer]
     x = i_start
     while x < i_max
       j = j_start - n
@@ -153,7 +168,7 @@ export default class Layers
           land_sprite = if tile_info.has_ground then @land_layer.sprite_for(sprite_counter, x, j, tile_width, tile_height) else null
           tree_sprite = if tile_info.has_tree then @tree_layer.sprite_for(sprite_counter, x, j, tile_width, tile_height) else null
           underlay_sprite = if tile_info.zone_info? then @underlay_layer.sprite_for(tile_info.zone_info.color, sprite_counter, x, j, tile_width, tile_height) else null
-          building_sprite = if tile_info.building_info? && tile_info.building_info.x == x && tile_info.building_info.y == j then @building_layer.sprite_for(tile_info.building_info, sprite_counter, x, j, tile_width, tile_height) else null
+          building_sprite = if tile_info.building_info? && tile_info.building_info.x == x && tile_info.building_info.y == j then (if @ui_state.render_buildings then @building_layer else @building_footprint_layer).sprite_for(tile_info.building_info, sprite_counter, x, j, tile_width, tile_height) else null
           overlay_sprite = if tile_info.overlay_info? then @overlay_layer.sprite_for(tile_info.overlay_info.color, sprite_counter, x, j, tile_width, tile_height) else null
 
           tree_sprite.render(tile_info, sprite_counter, canvas.x, canvas.y, tile_width, tile_height) if tree_sprite?.within_canvas(canvas.x, canvas.y, viewport)
@@ -185,5 +200,5 @@ export default class Layers
 
       x += 1
 
-    layer.hide_sprites(sprite_counter) for layer in [@land_layer, @tree_layer, @underlay_layer, @building_layer, @overlay_layer]
+    layer.hide_sprites(sprite_counter) for layer in [@land_layer, @tree_layer, @underlay_layer, @building_layer, @building_footprint_layer, @overlay_layer]
     @plane_layer.refresh_sprites()

@@ -42,6 +42,18 @@ class BuildingZone
       value: 9
       type: 'OFFICES'
       color: 0x394488
+    SERVICE:
+      value: 10
+      type: 'SERVICE'
+      color: 0x4974D8
+    WAREHOUSE:
+      value: 11
+      type: 'WAREHOUSE'
+      color: 0xD7D988
+    MAUSOLEUM:
+      value: 12
+      type: 'MAUSOLEUM'
+      color: 0xFFFFFF
 
 
   @deserialize_chunk: (width, height, data) ->

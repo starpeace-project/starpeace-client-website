@@ -34,8 +34,9 @@ for type in ['ZONES', 'BEAUTY', 'HC_RESIDENTIAL', 'MC_RESIDENTIAL', 'LC_RESIDENT
 
 class OverlayManager
   constructor: (@client) ->
-    @requested_overlay_asset = false
-    @has_overlay_asset = false
+    @requested_overlay_metadata = false
+    @overlay_metadata = null
+    @loaded_atlases = {}
     @chunk_promises = {}
 
   load_chunk: (type, chunk_x, chunk_y, width, height) ->
@@ -60,13 +61,29 @@ class OverlayManager
       , 500)
 
   has_assets: () ->
-    @has_overlay_asset
+    @overlay_metadata? && @overlay_metadata.atlas.length == Object.keys(@loaded_atlases).length
 
   queue_asset_load: () ->
-    return if @requested_overlay_asset
-    @requested_overlay_asset = true
-    @client.asset_manager.queue('overlay', './overlay.png', (resource) =>
-      @has_overlay_asset = true
+    return if @requested_overlay_metadata
+    @requested_overlay_metadata = true
+    @client.asset_manager.queue('metadata.overlay', './overlay.metadata.json', (resource) =>
+      @overlay_metadata = resource.data
+      overlay.key = key for key,overlay of @overlay_metadata.overlays
+      @load_overlay_atlas(resource.data.atlas)
     )
+
+  load_overlay_atlas: (atlas_paths) ->
+    for path in atlas_paths
+      do (path) =>
+        @client.asset_manager.queue(path, path, (resource) =>
+          @loaded_atlases[path] = resource
+
+          # mip-mapping has bigger impact without edge aliasing
+          # TODO: why isn't this, or PIXI.settings.MIPMAP_TEXTURES, working?
+          resource.spritesheet.baseTexture.mipmap = false
+
+          @client.notify_assets_changed()
+        )
+    @client.asset_manager.load_queued()
 
 export default OverlayManager

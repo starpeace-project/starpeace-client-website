@@ -27,16 +27,6 @@ DIRECTIONS = {
     'right': 'e'
   }
 }
-# VELOCITY = {
-#   'n': { x: -1, y: 0 },
-#   'ne': { x: -1, y: -1 },
-#   'e': { x: 0, y: -1 },
-#   'se': { x: 1, y: -1 },
-#   's': { x: 1, y: 0 },
-#   'sw': { x: 1, y: 1 },
-#   'w': { x: 0, y: 1 },
-#   'nw': { x: -1, y: 1 }
-# }
 VELOCITY = {
   'n': [-1.5, -1]
   'ne': [0, -1]
@@ -65,7 +55,7 @@ export default class PlaneManager
     }
 
   check_planes: () ->
-    return unless @has_assets() && @client.renderer.initialized
+    return unless @has_assets() && @client.renderer.initialized && @client.ui_state.render_planes
 
     unless @client.game_state.plane_sprite?
       source_position = POSITIONS[Math.floor(Math.random() * POSITIONS.length)]
