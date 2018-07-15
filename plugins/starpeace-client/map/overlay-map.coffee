@@ -4,7 +4,7 @@ import ChunkMap from '~/plugins/starpeace-client/map/chunk/chunk-map.coffee'
 import Overlay from '~/plugins/starpeace-client/map/overlay.coffee'
 
 class OverlayMap
-  constructor: (@client, @width, @height) ->
+  constructor: (@overlay_manager, @renderer, @width, @height) ->
     @overlay_data = {}
     @overlay_chunks = {}
 
@@ -12,8 +12,8 @@ class OverlayMap
       continue if type == 'NONE'
       do (type) =>
         @overlay_data[type] = new Array(@width * @height)
-        @overlay_chunks[type] = new ChunkMap(@client, @width, @height, true, (chunk_x, chunk_y, chunk_width, chunk_height) =>
-          @client.overlay_manager.load_chunk(type, chunk_x, chunk_y, chunk_width, chunk_height)
+        @overlay_chunks[type] = new ChunkMap(@renderer, @width, @height, true, (chunk_x, chunk_y, chunk_width, chunk_height) =>
+          @overlay_manager.load_chunk(type, chunk_x, chunk_y, chunk_width, chunk_height)
         , (chunk_info, data) =>
           Logger.debug "refreshing overlay chunk for #{type} at #{chunk_info.chunk_x}x#{chunk_info.chunk_y}"
 

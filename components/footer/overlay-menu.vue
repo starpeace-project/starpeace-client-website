@@ -30,11 +30,9 @@ import Overlay from '~/plugins/starpeace-client/map/overlay.coffee'
 
 export default
   props:
-    client: Object
+    ui_state: Object
 
   computed:
-    ui_state: -> @client?.ui_state
-
     show_overlay_menu: -> @ui_state?.show_overlay || false
     current_overlay: -> @ui_state?.current_overlay || Overlay.TYPES.NONE
     current_overlay_value: -> @current_overlay.type

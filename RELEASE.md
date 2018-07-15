@@ -10,9 +10,9 @@
 * [done] improved asset versioning [v0.2.4]
 * [done] plane assets [v0.2.4]
 * [done] effects assets and building metadata [v0.2.5]
-* [pending] game background music
-* [in progress] concrete and platform assets
+* [done] concrete and platform assets [v0.2.6]
 * [pending] road and bridge assets
+* [pending] game background music
 
 ### gameplay
 * [done] persist client options in localStorage [v0.2.3]
@@ -21,8 +21,8 @@
 * [done] rendering options support [v0.2.5]
 * [done] building footprint layer rendering [v0.2.5]
 * [done] building effect layer rendering [v0.2.5]
-* [in progress] improve tree layer rendering
-* [in progress] concrete and platform rendering
+* [in progress] improve tree layer rendering [v0.2.6]
+* [in progress] concrete and platform rendering [v0.2.6]
 * [pending] road and bridge rendering
 * [pending] game music controls
 * [pending] mini-map rendering

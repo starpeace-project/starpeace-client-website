@@ -13,11 +13,7 @@
 <script lang='coffee'>
 export default
   props:
-    client: Object
-
-  computed:
-    menu_state: -> @client?.menu_state
-
+    menu_state: Object
 </script>
 
 <style lang='sass' scoped>

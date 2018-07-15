@@ -27,10 +27,10 @@
 <script lang='coffee'>
 export default
   props:
-    client: Object
+    ui_state: Object
 
   computed:
-    show_header: -> !@client? || @client?.ui_state?.show_header
+    show_header: -> !@ui_state? || @ui_state?.show_header
 </script>
 
 <style lang='sass' scoped>

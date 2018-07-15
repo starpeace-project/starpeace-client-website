@@ -4,7 +4,7 @@ import Logger from '~/plugins/starpeace-client/logger.coffee'
 MOCK_DATA = {}
 
 class BuildingManager
-  constructor: (@client) ->
+  constructor: (@asset_manager, @event_listener, @game_state) ->
     @chunk_promises = {}
 
     @requested_building_metadata = false
@@ -52,7 +52,7 @@ class BuildingManager
     return if @chunk_promises[key]?
 
     Logger.debug("attempting to load building chunk at #{chunk_x}x#{chunk_y}")
-    @client.game_state.start_ajax()
+    @game_state.start_ajax()
     @chunk_promises[key] = new Promise (done) =>
       setTimeout(=>
         delete @chunk_promises[key]
@@ -61,7 +61,7 @@ class BuildingManager
         data = MOCK_DATA[key] if MOCK_DATA[key]?
 
         done(data)
-        @client.game_state.finish_ajax()
+        @game_state.finish_ajax()
       , 500)
 
   has_assets: () ->
@@ -70,7 +70,7 @@ class BuildingManager
   queue_asset_load: () ->
     return if @requested_building_metadata
     @requested_building_metadata = true
-    @client.asset_manager.queue('metadata.building', './building.metadata.json', (resource) =>
+    @asset_manager.queue('metadata.building', './building.metadata.json', (resource) =>
       @building_metadata = resource.data
       building.key = key for key,building of @building_metadata.buildings
       @setup_mocks()
@@ -80,12 +80,12 @@ class BuildingManager
   load_building_atlas: (atlas_paths) ->
     for path in atlas_paths
       do (path) =>
-        @client.asset_manager.queue(path, path, (resource) =>
+        @asset_manager.queue(path, path, (resource) =>
           @loaded_atlases[path] = resource
           @building_textures[building.key] = _.map(building.frames, (frame) -> PIXI.utils.TextureCache[frame]) for building in @buildings_for_atlas(path)
-          @client.notify_assets_changed()
+          @event_listener.notify_asset_listeners()
         )
-    @client.asset_manager.load_queued()
+    @asset_manager.load_queued()
 
   buildings_for_atlas: (atlas_key) ->
     atlas_key = atlas_key.substring(2) if atlas_key.startsWith('./')

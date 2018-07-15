@@ -10,12 +10,11 @@ import Viewport from '~/plugins/starpeace-client/renderer/camera/viewport.coffee
 import Layers from '~/plugins/starpeace-client/renderer/layers.coffee'
 
 class Renderer
-  constructor: (@client) ->
+  constructor: (@managers, @game_state, @ui_state) ->
     @initialized = false
-    @client.game_state.initialized = false
 
   viewport: () ->
-    @_viewport = new Viewport(@client, @client.game_state, @renderer_width, @renderer_height) unless @_viewport?
+    @_viewport = new Viewport(@game_state, @renderer_width, @renderer_height) unless @_viewport?
     @_viewport
 
   update_offset: (render_container) ->
@@ -33,7 +32,7 @@ class Renderer
     @update_offset(render_container)
     @renderer_width = Math.ceil(render_container.offsetWidth)
     @renderer_height = Math.ceil(render_container.offsetHeight)
-    @_viewport = new Viewport(@client, @client.game_state, @renderer_width, @renderer_height)
+    @_viewport = new Viewport(@game_state, @renderer_width, @renderer_height)
     @application.renderer.resize(@renderer_width, @renderer_height)
     @initialize_map()
 
@@ -49,7 +48,7 @@ class Renderer
     @update_offset(render_container)
     @renderer_width = Math.ceil(render_container.offsetWidth)
     @renderer_height = Math.ceil(render_container.offsetHeight)
-    @_viewport = new Viewport(@client, @client.game_state, @renderer_width, @renderer_height)
+    @_viewport = new Viewport(@game_state, @renderer_width, @renderer_height)
     @application = new PIXI.Application(@renderer_width, @renderer_height, {
       backgroundColor : 0x000000
     })
@@ -66,24 +65,27 @@ class Renderer
   initialize_map: () ->
     @layers?.remove_layers(@application.stage)
     @layers?.destroy()
-    @layers = new Layers(@client, @, @client.game_state, @client.ui_state)
+    @layers = new Layers(@, @managers.building_manager, @managers.effect_manager, @managers.plane_manager, @game_state, @ui_state)
     @layers.add_layers(@application.stage)
 
   initialize: () ->
     @initialize_application() unless @application?
 
-    planet = @client.game_state.current_planet
-    land_manifest = @client.planet_type_manifest_manager.planet_type_manifest[planet.planet_type]
-    map_texture = @client.planetary_manager.map_id_texture[planet.map_id]
+    planet = @game_state.current_planet
+    land_manifest = @managers.planet_type_manifest_manager.planet_type_manifest[planet.planet_type]
+    map_texture = @managers.planetary_manager.map_id_texture[planet.map_id]
 
-    @client.game_state.game_map = GameMap.from_texture(@client, land_manifest, map_texture)
+    @game_state.game_map = GameMap.from_texture(@, @managers.building_manager, @managers.overlay_manager, land_manifest, map_texture)
     @initialize_map()
 
-    @client.game_state.loading = true
-    setTimeout (=> @client.game_state.loading = false), 500
+    @game_state.loading = true
+    setTimeout (=> @game_state.loading = false), 500
 
-    @client.game_state.initialized = true
+    @game_state.initialized = true
     @initialized = true
+
+  trigger_refresh: () ->
+    @layers.needs_refresh = true if @layers?
 
   tick: () ->
     @fps_meter.tickStart() if @fps_meter?

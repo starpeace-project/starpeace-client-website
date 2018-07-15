@@ -15,17 +15,19 @@ import Sprite from '~/plugins/starpeace-client/renderer/sprite/sprite.coffee'
 
 import Utils from '~/plugins/starpeace-client/renderer/utils.coffee'
 
+PLANE_CHECK_SPEED = 5000
+
 export default class Layers
-  constructor: (@client, @renderer, @game_state, @ui_state) ->
+  constructor: (@renderer, @building_manager, @effect_manager, @plane_manager, @game_state, @ui_state) ->
     @needs_refresh = false
 
     @land_layer = new LayerLand(@game_state)
     @tree_layer = new LayerTree(@game_state)
     @underlay_layer = new LayerOverlay(@game_state, true)
-    @building_layer = new LayerBuilding(@client, @game_state)
-    @building_footprint_layer = new LayerBuildingFootprint(@client, @game_state)
+    @building_layer = new LayerBuilding(@building_manager, @effect_manager, @game_state, @ui_state)
+    @building_footprint_layer = new LayerBuildingFootprint(@building_manager, @game_state)
     @overlay_layer = new LayerOverlay(@game_state, false)
-    @plane_layer = new LayerPlane(@client, @renderer, @game_state)
+    @plane_layer = new LayerPlane(@plane_manager, @renderer, @game_state, @ui_state)
 
     @last_scale_rendered = 0
     @last_season_rendered = null
@@ -34,11 +36,12 @@ export default class Layers
     @last_rendered_overlay_type = null
     @last_rendered_render_options = { trees: null, buildings: null, building_animations: null, building_effects: null, planes: null }
 
-    # @plane_layer.container.addChild(@game_state.plane_sprite.sprite) if @game_state.plane_sprite?
+    @check_loop = setInterval((=> @check_planes()), PLANE_CHECK_SPEED)
 
     @refresh()
 
   destroy: () ->
+    clearInterval(@check_loop) if @check_loop?
     layer.destroy() for layer in [@land_layer, @tree_layer, @underlay_layer, @building_layer, @building_footprint_layer, @overlay_layer, @plane_layer]
 
   remove_layers: (stage) ->
@@ -163,7 +166,7 @@ export default class Layers
           canvas = viewport.iso_to_canvas(x, j, view_center)
 
           tile_info = @info_for_tile(x, j)
-          building_metadata = if tile_info.building_info? then @client.building_manager.building_metadata.buildings[tile_info.building_info.key] else null
+          building_metadata = if tile_info.building_info? then @building_manager.building_metadata.buildings[tile_info.building_info.key] else null
 
           land_sprite = if tile_info.has_ground then @land_layer.sprite_for(sprite_counter, x, j, tile_width, tile_height) else null
           tree_sprite = if tile_info.has_tree then @tree_layer.sprite_for(sprite_counter, x, j, tile_width, tile_height) else null
@@ -202,3 +205,11 @@ export default class Layers
 
     layer.hide_sprites(sprite_counter) for layer in [@land_layer, @tree_layer, @underlay_layer, @building_layer, @building_footprint_layer, @overlay_layer]
     @plane_layer.refresh_sprites()
+
+  check_planes: () ->
+    return unless @plane_manager.has_assets() && @game_state.initialized && @ui_state.render_planes
+    return if @game_state.plane_sprite?
+
+    flight_plan = @plane_manager.random_flight_plan(@renderer.viewport())
+    @game_state.plane_sprite = @plane_layer.add_sprite(flight_plan.plane_info, flight_plan.direction, flight_plan.velocity,
+        flight_plan.source_map_x, flight_plan.source_map_y, flight_plan.target_map_x, flight_plan.target_map_y)

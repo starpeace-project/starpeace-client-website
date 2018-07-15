@@ -106,18 +106,16 @@ import moment from 'moment'
 
 export default
   props:
-    client: Object
+    game_state: Object
+    menu_state: Object
+    ui_state: Object
+    camera_manager: Object
 
   data: ->
     client_version: process.env.CLIENT_VERSION
 
   computed:
-    game_state: -> @client?.game_state
-    menu_state: -> @client?.menu_state
-    ui_state: -> @client?.ui_state
-    camera_manager: -> @client?.camera_manager
-
-    is_ready: -> @client?.renderer?.initialized
+    is_ready: -> @game_state?.initialized
     ticker_message: -> @ui_state?.event_ticker_message || ''
     current_date: -> moment(@game_state?.current_date).format('MMM D, YYYY')
 

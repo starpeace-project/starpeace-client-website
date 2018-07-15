@@ -8,7 +8,7 @@ class ChunkMap
   @CHUNK_WIDTH = CHUNK_WIDTH
   @CHUNK_HEIGHT = CHUNK_HEIGHT
 
-  constructor: (@client, @width, @height, @refresh_on_load, @refresh_callback, @handle_refresh_callback) ->
+  constructor: (@renderer, @width, @height, @refresh_on_load, @refresh_callback, @handle_refresh_callback) ->
     chunk_width = Math.ceil(@width / CHUNK_WIDTH)
     chunk_height = Math.ceil(@height / CHUNK_HEIGHT)
     @chunk_info = new Array(chunk_width * chunk_height)
@@ -29,7 +29,7 @@ class ChunkMap
 
         @handle_refresh_callback(@chunk_info[chunk_index], data)
 
-        @client.renderer.layers.needs_refresh = true if @refresh_on_load && @client.renderer.layers?
+        @renderer?.trigger_refresh() if @refresh_on_load
 
 
   info_at: (x, y) ->

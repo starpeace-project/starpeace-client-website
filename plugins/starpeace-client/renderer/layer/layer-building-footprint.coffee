@@ -10,7 +10,7 @@ import Logger from '~/plugins/starpeace-client/logger.coffee'
 MAX_TILES = 10000
 
 export default class LayerBuildingFootprint
-  constructor: (@client, @game_state) ->
+  constructor: (@building_manager, @game_state) ->
     @sprites = []
     @container = new PIXI.particles.ParticleContainer(MAX_TILES, {
       tint: true
@@ -33,7 +33,7 @@ export default class LayerBuildingFootprint
   sprite_for: (building_info, counter, x, y, tile_width, tile_height) ->
     throw "maximum number of building footprint particles reached" if counter.building_footprint >= MAX_TILES
 
-    metadata = @client.building_manager.building_metadata.buildings[building_info.key]
+    metadata = @building_manager.building_metadata.buildings[building_info.key]
     building_zone = BuildingZone.TYPES[metadata.zone]
     texture = PIXI.utils.TextureCache["overlay.#{metadata.w}"]
     return unless texture?

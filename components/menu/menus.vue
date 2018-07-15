@@ -2,15 +2,14 @@
 %no-ssr
   #menu-container.level{'v-show':'can_render', 'v-cloak':true}
 
-    %menu-building{'v-show':"main_menu == 'building'", 'v-bind:client':'client'}
-    %menu-chat{'v-show':"main_menu == 'chat'", 'v-bind:client':'client'}
-    %menu-favorites{'v-show':"show_menu_favorites", 'v-bind:client':'client'}
-    %menu-mail{'v-show':"main_menu == 'mail'", 'v-bind:client':'client'}
-    %menu-options{'v-show':"main_menu == 'options'", 'v-bind:client':'client'}
-    %menu-help{'v-show':"main_menu == 'help'", 'v-bind:client':'client'}
+    %menu-building{'v-show':"main_menu == 'building'", 'v-bind:menu_state':'menu_state'}
+    %menu-chat{'v-show':"main_menu == 'chat'", 'v-bind:menu_state':'menu_state'}
+    %menu-favorites{'v-show':"show_menu_favorites", 'v-bind:menu_state':'menu_state'}
+    %menu-mail{'v-show':"main_menu == 'mail'", 'v-bind:menu_state':'menu_state'}
+    %menu-options{'v-show':"main_menu == 'options'", 'v-bind:menu_state':'menu_state', 'v-bind:ui_state':'ui_state'}
+    %menu-help{'v-show':"main_menu == 'help'", 'v-bind:menu_state':'menu_state'}
 
-    %menu-release-notes{'v-show':"show_menu_release_notes", 'v-bind:client':'client'}
-
+    %menu-release-notes{'v-show':"show_menu_release_notes", 'v-bind:menu_state':'menu_state'}
 </template>
 
 <script lang='coffee'>
@@ -33,17 +32,15 @@ export default
     'menu-release-notes': MenuReleaseNotes
 
   props:
-    client: Object
+    game_state: Object
+    menu_state: Object
+    ui_state: Object
 
   computed:
-    menu_state: -> @client?.menu_state
-    game_state: -> @client?.game_state
-
     can_render: -> @game_state?.initialized || false
     main_menu: -> @menu_state?.main_menu
     show_menu_favorites: -> @menu_state?.show_menu_favorites || false
     show_menu_release_notes: -> @menu_state?.show_menu_release_notes || false
-
 </script>
 
 <style lang='sass' scoped>

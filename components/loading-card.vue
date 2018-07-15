@@ -10,10 +10,10 @@
 <script lang='coffee'>
 export default
   props:
-    client: Object
+    game_state: Object
 
   computed:
-    is_loading: -> (@client?.game_state?.initialized || false) && (@client?.game_state?.loading || false)
+    is_loading: -> (@game_state?.initialized || false) && (@game_state?.loading || false)
 </script>
 
 <style lang='sass' scoped>

@@ -33,7 +33,7 @@ for type in ['ZONES', 'BEAUTY', 'HC_RESIDENTIAL', 'MC_RESIDENTIAL', 'LC_RESIDENT
         info.data = info.data.join('')
 
 class OverlayManager
-  constructor: (@client) ->
+  constructor: (@asset_manager, @event_listener, @game_state) ->
     @requested_overlay_metadata = false
     @overlay_metadata = null
     @loaded_atlases = {}
@@ -44,7 +44,7 @@ class OverlayManager
     return if @chunk_promises[key]?
 
     Logger.debug("attempting to load overlay chunk for #{type} at #{chunk_x}x#{chunk_y}")
-    @client.game_state.start_ajax()
+    @game_state.start_ajax()
     @chunk_promises[key] = new Promise (done) =>
       data = new Array(width, height).fill(Overlay.TYPES.NONE)
 
@@ -57,7 +57,7 @@ class OverlayManager
       setTimeout(=>
         delete @chunk_promises[key]
         done(data)
-        @client.game_state.finish_ajax()
+        @game_state.finish_ajax()
       , 500)
 
   has_assets: () ->
@@ -66,7 +66,7 @@ class OverlayManager
   queue_asset_load: () ->
     return if @requested_overlay_metadata
     @requested_overlay_metadata = true
-    @client.asset_manager.queue('metadata.overlay', './overlay.metadata.json', (resource) =>
+    @asset_manager.queue('metadata.overlay', './overlay.metadata.json', (resource) =>
       @overlay_metadata = resource.data
       overlay.key = key for key,overlay of @overlay_metadata.overlays
       @load_overlay_atlas(resource.data.atlas)
@@ -75,15 +75,15 @@ class OverlayManager
   load_overlay_atlas: (atlas_paths) ->
     for path in atlas_paths
       do (path) =>
-        @client.asset_manager.queue(path, path, (resource) =>
+        @asset_manager.queue(path, path, (resource) =>
           @loaded_atlases[path] = resource
 
           # mip-mapping has bigger impact without edge aliasing
           # TODO: why isn't this, or PIXI.settings.MIPMAP_TEXTURES, working?
           resource.spritesheet.baseTexture.mipmap = false
 
-          @client.notify_assets_changed()
+          @event_listener.notify_asset_listeners()
         )
-    @client.asset_manager.load_queued()
+    @asset_manager.load_queued()
 
 export default OverlayManager

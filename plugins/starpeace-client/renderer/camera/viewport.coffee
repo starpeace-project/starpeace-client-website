@@ -2,7 +2,7 @@ import PlanetTypeManifest from '~/plugins/starpeace-client/metadata/planet-type-
 
 export default class Viewport
 
-  constructor: (@client, @game_state, renderer_width, renderer_height) ->
+  constructor: (@game_state, renderer_width, renderer_height) ->
     @canvas_width = Math.ceil(renderer_width || 0)
     @canvas_height = Math.ceil(renderer_height || 0)
     @half_canvas_width = Math.ceil(@canvas_width * 0.5)

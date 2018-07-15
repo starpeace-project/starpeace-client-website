@@ -18,13 +18,10 @@
 <script lang='coffee'>
 export default
   props:
-    client: Object
+    menu_state: Object
 
   data: ->
     release_notes_html: process.env.RELEASE_NOTES_HTML
-
-  computed:
-    menu_state: -> @client?.menu_state
 </script>
 
 <style lang='sass' scoped>

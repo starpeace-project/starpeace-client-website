@@ -28,27 +28,21 @@ import Logger from '~/plugins/starpeace-client/logger.coffee'
 
 export default
   props:
-    client: Object
+    game_state: Object
+    planetary_metadata_manager: Object
 
   computed:
-    game_state: -> @client?.game_state
-    planetary_metadata_manager: -> @client.planetary_metadata_manager
-
-    planetary_systems: ->
-      @planetary_metadata_manager?.systems_metadata || []
+    planetary_systems: -> @planetary_metadata_manager?.systems_metadata || []
 
   methods:
     select_planetary_system: (planetary_system_id) ->
       system = @planetary_metadata_manager.planetary_system_for_id(planetary_system_id)
       throw "unknown planetary system id <#{planetary_system_id}>" unless system?
-      @client.game_state.current_planetary_system = system
+      @game_state.current_planetary_system = system
       window.document.title = "#{@game_state.current_planetary_system.name} - STARPEACE" if window?.document?
       Logger.debug "proceeding with planetary system <#{@game_state.current_planetary_system}>"
 
     system_animation_url: (system) -> ''
-
-
-
 </script>
 
 <style lang='sass' scoped>

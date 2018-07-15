@@ -122,12 +122,10 @@
 <script lang='coffee'>
 export default
   props:
-    client: Object
+    menu_state: Object
+    ui_state: Object
 
   computed:
-    menu_state: -> @client?.menu_state
-    ui_state: -> @client?.ui_state
-
     can_reset: ->
       @ui_state.show_header != true || @ui_state.show_fps != true || @ui_state.render_trees != true || @ui_state.render_buildings != true ||
           @ui_state.render_building_animations != true || @ui_state.render_building_effects != true || @ui_state.render_planes != true

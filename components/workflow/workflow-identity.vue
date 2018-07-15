@@ -40,10 +40,10 @@
 <script lang='coffee'>
 export default
   props:
-    client: Object
+    game_state: Object
 
   methods:
-    proceed_as_visitor: -> @client?.game_state?.proceed_as_visitor()
+    proceed_as_visitor: -> @game_state?.proceed_as_visitor()
 
 </script>
 

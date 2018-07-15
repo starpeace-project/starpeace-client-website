@@ -3,8 +3,8 @@
 global PIXI
 ###
 
-class AssetManager
-  constructor: (@client) ->
+export default class AssetManager
+  constructor: (@game_state) ->
     PIXI.loader.baseUrl = "https://cdn.starpeace.io"
     PIXI.loader.onProgress.add (e) =>
       @loading_progress = e.progress
@@ -28,7 +28,7 @@ class AssetManager
     return if @loading
 
     @loading = true
-    @client.game_state.start_ajax()
+    @game_state.start_ajax()
     PIXI.loader.load (loader, resources) =>
       for key in pending_keys
         if resources[key]?
@@ -37,8 +37,6 @@ class AssetManager
           delete @key_callbacks[key]
         true
 
-      @client.game_state.finish_ajax()
+      @game_state.finish_ajax()
       @loading = false
       setTimeout((=> @load_queued()), 250) if Object.keys(@key_callbacks).length
-
-export default AssetManager

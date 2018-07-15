@@ -12,6 +12,9 @@ import OverlayManager from '~/plugins/starpeace-client/loader/overlay-manager.co
 import PlaneManager from '~/plugins/starpeace-client/loader/plane-manager.coffee'
 import PlanetaryManager from '~/plugins/starpeace-client/loader/planetary-manager.coffee'
 
+import Managers from '~/plugins/starpeace-client/loader/managers.coffee'
+
+import EventListener from '~/plugins/starpeace-client/state/event-listener.coffee'
 import GameState from '~/plugins/starpeace-client/state/game-state.coffee'
 import MenuState from '~/plugins/starpeace-client/state/menu-state.coffee'
 import UIState from '~/plugins/starpeace-client/state/ui-state.coffee'
@@ -23,53 +26,33 @@ import InputHandler from '~/plugins/starpeace-client/renderer/input/input-handle
 
 export default class Client
   constructor: () ->
-    @planetary_metadata_manager = new PlanetaryMetadataManager(@)
-    @planet_type_manifest_manager = new PlanetTypeManifestManager(@)
-
-    @asset_manager = new AssetManager(@)
-    @building_manager = new BuildingManager(@)
-    @effect_manager = new EffectManager(@)
-    @event_manager = new EventManager(@)
-    @overlay_manager = new OverlayManager(@)
-    @plane_manager = new PlaneManager(@)
-    @planetary_manager = new PlanetaryManager(@)
+    @event_listener = new EventListener()
+    @event_listener.subscribe_asset_listener(=> @notify_assets_changed())
 
     @game_state = new GameState()
     @menu_state = new MenuState()
     @ui_state = new UIState()
 
-    @renderer = new Renderer(@)
-    @camera_manager = new CameraManager(@, @renderer)
+    @managers = new Managers(@event_listener, @game_state, @ui_state)
+
+    @renderer = new Renderer(@managers, @game_state, @ui_state)
+    @camera_manager = new CameraManager(@renderer, @game_state)
     @input_handler = new InputHandler(@menu_state, @camera_manager, @renderer)
 
     @initialize_callback = null
 
     Logger.banner()
 
-  select_planet: (planet) ->
-    @game_state.current_planet = planet
-    Logger.debug "proceeding with planet <#{@game_state.current_planet}>"
-
-    @building_manager.queue_asset_load()
-    @effect_manager.queue_asset_load()
-    @event_manager.queue_asset_load()
-    @overlay_manager.queue_asset_load()
-    @plane_manager.queue_asset_load()
-    @planetary_manager.queue_asset_load(@game_state.current_planet.planet_type, @game_state.current_planet.map_id)
-
-    @asset_manager.load_queued()
-
   notify_assets_changed: () ->
-    return unless @game_state.current_planet? && @building_manager.has_assets() && @effect_manager.has_assets() && @event_manager.has_assets() &&
-      @overlay_manager.has_assets() && @planetary_manager.has_assets(@game_state.current_planet) && @plane_manager.has_assets()
+    return unless @managers.has_assets()
 
     @game_state.has_assets = true
 
     clearTimeout(@initialize_callback) if @initialize_callback
     @initialize_callback = setTimeout(=>
+      @managers.initialize()
       @renderer.initialize()
       @input_handler.initialize()
-      @event_manager.update_message()
     , 500)
 
   tick: () ->

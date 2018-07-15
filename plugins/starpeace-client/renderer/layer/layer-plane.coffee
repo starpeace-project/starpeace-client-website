@@ -7,7 +7,7 @@ import SpritePlane from '~/plugins/starpeace-client/renderer/sprite/sprite-plane
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 
 export default class LayerPlane
-  constructor: (@client, @renderer, @game_state) ->
+  constructor: (@plane_manager, @renderer, @game_state, @ui_state) ->
     @container = new PIXI.particles.ParticleContainer(10, {
       tint: true
       uvs: true
@@ -29,7 +29,7 @@ export default class LayerPlane
         existing_sprite.current_map_x, existing_sprite.current_map_y, existing_sprite.target_map_x, existing_sprite.target_map_y)
 
   add_sprite: (plane_info, direction, velocity, source_map_x, source_map_y, target_map_x, target_map_y) ->
-    textures = @client.plane_manager.plane_textures[plane_info.key]
+    textures = @plane_manager.plane_textures[plane_info.key]
     return null unless textures?.length
 
     width = @game_state.game_scale * textures[0].width
@@ -51,7 +51,7 @@ export default class LayerPlane
 
   refresh_sprites: () ->
     return unless @game_state.plane_sprite?.sprite?
-    unless @game_state.plane_sprite?.sprite?.texture? && @client.ui_state.render_planes
+    unless @game_state.plane_sprite?.sprite?.texture? && @ui_state.render_planes
       # texture fails to load sometimes
       @container.removeChild(@game_state.plane_sprite?.sprite)
       @game_state.plane_sprite = null

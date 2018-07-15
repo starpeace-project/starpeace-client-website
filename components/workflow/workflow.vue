@@ -13,12 +13,12 @@
 
           .card-content{'v-bind:style':'workflow_card_content_style'}
             %menu-loading{'v-show':"status == 'pending_identity_authentication'", message:'Authenticating identity with provider...'}
-            %menu-identity{'v-show':"status == 'pending_identity'", 'v-bind:client':'client'}
+            %menu-identity{'v-show':"status == 'pending_identity'", 'v-bind:game_state':'game_state'}
             %menu-loading{'v-show':"status == 'pending_account'", message:'Authorizing session for identity...'}
 
             %menu-loading{'v-show':"status == 'pending_planetary_metadata'", message:'Retrieving planetary information...'}
-            %menu-planetary-system{'v-show':"status == 'pending_planetary_system'", 'v-bind:client':'client'}
-            %menu-planet{'v-show':"status == 'pending_planet'", 'v-bind:client':'client'}
+            %menu-planetary-system{'v-show':"status == 'pending_planetary_system'", 'v-bind:game_state':'game_state', 'v-bind:planetary_metadata_manager':'planetary_metadata_manager'}
+            %menu-planet{'v-show':"status == 'pending_planet'", 'v-bind:event_listener':'event_listener', 'v-bind:game_state':'game_state', 'v-bind:planetary_metadata_manager':'planetary_metadata_manager'}
 
             %menu-loading{'v-show':"status == 'pending_assets'", message:'Loading assets and resources...'}
             %menu-loading{'v-show':"status == 'pending_initialization'", message:'Initializing client environment...'}
@@ -51,11 +51,11 @@ export default
     'menu-planet': WorkflowPlanet
 
   props:
-    client: Object
+    event_listener: Object
+    game_state: Object
+    planetary_metadata_manager: Object
 
   computed:
-    game_state: -> @client?.game_state
-
     status: ->
       return 'initializing' unless @game_state?
       return 'pending_identity_authentication' if @game_state.current_identity_authentication?
@@ -63,7 +63,7 @@ export default
       return 'pending_account' unless @game_state.current_account?
       return 'pending_account_registration' unless @game_state.current_account?.registered
 
-      return 'pending_planetary_metadata' unless @client?.planetary_metadata_manager?.systems_metadata?.length
+      return 'pending_planetary_metadata' unless @planetary_metadata_manager?.systems_metadata?.length
       return 'pending_planetary_system' unless @game_state.current_planetary_system?
       return 'pending_planet' unless @game_state.current_planet?
 
@@ -84,9 +84,9 @@ export default
   methods:
     reset_planetary_system: ->
       window.document.title = "STARPEACE" if window?.document?
-      @client.game_state.current_planetary_system = null
-      @client.game_state.current_planet = null
-      @client.game_state.initialized = false
+      @game_state.current_planetary_system = null
+      @game_state.current_planet = null
+      @game_state.initialized = false
       # FIXME: TODO: what other state should be reset?
       Logger.debug "resetting planetary system back to empty, will need to re-select"
 

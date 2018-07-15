@@ -8,12 +8,12 @@
 <script lang='coffee'>
 export default
   props:
-    client: Object
+    game_state: Object
+    ui_state: Object
 
   computed:
-    is_ready: -> @client?.renderer.initialized
-
-    show_fps: -> @client?.ui_state?.show_fps
+    is_ready: -> @game_state.initialized
+    show_fps: -> @ui_state?.show_fps
 
 </script>
 

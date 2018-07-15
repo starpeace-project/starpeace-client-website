@@ -77,5 +77,8 @@ class GameState
       .catch (error) ->
         # FIXME: TODO: figure out error handling
 
+  set_planet: (planet) ->
+    @current_planet = planet
+    Logger.debug "proceeding with planet <#{@current_planet}>"
 
 export default GameState

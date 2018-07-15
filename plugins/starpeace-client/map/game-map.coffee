@@ -4,9 +4,9 @@ import GroundMap from '~/plugins/starpeace-client/map/ground-map.coffee'
 import OverlayMap from '~/plugins/starpeace-client/map/overlay-map.coffee'
 
 class GameMap
-  constructor: (@client, @width, @height, @ground_map) ->
-    @building_map = new BuildingMap(@client, @width, @height)
-    @overlay_map = new OverlayMap(@client, @width, @height)
+  constructor: (building_manager, overlay_manager, renderer, @width, @height, @ground_map) ->
+    @building_map = new BuildingMap(building_manager, renderer, @width, @height)
+    @overlay_map = new OverlayMap(overlay_manager, renderer, @width, @height)
 
   update_building_chunk_at: (x, y) -> @building_map.chunk_update_at(x, y)
   building_chunk_info_at: (x, y) -> @building_map.chunk_info_at(x, y)
@@ -20,9 +20,9 @@ class GameMap
   overlay_chunk_info_at: (overlay_type, x, y) -> @overlay_map.chunk_info_at(overlay_type, x, y)
   overlay_at: (overlay_type, x, y) -> @overlay_map.overlay_at(overlay_type, x, y)
 
-  @from_texture: (client, manifest, texture) ->
+  @from_texture: (renderer, building_manager, overlay_manager, manifest, texture) ->
     map_width = texture.texture.width
     map_height = texture.texture.height
-    new GameMap(client, map_width, map_height, GroundMap.from_texture(manifest, texture))
+    new GameMap(building_manager, overlay_manager, renderer, map_width, map_height, GroundMap.from_texture(manifest, texture))
 
 export default GameMap

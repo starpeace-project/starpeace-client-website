@@ -2,7 +2,7 @@
 EVENT_CHANGE_SPEED = 30000
 
 class EventManager
-  constructor: (@client) ->
+  constructor: (@asset_manager, @game_state, @ui_state) ->
     @requested_static_news = false
     @static_news_index = -1
     @static_news = []
@@ -15,16 +15,16 @@ class EventManager
   queue_asset_load: () ->
     return if @requested_static_news
     @requested_static_news = true
-    @client.asset_manager.queue('news.static.en', './news.static.en.json', (resource) =>
+    @asset_manager.queue('news.static.en', './news.static.en.json', (resource) =>
       @static_news = _.shuffle(resource.data)
     )
 
 
   update_message: () ->
-    return unless @static_news.length && @client.renderer.initialized
+    return unless @static_news.length && @game_state.initialized
 
     @static_news_index = Math.floor(Math.random() * @static_news.length) if @static_news_index < 0
-    @client.ui_state.event_ticker_message = @static_news[@static_news_index]
+    @ui_state.event_ticker_message = @static_news[@static_news_index]
 
     @static_news_index += 1
     @static_news_index = 0 if @static_news_index >= @static_news.length

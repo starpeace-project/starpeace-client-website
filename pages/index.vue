@@ -1,14 +1,14 @@
 <template lang='haml'>
 %no-ssr
   #application-container{'v-bind:class':'application_css_class', 'v-cloak':true}
-    %sp-header{'v-bind:client':'client'}
-    %sp-loading-card{'v-bind:client':'client'}
-    %sp-loading-modal{'v-bind:client':'client'}
-    %sp-workflow{'v-bind:client':'client'}
-    %sp-menu{'v-bind:client':'client'}
-    %sp-body{'v-bind:client':'client'}
-    %sp-footer-overlay-menu{'v-bind:client':'client'}
-    %sp-footer{'v-bind:client':'client'}
+    %sp-header{'v-bind:ui_state':'ui_state'}
+    %sp-loading-card{'v-bind:game_state':'game_state'}
+    %sp-loading-modal{'v-bind:game_state':'game_state'}
+    %sp-workflow{'v-bind:event_listener':'event_listener', 'v-bind:game_state':'game_state', 'v-bind:planetary_metadata_manager':'planetary_metadata_manager'}
+    %sp-menu{'v-bind:game_state':'game_state', 'v-bind:menu_state':'menu_state', 'v-bind:ui_state':'ui_state'}
+    %sp-body{'v-bind:game_state':'game_state', 'v-bind:ui_state':'ui_state'}
+    %sp-footer-overlay-menu{'v-bind:ui_state':'ui_state'}
+    %sp-footer{'v-bind:game_state':'game_state', 'v-bind:menu_state':'menu_state', 'v-bind:ui_state':'ui_state', 'v-bind:camera_manager':'camera_manager'}
 </template>
 
 <script lang='coffee'>
@@ -45,10 +45,14 @@ export default
     'sp-footer': Footer
 
   data: ->
-    client: client
+    event_listener: client?.event_listener
+    game_state: client?.game_state
+    menu_state: client?.menu_state
+    ui_state: client?.ui_state
+    planetary_metadata_manager: client?.managers?.planetary_metadata_manager
+    camera_manager: client?.camera_manager
 
   computed:
-    ui_state: -> @client?.ui_state
     application_css_class: ->
       classes = []
       classes.push('no-header') unless @ui_state?.show_header

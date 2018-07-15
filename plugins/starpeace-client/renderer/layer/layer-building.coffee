@@ -8,7 +8,7 @@ import SpriteEffect from '~/plugins/starpeace-client/renderer/sprite/sprite-effe
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 
 export default class LayerBuilding
-  constructor: (@client, @game_state) ->
+  constructor: (@building_manager, @effect_manager, @game_state, @ui_state) ->
     @static_sprites = []
     @animated_sprites = []
     @effect_sprites = []
@@ -56,21 +56,21 @@ export default class LayerBuilding
     sprite
 
   sprite_for: (building_info, counter, x, y, tile_width, tile_height) ->
-    textures = @client.building_manager.building_textures[building_info.key]
+    textures = @building_manager.building_textures[building_info.key]
     return null unless textures?.length && textures[0]?
 
-    is_building_animated = textures.length == 1 || !@client.ui_state.render_building_animations
+    is_building_animated = textures.length == 1 || !@ui_state.render_building_animations
     sprite = if is_building_animated then @static_sprite(counter.building.static, textures[0]) else @animated_sprite(@animated_sprites, counter.building.animated, .2, textures)
 
-    metadata = @client.building_manager.building_metadata.buildings[building_info.key]
+    metadata = @building_manager.building_metadata.buildings[building_info.key]
     width = metadata.w * tile_width
     height = Math.ceil(textures[0].height * (width / textures[0].width))
 
     effect_sprites = []
-    if metadata.effects? && @client.ui_state.render_building_effects
+    if metadata.effects? && @ui_state.render_building_effects
       for effect in metadata.effects
-        effect_metadata = @client.effect_manager.effect_metadata.effects[effect.type]
-        effect_textures = @client.effect_manager.effect_textures[effect.type]
+        effect_metadata = @effect_manager.effect_metadata.effects[effect.type]
+        effect_textures = @effect_manager.effect_textures[effect.type]
         continue unless effect_metadata? && effect_textures?.length
         effect_sprite = @animated_sprite(@effect_sprites, counter.building.effect + effect_sprites.length, .1, effect_textures)
         effect_sprite.parent_sprite = sprite

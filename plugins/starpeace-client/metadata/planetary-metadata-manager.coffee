@@ -3,14 +3,14 @@ import Vue from 'vue'
 
 import PlanetarySystem from '~/plugins/starpeace-client/planet/planetary-system.coffee'
 
-class PlanetaryMetadataManager
-  constructor: (@client) ->
+export default class PlanetaryMetadataManager
+  constructor: (@identity) ->
     @systems_metadata = []
     @systems_metadata_by_id = {}
     @planets_metadata_by_id = {}
 
 
-    PlanetarySystem.load(@client.identity)
+    PlanetarySystem.load(@identity)
       .then (systems) =>
 
         systems_by_id = {}
@@ -36,5 +36,3 @@ class PlanetaryMetadataManager
 
   planet_for_id: (id) ->
     @planets_metadata_by_id[id]
-
-export default PlanetaryMetadataManager
