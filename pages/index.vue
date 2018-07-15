@@ -1,6 +1,6 @@
 <template lang='haml'>
 %no-ssr
-  #application{'v-bind:class':'application_css_class', 'v-cloak':true}
+  #application-container{'v-bind:class':'application_css_class', 'v-cloak':true}
     %sp-header{'v-bind:client':'client'}
     %sp-loading-card{'v-bind:client':'client'}
     %sp-loading-modal{'v-bind:client':'client'}
@@ -30,6 +30,7 @@ if process.browser
     requestAnimationFrame(-> animate())
 
 export default
+  layout: 'application'
   created: ->
     animate() if animate?
 
@@ -56,10 +57,5 @@ export default
 </script>
 
 <style lang='sass'>
-#application
-  display: grid
-  grid-template-columns: .5rem auto .5rem
-  grid-template-rows: 4rem auto 3rem 15.5rem
-  height: 100vh
 
 </style>

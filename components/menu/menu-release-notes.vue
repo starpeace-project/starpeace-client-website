@@ -7,8 +7,12 @@
       .card-header-icon.card-close{'v-on:click.stop.prevent':'menu_state.toggle_menu_release_notes()'}
         %font-awesome-icon{':icon':"['fas', 'times']"}
 
-    .card-content.release-notes{'v-html':'release_notes_html'}
-
+    .card-content.release-notes
+      .card-description
+        Visit the
+        %a{href:'/release', target:'_blank'} release notes archive
+        &nbsp;to view additional notes and historical changelog.
+      .note-body{'v-html':'release_notes_html'}
 </template>
 
 <script lang='coffee'>
@@ -21,7 +25,6 @@ export default
 
   computed:
     menu_state: -> @client?.menu_state
-
 </script>
 
 <style lang='sass' scoped>
@@ -50,5 +53,6 @@ export default
   &::-webkit-scrollbar-thumb:hover
       background: #6ea192
 
-
+  .card-description
+    margin-bottom: 1rem
 </style>

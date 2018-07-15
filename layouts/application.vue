@@ -7,7 +7,7 @@
 <style lang='sass'>
 html
   font-size: 12px
-  overflow-y: scroll
+  overflow-y: hidden
 
 body
   background: url('~/assets/images/background.jpg') top center repeat-y
@@ -16,6 +16,7 @@ body
   color: #000
   font-family: 'Open Sans', sans-serif
   font-size: 12px
+  height: 100vh
   margin: 0
   padding: 0
   -webkit-touch-callout: none
@@ -25,14 +26,20 @@ body
   -ms-user-select: none
   user-select: none
 
+#application
+  display: grid
+  grid-template-columns: .5rem auto .5rem
+  grid-template-rows: 4rem auto 3rem 15.5rem
+
 #application-container
   display: grid
   grid-template-columns: .5rem auto .5rem
-  grid-template-rows: 4rem auto
+  grid-template-rows: 4rem auto 3rem 15.5rem
+  height: 100vh
+  position: relative
 
   @media screen and (max-width: 768px)
-    display: inline-block
-    width: 100%
+    grid-template-rows: calc(11vw + 1rem) auto 3rem 15.5rem
 
     #common-header
       display: inline-block

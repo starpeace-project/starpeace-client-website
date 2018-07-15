@@ -15,12 +15,18 @@ const is_development = process.env.NODE_ENV === 'development'
 // }
 const client_version = 'v' + pjson.version + '-' + moment().tz('America/Los_Angeles').format('YYYY-MM-DD');
 
-var release_notes_html = marked(fs.readFileSync('./RELEASE.md').toString())
-release_notes_html = release_notes_html.replace(new RegExp(/\<li\>/, 'g'), "<li class='columns'>");
-release_notes_html = release_notes_html.replace(new RegExp(/\<\/li\>/, 'g'), "</span></li>");
-release_notes_html = release_notes_html.replace(new RegExp(/\[done\]/, 'g'), "<span class='column is-2'><span class='tag is-link'>done</span></span><span class='column is-10'>");
-release_notes_html = release_notes_html.replace(new RegExp(/\[in progress\]/, 'g'), "<span class='column is-2'><span class='tag is-success'>in progress</span></span><span class='column is-10'>");
-release_notes_html = release_notes_html.replace(new RegExp(/\[pending\]/, 'g'), "<span class='column is-2'><span class='tag is-warning'>pending</span></span><span class='column is-10'>");
+var render_and_convert_markdown = function(markdown) {
+  var release_notes_html = marked(markdown);
+  release_notes_html = release_notes_html.replace(new RegExp(/\<li\>/, 'g'), "<li class='columns is-mobile'>");
+  release_notes_html = release_notes_html.replace(new RegExp(/\<\/li\>/, 'g'), "</span></li>");
+  release_notes_html = release_notes_html.replace(new RegExp(/\[done\]/, 'g'), "<span class='column is-2'><span class='tag is-link'>done</span></span><span class='column is-10'>");
+  release_notes_html = release_notes_html.replace(new RegExp(/\[in progress\]/, 'g'), "<span class='column is-2'><span class='tag is-success'>in progress</span></span><span class='column is-10'>");
+  release_notes_html = release_notes_html.replace(new RegExp(/\[pending\]/, 'g'), "<span class='column is-2'><span class='tag is-warning'>pending</span></span><span class='column is-10'>");
+  return release_notes_html;
+}
+
+var release_notes_html = render_and_convert_markdown(fs.readFileSync('./RELEASE.md').toString());
+var release_notes_archive_html = render_and_convert_markdown(fs.readFileSync('./RELEASE-archive.md').toString());
 
 module.exports = {
   css: [
@@ -47,7 +53,8 @@ module.exports = {
   },
   env: {
     CLIENT_VERSION: client_version,
-    RELEASE_NOTES_HTML: release_notes_html
+    RELEASE_NOTES_HTML: release_notes_html,
+    RELEASE_NOTES_ARCHIVE_HTML: release_notes_archive_html
   },
   build: {
     // analyze: true,

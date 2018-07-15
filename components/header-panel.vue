@@ -1,23 +1,27 @@
 <template lang='haml'>
-%no-ssr
-  #common-header{'v-show':'show_header', 'v-cloak':true}
-    .common-logo
-      %a.logo{href: '/'}
-        %h1 STAR
-        %img.starpeace-logo
-        %h1 PEACE
+#common-header{'v-show':'show_header', 'v-cloak':true}
+  .common-logo.not-mobile.is-hidden-mobile
+    %a.logo{href: '/'}
+      %h1 STAR
+      %img.starpeace-logo
+      %h1 PEACE
+  .common-logo.mobile.is-hidden-tablet
+    %a.logo{href: '/'}
+      %h1 STAR
+      %img.starpeace-logo
+      %h1 PEACE
 
-    .welcome
-      %span Welcome, Visitor!
-      %a.login-header{href: '/login.html'} Sign In
+  .welcome.is-hidden-mobile.is-hidden-tablet-only
+    %span Welcome, Visitor!
+    %a.login-header{href: 'https://client.starpeace.io/login'} Sign In
 
-    .development
-      %a.documentation{href: 'https://docs.starpeace.io', target:'_blank'} Documentation
-      %a.community{href: 'https://starpeaceproject.com/', target:'_blank'} Community
-      %a.discord{href: 'https://discord.gg/TF9Bmsj', target:'_blank'}
-        %font-awesome-icon{':icon':"['fab', 'discord']"}
-      %a.github{href: 'https://github.com/ronappleton/starpeace-website-client', target:'_blank'}
-        %font-awesome-icon{':icon':"['fab', 'github']"}
+  .development.is-hidden-mobile.is-hidden-tablet-only
+    %a.documentation{href: 'https://docs.starpeace.io'} Documentation
+    %a.community{href: 'https://starpeaceproject.com/', target:'_blank'} Community
+    %a.discord{href: 'https://discord.gg/TF9Bmsj', target:'_blank'}
+      %font-awesome-icon{':icon':"['fab', 'discord']"}
+    %a.github{href: 'https://github.com/ronappleton/starpeace-website-client', target:'_blank'}
+      %font-awesome-icon{':icon':"['fab', 'github']"}
 </template>
 
 <script lang='coffee'>
@@ -26,8 +30,7 @@ export default
     client: Object
 
   computed:
-    show_header: -> @client?.ui_state?.show_header
-
+    show_header: -> !@client? || @client?.ui_state?.show_header
 </script>
 
 <style lang='sass' scoped>
@@ -63,6 +66,20 @@ export default
 
       &:not(:first-child)
         margin-left: .5rem
+
+    &.mobile
+      padding: 2vw 1vw 1vw
+      text-align: center
+      width: 100%
+
+      .starpeace-logo
+        background-size: 9vw
+        height: 9vw
+        margin: 0 0 .5rem
+        width: 9vw
+
+      h1
+        font-size: 11vw
 
   a
     color: #fff
