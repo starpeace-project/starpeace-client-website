@@ -75,7 +75,7 @@ class Renderer
     land_manifest = @managers.planet_type_manifest_manager.planet_type_manifest[planet.planet_type]
     map_texture = @managers.planetary_manager.map_id_texture[planet.map_id]
 
-    @game_state.game_map = GameMap.from_texture(@, @managers.building_manager, @managers.overlay_manager, land_manifest, map_texture)
+    @game_state.game_map = new GameMap(@, @managers.building_manager, @managers.overlay_manager, land_manifest, map_texture, @ui_state)
     @initialize_map()
 
     @game_state.loading = true

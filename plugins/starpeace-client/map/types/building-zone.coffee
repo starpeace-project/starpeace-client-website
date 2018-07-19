@@ -1,6 +1,5 @@
 
-
-class BuildingZone
+export default class BuildingZone
   @TYPES:
     NONE:
       value: 0
@@ -67,5 +66,3 @@ class BuildingZone
         zones[y * width + x] = type || BuildingZone.TYPES.NONE
 
     zones
-
-export default BuildingZone

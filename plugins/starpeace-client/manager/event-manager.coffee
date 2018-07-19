@@ -1,7 +1,7 @@
 
 EVENT_CHANGE_SPEED = 30000
 
-class EventManager
+export default class EventManager
   constructor: (@asset_manager, @game_state, @ui_state) ->
     @requested_static_news = false
     @static_news_index = -1
@@ -28,5 +28,3 @@ class EventManager
 
     @static_news_index += 1
     @static_news_index = 0 if @static_news_index >= @static_news.length
-
-export default EventManager

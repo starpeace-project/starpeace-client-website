@@ -10,35 +10,11 @@ TREE_TYPE_PERCENTAGE.grass = .3
 TREE_TYPE_PERCENTAGE.midgrass = .2
 TREE_TYPE_PERCENTAGE.dryground = .1
 
-class GroundMap
+export default class GroundMap
   constructor: (@width, @height, @ground_map_tiles, @tree_map_tiles) ->
 
-  index_at: (x, y) -> (@height - y) * @width + (@width - x)
-
-  has_tree_at: (x, y) -> @tree_map_tiles[@index_at(x, y)]?
-  tree_at: (x, y) -> @tree_map_tiles[@index_at(x, y)]
-
-  has_ground_at: (x, y) -> @ground_map_tiles[@index_at(x, y)]?
-  ground_at: (x, y) -> @ground_map_tiles[@index_at(x, y)]
-
-  tree_texture_for: (season, x, y) ->
-    texture = null
-    unless x < 0 || x > @width || y < 0 || y > @height
-      tree_tile = @tree_at(x, y)
-      texture_id = tree_tile?.textures?[season]
-      texture = PIXI.utils.TextureCache[texture_id] if texture_id?.length
-      Logger.debug("unable to find tree texture <#{texture_id}> for coord <#{x}>x<#{y}>") unless texture?
-    texture
-
-  ground_texture_for: (season, x, y) ->
-    texture = PIXI.utils.TextureCache["#{season}.255.border.center.1"]
-    unless x < 0 || x > @width || y < 0 || y > @height
-      tile = @ground_at(x, y)
-      texture_id = _.values(tile?.textures?['0deg']?[season] || {})[0]
-      texture = PIXI.utils.TextureCache[texture_id] if texture_id?.length
-      Logger.debug("unable to find ground texture <#{texture_id}> for coord <#{x}>x<#{y}>, will fall back to default") unless texture?
-    texture
-
+  tree_at: (x, y) -> @tree_map_tiles[(@height - x) * @width + (@width - y)]
+  ground_at: (x, y) -> @ground_map_tiles[(@height - x) * @width + (@width - y)]
 
   @pixels_for_image: (image) ->
     canvas = document.createElement('canvas')
@@ -67,5 +43,3 @@ class GroundMap
         true
 
     new GroundMap(map_width, map_height, ground_tiles, tree_tiles)
-
-export default GroundMap

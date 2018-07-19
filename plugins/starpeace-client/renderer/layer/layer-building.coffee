@@ -4,6 +4,7 @@ global PIXI
 ###
 
 import SpriteBuilding from '~/plugins/starpeace-client/renderer/sprite/sprite-building.coffee'
+import SpriteConcrete from '~/plugins/starpeace-client/renderer/sprite/sprite-concrete.coffee'
 import SpriteEffect from '~/plugins/starpeace-client/renderer/sprite/sprite-effect.coffee'
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 
@@ -55,7 +56,13 @@ export default class LayerBuilding
     sprite.gotoAndPlay(Math.floor(new Date().getTime() / 200) % textures.length)
     sprite
 
-  sprite_for: (building_info, counter, x, y, tile_width, tile_height) ->
+  concrete_sprite_for: (concrete_info, counter, tile_width, tile_height) ->
+    texture = PIXI.utils.TextureCache[concrete_info.key] if concrete_info.key?.length
+    Logger.debug("unable to find concrete texture <#{concrete_info.key}>") unless texture?
+    return null unless texture?
+    new SpriteConcrete(tile_width, Math.ceil(texture.height * (tile_width / texture.width)), @static_sprite(counter.building.static, texture), true)
+
+  sprite_for: (building_info, counter, tile_width, tile_height) ->
     textures = @building_manager.building_textures[building_info.key]
     return null unless textures?.length && textures[0]?
 

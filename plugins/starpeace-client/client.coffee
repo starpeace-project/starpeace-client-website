@@ -4,15 +4,7 @@ import Logger from '~/plugins/starpeace-client/logger.coffee'
 import PlanetaryMetadataManager from '~/plugins/starpeace-client/metadata/planetary-metadata-manager.coffee'
 import PlanetTypeManifestManager from '~/plugins/starpeace-client/metadata/planet-type-manifest-manager.coffee'
 
-import AssetManager from '~/plugins/starpeace-client/loader/asset-manager.coffee'
-import BuildingManager from '~/plugins/starpeace-client/loader/building-manager.coffee'
-import EffectManager from '~/plugins/starpeace-client/loader/effect-manager.coffee'
-import EventManager from '~/plugins/starpeace-client/loader/event-manager.coffee'
-import OverlayManager from '~/plugins/starpeace-client/loader/overlay-manager.coffee'
-import PlaneManager from '~/plugins/starpeace-client/loader/plane-manager.coffee'
-import PlanetaryManager from '~/plugins/starpeace-client/loader/planetary-manager.coffee'
-
-import Managers from '~/plugins/starpeace-client/loader/managers.coffee'
+import Managers from '~/plugins/starpeace-client/manager/managers.coffee'
 
 import EventListener from '~/plugins/starpeace-client/state/event-listener.coffee'
 import GameState from '~/plugins/starpeace-client/state/game-state.coffee'

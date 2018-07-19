@@ -28,10 +28,12 @@ export default class LayerTree
   reset_counter: (counter) ->
     counter.tree = 0
 
-  sprite_for: (counter, x, y, tile_width, tile_height) ->
+  sprite_for: (tree_info, counter, x, y, tile_width, tile_height) ->
     throw "maximum number of tree particles reached" if counter.tree >= MAX_TILES
 
-    texture = @game_state.game_map.ground_map.tree_texture_for(@game_state.current_season, y, x)
+    texture_id = tree_info?.textures?[@game_state.current_season]
+    texture = PIXI.utils.TextureCache[texture_id] if texture_id?.length
+    Logger.debug("unable to find tree texture <#{texture_id}> for coord <#{x}>x<#{y}>") unless texture?
     return null unless texture?
 
     if counter.tree >= @sprites.length

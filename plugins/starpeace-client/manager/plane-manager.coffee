@@ -1,7 +1,7 @@
 
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 
-PLANE_TYPES = ['plane.adchopper', 'plane.balloon.1', 'plane.balloon.2', 'plane.saucer', 'plane.zeppelin']
+PLANE_TYPES = ['plane.adchopper', 'plane.balloon.1', 'plane.balloon.2', 'plane.saucer', 'plane.zeppelin', 'plane.ufo']
 PLANE_TYPE_WITH_DIRECTION = new Set(['plane.zeppelin'])
 POSITIONS = ['left', 'top', 'right', 'bottom']
 DIRECTIONS = {
@@ -47,8 +47,8 @@ export default class PlaneManager
 
   @velocity_for: (direction, type) ->
     {
-      x: (if type.startsWith 'plane.balloon' then .5 else if type == 'plane.saucer' then 2 else 1) * VELOCITY[direction][0]
-      y: (if type.startsWith 'plane.balloon' then .5 else if type == 'plane.saucer' then 2 else 1) * VELOCITY[direction][1]
+      x: (if type.startsWith 'plane.balloon' then .5 else if type == 'plane.saucer' || type == 'plane.ufo' then 2 else 1) * VELOCITY[direction][0]
+      y: (if type.startsWith 'plane.balloon' then .5 else if type == 'plane.saucer' || type == 'plane.ufo' then 2 else 1) * VELOCITY[direction][1]
     }
 
   random_flight_plan: (viewport) ->

@@ -1,8 +1,8 @@
 
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 
-import BuildingZone from '~/plugins/starpeace-client/map/building-zone.coffee'
-import Overlay from '~/plugins/starpeace-client/map/overlay.coffee'
+import BuildingZone from '~/plugins/starpeace-client/map/types/building-zone.coffee'
+import Overlay from '~/plugins/starpeace-client/map/types/overlay.coffee'
 
 DUMMY_ZONE_CHUNK_DATA = {}
 for type in ['ZONES', 'BEAUTY', 'HC_RESIDENTIAL', 'MC_RESIDENTIAL', 'LC_RESIDENTIAL', 'QOL',
@@ -21,8 +21,8 @@ for type in ['ZONES', 'BEAUTY', 'HC_RESIDENTIAL', 'MC_RESIDENTIAL', 'LC_RESIDENT
 
       if type == 'ZONES'
         info.data = "1111122222333334444411111222223333344444111112222233333444441111122222333334444411111222223333344444" +
-            "5555566666777778888855555666667777788888555556666677777888885555566666777778888855555666667777788888" +
-            "9999900000000000000099999000000000000000999990000000000000009999900000000000000099999000000000000000" +
+            "5555566666777778888855555666667777788888555556666677777888885555566666777778888855555666667777111888" +
+            "9999900000000012100099999000000000111000999990000000000000009999900000000000000099999000000000000000" +
             "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
       else
         magnitude = 0.5 + 0.5 * Math.random()
@@ -32,7 +32,7 @@ for type in ['ZONES', 'BEAUTY', 'HC_RESIDENTIAL', 'MC_RESIDENTIAL', 'LC_RESIDENT
             info.data[y * 20 + x] = Math.round(255 * (1 - Math.min(1, magnitude * (distance / 10)))).toString(16).padStart(2, '0')
         info.data = info.data.join('')
 
-class OverlayManager
+export default class OverlayManager
   constructor: (@asset_manager, @event_listener, @game_state) ->
     @requested_overlay_metadata = false
     @overlay_metadata = null
@@ -85,5 +85,3 @@ class OverlayManager
           @event_listener.notify_asset_listeners()
         )
     @asset_manager.load_queued()
-
-export default OverlayManager

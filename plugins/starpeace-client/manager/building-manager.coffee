@@ -3,7 +3,7 @@ import Logger from '~/plugins/starpeace-client/logger.coffee'
 
 MOCK_DATA = {}
 
-class BuildingManager
+export default class BuildingManager
   constructor: (@asset_manager, @event_listener, @game_state) ->
     @chunk_promises = {}
 
@@ -46,6 +46,8 @@ class BuildingManager
         if x > 235
           x = 195
           y += 1
+
+      # return if ~key.indexOf('legend')
 
   load_chunk: (chunk_x, chunk_y, width, height) ->
     key = "#{chunk_x}x#{chunk_y}"
@@ -96,5 +98,3 @@ class BuildingManager
 
   atlas_for: (key) ->
     @building_metadata.buildings[key].atlas
-
-export default BuildingManager

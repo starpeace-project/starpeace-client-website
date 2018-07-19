@@ -1,11 +1,12 @@
 
-import AssetManager from '~/plugins/starpeace-client/loader/asset-manager.coffee'
-import BuildingManager from '~/plugins/starpeace-client/loader/building-manager.coffee'
-import EffectManager from '~/plugins/starpeace-client/loader/effect-manager.coffee'
-import EventManager from '~/plugins/starpeace-client/loader/event-manager.coffee'
-import OverlayManager from '~/plugins/starpeace-client/loader/overlay-manager.coffee'
-import PlaneManager from '~/plugins/starpeace-client/loader/plane-manager.coffee'
-import PlanetaryManager from '~/plugins/starpeace-client/loader/planetary-manager.coffee'
+import AssetManager from '~/plugins/starpeace-client/manager/asset-manager.coffee'
+import BuildingManager from '~/plugins/starpeace-client/manager/building-manager.coffee'
+import ConcreteManager from '~/plugins/starpeace-client/manager/concrete-manager.coffee'
+import EffectManager from '~/plugins/starpeace-client/manager/effect-manager.coffee'
+import EventManager from '~/plugins/starpeace-client/manager/event-manager.coffee'
+import OverlayManager from '~/plugins/starpeace-client/manager/overlay-manager.coffee'
+import PlaneManager from '~/plugins/starpeace-client/manager/plane-manager.coffee'
+import PlanetaryManager from '~/plugins/starpeace-client/manager/planetary-manager.coffee'
 
 import PlanetaryMetadataManager from '~/plugins/starpeace-client/metadata/planetary-metadata-manager.coffee'
 import PlanetTypeManifestManager from '~/plugins/starpeace-client/metadata/planet-type-manifest-manager.coffee'
@@ -14,6 +15,7 @@ export default class Managers
   constructor: (@event_listener, @game_state, @ui_state) ->
     @asset_manager = new AssetManager(@game_state)
     @building_manager = new BuildingManager(@asset_manager, @event_listener, @game_state)
+    @concrete_manager = new ConcreteManager(@asset_manager, @event_listener)
     @effect_manager = new EffectManager(@asset_manager, @event_listener)
     @event_manager = new EventManager(@asset_manager, @game_state, @ui_state)
     @overlay_manager = new OverlayManager(@asset_manager, @event_listener, @game_state)
@@ -26,11 +28,12 @@ export default class Managers
     @event_listener.subscribe_planet_listener(=> @queue_asset_load())
 
   has_assets: () ->
-    @game_state.current_planet? && @building_manager.has_assets() && @effect_manager.has_assets() && @event_manager.has_assets() &&
+    @game_state.current_planet? && @building_manager.has_assets() && @concrete_manager.has_assets() && @effect_manager.has_assets() && @event_manager.has_assets() &&
       @overlay_manager.has_assets() && @planetary_manager.has_assets(@game_state.current_planet) && @plane_manager.has_assets()
 
   queue_asset_load: () ->
     @building_manager.queue_asset_load()
+    @concrete_manager.queue_asset_load()
     @effect_manager.queue_asset_load()
     @event_manager.queue_asset_load()
     @overlay_manager.queue_asset_load()

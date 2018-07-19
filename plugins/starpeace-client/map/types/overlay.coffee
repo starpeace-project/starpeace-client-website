@@ -1,7 +1,7 @@
 
 import tinygradient from 'tinygradient'
 
-class Overlay
+export default class Overlay
   @TYPES:
     NONE:
       value: 0
@@ -153,5 +153,3 @@ class Overlay
         }
 
     overlay_data
-
-export default Overlay

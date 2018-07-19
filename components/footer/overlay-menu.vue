@@ -26,7 +26,7 @@
 </template>
 
 <script lang='coffee'>
-import Overlay from '~/plugins/starpeace-client/map/overlay.coffee'
+import Overlay from '~/plugins/starpeace-client/map/types/overlay.coffee'
 
 export default
   props:

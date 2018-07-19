@@ -3,7 +3,7 @@
 global PIXI
 ###
 
-import BuildingZone from '~/plugins/starpeace-client/map/building-zone.coffee'
+import BuildingZone from '~/plugins/starpeace-client/map/types/building-zone.coffee'
 import SpriteBuildingFootprint from '~/plugins/starpeace-client/renderer/sprite/sprite-building-footprint.coffee'
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 
