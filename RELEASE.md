@@ -1,10 +1,10 @@
 
-## v0.3 - in progress - updated 2018-07-19
+## v0.3 - in progress - updated 2018-07-22
 ### platform
 * [done] improved building rendering around edges [v0.2.1]
 * [done] improved z-order rendering across layers [v0.2.2]
 * [pending] input interaction support for buildings (selection, rendering)
-* [pending] fix broken z-order rendering for buildings, trees, tree concrete, and platforms
+* [in progress] fix broken z-order rendering for buildings, trees, tree concrete, and platforms
 
 ### assets
 * [done] improved gameplay documentation [v0.2.4]

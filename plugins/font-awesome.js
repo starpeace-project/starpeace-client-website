@@ -22,11 +22,11 @@ import {
   faUserSecret,
   faUserTie
 } from '@fortawesome/free-solid-svg-icons'
-import { faDiscord, faGithub } from '@fortawesome/free-brands-svg-icons'
+import { faDiscord, faGithub, faTwitter } from '@fortawesome/free-brands-svg-icons'
 
 library.add(faAngleUp, faBuilding, faCheck, faCogs, faComments, faEnvelope, faEye,
   faGlobe, faMapPin, faMinus, faPlus, faRedoAlt, faTimes, faToggleOff, faToggleOn,
-  faUndoAlt, faQuestionCircle, faUserSecret, faUserTie, faDiscord, faGithub)
+  faUndoAlt, faQuestionCircle, faUserSecret, faUserTie, faDiscord, faGithub, faTwitter)
 
 
 import Vue from 'vue'
