@@ -3,6 +3,7 @@
 global PIXI
 ###
 
+import Concrete from '~/plugins/starpeace-client/map/types/concrete.coffee'
 import SpriteBuilding from '~/plugins/starpeace-client/renderer/sprite/sprite-building.coffee'
 import SpriteConcrete from '~/plugins/starpeace-client/renderer/sprite/sprite-concrete.coffee'
 import SpriteEffect from '~/plugins/starpeace-client/renderer/sprite/sprite-effect.coffee'
@@ -15,10 +16,8 @@ export default class LayerBuilding
     @effect_sprites = []
     @container = new PIXI.Container()
 
-    @group = new PIXI.display.Group(1, (sprite) ->
-      source_sprite = if sprite.parent_sprite? then sprite.parent_sprite else sprite
-      sprite.zOrder = -10 * (source_sprite.y + source_sprite.height) + (source_sprite.x + source_sprite.width * .5) - (if sprite.parent_sprite? then 1 else 0)
-    )
+    @group = new PIXI.display.Group(1)
+    @group.enableSort = true
     @layer = new PIXI.display.Layer(@group)
 
     Logger.debug "configured map building layer"
@@ -57,10 +56,11 @@ export default class LayerBuilding
     sprite
 
   concrete_sprite_for: (concrete_info, counter, tile_width, tile_height) ->
-    texture = PIXI.utils.TextureCache[concrete_info.key] if concrete_info.key?.length
-    Logger.debug("unable to find concrete texture <#{concrete_info.key}>") unless texture?
+    return null unless concrete_info.type == Concrete.TYPES.CENTER_TREEABLE
+    texture = PIXI.utils.TextureCache['concrete.c.plant']
+    Logger.debug("unable to find concrete texture <concrete.c.plant>") unless texture?
     return null unless texture?
-    new SpriteConcrete(tile_width, Math.ceil(texture.height * (tile_width / texture.width)), @static_sprite(counter.building.static, texture), true)
+    new SpriteConcrete(tile_width, Math.ceil(texture.height * (tile_width / texture.width)), @static_sprite(counter.building.static, texture), true, 0)
 
   sprite_for: (building_info, counter, tile_width, tile_height) ->
     textures = @building_manager.building_textures[building_info.key]

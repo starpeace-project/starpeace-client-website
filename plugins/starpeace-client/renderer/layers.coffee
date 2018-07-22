@@ -81,14 +81,18 @@ export default class Layers
     if !tile_info.position_within_map
       @land_layer.blank_sprite_for(sprite_counter, tile_width, tile_height)
 
-    else if tile_info.concrete_info?.is_plant
+    else if tile_info.land_info?
+      @land_layer.sprite_for(tile_info.land_info, sprite_counter, x, j, tile_width, tile_height)
+
+    else
+      null
+
+  sprite_for_concrete: (tile_info, sprite_counter, x, j, tile_width, tile_height) ->
+    if tile_info.concrete_info?.type?.use_building_layer
       @building_layer.concrete_sprite_for(tile_info.concrete_info, sprite_counter, tile_width, tile_height)
 
     else if tile_info.concrete_info?
       @concrete_layer.sprite_for(tile_info.concrete_info, sprite_counter, tile_width, tile_height)
-
-    else if tile_info.land_info?
-      @land_layer.sprite_for(tile_info.land_info, sprite_counter, x, j, tile_width, tile_height)
 
     else
       null
@@ -149,13 +153,15 @@ export default class Layers
           building_metadata = if tile_info.building_info? then @building_manager.building_metadata.buildings[tile_info.building_info.key] else null
 
           land_sprite = @sprite_for_land(tile_info, sprite_counter, x, j, tile_width, tile_height)
+          concrete_sprite = @sprite_for_concrete(tile_info, sprite_counter, x, j, tile_width, tile_height)
           tree_sprite = if tile_info.tree_info? then @tree_layer.sprite_for(tile_info.tree_info, sprite_counter, x, j, tile_width, tile_height) else null
           underlay_sprite = if tile_info.zone_info? then @underlay_layer.sprite_for(tile_info.zone_info.color, sprite_counter, x, j, tile_width, tile_height) else null
           building_sprite = if tile_info.building_info? && tile_info.building_info.x == x && tile_info.building_info.y == j then (if @ui_state.render_buildings then @building_layer else @building_footprint_layer).sprite_for(tile_info.building_info, sprite_counter, tile_width, tile_height) else null
           overlay_sprite = if tile_info.overlay_info? then @overlay_layer.sprite_for(tile_info.overlay_info.color, sprite_counter, x, j, tile_width, tile_height) else null
 
-          tree_sprite.render(tile_info, sprite_counter, canvas.x, canvas.y, tile_width, tile_height) if tree_sprite?.within_canvas(canvas.x, canvas.y, viewport)
           land_sprite.render(tile_info, sprite_counter, canvas.x, canvas.y, tile_width, tile_height) if land_sprite?.within_canvas(canvas.x, canvas.y, viewport)
+          concrete_sprite.render(tile_info, sprite_counter, canvas.x, canvas.y, tile_width, tile_height) if concrete_sprite?.within_canvas(canvas.x, canvas.y, viewport)
+          tree_sprite.render(tile_info, sprite_counter, canvas.x, canvas.y, tile_width, tile_height) if tree_sprite?.within_canvas(canvas.x, canvas.y, viewport)
           underlay_sprite.render(tile_info, sprite_counter, canvas.x, canvas.y, tile_width, tile_height) if underlay_sprite?.within_canvas(canvas.x, canvas.y, viewport)
           building_sprite.render(tile_info, sprite_counter, canvas.x, canvas.y, tile_width, tile_height) if building_sprite?.within_canvas(canvas.x, canvas.y, viewport)
           overlay_sprite.render(tile_info, sprite_counter, canvas.x, canvas.y, tile_width, tile_height) if overlay_sprite?.within_canvas(canvas.x, canvas.y, viewport)

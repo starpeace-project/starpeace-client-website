@@ -9,7 +9,7 @@ export default class GameMap
     @width = texture.texture.width
     @height = texture.texture.height
     @ground_map = GroundMap.from_texture(manifest, texture)
-    @building_map = new BuildingMap(building_manager, renderer, @width, @height)
+    @building_map = new BuildingMap(@ground_map, building_manager, renderer, @width, @height)
     @overlay_map = new OverlayMap(overlay_manager, renderer, @width, @height)
 
   info_for_tile: (x, y) ->
@@ -39,13 +39,12 @@ export default class GameMap
           @overlay_map.chunk_update_at(@ui_state.current_overlay.type, x, y)
 
       building_info = @building_map.building_at(x, y)
-      concrete_info = @building_map.concrete_at(x, y)
-      concrete_type = @building_map.concrete_type_at(x, y)
-      is_concrete_or_buffer = concrete_info? || concrete_type == Concrete.TYPES.BUFFER || concrete_type == Concrete.TYPES.EDGE || concrete_type == Concrete.TYPES.CENTER || concrete_type == Concrete.TYPES.CENTER_PLANT
+      concrete_info = @building_map.concrete.concrete_info_at(x, y)
 
     position_within_map = x >= 0 && x < @width && y >= 0 && y < @height
-    tree_info = if @ui_state.render_trees && !is_concrete_or_buffer && position_within_map then @ground_map.tree_at(x, y) else null
-    land_info = if !concrete_info? && !tree_info? && position_within_map then @ground_map.ground_at(x, y) else null
+    tree_info = if @ui_state.render_trees && !concrete_info? && position_within_map then @ground_map.tree_at(x, y) else null
+    land_info = if (concrete_info? && concrete_info.type != Concrete.TYPES.CENTER && concrete_info.type != Concrete.TYPES.CENTER_TREEABLE) ||
+        !concrete_info? && !tree_info? && position_within_map then @ground_map.ground_at(x, y) else null
 
     {
       position_within_map

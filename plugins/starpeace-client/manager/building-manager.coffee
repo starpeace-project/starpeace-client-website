@@ -47,7 +47,7 @@ export default class BuildingManager
           x = 195
           y += 1
 
-      # return if ~key.indexOf('legend')
+      # return if ~key.indexOf('park.small')
 
   load_chunk: (chunk_x, chunk_y, width, height) ->
     key = "#{chunk_x}x#{chunk_y}"
