@@ -3,11 +3,11 @@
 
 [![Build Status](https://travis-ci.org/ronappleton/starpeace-website-client.svg)](https://travis-ci.org/ronappleton/starpeace-website-client)
 
-Client website for [Starpeace](https://www.starpeace.io), including webgl game client, client-side gameplay logic, and user interface controls.
+Client website for [STARPEACE](https://www.starpeace.io), including webgl game client, client-side gameplay logic, and user interface controls.
 
 ## Official Documentation
 
-Documentation for client gameplay can be found on the [Starpeace website](https://docs.starpeace.io).
+Documentation for client gameplay can be found on the [STARPEACE website](https://docs.starpeace.io).
 
 ## Roadmap
 
@@ -15,7 +15,7 @@ Development and gameplay roadmap can be found in [RELEASE.md](./RELEASE.md).
 
 ## Security Vulnerabilities
 
-If you discover a security vulnerability within Starpeace website, please send an e-mail to security@starpeace.io or open a [GitHub issue](https://github.com/ronappleton/starpeace-website-client/issues). All security vulnerabilities will be promptly addressed.
+If you discover a security vulnerability within the STARPEACE website, please send an e-mail to security@starpeace.io or open a [GitHub issue](https://github.com/ronappleton/starpeace-website-client/issues). All security vulnerabilities will be promptly addressed.
 
 ## Development
 
@@ -37,29 +37,22 @@ Install starpeace-website-client dependencies:
 $ npm install
 ```
 
-Build repository with default or ```build``` grunt target:
+Build repository with npm command defined in package.json:
 
 ```
-$ grunt
-$ grunt build
+$ npm run generate
 ```
 
-To simplify and improve development, the ```watch``` grunt target can be executed to watch for file changes and automatically rebuild application:
+Local development with nuxt and interactive build can be started with a single command:
 
 ```
-$ grunt watch
-```
-
-A simple server is also provided to serve static assets for local testing, accessible at [127.0.0.1:11010](http://127.0.0.1:11010) using ```server``` grunt target:
-
-```
-$ grunt server
+$ npm run dev
 ```
 
 ## Build and Deployment
 
-After building repository, website is compiled into static resources within the ```/build/public/``` folder. These resources should be served as static assets from web application and can be cached if desired.
+After building repository, website is compiled into static resources within the ```/dist/``` folder. These resources should be served as static assets from web application and can be cached if desired.
 
 ## License
 
-Starpeace website is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+STARPEACE website is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
