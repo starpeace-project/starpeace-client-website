@@ -15,9 +15,11 @@ export default class SpriteBuilding extends Sprite
     @sprite.y = canvas_y - (@_height - tile_height)
     @sprite.width = @_width + 1
     @sprite.height = @_height + 1
-    @sprite.zOrder = 100000 - (@sprite.y + @sprite.height - @sprite.map_half_height)
+    @sprite.zOrder = -(@sprite.y + @sprite.height - @sprite.map_half_height)
 
-    sprite.render_sprite(tile_info, @sprite.x, @sprite.y, tile_width, tile_height) for sprite in @effect_sprites
+    for sprite in @effect_sprites
+      sprite.render_sprite(tile_info, @sprite.x, @sprite.y, tile_width, tile_height)
+      sprite.sprite.zOrder = @sprite.zOrder - 1
 
   increment_counter: (tile_info, counter) ->
     if @sprite instanceof PIXI.extras.AnimatedSprite

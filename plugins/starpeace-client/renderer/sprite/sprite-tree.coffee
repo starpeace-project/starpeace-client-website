@@ -12,7 +12,7 @@ export default class SpriteTree extends Sprite
     @sprite.width = @_width + 1
     @sprite.height = @_height + 1
     @sprite.tint = if tile_info.has_building_chunk_info then 0xFFFFFF else 0x555555
-    @sprite.zOrder = 100000 - (@sprite.y + @sprite.height - tile_height * .5)
+    @sprite.zOrder = -(@sprite.y + @sprite.height - .5 * tile_height)
 
   increment_counter: (tile_info, counter) ->
     counter.tree += 1

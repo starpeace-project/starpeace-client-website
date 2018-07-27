@@ -60,7 +60,9 @@ export default class LayerBuilding
     texture = PIXI.utils.TextureCache['concrete.c.plant']
     Logger.debug("unable to find concrete texture <concrete.c.plant>") unless texture?
     return null unless texture?
-    new SpriteConcrete(tile_width, Math.ceil(texture.height * (tile_width / texture.width)), @static_sprite(counter.building.static, texture), true, 0)
+    sprite = @static_sprite(counter.building.static, texture)
+    sprite.map_half_height = Math.round(.5 * tile_height)
+    new SpriteConcrete(tile_width, Math.ceil(texture.height * (tile_width / texture.width)), sprite, true, 0)
 
   sprite_for: (building_info, counter, tile_width, tile_height) ->
     textures = @building_manager.building_textures[building_info.key]
@@ -72,6 +74,7 @@ export default class LayerBuilding
     metadata = @building_manager.building_metadata.buildings[building_info.key]
     width = metadata.w * tile_width
     height = Math.ceil(textures[0].height * (width / textures[0].width))
+    sprite.map_half_height = Math.round(.5 * metadata.h * tile_height)
 
     effect_sprites = []
     if metadata.effects? && @ui_state.render_building_effects

@@ -11,7 +11,7 @@ export default class SpriteConcrete extends Sprite
     @sprite.y = canvas_y - (@_height - tile_height) + @offset_y
     @sprite.width = @_width + 1
     @sprite.height = @_height + 1
-    @sprite.zOrder = 100000 - (@sprite.y + @sprite.height - tile_height * .5)
+    @sprite.zOrder = -(@sprite.y + @sprite.height - .5 * tile_height)
 
   increment_counter: (tile_info, counter) ->
     if @use_building_layer
