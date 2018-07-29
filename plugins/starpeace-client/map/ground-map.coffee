@@ -1,8 +1,4 @@
 
-###
-global PIXI
-###
-
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 
 TREE_TYPE_PERCENTAGE = {}
@@ -15,6 +11,13 @@ export default class GroundMap
 
   tree_at: (x, y) -> @tree_map_tiles[(@height - x) * @width + (@width - y)]
   ground_at: (x, y) -> @ground_map_tiles[(@height - x) * @width + (@width - y)]
+
+  is_water_at: (x, y) ->
+    @ground_at(x, y).zone == 'water'
+  is_water_around: (x, y) ->
+    @ground_at(x, y).zone == 'water' || @ground_at(x - 1, y).zone == 'water' || @ground_at(x + 1, y).zone == 'water' ||
+        @ground_at(x, y - 1).zone == 'water' || @ground_at(x, y + 1).zone == 'water' || @ground_at(x - 1, y - 1).zone == 'water' ||
+        @ground_at(x - 1, y + 1).zone == 'water' || @ground_at(x + 1, y - 1).zone == 'water' || @ground_at(x + 1, y + 1).zone == 'water'
 
   @pixels_for_image: (image) ->
     canvas = document.createElement('canvas')
@@ -40,6 +43,5 @@ export default class GroundMap
         ground_tiles[map_index] = manifest.ground_for_color(color) if manifest.has_ground_for_color(color)
         tree_tiles[map_index] = manifest.random_tree_for_zone(ground_tiles[map_index].zone) if zones_with_trees.has(ground_tiles[map_index]?.zone) && Math.random() < (TREE_TYPE_PERCENTAGE[ground_tiles[map_index]?.zone] || 0.2)
 
-        true
 
     new GroundMap(map_width, map_height, ground_tiles, tree_tiles)

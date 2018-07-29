@@ -27,7 +27,7 @@ export default class Client
 
     @managers = new Managers(@event_listener, @game_state, @ui_state)
 
-    @renderer = new Renderer(@managers, @game_state, @ui_state)
+    @renderer = new Renderer(@event_listener, @managers, @game_state, @ui_state)
     @camera_manager = new CameraManager(@renderer, @game_state)
     @input_handler = new InputHandler(@menu_state, @camera_manager, @renderer)
 

@@ -1,6 +1,8 @@
 
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 
+import RoadManager from '~/plugins/starpeace-client/manager/road-manager.coffee'
+
 MOCK_DATA = {}
 
 export default class BuildingManager
@@ -17,7 +19,8 @@ export default class BuildingManager
     can_place = (xt, yt, info) ->
       for j in [0...info.h]
         for i in [0...info.w]
-          return false if mock_map_buildings[1000 * (yt - j) + (xt - i)]?
+          index = 1000 * (yt - j) + (xt - i)
+          return false if mock_map_buildings[index]? || RoadManager.DUMMY_ROAD_DATA[index]
       true
     place_mock = (xt, yt, info) ->
       for j in [0...info.h]

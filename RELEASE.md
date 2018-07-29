@@ -1,5 +1,5 @@
 
-## v0.3 - in progress - updated 2018-07-26
+## v0.3 - in progress - updated 2018-07-29
 ### platform
 * [done] improved building rendering around edges [v0.2.1]
 * [done] improved z-order rendering across layers [v0.2.2]
@@ -13,7 +13,7 @@
 * [done] effects assets and building metadata [v0.2.5]
 * [done] concrete and platform assets [v0.2.6]
 * [done] road and bridge assets [v0.2.7]
-* [pending] game background music
+* [in progress] game background music
 
 ### gameplay
 * [done] persist client options in localStorage [v0.2.3]

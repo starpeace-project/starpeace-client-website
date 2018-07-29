@@ -1,7 +1,7 @@
 
 import moment from 'moment'
 
-class ChunkInfo
+export default class ChunkInfo
   constructor: (@chunk_x, @chunk_y, @width, @height, @max_age_mins) ->
     @last_updated = moment()
 
@@ -13,5 +13,3 @@ class ChunkInfo
 
   update: () ->
     @last_updated = moment()
-
-export default ChunkInfo

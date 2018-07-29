@@ -10,15 +10,11 @@ import SpriteEffect from '~/plugins/starpeace-client/renderer/sprite/sprite-effe
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 
 export default class LayerBuilding
-  constructor: (@building_manager, @effect_manager, @game_state, @ui_state) ->
+  constructor: (@common_zorder_group, @building_manager, @effect_manager, @game_state, @ui_state) ->
     @static_sprites = []
     @animated_sprites = []
     @effect_sprites = []
     @container = new PIXI.Container()
-
-    @group = new PIXI.display.Group(1)
-    @group.enableSort = true
-    @layer = new PIXI.display.Layer(@group)
 
     Logger.debug "configured map building layer"
 
@@ -34,7 +30,7 @@ export default class LayerBuilding
   static_sprite: (counter_index, texture) ->
     if counter_index >= @static_sprites.length
       sprite = @static_sprites[counter_index] = new PIXI.Sprite(texture)
-      sprite.parentGroup = @group
+      sprite.parentGroup = @common_zorder_group
       @container.addChild(sprite)
       sprite
     else
@@ -46,7 +42,7 @@ export default class LayerBuilding
     sprite = null
     if counter_index >= sprite_container.length
       sprite = sprite_container[counter_index] = new PIXI.extras.AnimatedSprite(textures)
-      sprite.parentGroup = @group
+      sprite.parentGroup = @common_zorder_group
       @container.addChild(sprite)
     else
       sprite = sprite_container[counter_index]

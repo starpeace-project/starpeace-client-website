@@ -11,6 +11,7 @@ import LayerConcrete from '~/plugins/starpeace-client/renderer/layer/layer-concr
 import LayerLand from '~/plugins/starpeace-client/renderer/layer/layer-land.coffee'
 import LayerOverlay from '~/plugins/starpeace-client/renderer/layer/layer-overlay.coffee'
 import LayerPlane from '~/plugins/starpeace-client/renderer/layer/layer-plane.coffee'
+import LayerRoad from '~/plugins/starpeace-client/renderer/layer/layer-road.coffee'
 import LayerTree from '~/plugins/starpeace-client/renderer/layer/layer-tree.coffee'
 import Sprite from '~/plugins/starpeace-client/renderer/sprite/sprite.coffee'
 
@@ -22,11 +23,16 @@ export default class Layers
   constructor: (@renderer, @building_manager, @effect_manager, @plane_manager, @game_state, @ui_state) ->
     @needs_refresh = false
 
+    @common_zorder_group = new PIXI.display.Group(1)
+    @common_zorder_group.enableSort = true
+    @common_zorder_layer = new PIXI.display.Layer(@common_zorder_group)
+
     @land_layer = new LayerLand(@game_state)
     @concrete_layer = new LayerConcrete(@game_state)
+    @road_layer = new LayerRoad(@game_state)
     @tree_layer = new LayerTree(@game_state)
     @underlay_layer = new LayerOverlay(@game_state, true)
-    @building_layer = new LayerBuilding(@building_manager, @effect_manager, @game_state, @ui_state)
+    @building_layer = new LayerBuilding(@common_zorder_group, @building_manager, @effect_manager, @game_state, @ui_state)
     @building_footprint_layer = new LayerBuildingFootprint(@building_manager, @game_state)
     @overlay_layer = new LayerOverlay(@game_state, false)
     @plane_layer = new LayerPlane(@plane_manager, @renderer, @game_state, @ui_state)
@@ -44,13 +50,14 @@ export default class Layers
 
   destroy: () ->
     clearInterval(@check_loop) if @check_loop?
-    layer.destroy() for layer in [@land_layer, @concrete_layer, @tree_layer, @underlay_layer, @building_layer, @building_footprint_layer, @overlay_layer, @plane_layer]
+    layer.destroy() for layer in [@land_layer, @concrete_layer, @road_layer, @tree_layer, @underlay_layer, @building_layer, @building_footprint_layer, @overlay_layer, @plane_layer]
 
   remove_layers: (stage) ->
-    stage.removeChild(@building_layer.layer)
+    stage.removeChild(@common_zorder_layer)
 
     stage.removeChild(@land_layer.container)
     stage.removeChild(@concrete_layer.container)
+    stage.removeChild(@road_layer.container)
     stage.removeChild(@tree_layer.container)
     stage.removeChild(@underlay_layer.container)
     stage.removeChild(@building_layer.container)
@@ -59,10 +66,11 @@ export default class Layers
     stage.removeChild(@plane_layer.container)
 
   add_layers: (stage) ->
-    stage.addChild(@building_layer.layer)
+    stage.addChild(@common_zorder_layer)
 
     stage.addChild(@land_layer.container)
     stage.addChild(@concrete_layer.container)
+    stage.addChild(@road_layer.container)
     stage.addChild(@tree_layer.container)
     stage.addChild(@underlay_layer.container)
     stage.addChild(@building_layer.container)
@@ -78,7 +86,7 @@ export default class Layers
       @ui_state.render_planes != @last_rendered_render_options.planes
 
   sprite_for_land: (tile_info, sprite_counter, x, j, tile_width, tile_height) ->
-    if !tile_info.position_within_map
+    unless tile_info.is_position_within_map
       @land_layer.blank_sprite_for(sprite_counter, tile_width, tile_height)
 
     else if tile_info.land_info?
@@ -140,7 +148,7 @@ export default class Layers
     m_buffer = 6
 
     sprite_counter = {}
-    layer.reset_counter(sprite_counter) for layer in [@land_layer, @concrete_layer, @tree_layer, @underlay_layer, @building_layer, @building_footprint_layer, @overlay_layer]
+    layer.reset_counter(sprite_counter) for layer in [@land_layer, @concrete_layer, @road_layer, @tree_layer, @underlay_layer, @building_layer, @building_footprint_layer, @overlay_layer]
     x = i_start
     while x < i_max
       j = j_start - n
@@ -154,6 +162,7 @@ export default class Layers
 
           land_sprite = @sprite_for_land(tile_info, sprite_counter, x, j, tile_width, tile_height)
           concrete_sprite = @sprite_for_concrete(tile_info, sprite_counter, x, j, tile_width, tile_height)
+          road_sprite = if tile_info.road_info? then @road_layer.sprite_for(tile_info.road_info, sprite_counter, x, j, tile_width, tile_height) else null
           tree_sprite = if tile_info.tree_info? then @tree_layer.sprite_for(tile_info.tree_info, sprite_counter, x, j, tile_width, tile_height) else null
           underlay_sprite = if tile_info.zone_info? then @underlay_layer.sprite_for(tile_info.zone_info.color, sprite_counter, x, j, tile_width, tile_height) else null
           building_sprite = if tile_info.building_info? && tile_info.building_info.x == x && tile_info.building_info.y == j then (if @ui_state.render_buildings then @building_layer else @building_footprint_layer).sprite_for(tile_info.building_info, sprite_counter, tile_width, tile_height) else null
@@ -161,6 +170,7 @@ export default class Layers
 
           land_sprite.render(tile_info, sprite_counter, canvas.x, canvas.y, tile_width, tile_height) if land_sprite?.within_canvas(canvas.x, canvas.y, viewport)
           concrete_sprite.render(tile_info, sprite_counter, canvas.x, canvas.y, tile_width, tile_height) if concrete_sprite?.within_canvas(canvas.x, canvas.y, viewport)
+          road_sprite.render(tile_info, sprite_counter, canvas.x, canvas.y, tile_width, tile_height) if road_sprite?.within_canvas(canvas.x, canvas.y, viewport)
           tree_sprite.render(tile_info, sprite_counter, canvas.x, canvas.y, tile_width, tile_height) if tree_sprite?.within_canvas(canvas.x, canvas.y, viewport)
           underlay_sprite.render(tile_info, sprite_counter, canvas.x, canvas.y, tile_width, tile_height) if underlay_sprite?.within_canvas(canvas.x, canvas.y, viewport)
           building_sprite.render(tile_info, sprite_counter, canvas.x, canvas.y, tile_width, tile_height) if building_sprite?.within_canvas(canvas.x, canvas.y, viewport)
@@ -189,7 +199,7 @@ export default class Layers
 
       x += 1
 
-    layer.hide_sprites(sprite_counter) for layer in [@land_layer, @concrete_layer, @tree_layer, @underlay_layer, @building_layer, @building_footprint_layer, @overlay_layer]
+    layer.hide_sprites(sprite_counter) for layer in [@land_layer, @concrete_layer, @road_layer, @tree_layer, @underlay_layer, @building_layer, @building_footprint_layer, @overlay_layer]
     @plane_layer.refresh_sprites()
 
   check_planes: () ->

@@ -6,6 +6,11 @@ export default class Concrete
       priority: 1
       texture_id: 'concrete.c.solid'
       use_building_layer: false
+    CENTER_ROAD:
+      type: 'CENTER_ROAD'
+      priority: 1
+      texture_id: 'concrete.c.solid'
+      use_building_layer: false
     PLATFORM_CENTER:
       type: 'PLATFORM_CENTER'
       priority: 1
@@ -19,6 +24,11 @@ export default class Concrete
       use_building_layer: true
     BUFFER:
       type: 'BUFFER'
+      priority: 3
+      texture_id: null
+      use_building_layer: false
+    BUFFER_ROAD:
+      type: 'BUFFER_ROAD'
       priority: 3
       texture_id: null
       use_building_layer: false

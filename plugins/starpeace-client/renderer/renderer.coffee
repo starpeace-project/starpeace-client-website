@@ -10,8 +10,10 @@ import Viewport from '~/plugins/starpeace-client/renderer/camera/viewport.coffee
 import Layers from '~/plugins/starpeace-client/renderer/layers.coffee'
 
 class Renderer
-  constructor: (@managers, @game_state, @ui_state) ->
+  constructor: (@event_listener, @managers, @game_state, @ui_state) ->
     @initialized = false
+
+    @event_listener.subscribe_map_data_listener (chunk_event) => @layers.needs_refresh = true if @layers?
 
   viewport: () ->
     @_viewport = new Viewport(@game_state, @renderer_width, @renderer_height) unless @_viewport?
@@ -75,7 +77,7 @@ class Renderer
     land_manifest = @managers.planet_type_manifest_manager.planet_type_manifest[planet.planet_type]
     map_texture = @managers.planetary_manager.map_id_texture[planet.map_id]
 
-    @game_state.game_map = new GameMap(@, @managers.building_manager, @managers.overlay_manager, land_manifest, map_texture, @ui_state)
+    @game_state.game_map = new GameMap(@event_listener, @managers.building_manager, @managers.road_manager, @managers.overlay_manager, land_manifest, map_texture, @ui_state)
     @initialize_map()
 
     @game_state.loading = true
@@ -83,9 +85,6 @@ class Renderer
 
     @game_state.initialized = true
     @initialized = true
-
-  trigger_refresh: () ->
-    @layers.needs_refresh = true if @layers?
 
   tick: () ->
     @fps_meter.tickStart() if @fps_meter?

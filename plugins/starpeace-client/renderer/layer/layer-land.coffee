@@ -31,7 +31,6 @@ export default class LayerLand
   sprite_for_texture: (texture, counter, tile_width, tile_height) ->
     throw "maximum number of land particles reached" if counter.land >= MAX_TILES
 
-    # texture = @game_state.game_map.ground_map.ground_texture_for(@game_state.current_season, y, x)
     if counter.land >= @sprites.length
       @sprites[counter.land] = new PIXI.Sprite(texture)
       @container.addChild(@sprites[counter.land])
