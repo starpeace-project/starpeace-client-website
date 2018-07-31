@@ -90,6 +90,16 @@ export default class Concrete
       priority: 4
       texture_id: 'concrete.ne.outer'
       use_building_layer: false
+    EDGE_NE_OUTER_N:
+      type: 'EDGE_NE_OUTER_N'
+      priority: 4
+      texture_id: 'concrete.ne.outer.n'
+      use_building_layer: false
+    EDGE_NE_OUTER_W:
+      type: 'EDGE_NE_OUTER_W'
+      priority: 4
+      texture_id: 'concrete.ne.outer.w'
+      use_building_layer: false
     EDGE_NE_INNER:
       type: 'EDGE_NE_INNER'
       priority: 4
@@ -104,6 +114,16 @@ export default class Concrete
       type: 'EDGE_SE_OUTER'
       priority: 4
       texture_id: 'concrete.se.outer'
+      use_building_layer: false
+    EDGE_SE_OUTER_E:
+      type: 'EDGE_SE_OUTER_E'
+      priority: 4
+      texture_id: 'concrete.se.outer.e'
+      use_building_layer: false
+    EDGE_SE_OUTER_N:
+      type: 'EDGE_SE_OUTER_N'
+      priority: 4
+      texture_id: 'concrete.se.outer.n'
       use_building_layer: false
     EDGE_SE_INNER:
       type: 'EDGE_SE_INNER'
@@ -120,6 +140,16 @@ export default class Concrete
       priority: 4
       texture_id: 'concrete.sw.outer'
       use_building_layer: false
+    EDGE_SW_OUTER_E:
+      type: 'EDGE_SW_OUTER_E'
+      priority: 4
+      texture_id: 'concrete.sw.outer.e'
+      use_building_layer: false
+    EDGE_SW_OUTER_S:
+      type: 'EDGE_SW_OUTER_S'
+      priority: 4
+      texture_id: 'concrete.sw.outer.s'
+      use_building_layer: false
     EDGE_SW_INNER:
       type: 'EDGE_SW_INNER'
       priority: 4
@@ -134,6 +164,16 @@ export default class Concrete
       type: 'EDGE_NW_OUTER'
       priority: 4
       texture_id: 'concrete.nw.outer'
+      use_building_layer: false
+    EDGE_NW_OUTER_W:
+      type: 'EDGE_NW_OUTER_W'
+      priority: 4
+      texture_id: 'concrete.nw.outer.w'
+      use_building_layer: false
+    EDGE_NW_OUTER_S:
+      type: 'EDGE_NW_OUTER_S'
+      priority: 4
+      texture_id: 'concrete.nw.outer.s'
       use_building_layer: false
     EDGE_NW_INNER:
       type: 'EDGE_NW_INNER'

@@ -38,11 +38,11 @@ export default class BuildingMap
     y > 0 && @building_info_at(x, y - 1)?.has_concrete == true ||
         y < @height && @building_info_at(x, y + 1)?.has_concrete == true ||
         x > 0 && @building_info_at(x - 1, y)?.has_concrete == true ||
-        x < @width && @building_info_at(x + 1, y)?.has_concrete == true ||
-        x > 0 && y > 0 && @building_info_at(x - 1, y - 1)?.has_concrete == true ||
-        x > 0 && y < @height && @building_info_at(x - 1, y + 1)?.has_concrete == true ||
-        x > 0 && y > 0 && @building_info_at(x + 1, y - 1)?.has_concrete == true ||
-        x < @width && y < @height && @building_info_at(x + 1, y + 1)?.has_concrete == true
+        x < @width && @building_info_at(x + 1, y)?.has_concrete == true #||
+        # x > 0 && y > 0 && @building_info_at(x - 1, y - 1)?.has_concrete == true ||
+        # x > 0 && y < @height && @building_info_at(x - 1, y + 1)?.has_concrete == true ||
+        # x > 0 && y > 0 && @building_info_at(x + 1, y - 1)?.has_concrete == true ||
+        # x < @width && y < @height && @building_info_at(x + 1, y + 1)?.has_concrete == true
 
   add_building: (building) ->
     metadata = @building_manager.building_metadata.buildings[building.key]

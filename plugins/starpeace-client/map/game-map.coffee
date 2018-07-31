@@ -14,7 +14,7 @@ export default class GameMap
     @ground_map = GroundMap.from_texture(manifest, texture)
     @building_map = new BuildingMap(event_listener, @ground_map, building_manager, road_manager, @width, @height)
     @concrete_map = new ConcreteMap(event_listener, @ground_map, @building_map, @width, @height)
-    @road_map = new RoadMap(event_listener, @ground_map, @building_map, @width, @height)
+    @road_map = new RoadMap(event_listener, @ground_map, @building_map, @concrete_map, @width, @height)
     @overlay_map = new OverlayMap(event_listener, overlay_manager, @width, @height)
 
   info_for_tile: (x, y) ->
@@ -50,7 +50,7 @@ export default class GameMap
       concrete_info = @concrete_map.concrete_info_at(x, y)
 
       # TODO: FIXME: try to move logic somewhere better (road_info should be immutable)
-      # road_info.is_city = true if road_info?.is_city == false && concrete_info?.type == Concrete.TYPES.CENTER_ROAD
+      road_info.is_city = true if road_info?.is_city == false && concrete_info?.type == Concrete.TYPES.CENTER_ROAD
 
     is_position_within_map = x >= 0 && x < @width && y >= 0 && y < @height
     is_road_needs_land = road_info? && (!road_info.is_city || road_info.type.is_bridge)

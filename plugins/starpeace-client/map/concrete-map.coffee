@@ -5,6 +5,10 @@ import ChunkMap from '~/plugins/starpeace-client/map/chunk/chunk-map.coffee'
 import BuildingZone from '~/plugins/starpeace-client/map/types/building-zone.coffee'
 import Concrete from '~/plugins/starpeace-client/map/types/concrete.coffee'
 
+TYPES_CENTER = new Set([Concrete.TYPES.CENTER, Concrete.TYPES.CENTER_ROAD, Concrete.TYPES.CENTER_TREEABLE, Concrete.TYPES.PLATFORM_CENTER])
+TYPES_CENTER_NO_ROAD = new Set([Concrete.TYPES.CENTER, Concrete.TYPES.CENTER_TREEABLE, Concrete.TYPES.PLATFORM_CENTER])
+TYPES_BUFFER = new Set([Concrete.TYPES.BUFFER, Concrete.TYPES.BUFFER_ROAD])
+
 export default class ConcreteMap
   constructor: (event_listener, @ground_map, @building_map, @width, @height) ->
     @concrete_post_process = new Array(@width * @height)
@@ -14,6 +18,11 @@ export default class ConcreteMap
       @refresh_concrete(chunk_event.info.chunk_x, chunk_event.info.chunk_y) if chunk_event.type == 'building' || chunk_event.type == 'road'
 
   concrete_info_at: (x, y) -> @concrete_info[y * @width + x]
+  is_concrete_around: (x, y) ->
+    x > 0 && TYPES_CENTER_NO_ROAD.has(@concrete_post_process[(y - 0) * @width + x - 1]) ||
+        x < @width && TYPES_CENTER_NO_ROAD.has(@concrete_post_process[(y - 0) * @width + x + 1]) ||
+        y > 0 && TYPES_CENTER_NO_ROAD.has(@concrete_post_process[(y - 1) * @width + x - 0]) ||
+        y < @height && TYPES_CENTER_NO_ROAD.has(@concrete_post_process[(y + 1) * @width + x - 0])
 
   concrete_outline: (type, sw_x, sw_y, width, height) ->
     for y in [0...height]
@@ -66,14 +75,6 @@ export default class ConcreteMap
 
     null
 
-  is_neighbor_center: (x, y, include_road) ->
-    type = @concrete_post_process[y * @width + x]
-    type == Concrete.TYPES.CENTER || include_road && type == Concrete.TYPES.CENTER_ROAD || type == Concrete.TYPES.CENTER_TREEABLE || type == Concrete.TYPES.PLATFORM_CENTER
-
-  is_neighbor_center_or_edge: (x, y) ->
-    type = @concrete_post_process[y * @width + x]
-    type? && type != Concrete.TYPES.BUFFER && type != Concrete.TYPES.BUFFER_ROAD
-
   reset_concrete: (source_x, target_x, source_y, target_y) ->
     for y in [source_y...target_y]
       for x in [source_x...target_x]
@@ -94,20 +95,19 @@ export default class ConcreteMap
       for y in [source_y...target_y]
         for x in [source_x...target_x]
           index = y * @width + x
-          continue if @concrete_post_process[index] == Concrete.TYPES.CENTER || @concrete_post_process[index] == Concrete.TYPES.CENTER_ROAD || @concrete_post_process[index] == Concrete.TYPES.CENTER_TREEABLE ||
-              @concrete_post_process[index] == Concrete.TYPES.PLATFORM_CENTER || @concrete_post_process[index] == Concrete.TYPES.BUFFER || @concrete_post_process[index] == Concrete.TYPES.BUFFER_ROAD
+          continue if TYPES_CENTER.has(@concrete_post_process[index]) || TYPES_BUFFER.has(@concrete_post_process[index])
 
-          neighbor_n = @is_neighbor_center(x - 0, y - 1, true)
-          neighbor_ne = @is_neighbor_center(x - 1, y - 1, true)
-          neighbor_e = @is_neighbor_center(x - 1, y - 0, true)
-          neighbor_se = @is_neighbor_center(x - 1, y + 1, true)
-          neighbor_s = @is_neighbor_center(x - 0, y + 1, true)
-          neighbor_sw = @is_neighbor_center(x + 1, y + 1, true)
-          neighbor_w = @is_neighbor_center(x + 1, y - 0, true)
-          neighbor_nw = @is_neighbor_center(x + 1, y - 1, true)
+          neighbor_n = TYPES_CENTER.has(@concrete_post_process[(y - 1) * @width + x - 0])
+          neighbor_ne = TYPES_CENTER.has(@concrete_post_process[(y - 1) * @width + x - 1])
+          neighbor_e = TYPES_CENTER.has(@concrete_post_process[(y - 0) * @width + x - 1])
+          neighbor_se = TYPES_CENTER.has(@concrete_post_process[(y + 1) * @width + x - 1])
+          neighbor_s = TYPES_CENTER.has(@concrete_post_process[(y + 1) * @width + x + 0])
+          neighbor_sw = TYPES_CENTER.has(@concrete_post_process[(y + 1) * @width + x + 1])
+          neighbor_w = TYPES_CENTER.has(@concrete_post_process[(y - 0) * @width + x + 1])
+          neighbor_nw = TYPES_CENTER.has(@concrete_post_process[(y - 1) * @width + x + 1])
 
           @concrete_post_process[index] = @concrete_for_neighbors(@ground_map.is_water_around(x, y), neighbor_n, neighbor_ne, neighbor_e, neighbor_se, neighbor_s, neighbor_sw, neighbor_w, neighbor_nw)
-          did_change_concrete = did_change_concrete || @concrete_post_process[index] == Concrete.TYPES.CENTER || @concrete_post_process[index] == Concrete.TYPES.CENTER_ROAD || @concrete_post_process[index] == Concrete.TYPES.CENTER_TREEABLE || @concrete_post_process[index] == Concrete.TYPES.PLATFORM_CENTER
+          did_change_concrete = did_change_concrete || TYPES_CENTER.has(@concrete_post_process[index])
 
   merge_platforms: (source_x, target_x, source_y, target_y) ->
     did_change_concrete = true
@@ -163,16 +163,18 @@ export default class ConcreteMap
           @concrete_post_process[index] = Concrete.TYPES.EDGE_NE_OUTER if @concrete_post_process[index] == Concrete.TYPES.EDGE_E && @concrete_post_process[index_e] == Concrete.TYPES.PLATFORM_EDGE_N
           @concrete_post_process[index] = Concrete.TYPES.EDGE_SE_OUTER if @concrete_post_process[index] == Concrete.TYPES.EDGE_E && @concrete_post_process[index_w] == Concrete.TYPES.PLATFORM_EDGE_N
 
-          @concrete_post_process[index] = Concrete.TYPES.EDGE_NW_OUTER if @concrete_post_process[index] == Concrete.TYPES.EDGE_W && @concrete_post_process[index_e] == Concrete.TYPES.PLATFORM_EDGE_S
+          @concrete_post_process[index] = Concrete.TYPES.EDGE_NW_OUTER_S if @concrete_post_process[index] == Concrete.TYPES.EDGE_W && @concrete_post_process[index_e] == Concrete.TYPES.PLATFORM_EDGE_S
           @concrete_post_process[index] = Concrete.TYPES.EDGE_SW_OUTER if @concrete_post_process[index] == Concrete.TYPES.EDGE_W && @concrete_post_process[index_w] == Concrete.TYPES.PLATFORM_EDGE_S
 
-          @concrete_post_process[index] = Concrete.TYPES.EDGE_NW_OUTER if @concrete_post_process[index] == Concrete.TYPES.EDGE_N && @concrete_post_process[index_n] == Concrete.TYPES.PLATFORM_EDGE_E
+          @concrete_post_process[index] = Concrete.TYPES.EDGE_NW_OUTER_W if @concrete_post_process[index] == Concrete.TYPES.EDGE_N && @concrete_post_process[index_n] == Concrete.TYPES.PLATFORM_EDGE_E
           @concrete_post_process[index] = Concrete.TYPES.EDGE_NE_OUTER if @concrete_post_process[index] == Concrete.TYPES.EDGE_N && @concrete_post_process[index_s] == Concrete.TYPES.PLATFORM_EDGE_E
 
           @concrete_post_process[index] = Concrete.TYPES.EDGE_SW_OUTER if @concrete_post_process[index] == Concrete.TYPES.EDGE_S && @concrete_post_process[index_n] == Concrete.TYPES.PLATFORM_EDGE_W
           @concrete_post_process[index] = Concrete.TYPES.EDGE_SE_OUTER if @concrete_post_process[index] == Concrete.TYPES.EDGE_S && @concrete_post_process[index_s] == Concrete.TYPES.PLATFORM_EDGE_W
 
           @concrete_post_process[index] = Concrete.TYPES.EDGE_NE_OUTER if @concrete_post_process[index] == Concrete.TYPES.EDGE_E && @concrete_post_process[index_n] == Concrete.TYPES.EDGE_N
+
+          @concrete_post_process[index] = Concrete.TYPES.EDGE_N if @concrete_post_process[index] == Concrete.TYPES.EDGE_NE_INNER && @concrete_post_process[index_n] == Concrete.TYPES.EDGE_N
 
           did_change_concrete = did_change_concrete || (@concrete_post_process[index] != original_type)
 
@@ -181,16 +183,28 @@ export default class ConcreteMap
       for x in [source_x...target_x]
         index = y * @width + x
         continue unless @concrete_post_process[index] == Concrete.TYPES.BUFFER_ROAD
-        @concrete_post_process[index] = Concrete.TYPES.CENTER_ROAD if @is_neighbor_center(x, y - 1, false) || @is_neighbor_center(x, y + 1, false) ||
-            @is_neighbor_center(x - 1, y, false) || @is_neighbor_center(x + 1, y, false)
+
+        index_n = (y - 1) * @width + x
+        index_s = (y + 1) * @width + x
+        index_e = index + 1
+        index_w = index - 1
+
+        @concrete_post_process[index] = Concrete.TYPES.CENTER_ROAD if @is_concrete_around(x, y) || (
+              (if y > 0 && @concrete_post_process[index_n] == Concrete.TYPES.CENTER_ROAD then 1 else 0) +
+              (if y < @height && @concrete_post_process[index_s] == Concrete.TYPES.CENTER_ROAD then 1 else 0) +
+              (if x > 0 && @concrete_post_process[index_w] == Concrete.TYPES.CENTER_ROAD then 1 else 0) +
+              (if x < @width && @concrete_post_process[index_e] == Concrete.TYPES.CENTER_ROAD then 1 else 0)
+            ) > 1
 
   clear_trees_around_concrete: (source_x, target_x, source_y, target_y) ->
+    is_neighbor_center_or_edge = (x, y) => @concrete_post_process[y * @width + x]? && !TYPES_BUFFER.has(@concrete_post_process[y * @width + x])
+
     for y in [source_y...target_y]
       for x in [source_x...target_x]
         index = y * @width + x
         continue if @concrete_post_process[index]?
-        @concrete_post_process[index] = Concrete.TYPES.BUFFER if @is_neighbor_center_or_edge(x - 0, y - 1) || @is_neighbor_center_or_edge(x - 1, y - 0) ||
-            @is_neighbor_center_or_edge(x - 0, y + 1) || @is_neighbor_center_or_edge(x + 1, y - 0)
+        @concrete_post_process[index] = Concrete.TYPES.BUFFER if is_neighbor_center_or_edge(x - 0, y - 1) || is_neighbor_center_or_edge(x - 1, y - 0) ||
+            is_neighbor_center_or_edge(x - 0, y + 1) || is_neighbor_center_or_edge(x + 1, y - 0)
 
   populate_info: (source_x, target_x, source_y, target_y) ->
     for y in [source_y...target_y]

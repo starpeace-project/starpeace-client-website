@@ -5,7 +5,7 @@ import ChunkMap from '~/plugins/starpeace-client/map/chunk/chunk-map.coffee'
 import Road from '~/plugins/starpeace-client/map/types/road.coffee'
 
 export default class RoadMap
-  constructor: (event_listener, @ground_map, @building_map, @width, @height) ->
+  constructor: (event_listener, @ground_map, @building_map, @concrete_map, @width, @height) ->
     @road_buffer = new Array(@width * @height)
     @road_info = new Array(@width * @height)
 
@@ -69,5 +69,5 @@ export default class RoadMap
         @road_info[index] = {
           type: road_type
           is_over_water: @ground_map.is_water_at(x, y)
-          is_city: @building_map.is_city_around(x, y)
+          is_city: @concrete_map.is_concrete_around(x, y)
         } if road_type?
