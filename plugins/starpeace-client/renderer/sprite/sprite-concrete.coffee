@@ -2,19 +2,22 @@
 import Sprite from '~/plugins/starpeace-client/renderer/sprite/sprite.coffee'
 
 export default class SpriteConcrete extends Sprite
-  constructor: (width, height, @sprite, @use_building_layer, @offset_y) ->
-    super(width, height)
+  constructor: (@texture, @is_flat, @is_platform) ->
+    super()
 
-  render_sprite: (tile_info, canvas_x, canvas_y, tile_width, tile_height) ->
-    @sprite.visible = true
-    @sprite.x = canvas_x - (@_width - tile_width)
-    @sprite.y = canvas_y - (@_height - tile_height) + @offset_y
-    @sprite.width = @_width + 1
-    @sprite.height = @_height + 1
-    @sprite.zOrder = -(@sprite.y + @sprite.height - .5 * tile_height)
+  width: (viewport) -> viewport.tile_width + 1
+  height: (viewport) -> Math.ceil(@texture.height * (viewport.tile_width / @texture.width)) + 1
 
-  increment_counter: (tile_info, counter) ->
-    if @use_building_layer
-      counter.building.static += 1
-    else
-      counter.concrete += 1
+  render: (sprite, canvas, viewport) ->
+    width = @width(viewport)
+    height = @height(viewport)
+    offset_y = if @is_platform then Math.round(viewport.tile_size_y(.5625)) else 0
+
+    sprite.visible = true
+    sprite.alpha = 1
+    sprite.x = canvas.x - (width - viewport.tile_width)
+    sprite.y = canvas.y - (height - viewport.tile_height) + offset_y
+    sprite.width = width
+    sprite.height = height
+    sprite.tint = 0xFFFFFF
+    sprite.zOrder = -1 * (sprite.y + sprite.height - .5 * viewport.tile_height)

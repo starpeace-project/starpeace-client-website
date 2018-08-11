@@ -29,7 +29,7 @@ export default class Client
 
     @renderer = new Renderer(@event_listener, @managers, @game_state, @ui_state)
     @camera_manager = new CameraManager(@renderer, @game_state)
-    @input_handler = new InputHandler(@menu_state, @camera_manager, @renderer)
+    @input_handler = new InputHandler(@game_state, @menu_state, @camera_manager, @renderer)
 
     @initialize_callback = null
 

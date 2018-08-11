@@ -2,17 +2,24 @@
 import Sprite from '~/plugins/starpeace-client/renderer/sprite/sprite.coffee'
 
 export default class SpriteTree extends Sprite
-  constructor: (width, height, @sprite) ->
-    super(width, height)
+  @BUFFER_X: .5
+  @BUFFER_Y: .5
 
-  render_sprite: (tile_info, canvas_x, canvas_y, tile_width, tile_height) ->
-    @sprite.visible = true
-    @sprite.x = canvas_x - (@_width - tile_width)
-    @sprite.y = canvas_y - (@_height - tile_height)
-    @sprite.width = @_width + 1
-    @sprite.height = @_height + 1
-    @sprite.tint = if tile_info.is_chunk_data_loaded then 0xFFFFFF else 0x555555
-    @sprite.zOrder = -(@sprite.y + @sprite.height - .5 * tile_height)
+  constructor: (@texture, @has_data) ->
+    super()
 
-  increment_counter: (tile_info, counter) ->
-    counter.tree += 1
+  width: (viewport) -> viewport.tile_width + SpriteTree.BUFFER_X
+  height: (viewport) -> Math.ceil(@texture.height * (viewport.tile_width / @texture.width)) + SpriteTree.BUFFER_Y
+
+  render: (sprite, canvas, viewport) ->
+    width = @width(viewport)
+    height = @height(viewport)
+
+    sprite.visible = true
+    sprite.alpha = 1
+    sprite.x = canvas.x - (width - viewport.tile_width)
+    sprite.y = canvas.y - (height - viewport.tile_height)
+    sprite.width = width
+    sprite.height = height
+    sprite.tint = if @has_data then 0xFFFFFF else 0x555555
+    sprite.zOrder = -1 * (sprite.y + sprite.height - .5 * viewport.tile_height)

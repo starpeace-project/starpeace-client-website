@@ -1,10 +1,12 @@
 
-## v0.3 - in progress - updated 2018-07-29
+## v0.3 - in progress - updated 2018-08-11
 ### platform
 * [done] improved building rendering around edges [v0.2.1]
 * [done] improved z-order rendering across layers [v0.2.2]
 * [done] fix broken z-order rendering for buildings, trees, tree concrete, and platforms [v0.2.7]
+* [in progress] sprite layer render refactor and fixes, caching optimizations [v0.2.7]
 * [pending] input interaction support for buildings (selection, rendering)
+* [pending] dynamic layouts (desktop, tablet, mobile)
 
 ### assets
 * [done] improved gameplay documentation [v0.2.4]

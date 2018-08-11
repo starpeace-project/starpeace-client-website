@@ -5,15 +5,22 @@ global FPSMeter
 global PIXI
 ###
 
+import ChunkMap from '~/plugins/starpeace-client/map/chunk/chunk-map.coffee'
 import GameMap from '~/plugins/starpeace-client/map/game-map.coffee'
 import Viewport from '~/plugins/starpeace-client/renderer/camera/viewport.coffee'
-import Layers from '~/plugins/starpeace-client/renderer/layers.coffee'
+import Layers from '~/plugins/starpeace-client/renderer/layer/layers.coffee'
 
-class Renderer
+export default class Renderer
   constructor: (@event_listener, @managers, @game_state, @ui_state) ->
     @initialized = false
 
-    @event_listener.subscribe_map_data_listener (chunk_event) => @layers.needs_refresh = true if @layers?
+    @event_listener.subscribe_map_data_listener (chunk_event) =>
+      if @layers?.tile_item_cache?
+        source_x = (chunk_event.info.chunk_x - 0) * ChunkMap.CHUNK_WIDTH - 10
+        target_x = (chunk_event.info.chunk_x + 1) * ChunkMap.CHUNK_WIDTH + 10
+        source_y = (chunk_event.info.chunk_y - 0) * ChunkMap.CHUNK_HEIGHT - 10
+        target_y = (chunk_event.info.chunk_y + 1) * ChunkMap.CHUNK_HEIGHT + 10
+        @layers.tile_item_cache.clear_cache(source_x, target_x, source_y, target_y)
 
   viewport: () ->
     @_viewport = new Viewport(@game_state, @renderer_width, @renderer_height) unless @_viewport?
@@ -91,9 +98,8 @@ class Renderer
     current_time = new Date().getTime()
 
     @update_offset(document?.getElementById('render-container')) unless @offset?
+
     @layers.refresh() if @layers?.should_refresh()
-    @layers?.plane_layer.refresh_sprites()# unless current_time % 10
+    @layers?.refresh_planes()
 
     @fps_meter.tick() if @fps_meter?
-
-export default Renderer

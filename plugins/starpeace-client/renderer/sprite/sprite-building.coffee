@@ -1,30 +1,23 @@
 
-###
-global PIXI
-###
-
 import Sprite from '~/plugins/starpeace-client/renderer/sprite/sprite.coffee'
 
 export default class SpriteBuilding extends Sprite
-  constructor: (width, height, @sprite, @effect_sprites) ->
-    super(width, height)
+  constructor: (@textures, @is_animated, @metadata, @effects) ->
+    super()
 
-  render_sprite: (tile_info, canvas_x, canvas_y, tile_width, tile_height) ->
-    @sprite.visible = true
-    @sprite.x = canvas_x - (@_width - tile_width) * .5
-    @sprite.y = canvas_y - (@_height - tile_height)
-    @sprite.width = @_width + 1
-    @sprite.height = @_height + 1
-    @sprite.zOrder = -(@sprite.y + @sprite.height - @sprite.map_half_height)
+  width: (viewport) -> @metadata.w * viewport.tile_width + 1
+  height: (viewport) -> Math.ceil(@textures[0].height * (@width(viewport) / @textures[0].width)) + 1
 
-    for sprite in @effect_sprites
-      sprite.render_sprite(tile_info, @sprite.x, @sprite.y, tile_width, tile_height)
-      sprite.sprite.zOrder = @sprite.zOrder - 1
+  render: (sprite, canvas, viewport) ->
+    width = @width(viewport)
+    height = @height(viewport)
 
-  increment_counter: (tile_info, counter) ->
-    if @sprite instanceof PIXI.extras.AnimatedSprite
-      counter.building.animated += 1
-    else
-      counter.building.static += 1
+    sprite.visible = true
+    sprite.alpha = 1
+    sprite.x = canvas.x - (width - viewport.tile_width) * .5
+    sprite.y = canvas.y - (height - viewport.tile_height)
+    sprite.width = width
+    sprite.height = height
+    sprite.tint = 0xFFFFFF
 
-    sprite.increment_counter(tile_info, counter) for sprite in @effect_sprites
+    sprite.zOrder = -1 * (sprite.y + sprite.height - Math.round(.5 * @metadata.h * viewport.tile_height))

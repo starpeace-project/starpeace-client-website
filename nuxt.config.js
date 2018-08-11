@@ -93,6 +93,6 @@ module.exports = {
     { src: '~/plugins/fpsmeter', ssr: false },
     { src: '~/plugins/font-awesome', ssr: false },
     { src: '~/plugins/google-analytics', ssr: false },
-    { src: '~/plugins/pixi', ssr: false }
+    { src: '~/plugins/pixi/pixi', ssr: false }
   ]
 }

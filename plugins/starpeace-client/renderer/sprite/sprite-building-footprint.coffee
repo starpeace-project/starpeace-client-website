@@ -1,17 +1,23 @@
 
+import BuildingZone from '~/plugins/starpeace-client/map/types/building-zone.coffee'
+
 import Sprite from '~/plugins/starpeace-client/renderer/sprite/sprite.coffee'
 
 export default class SpriteBuildingFootprint extends Sprite
-  constructor: (width, height, @sprite) ->
-    super(width, height)
+  constructor: (@texture, @metadata, @zone_color) ->
+    super()
 
-  render_sprite: (tile_info, canvas_x, canvas_y, tile_width, tile_height) ->
-    @sprite.visible = true
-    @sprite.alpha = 1
-    @sprite.x = canvas_x - (@_width - tile_width) * .5
-    @sprite.y = canvas_y - (@_height - tile_height)
-    @sprite.width = @_width - 0.25
-    @sprite.height = @_height - 0.25
+  width: (viewport) -> @metadata.w * viewport.tile_width - 0.25
+  height: (viewport) -> Math.ceil(@texture.height * (@width(viewport) / @texture.width)) - 0.25
 
-  increment_counter: (tile_info, counter) ->
-    counter.building_footprint += 1
+  render: (sprite, canvas, viewport) ->
+    width = @width(viewport)
+    height = @height(viewport)
+
+    sprite.visible = true
+    sprite.alpha = 1
+    sprite.x = canvas.x - (width - viewport.tile_width) * .5
+    sprite.y = canvas.y - (height - viewport.tile_height)
+    sprite.width = width
+    sprite.height = height
+    sprite.tint = BuildingZone.TYPES[@metadata.zone]?.color || BuildingZone.TYPES.RESERVED.color

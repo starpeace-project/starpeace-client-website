@@ -3,7 +3,7 @@ ZOOM_DISABLED = false
 AUTO_SCROLL_DISABLED = true
 
 class InputHandler
-  constructor: (@menu_state, @camera_manager, @renderer) ->
+  constructor: (@game_state, @menu_state, @camera_manager, @renderer) ->
     @initialized = false
 
     @is_moving = false
@@ -54,7 +54,7 @@ class InputHandler
       @last_x = event_x
       @last_y = event_y
 
-      @camera_manager.pan_camera(delta_x, delta_y)
+      @camera_manager.pan_camera(delta_x / @game_state.game_scale, delta_y / @game_state.game_scale)
 
     stop_auto_scroll = (event) =>
       clearInterval(@auto_scroll) if @auto_scroll?

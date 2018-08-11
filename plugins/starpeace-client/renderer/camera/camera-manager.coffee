@@ -28,6 +28,6 @@ class CameraManager
     @game_state.view_offset_x += delta_x unless delta_x == 0
     @game_state.view_offset_y += delta_y unless delta_y == 0
 
-    @renderer.layers.needs_refresh = true if @renderer.layers? && (delta_x != 0 || delta_y != 0)
+    @renderer.layers.mark_dirty() if @renderer.layers? && (delta_x != 0 || delta_y != 0)
 
 export default CameraManager

@@ -2,15 +2,18 @@
 import Sprite from '~/plugins/starpeace-client/renderer/sprite/sprite.coffee'
 
 export default class SpriteRoad extends Sprite
-  constructor: (width, height, @sprite) ->
-    super(width, height)
+  constructor: (@texture) ->
+    super()
 
-  render_sprite: (tile_info, canvas_x, canvas_y, tile_width, tile_height) ->
-    @sprite.visible = true
-    @sprite.x = canvas_x - (@_width - tile_width)
-    @sprite.y = canvas_y - (@_height - tile_height)
-    @sprite.width = @_width + 1
-    @sprite.height = @_height + 1
+  width: (viewport) -> viewport.tile_width + 1
+  height: (viewport) -> viewport.tile_height + 1
 
-  increment_counter: (tile_info, counter) ->
-    counter.road += 1
+  render: (sprite, canvas, viewport) ->
+    width = @width(viewport)
+    height = @height(viewport)
+
+    sprite.visible = true
+    sprite.x = canvas.x - (width - viewport.tile_width)
+    sprite.y = canvas.y - (height - viewport.tile_height)
+    sprite.width = width
+    sprite.height = height

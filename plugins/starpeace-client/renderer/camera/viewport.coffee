@@ -46,3 +46,7 @@ export default class Viewport
       x: Math.round((i - j) * @half_tile_width - @tile_width - center.x)
       y: Math.round((i + j) * @half_tile_height - @tile_height - center.y)
     }
+
+  tile_size_x: (percent) -> @tile_width * percent
+  tile_size_y: (percent) -> @tile_height * percent
+  with_scale: (value) -> @game_state.game_scale * value
