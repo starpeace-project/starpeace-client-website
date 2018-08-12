@@ -1,27 +1,26 @@
 <template lang='haml'>
 %no-ssr
   %transition{name:'fade'}
-    #workflow-container.level{'v-show':'is_active'}
-      .level-item
-        .card{'v-bind:style':'workflow_card_style', 'v-bind:class':'workflow_card_class'}
-          .card-header{'v-show':'has_header'}
-            .card-header-title{'v-if':"status == 'pending_planetary_system'"}
-              Planetary Systems
-            .card-header-title.card-header-planet{'v-else-if':"status == 'pending_planet'"}
-              %a{'v-on:click.stop.prevent':'reset_planetary_system()', href: '#'} Planetary Systems
-              &nbsp;/&nbsp;{{ current_planetary_system_name() }}
+    #workflow-container{'v-show':'is_active'}
+      .card{'v-bind:style':'workflow_card_style', 'v-bind:class':'workflow_card_class'}
+        .card-header{'v-show':'has_header'}
+          .card-header-title{'v-if':"status == 'pending_planetary_system'"}
+            Planetary Systems
+          .card-header-title.card-header-planet{'v-else-if':"status == 'pending_planet'"}
+            %a{'v-on:click.stop.prevent':'reset_planetary_system()', href: '#'} Planetary Systems
+            &nbsp;/&nbsp;{{ current_planetary_system_name() }}
 
-          .card-content{'v-bind:style':'workflow_card_content_style'}
-            %menu-loading{'v-show':"status == 'pending_identity_authentication'", message:'Authenticating identity with provider...'}
-            %menu-identity{'v-show':"status == 'pending_identity'", 'v-bind:game_state':'game_state'}
-            %menu-loading{'v-show':"status == 'pending_account'", message:'Authorizing session for identity...'}
+        .card-content{'v-bind:style':'workflow_card_content_style'}
+          %menu-loading{'v-show':"status == 'pending_identity_authentication'", message:'Authenticating identity with provider...'}
+          %menu-identity{'v-show':"status == 'pending_identity'", 'v-bind:game_state':'game_state'}
+          %menu-loading{'v-show':"status == 'pending_account'", message:'Authorizing session for identity...'}
 
-            %menu-loading{'v-show':"status == 'pending_planetary_metadata'", message:'Retrieving planetary information...'}
-            %menu-planetary-system{'v-show':"status == 'pending_planetary_system'", 'v-bind:game_state':'game_state', 'v-bind:planetary_metadata_manager':'planetary_metadata_manager'}
-            %menu-planet{'v-show':"status == 'pending_planet'", 'v-bind:event_listener':'event_listener', 'v-bind:game_state':'game_state', 'v-bind:planetary_metadata_manager':'planetary_metadata_manager'}
+          %menu-loading{'v-show':"status == 'pending_planetary_metadata'", message:'Retrieving planetary information...'}
+          %menu-planetary-system{'v-show':"status == 'pending_planetary_system'", 'v-bind:game_state':'game_state', 'v-bind:planetary_metadata_manager':'planetary_metadata_manager'}
+          %menu-planet{'v-show':"status == 'pending_planet'", 'v-bind:event_listener':'event_listener', 'v-bind:game_state':'game_state', 'v-bind:planetary_metadata_manager':'planetary_metadata_manager'}
 
-            %menu-loading{'v-show':"status == 'pending_assets'", message:'Loading assets and resources...'}
-            %menu-loading{'v-show':"status == 'pending_initialization'", message:'Initializing client environment...'}
+          %menu-loading{'v-show':"status == 'pending_assets'", message:'Loading assets and resources...'}
+          %menu-loading{'v-show':"status == 'pending_initialization'", message:'Initializing client environment...'}
 </template>
 
 <script lang='coffee'>
@@ -75,8 +74,8 @@ export default
     is_active: -> @status != 'ready'
 
     workflow_card_class: -> { 'has-header': @has_header }
-    workflow_card_style: -> { 'width': @max_width, 'max-width': @max_width }
-    workflow_card_content_style: -> { 'width': @max_width }
+    workflow_card_style: -> { 'max-width': @max_width } #'width': @max_width,
+    workflow_card_content_style: -> {  } #'width': @max_width
 
     has_header: -> @status == 'pending_planetary_system' || @status == 'pending_planet'
     max_width: -> STATUS_MAX_WIDTHS[@status]
@@ -100,10 +99,13 @@ export default
   grid-row-start: 2
   grid-row-end: 4
   margin: 0
+  text-align: center
 
 .card
   transition: max-width .5s
   z-index: 1050
+  display: inline-block
+  text-align: left
 
   .card-header-planet
     a

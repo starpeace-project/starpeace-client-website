@@ -1,30 +1,33 @@
 <template lang='haml'>
-.columns
-  .column
-    %ul
-      %li.planet-item{'v-for':'planet in planets_for_system()'}
-        %table.table.planet-table
-          %tbody
-            %tr
-              %td.planet-image{rowspan:5}
-                %img.planet-image.starpeace-logo.logo-loading{'v-bind:src':"planet_animation_url(planet)", 'v-on:load':"$event.target.classList.remove('starpeace-logo', 'logo-loading')"}
-              %td{colspan:3}
-                %h3 {{planet.name}}
-              %td.planet-select{rowspan:5}
-                %a.button.is-primary.is-medium.choose-system{'v-on:click.stop.prevent':'select_planet(planet.id)', href:'#'} Select
-            %tr.planet-info-row
-              %td Population:
-              %td.planet-value {{0}}
-              %td.planet-description{rowspan:4} {{planet_description(planet)}}
-            %tr.planet-info-row
-              %td Investments:
-              %td.planet-value ${{0}}
-            %tr.planet-info-row
-              %td Tycoons:
-              %td.planet-value {{0}}
-            %tr.planet-info-row
-              %td Online:
-              %td.planet-value {{0}}
+%ul
+  %li.planet-item{'v-for':'planet in planets_for_system()'}
+    .columns.planet-column.is-mobile.is-centered.is-marginless.is-vcentered
+      .column.is-narrow.is-hidden-mobile
+        %img.planet-image.starpeace-logo.logo-loading{'v-bind:src':"planet_animation_url(planet)", 'v-on:load':"$event.target.classList.remove('starpeace-logo', 'logo-loading')"}
+
+      .column.planet-info
+        %h3 {{planet.name}}
+        .columns
+          .column.is-paddingless-mobile
+            %ul
+              %li
+                %span Population:
+                %span.planet-value {{0}}
+              %li
+                %span Investments:
+                %span.planet-value {{0}}
+              %li
+                %span Tycoons:
+                %span.planet-value {{0}}
+              %li
+                %span Online:
+                %span.planet-value {{0}}
+
+          .column.is-paddingless-mobile.planet-description {{planet_description(planet)}}
+
+      .column.is-narrow.planet-select
+        %img.planet-image.starpeace-logo.logo-loading.is-hidden-tablet{'v-bind:src':"planet_animation_url(planet)", 'v-on:load':"$event.target.classList.remove('starpeace-logo', 'logo-loading')"}
+        %a.button.is-primary.is-medium.choose-system{'v-on:click.stop.prevent':'select_planet(planet.id)', href:'#'} Select
 </template>
 
 <script lang='coffee'>
@@ -58,11 +61,45 @@ export default
 </script>
 
 <style lang='sass' scoped>
-.columns
-  margin: 0
+@import '~bulma/sass/utilities/_all'
 
-  .column
-    padding: 0
+.planet-image
+  +mobile
+    width: 20vw
+
+  +tablet
+    width: 7.5rem
+
+  &.starpeace-logo
+    +mobile
+      background-size: 20vw
+      height: 20vw
+      width: 20vw
+
+    +tablet
+      background-size: 7.5rem
+      height: 7.5rem
+      width: 7.5rem
+
+.planet-description
+  border: 0
+  font-size: 1rem
+  vertical-align: top
+
+  +tablet
+    max-width: 10rem
+    padding-left: 1.5rem
+
+.planet-select
+  max-width: 10rem
+  padding-left: 1rem
+  text-align: center
+
+  +tablet
+    width: 10rem
+
+  .planet-image
+    padding-bottom: 2rem
 
 .planet-item
   background-color: opacify(lighten(#395950, 1%), .3)
@@ -72,47 +109,18 @@ export default
   &:not(:first-child)
     margin-top: .25rem
 
-.planet-table
-  background-color: transparent
+.planet-info
   color: #fff
-  margin: 0
-  width: 100%
+  font-size: 1rem
 
-  tr
-    &:first-child
-      td
-        border: 0
+  li
+    border-bottom: 1px solid #CCC
+    padding-bottom: .25rem
 
-    &.planet-info-row
-      font-size: 1rem
-
-  td
-    padding: .25rem
-    vertical-align: middle
-
-    &.planet-image
-      padding: .5rem 1.5rem 0 1rem
-      text-align: center
-      width: 10rem
-
-      .starpeace-logo
-        background-size: 7.5rem
-        height: 7.5rem
-        width: 7.5rem
+    &:not(:last-child)
+      margin-bottom: .25rem
 
   .planet-value
-    text-align: right
+    float: right
 
-  .planet-description
-    border: 0
-    max-width: 10rem
-    font-size: 1rem
-    padding-left: 1.5rem
-    vertical-align: top
-
-  .planet-select
-    max-width: 10rem
-    padding-left: 1rem
-    text-align: center
-    width: 10rem
 </style>

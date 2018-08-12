@@ -45,10 +45,15 @@ body
       display: inline-block
       width: 100%
 
+  &.no-header
+    @media screen and (max-width: 768px)
+      grid-template-rows: calc(1rem) auto 3rem 15.5rem
+
   #application-body
     grid-column-start: 1
     grid-column-end: 4
     grid-row-start: 2
     grid-row-end: 2
     margin: 0
+
 </style>

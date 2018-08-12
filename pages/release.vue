@@ -17,8 +17,8 @@
 </template>
 
 <script lang='coffee'>
-import Header from '~/components/header-panel.vue'
-import Footer from '~/components/footer-panel.vue'
+import Header from '~/components/header/header-panel.vue'
+import Footer from '~/components/footer/footer-panel.vue'
 
 export default
   components:
@@ -33,6 +33,4 @@ export default
 <style lang='sass' scoped>
 .notes-container
   margin-top: 1rem
-
-
 </style>

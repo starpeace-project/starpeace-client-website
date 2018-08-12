@@ -34,7 +34,7 @@
         %li
           %font-awesome-icon.fa-li{':icon':"['fas', 'check']"}
           Build an Empire!
-      %a.button.is-medium.is-info.login{href:'/login.html'} Tycoon Visa
+      %a.button.is-medium.is-info.login{disabled:'disabled'} Tycoon Visa
 </template>
 
 <script lang='coffee'>
@@ -48,6 +48,8 @@ export default
 </script>
 
 <style lang='sass' scoped>
+@import '~bulma/sass/utilities/_all'
+
 .welcome-message
   border-bottom: 1px solid #6ea192
   color: #fff
@@ -69,7 +71,12 @@ export default
   text-align: center
 
   &:first-child
-    border-right: 1px solid #6ea192
+    +mobile
+      border-bottom: 1px solid #6ea192
+      padding-bottom: 2rem
+
+    +tablet
+      border-right: 1px solid #6ea192
 
   h3
     color: #fff

@@ -5,8 +5,8 @@
 * [done] improved z-order rendering across layers [v0.2.2]
 * [done] fix broken z-order rendering for buildings, trees, tree concrete, and platforms [v0.2.7]
 * [done] sprite layer render refactor and fixes, caching optimizations [v0.2.7]
+* [in progress] dynamic layouts (desktop, mobile) [v0.2.8]
 * [pending] input interaction support for buildings (selection, rendering)
-* [in progress] dynamic layouts (desktop, tablet, mobile)
 
 ### assets
 * [done] improved gameplay documentation [v0.2.4]
