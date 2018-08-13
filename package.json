@@ -1,8 +1,8 @@
 {
-  "name": "starpeace-website-client",
+  "name": "@starpeace/starpeace-website-client",
   "version": "0.2.7",
   "description": "Client website application for STARPEACE multiplayer economic simulation",
-  "author": "ronappleton",
+  "author": "starpeace-project",
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=development PORT=11010 nuxt",
@@ -13,7 +13,7 @@
     "precommit": "npm run lint"
   },
   "dependencies": {
-    "nuxt": "^1.0.0"
+    "nuxt": "^1.4.2"
   },
   "devDependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.0",
@@ -38,10 +38,10 @@
     "marked": "^0.4.0",
     "moment": "^2.22.2",
     "moment-timezone": "^0.5.21",
-    "node-sass": "^4.9.0",
+    "node-sass": "^4.9.3",
     "pixi-layers": "^0.1.9",
     "pixi.js": "^4.8.1",
-    "sass-loader": "^7.0.3",
+    "sass-loader": "^7.1.0",
     "tinygradient": "^0.4.0"
   }
 }
