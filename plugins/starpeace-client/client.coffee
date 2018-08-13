@@ -11,6 +11,8 @@ import GameState from '~/plugins/starpeace-client/state/game-state.coffee'
 import MenuState from '~/plugins/starpeace-client/state/menu-state.coffee'
 import UIState from '~/plugins/starpeace-client/state/ui-state.coffee'
 
+import MusicManager from '~/plugins/starpeace-client/sound/music-manager.coffee'
+
 import Renderer from '~/plugins/starpeace-client/renderer/renderer.coffee'
 import CameraManager from '~/plugins/starpeace-client/renderer/camera/camera-manager.coffee'
 import InputHandler from '~/plugins/starpeace-client/renderer/input/input-handler.coffee'
@@ -26,6 +28,7 @@ export default class Client
     @ui_state = new UIState()
 
     @managers = new Managers(@event_listener, @game_state, @ui_state)
+    @music_manager = new MusicManager(@game_state)
 
     @renderer = new Renderer(@event_listener, @managers, @game_state, @ui_state)
     @camera_manager = new CameraManager(@renderer, @game_state)

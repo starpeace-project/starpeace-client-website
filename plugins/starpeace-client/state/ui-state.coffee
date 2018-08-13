@@ -1,12 +1,13 @@
 
 import Overlay from '~/plugins/starpeace-client/map/types/overlay.coffee'
 
-class UIState
+export default class UIState
   constructor: () ->
     @event_ticker_message = ''
 
     @saved_show_header = @show_header = true
     @saved_show_fps = @show_fps = true
+    @saved_game_music = @game_music = false
 
     @show_overlay = false
     @current_overlay = Overlay.TYPES.TOWNS
@@ -25,6 +26,7 @@ class UIState
   load_state: () ->
     show_header = localStorage.getItem('options.show_header')
     show_fps = localStorage.getItem('options.show_fps')
+    game_music = localStorage.getItem('options.game_music')
 
     render_trees = localStorage.getItem('options.render_trees')
     render_buildings = localStorage.getItem('options.render_buildings')
@@ -32,8 +34,9 @@ class UIState
     render_building_effects = localStorage.getItem('options.render_building_effects')
     render_planes = localStorage.getItem('options.render_planes')
 
-    @saved_show_header = @show_header = !show_header? || show_header == 'true'
-    @saved_show_fps = @show_fps = !show_fps? || show_fps == 'true'
+    @saved_show_header = @show_header = show_header == 'true'
+    @saved_show_fps = @show_fps = show_fps == 'true'
+    @saved_game_music = @game_music = game_music == 'true'
 
     @saved_render_trees = @render_trees = !render_trees? || render_trees == 'true'
     @saved_render_buildings = @render_buildings = !render_buildings? || render_buildings == 'true'
@@ -44,6 +47,7 @@ class UIState
   reset_state: () ->
     localStorage.removeItem('options.show_header')
     localStorage.removeItem('options.show_fps')
+    localStorage.removeItem('options.game_music')
 
     localStorage.removeItem('options.render_trees')
     localStorage.removeItem('options.render_buildings')
@@ -53,6 +57,7 @@ class UIState
 
     @show_header = true
     @show_fps = true
+    @game_music = false
 
     @render_trees = true
     @render_buildings = true
@@ -63,6 +68,7 @@ class UIState
   save_state: () ->
     localStorage.setItem('options.show_header', @show_header.toString())
     localStorage.setItem('options.show_fps', @show_fps.toString())
+    localStorage.setItem('options.game_music', @game_music.toString())
 
     localStorage.setItem('options.render_trees', @render_trees.toString())
     localStorage.setItem('options.render_buildings', @render_buildings.toString())
@@ -72,6 +78,7 @@ class UIState
 
     @saved_show_header = @show_header
     @saved_show_fps = @show_fps
+    @saved_game_music = @game_music
 
     @saved_render_trees = @render_trees
     @saved_render_buildings = @render_buildings
@@ -92,5 +99,3 @@ class UIState
     else
       @show_overlay = false
       @show_zones = true
-
-export default UIState

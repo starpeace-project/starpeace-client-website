@@ -4396,6 +4396,12 @@
       "resolved": "https://registry.npmjs.org/hosted-git-info/-/hosted-git-info-2.6.0.tgz",
       "integrity": "sha512-lIbgIIQA3lz5XaB6vxakj6sDHADJiZadYEJB+FgA+C4nubM1NwcuvUr9EJPmnH1skZqpqUzWborWo8EIUi0Sdw=="
     },
+    "howler": {
+      "version": "2.0.14",
+      "resolved": "https://registry.npmjs.org/howler/-/howler-2.0.14.tgz",
+      "integrity": "sha512-U2ao6mRaPjjzOtwQTDA2OMk9ftQ+k+CrdaBrSIxcO6artSNBtK4kwdx8vUoajMvv6vGZWYiQOmBYnffOFWHt7w==",
+      "dev": true
+    },
     "html-comment-regex": {
       "version": "1.1.1",
       "resolved": "https://registry.npmjs.org/html-comment-regex/-/html-comment-regex-1.1.1.tgz",

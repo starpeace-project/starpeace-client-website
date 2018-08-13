@@ -43,6 +43,8 @@ class GameState
     @current_planet = null
     # FIXME: TODO: consider loading state from url parameters (planet_id)
 
+    @game_music_playing = false
+    @game_music_volume = true
 
     @view_offset_x = 3600
     @view_offset_y = 4250

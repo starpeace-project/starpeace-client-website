@@ -76,6 +76,15 @@ sp-primary-color<template lang='haml'>
                 .level-item.client-version
                   %a{'v-bind:class':'menu_class_release_notes', 'v-on:click.stop.prevent':'menu_state.toggle_menu_release_notes()'} {{client_version}}
 
+                .level-item.game-music.sp-primary-color{'v-bind:class':'game_music_class', 'v-show':"ui_state.game_music"}
+                  %font-awesome-icon{':icon':"['fas', 'play']", 'v-show':'!game_state.game_music_playing', 'v-on:click.stop.prevent':'toggle_game_music()'}
+                  %font-awesome-icon{':icon':"['fas', 'pause']", 'v-show':'game_state.game_music_playing', 'v-on:click.stop.prevent':'toggle_game_music()'}
+                .level-item.game-music-next.sp-primary-color{'v-bind:class':'game_music_volume_class', 'v-show':"ui_state.game_music"}
+                  %font-awesome-icon{':icon':"['fas', 'fast-forward']", 'v-on:click.stop.prevent':'toggle_next_game_music()'}
+                .level-item.game-music-volume.sp-primary-color{'v-bind:class':'game_music_volume_class', 'v-show':"ui_state.game_music"}
+                  %font-awesome-icon{':icon':"['fas', 'volume-up']", 'v-show':'game_state.game_music_volume', 'v-on:click.stop.prevent':'toggle_game_music_volume()'}
+                  %font-awesome-icon{':icon':"['fas', 'volume-off']", 'v-show':'!game_state.game_music_volume', 'v-on:click.stop.prevent':'toggle_game_music_volume()'}
+
                 .level-item.notification-mail.sp-primary-color
                   %font-awesome-icon{':icon':"['far', 'envelope']"}
 
@@ -110,6 +119,7 @@ export default
     menu_state: Object
     ui_state: Object
     camera_manager: Object
+    music_manager: Object
 
   data: ->
     client_version: process.env.CLIENT_VERSION
@@ -131,11 +141,17 @@ export default
     menu_class_help: -> { 'is-active': @menu_state?.main_menu == 'help' }
     menu_class_release_notes: -> { 'is-active': @menu_state?.show_menu_release_notes || false }
 
+    game_music_class: -> if @game_state.game_music_playing then 'music-pause' else 'music-play'
+    game_music_volume_class: -> if @game_state.game_music_volume then 'music-volume' else 'music-mute'
+
     notification_loading_css_class: -> { 'ajax-loading': (@game_state?.ajax_requests || 0) > 0 }
 
   methods:
     toggle_zones: -> @ui_state.show_zones = !@ui_state.show_zones
 
+    toggle_game_music: -> @music_manager.toggle_music()
+    toggle_next_game_music: -> @music_manager.next_song()
+    toggle_game_music_volume: -> @music_manager.toggle_volume()
 </script>
 
 <style lang='sass' scoped>
@@ -299,6 +315,27 @@ export default
             &.is-active
               color: #6ea192
               opacity: 1
+
+        .game-music
+          font-size: 1.2rem
+          margin-left: 1.5rem
+
+          &.music-pause
+            opacity: .5
+
+          &.music-play
+            opacity: .8
+
+        .game-music-next
+          font-size: 1.5rem
+          margin-left: .75rem
+          opacity: .5
+
+        .game-music-volume
+          font-size: 1.5rem
+          margin-left: .5rem
+          min-width: 1.75rem
+          opacity: .5
 
         .notification-mail
           font-size: 1.5rem

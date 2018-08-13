@@ -10,9 +10,12 @@ import {
   faAngleUp,
   faCheck,
   faCogs,
+  faFastForward,
   faGlobe,
   faMapPin,
   faMinus,
+  faPause,
+  faPlay,
   faPlus,
   faRedoAlt,
   faTimes,
@@ -20,13 +23,15 @@ import {
   faToggleOn,
   faUndoAlt,
   faUserSecret,
-  faUserTie
+  faUserTie,
+  faVolumeOff,
+  faVolumeUp
 } from '@fortawesome/free-solid-svg-icons'
 import { faDiscord, faGithub, faTwitter } from '@fortawesome/free-brands-svg-icons'
 
-library.add(faAngleUp, faBuilding, faCheck, faCogs, faComments, faEnvelope, faEye,
-  faGlobe, faMapPin, faMinus, faPlus, faRedoAlt, faTimes, faToggleOff, faToggleOn,
-  faUndoAlt, faQuestionCircle, faUserSecret, faUserTie, faDiscord, faGithub, faTwitter)
+library.add(faAngleUp, faBuilding, faCheck, faCogs, faComments, faDiscord, faEnvelope, faEye, faFastForward,
+  faGithub, faGlobe, faMapPin, faMinus, faPause, faPlay, faPlus, faRedoAlt, faTimes, faToggleOff, faToggleOn,
+  faUndoAlt, faQuestionCircle, faTwitter, faUserSecret, faUserTie, faVolumeOff, faVolumeUp)
 
 
 import Vue from 'vue'
