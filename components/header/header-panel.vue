@@ -22,7 +22,7 @@
       %font-awesome-icon{':icon':"['fab', 'discord']"}
     %a.twitter{href: 'https://twitter.com/starpeace_io', target:'_blank'}
       %font-awesome-icon{':icon':"['fab', 'twitter']"}
-    %a.github{href: 'https://github.com/ronappleton/starpeace-website-client', target:'_blank'}
+    %a.github{href: 'https://github.com/starpeace-project/starpeace-website-client', target:'_blank'}
       %font-awesome-icon{':icon':"['fab', 'github']"}
 </template>
 

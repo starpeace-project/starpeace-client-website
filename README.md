@@ -1,7 +1,7 @@
 
 # starpeace-website-client
 
-[![Build Status](https://travis-ci.org/ronappleton/starpeace-website-client.svg)](https://travis-ci.org/ronappleton/starpeace-website-client)
+[![Build Status](https://travis-ci.org/starpeace-project/starpeace-website-client.svg)](https://travis-ci.org/starpeace-project/starpeace-website-client)
 
 Client website for [STARPEACE](https://www.starpeace.io), including webgl game client, client-side gameplay logic, and user interface controls.
 
@@ -15,7 +15,7 @@ Development and gameplay roadmap can be found in [RELEASE.md](./RELEASE.md).
 
 ## Security Vulnerabilities
 
-If you discover a security vulnerability within the STARPEACE website, please send an e-mail to security@starpeace.io or open a [GitHub issue](https://github.com/ronappleton/starpeace-website-client/issues). All security vulnerabilities will be promptly addressed.
+If you discover a security vulnerability within the STARPEACE website, please send an e-mail to security@starpeace.io or open a [GitHub issue](https://github.com/starpeace-project/starpeace-website-client/issues). All security vulnerabilities will be promptly addressed.
 
 ## Development
 
@@ -27,7 +27,7 @@ Local development can be accomplished in a few commands. The following build-tim
 Retrieve copy of repository and navigate to root:
 
 ```
-$ git clone https://github.com/ronappleton/starpeace-website-client.git
+$ git clone https://github.com/starpeace-project/starpeace-website-client.git
 $ cd starpeace-website-client
 ```
 
