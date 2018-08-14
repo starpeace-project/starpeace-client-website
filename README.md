@@ -2,6 +2,7 @@
 # starpeace-website-client
 
 [![Build Status](https://travis-ci.org/starpeace-project/starpeace-website-client.svg)](https://travis-ci.org/starpeace-project/starpeace-website-client)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Client website for [STARPEACE](https://www.starpeace.io), including webgl game client, client-side gameplay logic, and user interface controls.
 
@@ -55,4 +56,4 @@ After building repository, website is compiled into static resources within the 
 
 ## License
 
-STARPEACE website is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+starpeace-website-client is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)

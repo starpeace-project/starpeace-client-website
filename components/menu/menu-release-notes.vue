@@ -6,7 +6,6 @@
         Release Notes
       .card-header-icon.card-close{'v-on:click.stop.prevent':'menu_state.toggle_menu_release_notes()'}
         %font-awesome-icon{':icon':"['fas', 'times']"}
-
     .card-content.release-notes
       .card-description
         Visit the
