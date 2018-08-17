@@ -8,26 +8,28 @@ import LayerCache from '~/plugins/starpeace-client/renderer/layer/layer-cache.co
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 
 export default class LayerManager
+  @MAX_PARTICLES: 65536
+
   constructor: (options) ->
-    @land_container = new PIXI.particles.ParticleContainer(32768, { tint: true, uvs: true, vertices: true })
+    @land_container = new PIXI.particles.ParticleContainer(LayerManager.MAX_PARTICLES, { tint: true, uvs: true, vertices: true })
     @land_container.zIndex = 0
-    @land_sprite_cache = new LayerCache(@land_container, null, 32768, false)
+    @land_sprite_cache = new LayerCache(@land_container, null, LayerManager.MAX_PARTICLES, false)
 
-    @concrete_container = new PIXI.particles.ParticleContainer(32768, { uvs: true, vertices: true })
+    @concrete_container = new PIXI.particles.ParticleContainer(LayerManager.MAX_PARTICLES, { uvs: true, vertices: true })
     @concrete_container.zIndex = 0
-    @concrete_sprite_cache = new LayerCache(@concrete_container, null, 32768, false)
+    @concrete_sprite_cache = new LayerCache(@concrete_container, null, LayerManager.MAX_PARTICLES, false)
 
-    @underlay_container = new PIXI.particles.ParticleContainer(32768, { tint: true, vertices: true })
+    @underlay_container = new PIXI.particles.ParticleContainer(LayerManager.MAX_PARTICLES, { tint: true, vertices: true })
     @underlay_container.zIndex = 1
-    @underlay_sprite_cache = new LayerCache(@underlay_container, null, 32768, false)
+    @underlay_sprite_cache = new LayerCache(@underlay_container, null, LayerManager.MAX_PARTICLES, false)
 
-    @road_container = new PIXI.particles.ParticleContainer(32768, { uvs: true, vertices: true })
+    @road_container = new PIXI.particles.ParticleContainer(LayerManager.MAX_PARTICLES, { uvs: true, vertices: true })
     @road_container.zIndex = 2
-    @road_sprite_cache = new LayerCache(@road_container, null, 32768, false)
+    @road_sprite_cache = new LayerCache(@road_container, null, LayerManager.MAX_PARTICLES, false)
 
-    @foundation_container = new PIXI.particles.ParticleContainer(32768, { tint: true, uvs: true, vertices: true })
+    @foundation_container = new PIXI.particles.ParticleContainer(LayerManager.MAX_PARTICLES, { tint: true, uvs: true, vertices: true })
     @foundation_container.zIndex = 2
-    @foundation_sprite_cache = new LayerCache(@foundation_container, null, 32768, false)
+    @foundation_sprite_cache = new LayerCache(@foundation_container, null, LayerManager.MAX_PARTICLES, false)
 
     @with_height_container = new PIXI.Container()
     @with_height_container.zIndex = 3
@@ -35,9 +37,9 @@ export default class LayerManager
     @with_height_static_sprite_cache = new LayerCache(@with_height_container, @with_height_zorder_layer, 0, false)
     @with_height_animated_sprite_cache = new LayerCache(@with_height_container, @with_height_zorder_layer, 0, true)
 
-    @overlay_container = new PIXI.particles.ParticleContainer(32768, { tint: true, vertices: true })
+    @overlay_container = new PIXI.particles.ParticleContainer(LayerManager.MAX_PARTICLES, { tint: true, vertices: true })
     @overlay_container.zIndex = 4
-    @overlay_sprite_cache = new LayerCache(@overlay_container, null, 32768, false)
+    @overlay_sprite_cache = new LayerCache(@overlay_container, null, LayerManager.MAX_PARTICLES, false)
 
     @plane_container = new PIXI.Container()
     @plane_container.zIndex = 5

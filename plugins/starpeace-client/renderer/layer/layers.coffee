@@ -68,7 +68,7 @@ export default class Layers
       j = j_start - n
       while j < (j_start + m)
         if j > 0 && j < @game_state.game_map.height && x > 0 && x < @game_state.game_map.width
-          tile_item = @tile_item_cache.cache_item(@game_state.game_map.info_for_tile(x, j), x, j, viewport)
+          tile_item = @tile_item_cache.cache_item(x, j)
           @layer_manager.render_tile_item(render_state, tile_item, viewport.iso_to_canvas(x, j, view_center), viewport) if tile_item?
 
         j += 1

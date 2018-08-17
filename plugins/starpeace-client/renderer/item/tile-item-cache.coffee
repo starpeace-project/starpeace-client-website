@@ -57,9 +57,11 @@ export default class TileItemCache
 
     @is_dirty = true
 
-  cache_item: (tile_info, x, y) ->
+  cache_item: (x, y) ->
+    return @tile_items[y * @game_state.game_map.width + x] if @tile_items[y * @game_state.game_map.width + x]?
+    tile_info = @game_state.game_map.info_for_tile(x, y)
     is_building_root_tile = tile_info.building_info? && tile_info.building_info.x == x && tile_info.building_info.y == y
-    @tile_items[y * @game_state.game_map.width + x] ||= new TileItem(tile_info, x, y, {
+    @tile_items[y * @game_state.game_map.width + x] = new TileItem(tile_info, x, y, {
         land: @land_sprite_info_for(tile_info)
         concrete: @concrete_sprite_info_for(tile_info)
         road: @road_sprite_info_for(tile_info)

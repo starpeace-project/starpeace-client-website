@@ -54,6 +54,10 @@ $ npm run dev
 
 After building repository, website is compiled into static resources within the ```/dist/``` folder. These resources should be served as static assets from web application and can be cached if desired.
 
+### client.starpeace.io
+
+Repository is currently deployed to and hosted with AWS S3. Changes pushed to repository will activate webhook to AWS CodePipeline, triggering automatic rebuild and deployment of website resources.
+
 ## License
 
 starpeace-website-client is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)

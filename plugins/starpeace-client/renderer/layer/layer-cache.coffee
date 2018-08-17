@@ -20,6 +20,7 @@ export default class LayerCache
     return unless count < @sprite_count
 
     for index in [count...@sprite_count]
+      break unless @sprite_pool[index]
       @sprite_pool[index].visible = false
       @sprite_pool[index].x = -1000
       @sprite_pool[index].y = -1000

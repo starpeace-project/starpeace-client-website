@@ -3,14 +3,16 @@
 ###
 
 class CameraManager
+  @MIN_ZOOM: .25
+  @MAX_ZOOM: 1.5
 
   constructor: (@renderer, @game_state) ->
 
   adjust_scale: (delta) ->
     # before_scale = @client.game_state.game_scale
     @game_state.game_scale -= delta
-    @game_state.game_scale = 1.5 if @game_state.game_scale > 1.5
-    @game_state.game_scale = 0.5 if @game_state.game_scale < 0.5
+    @game_state.game_scale = CameraManager.MAX_ZOOM if @game_state.game_scale > CameraManager.MAX_ZOOM
+    @game_state.game_scale = CameraManager.MIN_ZOOM if @game_state.game_scale < CameraManager.MIN_ZOOM
 
     @renderer.viewport().refresh()
 
