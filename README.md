@@ -1,8 +1,12 @@
 
 # starpeace-website-client
 
+[![GitHub release](https://img.shields.io/github/release/starpeace-project/starpeace-website-client.svg)](https://github.com/starpeace-project/starpeace-website-client/releases/)
 [![Build Status](https://travis-ci.org/starpeace-project/starpeace-website-client.svg)](https://travis-ci.org/starpeace-project/starpeace-website-client)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![GitHub license](https://img.shields.io/github/license/starpeace-project/starpeace-website-client.svg)](https://github.com/starpeace-project/starpeace-website-client/blob/master/LICENSE)
+[![GitHub issues](https://img.shields.io/github/issues/starpeace-project/starpeace-website-client.svg)](https://github.com/starpeace-project/starpeace-website-client/issues)
+[![GitHub stars](https://img.shields.io/github/stars/starpeace-project/starpeace-website-client.svg)](https://github.com/starpeace-project/starpeace-website-client/stargazers)
+![Twitter Follow](https://img.shields.io/twitter/follow/starpeace_io.svg?style=social&label=Follow)
 
 Client website for [STARPEACE](https://www.starpeace.io), including webgl game client, client-side gameplay logic, and user interface controls.
 
