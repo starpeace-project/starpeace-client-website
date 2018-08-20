@@ -4,8 +4,11 @@ global PIXI
 ###
 
 export default class AssetManager
+  @CDN_URL: 'https://cdn.starpeace.io'
+  @CDN_VERSION: 'a0d01716446cba3dfd50da3e56339079'
+
   constructor: (@game_state) ->
-    PIXI.loader.baseUrl = "https://cdn.starpeace.io"
+    PIXI.loader.baseUrl = "#{AssetManager.CDN_URL}/#{AssetManager.CDN_VERSION}"
     PIXI.loader.onProgress.add (e) =>
       @loading_progress = e.progress
 

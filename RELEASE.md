@@ -16,6 +16,7 @@
 * [done] concrete and platform assets [v0.2.6]
 * [done] road and bridge assets [v0.2.7]
 * [done] game background music [v0.2.8]
+* [done] formal asset versioning [v0.2.9]
 
 ### gameplay
 * [done] persist client options in localStorage [v0.2.3]

@@ -1,14 +1,15 @@
 
+import AssetManager from '~/plugins/starpeace-client/manager/asset-manager.coffee'
+
 import { Howl, Howler } from 'howler'
 
 export default class MusicManager
-  @CDN_URL: 'https://cdn.starpeace.io'
-  @MUSIC_MP3: ['music.intro.mp3', 'music.inmap1.mp3', 'music.inmap3.mp3', 'music.inmap2.mp3','music.inmap4.mp3'] # 1 & 2 similar
+  @MUSIC_MP3: ['music.intro.mp3', 'music.inmap1.mp3', 'music.inmap3.mp3', 'music.inmap2.mp3','music.inmap4.mp3'] # inmap1 & inmap2 similar
 
   constructor: (@game_state) ->
     @music_index = Math.floor(Math.random() * MusicManager.MUSIC_MP3.length)
     @music = MusicManager.MUSIC_MP3.map (item) => new Howl({
-      src: "#{MusicManager.CDN_URL}/#{item}"
+      src: "#{AssetManager.CDN_URL}/#{AssetManager.CDN_VERSION}/#{item}"
       autoplay: false
       html5: true
       loop: false

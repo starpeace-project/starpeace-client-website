@@ -46,7 +46,7 @@ export default
       @event_listener.notify_planet_listeners()
       window.document.title = "#{@game_state.current_planet.name} - STARPEACE" if window?.document?
 
-    planet_animation_url: (planet) -> "https://cdn.starpeace.io/planet.#{planet.id}.animation.gif"
+    planet_animation_url: (planet) -> "https://cdn.starpeace.io/animations/planet.#{planet.id}.animation.gif"
     planet_description: (planet) ->
       size = if planet.width < 1000 then 'Small' else if planet.width > 1000 then 'Large' else 'Average'
       seasons = if planet.temperature_baseline < 50 then 'only cold' else if planet.temperature_baseline > 50 then 'only hot' else 'average'
