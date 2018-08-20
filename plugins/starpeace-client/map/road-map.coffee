@@ -65,9 +65,9 @@ export default class RoadMap
         index_w = index - 1
 
         is_water = @ground_map.is_water_at(x, y)
-        is_concrete_around = @concrete_map.is_concrete_around(x, y)
         is_concrete = @concrete_map.is_concrete_at(x, y)
         is_concrete_edge = !is_concrete && @concrete_map.is_concrete_edge_at(x, y)
+        is_concrete_around = @concrete_map.is_concrete_around(x, y) && !@ground_map.is_coast_at(x, y)
         road_type = @determine_road_by_neighbors(is_water, is_concrete_around, has_n && @road_buffer[index_n] == true, has_s && @road_buffer[index_s] == true,
             has_e && @road_buffer[index_e] == true, has_w && @road_buffer[index_w] == true)
 
@@ -101,7 +101,8 @@ export default class RoadMap
           @road_info[index].type = Road.TYPES.CITY_E_COUNTRY_W if @road_info[index].type == Road.TYPES.EW && has_e && @road_info[index_e]?.is_city
           @road_info[index].type = Road.TYPES.CITY_W_COUNTRY_E if @road_info[index].type == Road.TYPES.EW && has_w && @road_info[index_w]?.is_city
 
-        @road_info[index_n].type = Road.TYPES.BRIDGE_N_RAMP if @road_info[index].type == Road.TYPES.NS && !@road_info[index]?.is_over_water && has_n && @road_info[index_n]?.type == Road.TYPES.BRIDGE_NS
-        @road_info[index_s].type = Road.TYPES.BRIDGE_S_RAMP if @road_info[index].type == Road.TYPES.NS && !@road_info[index]?.is_over_water && has_s && @road_info[index_s]?.type == Road.TYPES.BRIDGE_NS
-        @road_info[index_e].type = Road.TYPES.BRIDGE_E_RAMP if @road_info[index].type == Road.TYPES.EW && !@road_info[index]?.is_over_water && has_e && @road_info[index_e]?.type == Road.TYPES.BRIDGE_EW
-        @road_info[index_w].type = Road.TYPES.BRIDGE_W_RAMP if @road_info[index].type == Road.TYPES.EW && !@road_info[index]?.is_over_water && has_w && @road_info[index_w]?.type == Road.TYPES.BRIDGE_EW
+        unless @road_info[index]?.is_over_water
+          @road_info[index_n].type = Road.TYPES.BRIDGE_N_RAMP if @road_info[index].type == Road.TYPES.NS && has_n && @road_info[index_n]?.type == Road.TYPES.BRIDGE_NS
+          @road_info[index_s].type = Road.TYPES.BRIDGE_S_RAMP if @road_info[index].type == Road.TYPES.NS && has_s && @road_info[index_s]?.type == Road.TYPES.BRIDGE_NS
+          @road_info[index_e].type = Road.TYPES.BRIDGE_E_RAMP if @road_info[index].type == Road.TYPES.EW && has_e && @road_info[index_e]?.type == Road.TYPES.BRIDGE_EW
+          @road_info[index_w].type = Road.TYPES.BRIDGE_W_RAMP if @road_info[index].type == Road.TYPES.EW && has_w && @road_info[index_w]?.type == Road.TYPES.BRIDGE_EW

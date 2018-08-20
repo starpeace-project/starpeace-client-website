@@ -58,7 +58,7 @@ export default class ConcreteMap
       for x in [source_x...target_x]
         index = y * @width + x
         @concrete_fill_types[index] = @building_map.tile_info_concrete[index]
-        continue if @concrete_fill_types[index] == Concrete.FILL_TYPE.NO_FILL || @concrete_fill_types[index] == Concrete.FILL_TYPE.FILLED
+        @concrete_fill_types[index] = Concrete.FILL_TYPE.NO_FILL if @ground_map.is_coast_at(x, y)
 
   fill_concrete_gaps: (source_x, target_x, source_y, target_y) ->
     did_change = false

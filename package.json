@@ -1,6 +1,6 @@
 {
   "name": "@starpeace/starpeace-website-client",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "description": "Client website application for STARPEACE multiplayer economic simulation",
   "author": "starpeace-project",
   "private": true,
