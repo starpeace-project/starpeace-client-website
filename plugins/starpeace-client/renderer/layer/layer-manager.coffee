@@ -101,7 +101,7 @@ export default class LayerManager
       foundation = @foundation_sprite_cache.new_sprite(render_state, { texture:tile_item.sprite_info.foundation.texture })
       tile_item.sprite_info.foundation.render(foundation, canvas, viewport)
 
-    if false && tile_item.sprite_info.building?.within_canvas(canvas, viewport)
+    if tile_item.sprite_info.building?.within_canvas(canvas, viewport)
       sprite_cache = if tile_item.sprite_info.building.is_animated then @with_height_animated_sprite_cache else @with_height_static_sprite_cache
       building = sprite_cache.new_sprite(render_state, { textures:tile_item.sprite_info.building.textures, speed:.15 })
       tile_item.sprite_info.building.render(building, canvas, viewport)
