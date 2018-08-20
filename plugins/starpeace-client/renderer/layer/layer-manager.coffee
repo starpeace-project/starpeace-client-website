@@ -79,13 +79,17 @@ export default class LayerManager
       tile_item.sprite_info.concrete.render(concrete, canvas, viewport)
       tile_item.sprite_info.underlay.render(concrete_underlay, concrete.zOrder, false, canvas, viewport) if concrete_underlay?
 
-    if !has_concrete_with_height && !tile_item.sprite_info.tree? && tile_item.sprite_info.underlay?.within_canvas(canvas, viewport)
+    has_road_with_height = if tile_item.sprite_info.road? then has_concrete_with_height || tile_item.sprite_info.road.is_bridge else false
+    if tile_item.sprite_info.road?.within_canvas(canvas, viewport)
+      sprite_cache = if has_road_with_height then @with_height_static_sprite_cache else @road_sprite_cache
+      road = sprite_cache.new_sprite(render_state, { texture:tile_item.sprite_info.road.texture })
+      road_underlay = @with_height_static_sprite_cache.new_sprite(render_state, { texture:tile_item.sprite_info.underlay.texture }) if has_road_with_height && tile_item.sprite_info.underlay?
+      tile_item.sprite_info.road.render(road, canvas, viewport)
+      tile_item.sprite_info.underlay.render(road_underlay, road.zOrder, false, canvas, viewport) if road_underlay?
+
+    if !(has_road_with_height || has_concrete_with_height) && !tile_item.sprite_info.tree? && tile_item.sprite_info.underlay?.within_canvas(canvas, viewport)
       underlay = @underlay_sprite_cache.new_sprite(render_state, { texture:tile_item.sprite_info.underlay.texture })
       tile_item.sprite_info.underlay.render(underlay, null, false, canvas, viewport)
-
-    if tile_item.sprite_info.road?.within_canvas(canvas, viewport)
-      road = @road_sprite_cache.new_sprite(render_state, { texture:tile_item.sprite_info.road.texture })
-      tile_item.sprite_info.road.render(road, canvas, viewport)
 
     if tile_item.sprite_info.tree?.within_canvas(canvas, viewport)
       tree = @with_height_static_sprite_cache.new_sprite(render_state, { texture:tile_item.sprite_info.tree.texture })
@@ -97,7 +101,7 @@ export default class LayerManager
       foundation = @foundation_sprite_cache.new_sprite(render_state, { texture:tile_item.sprite_info.foundation.texture })
       tile_item.sprite_info.foundation.render(foundation, canvas, viewport)
 
-    if tile_item.sprite_info.building?.within_canvas(canvas, viewport)
+    if false && tile_item.sprite_info.building?.within_canvas(canvas, viewport)
       sprite_cache = if tile_item.sprite_info.building.is_animated then @with_height_animated_sprite_cache else @with_height_static_sprite_cache
       building = sprite_cache.new_sprite(render_state, { textures:tile_item.sprite_info.building.textures, speed:.15 })
       tile_item.sprite_info.building.render(building, canvas, viewport)

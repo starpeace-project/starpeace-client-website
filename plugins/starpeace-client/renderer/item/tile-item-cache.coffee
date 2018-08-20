@@ -11,6 +11,8 @@ import SpritePlane from '~/plugins/starpeace-client/renderer/sprite/sprite-plane
 import SpriteRoad from '~/plugins/starpeace-client/renderer/sprite/sprite-road.coffee'
 import SpriteTree from '~/plugins/starpeace-client/renderer/sprite/sprite-tree.coffee'
 
+import Logger from '~/plugins/starpeace-client/logger.coffee'
+
 export default class TileItemCache
   constructor: (@building_manager, @effect_manager, @plane_manager, @game_state, @ui_state) ->
     @is_dirty = true
@@ -102,10 +104,10 @@ export default class TileItemCache
     return null unless texture_id?.length
 
     texture = PIXI.utils.TextureCache[texture_id]
-    Logger.debug "no road texture for #{tile_info.road_info.type}" unless texture?
+    Logger.debug "no road texture for #{tile_info.road_info.type?.type || 'unknown'}" unless texture?
     return null unless texture?
 
-    new SpriteRoad(texture)
+    new SpriteRoad(texture, tile_info.road_info.type.is_bridge || false, tile_info.road_info.is_on_platform)
 
   tree_sprite_info_for: (tile_info) ->
     return null unless tile_info.tree_info?
@@ -154,14 +156,6 @@ export default class TileItemCache
     new SpriteBuilding(textures, is_animated, metadata, effects)
 
   plane_sprite_info_for: (flight_plan) ->
-    # plane_info = flight_plan.plane_info
-    # direction = flight_plan.direction
-    # velocity = flight_plan.velocity
-    # source_map_x = flight_plan.source_map_x
-    # source_map_y = flight_plan.source_map_y
-    # target_map_x = flight_plan.target_map_x
-    # target_map_y = flight_plan.target_map_y
     textures = @plane_manager.plane_textures[flight_plan.plane_info.key]
     return null unless textures?.length
-
     new SpritePlane(textures, flight_plan)

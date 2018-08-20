@@ -6,7 +6,6 @@ global PIXI
 ###
 
 import ChunkMap from '~/plugins/starpeace-client/map/chunk/chunk-map.coffee'
-import GameMap from '~/plugins/starpeace-client/map/game-map.coffee'
 import Viewport from '~/plugins/starpeace-client/renderer/camera/viewport.coffee'
 import Layers from '~/plugins/starpeace-client/renderer/layer/layers.coffee'
 
@@ -79,18 +78,8 @@ export default class Renderer
 
   initialize: () ->
     @initialize_application() unless @application?
-
-    planet = @game_state.current_planet
-    land_manifest = @managers.planet_type_manifest_manager.planet_type_manifest[planet.planet_type]
-    map_texture = @managers.planetary_manager.map_id_texture[planet.map_id]
-
-    @game_state.game_map = new GameMap(@event_listener, @managers.building_manager, @managers.road_manager, @managers.overlay_manager, land_manifest, map_texture, @ui_state)
     @initialize_map()
 
-    @game_state.loading = true
-    setTimeout (=> @game_state.loading = false), 500
-
-    @game_state.initialized = true
     @initialized = true
 
   tick: () ->

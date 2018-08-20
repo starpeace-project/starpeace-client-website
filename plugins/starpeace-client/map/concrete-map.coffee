@@ -5,12 +5,9 @@ import ChunkMap from '~/plugins/starpeace-client/map/chunk/chunk-map.coffee'
 import BuildingZone from '~/plugins/starpeace-client/map/types/building-zone.coffee'
 import Concrete from '~/plugins/starpeace-client/map/types/concrete.coffee'
 
-TYPES_CENTER = new Set([Concrete.TYPES.CENTER, Concrete.TYPES.CENTER_ROAD, Concrete.TYPES.CENTER_TREEABLE, Concrete.TYPES.PLATFORM_CENTER])
-TYPES_CENTER_NO_ROAD = new Set([Concrete.TYPES.CENTER, Concrete.TYPES.CENTER_TREEABLE, Concrete.TYPES.PLATFORM_CENTER])
-TYPES_BUFFER = new Set([Concrete.TYPES.BUFFER, Concrete.TYPES.BUFFER_ROAD])
-
 export default class ConcreteMap
   constructor: (event_listener, @ground_map, @building_map, @width, @height) ->
+    @concrete_fill_types = new Array(@width * @height)
     @concrete_post_process = new Array(@width * @height)
     @concrete_info = new Array(@width * @height)
 
@@ -18,20 +15,19 @@ export default class ConcreteMap
       @refresh_concrete(chunk_event.info.chunk_x, chunk_event.info.chunk_y) if chunk_event.type == 'building' || chunk_event.type == 'road'
 
   concrete_info_at: (x, y) -> @concrete_info[y * @width + x]
+  is_concrete_at: (x, y) -> @concrete_fill_types[y * @width + x] == Concrete.FILL_TYPE.FILLED
+  is_concrete_edge_at: (x, y) -> @concrete_fill_types[y * @width + x] == Concrete.FILL_TYPE.EDGE
   is_concrete_around: (x, y) ->
-    x > 0 && TYPES_CENTER_NO_ROAD.has(@concrete_post_process[(y - 0) * @width + x - 1]) ||
-        x < @width && TYPES_CENTER_NO_ROAD.has(@concrete_post_process[(y - 0) * @width + x + 1]) ||
-        y > 0 && TYPES_CENTER_NO_ROAD.has(@concrete_post_process[(y - 1) * @width + x - 0]) ||
-        y < @height && TYPES_CENTER_NO_ROAD.has(@concrete_post_process[(y + 1) * @width + x - 0])
+    index = y * @width + x
+    index_n = (y - 1) * @width + x
+    index_s = (y + 1) * @width + x
+    index_e = index + 1
+    index_w = index - 1
+    @concrete_fill_types[index_n] == Concrete.FILL_TYPE.FILLED ||
+        @concrete_fill_types[index_s] == Concrete.FILL_TYPE.FILLED ||
+        @concrete_fill_types[index_e] == Concrete.FILL_TYPE.FILLED ||
+        @concrete_fill_types[index_w] == Concrete.FILL_TYPE.FILLED
 
-  concrete_outline: (type, sw_x, sw_y, width, height) ->
-    for y in [0...height]
-      @concrete_types[(sw_y - y) * @width + (sw_x - 0)] = type if (@concrete_types[(sw_y - y) * @width + (sw_x - 0)]?.priority || 10) >= type.priority
-      @concrete_types[(sw_y - y) * @width + (sw_x - width + 1)] = type if (@concrete_types[(sw_y - y) * @width + (sw_x - width + 1)]?.priority || 10) >= type.priority
-
-    for x in [0...width]
-      @concrete_types[(sw_y - 0) * @width + (sw_x - x)] = type if (@concrete_types[(sw_y - 0) * @width + (sw_x - x)]?.priority || 10) >= type.priority
-      @concrete_types[(sw_y - height + 1) * @width + (sw_x - x)] = type if (@concrete_types[(sw_y - height + 1) * @width + (sw_x - x)]?.priority || 10) >= type.priority
 
   refresh_concrete: (chunk_x, chunk_y) ->
     source_x = (chunk_x - 0) * ChunkMap.CHUNK_WIDTH - 10
@@ -40,180 +36,237 @@ export default class ConcreteMap
     target_y = (chunk_y + 1) * ChunkMap.CHUNK_HEIGHT + 10
 
     @reset_concrete(source_x, target_x, source_y, target_y)
+
+    @fill_concrete_gaps(source_x, target_x, source_y, target_y)
+    @fill_concrete_gaps_by_roads(source_x, target_x, source_y, target_y)
     @fill_road_concrete(source_x, target_x, source_y, target_y)
-    @fill_concrete(source_x, target_x, source_y, target_y)
 
-    @merge_platforms(source_x, target_x, source_y, target_y)
-    @merge_road_concrete(source_x, target_x, source_y, target_y)
-    @fix_edges(source_x, target_x, source_y, target_y)
+    @fill_concrete_gaps(source_x, target_x, source_y, target_y)
+    @fill_extra_road_concrete(source_x, target_x, source_y, target_y)
 
-    # add buffer, zOrder for trees conflicts with concrete/platforms
-    @clear_trees_around_concrete(source_x, target_x, source_y, target_y)
+    platform_iterations = 0
+    while @fill_platform_concrete(source_x, target_x, source_y, target_y)
+      platform_iterations += 1
+      break if platform_iterations > 5
 
+    @add_edges(source_x, target_x, source_y, target_y)
     @populate_info(source_x, target_x, source_y, target_y)
-
-
-  concrete_for_neighbors: (use_platform, neighbor_n, neighbor_ne, neighbor_e, neighbor_se, neighbor_s, neighbor_sw, neighbor_w, neighbor_nw) ->
-    return (if use_platform then Concrete.TYPES.PLATFORM_CENTER else Concrete.TYPES.CENTER_TREEABLE) if neighbor_n && neighbor_s || neighbor_e && neighbor_w
-
-    return (if use_platform then Concrete.TYPES.PLATFORM_EDGE_SE else Concrete.TYPES.EDGE_SW_OUTER) if neighbor_n && neighbor_e
-    return (if use_platform then Concrete.TYPES.PLATFORM_EDGE_NE else Concrete.TYPES.EDGE_SE_OUTER) if neighbor_e && neighbor_s
-    return (if use_platform then Concrete.TYPES.PLATFORM_EDGE_NW else Concrete.TYPES.EDGE_NE_OUTER) if neighbor_s && neighbor_w
-    return (if use_platform then Concrete.TYPES.PLATFORM_EDGE_SW else Concrete.TYPES.EDGE_NW_OUTER) if neighbor_w && neighbor_n
-
-    return (if use_platform then Concrete.TYPES.PLATFORM_CENTER else Concrete.TYPES.CENTER_TREEABLE) if neighbor_w && neighbor_se || neighbor_n && neighbor_sw || neighbor_e && neighbor_nw || neighbor_s && neighbor_ne
-
-    return (if use_platform then Concrete.TYPES.PLATFORM_EDGE_S else Concrete.TYPES.EDGE_W) if neighbor_n
-    return (if use_platform then Concrete.TYPES.PLATFORM_EDGE_W else Concrete.TYPES.EDGE_S) if neighbor_e
-    return (if use_platform then Concrete.TYPES.PLATFORM_EDGE_N else Concrete.TYPES.EDGE_E) if neighbor_s
-    return (if use_platform then Concrete.TYPES.PLATFORM_EDGE_E else Concrete.TYPES.EDGE_N) if neighbor_w
-
-    return (if use_platform then Concrete.TYPES.PLATFORM_EDGE_SE else Concrete.TYPES.EDGE_SW_INNER) if neighbor_ne
-    return (if use_platform then Concrete.TYPES.PLATFORM_EDGE_NE else Concrete.TYPES.EDGE_SE_INNER) if neighbor_se
-    return (if use_platform then Concrete.TYPES.PLATFORM_EDGE_SW else Concrete.TYPES.EDGE_NE_INNER) if neighbor_sw
-    return (if use_platform then Concrete.TYPES.PLATFORM_EDGE_NW else Concrete.TYPES.EDGE_NW_INNER) if neighbor_nw
-
-    null
+    @fix_populated_info(source_x, target_x, source_y, target_y)
 
   reset_concrete: (source_x, target_x, source_y, target_y) ->
     for y in [source_y...target_y]
       for x in [source_x...target_x]
         index = y * @width + x
-        @concrete_post_process[index] = @building_map.tile_info_concrete[index]
+        @concrete_fill_types[index] = @building_map.tile_info_concrete[index]
+        continue if @concrete_fill_types[index] == Concrete.FILL_TYPE.NO_FILL || @concrete_fill_types[index] == Concrete.FILL_TYPE.FILLED
 
-  fill_road_concrete: (source_x, target_x, source_y, target_y) ->
+  fill_concrete_gaps: (source_x, target_x, source_y, target_y) ->
+    did_change = false
     for y in [source_y...target_y]
       for x in [source_x...target_x]
         index = y * @width + x
-        continue unless @concrete_post_process[index] == Concrete.TYPES.BUFFER_ROAD
-        @concrete_post_process[index] = Concrete.TYPES.CENTER_ROAD if @building_map.is_city_around(x, y)
-
-  fill_concrete: (source_x, target_x, source_y, target_y) ->
-    did_change_concrete = true
-    while did_change_concrete
-      did_change_concrete = false
-      for y in [source_y...target_y]
-        for x in [source_x...target_x]
-          index = y * @width + x
-          continue if TYPES_CENTER.has(@concrete_post_process[index]) || TYPES_BUFFER.has(@concrete_post_process[index])
-
-          neighbor_n = TYPES_CENTER.has(@concrete_post_process[(y - 1) * @width + x - 0])
-          neighbor_ne = TYPES_CENTER.has(@concrete_post_process[(y - 1) * @width + x - 1])
-          neighbor_e = TYPES_CENTER.has(@concrete_post_process[(y - 0) * @width + x - 1])
-          neighbor_se = TYPES_CENTER.has(@concrete_post_process[(y + 1) * @width + x - 1])
-          neighbor_s = TYPES_CENTER.has(@concrete_post_process[(y + 1) * @width + x + 0])
-          neighbor_sw = TYPES_CENTER.has(@concrete_post_process[(y + 1) * @width + x + 1])
-          neighbor_w = TYPES_CENTER.has(@concrete_post_process[(y - 0) * @width + x + 1])
-          neighbor_nw = TYPES_CENTER.has(@concrete_post_process[(y - 1) * @width + x + 1])
-
-          @concrete_post_process[index] = @concrete_for_neighbors(@ground_map.is_water_around(x, y), neighbor_n, neighbor_ne, neighbor_e, neighbor_se, neighbor_s, neighbor_sw, neighbor_w, neighbor_nw)
-          did_change_concrete = did_change_concrete || TYPES_CENTER.has(@concrete_post_process[index])
-
-  merge_platforms: (source_x, target_x, source_y, target_y) ->
-    did_change_concrete = true
-    while did_change_concrete
-      did_change_concrete = false
-      for y in [source_y...target_y]
-        for x in [source_x...target_x]
-          index = y * @width + x
-          original_type = @concrete_post_process[index]
-          continue unless original_type?.is_platform
-
-          changed = false
-          index_n = (y - 1) * @width + x
-          index_s = (y + 1) * @width + x
-          index_e = index + 1
-          index_w = index - 1
-
-          @concrete_post_process[index] = Concrete.TYPES.PLATFORM_EDGE_N if @concrete_post_process[index] == Concrete.TYPES.PLATFORM_EDGE_NE && @concrete_post_process[index_e]?.is_platform
-          @concrete_post_process[index] = Concrete.TYPES.PLATFORM_EDGE_W if @concrete_post_process[index] == Concrete.TYPES.PLATFORM_EDGE_NE && @concrete_post_process[index_n]?.is_platform
-
-          @concrete_post_process[index] = Concrete.TYPES.PLATFORM_EDGE_N if @concrete_post_process[index] == Concrete.TYPES.PLATFORM_EDGE_NW && @concrete_post_process[index_w]?.is_platform
-          @concrete_post_process[index] = Concrete.TYPES.PLATFORM_EDGE_E if @concrete_post_process[index] == Concrete.TYPES.PLATFORM_EDGE_NW && @concrete_post_process[index_n]?.is_platform
-
-          @concrete_post_process[index] = Concrete.TYPES.PLATFORM_EDGE_S if @concrete_post_process[index] == Concrete.TYPES.PLATFORM_EDGE_SW && @concrete_post_process[index_w]?.is_platform
-          @concrete_post_process[index] = Concrete.TYPES.PLATFORM_EDGE_E if @concrete_post_process[index] == Concrete.TYPES.PLATFORM_EDGE_SW && @concrete_post_process[index_s]?.is_platform
-
-          @concrete_post_process[index] = Concrete.TYPES.PLATFORM_EDGE_S if @concrete_post_process[index] == Concrete.TYPES.PLATFORM_EDGE_SE && @concrete_post_process[index_e]?.is_platform
-          @concrete_post_process[index] = Concrete.TYPES.PLATFORM_EDGE_W if @concrete_post_process[index] == Concrete.TYPES.PLATFORM_EDGE_SE && @concrete_post_process[index_s]?.is_platform
-
-          @concrete_post_process[index] = Concrete.TYPES.PLATFORM_CENTER if @concrete_post_process[index] == Concrete.TYPES.PLATFORM_EDGE_N && @concrete_post_process[index_n]?.is_platform ||
-              @concrete_post_process[index] == Concrete.TYPES.PLATFORM_EDGE_S && @concrete_post_process[index_s]?.is_platform ||
-              @concrete_post_process[index] == Concrete.TYPES.PLATFORM_EDGE_W && @concrete_post_process[index_e]?.is_platform ||
-              @concrete_post_process[index] == Concrete.TYPES.PLATFORM_EDGE_E && @concrete_post_process[index_w]?.is_platform
-
-          did_change_concrete = did_change_concrete || (@concrete_post_process[index] != original_type)
-
-  fix_edges: (source_x, target_x, source_y, target_y) ->
-    did_change_concrete = true
-    while did_change_concrete
-      did_change_concrete = false
-      for y in [source_y...target_y]
-        for x in [source_x...target_x]
-          index = y * @width + x
-          original_type = @concrete_post_process[index]
-          continue unless original_type?
-
-          changed = false
-          index_n = (y - 1) * @width + x
-          index_s = (y + 1) * @width + x
-          index_e = index + 1
-          index_w = index - 1
-
-          @concrete_post_process[index] = Concrete.TYPES.EDGE_NE_OUTER if @concrete_post_process[index] == Concrete.TYPES.EDGE_E && @concrete_post_process[index_e] == Concrete.TYPES.PLATFORM_EDGE_N
-          @concrete_post_process[index] = Concrete.TYPES.EDGE_SE_OUTER if @concrete_post_process[index] == Concrete.TYPES.EDGE_E && @concrete_post_process[index_w] == Concrete.TYPES.PLATFORM_EDGE_N
-
-          @concrete_post_process[index] = Concrete.TYPES.EDGE_NW_OUTER_S if @concrete_post_process[index] == Concrete.TYPES.EDGE_W && @concrete_post_process[index_e] == Concrete.TYPES.PLATFORM_EDGE_S
-          @concrete_post_process[index] = Concrete.TYPES.EDGE_SW_OUTER if @concrete_post_process[index] == Concrete.TYPES.EDGE_W && @concrete_post_process[index_w] == Concrete.TYPES.PLATFORM_EDGE_S
-
-          @concrete_post_process[index] = Concrete.TYPES.EDGE_NW_OUTER_W if @concrete_post_process[index] == Concrete.TYPES.EDGE_N && @concrete_post_process[index_n] == Concrete.TYPES.PLATFORM_EDGE_E
-          @concrete_post_process[index] = Concrete.TYPES.EDGE_NE_OUTER if @concrete_post_process[index] == Concrete.TYPES.EDGE_N && @concrete_post_process[index_s] == Concrete.TYPES.PLATFORM_EDGE_E
-
-          @concrete_post_process[index] = Concrete.TYPES.EDGE_SW_OUTER if @concrete_post_process[index] == Concrete.TYPES.EDGE_S && @concrete_post_process[index_n] == Concrete.TYPES.PLATFORM_EDGE_W
-          @concrete_post_process[index] = Concrete.TYPES.EDGE_SE_OUTER if @concrete_post_process[index] == Concrete.TYPES.EDGE_S && @concrete_post_process[index_s] == Concrete.TYPES.PLATFORM_EDGE_W
-
-          @concrete_post_process[index] = Concrete.TYPES.EDGE_NE_OUTER if @concrete_post_process[index] == Concrete.TYPES.EDGE_E && @concrete_post_process[index_n] == Concrete.TYPES.EDGE_N
-
-          @concrete_post_process[index] = Concrete.TYPES.EDGE_N if @concrete_post_process[index] == Concrete.TYPES.EDGE_NE_INNER && @concrete_post_process[index_n] == Concrete.TYPES.EDGE_N
-
-          did_change_concrete = did_change_concrete || (@concrete_post_process[index] != original_type)
-
-  merge_road_concrete: (source_x, target_x, source_y, target_y) ->
-    for y in [source_y...target_y]
-      for x in [source_x...target_x]
-        index = y * @width + x
-        continue unless @concrete_post_process[index] == Concrete.TYPES.BUFFER_ROAD
+        continue if @concrete_fill_types[index] == Concrete.FILL_TYPE.NO_FILL || @concrete_fill_types[index] == Concrete.FILL_TYPE.FILLED
 
         index_n = (y - 1) * @width + x
         index_s = (y + 1) * @width + x
         index_e = index + 1
         index_w = index - 1
 
-        @concrete_post_process[index] = Concrete.TYPES.CENTER_ROAD if @is_concrete_around(x, y) || (
-              (if y > 0 && @concrete_post_process[index_n] == Concrete.TYPES.CENTER_ROAD then 1 else 0) +
-              (if y < @height && @concrete_post_process[index_s] == Concrete.TYPES.CENTER_ROAD then 1 else 0) +
-              (if x > 0 && @concrete_post_process[index_w] == Concrete.TYPES.CENTER_ROAD then 1 else 0) +
-              (if x < @width && @concrete_post_process[index_e] == Concrete.TYPES.CENTER_ROAD then 1 else 0)
-            ) > 1
+        if @concrete_fill_types[index_n] == Concrete.FILL_TYPE.FILLED && @concrete_fill_types[index_s] == Concrete.FILL_TYPE.FILLED ||
+            @concrete_fill_types[index_e] == Concrete.FILL_TYPE.FILLED && @concrete_fill_types[index_w] == Concrete.FILL_TYPE.FILLED
+          @concrete_fill_types[index] = Concrete.FILL_TYPE.FILLED
+          did_change = true
+          continue
+    did_change
 
-  clear_trees_around_concrete: (source_x, target_x, source_y, target_y) ->
-    is_neighbor_center_or_edge = (x, y) => @concrete_post_process[y * @width + x]? && !TYPES_BUFFER.has(@concrete_post_process[y * @width + x])
-
+  fill_concrete_gaps_by_roads: (source_x, target_x, source_y, target_y) ->
+    did_change = false
     for y in [source_y...target_y]
       for x in [source_x...target_x]
         index = y * @width + x
-        continue if @concrete_post_process[index]?
-        @concrete_post_process[index] = Concrete.TYPES.BUFFER if is_neighbor_center_or_edge(x - 0, y - 1) || is_neighbor_center_or_edge(x - 1, y - 0) ||
-            is_neighbor_center_or_edge(x - 0, y + 1) || is_neighbor_center_or_edge(x + 1, y - 0)
+        continue if @concrete_fill_types[index] == Concrete.FILL_TYPE.NO_FILL || @concrete_fill_types[index] == Concrete.FILL_TYPE.FILLED || @building_map.tile_info_road[index]?
+
+        index_n_1 = (y - 1) * @width + x
+        index_n_2 = (y - 2) * @width + x
+        index_s_1 = (y + 1) * @width + x
+        index_s_2 = (y + 2) * @width + x
+        index_e_1 = index + 1
+        index_e_2 = index + 2
+        index_w_1 = index - 1
+        index_w_2 = index - 2
+
+        if (@building_map.tile_info_road[index_n_1]? && @concrete_fill_types[index_s_1] == Concrete.FILL_TYPE.FILLED) ||
+            (@building_map.tile_info_road[index_s_1]? && @concrete_fill_types[index_n_1] == Concrete.FILL_TYPE.FILLED) ||
+            (@building_map.tile_info_road[index_e_1]? && @concrete_fill_types[index_w_1] == Concrete.FILL_TYPE.FILLED) ||
+            (@building_map.tile_info_road[index_w_1]? && @concrete_fill_types[index_e_1] == Concrete.FILL_TYPE.FILLED)
+          @concrete_fill_types[index] = Concrete.FILL_TYPE.FILLED
+          did_change = true
+          continue
+
+        if @ground_map.is_water_at(x, y) && (
+            ((@concrete_fill_types[index_n_1] == Concrete.FILL_TYPE.FILLED || @building_map.tile_info_road[index_n_1]?) &&
+            (@concrete_fill_types[index_s_2] == Concrete.FILL_TYPE.FILLED || @building_map.tile_info_road[index_s_2]?)) ||
+            ((@concrete_fill_types[index_s_1] == Concrete.FILL_TYPE.FILLED || @building_map.tile_info_road[index_s_1]?) &&
+            (@concrete_fill_types[index_n_2] == Concrete.FILL_TYPE.FILLED || @building_map.tile_info_road[index_n_2]?)) ||
+            ((@concrete_fill_types[index_e_1] == Concrete.FILL_TYPE.FILLED || @building_map.tile_info_road[index_e_1]?) &&
+            (@concrete_fill_types[index_w_2] == Concrete.FILL_TYPE.FILLED || @building_map.tile_info_road[index_w_2]?)) ||
+            ((@concrete_fill_types[index_w_1] == Concrete.FILL_TYPE.FILLED || @building_map.tile_info_road[index_w_1]?) &&
+            (@concrete_fill_types[index_e_2] == Concrete.FILL_TYPE.FILLED || @building_map.tile_info_road[index_e_2]?))
+        )
+          @concrete_fill_types[index] = Concrete.FILL_TYPE.FILLED
+          did_change = true
+          continue
+    did_change
+
+  fill_road_concrete: (source_x, target_x, source_y, target_y) ->
+    did_change = false
+    for y in [source_y...target_y]
+      for x in [source_x...target_x]
+        index = y * @width + x
+        continue if @concrete_fill_types[index] == Concrete.FILL_TYPE.NO_FILL || @concrete_fill_types[index] == Concrete.FILL_TYPE.FILLED || !@building_map.tile_info_road[index]?
+
+        index_n = (y - 1) * @width + x
+        index_s = (y + 1) * @width + x
+        index_e = index + 1
+        index_w = index - 1
+
+        if (@concrete_fill_types[index_n] == Concrete.FILL_TYPE.FILLED && !@building_map.tile_info_road[index_n]?) ||
+            (@concrete_fill_types[index_s] == Concrete.FILL_TYPE.FILLED && !@building_map.tile_info_road[index_s]?) ||
+            (@concrete_fill_types[index_e] == Concrete.FILL_TYPE.FILLED && !@building_map.tile_info_road[index_e]?) ||
+            (@concrete_fill_types[index_w] == Concrete.FILL_TYPE.FILLED && !@building_map.tile_info_road[index_w]?)
+          @concrete_fill_types[index] = Concrete.FILL_TYPE.FILLED
+          did_change = true
+          continue
+    did_change
+
+  fill_extra_road_concrete: (source_x, target_x, source_y, target_y) ->
+    did_change = false
+    for y in [source_y...target_y]
+      for x in [source_x...target_x]
+        index = y * @width + x
+        continue if @concrete_fill_types[index] == Concrete.FILL_TYPE.NO_FILL || @concrete_fill_types[index] == Concrete.FILL_TYPE.FILLED || !@building_map.tile_info_road[index]?
+
+        index_n = (y - 1) * @width + x
+        index_s = (y + 1) * @width + x
+        index_e = index + 1
+        index_w = index - 1
+
+        is_water = @ground_map.is_water_at(x, y)
+        if ((is_water || @concrete_fill_types[index_n] == Concrete.FILL_TYPE.FILLED) && @building_map.tile_info_road[index_n]? ||
+            (is_water || @concrete_fill_types[index_s] == Concrete.FILL_TYPE.FILLED) && @building_map.tile_info_road[index_s]?) &&
+            ((is_water || @concrete_fill_types[index_e] == Concrete.FILL_TYPE.FILLED) && @building_map.tile_info_road[index_e]? ||
+            (is_water || @concrete_fill_types[index_w] == Concrete.FILL_TYPE.FILLED) && @building_map.tile_info_road[index_w]?)
+          @concrete_fill_types[index] = Concrete.FILL_TYPE.FILLED
+          did_change = true
+          continue
+    did_change
+
+  fill_platform_concrete: (source_x, target_x, source_y, target_y) ->
+    did_change = false
+    for y in [source_y...target_y]
+      for x in [source_x...target_x]
+        index = y * @width + x
+        continue if @concrete_fill_types[index] == Concrete.FILL_TYPE.NO_FILL || @concrete_fill_types[index] == Concrete.FILL_TYPE.FILLED || !@ground_map.is_water_at(x, y)
+
+        index_n = (y - 1) * @width + x
+        index_s = (y + 1) * @width + x
+        index_e = index + 1
+        index_w = index - 1
+
+        if (@concrete_fill_types[index_e] == Concrete.FILL_TYPE.FILLED && @concrete_fill_types[index_s] == Concrete.FILL_TYPE.FILLED) ||
+            (@concrete_fill_types[index_w] == Concrete.FILL_TYPE.FILLED && @concrete_fill_types[index_s] == Concrete.FILL_TYPE.FILLED) ||
+            (@concrete_fill_types[index_e] == Concrete.FILL_TYPE.FILLED && @concrete_fill_types[index_n] == Concrete.FILL_TYPE.FILLED) ||
+            (@concrete_fill_types[index_w] == Concrete.FILL_TYPE.FILLED && @concrete_fill_types[index_n] == Concrete.FILL_TYPE.FILLED)
+          @concrete_fill_types[index] = Concrete.FILL_TYPE.FILLED
+          did_change = true
+          continue
+    did_change
+
+  add_edges: (source_x, target_x, source_y, target_y) ->
+    did_change = false
+    for y in [source_y...target_y]
+      for x in [source_x...target_x]
+        index = y * @width + x
+        continue if @concrete_fill_types[index] == Concrete.FILL_TYPE.NO_FILL || @concrete_fill_types[index] == Concrete.FILL_TYPE.FILLED || @concrete_fill_types[index] == Concrete.FILL_TYPE.EDGE
+
+        index_n = (y - 1) * @width + x
+        index_s = (y + 1) * @width + x
+        index_e = index + 1
+        index_w = index - 1
+        index_ne = (y - 1) * @width + x - 1
+        index_nw = (y - 1) * @width + x + 1
+        index_se = (y + 1) * @width + x - 1
+        index_sw = (y + 1) * @width + x + 1
+
+        if @concrete_fill_types[index_n] == Concrete.FILL_TYPE.FILLED || @concrete_fill_types[index_s] == Concrete.FILL_TYPE.FILLED ||
+            @concrete_fill_types[index_e] == Concrete.FILL_TYPE.FILLED || @concrete_fill_types[index_w] == Concrete.FILL_TYPE.FILLED ||
+            @concrete_fill_types[index_ne] == Concrete.FILL_TYPE.FILLED || @concrete_fill_types[index_nw] == Concrete.FILL_TYPE.FILLED ||
+            @concrete_fill_types[index_se] == Concrete.FILL_TYPE.FILLED || @concrete_fill_types[index_sw] == Concrete.FILL_TYPE.FILLED
+          @concrete_fill_types[index] = Concrete.FILL_TYPE.EDGE
+          did_change = true
+          continue
+    did_change
+
+  concrete_edge_type: (is_road, use_platform, x, y) ->
+    index = y * @width + x
+    index_n = (y - 1) * @width + x
+    index_s = (y + 1) * @width + x
+    index_e = index + 1
+    index_w = index - 1
+    index_ne = (y - 1) * @width + x - 1
+    index_nw = (y - 1) * @width + x + 1
+    index_se = (y + 1) * @width + x - 1
+    index_sw = (y + 1) * @width + x + 1
+
+    return Concrete.TYPES.PLATFORM_CENTER if is_road && use_platform
+
+    return (if use_platform then Concrete.TYPES.PLATFORM_EDGE_SE else Concrete.TYPES.EDGE_SW_OUTER) if @concrete_fill_types[index_n] == Concrete.FILL_TYPE.FILLED && @concrete_fill_types[index_w] == Concrete.FILL_TYPE.FILLED
+    return (if use_platform then Concrete.TYPES.PLATFORM_EDGE_NE else Concrete.TYPES.EDGE_SE_OUTER) if @concrete_fill_types[index_w] == Concrete.FILL_TYPE.FILLED && @concrete_fill_types[index_s] == Concrete.FILL_TYPE.FILLED
+    return (if use_platform then Concrete.TYPES.PLATFORM_EDGE_NW else Concrete.TYPES.EDGE_NE_OUTER) if @concrete_fill_types[index_s] == Concrete.FILL_TYPE.FILLED && @concrete_fill_types[index_e] == Concrete.FILL_TYPE.FILLED
+    return (if use_platform then Concrete.TYPES.PLATFORM_EDGE_SW else Concrete.TYPES.EDGE_NW_OUTER) if @concrete_fill_types[index_e] == Concrete.FILL_TYPE.FILLED && @concrete_fill_types[index_n] == Concrete.FILL_TYPE.FILLED
+
+    return (if use_platform then Concrete.TYPES.PLATFORM_EDGE_S else (if is_road then Concrete.TYPES.EDGE_W_FLAT else Concrete.TYPES.EDGE_W)) if @concrete_fill_types[index_n] == Concrete.FILL_TYPE.FILLED
+    return (if use_platform then Concrete.TYPES.PLATFORM_EDGE_W else (if is_road then Concrete.TYPES.EDGE_S_FLAT else Concrete.TYPES.EDGE_S)) if @concrete_fill_types[index_w] == Concrete.FILL_TYPE.FILLED
+    return (if use_platform then Concrete.TYPES.PLATFORM_EDGE_N else (if is_road then Concrete.TYPES.EDGE_E_FLAT else Concrete.TYPES.EDGE_E)) if @concrete_fill_types[index_s] == Concrete.FILL_TYPE.FILLED
+    return (if use_platform then Concrete.TYPES.PLATFORM_EDGE_E else (if is_road then Concrete.TYPES.EDGE_N_FLAT else Concrete.TYPES.EDGE_N)) if @concrete_fill_types[index_e] == Concrete.FILL_TYPE.FILLED
+
+    return (if use_platform then Concrete.TYPES.PLATFORM_EDGE_SE else Concrete.TYPES.EDGE_SW_INNER) if @concrete_fill_types[index_ne] == Concrete.FILL_TYPE.FILLED
+    return (if use_platform then Concrete.TYPES.PLATFORM_EDGE_NE else Concrete.TYPES.EDGE_SE_INNER) if @concrete_fill_types[index_se] == Concrete.FILL_TYPE.FILLED
+    return (if use_platform then Concrete.TYPES.PLATFORM_EDGE_NW else Concrete.TYPES.EDGE_NE_INNER) if @concrete_fill_types[index_sw] == Concrete.FILL_TYPE.FILLED
+    return (if use_platform then Concrete.TYPES.PLATFORM_EDGE_SW else Concrete.TYPES.EDGE_NW_INNER) if @concrete_fill_types[index_nw] == Concrete.FILL_TYPE.FILLED
+
+    null
 
   populate_info: (source_x, target_x, source_y, target_y) ->
     for y in [source_y...target_y]
       for x in [source_x...target_x]
         index = y * @width + x
-        concrete_type = @concrete_post_process[index]
-        if concrete_type == Concrete.TYPES.CENTER_TREEABLE
-          @concrete_info[index] = if (x % 2 == 1) ^ (y % 2 == 1) then { type: Concrete.TYPES.CENTER_TREEABLE } else { type: Concrete.TYPES.CENTER }
-        else if concrete_type?
-          @concrete_info[index] = { type: concrete_type }
+
+        is_road = @building_map.tile_info_road[y * @width + x]?
+        is_water = @ground_map.is_water_at(x, y)
+        if @concrete_fill_types[index] == Concrete.FILL_TYPE.FILLED
+          if is_water
+            @concrete_info[index] = { type: Concrete.TYPES.PLATFORM_CENTER }
+          else
+            unless @building_map.tile_info_building[y * @width + x]? || is_road || (x % 2 == 1) ^ (y % 2 == 1)
+              @concrete_info[index] = { type: Concrete.TYPES.CENTER_TREEABLE }
+            else
+              @concrete_info[index] = { type: Concrete.TYPES.CENTER }
+        else if @concrete_fill_types[index] == Concrete.FILL_TYPE.EDGE
+          concrete_type = @concrete_edge_type(is_road, is_water, x, y)
+          @concrete_info[index] = { type: concrete_type } if concrete_type?
         else
           @concrete_info[index] = null
+
+  fix_populated_info: (source_x, target_x, source_y, target_y) ->
+    for y in [source_y...target_y]
+      for x in [source_x...target_x]
+        index = y * @width + x
+        index_n = (y - 1) * @width + x
+        index_s = (y + 1) * @width + x
+        index_e = index + 1
+        index_w = index - 1
+
+        @concrete_info[index]?.type = Concrete.TYPES.EDGE_NW_OUTER_S if @concrete_info[index]?.type == Concrete.TYPES.EDGE_W && @concrete_info[index_e]?.type == Concrete.TYPES.PLATFORM_EDGE_S
+        @concrete_info[index]?.type = Concrete.TYPES.EDGE_SE_OUTER_N if @concrete_info[index]?.type == Concrete.TYPES.EDGE_E && @concrete_info[index_w]?.type == Concrete.TYPES.PLATFORM_EDGE_N
+        @concrete_info[index]?.type = Concrete.TYPES.EDGE_SE_OUTER_E if @concrete_info[index]?.type == Concrete.TYPES.EDGE_S && @concrete_info[index_s]?.type == Concrete.TYPES.PLATFORM_EDGE_W

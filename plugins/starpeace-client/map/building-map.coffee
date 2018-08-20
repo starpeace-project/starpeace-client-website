@@ -38,11 +38,7 @@ export default class BuildingMap
     y > 0 && @building_info_at(x, y - 1)?.has_concrete == true ||
         y < @height && @building_info_at(x, y + 1)?.has_concrete == true ||
         x > 0 && @building_info_at(x - 1, y)?.has_concrete == true ||
-        x < @width && @building_info_at(x + 1, y)?.has_concrete == true #||
-        # x > 0 && y > 0 && @building_info_at(x - 1, y - 1)?.has_concrete == true ||
-        # x > 0 && y < @height && @building_info_at(x - 1, y + 1)?.has_concrete == true ||
-        # x > 0 && y > 0 && @building_info_at(x + 1, y - 1)?.has_concrete == true ||
-        # x < @width && y < @height && @building_info_at(x + 1, y + 1)?.has_concrete == true
+        x < @width && @building_info_at(x + 1, y)?.has_concrete == true
 
   add_building: (building) ->
     metadata = @building_manager.building_metadata.buildings[building.key]
@@ -52,11 +48,10 @@ export default class BuildingMap
       for x in [0...metadata.w]
         map_index = (building.y - y) * @width + (building.x - x)
         @tile_info_building[map_index] = building
-        @tile_info_concrete[map_index] = if has_concrete then Concrete.TYPES.CENTER else Concrete.TYPES.BUFFER
+        @tile_info_concrete[map_index] = if has_concrete then Concrete.FILL_TYPE.FILLED else Concrete.FILL_TYPE.NO_FILL
 
   update_roads: (chunk_info, road_data) ->
     for y in [0...ChunkMap.CHUNK_HEIGHT]
       for x in [0...ChunkMap.CHUNK_WIDTH]
         map_index = (chunk_info.chunk_y * ChunkMap.CHUNK_HEIGHT + y) * @width + (chunk_info.chunk_x * ChunkMap.CHUNK_WIDTH + x)
         @tile_info_road[map_index] = if road_data[y * ChunkMap.CHUNK_WIDTH + x] then true else null
-        @tile_info_concrete[map_index] = Concrete.TYPES.BUFFER_ROAD if @tile_info_road[map_index]

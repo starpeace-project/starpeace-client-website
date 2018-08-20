@@ -1,6 +1,6 @@
 <template lang='haml'>
 %no-ssr
-  %transition{name:'fade'}
+  %transition{name:'fade-in'}
     #workflow-container{'v-show':'is_active'}
       .card{'v-bind:style':'workflow_card_style', 'v-bind:class':'workflow_card_class'}
         .card-header{'v-show':'has_header'}
@@ -21,6 +21,7 @@
 
           %menu-loading{'v-show':"status == 'pending_assets'", message:'Loading assets and resources...'}
           %menu-loading{'v-show':"status == 'pending_initialization'", message:'Initializing client environment...'}
+          %menu-loading{'v-show':"status == 'ready'", message:'Initializing...'}
 </template>
 
 <script lang='coffee'>

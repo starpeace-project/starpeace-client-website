@@ -6,6 +6,8 @@ import PlanetTypeManifestManager from '~/plugins/starpeace-client/metadata/plane
 
 import Managers from '~/plugins/starpeace-client/manager/managers.coffee'
 
+import GameMap from '~/plugins/starpeace-client/map/game-map.coffee'
+
 import EventListener from '~/plugins/starpeace-client/state/event-listener.coffee'
 import GameState from '~/plugins/starpeace-client/state/game-state.coffee'
 import MenuState from '~/plugins/starpeace-client/state/menu-state.coffee'
@@ -38,16 +40,24 @@ export default class Client
 
     Logger.banner()
 
+  initialize_game_map: () ->
+    planet = @game_state.current_planet
+    @game_state.game_map = new GameMap(@event_listener, @managers.building_manager, @managers.road_manager, @managers.overlay_manager,
+        @managers.planet_type_manifest_manager.planet_type_manifest[planet.planet_type], @managers.planetary_manager.map_id_texture[planet.map_id], @ui_state)
+
   notify_assets_changed: () ->
     return unless @managers.has_assets()
-
     @game_state.has_assets = true
+    @game_state.loading = true
 
     clearTimeout(@initialize_callback) if @initialize_callback
     @initialize_callback = setTimeout(=>
       @managers.initialize()
+      @initialize_game_map()
       @renderer.initialize()
       @input_handler.initialize()
+      @game_state.initialized = true
+      setTimeout (=> @game_state.loading = false), 500
     , 500)
 
   tick: () ->

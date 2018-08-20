@@ -20,7 +20,7 @@ MONTH_SEASONS = {
   11: 'winter'
 }
 
-class GameState
+export default class GameState
   constructor: () ->
     @initialized = false
     @loading = false
@@ -82,5 +82,3 @@ class GameState
   set_planet: (planet) ->
     @current_planet = planet
     Logger.debug "proceeding with planet <#{@current_planet}>"
-
-export default GameState

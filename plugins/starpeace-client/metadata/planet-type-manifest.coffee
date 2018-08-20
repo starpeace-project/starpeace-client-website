@@ -1,5 +1,5 @@
 
-class PlanetTypeManifest
+export default class PlanetTypeManifest
   @DEFAULT_TILE_WIDTH: 64
   @DEFAULT_TILE_HEIGHT: 32
 
@@ -21,5 +21,3 @@ class PlanetTypeManifest
     trees = @tree_definitions_by_zone[zone] || []
     return null unless trees.length
     trees[Math.floor(Math.random() * trees.length)]
-
-export default PlanetTypeManifest

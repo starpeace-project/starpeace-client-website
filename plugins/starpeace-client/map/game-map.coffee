@@ -49,14 +49,13 @@ export default class GameMap
       road_info = @road_map.road_info_at(x, y)
       concrete_info = @concrete_map.concrete_info_at(x, y)
 
-      # TODO: FIXME: try to move logic somewhere better (road_info should be immutable)
-      road_info.is_city = true if road_info?.is_city == false && concrete_info?.type == Concrete.TYPES.CENTER_ROAD
+      road_info.is_on_platform = true if road_info? && concrete_info? && road_info.is_over_water
 
     is_position_within_map = x >= 0 && x < @width && y >= 0 && y < @height
-    is_road_needs_land = road_info? && (!road_info.is_city || road_info.type.is_bridge)
-    is_concrete_needs_land = concrete_info? && concrete_info.type != Concrete.TYPES.CENTER && concrete_info.type != Concrete.TYPES.CENTER_ROAD && concrete_info.type != Concrete.TYPES.CENTER_TREEABLE
+    is_road_needs_land = road_info? && (!road_info.is_city || road_info.type.is_bridge || road_info.is_over_water && road_info.is_concrete_edge)
+    is_concrete_needs_land = concrete_info? && (concrete_info.type != Concrete.TYPES.CENTER && concrete_info.type != Concrete.TYPES.CENTER_TREEABLE)
 
-    tree_info = if @ui_state.render_trees && !road_info? && !concrete_info? && is_position_within_map then @ground_map.tree_at(x, y) else null
+    tree_info = if @ui_state.render_trees && !road_info? && !concrete_info? && !building_info? && is_position_within_map then @ground_map.tree_at(x, y) else null
     land_info = if is_position_within_map && (is_road_needs_land || !road_info?) && (is_concrete_needs_land || !concrete_info?) && !tree_info? then @ground_map.ground_at(x, y) else null
 
     {

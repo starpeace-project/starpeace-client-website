@@ -12,8 +12,8 @@ export default class GroundMap
   tree_at: (x, y) -> @tree_map_tiles[(@height - x) * @width + (@width - y)]
   ground_at: (x, y) -> @ground_map_tiles[(@height - x) * @width + (@width - y)]
 
-  is_water_at: (x, y) ->
-    @ground_at(x, y).zone == 'water'
+  is_coast_at: (x, y) -> @ground_at(x, y).is_coast
+  is_water_at: (x, y) -> @ground_at(x, y).zone == 'water'
   is_water_around: (x, y) ->
     @ground_at(x, y).zone == 'water' || @ground_at(x - 1, y).zone == 'water' || @ground_at(x + 1, y).zone == 'water' ||
         @ground_at(x, y - 1).zone == 'water' || @ground_at(x, y + 1).zone == 'water' || @ground_at(x - 1, y - 1).zone == 'water' ||

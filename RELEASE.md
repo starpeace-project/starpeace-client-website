@@ -1,5 +1,5 @@
 
-## v0.3 - in progress - updated 2018-08-12
+## v0.3 - in progress - updated 2018-08-19
 ### platform
 * [done] improved building rendering around edges [v0.2.1]
 * [done] improved z-order rendering across layers [v0.2.2]
@@ -28,8 +28,8 @@
 * [done] concrete and platform rendering [v0.2.6]
 * [done] road rendering [v0.2.7]
 * [done] game music controls [v0.2.8]
-* [in progress] bridge rendering
-* [in progress] improve concrete rendering (edges, roads)
+* [done] bridge rendering [v0.2.9]
+* [in progress] improve concrete rendering (edges, roads) [v0.2.9]
 * [pending] mini-map rendering
 * [pending] map favorites integration
 * [pending] map place building interaction support

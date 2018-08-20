@@ -89,6 +89,23 @@ export default class Road
       city_texture_id: 'road.city.nwse.sw'
       country_texture_id: 'road.country.nwse.sw'
 
+    CITY_N_COUNTRY_S:
+      type: 'CITY_N_COUNTRY_S'
+      city_texture_id: 'road.city.n.country.s'
+      country_texture_id: 'road.city.n.country.s'
+    CITY_S_COUNTRY_N:
+      type: 'CITY_S_COUNTRY_N'
+      city_texture_id: 'road.city.s.country.n'
+      country_texture_id: 'road.city.s.country.n'
+    CITY_E_COUNTRY_W:
+      type: 'CITY_E_COUNTRY_W'
+      city_texture_id: 'road.city.e.country.w'
+      country_texture_id: 'road.city.e.country.w'
+    CITY_W_COUNTRY_E:
+      type: 'CITY_W_COUNTRY_E'
+      city_texture_id: 'road.city.w.country.e'
+      country_texture_id: 'road.city.w.country.e'
+
     BRIDGE_EW:
       type: 'BRIDGE_EW'
       city_texture_id: 'bridge.ew'
