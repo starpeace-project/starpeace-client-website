@@ -1,7 +1,7 @@
 
 import BuildingMap from '~/plugins/starpeace-client/map/building-map.coffee'
 import ConcreteMap from '~/plugins/starpeace-client/map/concrete-map.coffee'
-import GroundMap from '~/plugins/starpeace-client/map/ground-map.coffee'
+import LandMap from '~/plugins/starpeace-client/map/land-map.coffee'
 import OverlayMap from '~/plugins/starpeace-client/map/overlay-map.coffee'
 import RoadMap from '~/plugins/starpeace-client/map/road-map.coffee'
 
@@ -11,7 +11,7 @@ export default class GameMap
   constructor: (event_listener, building_manager, road_manager, overlay_manager, manifest, texture, @ui_state) ->
     @width = texture.texture.width
     @height = texture.texture.height
-    @ground_map = GroundMap.from_texture(manifest, texture)
+    @ground_map = LandMap.from_texture(manifest, texture)
     @building_map = new BuildingMap(event_listener, @ground_map, building_manager, road_manager, @width, @height)
     @concrete_map = new ConcreteMap(event_listener, @ground_map, @building_map, @width, @height)
     @road_map = new RoadMap(event_listener, @ground_map, @building_map, @concrete_map, @width, @height)
@@ -52,7 +52,7 @@ export default class GameMap
       road_info.is_on_platform = true if road_info? && concrete_info? && road_info.is_over_water
 
     is_position_within_map = x >= 0 && x < @width && y >= 0 && y < @height
-    is_road_needs_land = road_info? && (!road_info.is_city || road_info.type.is_bridge || road_info.is_over_water && road_info.is_concrete_edge)
+    is_road_needs_land = road_info? && (!road_info.is_city || road_info.is_over_water || road_info.is_concrete_edge)
     is_concrete_needs_land = concrete_info? && (concrete_info.type != Concrete.TYPES.CENTER && concrete_info.type != Concrete.TYPES.CENTER_TREEABLE)
 
     tree_info = if @ui_state.render_trees && !road_info? && !concrete_info? && !building_info? && is_position_within_map then @ground_map.tree_at(x, y) else null

@@ -107,7 +107,7 @@ export default class TileItemCache
     Logger.debug "no road texture for #{tile_info.road_info.type?.type || 'unknown'}" unless texture?
     return null unless texture?
 
-    new SpriteRoad(texture, tile_info.road_info.type.is_bridge || false, tile_info.road_info.is_on_platform)
+    new SpriteRoad(texture, tile_info.road_info.type.is_bridge || false, tile_info.road_info.is_over_water)
 
   tree_sprite_info_for: (tile_info) ->
     return null unless tile_info.tree_info?

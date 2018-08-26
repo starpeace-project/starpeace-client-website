@@ -1,12 +1,12 @@
 
-## v0.3 - in progress - updated 2018-08-19
+## v0.3 - in progress - updated 2018-08-26
 ### platform
 * [done] improved building rendering around edges [v0.2.1]
 * [done] improved z-order rendering across layers [v0.2.2]
 * [done] fix broken z-order rendering for buildings, trees, tree concrete, and platforms [v0.2.7]
 * [done] sprite layer render refactor and fixes, caching optimizations [v0.2.7]
 * [done] initial dynamic layout support (desktop, mobile) [v0.2.8]
-* [pending] input interaction support for buildings (selection, rendering)
+* [in progress] input interaction support for buildings (selection, rendering)
 
 ### assets
 * [done] improved gameplay documentation [v0.2.4]
@@ -30,7 +30,7 @@
 * [done] road rendering [v0.2.7]
 * [done] game music controls [v0.2.8]
 * [done] bridge rendering [v0.2.9]
-* [in progress] improve concrete rendering (edges, roads) [v0.2.9]
+* [done] improve concrete rendering (edges, roads) [v0.2.9]
 * [pending] mini-map rendering
 * [pending] map favorites integration
-* [pending] map place building interaction support
+* [in progress] map place building interaction support

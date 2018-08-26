@@ -22,7 +22,7 @@ export default class BuildingManager
       for j in [0...info.h]
         for i in [0...info.w]
           index = 1000 * (yt - j) + (xt - i)
-          return false if mock_map_buildings[index]? || RoadManager.DUMMY_ROAD_DATA[index] || @game_state.game_map?.ground_map?.is_coast_at(xt - i, yt - j)
+          return false if mock_map_buildings[index]? || RoadManager.DUMMY_ROAD_DATA[index] || @game_state.game_map?.ground_map?.is_coast_at(xt - i, yt - j) || @game_state.game_map?.ground_map?.is_water_at(xt - i, yt - j) && @game_state.game_map?.ground_map?.is_coast_around(xt - i, yt - j)
       true
     place_mock = (xt, yt, info) ->
       for j in [0...info.h]

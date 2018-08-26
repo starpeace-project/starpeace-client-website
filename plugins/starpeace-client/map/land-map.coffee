@@ -6,13 +6,15 @@ TREE_TYPE_PERCENTAGE.grass = .3
 TREE_TYPE_PERCENTAGE.midgrass = .2
 TREE_TYPE_PERCENTAGE.dryground = .1
 
-export default class GroundMap
+export default class LandMap
   constructor: (@width, @height, @ground_map_tiles, @tree_map_tiles) ->
 
   tree_at: (x, y) -> @tree_map_tiles[(@height - x) * @width + (@width - y)]
   ground_at: (x, y) -> @ground_map_tiles[(@height - x) * @width + (@width - y)]
 
   is_coast_at: (x, y) -> @ground_at(x, y).is_coast
+  is_coast_around: (x, y) ->
+    @ground_at(x, y).is_coast || @ground_at(x - 1, y).is_coast || @ground_at(x + 1, y).is_coast || @ground_at(x, y - 1).is_coast
   is_water_at: (x, y) -> @ground_at(x, y).zone == 'water'
   is_water_around: (x, y) ->
     @ground_at(x, y).zone == 'water' || @ground_at(x - 1, y).zone == 'water' || @ground_at(x + 1, y).zone == 'water' ||
@@ -31,7 +33,7 @@ export default class GroundMap
     map_height = texture.texture.height
 
     zones_with_trees = manifest.zones_with_trees()
-    pixels = GroundMap.pixels_for_image(texture.data)
+    pixels = LandMap.pixels_for_image(texture.data)
     ground_tiles = new Array(map_height * map_width)
     tree_tiles = new Array(map_height * map_width)
     for y in [0...map_height]
@@ -44,4 +46,4 @@ export default class GroundMap
         tree_tiles[map_index] = manifest.random_tree_for_zone(ground_tiles[map_index].zone) if zones_with_trees.has(ground_tiles[map_index]?.zone) && Math.random() < (TREE_TYPE_PERCENTAGE[ground_tiles[map_index]?.zone] || 0.2)
 
 
-    new GroundMap(map_width, map_height, ground_tiles, tree_tiles)
+    new LandMap(map_width, map_height, ground_tiles, tree_tiles)

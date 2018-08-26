@@ -1,6 +1,6 @@
 {
   "name": "@starpeace/starpeace-website-client",
-  "version": "0.2.7",
+  "version": "0.2.9",
   "lockfileVersion": 1,
   "requires": true,
   "dependencies": {
@@ -4397,9 +4397,9 @@
       "integrity": "sha512-lIbgIIQA3lz5XaB6vxakj6sDHADJiZadYEJB+FgA+C4nubM1NwcuvUr9EJPmnH1skZqpqUzWborWo8EIUi0Sdw=="
     },
     "howler": {
-      "version": "2.0.14",
-      "resolved": "https://registry.npmjs.org/howler/-/howler-2.0.14.tgz",
-      "integrity": "sha512-U2ao6mRaPjjzOtwQTDA2OMk9ftQ+k+CrdaBrSIxcO6artSNBtK4kwdx8vUoajMvv6vGZWYiQOmBYnffOFWHt7w==",
+      "version": "2.0.15",
+      "resolved": "https://registry.npmjs.org/howler/-/howler-2.0.15.tgz",
+      "integrity": "sha512-Ceui16WCAdBiRlI3cK/zPmp6eWKG4wU5yIYHtH+X4zPhwqbr2ieRQvt/1J60NCqEXFHuBKdzBrS5DRYkMwiQsg==",
       "dev": true
     },
     "html-comment-regex": {

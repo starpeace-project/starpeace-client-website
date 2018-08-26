@@ -137,6 +137,15 @@ export default class Road
       country_texture_id: 'bridge.ramp.w'
       is_bridge: true
 
+  @connects_east: (type) ->
+    type == Road.TYPES.CROSS || type == Road.TYPES.EW || type == Road.TYPES.EW_END_W || type == Road.TYPES.T_EW_N || type == Road.TYPES.T_EW_S || type == Road.TYPES.T_NS_W || type == Road.TYPES.NE_CORNER || type == Road.TYPES.SE_CORNER
+  @connects_west: (type) ->
+    type == Road.TYPES.CROSS || type == Road.TYPES.EW || type == Road.TYPES.EW_END_E || type == Road.TYPES.T_EW_N || type == Road.TYPES.T_EW_S || type == Road.TYPES.T_NS_E || type == Road.TYPES.NW_CORNER || type == Road.TYPES.SW_CORNER
+  @connects_north: (type) ->
+    type == Road.TYPES.CROSS || type == Road.TYPES.NS || type == Road.TYPES.NS_END_S || type == Road.TYPES.T_NS_E || type == Road.TYPES.T_NS_W || type == Road.TYPES.T_EW_S || type == Road.TYPES.NE_CORNER || type == Road.TYPES.NW_CORNER
+  @connects_south: (type) ->
+    type == Road.TYPES.CROSS || type == Road.TYPES.NS || type == Road.TYPES.NS_END_N || type == Road.TYPES.T_NS_E || type == Road.TYPES.T_NS_W || type == Road.TYPES.T_EW_N || type == Road.TYPES.SE_CORNER || type == Road.TYPES.SW_CORNER
+
 
   @deserialize_chunk: (width, height, data) ->
     road_data = new Array(width * height)

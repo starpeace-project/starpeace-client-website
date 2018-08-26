@@ -71,7 +71,7 @@ export default class LayerManager
       land = @land_sprite_cache.new_sprite(render_state, { texture:tile_item.sprite_info.land.texture })
       tile_item.sprite_info.land.render(land, canvas, viewport)
 
-    has_concrete_with_height = if tile_item.sprite_info.concrete? then !tile_item.sprite_info.concrete.is_flat else false
+    has_concrete_with_height = if tile_item.sprite_info.concrete? then !tile_item.sprite_info.concrete.is_flat || tile_item.sprite_info.concrete.is_platform else false
     if tile_item.sprite_info.concrete?.within_canvas(canvas, viewport)
       sprite_cache = if has_concrete_with_height then @with_height_static_sprite_cache else @concrete_sprite_cache
       concrete = sprite_cache.new_sprite(render_state, { texture:tile_item.sprite_info.concrete.texture })
@@ -79,7 +79,7 @@ export default class LayerManager
       tile_item.sprite_info.concrete.render(concrete, canvas, viewport)
       tile_item.sprite_info.underlay.render(concrete_underlay, concrete.zOrder, false, canvas, viewport) if concrete_underlay?
 
-    has_road_with_height = if tile_item.sprite_info.road? then has_concrete_with_height || tile_item.sprite_info.road.is_bridge else false
+    has_road_with_height = if tile_item.sprite_info.road? then has_concrete_with_height || tile_item.sprite_info.road.is_bridge || tile_item.sprite_info.road.is_over_water else false
     if tile_item.sprite_info.road?.within_canvas(canvas, viewport)
       sprite_cache = if has_road_with_height then @with_height_static_sprite_cache else @road_sprite_cache
       road = sprite_cache.new_sprite(render_state, { texture:tile_item.sprite_info.road.texture })

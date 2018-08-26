@@ -40,6 +40,14 @@ export default class BuildingMap
         x > 0 && @building_info_at(x - 1, y)?.has_concrete == true ||
         x < @width && @building_info_at(x + 1, y)?.has_concrete == true
 
+  is_road_junction: (x, y) ->
+    index = y * @width + x
+    index_n = (y - 1) * @width + x
+    index_s = (y + 1) * @width + x
+    index_e = index + 1
+    index_w = index - 1
+    (@tile_info_road[index_n] || @tile_info_road[index_s]) && (@tile_info_road[index_e] || @tile_info_road[index_w])
+
   add_building: (building) ->
     metadata = @building_manager.building_metadata.buildings[building.key]
 

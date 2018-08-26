@@ -17,13 +17,6 @@ export default class Concrete
       type: 'CENTER_TREEABLE'
       texture_id: 'concrete.c.plant'
 
-    BUFFER:
-      type: 'BUFFER'
-      texture_id: null
-    BUFFER_ROAD:
-      type: 'BUFFER_ROAD'
-      texture_id: null
-
     EDGE_N:
       type: 'EDGE_N'
       texture_id: 'concrete.n'
@@ -110,6 +103,7 @@ export default class Concrete
       type: 'PLATFORM_CENTER'
       texture_id: 'platform.c'
       is_platform: true
+      is_flat: true
     PLATFORM_EDGE_N:
       type: 'PLATFORM_EDGE_N'
       texture_id: 'platform.e'
