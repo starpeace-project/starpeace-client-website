@@ -24,6 +24,7 @@
     "@nuxtjs/google-analytics": "^2.0.2",
     "@nuxtjs/moment": "^1.0.0",
     "bulma": "^0.7.1",
+    "bulma-tooltip": "^2.0.1",
     "coffee-loader": "^0.9.0",
     "coffeescript": "^2.3.1",
     "cross-env": "^5.2.0",

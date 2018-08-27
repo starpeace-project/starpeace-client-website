@@ -46,23 +46,23 @@ sp-primary-color<template lang='haml'>
         %tbody
           %tr.row-menu
             %td.column-menu
-              %a.button.is-starpeace.is-small{'v-bind:class':'menu_class_planetary', 'v-on:click.stop.prevent':'menu_state.toggle_menu_planetary()'}
+              %a.button.is-starpeace.is-small.tooltip{'v-bind:class':'menu_class_planetary', 'v-on:click.stop.prevent':'menu_state.toggle_menu_planetary()', 'data-tooltip':'Planetary Systems'}
                 %font-awesome-icon{':icon':"['fas', 'globe']"}
-              %a.button.is-starpeace.is-small{'v-bind:class':'menu_class_favorites', 'v-on:click.stop.prevent':'menu_state.toggle_menu_favorites()'}
+              %a.button.is-starpeace.is-small.tooltip{'v-bind:class':'menu_class_favorites', 'v-on:click.stop.prevent':'menu_state.toggle_menu_favorites()', 'data-tooltip':'Map Locations'}
                 %font-awesome-icon{':icon':"['fas', 'map-pin']"}
-              %a.button.is-starpeace.is-small{'v-on:click.stop.prevent':'menu_state.hide_all_menus()'}
+              %a.button.is-starpeace.is-small.tooltip{'v-on:click.stop.prevent':'menu_state.hide_all_menus()', 'data-tooltip':'Hide Menus'}
                 %font-awesome-icon{':icon':"['far', 'eye']"}
-              %a.button.is-starpeace.is-small{'v-bind:class':'menu_class_tycoon', 'v-on:click.stop.prevent':'menu_state.toggle_menu_tycoon()'}
+              %a.button.is-starpeace.is-small.tooltip{'v-bind:class':'menu_class_tycoon', 'v-on:click.stop.prevent':'menu_state.toggle_menu_tycoon()', 'data-tooltip':'Tycoon Details'}
                 %font-awesome-icon{':icon':"['fas', 'user-tie']"}
-              %a.button.is-starpeace.is-small{'v-bind:class':'menu_class_building', 'v-on:click.stop.prevent':'menu_state.toggle_menu_building()'}
+              %a.button.is-starpeace.is-small.tooltip{'v-bind:class':'menu_class_building', 'v-on:click.stop.prevent':'menu_state.toggle_menu_building()', 'data-tooltip':'Construction'}
                 %font-awesome-icon{':icon':"['far', 'building']"}
-              %a.button.is-starpeace.is-small{'v-bind:class':'menu_class_mail', 'v-on:click.stop.prevent':'menu_state.toggle_menu_mail()'}
+              %a.button.is-starpeace.is-small.tooltip{'v-bind:class':'menu_class_mail', 'v-on:click.stop.prevent':'menu_state.toggle_menu_mail()', 'data-tooltip':'Mail'}
                 %font-awesome-icon{':icon':"['far', 'envelope']"}
-              %a.button.is-starpeace.is-small{'v-bind:class':'menu_class_chat', 'v-on:click.stop.prevent':'menu_state.toggle_menu_chat()'}
+              %a.button.is-starpeace.is-small.tooltip{'v-bind:class':'menu_class_chat', 'v-on:click.stop.prevent':'menu_state.toggle_menu_chat()', 'data-tooltip':'Chat'}
                 %font-awesome-icon{':icon':"['far', 'comments']"}
-              %a.button.is-starpeace.is-small{'v-bind:class':'menu_class_options', 'v-on:click.stop.prevent':'menu_state.toggle_menu_options()'}
+              %a.button.is-starpeace.is-small.tooltip{'v-bind:class':'menu_class_options', 'v-on:click.stop.prevent':'menu_state.toggle_menu_options()', 'data-tooltip':'Options'}
                 %font-awesome-icon{':icon':"['fas', 'cogs']"}
-              %a.button.is-starpeace.is-small{'v-bind:class':'menu_class_help', 'v-on:click.stop.prevent':'menu_state.toggle_menu_help()'}
+              %a.button.is-starpeace.is-small.tooltip{'v-bind:class':'menu_class_help', 'v-on:click.stop.prevent':'menu_state.toggle_menu_help()', 'data-tooltip':'Help'}
                 %font-awesome-icon{':icon':"['far', 'question-circle']"}
 
             %td.column-tycoon

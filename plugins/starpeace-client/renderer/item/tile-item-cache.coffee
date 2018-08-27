@@ -153,7 +153,7 @@ export default class TileItemCache
         continue unless effect_metadata? && effect_textures?.length
         effects.push(new SpriteEffect(effect_textures, effect, effect_metadata))
 
-    new SpriteBuilding(textures, is_animated, metadata, effects)
+    new SpriteBuilding(textures, is_animated, metadata.hit_area || [], metadata, effects)
 
   plane_sprite_info_for: (flight_plan) ->
     textures = @plane_manager.plane_textures[flight_plan.plane_info.key]

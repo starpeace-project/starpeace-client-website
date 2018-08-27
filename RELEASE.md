@@ -6,7 +6,7 @@
 * [done] fix broken z-order rendering for buildings, trees, tree concrete, and platforms [v0.2.7]
 * [done] sprite layer render refactor and fixes, caching optimizations [v0.2.7]
 * [done] initial dynamic layout support (desktop, mobile) [v0.2.8]
-* [in progress] input interaction support for buildings (selection, rendering)
+* [in progress] input interaction support for buildings (selection, rendering) [v0.2.10]
 
 ### assets
 * [done] improved gameplay documentation [v0.2.4]
@@ -17,6 +17,7 @@
 * [done] road and bridge assets [v0.2.7]
 * [done] game background music [v0.2.8]
 * [done] formal asset versioning [v0.2.9]
+* [done] building asset interaction hitboxes [v0.2.10]
 
 ### gameplay
 * [done] persist client options in localStorage [v0.2.3]
@@ -31,6 +32,6 @@
 * [done] game music controls [v0.2.8]
 * [done] bridge rendering [v0.2.9]
 * [done] improve concrete rendering (edges, roads) [v0.2.9]
+* [in progress] map place building interaction support
 * [pending] mini-map rendering
 * [pending] map favorites integration
-* [in progress] map place building interaction support

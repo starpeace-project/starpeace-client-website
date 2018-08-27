@@ -9,7 +9,7 @@ import Logger from '~/plugins/starpeace-client/logger.coffee'
 SPRITE_BUFFER = 100000
 
 export default class LayerCache
-  constructor: (@container, @common_zorder_layer, @max_size, @is_animated) ->
+  constructor: (@container, @common_zorder_layer, @max_size, @is_animated, @pointer_events) ->
     @id = Utils.uuid()
 
     @sprite_count = 0
@@ -24,6 +24,7 @@ export default class LayerCache
       @sprite_pool[index].visible = false
       @sprite_pool[index].x = -1000
       @sprite_pool[index].y = -1000
+      @sprite_pool[index].click_callback = null
 
   new_sprite: (render_state, options) ->
     render_state[@id] = 0 unless render_state[@id]?
@@ -41,9 +42,32 @@ export default class LayerCache
       @sprite_count += 1
       sprite = @sprite_pool[render_state[@id]] = if @is_animated then new PIXI.extras.AnimatedSprite(textures) else new PIXI.Sprite(textures[0])
       sprite.parentLayer = @common_zorder_layer if @common_zorder_layer?
+      if @pointer_events
+        sprite.interactive = true
+        sprite.interactiveChildren = false
+
+        sprite.on('pointerdown', (event) ->
+          return unless event.currentTarget.click_callback?
+
+          event.currentTarget.event_pointer_down_x = Math.round(event.data?.global?.x || 0)
+          event.currentTarget.event_pointer_down_y = Math.round(event.data?.global?.y || 0)
+        )
+        sprite.on('pointerup', (event) ->
+          return unless event.currentTarget.click_callback?
+
+          delta_x = Math.round(event.data?.global?.x || 0) - (event.currentTarget.event_pointer_down_x || 0)
+          delta_y = Math.round(event.data?.global?.y || 0) - (event.currentTarget.event_pointer_down_y || 0)
+          return if delta_x > 0 || delta_y > 0
+
+          event.currentTarget.click_callback()
+        )
       @container.addChild(sprite)
 
     render_state[@id] += 1
+
+    if @pointer_events
+      sprite.hitArea = if options.hit_area then options.hit_area else null
+      sprite.click_callback = if options.click_callback? then options.click_callback else null
 
     if @is_animated
       sprite.animationSpeed = if options.speed? then options.speed else .2

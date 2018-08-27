@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js'
 import 'pixi-layers'
 
-// import '~/plugins/pixi/color-fill-filter'
+import '~/plugins/pixi/composite-polygon'
 
 export default PIXI

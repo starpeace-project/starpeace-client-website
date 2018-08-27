@@ -13,37 +13,37 @@ export default class LayerManager
   constructor: (options) ->
     @land_container = new PIXI.particles.ParticleContainer(LayerManager.MAX_PARTICLES, { tint: true, uvs: true, vertices: true })
     @land_container.zIndex = 0
-    @land_sprite_cache = new LayerCache(@land_container, null, LayerManager.MAX_PARTICLES, false)
+    @land_sprite_cache = new LayerCache(@land_container, null, LayerManager.MAX_PARTICLES, false, false)
 
     @concrete_container = new PIXI.particles.ParticleContainer(LayerManager.MAX_PARTICLES, { uvs: true, vertices: true })
     @concrete_container.zIndex = 0
-    @concrete_sprite_cache = new LayerCache(@concrete_container, null, LayerManager.MAX_PARTICLES, false)
+    @concrete_sprite_cache = new LayerCache(@concrete_container, null, LayerManager.MAX_PARTICLES, false, false)
 
     @underlay_container = new PIXI.particles.ParticleContainer(LayerManager.MAX_PARTICLES, { tint: true, vertices: true })
     @underlay_container.zIndex = 1
-    @underlay_sprite_cache = new LayerCache(@underlay_container, null, LayerManager.MAX_PARTICLES, false)
+    @underlay_sprite_cache = new LayerCache(@underlay_container, null, LayerManager.MAX_PARTICLES, false, false)
 
     @road_container = new PIXI.particles.ParticleContainer(LayerManager.MAX_PARTICLES, { uvs: true, vertices: true })
     @road_container.zIndex = 2
-    @road_sprite_cache = new LayerCache(@road_container, null, LayerManager.MAX_PARTICLES, false)
+    @road_sprite_cache = new LayerCache(@road_container, null, LayerManager.MAX_PARTICLES, false, false)
 
     @foundation_container = new PIXI.particles.ParticleContainer(LayerManager.MAX_PARTICLES, { tint: true, uvs: true, vertices: true })
     @foundation_container.zIndex = 2
-    @foundation_sprite_cache = new LayerCache(@foundation_container, null, LayerManager.MAX_PARTICLES, false)
+    @foundation_sprite_cache = new LayerCache(@foundation_container, null, LayerManager.MAX_PARTICLES, false, false)
 
     @with_height_container = new PIXI.Container()
     @with_height_container.zIndex = 3
     @with_height_zorder_layer = new PIXI.display.Layer(new PIXI.display.Group(3, true))
-    @with_height_static_sprite_cache = new LayerCache(@with_height_container, @with_height_zorder_layer, 0, false)
-    @with_height_animated_sprite_cache = new LayerCache(@with_height_container, @with_height_zorder_layer, 0, true)
+    @with_height_static_sprite_cache = new LayerCache(@with_height_container, @with_height_zorder_layer, 0, false, true)
+    @with_height_animated_sprite_cache = new LayerCache(@with_height_container, @with_height_zorder_layer, 0, true, true)
 
     @overlay_container = new PIXI.particles.ParticleContainer(LayerManager.MAX_PARTICLES, { tint: true, vertices: true })
     @overlay_container.zIndex = 4
-    @overlay_sprite_cache = new LayerCache(@overlay_container, null, LayerManager.MAX_PARTICLES, false)
+    @overlay_sprite_cache = new LayerCache(@overlay_container, null, LayerManager.MAX_PARTICLES, false, false)
 
     @plane_container = new PIXI.Container()
     @plane_container.zIndex = 5
-    @plane_sprite_cache = new LayerCache(@plane_container, null, 0, true)
+    @plane_sprite_cache = new LayerCache(@plane_container, null, 0, true, false)
 
     @containers = [@land_container, @concrete_container, @underlay_container, @road_container, @foundation_container, @with_height_container, @overlay_container, @plane_container]
     @sprite_caches = [@land_sprite_cache, @concrete_sprite_cache, @underlay_sprite_cache, @road_sprite_cache, @foundation_sprite_cache, @with_height_static_sprite_cache, @with_height_animated_sprite_cache, @overlay_sprite_cache]
@@ -102,8 +102,10 @@ export default class LayerManager
       tile_item.sprite_info.foundation.render(foundation, canvas, viewport)
 
     if tile_item.sprite_info.building?.within_canvas(canvas, viewport)
+      select_building_callback = () =>
+        Logger.debug JSON.stringify(tile_item.tile_info.building_info)
       sprite_cache = if tile_item.sprite_info.building.is_animated then @with_height_animated_sprite_cache else @with_height_static_sprite_cache
-      building = sprite_cache.new_sprite(render_state, { textures:tile_item.sprite_info.building.textures, speed:.15 })
+      building = sprite_cache.new_sprite(render_state, { textures:tile_item.sprite_info.building.textures, speed:.15, hit_area:tile_item.sprite_info.building.hit_area(viewport), click_callback:select_building_callback })
       tile_item.sprite_info.building.render(building, canvas, viewport)
 
       for effect_info in tile_item.sprite_info.building.effects

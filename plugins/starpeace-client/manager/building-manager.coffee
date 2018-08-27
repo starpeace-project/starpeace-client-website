@@ -1,5 +1,6 @@
 
 import Logger from '~/plugins/starpeace-client/logger.coffee'
+import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
 
 import RoadManager from '~/plugins/starpeace-client/manager/road-manager.coffee'
 
@@ -40,6 +41,7 @@ export default class BuildingManager
           chunk_key = "#{Math.floor(x/20)}x#{Math.floor(y/20)}"
           MOCK_DATA[chunk_key] ||= []
           MOCK_DATA[chunk_key].push {
+            id: Utils.uuid()
             key: key
             x: x
             y: y
