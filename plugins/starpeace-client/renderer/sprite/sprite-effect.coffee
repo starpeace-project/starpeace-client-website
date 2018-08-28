@@ -17,7 +17,7 @@ export default class SpriteEffect extends Sprite
     height = @height(viewport)
 
     sprite.visible = true
-    sprite.alpha = 1
+    sprite.alpha = parent_sprite.alpha
     sprite.x = parent_sprite.x + parent_x - x_offset
     sprite.y = parent_sprite.y + parent_y - y_offset
     sprite.width = width

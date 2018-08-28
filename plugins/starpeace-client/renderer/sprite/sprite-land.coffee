@@ -13,6 +13,7 @@ export default class SpriteLand extends Sprite
     height = @height(viewport)
 
     sprite.visible = true
+    sprite.alpha = 1
     sprite.x = canvas.x - (width - viewport.tile_width)
     sprite.y = canvas.y - (height - viewport.tile_height)
     sprite.width = width + 1

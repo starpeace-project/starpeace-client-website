@@ -54,6 +54,9 @@ export default class GameState
     @current_date = '2235-01-01'
     @current_season = 'winter'
 
+    @selected_building_id = null
+    @selected_tycoon_id = null
+
     setInterval(=>
       return unless @initialized
       # FIXME: TODO: remove and get from server

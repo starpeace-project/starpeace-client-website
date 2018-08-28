@@ -14,6 +14,7 @@ export default class SpriteRoad extends Sprite
     offset_y = if !@is_bridge && @is_over_water then Math.round(viewport.tile_size_y(.375)) else 0 #.5625
 
     sprite.visible = true
+    sprite.alpha = 1
     sprite.x = canvas.x - (width - viewport.tile_width)
     sprite.y = canvas.y - (height - viewport.tile_height) - offset_y
     sprite.width = width

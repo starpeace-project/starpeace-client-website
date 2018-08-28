@@ -60,6 +60,9 @@ export default class LayerCache
           return if delta_x > 0 || delta_y > 0
 
           event.currentTarget.click_callback()
+          event.data?.originalEvent?.preventDefault()
+          event.stopPropagation()
+          false
         )
       @container.addChild(sprite)
 

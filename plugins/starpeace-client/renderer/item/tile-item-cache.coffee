@@ -23,6 +23,7 @@ export default class TileItemCache
     @last_rendered_overlay = false
     @last_rendered_overlay_type = null
     @last_rendered_render_options = { trees: null, buildings: null, building_animations: null, building_effects: null, planes: null }
+    @last_rendered_selection_options = { building_id: null, tycoon_id: null }
 
     @tile_items = []
 
@@ -31,7 +32,8 @@ export default class TileItemCache
       @ui_state.show_zones != @last_rendered_zones || @ui_state.show_overlay != @last_rendered_overlay || @ui_state.current_overlay.type != @last_rendered_overlay_type ||
       @ui_state.render_trees != @last_rendered_render_options.trees || @ui_state.render_buildings != @last_rendered_render_options.buildings ||
       @ui_state.render_building_animations != @last_rendered_render_options.building_animations || @ui_state.render_building_effects != @last_rendered_render_options.building_effects ||
-      @ui_state.render_planes != @last_rendered_render_options.planes
+      @ui_state.render_planes != @last_rendered_render_options.planes ||
+      @game_state.selected_building_id != @last_rendered_selection_options.building_id || @game_state.selected_tycoon_id != @last_rendered_selection_options.tycoon_id
 
   reset_cache: () ->
     @last_scale_rendered = @game_state.game_scale
@@ -45,6 +47,9 @@ export default class TileItemCache
     @last_rendered_render_options.building_animations = @ui_state.render_building_animations
     @last_rendered_render_options.building_effects = @ui_state.render_building_effects
     @last_rendered_render_options.planes = @ui_state.render_planes
+
+    @last_rendered_selection_options.building_id = @game_state.selected_building_id
+    @last_rendered_selection_options.tycoon_id = @game_state.selected_tycoon_id
 
     @is_dirty = false
 
@@ -153,7 +158,10 @@ export default class TileItemCache
         continue unless effect_metadata? && effect_textures?.length
         effects.push(new SpriteEffect(effect_textures, effect, effect_metadata))
 
-    new SpriteBuilding(textures, is_animated, metadata.hit_area || [], metadata, effects)
+    is_selected = if @game_state.selected_building_id?.length then @game_state.selected_building_id == tile_info.building_info.id else false
+    is_filtered = if @game_state.selected_tycoon_id?.length then @game_state.selected_tycoon_id != tile_info.building_info.tycoon_id else false
+
+    new SpriteBuilding(textures, is_animated, is_selected, is_filtered, metadata, effects)
 
   plane_sprite_info_for: (flight_plan) ->
     textures = @plane_manager.plane_textures[flight_plan.plane_info.key]

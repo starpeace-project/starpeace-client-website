@@ -5,6 +5,7 @@ import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
 import RoadManager from '~/plugins/starpeace-client/manager/road-manager.coffee'
 
 MOCK_DATA = {}
+MOCK_TYCOONS = [Utils.uuid(), Utils.uuid(), Utils.uuid(), Utils.uuid(), Utils.uuid()]
 
 export default class BuildingManager
   constructor: (@asset_manager, @event_listener, @game_state) ->
@@ -42,6 +43,7 @@ export default class BuildingManager
           MOCK_DATA[chunk_key] ||= []
           MOCK_DATA[chunk_key].push {
             id: Utils.uuid()
+            tycoon_id: MOCK_TYCOONS[Math.floor(Math.random() * MOCK_TYCOONS.length)]
             key: key
             x: x
             y: y

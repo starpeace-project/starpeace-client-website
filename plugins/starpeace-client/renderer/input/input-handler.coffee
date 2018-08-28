@@ -32,15 +32,23 @@ class InputHandler
       @is_moving = true
       event = event?.data
       return unless @renderer?.initialized && event? && event.isPrimary
-      @last_x = Math.round(event.global.x)
-      @last_y = Math.round(event.global.y)
+
+      @start_x = @last_x = Math.round(event.global.x)
+      @start_y = @last_y = Math.round(event.global.y)
 
     finish_moving = (event) =>
+      return unless @is_moving
       @is_moving = false
+
+      do_action = !event.stopped
       event = event?.data
       return unless @renderer?.initialized && event? && event.isPrimary
       @last_x = Math.round(event.global.x)
       @last_y = Math.round(event.global.y)
+
+      if do_action && @last_x == @start_x && @last_y == @start_y
+        @game_state.selected_building_id = null
+        @game_state.selected_tycoon_id = null
 
     do_move = (event) =>
       event = event?.data
