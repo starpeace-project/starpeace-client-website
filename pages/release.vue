@@ -31,6 +31,12 @@ export default
 </script>
 
 <style lang='sass' scoped>
+@import '~bulma/sass/utilities/_all'
+
 .notes-container
   margin-top: 1rem
+
+#application-body
+  +mobile
+    overflow-x: hidden
 </style>
