@@ -7,7 +7,7 @@
   %sp-menu{'v-bind:game_state':'game_state', 'v-bind:menu_state':'menu_state', 'v-bind:ui_state':'ui_state'}
   %sp-body{'v-bind:game_state':'game_state', 'v-bind:ui_state':'ui_state'}
   %sp-footer-overlay-menu{'v-bind:ui_state':'ui_state'}
-  %sp-footer{'v-bind:game_state':'game_state', 'v-bind:menu_state':'menu_state', 'v-bind:ui_state':'ui_state', 'v-bind:camera_manager':'camera_manager', 'v-bind:music_manager':'music_manager'}
+  %sp-footer{'v-bind:camera_manager':'camera_manager', 'v-bind:mini_map_renderer':'mini_map_renderer', 'v-bind:game_state':'game_state', 'v-bind:menu_state':'menu_state', 'v-bind:ui_state':'ui_state', 'v-bind:music_manager':'music_manager'}
 </template>
 
 <script lang='coffee'>
@@ -41,13 +41,14 @@ export default
       classes
 
   data: ->
+    camera_manager: @client?.camera_manager
     event_listener: @client?.event_listener
     game_state: @client?.game_state
     menu_state: @client?.menu_state
-    ui_state: @client?.ui_state
-    planetary_metadata_manager: @client?.managers?.planetary_metadata_manager
-    camera_manager: @client?.camera_manager
+    mini_map_renderer: @client?.mini_map_renderer
     music_manager: @client?.music_manager
+    planetary_metadata_manager: @client?.managers?.planetary_metadata_manager
+    ui_state: @client?.ui_state
 </script>
 
 <style lang='sass' scoped>

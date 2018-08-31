@@ -15,6 +15,7 @@ import UIState from '~/plugins/starpeace-client/state/ui-state.coffee'
 
 import MusicManager from '~/plugins/starpeace-client/sound/music-manager.coffee'
 
+import MiniMapRenderer from '~/plugins/starpeace-client/renderer/mini-map-renderer.coffee'
 import Renderer from '~/plugins/starpeace-client/renderer/renderer.coffee'
 import CameraManager from '~/plugins/starpeace-client/renderer/camera/camera-manager.coffee'
 import InputHandler from '~/plugins/starpeace-client/renderer/input/input-handler.coffee'
@@ -32,6 +33,7 @@ export default class Client
     @managers = new Managers(@event_listener, @game_state, @ui_state)
     @music_manager = new MusicManager(@game_state)
 
+    @mini_map_renderer = new MiniMapRenderer(@event_listener, @managers, @game_state, @ui_state)
     @renderer = new Renderer(@event_listener, @managers, @game_state, @ui_state)
     @camera_manager = new CameraManager(@renderer, @game_state)
     @input_handler = new InputHandler(@game_state, @menu_state, @camera_manager, @renderer)
@@ -56,9 +58,11 @@ export default class Client
       @initialize_game_map()
       @renderer.initialize()
       @input_handler.initialize()
+      @mini_map_renderer.initialize()
       @game_state.initialized = true
       setTimeout (=> @game_state.loading = false), 500
     , 500)
 
   tick: () ->
     @renderer.tick() if @renderer.initialized
+    @mini_map_renderer.tick() if @mini_map_renderer.initialized

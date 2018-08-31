@@ -23,6 +23,14 @@ sp-primary-color<template lang='haml'>
             %td.column-details-ticker.primary
               Welcome to STARPEACE! If you enjoy your time as a Visitor, become a Tycoon!
 
+            %td.column-mini-map{rowspan: 2, 'v-show':'ui_state.show_mini_map', 'v-bind:style':'mini_map_column_css_style'}
+              #mini-map-container{'v-bind:style':'mini_map_container_css_style'}
+                #mini-map-webgl-container
+                %a.zoom.zoom-out{'v-on:click.stop.prevent':'mini_map_renderer.zoom_in()'}
+                  %font-awesome-icon{':icon':"['fas', 'plus']"}
+                %a.zoom.zoom-in{'v-on:click.stop.prevent':'mini_map_renderer.zoom_out()'}
+                  %font-awesome-icon{':icon':"['fas', 'minus']"}
+
           %tr
             %td.column-camera-controls
               %a.button.is-starpeace.is-small
@@ -111,18 +119,43 @@ sp-primary-color<template lang='haml'>
 </template>
 
 <script lang='coffee'>
+import interact from 'interactjs'
 import moment from 'moment'
+
+MIN_MINI_MAP_WIDTH = 300
+MIN_MINI_MAP_HEIGHT = 200
 
 export default
   props:
+    camera_manager: Object
     game_state: Object
     menu_state: Object
-    ui_state: Object
-    camera_manager: Object
+    mini_map_renderer: Object
     music_manager: Object
+    ui_state: Object
 
   data: ->
     client_version: process.env.CLIENT_VERSION
+
+  updated: ->
+    element = @.$el.querySelector('#mini-map-container') if process.browser
+    return unless element? && !element.dataset.interactSetup?
+
+    interact(element)
+      .resizable({
+        edges: { left: true, right: false, bottom: false, top: true }
+        inertia: true
+        restrictSize: {
+          min: {
+            width: MIN_MINI_MAP_WIDTH
+            height: MIN_MINI_MAP_HEIGHT
+          }
+        }
+      })
+      .on('resizemove', (event) =>
+        @ui_state.update_mini_map(event.rect.width, event.rect.height)
+      )
+    element.dataset.interactSetup = true
 
   computed:
     is_ready: -> @game_state?.initialized
@@ -146,6 +179,8 @@ export default
 
     notification_loading_css_class: -> { 'ajax-loading': (@game_state?.ajax_requests || 0) > 0 }
 
+    mini_map_column_css_style: -> "width:#{@ui_state.mini_map_width}px"
+    mini_map_container_css_style: -> "width:#{@ui_state.mini_map_width}px;height:#{@ui_state.mini_map_height}px"
   methods:
     toggle_zones: -> @ui_state.show_zones = !@ui_state.show_zones
 
@@ -232,6 +267,37 @@ export default
         font-weight: 1000
         letter-spacing: .2rem
         line-height: 3.75rem
+
+    .column-mini-map
+      position: relative
+
+      #mini-map-container
+        background-color: #000
+        bottom: 0
+        min-height: 200px
+        min-width: 300px
+        padding: 6px
+        position: absolute
+        right: 0
+        z-index: 1050
+
+        #mini-map-webgl-container
+          height: 100%
+          width: 100%
+
+        .zoom
+          background-color: #000
+          color: #FFF
+          bottom: 5px
+          padding: .25rem .75rem 0
+          position: absolute
+
+        .zoom-out
+          left: 5px
+
+        .zoom-in
+          right: 5px
+
 
     .column-details-ticker
       background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAADCAYAAABWKLW/AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAEElEQVQI12NgYGD4z0AQAAAjBAEAIsfjuAAAAABJRU5ErkJggg==')

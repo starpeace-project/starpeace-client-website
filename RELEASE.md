@@ -1,5 +1,5 @@
 
-## v0.3 - in progress - updated 2018-08-27
+## v0.3 - in progress - updated 2018-08-30
 ### platform
 * [done] improved building rendering around edges [v0.2.1]
 * [done] improved z-order rendering across layers [v0.2.2]

@@ -44,6 +44,18 @@
           .field.is-horizontal
             .column.is-paddingless.is-9
               .field-label
+                %label.label Mini&nbsp;Map:
+            .column.is-paddingless.field-body
+              .field.is-narrow
+                .control
+                  .toggle-icons
+                    %a{href:'#', 'v-show':"ui_state.show_mini_map", 'v-on:click.stop.prevent':"ui_state.show_mini_map = !ui_state.show_mini_map"}
+                      %font-awesome-icon{':icon':"['fas', 'toggle-on']"}
+                    %a{href:'#', 'v-show':"!ui_state.show_mini_map", 'v-on:click.stop.prevent':"ui_state.show_mini_map = !ui_state.show_mini_map"}
+                      %font-awesome-icon{':icon':"['fas', 'toggle-off']"}
+          .field.is-horizontal
+            .column.is-paddingless.is-9
+              .field-label
                 %label.label Game&nbsp;Music:
             .column.is-paddingless.field-body
               .field.is-narrow
@@ -139,10 +151,10 @@ export default
 
   computed:
     can_reset: ->
-      @ui_state.show_header != true || @ui_state.show_fps != true || @ui_state.game_music == true || @ui_state.render_trees != true || @ui_state.render_buildings != true ||
+      @ui_state.show_header != true || @ui_state.show_fps != true || @ui_state.show_mini_map != true || @ui_state.game_music == true || @ui_state.render_trees != true || @ui_state.render_buildings != true ||
           @ui_state.render_building_animations != true || @ui_state.render_building_effects != true || @ui_state.render_planes != true
     is_dirty: ->
-      @ui_state.saved_show_header != @ui_state.show_header || @ui_state.saved_show_fps != @ui_state.show_fps || @ui_state.saved_game_music != @ui_state.game_music ||
+      @ui_state.saved_show_header != @ui_state.show_header || @ui_state.saved_show_fps != @ui_state.show_fps || @ui_state.saved_show_mini_map != @ui_state.show_mini_map || @ui_state.saved_game_music != @ui_state.game_music ||
           @ui_state.saved_render_trees != @ui_state.render_trees || @ui_state.saved_render_buildings != @ui_state.render_buildings ||
           @ui_state.saved_render_building_animations != @ui_state.render_building_animations || @ui_state.saved_render_building_effects != @ui_state.render_building_effects ||
           @ui_state.saved_render_planes != @ui_state.render_planes
