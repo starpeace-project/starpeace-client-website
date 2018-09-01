@@ -3,13 +3,22 @@ global addResizeListener
 global PIXI
 ###
 
+import PlanetTypeManifest from '~/plugins/starpeace-client/metadata/planet-type-manifest.coffee'
+
 import ChunkMap from '~/plugins/starpeace-client/map/chunk/chunk-map.coffee'
 import BuildingZone from '~/plugins/starpeace-client/map/types/building-zone.coffee'
 
+import MiniMapInputHandler from '~/plugins/starpeace-client/renderer/input/mini-map-input-handler.coffee'
+
 MINI_MAP_TEXTURE_KEY = 'rendered-mini-map'
+MINI_MAP_ZOOM_MIN = .25
+MINI_MAP_ZOOM_STEP = .25
+
+MINI_MAP_TILE_WIDTH = Math.sqrt(2)
+MINI_MAP_TILE_HEIGHT = MINI_MAP_TILE_WIDTH * .5
 
 export default class MiniMapRenderer
-  constructor: (event_listener, @managers, @game_state, @ui_state) ->
+  constructor: (event_listener, @managers, @renderer, @game_state, @ui_state) ->
     @initialized = false
     @rgba_buffer = null
 
@@ -27,6 +36,8 @@ export default class MiniMapRenderer
 
       unless @pending_refresh?
         @pending_refresh = setTimeout((=> @refresh_map_texture()), 500)
+
+    event_listener.subscribe_viewport_listener (event) => @upate_viewport()
 
   update_map_data: (source_x, target_x, source_y, target_y) ->
     return unless @game_state.game_map?.raw_map_rgba_pixels?
@@ -46,11 +57,12 @@ export default class MiniMapRenderer
           building_info = @game_state.game_map.building_map.building_info_at(x, y)
           building_metadata = if building_info? then @managers.building_manager.building_metadata.buildings[building_info.key] else null
           if @game_state.game_map.road_map.road_info_at(x, y)
-            @rgba_buffer[index + 0] = 255
-            @rgba_buffer[index + 1] = 255
-            @rgba_buffer[index + 2] = 255
+            @rgba_buffer[index + 0] = 30
+            @rgba_buffer[index + 1] = 30
+            @rgba_buffer[index + 2] = 30
           else if building_info? && building_metadata?
-            color = BuildingZone.TYPES[building_metadata.zone]?.color || BuildingZone.TYPES.RESERVED.color
+            zone = BuildingZone.TYPES[building_metadata.zone] || BuildingZone.TYPES.RESERVED
+            color = if zone == BuildingZone.TYPES.CIVICS then 0x1E1E1E else zone.color
             @rgba_buffer[index + 0] = (color & 0xFF0000) >> 16
             @rgba_buffer[index + 1] = (color & 0x00FF00) >> 8
             @rgba_buffer[index + 2] = (color & 0x0000FF) >> 0
@@ -100,8 +112,24 @@ export default class MiniMapRenderer
     @container.scale = new PIXI.Point(1, .5)
     @application.stage.addChild(@container)
 
+    @viewport = new PIXI.Graphics()
+    @application.stage.addChild(@viewport)
+
+    @input_handler = new MiniMapInputHandler(@, @game_state, @ui_state)
+
     render_container.appendChild(@application.view)
     addResizeListener(render_container, => @handle_resize())
+
+  initialize_mini_map_sprite: () ->
+    @sprite = new PIXI.Sprite(PIXI.utils.TextureCache[MINI_MAP_TEXTURE_KEY])
+    # @sprite.anchor.set(0.5)
+    @sprite.interactive = true
+    #@sprite.position = new PIXI.Point(@game_state.game_map.width * .5, @game_state.game_map.height * .5)
+    @sprite.scale = new PIXI.Point(@ui_state.mini_map_zoom, @ui_state.mini_map_zoom)
+    @sprite.x = @map_offset_x
+    @sprite.y = @map_offset_y
+    @sprite.rotation = Math.PI * .25
+    @container.addChild(@sprite)
 
   initialize: () ->
     @initialize_application() unless @application?
@@ -109,61 +137,61 @@ export default class MiniMapRenderer
     @update_map_data(0, @game_state.game_map.width, 0, @game_state.game_map.height)
     @pending_refresh = setTimeout((=> @refresh_map_texture()), 1000)
 
+    @last_mini_map_zoom = 0
+    @last_view_offset_x = 0
+    @last_view_offset_y = 0
+
     @initialized = true
 
-  map_drag_start: (event) ->
-    event = event?.data
-    return unless event? && event.isPrimary
-    @start_x = @last_x = Math.round(event.global.x)
-    @start_y = @last_y = Math.round(event.global.y)
-    @dragging = true
-  map_drag_end: (event) ->
-    event = event?.data
-    return unless @dragging && event? && event.isPrimary
-    @last_x = Math.round(event.global.x)
-    @last_y = Math.round(event.global.y)
-    @dragging = false
-  map_drag_move: (event) ->
-    event = event?.data
-    return unless @dragging && event? && event.isPrimary
-
-    event_x = Math.round(event.global.x)
-    event_y = Math.round(event.global.y)
-
-    delta_x = if @last_x >= 0 then @last_x - event_x else 0
-    delta_y = if @last_y >= 0 then @last_y - event_y else 0
-    @last_x = event_x
-    @last_y = event_y
-
+  offset: (delta_x, delta_y) ->
     @map_offset_x -= delta_x unless delta_x == 0
-    @map_offset_y -= delta_y unless delta_y == 0
+    @map_offset_y -= (2 * delta_y) unless delta_y == 0
 
-    # console.log "#{@map_offset_x} x #{@map_offset_y}"
-    @sprite.x = @map_offset_x
-    @sprite.y = @map_offset_y
+    @upate_viewport()
 
   zoom_in: () ->
-    return if @ui_state.mini_map_zoom + .5 > 6
-    @ui_state.update_mini_map_zoom(.5)
-    @sprite.scale = new PIXI.Point(@ui_state.mini_map_zoom, @ui_state.mini_map_zoom) if @sprite?
+    if @ui_state.update_mini_map_zoom(MINI_MAP_ZOOM_STEP)
+      @sprite.scale = new PIXI.Point(@ui_state.mini_map_zoom, @ui_state.mini_map_zoom) if @sprite?
 
   zoom_out: () ->
-    return if @ui_state.mini_map_zoom - .5 < .5
-    @ui_state.update_mini_map_zoom(-.5)
-    @sprite.scale = new PIXI.Point(@ui_state.mini_map_zoom, @ui_state.mini_map_zoom) if @sprite?
+    if @ui_state.update_mini_map_zoom(-MINI_MAP_ZOOM_STEP)
+      @sprite.scale = new PIXI.Point(@ui_state.mini_map_zoom, @ui_state.mini_map_zoom) if @sprite?
+
+  upate_viewport: () ->
+    return unless @initialized && @sprite?
+
+    ratio_x = @ui_state.mini_map_zoom * MINI_MAP_TILE_WIDTH / PlanetTypeManifest.DEFAULT_TILE_WIDTH
+    ratio_y = @ui_state.mini_map_zoom * MINI_MAP_TILE_HEIGHT / PlanetTypeManifest.DEFAULT_TILE_HEIGHT
+
+    viewport = @renderer.viewport()
+    viewport_width = Math.round(ratio_x * viewport.canvas_width  / @game_state.game_scale)
+    viewport_height = Math.round(ratio_y * viewport.canvas_height / @game_state.game_scale)
+
+    mini_map_x = Math.round(@game_state.view_offset_x * ratio_x - viewport_width * .5) + @map_offset_x
+    mini_map_y = Math.round(@game_state.view_offset_y * ratio_y - viewport_height * .5) + .5 * @map_offset_y
+
+    if @last_view_offset_x != @game_state.view_offset_x || @last_view_offset_y != @game_state.view_offset_y
+      center_offset_x = mini_map_x - (@renderer_width * .5 - viewport_width * .5)
+      center_offset_y = mini_map_y - (@renderer_height * .5 - viewport_height * .5)
+
+      @map_offset_x = @map_offset_x - center_offset_x
+      @map_offset_y = @map_offset_y - center_offset_y
+
+      mini_map_x = mini_map_x - center_offset_x
+      mini_map_y = mini_map_y - center_offset_y
+
+    @sprite?.x = @map_offset_x
+    @sprite?.y = @map_offset_y
+
+    @viewport.clear()
+    @viewport.lineStyle(2, 0xFFD0FF, .7)
+    @viewport.drawRect(mini_map_x, mini_map_y, viewport_width, viewport_height)
+
+    @last_mini_map_zoom = @ui_state.mini_map_zoom
+    @last_game_scale = @game_state.game_scale
+    @last_view_offset_x = @game_state.view_offset_x
+    @last_view_offset_y = @game_state.view_offset_y
 
   tick: () ->
-    unless @sprite? || !PIXI.utils.TextureCache[MINI_MAP_TEXTURE_KEY]?
-      @sprite = new PIXI.Sprite(PIXI.utils.TextureCache[MINI_MAP_TEXTURE_KEY])
-      # @sprite.anchor.set(0.5)
-      @sprite.interactive = true
-      @sprite.on('pointerdown', (event) => @map_drag_start(event))
-        .on('pointerup', (event) => @map_drag_end(event))
-        .on('pointerupoutside', (event) => @map_drag_end(event))
-        .on('pointermove', (event) => @map_drag_move(event))
-      #@sprite.position = new PIXI.Point(@game_state.game_map.width * .5, @game_state.game_map.height * .5)
-      @sprite.scale = new PIXI.Point(@ui_state.mini_map_zoom, @ui_state.mini_map_zoom)
-      @sprite.x = @map_offset_x
-      @sprite.y = @map_offset_y
-      @sprite.rotation = Math.PI * .25
-      @container.addChild(@sprite)
+    @initialize_mini_map_sprite() unless @sprite? || !PIXI.utils.TextureCache[MINI_MAP_TEXTURE_KEY]?
+    @upate_viewport() if @last_mini_map_zoom != @ui_state.mini_map_zoom ||  @last_game_scale != @game_state.game_scale || @last_view_offset_x != @game_state.view_offset_x || @last_view_offset_y != @game_state.view_offset_y

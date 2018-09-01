@@ -1,7 +1,12 @@
 
 import Overlay from '~/plugins/starpeace-client/map/types/overlay.coffee'
 
-DEFAULT_MINI_MAP_ZOOM = 2
+MINI_MAP_ZOOM_MAX = 2
+MINI_MAP_ZOOM_MIN = .25
+MINI_MAP_ZOOM_STEP = .25
+
+DEFAULT_MINI_MAP_ZOOM = 1
+
 DEFAULT_MINI_MAP_WIDTH = 300
 DEFAULT_MINI_MAP_HEIGHT = 200
 
@@ -53,7 +58,7 @@ export default class UIState
     @saved_show_mini_map = @show_mini_map = show_mini_map == 'true'
     @saved_game_music = @game_music = game_music == 'true'
 
-    @mini_map_zoom = parseInt(mini_map_zoom) if mini_map_zoom?.length
+    @mini_map_zoom = Math.min(MINI_MAP_ZOOM_MAX, Math.max(MINI_MAP_ZOOM_MIN, parseInt(mini_map_zoom))) if mini_map_zoom?.length
     @mini_map_width = parseInt(mini_map_width) if mini_map_width?.length
     @mini_map_height = parseInt(mini_map_height) if mini_map_height?.length
 
@@ -131,8 +136,12 @@ export default class UIState
       @show_zones = true
 
   update_mini_map_zoom: (zoom_delta) ->
-    @mini_map_zoom = @mini_map_zoom + zoom_delta
-    localStorage.setItem('mini_map.zoom', @mini_map_zoom.toString())
+    before = @mini_map_zoom
+    @mini_map_zoom = Math.min(MINI_MAP_ZOOM_MAX, Math.max(MINI_MAP_ZOOM_MIN, @mini_map_zoom + zoom_delta))
+    if @mini_map_zoom != before
+      localStorage.setItem('mini_map.zoom', @mini_map_zoom.toString())
+      return true
+    false
 
   update_mini_map: (width, height) ->
     @mini_map_width = width

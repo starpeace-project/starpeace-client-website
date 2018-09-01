@@ -22,7 +22,9 @@ export default class Renderer
         @layers.tile_item_cache.clear_cache(source_x, target_x, source_y, target_y)
 
   viewport: () ->
-    @_viewport = new Viewport(@game_state, @renderer_width, @renderer_height) unless @_viewport?
+    unless @_viewport?
+      @_viewport = new Viewport(@game_state, @renderer_width, @renderer_height)
+      @event_listener.notify_viewport_listeners({})
     @_viewport
 
   update_offset: (render_container) ->
@@ -42,6 +44,7 @@ export default class Renderer
     @renderer_height = Math.ceil(render_container.offsetHeight)
     @_viewport = new Viewport(@game_state, @renderer_width, @renderer_height)
     @application.renderer.resize(@renderer_width, @renderer_height)
+    @event_listener.notify_viewport_listeners({})
     @initialize_map()
 
   initialize_application: () ->
@@ -69,6 +72,7 @@ export default class Renderer
     @fps_meter = new FPSMeter(fps_el, { theme: 'colorful' }) if fps_el?
 
     addResizeListener(render_container, => @handle_resize())
+    @event_listener.notify_viewport_listeners({})
 
   initialize_map: () ->
     @layers?.remove_layers(@application.stage)

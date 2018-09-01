@@ -33,8 +33,8 @@ export default class Client
     @managers = new Managers(@event_listener, @game_state, @ui_state)
     @music_manager = new MusicManager(@game_state)
 
-    @mini_map_renderer = new MiniMapRenderer(@event_listener, @managers, @game_state, @ui_state)
     @renderer = new Renderer(@event_listener, @managers, @game_state, @ui_state)
+    @mini_map_renderer = new MiniMapRenderer(@event_listener, @managers, @renderer, @game_state, @ui_state)
     @camera_manager = new CameraManager(@renderer, @game_state)
     @input_handler = new InputHandler(@game_state, @menu_state, @camera_manager, @renderer)
 

@@ -4,6 +4,7 @@ export default class EventListener
     @planet_listeners = []
     @asset_listeners = []
     @map_data_listeners = []
+    @viewport_listeners = []
 
   subscribe_planet_listener: (listener_callback) ->
     throw new "callback must be a method" unless _.isFunction(listener_callback)
@@ -36,4 +37,15 @@ export default class EventListener
       for listener in @map_data_listeners
         do (listener) =>
           setTimeout((=> listener(chunk_event)), 0)
+    , 50)
+
+  subscribe_viewport_listener: (listener_callback) ->
+    throw new "callback must be a method" unless _.isFunction(listener_callback)
+    @viewport_listeners.push listener_callback
+
+  notify_viewport_listeners: (event) ->
+    setTimeout(=>
+      for listener in @viewport_listeners
+        do (listener) =>
+          setTimeout((=> listener(event)), 0)
     , 50)
