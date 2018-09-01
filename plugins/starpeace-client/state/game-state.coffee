@@ -50,6 +50,7 @@ export default class GameState
     @view_offset_y = 4250
 
     @game_scale = 0.75
+    @game_map = null
 
     @current_date = '2235-01-01'
     @current_season = 'winter'

@@ -21,25 +21,14 @@ export default class LandMap
         @ground_at(x, y - 1).zone == 'water' || @ground_at(x, y + 1).zone == 'water' || @ground_at(x - 1, y - 1).zone == 'water' ||
         @ground_at(x - 1, y + 1).zone == 'water' || @ground_at(x + 1, y - 1).zone == 'water' || @ground_at(x + 1, y + 1).zone == 'water'
 
-  @pixels_for_image: (image) ->
-    canvas = document.createElement('canvas')
-    canvas.width = image.width
-    canvas.height = image.height
-    canvas.getContext('2d').drawImage(image, 0, 0, image.width, image.height)
-    canvas.getContext('2d').getImageData(0, 0, image.width, image.height).data
-
-  @from_texture: (manifest, texture) ->
-    map_width = texture.texture.width
-    map_height = texture.texture.height
-
+  @from_pixel_data: (manifest, map_width, map_height, map_pixels) ->
     zones_with_trees = manifest.zones_with_trees()
-    pixels = LandMap.pixels_for_image(texture.data)
     ground_tiles = new Array(map_height * map_width)
     tree_tiles = new Array(map_height * map_width)
     for y in [0...map_height]
       for x in [0...map_width]
         index = (y * map_width + x) * 4
-        color = ((pixels[index + 2] << 16) & 0xFF0000) | ((pixels[index + 1] << 8) & 0x00FF00) | ((pixels[index + 0] << 0) & 0x0000FF)
+        color = ((map_pixels[index + 2] << 16) & 0xFF0000) | ((map_pixels[index + 1] << 8) & 0x00FF00) | ((map_pixels[index + 0] << 0) & 0x0000FF)
 
         map_index = y * map_width + x
         ground_tiles[map_index] = manifest.ground_for_color(color) if manifest.has_ground_for_color(color)

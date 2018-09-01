@@ -7,11 +7,18 @@ import RoadMap from '~/plugins/starpeace-client/map/road-map.coffee'
 
 import Concrete from '~/plugins/starpeace-client/map/types/concrete.coffee'
 
+import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
+
 export default class GameMap
   constructor: (event_listener, building_manager, road_manager, overlay_manager, manifest, texture, @ui_state) ->
     @width = texture.texture.width
     @height = texture.texture.height
-    @ground_map = LandMap.from_texture(manifest, texture)
+
+    map_width = texture.texture.width
+    map_height = texture.texture.height
+
+    @raw_map_rgba_pixels = Utils.pixels_for_image(texture.data)
+    @ground_map = LandMap.from_pixel_data(manifest, @width, @height, @raw_map_rgba_pixels)
     @building_map = new BuildingMap(event_listener, @ground_map, building_manager, road_manager, @width, @height)
     @concrete_map = new ConcreteMap(event_listener, @ground_map, @building_map, @width, @height)
     @road_map = new RoadMap(event_listener, @ground_map, @building_map, @concrete_map, @width, @height)

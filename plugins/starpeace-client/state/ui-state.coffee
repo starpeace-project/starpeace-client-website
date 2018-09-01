@@ -1,6 +1,7 @@
 
 import Overlay from '~/plugins/starpeace-client/map/types/overlay.coffee'
 
+DEFAULT_MINI_MAP_ZOOM = 2
 DEFAULT_MINI_MAP_WIDTH = 300
 DEFAULT_MINI_MAP_HEIGHT = 200
 
@@ -13,6 +14,7 @@ export default class UIState
     @saved_show_mini_map = @show_mini_map = true
     @saved_game_music = @game_music = false
 
+    @mini_map_zoom = DEFAULT_MINI_MAP_ZOOM
     @mini_map_width = DEFAULT_MINI_MAP_WIDTH
     @mini_map_height = DEFAULT_MINI_MAP_HEIGHT
 
@@ -36,6 +38,7 @@ export default class UIState
     show_mini_map = localStorage.getItem('options.show_mini_map') || 'true'
     game_music = localStorage.getItem('options.game_music') || 'true'
 
+    mini_map_zoom = localStorage.getItem('mini_map.zoom')
     mini_map_width = localStorage.getItem('mini_map.width')
     mini_map_height = localStorage.getItem('mini_map.height')
 
@@ -50,8 +53,7 @@ export default class UIState
     @saved_show_mini_map = @show_mini_map = show_mini_map == 'true'
     @saved_game_music = @game_music = game_music == 'true'
 
-    @mini_map_x = parseInt(mini_map_width) if mini_map_x?.length
-    @mini_map_y = parseInt(mini_map_height) if mini_map_y?.length
+    @mini_map_zoom = parseInt(mini_map_zoom) if mini_map_zoom?.length
     @mini_map_width = parseInt(mini_map_width) if mini_map_width?.length
     @mini_map_height = parseInt(mini_map_height) if mini_map_height?.length
 
@@ -67,6 +69,7 @@ export default class UIState
     localStorage.removeItem('options.show_mini_map')
     localStorage.removeItem('options.game_music')
 
+    localStorage.removeItem('mini_map.zoom')
     localStorage.removeItem('mini_map.width')
     localStorage.removeItem('mini_map.height')
 
@@ -80,6 +83,7 @@ export default class UIState
     @show_fps = true
     @game_music = false
 
+    @mini_map_zoom = DEFAULT_MINI_MAP_ZOOM
     @mini_map_width = DEFAULT_MINI_MAP_WIDTH
     @mini_map_height = DEFAULT_MINI_MAP_HEIGHT
 
@@ -125,6 +129,10 @@ export default class UIState
     else
       @show_overlay = false
       @show_zones = true
+
+  update_mini_map_zoom: (zoom_delta) ->
+    @mini_map_zoom = @mini_map_zoom + zoom_delta
+    localStorage.setItem('mini_map.zoom', @mini_map_zoom.toString())
 
   update_mini_map: (width, height) ->
     @mini_map_width = width
