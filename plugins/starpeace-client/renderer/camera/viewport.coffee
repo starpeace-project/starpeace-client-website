@@ -19,6 +19,14 @@ export default class Viewport
     @offset = Math.ceil(Math.sqrt(@half_canvas_width * @half_canvas_width + @half_canvas_height * @half_canvas_height))
     @omega = Math.atan2(@canvas_width / 4, @canvas_height / 4)
 
+  recenter_at: (i, j) ->
+    y = (i + j) * @half_tile_height
+    x = (i - j) * @half_tile_width
+
+    @game_state.view_offset_x = (x + @offset * Math.sin(@omega)) / @game_state.game_scale
+    @game_state.view_offset_y = (y + @offset * Math.cos(@omega)) / @game_state.game_scale
+
+  # FIXME: might really be top-left corner of viewport; rename?
   map_center: () ->
     x = @game_state.game_scale * @game_state.view_offset_x - @offset * Math.sin(@omega)
     y = @game_state.game_scale * @game_state.view_offset_y - @offset * Math.cos(@omega)

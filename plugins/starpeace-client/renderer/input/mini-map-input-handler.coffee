@@ -22,6 +22,8 @@ export default class MiniMapInputHandler
     @last_y = Math.round(event.global.y)
     @dragging = false
 
+    @mini_map_renderer.recenter_at(@last_x, @last_y) if @last_x == @start_x && @last_y == @start_y
+
   map_drag_move: (event) ->
     event = event?.data
     return unless @dragging && event? && event.isPrimary

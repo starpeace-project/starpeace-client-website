@@ -12,14 +12,10 @@ export default class LandMap
   tree_at: (x, y) -> @tree_map_tiles[(@height - x) * @width + (@width - y)]
   ground_at: (x, y) -> @ground_map_tiles[(@height - x) * @width + (@width - y)]
 
-  is_coast_at: (x, y) -> @ground_at(x, y).is_coast
+  is_coast_at: (x, y) -> @ground_at(x, y)?.is_coast
   is_coast_around: (x, y) ->
-    @ground_at(x, y).is_coast || @ground_at(x - 1, y).is_coast || @ground_at(x + 1, y).is_coast || @ground_at(x, y - 1).is_coast
-  is_water_at: (x, y) -> @ground_at(x, y).zone == 'water'
-  is_water_around: (x, y) ->
-    @ground_at(x, y).zone == 'water' || @ground_at(x - 1, y).zone == 'water' || @ground_at(x + 1, y).zone == 'water' ||
-        @ground_at(x, y - 1).zone == 'water' || @ground_at(x, y + 1).zone == 'water' || @ground_at(x - 1, y - 1).zone == 'water' ||
-        @ground_at(x - 1, y + 1).zone == 'water' || @ground_at(x + 1, y - 1).zone == 'water' || @ground_at(x + 1, y + 1).zone == 'water'
+    @ground_at(x, y)?.is_coast || @ground_at(x - 1, y)?.is_coast || @ground_at(x + 1, y)?.is_coast || @ground_at(x, y - 1)?.is_coast
+  is_water_at: (x, y) -> @ground_at(x, y)?.zone == 'water'
 
   @from_pixel_data: (manifest, map_width, map_height, map_pixels) ->
     zones_with_trees = manifest.zones_with_trees()

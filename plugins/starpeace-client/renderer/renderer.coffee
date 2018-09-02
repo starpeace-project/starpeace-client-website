@@ -88,7 +88,6 @@ export default class Renderer
 
   tick: () ->
     @fps_meter.tickStart() if @fps_meter?
-    current_time = new Date().getTime()
 
     @update_offset(document?.getElementById('render-container')) unless @offset?
 

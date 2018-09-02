@@ -143,6 +143,27 @@ export default class MiniMapRenderer
 
     @initialized = true
 
+  recenter_at: (mini_canvas_x, mini_canvas_y) ->
+    mini_canvas_x = mini_canvas_x - @map_offset_x
+    mini_canvas_y = mini_canvas_y - @map_offset_y * .5
+
+    ratio_x = @ui_state.mini_map_zoom * MINI_MAP_TILE_WIDTH / PlanetTypeManifest.DEFAULT_TILE_WIDTH
+    ratio_y = @ui_state.mini_map_zoom * MINI_MAP_TILE_HEIGHT / PlanetTypeManifest.DEFAULT_TILE_HEIGHT
+
+    viewport = @renderer.viewport()
+    half_viewport_width = Math.round(ratio_x * viewport.canvas_width / (2 * @game_state.game_scale))
+    half_viewport_height = Math.round(ratio_y * viewport.canvas_height / (2 * @game_state.game_scale))
+
+    mini_canvas_x = mini_canvas_x - half_viewport_width
+    mini_canvas_y = mini_canvas_y - half_viewport_height
+
+    x_ratio = mini_canvas_x / (@ui_state.mini_map_zoom * MINI_MAP_TILE_WIDTH * .5)
+    y_ratio = mini_canvas_y / (@ui_state.mini_map_zoom * MINI_MAP_TILE_HEIGHT * .5)
+    iso_x = (y_ratio + x_ratio) * 0.5
+    iso_y = (y_ratio - x_ratio) * 0.5
+
+    viewport.recenter_at(iso_x, iso_y)
+
   offset: (delta_x, delta_y) ->
     @map_offset_x -= delta_x unless delta_x == 0
     @map_offset_y -= (2 * delta_y) unless delta_y == 0
@@ -174,10 +195,10 @@ export default class MiniMapRenderer
       center_offset_x = mini_map_x - (@renderer_width * .5 - viewport_width * .5)
       center_offset_y = mini_map_y - (@renderer_height * .5 - viewport_height * .5)
 
-      @map_offset_x = @map_offset_x - center_offset_x
-      @map_offset_y = @map_offset_y - 2 * center_offset_y
+      @map_offset_x = Math.round(@map_offset_x - center_offset_x)
+      @map_offset_y = Math.round(@map_offset_y - 2 * center_offset_y)
 
-      mini_map_x = mini_map_x - center_offset_x
+      mini_map_x = Math.round(mini_map_x - center_offset_x)
       mini_map_y = Math.round(@game_state.view_offset_y * ratio_y - viewport_height * .5 + .5 * @map_offset_y)
 
     @sprite?.x = @map_offset_x

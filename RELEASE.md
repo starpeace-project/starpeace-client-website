@@ -32,6 +32,6 @@
 * [done] game music controls [v0.2.8]
 * [done] bridge rendering [v0.2.9]
 * [done] improve concrete rendering (edges, roads) [v0.2.9]
-* [in progress] mini-map rendering [v0.2.11]
-* [pending] map favorites integration
+* [done] mini-map rendering [v0.2.11]
+* [in progress] map favorites integration
 * [pending] map place building interaction support

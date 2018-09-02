@@ -11,6 +11,9 @@ export default class Layers
     @tile_item_cache = new TileItemCache(building_manager, effect_manager, @plane_manager, @game_state, @ui_state)
     @layer_manager = new LayerManager(@game_state, @ui_state)
 
+    @last_view_offset_x = 0
+    @last_view_offset_y = 0
+
     @check_loop = setInterval(=>
       return unless @plane_manager.has_assets() && @game_state.initialized && @ui_state.render_planes && !@game_state.plane_sprite?
       @game_state.plane_sprite = @tile_item_cache.plane_sprite_info_for(@plane_manager.random_flight_plan(@renderer.viewport()))
@@ -25,7 +28,7 @@ export default class Layers
   remove_layers: (stage) -> @layer_manager.remove_from_stage(stage)
   add_layers: (stage) -> @layer_manager.add_to_stage(stage)
 
-  should_refresh: () -> @needs_refresh || @tile_item_cache.is_dirty || @tile_item_cache.should_clear_cache()
+  should_refresh: () -> @needs_refresh || (@last_view_offset_x != @game_state.view_offset_x || @last_view_offset_y != @game_state.view_offset_y) || @tile_item_cache.is_dirty || @tile_item_cache.should_clear_cache()
   mark_dirty: () -> @needs_refresh = true
 
   refresh_planes: () ->
@@ -96,3 +99,5 @@ export default class Layers
 
     @layer_manager.clear_cache_sprites(render_state)
     @needs_refresh = false
+    @last_view_offset_x = @game_state.view_offset_x
+    @last_view_offset_y = @game_state.view_offset_y
