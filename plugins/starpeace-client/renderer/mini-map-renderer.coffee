@@ -167,18 +167,18 @@ export default class MiniMapRenderer
     viewport_width = Math.round(ratio_x * viewport.canvas_width  / @game_state.game_scale)
     viewport_height = Math.round(ratio_y * viewport.canvas_height / @game_state.game_scale)
 
-    mini_map_x = Math.round(@game_state.view_offset_x * ratio_x - viewport_width * .5) + @map_offset_x
-    mini_map_y = Math.round(@game_state.view_offset_y * ratio_y - viewport_height * .5) + .5 * @map_offset_y
+    mini_map_x = Math.round(@game_state.view_offset_x * ratio_x - viewport_width * .5 + @map_offset_x)
+    mini_map_y = Math.round(@game_state.view_offset_y * ratio_y - viewport_height * .5 + .5 * @map_offset_y)
 
     if @last_view_offset_x != @game_state.view_offset_x || @last_view_offset_y != @game_state.view_offset_y
       center_offset_x = mini_map_x - (@renderer_width * .5 - viewport_width * .5)
       center_offset_y = mini_map_y - (@renderer_height * .5 - viewport_height * .5)
 
       @map_offset_x = @map_offset_x - center_offset_x
-      @map_offset_y = @map_offset_y - center_offset_y
+      @map_offset_y = @map_offset_y - 2 * center_offset_y
 
       mini_map_x = mini_map_x - center_offset_x
-      mini_map_y = mini_map_y - center_offset_y
+      mini_map_y = Math.round(@game_state.view_offset_y * ratio_y - viewport_height * .5 + .5 * @map_offset_y)
 
     @sprite?.x = @map_offset_x
     @sprite?.y = @map_offset_y
