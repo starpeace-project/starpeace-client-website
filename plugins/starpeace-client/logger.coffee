@@ -28,10 +28,10 @@ export default class Logger
         "##%c#{version_text}%c##\n" +
         "###########################################################################################\n" +
         "##                                                                                       ##\n" +
-        "## %cplease report any discovered security vulnerabilities to security@starpeace.io%c        ##\n" +
+        "##         %c please report all security vulnerabilities to security@starpeace.io %c         ##\n" +
         "##                                                                                       ##\n" +
         "## %cinterested in contributing? any and all help is gladly welcome! please join STARPEACE%c ##\n" +
-        "## %cDiscord chatroom or visit starpeace-project Github organization for more information%c  ##\n" +
+        "## %cDiscord chatroom or visit starpeace-project Github organization for more information!%c ##\n" +
         "##                                                                                       ##\n" +
         "###########################################################################################\n"
 

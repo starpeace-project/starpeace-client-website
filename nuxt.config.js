@@ -90,6 +90,7 @@ module.exports = {
   ],
   plugins: [
     { src: '~/plugins/element-queries', ssr: false },
+    { src: '~/plugins/flaticon', ssr: false },
     { src: '~/plugins/fpsmeter', ssr: false },
     { src: '~/plugins/font-awesome', ssr: false },
     { src: '~/plugins/google-analytics', ssr: false },

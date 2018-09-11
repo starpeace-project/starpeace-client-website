@@ -121,6 +121,7 @@ export default class MiniMapRenderer
     addResizeListener(render_container, => @handle_resize())
 
   initialize_mini_map_sprite: () ->
+    return unless @container?
     @sprite = new PIXI.Sprite(PIXI.utils.TextureCache[MINI_MAP_TEXTURE_KEY])
     # @sprite.anchor.set(0.5)
     @sprite.interactive = true

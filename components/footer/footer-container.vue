@@ -63,7 +63,7 @@ sp-primary-color<template lang='haml'>
               %a.button.is-starpeace.is-small.tooltip{'v-bind:class':'menu_class_tycoon', 'v-on:click.stop.prevent':'menu_state.toggle_menu_tycoon()', 'data-tooltip':'Tycoon Details'}
                 %font-awesome-icon{':icon':"['fas', 'user-tie']"}
               %a.button.is-starpeace.is-small.tooltip{'v-bind:class':'menu_class_building', 'v-on:click.stop.prevent':'menu_state.toggle_menu_building()', 'data-tooltip':'Construction'}
-                %font-awesome-icon{':icon':"['far', 'building']"}
+                %font-awesome-icon{':icon':"['fas', 'toolbox']"}
               %a.button.is-starpeace.is-small.tooltip{'v-bind:class':'menu_class_mail', 'v-on:click.stop.prevent':'menu_state.toggle_menu_mail()', 'data-tooltip':'Mail'}
                 %font-awesome-icon{':icon':"['far', 'envelope']"}
               %a.button.is-starpeace.is-small.tooltip{'v-bind:class':'menu_class_chat', 'v-on:click.stop.prevent':'menu_state.toggle_menu_chat()', 'data-tooltip':'Chat'}
@@ -78,7 +78,7 @@ sp-primary-color<template lang='haml'>
                 Visitor
               %span.column-tycoon-buildings.sp-primary-color
                 %span.count 0 / 0
-                %i.far.fa-building
+                %font-awesome-icon{':icon':"['far', 'building']"}
 
               .column-notification-icons.level
                 .level-item.client-version

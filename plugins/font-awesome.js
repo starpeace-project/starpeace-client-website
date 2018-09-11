@@ -12,6 +12,7 @@ import {
   faCogs,
   faFastForward,
   faGlobe,
+  faMagic,
   faMapPin,
   faMinus,
   faPause,
@@ -21,6 +22,7 @@ import {
   faTimes,
   faToggleOff,
   faToggleOn,
+  faToolbox,
   faUndoAlt,
   faUserSecret,
   faUserTie,
@@ -30,8 +32,8 @@ import {
 import { faDiscord, faGithub, faTwitter } from '@fortawesome/free-brands-svg-icons'
 
 library.add(faAngleUp, faBuilding, faCheck, faCogs, faComments, faDiscord, faEnvelope, faEye, faFastForward,
-  faGithub, faGlobe, faMapPin, faMinus, faPause, faPlay, faPlus, faRedoAlt, faTimes, faToggleOff, faToggleOn,
-  faUndoAlt, faQuestionCircle, faTwitter, faUserSecret, faUserTie, faVolumeOff, faVolumeUp)
+  faGithub, faGlobe, faMagic, faMapPin, faMinus, faPause, faPlay, faPlus, faRedoAlt, faTimes, faToggleOff, faToggleOn,
+  faToolbox, faUndoAlt, faQuestionCircle, faTwitter, faUserSecret, faUserTie, faVolumeOff, faVolumeUp)
 
 
 import Vue from 'vue'

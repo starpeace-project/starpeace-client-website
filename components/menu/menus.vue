@@ -15,7 +15,7 @@
 <script lang='coffee'>
 import MenuBuilding from '~/components/menu/menu-building.vue'
 import MenuChat from '~/components/menu/menu-chat.vue'
-import MenuFavorites from '~/components/menu/menu-favorites.vue'
+import MenuFavorites from '~/components/menu/favorites/main-menu.vue'
 import MenuMail from '~/components/menu/menu-mail.vue'
 import MenuOptions from '~/components/menu/menu-options.vue'
 import MenuHelp from '~/components/menu/menu-help.vue'

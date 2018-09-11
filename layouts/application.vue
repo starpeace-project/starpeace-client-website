@@ -5,6 +5,8 @@
 </template>
 
 <style lang='sass'>
+@import '~bulma/sass/utilities/_all'
+
 html
   font-size: 12px
   overflow-y: hidden
@@ -38,8 +40,8 @@ body
   height: 100vh
   position: relative
 
-  @media screen and (max-width: 768px)
-    grid-template-rows: calc(11vw + 1rem) auto 3rem 15.5rem
+  +mobile
+    grid-template-rows: calc(11vw + 1.5rem) auto 3rem 15.5rem
 
     #common-header
       display: inline-block
