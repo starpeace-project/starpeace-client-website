@@ -9,7 +9,7 @@
 [![Discord](https://img.shields.io/discord/449310464321650703.svg)](https://discord.gg/TF9Bmsj)
 ![Twitter Follow](https://img.shields.io/twitter/follow/starpeace_io.svg?style=social&label=Follow)
 
-Client website for [STARPEACE](https://www.starpeace.io), including webgl game client, client-side gameplay logic, and user interface controls. https://client.starpeace.io
+Client website for [STARPEACE](https://www.starpeace.io), including webgl rendering client, client-side javascript and AJAX gameplay logic, and HTML5 user interface controls. https://client.starpeace.io
 
 ## Official Documentation
 
@@ -25,50 +25,7 @@ If you discover a security vulnerability within the STARPEACE website, please se
 
 ## Contributing
 
-All contributions to starpeace-website-client are gladly welcome, including any development, translations, or play-testing effort. Please join Discord chatroom or community forums to learn more.
-
-### Development
-
-starpeace-website-client welcomes all developer or designer contributions; please let us know if you'd like to get involved! STAPEACE homepage and license content is located in the [starpeace-website](https://github.com/starpeace-project/starpeace-website) repository, documentation website is located in the [starpeace-website-documentation](https://github.com/starpeace-project/starpeace-website-documentation) repository, and client media assets are located in the [starpeace-website-client-assets](https://github.com/starpeace-project/starpeace-website-client-assets) repository.
-
-Local development can be accomplished in a few commands. The following build-time dependencies must be installed:
-
-* [Node.js](https://nodejs.org/en/) javascript runtime and [npm](https://www.npmjs.com/get-npm) package manager
-
-Retrieve copy of repository and navigate to root:
-
-```
-$ git clone https://github.com/starpeace-project/starpeace-website-client.git
-$ cd starpeace-website-client
-```
-
-Install starpeace-website-client dependencies:
-
-```
-$ npm install
-```
-
-Build repository with npm command defined in package.json:
-
-```
-$ npm run generate
-```
-
-Local development with nuxt and interactive build can be started with a single command:
-
-```
-$ npm run dev
-```
-
-Nuxt webserver is started locally and can be accessed at http://127.0.0.1:11010. Only this specific local URL is whitelisted to retrieve assets from CDN (normally cross-site errors).
-
-### Translations
-
-STARPEACE is a global game with an international player-base, making language translations an important aspect of project. starpeace-website-client aims to support the following languages and is actively looking for any translation contributors:
-
-* English, French, Portuguese, German, Italian, and Spanish
-
-If you'd like to see STARPEACE translated to your native language and can provide translations, please [create an issue](https://github.com/starpeace-project/starpeace-website-client/issues) or [chat with project team](https://discord.gg/TF9Bmsj)!
+starpeace-website-client welcomes all contributions, from developer to designer to translator to play-tester; please let us know if you'd like to get involved! Please [join Discord chatroom](https://discord.gg/TF9Bmsj) and [read the contributing guide](./CONTRIBUTING.md) to learn more.
 
 ## Build and Deployment
 
