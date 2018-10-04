@@ -1,22 +1,9 @@
 @import '~bulma/sass/utilities/_all'
 
-/* https://bulma.io/documentation/overview/variables/ */
-
 @import '~bulma'
 @import '~bulma-tooltip'
 
-$sp-primary: #6ea192
-$sp-primary-bg: #395950
-
-$sp-dark-bg: #2a453f
-
-$sp-button-light-bg: #ffffbf
-
-$sp-card-border-top: opacify(lighten($sp-primary-bg, 5%), .8)
-$sp-card-border-bottom: opacify(lighten(#000, 5%), .8)
-
-.sp-primary-color
-  color: $sp-primary
+@import '~assets/stylesheets/starpeace-variables'
 
 
 .button
@@ -27,16 +14,35 @@ $sp-card-border-bottom: opacify(lighten(#000, 5%), .8)
 
     transition: background-color .2s
 
-    &:hover
-      background-color: darken($sp-primary-bg, 5%)
-      border: 1px solid darken($sp-primary-bg, 1%)
-      color: lighten($sp-primary, 3%)
+    &:not([disabled])
+      &:hover
+        background-color: darken($sp-primary-bg, 5%)
+        border: 1px solid darken($sp-primary-bg, 1%)
+        color: lighten($sp-primary, 3%)
 
-    &:active,
-    &.is-active
+      &:active,
+      &.is-active
+        background-color: lighten($sp-primary-bg, 10%)
+        border: 1px solid lighten($sp-primary-bg, 10%)
+        color: #fff
+
+    &.is-inverted
       background-color: lighten($sp-primary-bg, 10%)
       border: 1px solid lighten($sp-primary-bg, 10%)
-      color: #fff
+      color: lighten($sp-primary, 15%)
+
+      &:not([disabled])
+        &:hover
+          background-color: lighten($sp-primary-bg, 15%)
+          border: 1px solid lighten($sp-primary-bg, 15%)
+          color: lighten($sp-primary, 20%)
+
+        &:active,
+        &.is-active
+          background-color: lighten($sp-primary-bg, 25%)
+          border: 1px solid lighten($sp-primary-bg, 25%)
+          color: lighten($sp-primary, 30%)
+
 
   &.is-starpeace-light
     &:active,

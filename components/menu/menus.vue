@@ -4,9 +4,9 @@
 
     %menu-building{'v-show':"main_menu == 'building'", 'v-bind:menu_state':'menu_state'}
     %menu-chat{'v-show':"main_menu == 'chat'", 'v-bind:menu_state':'menu_state'}
-    %menu-favorites{'v-show':"show_menu_favorites", 'v-bind:menu_state':'menu_state'}
+    %menu-bookmarks{'v-show':"show_menu_bookmarks", 'v-bind:bookmark_manager':'bookmark_manager', 'v-bind:game_state':'game_state', 'v-bind:menu_state':'menu_state', 'v-bind:options':'options'}
     %menu-mail{'v-show':"main_menu == 'mail'", 'v-bind:menu_state':'menu_state'}
-    %menu-options{'v-show':"main_menu == 'options'", 'v-bind:menu_state':'menu_state', 'v-bind:ui_state':'ui_state'}
+    %menu-options{'v-show':"main_menu == 'options'", 'v-bind:menu_state':'menu_state', 'v-bind:options':'options', 'v-bind:ui_state':'ui_state'}
     %menu-help{'v-show':"main_menu == 'help'", 'v-bind:menu_state':'menu_state'}
 
     %menu-release-notes{'v-show':"show_menu_release_notes", 'v-bind:menu_state':'menu_state'}
@@ -15,7 +15,7 @@
 <script lang='coffee'>
 import MenuBuilding from '~/components/menu/menu-building.vue'
 import MenuChat from '~/components/menu/menu-chat.vue'
-import MenuFavorites from '~/components/menu/favorites/main-menu.vue'
+import MenuBookmarks from '~/components/menu/bookmarks/main-menu.vue'
 import MenuMail from '~/components/menu/menu-mail.vue'
 import MenuOptions from '~/components/menu/menu-options.vue'
 import MenuHelp from '~/components/menu/menu-help.vue'
@@ -25,21 +25,23 @@ export default
   components:
     'menu-building': MenuBuilding
     'menu-chat': MenuChat
-    'menu-favorites': MenuFavorites
+    'menu-bookmarks': MenuBookmarks
     'menu-mail': MenuMail
     'menu-options': MenuOptions
     'menu-help': MenuHelp
     'menu-release-notes': MenuReleaseNotes
 
   props:
+    bookmark_manager: Object
     game_state: Object
     menu_state: Object
+    options: Object
     ui_state: Object
 
   computed:
     can_render: -> @game_state?.initialized || false
     main_menu: -> @menu_state?.main_menu
-    show_menu_favorites: -> @menu_state?.show_menu_favorites || false
+    show_menu_bookmarks: -> @menu_state?.show_menu_bookmarks || false
     show_menu_release_notes: -> @menu_state?.show_menu_release_notes || false
 </script>
 

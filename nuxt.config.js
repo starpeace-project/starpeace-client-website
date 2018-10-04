@@ -30,7 +30,8 @@ var release_notes_archive_html = render_and_convert_markdown(fs.readFileSync('./
 
 module.exports = {
   css: [
-    { src: '~/assets/stylesheets/bulma-starpeace.sass', lang: 'sass' },
+    { src: '~/assets/stylesheets/starpeace-bulma.sass', lang: 'sass' },
+    { src: '~/assets/stylesheets/starpeace-vue.sass', lang: 'sass' },
     { src: '~/assets/stylesheets/starpeace.sass', lang: 'sass' }
   ],
   head: {
@@ -38,7 +39,7 @@ module.exports = {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: 'Client website application for STARPEACE multiplayer economic simulation' }
+      { hid: 'description', name: 'description', content: 'STARPEACE client website: a real-time city-building economic simulation and cooperative multiplayer strategy game' }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },

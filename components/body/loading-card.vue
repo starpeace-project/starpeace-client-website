@@ -4,7 +4,7 @@
     .card
       .card-content
         %img.starpeace-logo
-        .label-loading.sp-primary-color Loading...
+        .label-loading Loading...
 </template>
 
 <script lang='coffee'>
@@ -17,17 +17,7 @@ export default
 </script>
 
 <style lang='sass' scoped>
-$sp-filter-primary: invert(38%) sepia(9%) saturate(1145%) hue-rotate(112deg) brightness(101%) contrast(86%)
-$sp-filter-light: invert(8%) sepia(22%) saturate(305%) hue-rotate(100deg) brightness(95%) contrast(97%)
-
-@keyframes spin
-  0%
-    filter: $sp-filter-primary
-  50%
-    filter: $sp-filter-light
-  100%
-    filter: $sp-filter-primary
-    transform: rotate(360deg)
+@import '~assets/stylesheets/starpeace'
 
 #loading-container
   grid-column-start: 1
@@ -48,7 +38,7 @@ $sp-filter-light: invert(8%) sepia(22%) saturate(305%) hue-rotate(100deg) bright
   z-index: 1050
 
   .starpeace-logo
-    animation: spin 1.5s linear infinite
+    animation: spin-and-blink 1.5s linear infinite
     background-size: 10rem
     filter: $sp-filter-primary
     height: 10rem
@@ -57,6 +47,7 @@ $sp-filter-light: invert(8%) sepia(22%) saturate(305%) hue-rotate(100deg) bright
     width: 10rem
 
   .label-loading
+    color: $sp-primary
     font-size: 1rem
     font-style: italic
 

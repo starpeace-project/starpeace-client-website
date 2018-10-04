@@ -1,6 +1,6 @@
 
 export default class MiniMapInputHandler
-  constructor: (@mini_map_renderer, @game_state, @ui_state) ->
+  constructor: (@mini_map_renderer) ->
     @mini_map_renderer.application.renderer.plugins.interaction.on('pointerdown', (event) => @map_drag_start(event))
     @mini_map_renderer.application.renderer.plugins.interaction.on('pointermove', (event) => @map_drag_move(event))
     @mini_map_renderer.application.renderer.plugins.interaction.on('pointerup', (event) => @map_drag_end(event))

@@ -5,17 +5,17 @@ import LayerManager from '~/plugins/starpeace-client/renderer/layer/layer-manage
 PLANE_CHECK_SPEED = 5000
 
 export default class Layers
-  constructor: (@renderer, building_manager, effect_manager, @plane_manager, @game_state, @ui_state) ->
+  constructor: (@renderer, building_manager, effect_manager, @plane_manager, @game_state, @options, @ui_state) ->
     @needs_refresh = false
 
-    @tile_item_cache = new TileItemCache(building_manager, effect_manager, @plane_manager, @game_state, @ui_state)
+    @tile_item_cache = new TileItemCache(building_manager, effect_manager, @plane_manager, @game_state, @options, @ui_state)
     @layer_manager = new LayerManager(@game_state, @ui_state)
 
     @last_view_offset_x = 0
     @last_view_offset_y = 0
 
     @check_loop = setInterval(=>
-      return unless @plane_manager.has_assets() && @game_state.initialized && @ui_state.render_planes && !@game_state.plane_sprite?
+      return unless @plane_manager.has_assets() && @game_state.initialized && @options.option('renderer.planes') && !@game_state.plane_sprite?
       @game_state.plane_sprite = @tile_item_cache.plane_sprite_info_for(@plane_manager.random_flight_plan(@renderer.viewport()))
     , PLANE_CHECK_SPEED)
 
@@ -33,7 +33,8 @@ export default class Layers
 
   refresh_planes: () ->
     return unless @game_state.plane_sprite?
-    if !@ui_state.render_planes || @game_state.plane_sprite.is_done
+    if @game_state.plane_sprite.is_done || !@options.option('renderer.planes')
+      # FIXME: TODO: probably need to clear plane better
       @game_state.plane_sprite = null
       return
 

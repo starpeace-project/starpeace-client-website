@@ -13,8 +13,16 @@ import SpriteTree from '~/plugins/starpeace-client/renderer/sprite/sprite-tree.c
 
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 
+RENDER_OPTIONS = [
+  'renderer.trees',
+  'renderer.buildings',
+  'renderer.building_animations',
+  'renderer.building_effects',
+  'renderer.planes'
+]
+
 export default class TileItemCache
-  constructor: (@building_manager, @effect_manager, @plane_manager, @game_state, @ui_state) ->
+  constructor: (@building_manager, @effect_manager, @plane_manager, @game_state, @options, @ui_state) ->
     @is_dirty = true
 
     @last_scale_rendered = 0
@@ -22,18 +30,21 @@ export default class TileItemCache
     @last_rendered_zones = false
     @last_rendered_overlay = false
     @last_rendered_overlay_type = null
-    @last_rendered_render_options = { trees: null, buildings: null, building_animations: null, building_effects: null, planes: null }
+
     @last_rendered_selection_options = { building_id: null, tycoon_id: null }
+    @last_rendered_render_options = { }
 
     @tile_items = []
 
   should_clear_cache: () ->
-    @game_state.game_scale != @last_scale_rendered || @game_state.current_season != @last_season_rendered ||
+    return true if @game_state.game_scale != @last_scale_rendered || @game_state.current_season != @last_season_rendered ||
       @ui_state.show_zones != @last_rendered_zones || @ui_state.show_overlay != @last_rendered_overlay || @ui_state.current_overlay.type != @last_rendered_overlay_type ||
-      @ui_state.render_trees != @last_rendered_render_options.trees || @ui_state.render_buildings != @last_rendered_render_options.buildings ||
-      @ui_state.render_building_animations != @last_rendered_render_options.building_animations || @ui_state.render_building_effects != @last_rendered_render_options.building_effects ||
-      @ui_state.render_planes != @last_rendered_render_options.planes ||
       @game_state.selected_building_id != @last_rendered_selection_options.building_id || @game_state.selected_tycoon_id != @last_rendered_selection_options.tycoon_id
+
+    for option in RENDER_OPTIONS
+      return true unless @options.option(option) == @last_rendered_render_options[option]
+
+    false
 
   reset_cache: () ->
     @last_scale_rendered = @game_state.game_scale
@@ -42,14 +53,10 @@ export default class TileItemCache
     @last_rendered_overlay = @ui_state.show_overlay
     @last_rendered_overlay_type = @ui_state.current_overlay.type
 
-    @last_rendered_render_options.trees = @ui_state.render_trees
-    @last_rendered_render_options.buildings = @ui_state.render_buildings
-    @last_rendered_render_options.building_animations = @ui_state.render_building_animations
-    @last_rendered_render_options.building_effects = @ui_state.render_building_effects
-    @last_rendered_render_options.planes = @ui_state.render_planes
-
     @last_rendered_selection_options.building_id = @game_state.selected_building_id
     @last_rendered_selection_options.tycoon_id = @game_state.selected_tycoon_id
+
+    @last_rendered_render_options[option] = @options.option(option) for option in RENDER_OPTIONS
 
     @is_dirty = false
 
@@ -74,8 +81,8 @@ export default class TileItemCache
         road: @road_sprite_info_for(tile_info)
         tree: @tree_sprite_info_for(tile_info)
         underlay: @underlay_sprite_info_for(tile_info)
-        foundation: if !@ui_state.render_buildings && is_building_root_tile then @foundation_sprite_info_for(tile_info) else null
-        building: if @ui_state.render_buildings && is_building_root_tile then @building_sprite_info_for(tile_info) else null
+        foundation: if !@options.option('renderer.buildings') && is_building_root_tile then @foundation_sprite_info_for(tile_info) else null
+        building: if @options.option('renderer.buildings') && is_building_root_tile then @building_sprite_info_for(tile_info) else null
         overlay: @overlay_sprite_info_for(tile_info)
       })
 
@@ -147,11 +154,11 @@ export default class TileItemCache
     textures = @building_manager.building_textures[tile_info.building_info.key]
     return null unless textures?.length && textures[0]?
 
-    is_animated = textures.length > 1 && @ui_state.render_building_animations
+    is_animated = textures.length > 1 && @options.option('renderer.building_animations')
     metadata = @building_manager.building_metadata.buildings[tile_info.building_info.key]
 
     effects = []
-    if metadata.effects? && @ui_state.render_building_effects
+    if metadata.effects? && @options.option('renderer.building_effects')
       for effect in metadata.effects
         effect_metadata = @effect_manager.effect_metadata.effects[effect.type]
         effect_textures = @effect_manager.effect_textures[effect.type]

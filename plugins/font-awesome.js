@@ -1,24 +1,36 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
+
 import {
   faBuilding,
   faComments,
   faEnvelope,
   faEye,
+  faFolder as faFolderRegular,
   faQuestionCircle
 } from '@fortawesome/free-regular-svg-icons'
+library.add(faBuilding, faComments, faEnvelope, faEye, faFolderRegular, faQuestionCircle)
+
 import {
   faAngleUp,
   faCheck,
   faCogs,
   faFastForward,
+  faFolder,
+  faFolderOpen,
   faGlobe,
   faMagic,
+  faMapMarkerAlt,
   faMapPin,
   faMinus,
+  faMinusSquare,
+  faParking,
   faPause,
   faPlay,
   faPlus,
+  faPlusSquare,
   faRedoAlt,
+  faSearchLocation,
+  faSquare,
   faTimes,
   faToggleOff,
   faToggleOn,
@@ -29,12 +41,12 @@ import {
   faVolumeOff,
   faVolumeUp
 } from '@fortawesome/free-solid-svg-icons'
-import { faDiscord, faGithub, faTwitter } from '@fortawesome/free-brands-svg-icons'
+library.add(faAngleUp, faCheck, faCogs, faFastForward, faFolder, faFolderOpen, faGlobe, faMagic, faMapMarkerAlt, faMapPin,
+  faMinus, faMinusSquare, faParking, faPause, faPlay, faPlus, faPlusSquare, faRedoAlt, faSearchLocation, faSquare, faTimes,
+  faToggleOff, faToggleOn, faToolbox, faUndoAlt, faUserSecret, faUserTie, faVolumeOff, faVolumeUp)
 
-library.add(faAngleUp, faBuilding, faCheck, faCogs, faComments, faDiscord, faEnvelope, faEye, faFastForward,
-  faGithub, faGlobe, faMagic, faMapPin, faMinus, faPause, faPlay, faPlus, faRedoAlt, faTimes, faToggleOff, faToggleOn,
-  faToolbox, faUndoAlt, faQuestionCircle, faTwitter, faUserSecret, faUserTie, faVolumeOff, faVolumeUp)
-
+import { faBimobject, faDiscord, faGithub, faMegaport, faMizuni, faMonero, faTwitter } from '@fortawesome/free-brands-svg-icons'
+library.add(faBimobject, faDiscord, faGithub, faMegaport, faMizuni, faMonero, faTwitter)
 
 import Vue from 'vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'

@@ -18,7 +18,7 @@ MINI_MAP_TILE_WIDTH = Math.sqrt(2)
 MINI_MAP_TILE_HEIGHT = MINI_MAP_TILE_WIDTH * .5
 
 export default class MiniMapRenderer
-  constructor: (event_listener, @managers, @renderer, @game_state, @ui_state) ->
+  constructor: (event_listener, @managers, @renderer, @game_state, @options, @ui_state) ->
     @initialized = false
     @rgba_buffer = null
 
@@ -115,18 +115,20 @@ export default class MiniMapRenderer
     @viewport = new PIXI.Graphics()
     @application.stage.addChild(@viewport)
 
-    @input_handler = new MiniMapInputHandler(@, @game_state, @ui_state)
+    @input_handler = new MiniMapInputHandler(@, @options)
 
     render_container.appendChild(@application.view)
     addResizeListener(render_container, => @handle_resize())
 
   initialize_mini_map_sprite: () ->
     return unless @container?
+
+    mini_map_zoom = @options.option('mini_map.zoom')
     @sprite = new PIXI.Sprite(PIXI.utils.TextureCache[MINI_MAP_TEXTURE_KEY])
     # @sprite.anchor.set(0.5)
     @sprite.interactive = true
     #@sprite.position = new PIXI.Point(@game_state.game_map.width * .5, @game_state.game_map.height * .5)
-    @sprite.scale = new PIXI.Point(@ui_state.mini_map_zoom, @ui_state.mini_map_zoom)
+    @sprite.scale = new PIXI.Point(mini_map_zoom, mini_map_zoom)
     @sprite.x = @map_offset_x
     @sprite.y = @map_offset_y
     @sprite.rotation = Math.PI * .25
@@ -145,11 +147,13 @@ export default class MiniMapRenderer
     @initialized = true
 
   recenter_at: (mini_canvas_x, mini_canvas_y) ->
+    mini_map_zoom = @options.option('mini_map.zoom')
+
     mini_canvas_x = mini_canvas_x - @map_offset_x
     mini_canvas_y = mini_canvas_y - @map_offset_y * .5
 
-    ratio_x = @ui_state.mini_map_zoom * MINI_MAP_TILE_WIDTH / PlanetTypeManifest.DEFAULT_TILE_WIDTH
-    ratio_y = @ui_state.mini_map_zoom * MINI_MAP_TILE_HEIGHT / PlanetTypeManifest.DEFAULT_TILE_HEIGHT
+    ratio_x = mini_map_zoom * MINI_MAP_TILE_WIDTH / PlanetTypeManifest.DEFAULT_TILE_WIDTH
+    ratio_y = mini_map_zoom * MINI_MAP_TILE_HEIGHT / PlanetTypeManifest.DEFAULT_TILE_HEIGHT
 
     viewport = @renderer.viewport()
     half_viewport_width = Math.round(ratio_x * viewport.canvas_width / (2 * @game_state.game_scale))
@@ -158,8 +162,8 @@ export default class MiniMapRenderer
     mini_canvas_x = mini_canvas_x - half_viewport_width
     mini_canvas_y = mini_canvas_y - half_viewport_height
 
-    x_ratio = mini_canvas_x / (@ui_state.mini_map_zoom * MINI_MAP_TILE_WIDTH * .5)
-    y_ratio = mini_canvas_y / (@ui_state.mini_map_zoom * MINI_MAP_TILE_HEIGHT * .5)
+    x_ratio = mini_canvas_x / (mini_map_zoom * MINI_MAP_TILE_WIDTH * .5)
+    y_ratio = mini_canvas_y / (mini_map_zoom * MINI_MAP_TILE_HEIGHT * .5)
     iso_x = (y_ratio + x_ratio) * 0.5
     iso_y = (y_ratio - x_ratio) * 0.5
 
@@ -171,19 +175,20 @@ export default class MiniMapRenderer
 
     @upate_viewport()
 
-  zoom_in: () ->
-    if @ui_state.update_mini_map_zoom(MINI_MAP_ZOOM_STEP)
-      @sprite.scale = new PIXI.Point(@ui_state.mini_map_zoom, @ui_state.mini_map_zoom) if @sprite?
-
-  zoom_out: () ->
-    if @ui_state.update_mini_map_zoom(-MINI_MAP_ZOOM_STEP)
-      @sprite.scale = new PIXI.Point(@ui_state.mini_map_zoom, @ui_state.mini_map_zoom) if @sprite?
+  zoom_and_scale: (delta) ->
+    if @ui_state.update_mini_map_zoom(delta)
+      mini_map_zoom = @options.option('mini_map.zoom')
+      @sprite.scale = new PIXI.Point(mini_map_zoom, mini_map_zoom) if @sprite?
+  zoom_in: () -> @zoom_and_scale(MINI_MAP_ZOOM_STEP)
+  zoom_out: () -> @zoom_and_scale(-MINI_MAP_ZOOM_STEP)
 
   upate_viewport: () ->
     return unless @initialized && @sprite?
 
-    ratio_x = @ui_state.mini_map_zoom * MINI_MAP_TILE_WIDTH / PlanetTypeManifest.DEFAULT_TILE_WIDTH
-    ratio_y = @ui_state.mini_map_zoom * MINI_MAP_TILE_HEIGHT / PlanetTypeManifest.DEFAULT_TILE_HEIGHT
+    mini_map_zoom = @options.option('mini_map.zoom')
+
+    ratio_x = mini_map_zoom * MINI_MAP_TILE_WIDTH / PlanetTypeManifest.DEFAULT_TILE_WIDTH
+    ratio_y = mini_map_zoom * MINI_MAP_TILE_HEIGHT / PlanetTypeManifest.DEFAULT_TILE_HEIGHT
 
     viewport = @renderer.viewport()
     viewport_width = Math.round(ratio_x * viewport.canvas_width  / @game_state.game_scale)
@@ -209,11 +214,11 @@ export default class MiniMapRenderer
     @viewport.lineStyle(2, 0xFFD0FF, .7)
     @viewport.drawRect(mini_map_x, mini_map_y, viewport_width, viewport_height)
 
-    @last_mini_map_zoom = @ui_state.mini_map_zoom
+    @last_mini_map_zoom = mini_map_zoom
     @last_game_scale = @game_state.game_scale
     @last_view_offset_x = @game_state.view_offset_x
     @last_view_offset_y = @game_state.view_offset_y
 
   tick: () ->
     @initialize_mini_map_sprite() unless @sprite? || !PIXI.utils.TextureCache[MINI_MAP_TEXTURE_KEY]?
-    @upate_viewport() if @last_mini_map_zoom != @ui_state.mini_map_zoom ||  @last_game_scale != @game_state.game_scale || @last_view_offset_x != @game_state.view_offset_x || @last_view_offset_y != @game_state.view_offset_y
+    @upate_viewport() if @last_mini_map_zoom != @options.option('mini_map.zoom') ||  @last_game_scale != @game_state.game_scale || @last_view_offset_x != @game_state.view_offset_x || @last_view_offset_y != @game_state.view_offset_y

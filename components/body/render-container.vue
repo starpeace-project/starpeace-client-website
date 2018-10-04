@@ -9,11 +9,19 @@
 export default
   props:
     game_state: Object
+    options: Object
     ui_state: Object
 
+  watch:
+    state_counter: (new_value, old_value) ->
+      @show_fps = @options?.option('general.show_fps')
+
+  data: ->
+    show_fps: @options?.option('general.show_fps')
+
   computed:
+    state_counter: -> @options.vue_state_counter
     is_ready: -> @game_state.initialized
-    show_fps: -> @ui_state?.show_fps
 
 </script>
 

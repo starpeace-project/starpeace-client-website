@@ -1,5 +1,5 @@
 
-## v0.3 - in progress - updated 2018-09-10
+## v0.3 - in progress - updated 2018-10-03
 ### platform
 * [done] improved building rendering around edges [v0.2.1]
 * [done] improved z-order rendering across layers [v0.2.2]
@@ -7,6 +7,7 @@
 * [done] sprite layer render refactor and fixes, caching optimizations [v0.2.7]
 * [done] initial dynamic layout support (desktop, mobile) [v0.2.8]
 * [done] input interaction support for buildings (selection, rendering) [v0.2.10]
+* [done] internal options simplification and refactoring [v0.2.12]
 
 ### assets
 * [done] improved gameplay documentation [v0.2.4]
@@ -18,6 +19,7 @@
 * [done] game background music [v0.2.8]
 * [done] formal asset versioning [v0.2.9]
 * [done] building asset interaction hitboxes [v0.2.10]
+* [in progress] divide asset repository, refactor build and logic logic, integrate game metadata [v0.2.12]
 
 ### gameplay
 * [done] persist client options in localStorage [v0.2.3]
@@ -33,5 +35,5 @@
 * [done] bridge rendering [v0.2.9]
 * [done] improve concrete rendering (edges, roads) [v0.2.9]
 * [done] mini-map rendering [v0.2.11]
-* [in progress] map favorites integration
+* [in progress] map favorites integration [v0.2.12]
 * [pending] map place building interaction support

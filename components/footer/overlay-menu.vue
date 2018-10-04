@@ -14,13 +14,13 @@
           %a.dropdown-item{'v-for':'overlay in overlays()', 'v-bind:class':'overlay_item_css_class(overlay)', 'v-on:click.stop.prevent':'change_overlay(overlay)', href:'#'}
             %span {{overlay.label}}
 
-    #flag-losing.sp-primary-color
+    #flag-losing
       %span{'v-on:click.stop.prevent':'toggle_losing_facilities()'}
         Signal Losing Facilities:
       .toggle-icons
         %a.toggle-on{href:'#', 'v-show':"show_losing_facilities", 'v-on:click.stop.prevent':'toggle_losing_facilities()'}
           %font-awesome-icon{':icon':"['fas', 'toggle-on']"}
-        %a.sp-primary-color{href:'#', 'v-show':"!show_losing_facilities", 'v-on:click.stop.prevent':'toggle_losing_facilities()'}
+        %a.toggle-off{href:'#', 'v-show':"!show_losing_facilities", 'v-on:click.stop.prevent':'toggle_losing_facilities()'}
           %font-awesome-icon{':icon':"['fas', 'toggle-off']"}
 
 </template>
@@ -52,6 +52,8 @@ export default
 </script>
 
 <style lang='sass' scoped>
+@import '~assets/stylesheets/starpeace-variables'
+
 #overlay-menu
   background-color: #000
   grid-column-start: 1
@@ -76,6 +78,7 @@ button
 
 
 #flag-losing
+  color: $sp-primary
   display: inline-block
   padding: 0 0 0 .75rem
 
@@ -102,5 +105,8 @@ button
       &:hover,
       &:active
         color: #fff
+
+    .toggle-off
+      color: $sp-primary
 
 </style>

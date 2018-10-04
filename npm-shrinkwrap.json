@@ -5,51 +5,51 @@
   "requires": true,
   "dependencies": {
     "@fortawesome/fontawesome-common-types": {
-      "version": "0.2.0",
-      "resolved": "https://registry.npmjs.org/@fortawesome/fontawesome-common-types/-/fontawesome-common-types-0.2.0.tgz",
-      "integrity": "sha512-raAiqWiXGZeQpFzz5fpLa6EQR3kSAK1cT5qaUanB9h4FatXvKEOPutDyeGQsF0hRtGfMb518Mzc7+LjBPDJCOg==",
+      "version": "0.2.4",
+      "resolved": "https://registry.npmjs.org/@fortawesome/fontawesome-common-types/-/fontawesome-common-types-0.2.4.tgz",
+      "integrity": "sha512-0qbIVm+MzkxMwKDx8V0C7w/6Nk+ZfBseOn2R1YK0f2DQP5pBcOQbu9NmaVaLzbJK6VJb1TuyTf0ZF97rc6iWJQ==",
       "dev": true
     },
     "@fortawesome/fontawesome-svg-core": {
-      "version": "1.2.0",
-      "resolved": "https://registry.npmjs.org/@fortawesome/fontawesome-svg-core/-/fontawesome-svg-core-1.2.0.tgz",
-      "integrity": "sha512-Wqh3kxcxeFCCLN3LevXJaZiBZ9V8ggOUpcQC+TBIaQIPNtMmUwsghLVpI6ojYKjoIvKi1nyAR9wpOTUVoxl4rA==",
+      "version": "1.2.4",
+      "resolved": "https://registry.npmjs.org/@fortawesome/fontawesome-svg-core/-/fontawesome-svg-core-1.2.4.tgz",
+      "integrity": "sha512-oGtnwcdhJomoDxbJcy6S0JxK6ItDhJLNOujm+qILPqajJ2a0P/YRomzBbixFjAPquCoyPUlA9g9ejA22P7TKNA==",
       "dev": true,
       "requires": {
-        "@fortawesome/fontawesome-common-types": "^0.2.0"
+        "@fortawesome/fontawesome-common-types": "^0.2.4"
       }
     },
     "@fortawesome/free-brands-svg-icons": {
-      "version": "5.1.0",
-      "resolved": "https://registry.npmjs.org/@fortawesome/free-brands-svg-icons/-/free-brands-svg-icons-5.1.0.tgz",
-      "integrity": "sha512-ILEJHR7Wiz9kJMtMgRh3EXNZmxUZW6z+3JQEN1TL02+aME7q+sHn3H8oOClti9XuIx5HckmbfevpBrl+fzeWCw==",
+      "version": "5.3.1",
+      "resolved": "https://registry.npmjs.org/@fortawesome/free-brands-svg-icons/-/free-brands-svg-icons-5.3.1.tgz",
+      "integrity": "sha512-CmvAgNVvfBvNFiPLFugmafNzU6t9auy1kGDv+U6Q81XD/QS7FsnJk8pnPftFnaoXJOlpchVNxz31tNjorM3LOQ==",
       "dev": true,
       "requires": {
-        "@fortawesome/fontawesome-common-types": "^0.2.0"
+        "@fortawesome/fontawesome-common-types": "^0.2.4"
       }
     },
     "@fortawesome/free-regular-svg-icons": {
-      "version": "5.1.0",
-      "resolved": "https://registry.npmjs.org/@fortawesome/free-regular-svg-icons/-/free-regular-svg-icons-5.1.0.tgz",
-      "integrity": "sha512-VKkfgrEjso9Dsc4TgV5UKqtgxs7bv2sgIsulf6X2rwsVDQqIKOxTZ2tcftGSa4wvRPIJ3lNcrmEMLwDWub593w==",
+      "version": "5.3.1",
+      "resolved": "https://registry.npmjs.org/@fortawesome/free-regular-svg-icons/-/free-regular-svg-icons-5.3.1.tgz",
+      "integrity": "sha512-ZHMohHUxPSEUeqc7LOmO5jdeI3vlQLDgSCYR4MYk6oN7C3X59vUadLefnvctMTJyF5NWYxDbaj90ulvickDnsQ==",
       "dev": true,
       "requires": {
-        "@fortawesome/fontawesome-common-types": "^0.2.0"
+        "@fortawesome/fontawesome-common-types": "^0.2.4"
       }
     },
     "@fortawesome/free-solid-svg-icons": {
-      "version": "5.1.0",
-      "resolved": "https://registry.npmjs.org/@fortawesome/free-solid-svg-icons/-/free-solid-svg-icons-5.1.0.tgz",
-      "integrity": "sha512-MijNhBFEporjnyg1BDnyBWwypFa+RkmQFqX94NZa7xWGIKirvujw2JG0BRR9jQZPFHcI4pRzhXMxBxUUi786yA==",
+      "version": "5.3.1",
+      "resolved": "https://registry.npmjs.org/@fortawesome/free-solid-svg-icons/-/free-solid-svg-icons-5.3.1.tgz",
+      "integrity": "sha512-NkiLBFoiHtJ89cPJdM+W6cLvTVKkLh3j9t3MxkXyip0ncdD3lhCunSuzvFcrTHWeETEyoClGd8ZIWrr3HFZ3BA==",
       "dev": true,
       "requires": {
-        "@fortawesome/fontawesome-common-types": "^0.2.0"
+        "@fortawesome/fontawesome-common-types": "^0.2.4"
       }
     },
     "@fortawesome/vue-fontawesome": {
-      "version": "0.1.0",
-      "resolved": "https://registry.npmjs.org/@fortawesome/vue-fontawesome/-/vue-fontawesome-0.1.0.tgz",
-      "integrity": "sha512-FBbNA1ymu46UDjfbzMmVWhEeTineUiWHoU1WTsauodC9tQRj96/d0gBUQl3UkM3wMJ18jMq2H5+nXCuNq0SsZw==",
+      "version": "0.1.1",
+      "resolved": "https://registry.npmjs.org/@fortawesome/vue-fontawesome/-/vue-fontawesome-0.1.1.tgz",
+      "integrity": "sha512-dvPpA9eI18bWr3E+c0JvCYD6xl/keEj0ICTMShUPbxsGkd6PdFU9xYjqA8qE8ahsY+xhbQzZt/k1FKlpMGaRXA==",
       "dev": true
     },
     "@nuxtjs/google-analytics": {
@@ -84,6 +84,12 @@
       "version": "4.8.0",
       "resolved": "https://registry.npmjs.org/@types/pixi.js/-/pixi.js-4.8.0.tgz",
       "integrity": "sha512-XAnOxKMyJdb0OBaJUuu17kUzR2KWKLKrOPR7laPyPYbK7faGfQjt0ueYXdTlFVDdqXPBh653+ozO0LKdLWPD3Q==",
+      "dev": true
+    },
+    "@types/tinycolor2": {
+      "version": "1.4.1",
+      "resolved": "https://registry.npmjs.org/@types/tinycolor2/-/tinycolor2-1.4.1.tgz",
+      "integrity": "sha512-25L/RL5tqZkquKXVHM1fM2bd23qjfbcPpAZ2N/H05Y45g3UEi+Hw8CbDV28shKY8gH1SHiLpZSxPI1lacqdpGg==",
       "dev": true
     },
     "abbrev": {
@@ -1471,9 +1477,9 @@
       "dev": true
     },
     "bulma-tooltip": {
-      "version": "2.0.1",
-      "resolved": "https://registry.npmjs.org/bulma-tooltip/-/bulma-tooltip-2.0.1.tgz",
-      "integrity": "sha512-y2e8ER6wej5hBgb5OXoyBqBxSD+1aw6kFHNp/HbOWw4UB4dKwREuNa/RecM6mjrSSxO9IeED787CU++Y1bbStg==",
+      "version": "2.0.2",
+      "resolved": "https://registry.npmjs.org/bulma-tooltip/-/bulma-tooltip-2.0.2.tgz",
+      "integrity": "sha512-xsqWeWV7tsUn3uH04SqJeP7/CyC1RaDVIyVzr4/sIO3friIIOi7L6jc5g7qUwDxuBQl72yH/yRPuefpXoQ4hWg==",
       "dev": true
     },
     "bytes": {
@@ -1804,9 +1810,9 @@
       }
     },
     "coffeescript": {
-      "version": "2.3.1",
-      "resolved": "https://registry.npmjs.org/coffeescript/-/coffeescript-2.3.1.tgz",
-      "integrity": "sha512-DNJmSPMyiz+OjWYyuDXNBcFutDjP2TS2owsZ8YvT65hA8c5IdHWIBqdA3Yf/XHoK23d/f1HqLjQbEJJZJoeV1w==",
+      "version": "2.3.2",
+      "resolved": "https://registry.npmjs.org/coffeescript/-/coffeescript-2.3.2.tgz",
+      "integrity": "sha512-YObiFDoukx7qPBi/K0kUKyntEZDfBQiqs/DbrR1xzASKOBjGT7auD85/DiPeRr9k++lRj7l3uA9TNMLfyfcD/Q==",
       "dev": true
     },
     "collection-visit": {
@@ -5186,9 +5192,9 @@
       }
     },
     "lodash": {
-      "version": "4.17.10",
-      "resolved": "https://registry.npmjs.org/lodash/-/lodash-4.17.10.tgz",
-      "integrity": "sha512-UejweD1pDoXu+AD825lWwp4ZGtSwgnpZxb3JDViD7StjQz+Nb/6l093lx4OQ0foGWNRoc19mWy7BzL+UAK2iVg=="
+      "version": "4.17.11",
+      "resolved": "https://registry.npmjs.org/lodash/-/lodash-4.17.11.tgz",
+      "integrity": "sha512-cQKh8igo5QUhZ7lg38DYWAxMvjSAKG0A8wGSVimP07SIUEK2UO+arSRKbRZWtelMtN5V0Hkwh5ryOto/SshYIg=="
     },
     "lodash._reinterpolate": {
       "version": "3.0.0",
@@ -6467,9 +6473,9 @@
       }
     },
     "pixi.js": {
-      "version": "4.8.1",
-      "resolved": "https://registry.npmjs.org/pixi.js/-/pixi.js-4.8.1.tgz",
-      "integrity": "sha512-oL0fx8satkkcLTmnweB1idVElCMO/Lg2fs21YSUnrEJy/Skt0FH56nITEv/7epJqs6hq9ZhztSMCP98KiKF9+g==",
+      "version": "4.8.2",
+      "resolved": "https://registry.npmjs.org/pixi.js/-/pixi.js-4.8.2.tgz",
+      "integrity": "sha512-OHA3Q3wwxRJXkVWALVuiUcUqQZd5p0rQF9ikCvOmux3A6Lxb5S61v4PMEAVgR3+1auZekbv/GNHCxDGFCQSi8g==",
       "dev": true,
       "requires": {
         "bit-twiddle": "^1.0.2",
@@ -10248,11 +10254,12 @@
       "dev": true
     },
     "tinygradient": {
-      "version": "0.4.0",
-      "resolved": "https://registry.npmjs.org/tinygradient/-/tinygradient-0.4.0.tgz",
-      "integrity": "sha512-T1JD4ZZjw/hl08DAI0kBtsn2N0mvQ9NTfUQI/BOFgz09yNLOtE3XphXLpKvCLVmkIp8UHef6R4P3DiLCbMHh7w==",
+      "version": "0.4.1",
+      "resolved": "https://registry.npmjs.org/tinygradient/-/tinygradient-0.4.1.tgz",
+      "integrity": "sha512-sgJ1GGaLUqyZy3SM2G1y2bVRfxdbyRUiYMIdkCxz0LVQvioEPRocYW30VhDOUOk6uoWBA7cSV/mcTruwR7Ypfw==",
       "dev": true,
       "requires": {
+        "@types/tinycolor2": "^1.4.0",
         "tinycolor2": "^1.0.0"
       }
     },

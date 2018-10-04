@@ -1,4 +1,4 @@
-sp-primary-color<template lang='haml'>
+<template lang='haml'>
 %no-ssr
   %transition{name:'fade'}
     #footer-container{'v-show':'is_ready', 'v-cloak':true}
@@ -23,7 +23,7 @@ sp-primary-color<template lang='haml'>
             %td.column-details-ticker.primary
               Welcome to STARPEACE! If you enjoy your time as a Visitor, become a Tycoon!
 
-            %td.column-mini-map{rowspan: 2, 'v-show':'ui_state.show_mini_map', 'v-bind:style':'mini_map_column_css_style'}
+            %td.column-mini-map{rowspan: 2, 'v-show':'show_mini_map', 'v-bind:style':'mini_map_column_css_style'}
               #mini-map-container{'v-bind:style':'mini_map_container_css_style'}
                 #mini-map-webgl-container
                 %a.zoom.zoom-out{'v-on:click.stop.prevent':'mini_map_renderer.zoom_in()'}
@@ -56,8 +56,8 @@ sp-primary-color<template lang='haml'>
             %td.column-menu
               %a.button.is-starpeace.is-small.tooltip{'v-bind:class':'menu_class_planetary', 'v-on:click.stop.prevent':'menu_state.toggle_menu_planetary()', 'data-tooltip':'Planetary Systems'}
                 %font-awesome-icon{':icon':"['fas', 'globe']"}
-              %a.button.is-starpeace.is-small.tooltip{'v-bind:class':'menu_class_favorites', 'v-on:click.stop.prevent':'menu_state.toggle_menu_favorites()', 'data-tooltip':'Map Locations'}
-                %font-awesome-icon{':icon':"['fas', 'map-pin']"}
+              %a.button.is-starpeace.is-small.tooltip{'v-bind:class':'menu_class_bookmarks', 'v-on:click.stop.prevent':'menu_state.toggle_menu_bookmarks()', 'data-tooltip':'Map Locations'}
+                %font-awesome-icon{':icon':"['fas', 'map-marker-alt']"}
               %a.button.is-starpeace.is-small.tooltip{'v-on:click.stop.prevent':'menu_state.hide_all_menus()', 'data-tooltip':'Hide Menus'}
                 %font-awesome-icon{':icon':"['far', 'eye']"}
               %a.button.is-starpeace.is-small.tooltip{'v-bind:class':'menu_class_tycoon', 'v-on:click.stop.prevent':'menu_state.toggle_menu_tycoon()', 'data-tooltip':'Tycoon Details'}
@@ -76,7 +76,7 @@ sp-primary-color<template lang='haml'>
             %td.column-tycoon
               %span.column-tycoon-name
                 Visitor
-              %span.column-tycoon-buildings.sp-primary-color
+              %span.column-tycoon-buildings
                 %span.count 0 / 0
                 %font-awesome-icon{':icon':"['far', 'building']"}
 
@@ -84,23 +84,23 @@ sp-primary-color<template lang='haml'>
                 .level-item.client-version
                   %a{'v-bind:class':'menu_class_release_notes', 'v-on:click.stop.prevent':'menu_state.toggle_menu_release_notes()'} {{client_version}}
 
-                .level-item.game-music.sp-primary-color{'v-bind:class':'game_music_class', 'v-show':"ui_state.game_music"}
+                .level-item.game-music{'v-bind:class':'game_music_class', 'v-show':"show_game_music"}
                   %font-awesome-icon{':icon':"['fas', 'play']", 'v-show':'!game_state.game_music_playing', 'v-on:click.stop.prevent':'toggle_game_music()'}
                   %font-awesome-icon{':icon':"['fas', 'pause']", 'v-show':'game_state.game_music_playing', 'v-on:click.stop.prevent':'toggle_game_music()'}
-                .level-item.game-music-next.sp-primary-color{'v-bind:class':'game_music_volume_class', 'v-show':"ui_state.game_music"}
+                .level-item.game-music-next{'v-bind:class':'game_music_volume_class', 'v-show':"show_game_music"}
                   %font-awesome-icon{':icon':"['fas', 'fast-forward']", 'v-on:click.stop.prevent':'toggle_next_game_music()'}
-                .level-item.game-music-volume.sp-primary-color{'v-bind:class':'game_music_volume_class', 'v-show':"ui_state.game_music"}
+                .level-item.game-music-volume{'v-bind:class':'game_music_volume_class', 'v-show':"show_game_music"}
                   %font-awesome-icon{':icon':"['fas', 'volume-up']", 'v-show':'game_state.game_music_volume', 'v-on:click.stop.prevent':'toggle_game_music_volume()'}
                   %font-awesome-icon{':icon':"['fas', 'volume-off']", 'v-show':'!game_state.game_music_volume', 'v-on:click.stop.prevent':'toggle_game_music_volume()'}
 
-                .level-item.notification-mail.sp-primary-color
+                .level-item.notification-mail
                   %font-awesome-icon{':icon':"['far', 'envelope']"}
 
                 .level-item.notification-loading
                   %img.starpeace-logo{'v-bind:class':'notification_loading_css_class'}
 
           %tr
-            %td.column-news-ticker.sp-primary-color {{ ticker_message }}
+            %td.column-news-ticker {{ ticker_message }}
 
             %td.column-tycoon-details
               %table
@@ -109,13 +109,13 @@ sp-primary-color<template lang='haml'>
                     %td.column-tycoon-corporation
                       [VISITOR VISA]
                   %tr
-                    %td.column-tycoon-cash.sp-primary-color
+                    %td.column-tycoon-cash
                       $0
                   %tr
-                    %td.column-tycoon-cashflow.sp-primary-color
+                    %td.column-tycoon-cashflow
                       ($0/h)
                   %tr
-                    %td.column-date.sp-primary-color {{ current_date }}
+                    %td.column-date {{ current_date }}
 </template>
 
 <script lang='coffee'>
@@ -132,10 +132,15 @@ export default
     menu_state: Object
     mini_map_renderer: Object
     music_manager: Object
+    options: Object
     ui_state: Object
 
   data: ->
     client_version: process.env.CLIENT_VERSION
+    show_mini_map: @options?.option('general.show_mini_map')
+    mini_map_width: @options?.option('mini_map.width')
+    mini_map_height: @options?.option('mini_map.height')
+    show_game_music: @options?.option('music.show_game_music')
 
   updated: ->
     element = @.$el.querySelector('#mini-map-container') if process.browser
@@ -157,7 +162,16 @@ export default
       )
     element.dataset.interactSetup = true
 
+  watch:
+    state_counter: (new_value, old_value) ->
+      @show_mini_map = @options?.option('general.show_mini_map')
+      @mini_map_width = @options?.option('mini_map.width')
+      @mini_map_height = @options?.option('mini_map.height')
+      @show_game_music = @options?.option('music.show_game_music')
+
   computed:
+    state_counter: -> @options?.vue_state_counter
+
     is_ready: -> @game_state?.initialized
     ticker_message: -> @ui_state?.event_ticker_message || ''
     current_date: -> moment(@game_state?.current_date).format('MMM D, YYYY')
@@ -165,7 +179,7 @@ export default
     menu_class_overlay: -> { 'is-active': @ui_state?.show_overlay || false }
     menu_class_zones: -> { 'is-active': @ui_state?.show_zones || false }
     menu_class_planetary: -> { 'is-active': @menu_state?.main_menu == 'planetary' }
-    menu_class_favorites: -> { 'is-active': @menu_state?.show_menu_favorites || false }
+    menu_class_bookmarks: -> { 'is-active': @menu_state?.show_menu_bookmarks || false }
     menu_class_tycoon: -> { 'is-active': @menu_state?.main_menu == 'tycoon' }
     menu_class_building: -> { 'is-active': @menu_state?.main_menu == 'building' }
     menu_class_mail: -> { 'is-active': @menu_state?.main_menu == 'mail' }
@@ -179,8 +193,9 @@ export default
 
     notification_loading_css_class: -> { 'ajax-loading': (@game_state?.ajax_requests || 0) > 0 }
 
-    mini_map_column_css_style: -> "width:#{@ui_state.mini_map_width}px"
-    mini_map_container_css_style: -> "width:#{@ui_state.mini_map_width}px;height:#{@ui_state.mini_map_height}px"
+    mini_map_column_css_style: -> "width:#{@mini_map_width}px"
+    mini_map_container_css_style: -> "width:#{@mini_map_width}px;height:#{@mini_map_height}px"
+
   methods:
     toggle_zones: -> @ui_state.show_zones = !@ui_state.show_zones
 
@@ -190,6 +205,8 @@ export default
 </script>
 
 <style lang='sass' scoped>
+@import '~assets/stylesheets/starpeace-variables'
+
 .button
   &.is-starpeace
     &.is-small
@@ -360,6 +377,8 @@ export default
         vertical-align: bottom
 
       .column-tycoon-buildings
+        color: $sp-primary
+
         .count
           margin-right: .5rem
 
@@ -383,6 +402,7 @@ export default
               opacity: 1
 
         .game-music
+          color: $sp-primary
           font-size: 1.2rem
           margin-left: 1.5rem
 
@@ -393,17 +413,20 @@ export default
             opacity: .8
 
         .game-music-next
+          color: $sp-primary
           font-size: 1.5rem
           margin-left: .75rem
           opacity: .5
 
         .game-music-volume
+          color: $sp-primary
           font-size: 1.5rem
           margin-left: .5rem
           min-width: 1.75rem
           opacity: .5
 
         .notification-mail
+          color: $sp-primary
           font-size: 1.5rem
           margin-left: 1rem
           opacity: .5
@@ -433,22 +456,26 @@ export default
         color: #fff
 
       .column-tycoon-cash
+        color: $sp-primary
         font-size: 1.5rem
         font-weight: 1000
         line-height: 1.25rem
 
       .column-tycoon-cashflow
+        color: $sp-primary
         padding-bottom: 0
         padding-top: .25rem
         vertical-align: bottom
 
       .column-date
+        color: $sp-primary
         padding-top: 0
         padding-bottom: 1rem
         vertical-align: top
 
     .column-news-ticker
       background-color: #2a453f
+      color: $sp-primary
       font-size: .85rem
       font-weight: 1000
       height: 6rem

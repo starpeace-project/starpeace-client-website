@@ -1,6 +1,6 @@
 # Contributing to STARPEACE
 
-:+1::peace: Thank you for taking the time to contribute! :peace::+1:
+:+1: Thank you for taking the time to contribute! :+1:
 
 The following is a set of guidelines for contributing to STARPEACE client website and its packages, which are hosted in the [STARPEACE Project Organization](https://github.com/starpeace-project) on GitHub. These are mostly guidelines, not rules. Use your best judgment, and feel free to propose changes to this document in a pull request.
 

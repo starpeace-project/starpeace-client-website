@@ -2,25 +2,25 @@
 class MenuState
   constructor: () ->
     @show_menu_release_notes = false
-    @show_menu_favorites = false
+    @show_menu_bookmarks = false
     @main_menu = null
 
   is_any_menu_open: () ->
-    @show_menu_favorites || @main_menu?.length || @show_menu_release_notes
+    @show_menu_bookmarks || @main_menu?.length || @show_menu_release_notes
 
   hide_all_menus: () ->
-    @show_menu_favorites = false
+    @show_menu_bookmarks = false
     @main_menu = null
     @show_menu_release_notes = false
 
   toggle_menu_planetary: () ->
     @show_menu_release_notes = false
     @main_menu = if @main_menu == 'planetary' then null else 'planetary'
-    @show_menu_favorites = false
+    @show_menu_bookmarks = false
 
-  toggle_menu_favorites: () ->
+  toggle_menu_bookmarks: () ->
     @show_menu_release_notes = false if @show_menu_release_notes
-    @show_menu_favorites = !@show_menu_favorites
+    @show_menu_bookmarks = !@show_menu_bookmarks
 
   toggle_menu_tycoon: () ->
     @show_menu_release_notes = false
@@ -43,7 +43,7 @@ class MenuState
 
   toggle_menu_release_notes: () ->
     @main_menu = null if @main_menu?.length
-    @show_menu_favorites = false if @show_menu_favorites
+    @show_menu_bookmarks = false if @show_menu_bookmarks
     @show_menu_release_notes = !@show_menu_release_notes
 
 export default MenuState

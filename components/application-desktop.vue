@@ -1,13 +1,13 @@
 <template lang='haml'>
 #application-container{'v-bind:class':'application_css_class', 'v-cloak':true}
-  %sp-header{'v-bind:ui_state':'ui_state'}
+  %sp-header{'v-bind:options':'options', 'v-bind:ui_state':'ui_state'}
   %sp-loading-card{'v-bind:game_state':'game_state'}
   %sp-loading-modal{'v-bind:game_state':'game_state'}
   %sp-workflow{'v-bind:event_listener':'event_listener', 'v-bind:game_state':'game_state', 'v-bind:planetary_metadata_manager':'planetary_metadata_manager'}
-  %sp-menu{'v-bind:game_state':'game_state', 'v-bind:menu_state':'menu_state', 'v-bind:ui_state':'ui_state'}
-  %sp-body{'v-bind:game_state':'game_state', 'v-bind:ui_state':'ui_state'}
+  %sp-menu{'v-bind:bookmark_manager':'bookmark_manager', 'v-bind:game_state':'game_state', 'v-bind:menu_state':'menu_state', 'v-bind:options':'options', 'v-bind:ui_state':'ui_state'}
+  %sp-body{'v-bind:game_state':'game_state', 'v-bind:options':'options', 'v-bind:ui_state':'ui_state'}
   %sp-footer-overlay-menu{'v-bind:ui_state':'ui_state'}
-  %sp-footer{'v-bind:camera_manager':'camera_manager', 'v-bind:mini_map_renderer':'mini_map_renderer', 'v-bind:game_state':'game_state', 'v-bind:menu_state':'menu_state', 'v-bind:ui_state':'ui_state', 'v-bind:music_manager':'music_manager'}
+  %sp-footer{'v-bind:camera_manager':'camera_manager', 'v-bind:mini_map_renderer':'mini_map_renderer', 'v-bind:game_state':'game_state', 'v-bind:menu_state':'menu_state', 'v-bind:options':'options', 'v-bind:ui_state':'ui_state', 'v-bind:music_manager':'music_manager'}
 </template>
 
 <script lang='coffee'>
@@ -34,21 +34,28 @@ export default
     'sp-footer-overlay-menu': FooterOverlayMenu
     'sp-footer': Footer
 
-  computed:
-    application_css_class: ->
-      classes = []
-      classes.push('no-header') unless @ui_state?.show_header
-      classes
+  watch:
+    state_counter: (new_value, old_value) ->
+      @show_header = @client?.options?.option('general.show_header')
 
   data: ->
+    bookmark_manager: @client?.bookmark_manager
     camera_manager: @client?.camera_manager
     event_listener: @client?.event_listener
     game_state: @client?.game_state
     menu_state: @client?.menu_state
     mini_map_renderer: @client?.mini_map_renderer
     music_manager: @client?.music_manager
+    options: @client?.options
     planetary_metadata_manager: @client?.managers?.planetary_metadata_manager
     ui_state: @client?.ui_state
+
+    show_header: @client?.options?.option('general.show_header')
+
+  computed:
+    state_counter: -> @options.vue_state_counter
+    application_css_class: -> if @show_header then [] else ['no-header']
+
 </script>
 
 <style lang='sass' scoped>

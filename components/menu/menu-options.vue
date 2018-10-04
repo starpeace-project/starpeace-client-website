@@ -13,7 +13,7 @@
           .field.is-horizontal
             .column.is-paddingless.is-9
               .field-label
-                %label.label.group-header General&nbsp;Options
+                %label.label.group-header General
             .column.is-paddingless.second-group-header
               .field-label
                 %label.label.group-header &nbsp;
@@ -25,9 +25,9 @@
               .field.is-narrow
                 .control
                   .toggle-icons
-                    %a{href:'#', 'v-show':"ui_state.show_header", 'v-on:click.stop.prevent':"ui_state.show_header = !ui_state.show_header"}
+                    %a{href:'#', 'v-show':"options.option('general.show_header')", 'v-on:click.stop.prevent':"options.toggle('general.show_header')"}
                       %font-awesome-icon{':icon':"['fas', 'toggle-on']"}
-                    %a{href:'#', 'v-show':"!ui_state.show_header", 'v-on:click.stop.prevent':"ui_state.show_header = !ui_state.show_header"}
+                    %a{href:'#', 'v-show':"!options.option('general.show_header')", 'v-on:click.stop.prevent':"options.toggle('general.show_header')"}
                       %font-awesome-icon{':icon':"['fas', 'toggle-off']"}
           .field.is-horizontal
             .column.is-paddingless.is-9
@@ -37,9 +37,9 @@
               .field.is-narrow
                 .control
                   .toggle-icons
-                    %a{href:'#', 'v-show':"ui_state.show_fps", 'v-on:click.stop.prevent':"ui_state.show_fps = !ui_state.show_fps"}
+                    %a{href:'#', 'v-show':"options.option('general.show_fps')", 'v-on:click.stop.prevent':"options.toggle('general.show_fps')"}
                       %font-awesome-icon{':icon':"['fas', 'toggle-on']"}
-                    %a{href:'#', 'v-show':"!ui_state.show_fps", 'v-on:click.stop.prevent':"ui_state.show_fps = !ui_state.show_fps"}
+                    %a{href:'#', 'v-show':"!options.option('general.show_fps')", 'v-on:click.stop.prevent':"options.toggle('general.show_fps')"}
                       %font-awesome-icon{':icon':"['fas', 'toggle-off']"}
           .field.is-horizontal
             .column.is-paddingless.is-9
@@ -49,9 +49,9 @@
               .field.is-narrow
                 .control
                   .toggle-icons
-                    %a{href:'#', 'v-show':"ui_state.show_mini_map", 'v-on:click.stop.prevent':"ui_state.show_mini_map = !ui_state.show_mini_map"}
+                    %a{href:'#', 'v-show':"options.option('general.show_mini_map')", 'v-on:click.stop.prevent':"options.toggle('general.show_mini_map')"}
                       %font-awesome-icon{':icon':"['fas', 'toggle-on']"}
-                    %a{href:'#', 'v-show':"!ui_state.show_mini_map", 'v-on:click.stop.prevent':"ui_state.show_mini_map = !ui_state.show_mini_map"}
+                    %a{href:'#', 'v-show':"!options.option('general.show_mini_map')", 'v-on:click.stop.prevent':"options.toggle('general.show_mini_map')"}
                       %font-awesome-icon{':icon':"['fas', 'toggle-off']"}
           .field.is-horizontal
             .column.is-paddingless.is-9
@@ -61,16 +61,16 @@
               .field.is-narrow
                 .control
                   .toggle-icons
-                    %a{href:'#', 'v-show':"ui_state.game_music", 'v-on:click.stop.prevent':"ui_state.game_music = !ui_state.game_music"}
+                    %a{href:'#', 'v-show':"options.option('music.show_game_music')", 'v-on:click.stop.prevent':"options.toggle('music.show_game_music')"}
                       %font-awesome-icon{':icon':"['fas', 'toggle-on']"}
-                    %a{href:'#', 'v-show':"!ui_state.game_music", 'v-on:click.stop.prevent':"ui_state.game_music = !ui_state.game_music"}
+                    %a{href:'#', 'v-show':"!options.option('music.show_game_music')", 'v-on:click.stop.prevent':"options.toggle('music.show_game_music')"}
                       %font-awesome-icon{':icon':"['fas', 'toggle-off']"}
 
         .column
           .field.is-horizontal
             .column.is-paddingless.is-9
               .field-label
-                %label.label.group-header Render&nbsp;Options
+                %label.label.group-header Rendering
             .column.is-paddingless.second-group-header
               .field-label
                 %label.label.group-header &nbsp;
@@ -82,9 +82,9 @@
               .field.is-narrow.has-text-centered
                 .control
                   .toggle-icons
-                    %a{href:'#', 'v-show':"ui_state.render_trees", 'v-on:click.stop.prevent':"ui_state.render_trees = !ui_state.render_trees"}
+                    %a{href:'#', 'v-show':"options.option('renderer.trees')", 'v-on:click.stop.prevent':"options.toggle('renderer.trees')"}
                       %font-awesome-icon{':icon':"['fas', 'toggle-on']"}
-                    %a{href:'#', 'v-show':"!ui_state.render_trees", 'v-on:click.stop.prevent':"ui_state.render_trees = !ui_state.render_trees"}
+                    %a{href:'#', 'v-show':"!options.option('renderer.trees')", 'v-on:click.stop.prevent':"options.toggle('renderer.trees')"}
                       %font-awesome-icon{':icon':"['fas', 'toggle-off']"}
           .field.is-horizontal
             .column.is-paddingless.is-9
@@ -94,9 +94,9 @@
               .field.is-narrow
                 .control
                   .toggle-icons
-                    %a{href:'#', 'v-show':"ui_state.render_buildings", 'v-on:click.stop.prevent':"ui_state.render_buildings = !ui_state.render_buildings"}
+                    %a{href:'#', 'v-show':"options.option('renderer.buildings')", 'v-on:click.stop.prevent':"options.toggle('renderer.buildings')"}
                       %font-awesome-icon{':icon':"['fas', 'toggle-on']"}
-                    %a{href:'#', 'v-show':"!ui_state.render_buildings", 'v-on:click.stop.prevent':"ui_state.render_buildings = !ui_state.render_buildings"}
+                    %a{href:'#', 'v-show':"!options.option('renderer.buildings')", 'v-on:click.stop.prevent':"options.toggle('renderer.buildings')"}
                       %font-awesome-icon{':icon':"['fas', 'toggle-off']"}
           .field.is-horizontal
             .column.is-paddingless.is-9
@@ -106,9 +106,9 @@
               .field.is-narrow
                 .control
                   .toggle-icons
-                    %a{href:'#', 'v-show':"ui_state.render_building_animations", 'v-on:click.stop.prevent':"ui_state.render_building_animations = !ui_state.render_building_animations"}
+                    %a{href:'#', 'v-show':"options.option('renderer.building_animations')", 'v-on:click.stop.prevent':"options.toggle('renderer.building_animations')"}
                       %font-awesome-icon{':icon':"['fas', 'toggle-on']"}
-                    %a{href:'#', 'v-show':"!ui_state.render_building_animations", 'v-on:click.stop.prevent':"ui_state.render_building_animations = !ui_state.render_building_animations"}
+                    %a{href:'#', 'v-show':"!options.option('renderer.building_animations')", 'v-on:click.stop.prevent':"options.toggle('renderer.building_animations')"}
                       %font-awesome-icon{':icon':"['fas', 'toggle-off']"}
           .field.is-horizontal
             .column.is-paddingless.is-9
@@ -118,9 +118,9 @@
               .field.is-narrow
                 .control
                   .toggle-icons
-                    %a{href:'#', 'v-show':"ui_state.render_building_effects", 'v-on:click.stop.prevent':"ui_state.render_building_effects = !ui_state.render_building_effects"}
+                    %a{href:'#', 'v-show':"options.option('renderer.building_effects')", 'v-on:click.stop.prevent':"options.toggle('renderer.building_effects')"}
                       %font-awesome-icon{':icon':"['fas', 'toggle-on']"}
-                    %a{href:'#', 'v-show':"!ui_state.render_building_effects", 'v-on:click.stop.prevent':"ui_state.render_building_effects = !ui_state.render_building_effects"}
+                    %a{href:'#', 'v-show':"!options.option('renderer.building_effects')", 'v-on:click.stop.prevent':"options.toggle('renderer.building_effects')"}
                       %font-awesome-icon{':icon':"['fas', 'toggle-off']"}
           .field.is-horizontal
             .column.is-paddingless.is-9
@@ -130,9 +130,66 @@
               .field.is-narrow
                 .control
                   .toggle-icons
-                    %a{href:'#', 'v-show':"ui_state.render_planes", 'v-on:click.stop.prevent':"ui_state.render_planes = !ui_state.render_planes"}
+                    %a{href:'#', 'v-show':"options.option('renderer.planes')", 'v-on:click.stop.prevent':"options.toggle('renderer.planes')"}
                       %font-awesome-icon{':icon':"['fas', 'toggle-on']"}
-                    %a{href:'#', 'v-show':"!ui_state.render_planes", 'v-on:click.stop.prevent':"ui_state.render_planes = !ui_state.render_planes"}
+                    %a{href:'#', 'v-show':"!options.option('renderer.planes')", 'v-on:click.stop.prevent':"options.toggle('renderer.planes')"}
+                      %font-awesome-icon{':icon':"['fas', 'toggle-off']"}
+
+        .column
+          .field.is-horizontal
+            .column.is-paddingless.is-9
+              .field-label
+                %label.label.group-header Map&nbsp;Locations
+            .column.is-paddingless.second-group-header
+              .field-label
+                %label.label.group-header &nbsp;
+          .field.is-horizontal
+            .column.is-paddingless.is-9
+              .field-label
+                %label.label Points of Interest:
+            .column.is-paddingless.field-body
+              .field.is-narrow.has-text-centered
+                .control
+                  .toggle-icons
+                    %a{href:'#', 'v-show':"options.option('bookmarks.points_of_interest')", 'v-on:click.stop.prevent':"options.toggle('bookmarks.points_of_interest')"}
+                      %font-awesome-icon{':icon':"['fas', 'toggle-on']"}
+                    %a{href:'#', 'v-show':"!options.option('bookmarks.points_of_interest')", 'v-on:click.stop.prevent':"options.toggle('bookmarks.points_of_interest')"}
+                      %font-awesome-icon{':icon':"['fas', 'toggle-off']"}
+          .field.is-horizontal
+            .column.is-paddingless.is-9
+              .field-label
+                %label.label POI - Towns:
+            .column.is-paddingless.field-body
+              .field.is-narrow.has-text-centered
+                .control
+                  .toggle-icons
+                    %a{href:'#', 'v-show':"options.option('bookmarks.towns')", 'v-on:click.stop.prevent':"options.toggle('bookmarks.towns')"}
+                      %font-awesome-icon{':icon':"['fas', 'toggle-on']"}
+                    %a{href:'#', 'v-show':"!options.option('bookmarks.towns')", 'v-on:click.stop.prevent':"options.toggle('bookmarks.towns')"}
+                      %font-awesome-icon{':icon':"['fas', 'toggle-off']"}
+          .field.is-horizontal
+            .column.is-paddingless.is-9
+              .field-label
+                %label.label POI - Mausoleums:
+            .column.is-paddingless.field-body
+              .field.is-narrow.has-text-centered
+                .control
+                  .toggle-icons
+                    %a{href:'#', 'v-show':"options.option('bookmarks.mausoleums')", 'v-on:click.stop.prevent':"options.toggle('bookmarks.mausoleums')"}
+                      %font-awesome-icon{':icon':"['fas', 'toggle-on']"}
+                    %a{href:'#', 'v-show':"!options.option('bookmarks.mausoleums')", 'v-on:click.stop.prevent':"options.toggle('bookmarks.mausoleums')"}
+                      %font-awesome-icon{':icon':"['fas', 'toggle-off']"}
+          .field.is-horizontal
+            .column.is-paddingless.is-9
+              .field-label
+                %label.label Corporation:
+            .column.is-paddingless.field-body
+              .field.is-narrow.has-text-centered
+                .control
+                  .toggle-icons
+                    %a{href:'#', 'v-show':"options.option('bookmarks.corporation')", 'v-on:click.stop.prevent':"options.toggle('bookmarks.corporation')"}
+                      %font-awesome-icon{':icon':"['fas', 'toggle-on']"}
+                    %a{href:'#', 'v-show':"!options.option('bookmarks.corporation')", 'v-on:click.stop.prevent':"options.toggle('bookmarks.corporation')"}
                       %font-awesome-icon{':icon':"['fas', 'toggle-off']"}
 
     %footer.card-footer
@@ -146,29 +203,30 @@
 <script lang='coffee'>
 export default
   props:
+    options: Object
     menu_state: Object
     ui_state: Object
 
+  data: ->
+    can_reset: @options?.can_reset()
+    is_dirty: @options?.is_dirty()
+
+  watch:
+    state_counter: (new_value, old_value) ->
+      @can_reset = @options?.can_reset()
+      @is_dirty = @options?.is_dirty()
+
   computed:
-    can_reset: ->
-      @ui_state.show_header != true || @ui_state.show_fps != true || @ui_state.show_mini_map != true || @ui_state.game_music == true || @ui_state.render_trees != true || @ui_state.render_buildings != true ||
-          @ui_state.render_building_animations != true || @ui_state.render_building_effects != true || @ui_state.render_planes != true
-    is_dirty: ->
-      @ui_state.saved_show_header != @ui_state.show_header || @ui_state.saved_show_fps != @ui_state.show_fps || @ui_state.saved_show_mini_map != @ui_state.show_mini_map || @ui_state.saved_game_music != @ui_state.game_music ||
-          @ui_state.saved_render_trees != @ui_state.render_trees || @ui_state.saved_render_buildings != @ui_state.render_buildings ||
-          @ui_state.saved_render_building_animations != @ui_state.render_building_animations || @ui_state.saved_render_building_effects != @ui_state.render_building_effects ||
-          @ui_state.saved_render_planes != @ui_state.render_planes
+    state_counter: -> @options.vue_state_counter
 
   methods:
-    reset_options: () ->
-      @ui_state.reset_state()
-    save_options: () ->
-      @ui_state.save_state()
+    reset_options: () -> @options.reset_state()
+    save_options: () -> @options.save_state()
 </script>
 
 <style lang='sass' scoped>
 .card
-  max-width: 40rem
+  max-width: 60rem
   width: 100%
   z-index: 1050
 

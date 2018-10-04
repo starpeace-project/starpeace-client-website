@@ -1,6 +1,5 @@
 
-$sp-filter-primary: invert(38%) sepia(9%) saturate(1145%) hue-rotate(112deg) brightness(101%) contrast(86%)
-$sp-filter-light: invert(8%) sepia(22%) saturate(305%) hue-rotate(100deg) brightness(95%) contrast(97%)
+@import '~assets/stylesheets/starpeace-variables'
 
 @keyframes pulse
   0%
@@ -12,6 +11,15 @@ $sp-filter-light: invert(8%) sepia(22%) saturate(305%) hue-rotate(100deg) bright
 
 @keyframes spin
   100%
+    transform: rotate(360deg)
+
+@keyframes spin-and-blink
+  0%
+    filter: $sp-filter-primary
+  50%
+    filter: $sp-filter-light
+  100%
+    filter: $sp-filter-primary
     transform: rotate(360deg)
 
 
@@ -33,27 +41,6 @@ h3
   font-size: 1.5rem
   text-shadow: 0 0 .25rem rgba(0, 0, 0, .2)
 
-
-/* handle auto-generated vue transition classes */
-.fade-enter-active
-  transition: opacity .5s
-.fade-leave-active
-  transition: opacity .5s
-.fade-enter
-  opacity: 0
-.fade-leave-to
-  opacity: 0
-
-.fade-in-enter-active
-  transition: opacity .5s
-.fade-in-enter
-  opacity: 0
-.fade-in-leave-to
-  opacity: 0
-
-/* cloak to keep DOM elements hidden until vue ready */
-[v-cloak]
-  display: none
 
 
 /* transform color with filters: https://codepen.io/sosuke/pen/Pjoqqp */
@@ -90,3 +77,18 @@ h3
 
   .tag
     display: flex
+
+
+.sp-scrollbar
+  &::-webkit-scrollbar
+    width: 1.25rem
+    background: rgba(0, 0, 0, 0.25)
+    box-shadow: rgba(0, 0, 0, 0.5) 0 0 5px inset
+
+  &::-webkit-scrollbar-thumb
+    background: rgba(255, 255, 255, 0.10)
+    background-clip: padding-box
+    border: solid 0.2rem transparent
+    border-color: rgba(0, 0, 0, 0.35)
+    border-radius: 9999em
+    box-shadow: rgba(255, 255, 255, 0.25) 0 0 1px 0 inset

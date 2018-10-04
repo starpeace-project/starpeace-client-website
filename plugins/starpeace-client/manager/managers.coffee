@@ -8,6 +8,7 @@ import OverlayManager from '~/plugins/starpeace-client/manager/overlay-manager.c
 import PlaneManager from '~/plugins/starpeace-client/manager/plane-manager.coffee'
 import PlanetaryManager from '~/plugins/starpeace-client/manager/planetary-manager.coffee'
 import RoadManager from '~/plugins/starpeace-client/manager/road-manager.coffee'
+import StringManager from '~/plugins/starpeace-client/manager/string-manager.coffee'
 
 import PlanetaryMetadataManager from '~/plugins/starpeace-client/metadata/planetary-metadata-manager.coffee'
 import PlanetTypeManifestManager from '~/plugins/starpeace-client/metadata/planet-type-manifest-manager.coffee'
@@ -22,6 +23,7 @@ export default class Managers
     @overlay_manager = new OverlayManager(@asset_manager, @event_listener, @game_state)
     @plane_manager = new PlaneManager(@asset_manager, @event_listener, @game_state, @ui_state)
     @road_manager = new RoadManager(@asset_manager, @event_listener, @game_state)
+    @string_manager = new StringManager(@asset_manager, @event_listener, @game_state)
 
     @planet_type_manifest_manager = new PlanetTypeManifestManager()
     @planetary_metadata_manager = new PlanetaryMetadataManager(@identity)
@@ -31,7 +33,7 @@ export default class Managers
 
   has_assets: () ->
     @game_state.current_planet? && @building_manager.has_assets() && @concrete_manager.has_assets() && @effect_manager.has_assets() && @event_manager.has_assets() &&
-      @overlay_manager.has_assets() && @planetary_manager.has_assets(@game_state.current_planet) && @plane_manager.has_assets() && @road_manager.has_assets()
+      @overlay_manager.has_assets() && @planetary_manager.has_assets(@game_state.current_planet) && @plane_manager.has_assets() && @road_manager.has_assets() && @string_manager.has_assets()
 
   queue_asset_load: () ->
     @building_manager.queue_asset_load()
@@ -42,6 +44,7 @@ export default class Managers
     @plane_manager.queue_asset_load()
     @planetary_manager.queue_asset_load(@game_state.current_planet.planet_type, @game_state.current_planet.map_id)
     @road_manager.queue_asset_load()
+    @string_manager.queue_asset_load()
 
     @asset_manager.load_queued()
 

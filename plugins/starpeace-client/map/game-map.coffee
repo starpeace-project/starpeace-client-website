@@ -10,7 +10,7 @@ import Concrete from '~/plugins/starpeace-client/map/types/concrete.coffee'
 import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
 
 export default class GameMap
-  constructor: (event_listener, building_manager, road_manager, overlay_manager, manifest, texture, @ui_state) ->
+  constructor: (event_listener, building_manager, road_manager, overlay_manager, manifest, texture, @options, @ui_state) ->
     @width = texture.texture.width
     @height = texture.texture.height
 
@@ -62,7 +62,7 @@ export default class GameMap
     is_road_needs_land = road_info? && (!road_info.is_city || road_info.is_over_water || road_info.is_concrete_edge)
     is_concrete_needs_land = concrete_info? && (concrete_info.type != Concrete.TYPES.CENTER && concrete_info.type != Concrete.TYPES.CENTER_TREEABLE)
 
-    tree_info = if @ui_state.render_trees && !road_info? && !concrete_info? && !building_info? && is_position_within_map then @ground_map.tree_at(x, y) else null
+    tree_info = if @options.option('renderer.trees') && !road_info? && !concrete_info? && !building_info? && is_position_within_map then @ground_map.tree_at(x, y) else null
     land_info = if is_position_within_map && (is_road_needs_land || !road_info?) && (is_concrete_needs_land || !concrete_info?) && !tree_info? then @ground_map.ground_at(x, y) else null
 
     {

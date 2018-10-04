@@ -29,10 +29,18 @@
 <script lang='coffee'>
 export default
   props:
+    options: Object
     ui_state: Object
 
+  watch:
+    state_counter: (new_value, old_value) ->
+      @show_header = @options?.option('general.show_header')
+
+  data: ->
+    show_header: @options?.option('general.show_header')
+
   computed:
-    show_header: -> !@ui_state? || @ui_state?.show_header
+    state_counter: -> @options?.vue_state_counter
 </script>
 
 <style lang='sass' scoped>

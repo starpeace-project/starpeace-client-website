@@ -32,19 +32,24 @@ export default
     'sp-footer-overlay-menu': FooterOverlayMenu
     'sp-footer': Footer
 
+  watch:
+    state_counter: (new_value, old_value) ->
+      @show_header = @client?.options?.option('general.show_header')
+
   computed:
-    application_css_class: ->
-      classes = []
-      classes.push('no-header') unless @ui_state?.show_header
-      classes
+    state_counter: -> @options.vue_state_counter
+    application_css_class: -> if @show_header then [] else ['no-header']
 
   data: ->
     event_listener: @client?.event_listener
     game_state: @client?.game_state
     menu_state: @client?.menu_state
+    options: @client?.options
     ui_state: @client?.ui_state
     planetary_metadata_manager: @client?.managers?.planetary_metadata_manager
     camera_manager: @client?.camera_manager
+
+    show_header: @client?.options?.option('general.show_header')
 </script>
 
 <style lang='sass' scoped>

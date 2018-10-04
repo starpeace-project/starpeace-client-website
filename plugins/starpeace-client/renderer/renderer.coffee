@@ -10,7 +10,7 @@ import Viewport from '~/plugins/starpeace-client/renderer/camera/viewport.coffee
 import Layers from '~/plugins/starpeace-client/renderer/layer/layers.coffee'
 
 export default class Renderer
-  constructor: (@event_listener, @managers, @game_state, @ui_state) ->
+  constructor: (@event_listener, @managers, @game_state, @options, @ui_state) ->
     @initialized = false
 
     @event_listener.subscribe_map_data_listener (chunk_event) =>
@@ -77,7 +77,7 @@ export default class Renderer
   initialize_map: () ->
     @layers?.remove_layers(@application.stage)
     @layers?.destroy()
-    @layers = new Layers(@, @managers.building_manager, @managers.effect_manager, @managers.plane_manager, @game_state, @ui_state)
+    @layers = new Layers(@, @managers.building_manager, @managers.effect_manager, @managers.plane_manager, @game_state, @options, @ui_state)
     @layers.add_layers(@application.stage)
 
   initialize: () ->
