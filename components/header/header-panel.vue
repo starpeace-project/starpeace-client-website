@@ -10,11 +10,9 @@
       %h1 STAR
       %img.starpeace-logo
       %h1 PEACE
-
   .welcome.is-hidden-mobile.is-hidden-tablet-only
     %span Welcome, Visitor!
     %a.login-header{href: 'https://client.starpeace.io/login'} Sign In
-
   .development.is-hidden-mobile.is-hidden-tablet-only
     %a.documentation{href: 'https://docs.starpeace.io'} Documentation
     %a.community{href: 'https://starpeace-project.com/', target:'_blank'} Community
@@ -34,13 +32,13 @@ export default
 
   watch:
     state_counter: (new_value, old_value) ->
-      @show_header = @options?.option('general.show_header')
+      @show_header = @options.option('general.show_header')
 
   data: ->
-    show_header: @options?.option('general.show_header')
+    show_header: @options.option('general.show_header')
 
   computed:
-    state_counter: -> @options?.vue_state_counter
+    state_counter: -> @options.vue_state_counter
 </script>
 
 <style lang='sass' scoped>

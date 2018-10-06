@@ -6,7 +6,6 @@
         Client Options
       .card-header-icon.card-close{'v-on:click.stop.prevent':'menu_state.toggle_menu_options()'}
         %font-awesome-icon{':icon':"['fas', 'times']"}
-
     .card-content
       %form.columns
         .column
@@ -65,7 +64,6 @@
                       %font-awesome-icon{':icon':"['fas', 'toggle-on']"}
                     %a{href:'#', 'v-show':"!options.option('music.show_game_music')", 'v-on:click.stop.prevent':"options.toggle('music.show_game_music')"}
                       %font-awesome-icon{':icon':"['fas', 'toggle-off']"}
-
         .column
           .field.is-horizontal
             .column.is-paddingless.is-9
@@ -134,7 +132,6 @@
                       %font-awesome-icon{':icon':"['fas', 'toggle-on']"}
                     %a{href:'#', 'v-show':"!options.option('renderer.planes')", 'v-on:click.stop.prevent':"options.toggle('renderer.planes')"}
                       %font-awesome-icon{':icon':"['fas', 'toggle-off']"}
-
         .column
           .field.is-horizontal
             .column.is-paddingless.is-9
@@ -191,13 +188,11 @@
                       %font-awesome-icon{':icon':"['fas', 'toggle-on']"}
                     %a{href:'#', 'v-show':"!options.option('bookmarks.corporation')", 'v-on:click.stop.prevent':"options.toggle('bookmarks.corporation')"}
                       %font-awesome-icon{':icon':"['fas', 'toggle-off']"}
-
     %footer.card-footer
       .card-footer-item.reset-item
         %a.button.is-primary.is-medium.is-outlined{'v-on:click.stop.prevent':'reset_options()', href: '#', ':disabled':'!can_reset'} Reset
       .card-footer-item.save-item
         %a.button.is-primary.is-medium{href:'#', 'v-on:click.stop.prevent':'save_options()', href: '#', ':disabled':'!is_dirty'} Save
-
 </template>
 
 <script lang='coffee'>

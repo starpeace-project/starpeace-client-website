@@ -1,19 +1,16 @@
 <template lang='haml'>
 %no-ssr
   #overlay-menu{'v-show':'show_overlay_menu', 'v-cloak':true}
-
     .dropdown.is-up.is-hoverable
       .dropdown-trigger
         %button.button.is-starpeace{'aria-haspopup':'true', 'aria-controls':'overlays'}
           %span {{current_overlay.label}}
           %span.icon.is-small
             %font-awesome-icon{':icon':"['fas', 'angle-up']"}
-
       #overlays.dropdown-menu{role:'menu'}
         .dropdown-content
           %a.dropdown-item{'v-for':'overlay in overlays()', 'v-bind:class':'overlay_item_css_class(overlay)', 'v-on:click.stop.prevent':'change_overlay(overlay)', href:'#'}
             %span {{overlay.label}}
-
     #flag-losing
       %span{'v-on:click.stop.prevent':'toggle_losing_facilities()'}
         Signal Losing Facilities:
@@ -22,7 +19,6 @@
           %font-awesome-icon{':icon':"['fas', 'toggle-on']"}
         %a.toggle-off{href:'#', 'v-show':"!show_losing_facilities", 'v-on:click.stop.prevent':'toggle_losing_facilities()'}
           %font-awesome-icon{':icon':"['fas', 'toggle-off']"}
-
 </template>
 
 <script lang='coffee'>

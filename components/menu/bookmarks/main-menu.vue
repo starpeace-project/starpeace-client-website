@@ -5,14 +5,12 @@
       Map Locations
     .card-header-icon.card-close{'v-on:click.stop.prevent':'menu_state.toggle_menu_favorites()'}
       %font-awesome-icon{':icon':"['fas', 'times']"}
-
   .card-content.overall-container
     .field.filter-input-container
       .control.has-icons-left.is-expanded
         %input.input{type:"text", placeholder:"Filter"}
         %span.icon.is-left
           %font-awesome-icon{':icon':"['fas', 'search-location']"}
-
     .filter-items
       %a.filter-toggle.tooltip.is-tooltip-top{'v-bind:class':"filter_class('services')", 'v-on:click.stop.prevent':"toggle_filter('services')", 'data-tooltip':'Services'}
         %img{src:'~/assets/images/icons/services/headquarters.svg'}
@@ -28,16 +26,13 @@
         %img{src:'~/assets/images/icons/residentials/lower.svg'}
       %a.filter-toggle.tooltip.is-tooltip-top{'v-bind:class':"filter_class('offices')", 'v-on:click.stop.prevent':"toggle_filter('offices')", 'data-tooltip':'Offices'}
         %img{src:'~/assets/images/icons/offices/office-block.svg'}
-
     %aside.sp-menu.sp-scrollbar
       %bookmark-item{'v-for':'item in sections', 'v-bind:item':'item', 'v-bind:key':'item.id'}
-
     .actions-container
       .action-column
         %a.button.is-fullwidth.is-starpeace{disabled:'disabled'} Organize
       .action-column
         %a.button.is-fullwidth.is-starpeace Add Bookmark
-
 </template>
 
 <script lang='coffee'>

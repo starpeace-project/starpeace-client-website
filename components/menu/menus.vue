@@ -1,14 +1,12 @@
 <template lang='haml'>
 %no-ssr
   #menu-container.level{'v-show':'can_render', 'v-cloak':true}
-
     %menu-building{'v-show':"main_menu == 'building'", 'v-bind:menu_state':'menu_state'}
     %menu-chat{'v-show':"main_menu == 'chat'", 'v-bind:menu_state':'menu_state'}
     %menu-bookmarks{'v-show':"show_menu_bookmarks", 'v-bind:bookmark_manager':'bookmark_manager', 'v-bind:game_state':'game_state', 'v-bind:menu_state':'menu_state', 'v-bind:options':'options'}
     %menu-mail{'v-show':"main_menu == 'mail'", 'v-bind:menu_state':'menu_state'}
     %menu-options{'v-show':"main_menu == 'options'", 'v-bind:menu_state':'menu_state', 'v-bind:options':'options', 'v-bind:ui_state':'ui_state'}
     %menu-help{'v-show':"main_menu == 'help'", 'v-bind:menu_state':'menu_state'}
-
     %menu-release-notes{'v-show':"show_menu_release_notes", 'v-bind:menu_state':'menu_state'}
 </template>
 

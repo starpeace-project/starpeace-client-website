@@ -1,5 +1,5 @@
 
-## v0.3 - in progress - updated 2018-10-03
+## v0.3 - in progress - updated 2018-10-06
 ### platform
 * [done] improved building rendering around edges [v0.2.1]
 * [done] improved z-order rendering across layers [v0.2.2]
@@ -19,7 +19,7 @@
 * [done] game background music [v0.2.8]
 * [done] formal asset versioning [v0.2.9]
 * [done] building asset interaction hitboxes [v0.2.10]
-* [in progress] divide asset repository, refactor build and logic logic, integrate game metadata [v0.2.12]
+* [in progress] refactor seal asset organization, integrate game metadata [v0.2.12]
 
 ### gameplay
 * [done] persist client options in localStorage [v0.2.3]
