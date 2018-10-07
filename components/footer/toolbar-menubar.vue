@@ -1,23 +1,7 @@
 <template lang='haml'>
 %td.column-menu
-  %a.button.is-starpeace.is-small.tooltip{'v-bind:class':'menu_class_planetary', 'v-on:click.stop.prevent':'menu_state.toggle_menu_planetary()', 'data-tooltip':'Planetary Systems'}
-    %font-awesome-icon{':icon':"['fas', 'globe']"}
-  %a.button.is-starpeace.is-small.tooltip{'v-bind:class':'menu_class_bookmarks', 'v-on:click.stop.prevent':'menu_state.toggle_menu_bookmarks()', 'data-tooltip':'Map Locations'}
-    %font-awesome-icon{':icon':"['fas', 'map-marker-alt']"}
-  %a.button.is-starpeace.is-small.tooltip{'v-on:click.stop.prevent':'menu_state.hide_all_menus()', 'data-tooltip':'Hide Menus'}
-    %font-awesome-icon{':icon':"['far', 'eye']"}
-  %a.button.is-starpeace.is-small.tooltip{'v-bind:class':'menu_class_tycoon', 'v-on:click.stop.prevent':'menu_state.toggle_menu_tycoon()', 'data-tooltip':'Tycoon Details'}
-    %font-awesome-icon{':icon':"['fas', 'user-tie']"}
-  %a.button.is-starpeace.is-small.tooltip{'v-bind:class':'menu_class_building', 'v-on:click.stop.prevent':'menu_state.toggle_menu_building()', 'data-tooltip':'Construction'}
-    %font-awesome-icon{':icon':"['fas', 'toolbox']"}
-  %a.button.is-starpeace.is-small.tooltip{'v-bind:class':'menu_class_mail', 'v-on:click.stop.prevent':'menu_state.toggle_menu_mail()', 'data-tooltip':'Mail'}
-    %font-awesome-icon{':icon':"['far', 'envelope']"}
-  %a.button.is-starpeace.is-small.tooltip{'v-bind:class':'menu_class_chat', 'v-on:click.stop.prevent':'menu_state.toggle_menu_chat()', 'data-tooltip':'Chat'}
-    %font-awesome-icon{':icon':"['far', 'comments']"}
-  %a.button.is-starpeace.is-small.tooltip{'v-bind:class':'menu_class_options', 'v-on:click.stop.prevent':'menu_state.toggle_menu_options()', 'data-tooltip':'Options'}
-    %font-awesome-icon{':icon':"['fas', 'cogs']"}
-  %a.button.is-starpeace.is-small.tooltip{'v-bind:class':'menu_class_help', 'v-on:click.stop.prevent':'menu_state.toggle_menu_help()', 'data-tooltip':'Help'}
-    %font-awesome-icon{':icon':"['far', 'question-circle']"}
+  %a.button.is-starpeace.is-small.tooltip{'v-for':'option in menu_options', 'v-bind:class':"option.menu_class", 'v-on:click.stop.prevent':"toggle_menu(option)", 'v-bind:data-tooltip':'option.tooltip'}
+    %font-awesome-icon{':icon':"[option.icon_category, option.icon_key]"}
 </template>
 
 <script lang='coffee'>
@@ -27,18 +11,74 @@ export default
     menu_state: Object
     ui_state: Object
 
+  data: ->
+    menu_options: [{
+      type: 'planetary'
+      tooltip: 'Planetary Systems'
+      icon_category: 'fas'
+      icon_key: 'globe'
+      menu_class: ''
+    }, {
+      type: 'bookmarks'
+      tooltip: 'Map Locations'
+      icon_category: 'fas'
+      icon_key: 'map-marker-alt'
+      menu_class: ''
+    }, {
+      type: 'hide_all'
+      tooltip: 'Hide Menus'
+      icon_category: 'far'
+      icon_key: 'eye'
+      menu_class: ''
+    }, {
+      type: 'tycoon'
+      tooltip: 'Tycoon Details'
+      icon_category: 'fas'
+      icon_key: 'user-tie'
+      menu_class: ''
+    }, {
+      type: 'construction'
+      tooltip: 'Construction'
+      icon_category: 'fas'
+      icon_key: 'toolbox'
+      menu_class: ''
+    }, {
+      type: 'mail'
+      tooltip: 'Mail'
+      icon_category: 'far'
+      icon_key: 'envelope'
+      menu_class: ''
+    }, {
+      type: 'chat'
+      tooltip: 'Chat'
+      icon_category: 'far'
+      icon_key: 'comments'
+      menu_class: ''
+    }, {
+      type: 'options'
+      tooltip: 'Options'
+      icon_category: 'fas'
+      icon_key: 'cogs'
+      menu_class: ''
+    }, {
+      type: 'help'
+      tooltip: 'Help'
+      icon_category: 'far'
+      icon_key: 'question-circle'
+      menu_class: ''
+    }]
+
+  watch:
+    menu_state_counter: (new_value, old_value) ->
+      option.menu_class = (if @menu_state?.is_visible(option.type) then 'is-active' else '') for option in @menu_options
+
   computed:
-    menu_class_overlay: -> { 'is-active': @ui_state?.show_overlay || false }
-    menu_class_zones: -> { 'is-active': @ui_state?.show_zones || false }
-    menu_class_planetary: -> { 'is-active': @menu_state?.main_menu == 'planetary' }
-    menu_class_bookmarks: -> { 'is-active': @menu_state?.show_menu_bookmarks || false }
-    menu_class_tycoon: -> { 'is-active': @menu_state?.main_menu == 'tycoon' }
-    menu_class_building: -> { 'is-active': @menu_state?.main_menu == 'building' }
-    menu_class_mail: -> { 'is-active': @menu_state?.main_menu == 'mail' }
-    menu_class_chat: -> { 'is-active': @menu_state?.main_menu == 'chat' }
-    menu_class_options: -> { 'is-active': @menu_state?.main_menu == 'options' }
-    menu_class_help: -> { 'is-active': @menu_state?.main_menu == 'help' }
-    menu_class_release_notes: -> { 'is-active': @menu_state?.show_menu_release_notes || false }
+    menu_state_counter: ->
+      (@menu_state?.toolbar_left || '') + (@menu_state?.toolbar_body || '') + (@menu_state?.toolbar_right || '')
+
+  methods:
+    toggle_menu: (option) ->
+      @menu_state.toggle_menu(option.type)
 </script>
 
 <style lang='sass' scoped>

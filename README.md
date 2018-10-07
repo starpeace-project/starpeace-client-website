@@ -17,7 +17,9 @@ Documentation for client gameplay can be found on the [STARPEACE documentation w
 
 ## Roadmap
 
-Active development and gameplay roadmap can be [found in RELEASE.md](./RELEASE.md), historical changelog can be [found in RELEASE-archive.md](./RELEASE-archive.md), and a rough plan for anticipated next steps can be [found in ROADMAP.md](./ROADMAP.md). Active and historical release notes are also [available in client](https://client.starpeace.io/release). https://client.starpeace.io/release
+Active development and gameplay roadmap can be [found in RELEASE.md](./RELEASE.md), historical changelog can be [found in RELEASE-archive.md](./RELEASE-archive.md), and a rough plan for anticipated next steps can be [found in ROADMAP.md](./ROADMAP.md).
+
+Current release notes are also [available in client](https://client.starpeace.io/release) at https://client.starpeace.io/release
 
 ## Security Vulnerabilities
 
@@ -25,7 +27,7 @@ If you discover a security vulnerability within the STARPEACE website, please se
 
 ## Contributing
 
-starpeace-website-client welcomes all contributions, from developer to designer to translator to play-tester; please let us know if you'd like to get involved! Please [join Discord chatroom](https://discord.gg/TF9Bmsj) and [read the contributing guide](./CONTRIBUTING.md) to learn more.
+starpeace-website-client welcomes all contributions: development, game design, translations, or play-testing; please let us know if you'd like to get involved! Please [join Discord chatroom](https://discord.gg/TF9Bmsj) and [read the contributing guide](./CONTRIBUTING.md) to learn more.
 
 ## Build and Deployment
 
@@ -33,7 +35,7 @@ After building repository, website is compiled into static resources within the 
 
 ### client.starpeace.io
 
-Repository is currently deployed to and hosted with AWS S3. Changes pushed to repository will activate webhook to AWS CodePipeline, triggering automatic rebuild and deployment of website resources.
+Repository is currently deployed to and hosted with AWS S3 and CloudFront. Changes pushed to repository will activate webhook to AWS CodePipeline, triggering automatic rebuild and deployment of website resources.
 
 ## License
 

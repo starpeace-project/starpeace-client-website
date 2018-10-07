@@ -58,7 +58,7 @@ export default
   grid-row-end: 3
   padding: .5rem .25rem
   min-width: 28rem
-  z-index: 1050
+  z-index: 1125
 
 button
   justify-content: flex-start

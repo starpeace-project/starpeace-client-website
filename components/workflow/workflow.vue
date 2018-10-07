@@ -95,12 +95,14 @@ export default
 
 <style lang='sass' scoped>
 #workflow-container
+  align-items: center
+  display: flex
   grid-column-start: 2
   grid-column-end: 3
   grid-row-start: 2
-  grid-row-end: 4
+  grid-row-end: 6
   margin: 0
-  text-align: center
+  justify-content: center
 
 .card
   transition: max-width .5s

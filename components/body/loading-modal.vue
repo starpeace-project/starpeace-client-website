@@ -22,8 +22,5 @@ export default
   opacity: .5
   z-index: 1045
 
-.no-header
-  #loading-modal
-    grid-row-start: 1
 
 </style>

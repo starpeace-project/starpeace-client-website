@@ -1,5 +1,5 @@
 
-## v0.3 - in progress - updated 2018-10-06
+## v0.3 - in progress - updated 2018-10-07
 ### platform
 * [done] improved building rendering around edges [v0.2.1]
 * [done] improved z-order rendering across layers [v0.2.2]
@@ -8,6 +8,7 @@
 * [done] initial dynamic layout support (desktop, mobile) [v0.2.8]
 * [done] input interaction support for buildings (selection, rendering) [v0.2.10]
 * [done] internal options simplification and refactoring [v0.2.12]
+* [done] improve client UI grid layout and game menu components [v0.2.12]
 
 ### assets
 * [done] improved gameplay documentation [v0.2.4]
@@ -36,4 +37,4 @@
 * [done] improve concrete rendering (edges, roads) [v0.2.9]
 * [done] mini-map rendering [v0.2.11]
 * [in progress] map favorites integration [v0.2.12]
-* [pending] map place building interaction support
+* [in progress] map place building interaction support

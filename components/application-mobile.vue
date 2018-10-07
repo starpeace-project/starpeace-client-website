@@ -4,7 +4,6 @@
   %sp-loading-card{'v-bind:game_state':'game_state'}
   %sp-loading-modal{'v-bind:game_state':'game_state'}
   %sp-workflow{'v-bind:event_listener':'event_listener', 'v-bind:game_state':'game_state', 'v-bind:planetary_metadata_manager':'planetary_metadata_manager'}
-  %sp-menu{'v-bind:game_state':'game_state', 'v-bind:menu_state':'menu_state', 'v-bind:ui_state':'ui_state'}
   %sp-body{'v-bind:game_state':'game_state', 'v-bind:ui_state':'ui_state'}
 </template>
 
@@ -13,9 +12,7 @@ import Header from '~/components/header/header-panel.vue'
 import LoadingCard from '~/components/body/loading-card.vue'
 import LoadingModal from '~/components/body/loading-modal.vue'
 import Workflow from '~/components/workflow/workflow.vue'
-import Menus from '~/components/menu/menus.vue'
 import RenderContainer from '~/components/body/render-container.vue'
-import Footer from '~/components/footer/footer-container.vue'
 import FooterOverlayMenu from '~/components/footer/overlay-menu.vue'
 
 export default
@@ -27,10 +24,8 @@ export default
     'sp-loading-card': LoadingCard
     'sp-loading-modal': LoadingModal
     'sp-workflow': Workflow
-    'sp-menu': Menus
     'sp-body': RenderContainer
     'sp-footer-overlay-menu': FooterOverlayMenu
-    'sp-footer': Footer
 
   watch:
     state_counter: (new_value, old_value) ->
@@ -53,29 +48,25 @@ export default
 </script>
 
 <style lang='sass' scoped>
-#render-parent-container
-  grid-column-start: 1
-  grid-column-end: 4
-  grid-row-start: 2
-  grid-row-end: 4
+@import '~bulma/sass/utilities/_all'
+
+#application-container
+  display: grid
+  grid-template-columns: 0 auto 0
+  grid-template-rows: 4rem auto 3rem 5rem 10.5rem
+  grid-row-gap: 0
+  height: 100vh
   position: relative
 
-.no-header
-  #render-parent-container
-    grid-row-start: 1
+  +mobile
+    grid-template-rows: calc(11vw + 1.5rem) auto 3rem 5rem 10.5rem
 
-#fps-container
-  left: .5rem
-  position: absolute
-  top: .5rem
-  z-index: 1015
+    #common-header
+      display: inline-block
+      width: 100%
 
-#render-container
-  height: 100%
-  left: 0
-  position: absolute
-  top: 0
-  width: 100%
-  z-index: 1000
+  &.no-header
+    +mobile
+      grid-template-rows: calc(1rem) auto 3rem 5rem 10.5rem
 
 </style>

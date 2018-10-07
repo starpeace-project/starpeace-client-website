@@ -33,9 +33,6 @@ export default
   grid-row-end: 4
   position: relative
 
-.no-header
-  #render-parent-container
-    grid-row-start: 1
 
 #fps-container
   left: .5rem

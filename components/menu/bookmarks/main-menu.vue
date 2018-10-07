@@ -1,11 +1,11 @@
 <template lang='haml'>
-.card.has-header
+#bookmarks-container.card.has-header
   .card-header
     .card-header-title
       Map Locations
-    .card-header-icon.card-close{'v-on:click.stop.prevent':'menu_state.toggle_menu_favorites()'}
+    .card-header-icon.card-close{'v-on:click.stop.prevent':"menu_state.toggle_menu('bookmarks')"}
       %font-awesome-icon{':icon':"['fas', 'times']"}
-  .card-content.overall-container
+  .card-content.sp-menu-background.overall-container
     .field.filter-input-container
       .control.has-icons-left.is-expanded
         %input.input{type:"text", placeholder:"Filter"}
@@ -72,16 +72,19 @@ export default
 $sp-primary: #6ea192
 $sp-primary-bg: #395950
 
-.card
-  height: 100%
-  max-width: 25rem
+#bookmarks-container
+  grid-column-start: 1
+  grid-column-end: 2
+  grid-row-start: 2
+  grid-row-end: 4
+  margin: 0
   overflow: hidden
-  position: absolute
-  width: 100%
-  z-index: 1050
+  z-index: 1100
+
+.card
+  overflow: hidden
 
   .card-content
-    background: linear-gradient(to bottom, darken($sp-primary-bg, 7.5%), darken($sp-primary-bg, 20%))
     height: calc(100% - 3.2rem)
     padding: 0
 

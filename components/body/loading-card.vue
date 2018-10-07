@@ -27,10 +27,6 @@ export default
   margin: 0
   position: relative
 
-.no-header
-  #loading-container
-    grid-row-start: 1
-
 .card
   max-width: 20rem
   text-align: center

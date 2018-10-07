@@ -4,10 +4,19 @@
   %sp-loading-card{'v-bind:game_state':'game_state'}
   %sp-loading-modal{'v-bind:game_state':'game_state'}
   %sp-workflow{'v-bind:event_listener':'event_listener', 'v-bind:game_state':'game_state', 'v-bind:planetary_metadata_manager':'planetary_metadata_manager'}
-  %sp-menu{'v-bind:bookmark_manager':'bookmark_manager', 'v-bind:game_state':'game_state', 'v-bind:menu_state':'menu_state', 'v-bind:options':'options', 'v-bind:ui_state':'ui_state'}
+  %menu-construction{'v-show':"is_menu_visible('construction')", 'v-bind:menu_state':'menu_state'}
+  %menu-chat{'v-show':"is_menu_visible('chat')", 'v-bind:menu_state':'menu_state'}
+  %menu-bookmarks{'v-show':"is_menu_visible('bookmarks')", 'v-bind:bookmark_manager':'bookmark_manager', 'v-bind:game_state':'game_state', 'v-bind:menu_state':'menu_state', 'v-bind:options':'options'}
+  %menu-mail{'v-show':"is_menu_visible('mail')", 'v-bind:menu_state':'menu_state'}
+  %menu-options{'v-show':"is_menu_visible('options')", 'v-bind:menu_state':'menu_state', 'v-bind:options':'options', 'v-bind:ui_state':'ui_state'}
+  %menu-planetary{'v-show':"is_menu_visible('planetary')", 'v-bind:bookmark_manager':'bookmark_manager', 'v-bind:game_state':'game_state', 'v-bind:menu_state':'menu_state', 'v-bind:options':'options'}
+  %menu-help{'v-show':"is_menu_visible('help')", 'v-bind:menu_state':'menu_state'}
+  %menu-release-notes{'v-show':"is_menu_visible('release_notes')", 'v-bind:menu_state':'menu_state'}
+  %menu-tycoon{'v-show':"is_menu_visible('tycoon')", 'v-bind:bookmark_manager':'bookmark_manager', 'v-bind:game_state':'game_state', 'v-bind:menu_state':'menu_state', 'v-bind:options':'options'}
   %sp-body{'v-bind:game_state':'game_state', 'v-bind:options':'options', 'v-bind:ui_state':'ui_state'}
   %sp-footer-overlay-menu{'v-bind:ui_state':'ui_state'}
-  %sp-footer{'v-bind:camera_manager':'camera_manager', 'v-bind:mini_map_renderer':'mini_map_renderer', 'v-bind:game_state':'game_state', 'v-bind:menu_state':'menu_state', 'v-bind:options':'options', 'v-bind:ui_state':'ui_state', 'v-bind:music_manager':'music_manager'}
+  %sp-toolbar-ribbon{'v-bind:camera_manager':'camera_manager', 'v-bind:game_state':'game_state', 'v-bind:mini_map_renderer':'mini_map_renderer', 'v-bind:options':'options', 'v-bind:ui_state':'ui_state'}
+  %sp-toolbar-details{'v-bind:camera_manager':'camera_manager', 'v-bind:game_state':'game_state', 'v-bind:menu_state':'menu_state', 'v-bind:mini_map_renderer':'mini_map_renderer', 'v-bind:options':'options', 'v-bind:ui_state':'ui_state', 'v-bind:music_manager':'music_manager'}
 </template>
 
 <script lang='coffee'>
@@ -15,9 +24,20 @@ import Header from '~/components/header/header-panel.vue'
 import LoadingCard from '~/components/body/loading-card.vue'
 import LoadingModal from '~/components/body/loading-modal.vue'
 import Workflow from '~/components/workflow/workflow.vue'
-import Menus from '~/components/menu/menus.vue'
+
+import MenuConstruction from '~/components/menu/menu-construction.vue'
+import MenuChat from '~/components/menu/menu-chat.vue'
+import MenuBookmarks from '~/components/menu/bookmarks/main-menu.vue'
+import MenuMail from '~/components/menu/menu-mail.vue'
+import MenuOptions from '~/components/menu/menu-options.vue'
+import MenuPlanetarySystem from '~/components/menu/menu-planetary-system.vue'
+import MenuHelp from '~/components/menu/menu-help.vue'
+import MenuReleaseNotes from '~/components/menu/menu-release-notes.vue'
+import MenuTycoon from '~/components/menu/menu-tycoon.vue'
+
 import RenderContainer from '~/components/body/render-container.vue'
-import Footer from '~/components/footer/footer-container.vue'
+import ToolbarDetails from '~/components/footer/toolbar-details.vue'
+import ToolbarRibbon from '~/components/footer/toolbar-ribbon.vue'
 import FooterOverlayMenu from '~/components/footer/overlay-menu.vue'
 
 export default
@@ -29,10 +49,19 @@ export default
     'sp-loading-card': LoadingCard
     'sp-loading-modal': LoadingModal
     'sp-workflow': Workflow
-    'sp-menu': Menus
     'sp-body': RenderContainer
     'sp-footer-overlay-menu': FooterOverlayMenu
-    'sp-footer': Footer
+    'sp-toolbar-details': ToolbarDetails
+    'sp-toolbar-ribbon': ToolbarRibbon
+    'menu-construction': MenuConstruction
+    'menu-chat': MenuChat
+    'menu-bookmarks': MenuBookmarks
+    'menu-mail': MenuMail
+    'menu-options': MenuOptions
+    'menu-planetary': MenuPlanetarySystem
+    'menu-help': MenuHelp
+    'menu-release-notes': MenuReleaseNotes
+    'menu-tycoon': MenuTycoon
 
   watch:
     state_counter: (new_value, old_value) ->
@@ -54,34 +83,37 @@ export default
 
   computed:
     state_counter: -> @options.vue_state_counter
-    application_css_class: -> if @show_header then [] else ['no-header']
+    application_css_class: ->
+      classes = []
+      classes.push 'no-header' unless @show_header
+      classes.push 'is-toolbar-left' if @menu_state.is_toolbar_left_open()
+      classes.push 'is-toolbar-right' if @menu_state.is_toolbar_right_open()
+      classes
 
+  methods:
+    is_menu_visible: (type) -> @game_state?.initialized && @menu_state?.is_visible(type)
 </script>
 
 <style lang='sass' scoped>
-#render-parent-container
-  grid-column-start: 1
-  grid-column-end: 4
-  grid-row-start: 2
-  grid-row-end: 4
+@import '~bulma/sass/utilities/_all'
+
+#application-container
+  display: grid
+  grid-template-columns: 0 auto 0
+  grid-template-rows: 4rem auto 3rem 5rem 10.5rem
+  height: 100vh
   position: relative
 
-.no-header
-  #render-parent-container
-    grid-row-start: 1
+  &.no-header
+    grid-template-rows: 0 auto 3rem 5rem 10.5rem
 
-#fps-container
-  left: .5rem
-  position: absolute
-  top: .5rem
-  z-index: 1015
+  &.is-toolbar-left:not(.is-toolbar-right)
+    grid-template-columns: 25rem auto 0rem
 
-#render-container
-  height: 100%
-  left: 0
-  position: absolute
-  top: 0
-  width: 100%
-  z-index: 1000
+  &.is-toolbar-right:not(.is-toolbar-left)
+    grid-template-columns: 0 auto 25rem
+
+  &.is-toolbar-right.is-toolbar-left
+    grid-template-columns: 25rem auto 25rem
 
 </style>

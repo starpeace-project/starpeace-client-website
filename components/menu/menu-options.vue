@@ -1,12 +1,12 @@
 <template lang='haml'>
-.level-item
+#options-container
   .card.has-header
     .card-header
       .card-header-title
         Client Options
-      .card-header-icon.card-close{'v-on:click.stop.prevent':'menu_state.toggle_menu_options()'}
+      .card-header-icon.card-close{'v-on:click.stop.prevent':"menu_state.toggle_menu('options')"}
         %font-awesome-icon{':icon':"['fas', 'times']"}
-    .card-content
+    .card-content.sp-menu-background
       %form.columns
         .column
           .field.is-horizontal
@@ -220,10 +220,20 @@ export default
 </script>
 
 <style lang='sass' scoped>
+
+#options-container
+  align-items: center
+  display: flex
+  grid-column-start: 2
+  grid-column-end: 3
+  grid-row-start: 2
+  grid-row-end: 4
+  justify-content: center
+  z-index: 1100
+
 .card
   max-width: 60rem
   width: 100%
-  z-index: 1050
 
   legend
     color: #fff

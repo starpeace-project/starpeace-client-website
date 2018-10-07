@@ -1,49 +1,53 @@
 
-class MenuState
+import Logger from '~/plugins/starpeace-client/logger.coffee'
+
+MENUBAR_LEFT = {
+  'planetary': true
+  'bookmarks': true
+  'tycoon': true
+}
+MENUBAR_BODY = {
+  'mail': true
+  'chat': true
+  'options': true
+  'help': true
+  'release_notes': true
+}
+MENUBAR_RIGHT = {
+  'construction': true
+}
+
+export default class MenuState
   constructor: () ->
-    @show_menu_release_notes = false
-    @show_menu_bookmarks = false
-    @main_menu = null
+    @toolbar_left = null
+    @toolbar_body = null
+    @toolbar_right = null
+
+  is_toolbar_left_open: () -> @toolbar_left?.length
+  is_toolbar_right_open: () -> @toolbar_right?.length
 
   is_any_menu_open: () ->
-    @show_menu_bookmarks || @main_menu?.length || @show_menu_release_notes
+    @toolbar_left?.length || @toolbar_body?.length || @toolbar_right?.length || @show_menu_release_notes
+
+  is_visible: (type) ->
+    return @toolbar_left == type if MENUBAR_LEFT[type]
+    return @toolbar_body == type if MENUBAR_BODY[type]
+    return @toolbar_right == type if MENUBAR_RIGHT[type]
+    false
 
   hide_all_menus: () ->
-    @show_menu_bookmarks = false
-    @main_menu = null
-    @show_menu_release_notes = false
+    @toolbar_left = null
+    @toolbar_body = null
+    @toolbar_right = null
 
-  toggle_menu_planetary: () ->
-    @show_menu_release_notes = false
-    @main_menu = if @main_menu == 'planetary' then null else 'planetary'
-    @show_menu_bookmarks = false
-
-  toggle_menu_bookmarks: () ->
-    @show_menu_release_notes = false if @show_menu_release_notes
-    @show_menu_bookmarks = !@show_menu_bookmarks
-
-  toggle_menu_tycoon: () ->
-    @show_menu_release_notes = false
-    @main_menu = if @main_menu == 'tycoon' then null else 'tycoon'
-  toggle_menu_building: () ->
-    @show_menu_release_notes = false
-    @main_menu = if @main_menu == 'building' then null else 'building'
-  toggle_menu_mail: () ->
-    @show_menu_release_notes = false
-    @main_menu = if @main_menu == 'mail' then null else 'mail'
-  toggle_menu_chat: () ->
-    @show_menu_release_notes = false
-    @main_menu = if @main_menu == 'chat' then null else 'chat'
-  toggle_menu_options: () ->
-    @show_menu_release_notes = false
-    @main_menu = if @main_menu == 'options' then null else 'options'
-  toggle_menu_help: () ->
-    @show_menu_release_notes = false
-    @main_menu = if @main_menu == 'help' then null else 'help'
-
-  toggle_menu_release_notes: () ->
-    @main_menu = null if @main_menu?.length
-    @show_menu_bookmarks = false if @show_menu_bookmarks
-    @show_menu_release_notes = !@show_menu_release_notes
-
-export default MenuState
+  toggle_menu: (type) ->
+    if type == 'hide_all'
+      @hide_all_menus()
+    else if MENUBAR_LEFT[type]
+      @toolbar_left = if @toolbar_left == type then null else type
+    else if MENUBAR_BODY[type]
+      @toolbar_body = if @toolbar_body == type then null else type
+    else if MENUBAR_RIGHT[type]
+      @toolbar_right = if @toolbar_right == type then null else type
+    else
+      Logger.info "unknown menu type #{type}"

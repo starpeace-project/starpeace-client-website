@@ -1,8 +1,8 @@
 <template lang='haml'>
 %no-ssr
   %transition{name:'fade'}
-    #footer-container{'v-show':'is_ready', 'v-cloak':true}
-      %table.table.row-inspect
+    #toolbar-ribbon{'v-show':'is_ready', 'v-cloak':'true'}
+      %table.table.row-inspect{'v-cloak':true}
         %tbody
           %tr
             %td.column-camera-controls
@@ -32,106 +32,27 @@
                 City Zones
             %td.column-details-ticker.secondary
               HINT: Tycoons can start companies and invest in different industries and real estate.
-      .row.row-details
-        .col-2.column-detail-logo
-        .col-10.column-detail-container
-      %table.table.row-footer-primary
-        %tbody
-          %tr.row-menu
-            %toolbar-menubar{'v-bind:game_state':'game_state', 'v-bind:menu_state':'menu_state', 'v-bind:ui_state':'ui_state'}
-            %td.column-tycoon
-              %span.column-tycoon-name
-                Visitor
-              %span.column-tycoon-buildings
-                %span.count 0 / 0
-                %font-awesome-icon{':icon':"['far', 'building']"}
-              .column-notification-icons.level
-                .level-item.client-version
-                  %a{'v-bind:class':'menu_class_release_notes', 'v-on:click.stop.prevent':'menu_state.toggle_menu_release_notes()'} {{client_version}}
-                .level-item.game-music{'v-bind:class':'game_music_class', 'v-show':"show_game_music"}
-                  %font-awesome-icon{':icon':"['fas', 'play']", 'v-show':'!game_state.game_music_playing', 'v-on:click.stop.prevent':'toggle_game_music()'}
-                  %font-awesome-icon{':icon':"['fas', 'pause']", 'v-show':'game_state.game_music_playing', 'v-on:click.stop.prevent':'toggle_game_music()'}
-                .level-item.game-music-next{'v-bind:class':'game_music_volume_class', 'v-show':"show_game_music"}
-                  %font-awesome-icon{':icon':"['fas', 'fast-forward']", 'v-on:click.stop.prevent':'toggle_next_game_music()'}
-                .level-item.game-music-volume{'v-bind:class':'game_music_volume_class', 'v-show':"show_game_music"}
-                  %font-awesome-icon{':icon':"['fas', 'volume-up']", 'v-show':'game_state.game_music_volume', 'v-on:click.stop.prevent':'toggle_game_music_volume()'}
-                  %font-awesome-icon{':icon':"['fas', 'volume-off']", 'v-show':'!game_state.game_music_volume', 'v-on:click.stop.prevent':'toggle_game_music_volume()'}
-                .level-item.notification-mail
-                  %font-awesome-icon{':icon':"['far', 'envelope']"}
-                .level-item.notification-loading
-                  %img.starpeace-logo{'v-bind:class':'notification_loading_css_class'}
-          %tr
-            %td.column-news-ticker {{ ticker_message }}
-            %td.column-tycoon-details
-              %table
-                %tbody
-                  %tr
-                    %td.column-tycoon-corporation
-                      [VISITOR VISA]
-                  %tr
-                    %td.column-tycoon-cash
-                      $0
-                  %tr
-                    %td.column-tycoon-cashflow
-                      ($0/h)
-                  %tr
-                    %td.column-date {{ current_date }}
 </template>
 
 <script lang='coffee'>
-import interact from 'interactjs'
-import moment from 'moment'
-
-import ToolbarMenubar from '~/components/footer/toolbar-menubar.vue'
 import ToolbarMinimap from '~/components/footer/toolbar-minimap.vue'
-
-MIN_MINI_MAP_WIDTH = 300
-MIN_MINI_MAP_HEIGHT = 200
 
 export default
   props:
     camera_manager: Object
     game_state: Object
-    menu_state: Object
     mini_map_renderer: Object
-    music_manager: Object
     options: Object
     ui_state: Object
 
   components:
-    'toolbar-menubar': ToolbarMenubar
     'toolbar-minimap': ToolbarMinimap
 
-  data: ->
-    client_version: process.env.CLIENT_VERSION
-    show_game_music: @options?.option('music.show_game_music')
-
-  watch:
-    state_counter: (new_value, old_value) ->
-      @show_game_music = @options?.option('music.show_game_music')
-
   computed:
-    state_counter: -> @options?.vue_state_counter
-
     is_ready: -> @game_state?.initialized
-    ticker_message: -> @ui_state?.event_ticker_message || ''
-    current_date: -> moment(@game_state?.current_date).format('MMM D, YYYY')
 
     menu_class_overlay: -> { 'is-active': @ui_state?.show_overlay || false }
     menu_class_zones: -> { 'is-active': @ui_state?.show_zones || false }
-    menu_class_release_notes: -> { 'is-active': @menu_state?.show_menu_release_notes || false }
-
-    game_music_class: -> if @game_state.game_music_playing then 'music-pause' else 'music-play'
-    game_music_volume_class: -> if @game_state.game_music_volume then 'music-volume' else 'music-mute'
-
-    notification_loading_css_class: -> { 'ajax-loading': (@game_state?.ajax_requests || 0) > 0 }
-
-  methods:
-    toggle_zones: -> @ui_state.show_zones = !@ui_state.show_zones
-
-    toggle_game_music: -> @music_manager.toggle_music()
-    toggle_next_game_music: -> @music_manager.next_song()
-    toggle_game_music_volume: -> @music_manager.toggle_volume()
 </script>
 
 <style lang='sass' scoped>
@@ -144,14 +65,15 @@ export default
       line-height: 1.5
       border-radius: .2rem
 
-#footer-container
+#toolbar-ribbon
   grid-column-start: 1
-  grid-column-end: 4
+  grid-column-end: 3
   grid-row-start: 4
   grid-row-end: 5
   margin: 0
 
   table
+    height: 100%
     width: 100%
 
     td

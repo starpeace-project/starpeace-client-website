@@ -1,13 +1,13 @@
 <template lang='haml'>
-.level-item
+#chat-container
   .card.has-header
     .card-header
       .card-header-title
         Chat
-      .card-header-icon.card-close{'v-on:click.stop.prevent':'menu_state.toggle_menu_chat()'}
+      .card-header-icon.card-close{'v-on:click.stop.prevent':"menu_state.toggle_menu('chat')"}
         %font-awesome-icon{':icon':"['fas', 'times']"}
 
-    .card-content
+    .card-content.sp-menu-background
 
 </template>
 
@@ -18,10 +18,19 @@ export default
 </script>
 
 <style lang='sass' scoped>
+#chat-container
+  align-items: center
+  display: flex
+  grid-column-start: 2
+  grid-column-end: 3
+  grid-row-start: 2
+  grid-row-end: 4
+  justify-content: center
+  z-index: 1100
+
 .card
   max-width: 50rem
   width: 100%
-  z-index: 1050
 
   .card-content
     min-height: 20rem

@@ -1,17 +1,18 @@
 <template lang='haml'>
-.level-item
+#notes-container
   .card.has-header
     .card-header
       .card-header-title
         Release Notes
-      .card-header-icon.card-close{'v-on:click.stop.prevent':'menu_state.toggle_menu_release_notes()'}
+      .card-header-icon.card-close{'v-on:click.stop.prevent':"menu_state.toggle_menu('release_notes')"}
         %font-awesome-icon{':icon':"['fas', 'times']"}
-    .card-content.release-notes
+    .card-content.sp-menu-background.release-notes
       .card-description
         Visit the
         %a{href:'/release', target:'_blank'} release notes archive
         &nbsp;to view additional notes and historical changelog.
-      .note-body{'v-html':'release_notes_html'}
+      %span.notes-wrapper
+        %aside.notes-content.sp-scrollbar{'v-html':'release_notes_html'}
 </template>
 
 <script lang='coffee'>
@@ -24,31 +25,42 @@ export default
 </script>
 
 <style lang='sass' scoped>
-.level-item
-  height: 95%
+#notes-container
+  align-items: center
+  display: flex
+  grid-column-start: 2
+  grid-column-end: 3
+  grid-row-start: 2
+  grid-row-end: 4
+  justify-content: center
+  overflow: hidden
+  z-index: 1100
 
 .card
-  height: 100%
+  height: 95%
   max-width: 60rem
   width: 100%
-  z-index: 1050
 
 .card-content
-  height: calc(100% - 3.5rem)
-  overflow-y: scroll
-
-  &::-webkit-scrollbar
-      width: 10px
-
-  &::-webkit-scrollbar-track
-      background: #2a453f
-
-  &::-webkit-scrollbar-thumb
-      background: #395950
-
-  &::-webkit-scrollbar-thumb:hover
-      background: #6ea192
+  height: calc(100% - 3.2rem)
+  padding-right: 0
+  overflow: hidden
 
   .card-description
+    height: 2rem
     margin-bottom: 1rem
+
+  .notes-wrapper
+    display: inline-block
+    height: calc(100% - 3rem)
+    position: relative
+    width: 100%
+
+  .notes-content
+    height: 100%
+    overflow-x: hidden
+    overflow-y: scroll
+    padding-right: 1.25rem
+    position: absolute
+    width: 100%
 </style>
