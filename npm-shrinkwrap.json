@@ -1476,6 +1476,12 @@
       "integrity": "sha512-wRSO2LXB+qI9Pyz2id+uZr4quz5aftSN7Ay1ysr1+krzVp3utD+Ci4CeKuZdrYGc800t65b7heXBL6qw2Wo/lQ==",
       "dev": true
     },
+    "bulma-popover": {
+      "version": "1.0.0",
+      "resolved": "https://registry.npmjs.org/bulma-popover/-/bulma-popover-1.0.0.tgz",
+      "integrity": "sha512-uc74pIcFIBG7vJMOOYwlcsyiN5HH1LmeDbDame2gLAtiM7EFGsHe58L6wQr6GNDJNrN/adwE2tNzqIb1yjL/Bw==",
+      "dev": true
+    },
     "bulma-tooltip": {
       "version": "2.0.2",
       "resolved": "https://registry.npmjs.org/bulma-tooltip/-/bulma-tooltip-2.0.2.tgz",
@@ -2794,6 +2800,15 @@
       "requires": {
         "jsbn": "~0.1.0",
         "safer-buffer": "^2.1.0"
+      }
+    },
+    "echarts": {
+      "version": "4.1.0",
+      "resolved": "https://registry.npmjs.org/echarts/-/echarts-4.1.0.tgz",
+      "integrity": "sha512-gP1e1fNnAj9KJpTDLXV21brklbfJlqeINmpQDJCDta9TX3cPoqyQOiDVcEPzbOVHqgBRgTOwNxC5iGwJ89014A==",
+      "dev": true,
+      "requires": {
+        "zrender": "4.0.4"
       }
     },
     "ee-first": {
@@ -9250,6 +9265,12 @@
       "resolved": "https://registry.npmjs.org/require-main-filename/-/require-main-filename-1.0.1.tgz",
       "integrity": "sha1-l/cXtp1IeE9fUmpsWqj/3aBVpNE="
     },
+    "resize-detector": {
+      "version": "0.1.9",
+      "resolved": "https://registry.npmjs.org/resize-detector/-/resize-detector-0.1.9.tgz",
+      "integrity": "sha512-dZ70I6+XErJ+bQAqc4e/AoAYaKKfdRS4/OLlYykTnaY753E97thIEbZLtJMXm8Uc5qG0lnC7DLfedd52PZpSwg==",
+      "dev": true
+    },
     "resolve": {
       "version": "1.8.1",
       "resolved": "https://registry.npmjs.org/resolve/-/resolve-1.8.1.tgz",
@@ -10800,6 +10821,17 @@
       "integrity": "sha1-Yxi+PPoM5/prAMuKn81CJo51+rg=",
       "dev": true
     },
+    "vue-echarts": {
+      "version": "3.1.3",
+      "resolved": "https://registry.npmjs.org/vue-echarts/-/vue-echarts-3.1.3.tgz",
+      "integrity": "sha512-qAGWNnTQ8rXN/Q4/krfcOpHmmlRfAXaT8penBiG6+USnYQo8W3Misjw2RezSfjCGrDcDkrylScpufNu8dwRFRA==",
+      "dev": true,
+      "requires": {
+        "echarts": "^4.1.0",
+        "lodash": "^4.17.10",
+        "resize-detector": "^0.1.7"
+      }
+    },
     "vue-hot-reload-api": {
       "version": "2.3.0",
       "resolved": "https://registry.npmjs.org/vue-hot-reload-api/-/vue-hot-reload-api-2.3.0.tgz",
@@ -11364,6 +11396,12 @@
           "integrity": "sha1-1UVjW+HjPFQmScaRc+Xeas+uNN0="
         }
       }
+    },
+    "zrender": {
+      "version": "4.0.4",
+      "resolved": "https://registry.npmjs.org/zrender/-/zrender-4.0.4.tgz",
+      "integrity": "sha512-03Vd/BDl/cPXp8E61f5+Xbgr/a4vDyFA+uUtUc1s+5KgcPbyY2m+78R/9LQwkR6QwFYHG8qk25Q8ESGs/qpkZw==",
+      "dev": true
     }
   }
 }

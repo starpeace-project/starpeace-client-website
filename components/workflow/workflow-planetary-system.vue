@@ -11,7 +11,7 @@
               %td{colspan:3}
                 %h3 {{system.name}}
               %td.system-select{rowspan:4}
-                %a.button.is-primary.is-medium.is-outlined.choose-system.float-right{'v-on:click.stop.prevent':'select_planetary_system(system.id)', href:'#'} Inspect
+                %a.button.is-primary.is-medium.is-outlined.choose-system.float-right{'v-on:click.stop.prevent':'select_planetary_system(system)', href:'#', 'v-bind:disabled':'!system.enabled'} Inspect
             %tr.system-info-row
               %td Population:
               %td.planet-value {{0}}
@@ -35,9 +35,8 @@ export default
     planetary_systems: -> @planetary_metadata_manager?.systems_metadata || []
 
   methods:
-    select_planetary_system: (planetary_system_id) ->
-      system = @planetary_metadata_manager.planetary_system_for_id(planetary_system_id)
-      throw "unknown planetary system id <#{planetary_system_id}>" unless system?
+    select_planetary_system: (system) ->
+      return unless system.enabled
       @game_state.current_planetary_system = system
       window.document.title = "#{@game_state.current_planetary_system.name} - STARPEACE" if window?.document?
       Logger.debug "proceeding with planetary system <#{@game_state.current_planetary_system}>"

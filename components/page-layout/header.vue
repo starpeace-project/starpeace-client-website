@@ -32,13 +32,14 @@ export default
 
   watch:
     state_counter: (new_value, old_value) ->
-      @show_header = @options.option('general.show_header')
+      @show_header = @options?.option('general.show_header')
+      @show_header = true unless @show_header?
 
   data: ->
-    show_header: @options.option('general.show_header')
+    show_header: if @options? then @options.option('general.show_header') else true
 
   computed:
-    state_counter: -> @options.vue_state_counter
+    state_counter: -> @options?.vue_state_counter
 </script>
 
 <style lang='sass' scoped>

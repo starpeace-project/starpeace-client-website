@@ -39,11 +39,22 @@ Please [join Discord chatroom](https://discord.gg/TF9Bmsj) if you have any quest
 
 STARPEACE Project is made up [several repositories](https://github.com/starpeace-project), each with unique responsibilities.
 
-* [starpeace-project-website](https://github.com/starpeace-project/starpeace-project-website) - project static content and information for STARPEACE Project website
-* [starpeace-website](https://github.com/starpeace-project/starpeace-website) - static homepage and license content for STARPEACE client website
-* [starpeace-website-client](https://github.com/starpeace-project/starpeace-website-client) - client game application logic and webgl rendering for STARPEACE client website
-* [starpeace-website-client-assets](https://github.com/starpeace-project/starpeace-website-client-assets) - raw media assets and procedural generation logic for STARPEACE client website
-* [starpeace-website-documentation](https://github.com/starpeace-project/starpeace-website-documentation) - static and dynamic documentation for STARPEACE client website
+### Client
+* [starpeace-website](https://github.com/starpeace-project/starpeace-website) - static client homepage and license content
+* [starpeace-website-client](https://github.com/starpeace-project/starpeace-website-client) - client game application logic and webgl rendering website
+* [starpeace-website-client-assets](https://github.com/starpeace-project/starpeace-website-client-assets) - raw media assets, gameplay resources, and procedural generation logic for client
+* [starpeace-website-documentation](https://github.com/starpeace-project/starpeace-website-documentation) - static and dynamic documentation website
+
+### Server
+* [starpeace-lumen-api-interface](https://github.com/starpeace-project/starpeace-lumen-api-interface) - primary API interface
+* [starpeace-laravel-controller](https://github.com/starpeace-project/starpeace-laravel-controller) - API container and controller
+* [starpeace-eloquent-models](https://github.com/starpeace-project/starpeace-eloquent-models) - backend data models
+* [starpeace-simulation-engine](https://github.com/starpeace-project/starpeace-simulation-engine) - simulation engine
+
+### Misc
+* [starpeace-documents-public](https://github.com/starpeace-project/starpeace-documents-public) - public design, planning, and gameplay documents
+* [starpeace-project-website](https://github.com/starpeace-project/starpeace-project-website) - project static content and information
+
 
 ### Design Decisions
 
@@ -211,8 +222,6 @@ Coffeescript is preferred, though if used, all JavaScript must adhere to [JavaSc
     * `count + 1` instead of `count+1`
 * Use spaces after commas (unless separated by newlines)
 * Use parentheses if it improves code clarity.
-* Prefer alphabetic keywords to symbolic keywords:
-    * `a is b` instead of `a == b`
 * Avoid spaces inside the curly-braces of hash literals:
     * `{a: 1, b: 2}` instead of `{ a: 1, b: 2 }`
 * Include a single line of whitespace between methods.

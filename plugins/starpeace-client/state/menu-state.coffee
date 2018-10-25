@@ -1,9 +1,14 @@
 
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 
+MULTI_MENUBARS = {
+  'research': ['left', 'body', 'right']
+}
+
 MENUBAR_LEFT = {
   'planetary': true
   'bookmarks': true
+  'research': true
   'tycoon': true
 }
 MENUBAR_BODY = {
@@ -12,9 +17,11 @@ MENUBAR_BODY = {
   'options': true
   'help': true
   'release_notes': true
+  'research': true
 }
 MENUBAR_RIGHT = {
   'construction': true
+  'research': true
 }
 
 export default class MenuState
@@ -43,11 +50,25 @@ export default class MenuState
   toggle_menu: (type) ->
     if type == 'hide_all'
       @hide_all_menus()
-    else if MENUBAR_LEFT[type]
+      return
+
+    clear_menus = (positions) =>
+      for position in positions
+        @toolbar_left = null if position == 'left'
+        @toolbar_body = null if position == 'body'
+        @toolbar_right = null if position == 'right'
+
+    if MENUBAR_LEFT[type]
+      clear_menus(MULTI_MENUBARS[@toolbar_left]) if MULTI_MENUBARS[@toolbar_left]? && @toolbar_left != type
       @toolbar_left = if @toolbar_left == type then null else type
-    else if MENUBAR_BODY[type]
+
+    if MENUBAR_BODY[type]
+      clear_menus(MULTI_MENUBARS[@toolbar_body]) if MULTI_MENUBARS[@toolbar_body]? && @toolbar_body != type
       @toolbar_body = if @toolbar_body == type then null else type
-    else if MENUBAR_RIGHT[type]
+
+    if MENUBAR_RIGHT[type]
+      clear_menus(MULTI_MENUBARS[@toolbar_right]) if MULTI_MENUBARS[@toolbar_right]? && @toolbar_right != type
       @toolbar_right = if @toolbar_right == type then null else type
-    else
+
+    unless MENUBAR_LEFT[type]? || MENUBAR_BODY[type]? || MENUBAR_RIGHT[type]?
       Logger.info "unknown menu type #{type}"

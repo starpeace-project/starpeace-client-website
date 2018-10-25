@@ -34,7 +34,7 @@ export default class Client
     @menu_state = new MenuState()
     @ui_state = new UIState(@options)
 
-    @managers = new Managers(@event_listener, @game_state, @ui_state)
+    @managers = new Managers(@event_listener, @options, @game_state, @ui_state)
     @music_manager = new MusicManager(@game_state)
 
     @renderer = new Renderer(@event_listener, @managers, @game_state, @options, @ui_state)

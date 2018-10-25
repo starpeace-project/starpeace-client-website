@@ -69,8 +69,7 @@ export default
 </script>
 
 <style lang='sass' scoped>
-$sp-primary: #6ea192
-$sp-primary-bg: #395950
+@import '~assets/stylesheets/starpeace-variables'
 
 #bookmarks-container
   grid-column-start: 1

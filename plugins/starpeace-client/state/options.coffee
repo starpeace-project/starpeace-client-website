@@ -66,6 +66,7 @@ export default class Options
       matches_saved = false unless @options_current[option.name] == @options_saved[option.name]
     !matches_saved
 
+  language: () -> 'EN'
 
   option: (name) ->
     @options_current[name]

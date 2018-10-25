@@ -17,6 +17,7 @@ export default
       tooltip: 'Planetary Systems'
       icon_category: 'fas'
       icon_key: 'globe'
+      extra_class: 'first-option'
       menu_class: ''
     }, {
       type: 'bookmarks'
@@ -35,6 +36,12 @@ export default
       tooltip: 'Tycoon Details'
       icon_category: 'fas'
       icon_key: 'user-tie'
+      menu_class: ''
+    }, {
+      type: 'research'
+      tooltip: 'R & D'
+      icon_category: 'fas'
+      icon_key: 'flask'
       menu_class: ''
     }, {
       type: 'construction'
@@ -98,15 +105,23 @@ td
 
   &.column-menu
     background: linear-gradient(to top, #395950, #000)
-    max-width: 32rem
+    max-width: 34rem
     padding: .25rem
     text-align: center
-    width: 32rem
+    width: 34rem
 
     .button
       height: 2.5rem
       font-size: 1.25rem
       padding: 0 .65rem
+
+      &:first-child
+        &.tooltip
+          &.is-tooltip-active::before,
+          &:focus::before,
+          &:hover::before
+            -webkit-transform: translate(-25%, -0.5rem)
+            transform: translate(-25%, -0.5rem)
 
       &:not(:first-child)
         margin-left: .5rem

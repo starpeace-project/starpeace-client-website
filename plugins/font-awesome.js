@@ -15,6 +15,7 @@ import {
   faCheck,
   faCogs,
   faFastForward,
+  faFlask,
   faFolder,
   faFolderOpen,
   faGlobe,
@@ -41,7 +42,7 @@ import {
   faVolumeOff,
   faVolumeUp
 } from '@fortawesome/free-solid-svg-icons'
-library.add(faAngleUp, faCheck, faCogs, faFastForward, faFolder, faFolderOpen, faGlobe, faMagic, faMapMarkerAlt, faMapPin,
+library.add(faAngleUp, faCheck, faCogs, faFastForward, faFlask, faFolder, faFolderOpen, faGlobe, faMagic, faMapMarkerAlt, faMapPin,
   faMinus, faMinusSquare, faParking, faPause, faPlay, faPlus, faPlusSquare, faRedoAlt, faSearchLocation, faSquare, faTimes,
   faToggleOff, faToggleOn, faToolbox, faUndoAlt, faUserSecret, faUserTie, faVolumeOff, faVolumeUp)
 

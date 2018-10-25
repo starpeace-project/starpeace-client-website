@@ -12,3 +12,6 @@ export default class Utils
     context = canvas.getContext('2d')
     context.drawImage(image, 0, 0, image.width, image.height)
     context.getImageData(0, 0, image.width, image.height).data
+
+  @format_money: (value, decimals=0) ->
+    value.toFixed(0).replace(new RegExp('\\d(?=(\\d{3})+$)', 'g'), '$&,')

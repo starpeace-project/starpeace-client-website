@@ -5,7 +5,7 @@ import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
 import RoadManager from '~/plugins/starpeace-client/manager/road-manager.coffee'
 
 MOCK_DATA = {}
-MOCK_TYCOONS = [Utils.uuid(), Utils.uuid(), Utils.uuid(), Utils.uuid(), Utils.uuid()]
+MOCK_TYCOONS = ['tycoon-id-1', 'tycoon-id-2', 'tycoon-id-3', 'tycoon-id-4', 'tycoon-id-5']
 
 export default class BuildingManager
   constructor: (@asset_manager, @event_listener, @game_state) ->
@@ -58,6 +58,7 @@ export default class BuildingManager
 
       # return if ~key.indexOf('tennis')
     @mocks_configured = true
+    # console.log JSON.stringify(MOCK_DATA)
 
   load_chunk: (chunk_x, chunk_y, width, height) ->
     key = "#{chunk_x}x#{chunk_y}"

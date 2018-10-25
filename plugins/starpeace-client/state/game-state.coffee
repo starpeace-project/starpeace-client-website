@@ -58,6 +58,11 @@ export default class GameState
     @selected_building_id = null
     @selected_tycoon_id = null
 
+    @inventions_selected_category = 'SERVICE'
+    @inventions_selected_industry_type = 'GENERAL'
+    @inventions_selected_invention_id = ''
+    @inventions_hover_invention_id = ''
+
     setInterval(=>
       return unless @initialized
       # FIXME: TODO: remove and get from server

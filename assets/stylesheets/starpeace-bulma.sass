@@ -18,7 +18,7 @@
       &:hover
         background-color: darken($sp-primary-bg, 5%)
         border: 1px solid darken($sp-primary-bg, 1%)
-        color: lighten($sp-primary, 3%)
+        color: lighten($sp-primary, 25%)
 
       &:active,
       &.is-active
@@ -121,10 +121,12 @@
       &:not(.button)
         color: #6ea192
 
-        &:hover
+        &:hover,
+        &.is-hover
           color: #8bb3a7
 
-        &:active
+        &:active,
+        &.is-active
           color: #fff
 
   .card-footer
@@ -133,6 +135,35 @@
     .card-footer-item
       &:not(:last-child)
         border-right: 1px solid rgba(110, 161, 146, .6)
+
+.inverse-card
+  border-top: 1px solid lighten($sp-card-border-bottom, 10%)
+  border-bottom: 1px solid darken($sp-card-border-top, 15%)
+  border-right: none
+  position: relative
+
+  &:before,
+  &:after
+    content: ""
+    position: absolute
+    bottom: 0
+    top: 0
+    width: 1px
+    z-index: 1200
+
+  &:before
+    background-image: -webkit-linear-gradient(lighten($sp-card-border-bottom, 10%), $sp-card-border-top)
+    background-image: -moz-linear-gradient($sp-card-border-bottom, $sp-card-border-top)
+    background-image: -o-linear-gradient($sp-card-border-bottom, $sp-card-border-top)
+    background-image: linear-gradient($sp-card-border-bottom, $sp-card-border-top)
+    left: -1px
+
+  &:after
+    background-image: -webkit-linear-gradient(lighten($sp-card-border-bottom, 10%), darken($sp-card-border-top, 15%))
+    background-image: -moz-linear-gradient(lighten($sp-card-border-bottom, 10%), darken($sp-card-border-top, 15%))
+    background-image: -o-linear-gradient(lighten($sp-card-border-bottom, 10%), darken($sp-card-border-top, 15%))
+    background-image: linear-gradient(lighten($sp-card-border-bottom, 10%), darken($sp-card-border-top, 15%))
+    right: -1px
 
 .dropdown
   .dropdown-content

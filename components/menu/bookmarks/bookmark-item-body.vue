@@ -59,16 +59,6 @@ export default
     &.sp-level-3
       padding-left: 3.2rem
 
-  .level-anchor
-    display: inline-block
-    width: .6rem
-    height: 1rem
-    border-left: 1px dotted $sp-primary
-    border-bottom: 1px dotted $sp-primary
-    margin-bottom: .25rem
-    margin-left: .4rem
-    margin-right: .25rem
-
   .link-image
     border: 0
     padding: .25rem

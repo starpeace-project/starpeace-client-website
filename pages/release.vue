@@ -17,8 +17,8 @@
 </template>
 
 <script lang='coffee'>
-import Header from '~/components/header/header-panel.vue'
-import Footer from '~/components/footer/footer-panel.vue'
+import Header from '~/components/page-layout/header.vue'
+import Footer from '~/components/page-layout/footer.vue'
 
 export default
   components:

@@ -8,7 +8,7 @@
 </template>
 
 <script lang='coffee'>
-import Header from '~/components/header/header-panel.vue'
+import Header from '~/components/page-layout/header.vue'
 import LoadingCard from '~/components/body/loading-card.vue'
 import LoadingModal from '~/components/body/loading-modal.vue'
 import Workflow from '~/components/workflow/workflow.vue'

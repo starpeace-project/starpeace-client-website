@@ -1,8 +1,10 @@
 const fs = require('fs')
+const path = require('path')
 const moment = require('moment')
 require('moment-timezone')
 const marked = require('marked')
 const webpack = require('webpack')
+const node_externals = require('webpack-node-externals')
 const pjson = require('./package.json')
 
 const is_development = process.env.NODE_ENV === 'development'
@@ -61,7 +63,7 @@ module.exports = {
     // analyze: true,
     publicPath: '/assets/',
     vendor: ['fpsmeter', 'howler', 'interactjs', 'javascript-detect-element-resize', 'lodash', 'pixi.js', 'tinygradient'],
-    extend (config, { isDev, isClient }) {
+    extend (config, { isDev, isClient, isServer }) {
       config.module.rules.push({
         test: /\.coffee$/,
         use: 'coffee-loader',
@@ -77,6 +79,22 @@ module.exports = {
         use: [ 'html-loader', 'markdown-loader' ],
         exclude: /(node_modules)/
       });
+      config.module.rules.push({
+        test: /\.js/,
+        use: 'babel-loader',
+        include: [
+          path.resolve('node_modules/vue-echarts'),
+          path.resolve('node_modules/resize-detector')
+        ]
+      });
+
+      if (isServer) {
+        config.externals = [
+          node_externals({
+            whitelist: [/es6-promise|\.(?!(?:js|json)$).{1,5}$/i, /^vue-echarts/]
+          })
+        ];
+      }
 
       if (!isClient) {
         if (!fs.existsSync('.nuxt/dist/')) {
@@ -90,6 +108,7 @@ module.exports = {
     '@nuxtjs/moment', ['@nuxtjs/google-analytics', { id: 'UA-120729341-2', debug: { sendHitTask: !is_development } }]
   ],
   plugins: [
+    { src: '~/plugins/echarts', ssr: false },
     { src: '~/plugins/element-queries', ssr: false },
     { src: '~/plugins/flaticon', ssr: false },
     { src: '~/plugins/fpsmeter', ssr: false },

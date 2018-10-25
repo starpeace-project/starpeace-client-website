@@ -12,6 +12,9 @@
   %menu-planetary{'v-show':"is_menu_visible('planetary')", 'v-bind:bookmark_manager':'bookmark_manager', 'v-bind:game_state':'game_state', 'v-bind:menu_state':'menu_state', 'v-bind:options':'options'}
   %menu-help{'v-show':"is_menu_visible('help')", 'v-bind:menu_state':'menu_state'}
   %menu-release-notes{'v-show':"is_menu_visible('release_notes')", 'v-bind:menu_state':'menu_state'}
+  %menu-research-menu{'v-show':"is_menu_visible('research')", 'v-bind:invention_manager':'invention_manager', 'v-bind:translation_manager':'translation_manager', 'v-bind:game_state':'game_state', 'v-bind:menu_state':'menu_state', 'v-bind:options':'options'}
+  %menu-research-tree{'v-show':"is_menu_visible('research')", 'v-bind:invention_manager':'invention_manager', 'v-bind:translation_manager':'translation_manager', 'v-bind:game_state':'game_state', 'v-bind:menu_state':'menu_state', 'v-bind:options':'options'}
+  %menu-research-details{'v-show':"is_menu_visible('research')", 'v-bind:invention_manager':'invention_manager', 'v-bind:translation_manager':'translation_manager', 'v-bind:game_state':'game_state', 'v-bind:menu_state':'menu_state', 'v-bind:options':'options'}
   %menu-tycoon{'v-show':"is_menu_visible('tycoon')", 'v-bind:bookmark_manager':'bookmark_manager', 'v-bind:game_state':'game_state', 'v-bind:menu_state':'menu_state', 'v-bind:options':'options'}
   %sp-body{'v-bind:game_state':'game_state', 'v-bind:options':'options', 'v-bind:ui_state':'ui_state'}
   %sp-footer-overlay-menu{'v-bind:ui_state':'ui_state'}
@@ -20,7 +23,7 @@
 </template>
 
 <script lang='coffee'>
-import Header from '~/components/header/header-panel.vue'
+import Header from '~/components/page-layout/header.vue'
 import LoadingCard from '~/components/body/loading-card.vue'
 import LoadingModal from '~/components/body/loading-modal.vue'
 import Workflow from '~/components/workflow/workflow.vue'
@@ -33,6 +36,9 @@ import MenuOptions from '~/components/menu/menu-options.vue'
 import MenuPlanetarySystem from '~/components/menu/menu-planetary-system.vue'
 import MenuHelp from '~/components/menu/menu-help.vue'
 import MenuReleaseNotes from '~/components/menu/menu-release-notes.vue'
+import MenuResearchMenu from '~/components/menu/research/menu.vue'
+import MenuResearchTree from '~/components/menu/research/tree.vue'
+import MenuResearchDetails from '~/components/menu/research/details.vue'
 import MenuTycoon from '~/components/menu/menu-tycoon.vue'
 
 import RenderContainer from '~/components/body/render-container.vue'
@@ -61,6 +67,9 @@ export default
     'menu-planetary': MenuPlanetarySystem
     'menu-help': MenuHelp
     'menu-release-notes': MenuReleaseNotes
+    'menu-research-menu': MenuResearchMenu
+    'menu-research-tree': MenuResearchTree
+    'menu-research-details': MenuResearchDetails
     'menu-tycoon': MenuTycoon
 
   watch:
@@ -71,10 +80,12 @@ export default
     bookmark_manager: @client?.bookmark_manager
     camera_manager: @client?.camera_manager
     event_listener: @client?.event_listener
+    invention_manager: @client?.managers?.invention_manager
     game_state: @client?.game_state
     menu_state: @client?.menu_state
     mini_map_renderer: @client?.mini_map_renderer
     music_manager: @client?.music_manager
+    translation_manager: @client?.managers?.translation_manager
     options: @client?.options
     planetary_metadata_manager: @client?.managers?.planetary_metadata_manager
     ui_state: @client?.ui_state

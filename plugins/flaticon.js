@@ -9,5 +9,8 @@
  * Special thanks to icon designers:
  * - https://www.flaticon.com/authors/geotatah
  * - https://www.flaticon.com/authors/zlatko-najdenovski
+ * - https://www.flaticon.com/authors/eucalyp
+ * - https://www.flaticon.com/authors/freepik
+ * - https://www.flaticon.com/authors/cursor-creative
  *
  */

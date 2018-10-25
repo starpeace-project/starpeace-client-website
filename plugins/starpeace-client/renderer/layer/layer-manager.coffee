@@ -109,6 +109,7 @@ export default class LayerManager
         else
           @game_state.selected_building_id = tile_item.tile_info.building_info.id
           @game_state.selected_tycoon_id = tile_item.tile_info.building_info.tycoon_id
+          console.log tile_item.tile_info.building_info
 
       sprite_cache = if tile_item.sprite_info.building.is_animated then @with_height_animated_sprite_cache else @with_height_static_sprite_cache
       building = sprite_cache.new_sprite(render_state, { textures:tile_item.sprite_info.building.textures, speed:.15, hit_area:tile_item.sprite_info.building.hit_area(viewport), click_callback:select_building_callback })

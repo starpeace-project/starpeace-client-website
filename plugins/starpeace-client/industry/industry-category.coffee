@@ -10,18 +10,15 @@ export default class IndustryCategory
     COMMERCE:
       type: 'COMMERCE'
       string: 'industry.category.commerce.label'
-    INDUSTRIES:
-      type: 'INDUSTRIES'
-      string: 'industry.category.industries.label'
+    INDUSTRY:
+      type: 'INDUSTRY'
+      string: 'industry.category.industry.label'
     LOGISTICS:
       type: 'LOGISTICS'
       string: 'industry.category.logistics.label'
-    OFFICES:
-      type: 'OFFICES'
-      string: 'industry.category.offices.label'
-    RESIDENTIALS:
-      type: 'RESIDENTIALS'
-      string: 'industry.category.residentials.label'
+    REAL_ESTATE:
+      type: 'REAL_ESTATE'
+      string: 'industry.category.real_estate.label'
     SERVICES:
       category: 'SERVICES'
       string: 'industry.category.services.label'

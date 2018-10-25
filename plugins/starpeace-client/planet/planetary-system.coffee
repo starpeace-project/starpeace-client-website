@@ -2,7 +2,7 @@
 import Planet from '~/plugins/starpeace-client/planet/planet.coffee'
 
 class PlanetarySystem
-  constructor: (@id, @name, @planets) ->
+  constructor: (@id, @name, @enabled, @planets) ->
     @as_of = new Date()
 
   planets: () ->
@@ -17,9 +17,9 @@ class PlanetarySystem
 
       setTimeout(->
         resolve([
-          new PlanetarySystem('1', 'Alpha Stella', [
+          new PlanetarySystem('system-1', 'Alpha Stella', true, [
             Planet.from_json({
-              id: '1'
+              id: 'planet-1'
               name: 'Mercury'
               map_id: 'aries'
               planet_type: 'earth'
@@ -29,7 +29,7 @@ class PlanetarySystem
               moisture_baseline: 25
             }),
             Planet.from_json({
-              id: '2'
+              id: 'planet-2'
               name: 'Venus'
               map_id: 'ancoeus'
               planet_type: 'earth'
@@ -39,7 +39,7 @@ class PlanetarySystem
               moisture_baseline: 50
             }),
             Planet.from_json({
-              id: '3'
+              id: 'planet-3'
               name: 'Earth'
               map_id: 'mondronia'
               planet_type: 'earth'
@@ -49,9 +49,9 @@ class PlanetarySystem
               moisture_baseline: 50
             })
           ]),
-          new PlanetarySystem('2', 'Stellae Beta', [
+          new PlanetarySystem('system-2', 'Stellae Beta', false, [
             Planet.from_json({
-              id: '4'
+              id: 'planet-4'
               name: 'Mars'
               map_id: 'darkadia'
               planet_type: 'earth'
@@ -61,7 +61,7 @@ class PlanetarySystem
               moisture_baseline: 50
             }),
             Planet.from_json({
-              id: '5'
+              id: 'planet-5'
               name: 'Jupiter'
               map_id: 'cymoril'
               planet_type: 'earth'
