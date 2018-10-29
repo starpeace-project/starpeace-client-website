@@ -39,7 +39,7 @@
           %span.invention-status-label Status:
           %span.invention-status-value.available Available for Research
         .action-row
-          %a.button.is-fullwidth.is-primary Start Research
+          %a.button.is-fullwidth.is-starpeace Start Research
 
 </template>
 

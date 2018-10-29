@@ -5,6 +5,26 @@
     .card-header-icon.card-close{'v-on:click.stop.prevent':"menu_state.toggle_menu('research')"}
       %font-awesome-icon{':icon':"['fas', 'times']"}
   .card-content.sp-menu-background.overall-container
+    .tree-list-container.sp-scrollbar
+      .status-title Available
+      %ul
+        %template{'v-if':"research_available.length"}
+          %li{'v-for':"research in research_available"}
+            %a{'v-on:click.stop.prevent':"select_invention(research.id)"} {{research.text}}
+        %template{'v-else-if':"true"}
+          %li None
+      .status-title In Progress
+      %ul
+        %template{'v-if':"research_in_progress.length"}
+          %li
+        %template{'v-else-if':"true"}
+          %li None
+      .status-title Completed
+      %ul
+        %template{'v-if':"research_completed.length"}
+          %li
+        %template{'v-else-if':"true"}
+          %li None
     .tree-container
       %chart.inverse-card{':options':'tree_options', ':initOptions':'tree_init_options', ':auto-resize':'true', 'v-on:click':"click_item", 'v-on:mouseover':'focus_item', 'v-on:mouseout':'unfocus_item'}
 
@@ -213,6 +233,19 @@ export default
     selected_invention_id: -> @game_state.inventions_selected_invention_id
     hover_invention_id: -> @game_state.inventions_hover_invention_id
 
+    research_available: ->
+      available = []
+      for invention in @invention_data
+        if invention.id?
+          available.push { id: invention.id, text: @translation_manager.text(invention.name_key) }
+      _.sortBy(available, (invention) -> invention.text)
+    research_in_progress: ->
+      in_progres = []
+      in_progres
+    research_completed: ->
+      completed = []
+      completed
+
     invention_data: ->
       return [] unless @state_counter?
 
@@ -248,6 +281,8 @@ export default
       return unless item.dataType == 'node'
       @game_state.inventions_hover_invention_id = '' if @game_state.inventions_hover_invention_id == item.data.name
 
+    select_invention: (invention_id) ->
+      @game_state.inventions_selected_invention_id = invention_id
 </script>
 
 <style lang='sass' scoped>
@@ -280,10 +315,38 @@ export default
     &.overall-container
       position: relative
 
+    .columns
+      height: 100%
+      margin: 0
+      padding: 0
+
+    .tree-list-container
+      height: calc(100% - 2rem)
+      left: 0
+      margin: 1rem 0
+      overflow-y: scroll
+      padding: 0 .5rem
+      position: absolute
+      top: 0
+      width: 20rem
+
+      .status-title
+        border-bottom: 1px solid $sp-primary
+        color: $sp-light
+        font-size: .9rem
+        font-weight: bold
+        margin-bottom: .25rem
+        padding-bottom: .25rem
+
+        &:not(:first-child)
+          margin-top: 1.5rem
+
     .tree-container
       height: 100%
       padding: 1rem
-      width: 100%
+      padding-left: 0
+      margin-left: 20rem
+      width: calc(100% - 20rem)
 
     .echarts
       background-color: #000
