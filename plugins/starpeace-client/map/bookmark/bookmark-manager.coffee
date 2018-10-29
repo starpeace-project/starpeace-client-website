@@ -6,44 +6,38 @@ import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
 
 export default class BookmarkManager
   constructor: (@game_state, @options) ->
-    @towns = new BookmarkFolder('bookmark-towns', 'Towns', {type:'TOWN'})
-    @mausoleums = new BookmarkFolder('bookmark-mausoleums', 'Mausoleums')
-    @points_of_interest = new BookmarkFolder('bookmark-pois', 'Points of Interest')
-    @points_of_interest.add_child(@towns)
-    @points_of_interest.add_child(@mausoleums)
+    @points_of_interest_items = []
+    @corporation_items = []
+    @bookmark_items = []
 
-    @corporation = new BookmarkFolder('bookmark-coporation', 'Corporation')
-    @bookmarks = new BookmarkFolder('bookmarks', 'Bookmarks')
+    @towns = new BookmarkFolder('bookmark-poi', 'bookmark-towns', 'Towns', 0, {type:'TOWN'})
+    @mausoleums = new BookmarkFolder('bookmark-poi', 'bookmark-mausoleums', 'Mausoleums', 1)
+    @points_of_interest_items.push @towns
+    @points_of_interest_items.push @mausoleums
 
     @vue_state_counter = 0
 
   load: () ->
     # TODO: load from API call
-    @towns.add_child(new Bookmark('town-a', 'Town A', 256, 256, {type:'TOWN'}))
+    @points_of_interest_items.push new Bookmark('bookmark-towns', 'town-a', 'Town A', 0, 256, 256, {type:'TOWN'})
 
-    @my_folder_1 = new BookmarkFolder('my-folder-1', 'My Folder 1')
-    @my_folder_2 = new BookmarkFolder('my-folder-2', 'My Folder 2')
-    @my_folder_3 = new BookmarkFolder('my-folder-3', 'My Folder 3')
-    @bookmarks.add_child(@my_folder_1)
-    @bookmarks.add_child(@my_folder_2)
-    @bookmarks.add_child(new Bookmark('my-bookmark-1', 'My Bookmark 1', 256, 256))
-    @bookmarks.add_child(new Bookmark('my-bookmark-2', 'My Bookmark 2', 256, 256))
-    @my_folder_1.add_child(new Bookmark('my-bookmark-3', 'My Bookmark 3', 256, 256))
-    @my_folder_2.add_child(@my_folder_3)
-    @my_folder_2.add_child(new Bookmark('my-bookmark-4', 'My Bookmark 4', 256, 256))
-    @my_folder_2.add_child(new Bookmark('my-bookmark-5', 'My Bookmark 5', 256, 256))
-    @my_folder_3.add_child(new Bookmark('my-bookmark-6', 'My Bookmark 6', 256, 256))
+    @bookmark_items.push new BookmarkFolder('bookmarks', 'my-folder-1', 'My Folder 1', 0, {draggable:true})
+    @bookmark_items.push new Bookmark('my-folder-1', 'my-bookmark-3', 'My Bookmark 3', 0, 256, 256, {draggable:true})
 
-    @company_1 = new BookmarkFolder('company-1', 'Dissidents Company', {type:'CORPORATION', seal:'DIS'})
-    @company_2 = new BookmarkFolder('company-2', 'Magna Corp Company', {type:'CORPORATION', seal:'MAGNA'})
-    @company_3 = new BookmarkFolder('company-3', 'Mariko Enterprises Company', {type:'CORPORATION', seal:'MKO'})
-    @company_4 = new BookmarkFolder('company-4', 'The Moab Company', {type:'CORPORATION', seal:'MOAB'})
-    @company_5 = new BookmarkFolder('company-5', 'Pure Gaba Initiative Company', {type:'CORPORATION', seal:'PGI'})
-    @corporation.add_child(@company_1)
-    @corporation.add_child(@company_2)
-    @corporation.add_child(@company_3)
-    @corporation.add_child(@company_4)
-    @corporation.add_child(@company_5)
+    @bookmark_items.push new BookmarkFolder('bookmarks', 'my-folder-2', 'My Folder 2', 1, {draggable:true})
+    @bookmark_items.push new BookmarkFolder('my-folder-2', 'my-folder-3', 'My Folder 3', 0, {draggable:true})
+    @bookmark_items.push new Bookmark('my-folder-3', 'my-bookmark-6', 'My Bookmark 6', 0, 256, 256, {draggable:true})
+    @bookmark_items.push new Bookmark('my-folder-2', 'my-bookmark-4', 'My Bookmark 4', 1, 256, 256, {draggable:true})
+    @bookmark_items.push new Bookmark('my-folder-2', 'my-bookmark-5', 'My Bookmark 5', 2, 256, 256, {draggable:true})
+
+    @bookmark_items.push new Bookmark('bookmarks', 'my-bookmark-1', 'My Bookmark 1', 2, 2, 256, 256, {draggable:true})
+    @bookmark_items.push new Bookmark('bookmarks', 'my-bookmark-2', 'My Bookmark 2', 3, 3, 256, 256, {draggable:true})
+
+    @corporation_items.push new BookmarkFolder('bookmark-corporation', 'company-1', 'Dissidents Company', 0, {type:'CORPORATION', seal:'DIS'})
+    @corporation_items.push new BookmarkFolder('bookmark-corporation', 'company-2', 'Magna Corp Company', 1, {type:'CORPORATION', seal:'MAGNA'})
+    @corporation_items.push new BookmarkFolder('bookmark-corporation', 'company-3', 'Mariko Enterprises Company', 2, {type:'CORPORATION', seal:'MKO'})
+    @corporation_items.push new BookmarkFolder('bookmark-corporation', 'company-4', 'The Moab Company', 3, {type:'CORPORATION', seal:'MOAB'})
+    @corporation_items.push new BookmarkFolder('bookmark-corporation', 'company-5', 'Pure Gaba Initiative Company', 4, {type:'CORPORATION', seal:'PGI'})
 
     @vue_state_counter += 1
 
@@ -56,3 +50,14 @@ export default class BookmarkManager
     sections.push(@corporation) if @options.option('bookmarks.corporation')
     sections.push(@bookmarks)
     sections
+
+  merge_bookmark_deltas: (deltas) ->
+    by_id = {}
+    by_id[item.id] = item for item in @bookmark_items
+
+    for delta in deltas
+      if by_id[delta.id]?
+        by_id[delta.id].parent_id = delta.parent_id
+        by_id[delta.id].order = delta.order
+
+    # TODO: persist bookmarks to server

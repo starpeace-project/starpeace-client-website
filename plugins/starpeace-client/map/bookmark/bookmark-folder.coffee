@@ -1,13 +1,13 @@
 
 
 export default class BookmarkFolder
-  constructor: (@id, @name, options={}) ->
+  constructor: (@parent_id, @id, @name, @order, options={}) ->
     @children = []
 
     @type = if options.type?.length then options.type else 'GENERIC'
     @seal = if options.seal?.length then options.seal else null
+    @draggable = if options.draggable? then options.draggable else false
 
-    @level = 0
     @expanded = false
     @hidden = false
 

@@ -27,7 +27,9 @@
       %a.filter-toggle.tooltip.is-tooltip-top{'v-bind:class':"filter_class('offices')", 'v-on:click.stop.prevent':"toggle_filter('offices')", 'data-tooltip':'Offices'}
         %img{src:'~/assets/images/icons/offices/office-block.svg'}
     %aside.sp-menu.sp-scrollbar
-      %bookmark-item{'v-for':'item in sections', 'v-bind:item':'item', 'v-bind:key':'item.id'}
+      %menu-section{'v-bind:bookmark_manager':'bookmark_manager', root_id:'bookmark-poi', label_text:'Points of Interest', 'v-bind:items':'poi_items', draggable:false}
+      %menu-section{'v-bind:bookmark_manager':'bookmark_manager', root_id:'bookmark-corporation', label_text:'Corporation', 'v-bind:items':'corporation_items', draggable:false}
+      %menu-section{'v-bind:bookmark_manager':'bookmark_manager', root_id:'bookmarks', label_text:'Bookmarks', 'v-bind:items':'bookmark_items', draggable:true}
     .actions-container
       .action-column
         %a.button.is-fullwidth.is-starpeace{disabled:'disabled'} Organize
@@ -36,11 +38,11 @@
 </template>
 
 <script lang='coffee'>
-import BookmarkItem from '~/components/menu/bookmarks/bookmark-item.vue'
+import MenuSection from '~/components/menu/bookmarks/menu-section.vue'
 
 export default
   components:
-    'bookmark-item': BookmarkItem
+    'menu-section': MenuSection
 
   props:
     bookmark_manager: Object
@@ -59,6 +61,10 @@ export default
 
   computed:
     state_counter: -> @options.vue_state_counter + @bookmark_manager.vue_state_counter
+
+    poi_items: -> @bookmark_manager?.points_of_interest_items || []
+    corporation_items: -> @bookmark_manager?.corporation_items || []
+    bookmark_items: -> @bookmark_manager?.bookmark_items || []
 
   methods:
     filter_class: (type) ->
@@ -135,6 +141,8 @@ export default
   height: calc(100% - .5rem - 4rem - 3.5rem - 3.5rem)
   overflow-x: hidden
   overflow-y: scroll
+  width: 100%
+  position: absolute
 
 .actions-container
   position: absolute

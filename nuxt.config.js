@@ -34,7 +34,8 @@ module.exports = {
   css: [
     { src: '~/assets/stylesheets/starpeace-bulma.sass', lang: 'sass' },
     { src: '~/assets/stylesheets/starpeace-vue.sass', lang: 'sass' },
-    { src: '~/assets/stylesheets/starpeace.sass', lang: 'sass' }
+    { src: '~/assets/stylesheets/starpeace.sass', lang: 'sass' },
+    { src: 'v-contextmenu', lang: 'css' }
   ],
   head: {
     title: 'STARPEACE',
@@ -62,7 +63,7 @@ module.exports = {
   build: {
     // analyze: true,
     publicPath: '/assets/',
-    vendor: ['fpsmeter', 'howler', 'interactjs', 'javascript-detect-element-resize', 'lodash', 'pixi.js', 'tinygradient'],
+    vendor: ['fpsmeter', 'howler', 'interactjs', 'javascript-detect-element-resize', 'lodash', 'pixi.js', 'tinygradient', 'v-contextmenu'],
     extend (config, { isDev, isClient, isServer }) {
       config.module.rules.push({
         test: /\.coffee$/,

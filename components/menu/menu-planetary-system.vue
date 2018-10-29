@@ -9,12 +9,8 @@
 </template>
 
 <script lang='coffee'>
-import BookmarkItem from '~/components/menu/bookmarks/bookmark-item.vue'
 
 export default
-  components:
-    'bookmark-item': BookmarkItem
-
   props:
     bookmark_manager: Object
     options: Object

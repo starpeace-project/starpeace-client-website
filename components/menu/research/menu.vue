@@ -28,7 +28,7 @@
 </template>
 
 <script lang='coffee'>
-import IndustryTypeIcon from '~/components/industry-type-icon.vue'
+import IndustryTypeIcon from '~/components/misc/industry-type-icon.vue'
 import IndustryType from '~/plugins/starpeace-client/industry/industry-type.coffee'
 
 organize_sections = (invention_manager, selected_category) ->

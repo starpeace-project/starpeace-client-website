@@ -2,13 +2,14 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 
 import {
   faBuilding,
+  faCircle,
   faComments,
   faEnvelope,
   faEye,
   faFolder as faFolderRegular,
   faQuestionCircle
 } from '@fortawesome/free-regular-svg-icons'
-library.add(faBuilding, faComments, faEnvelope, faEye, faFolderRegular, faQuestionCircle)
+library.add(faBuilding, faCircle, faComments, faEnvelope, faEye, faFolderRegular, faQuestionCircle)
 
 import {
   faAngleUp,

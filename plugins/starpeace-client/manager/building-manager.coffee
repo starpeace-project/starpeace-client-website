@@ -37,6 +37,7 @@ export default class BuildingManager
       found_position = false
       until found_position
         if can_place(x, y, info)
+          # console.log info
           found_position = true
           place_mock(x, y, info)
           chunk_key = "#{Math.floor(x/20)}x#{Math.floor(y/20)}"
