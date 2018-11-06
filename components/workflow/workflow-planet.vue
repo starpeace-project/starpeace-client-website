@@ -1,50 +1,66 @@
 <template lang='haml'>
-%ul
-  %li.planet-item{'v-for':'planet in planets_for_system()'}
-    .columns.planet-column.is-mobile.is-centered.is-marginless.is-vcentered
-      .column.is-narrow.is-hidden-mobile
-        %img.planet-image.starpeace-logo.logo-loading{'v-bind:src':"planet_animation_url(planet)", 'v-on:load':"$event.target.classList.remove('starpeace-logo', 'logo-loading')"}
+.content.is-marginless
+  .card.planet{'v-for':'planet in planets'}
+    .card-content
+      .level.is-mobile.planet-row
+        .level-left
+          .level-item
+            %img.planet-image.starpeace-logo.logo-loading{'v-bind:src':"planet_animation_url(planet)", 'v-on:load':"$event.target.classList.remove('starpeace-logo', 'logo-loading')"}
 
-      .column.planet-info
-        %h3 {{planet.name}}
-        .columns
-          .column.is-paddingless-mobile
-            %ul
-              %li
-                %span Population:
-                %span.planet-value {{0}}
-              %li
-                %span Investments:
-                %span.planet-value {{0}}
-              %li
-                %span Tycoons:
-                %span.planet-value {{0}}
-              %li
-                %span Online:
-                %span.planet-value {{0}}
+        .level-item.planet-item.info
+          .content
+            .planet-name {{planet.name}}
+            .planet-population.planet-info-row
+              %span Population:
+              %span.planet-value {{planet.population}}
+            .planet-investments.planet-info-row
+              %span Investments:
+              %span.planet-value
+                %money-text{'v-bind:value':'planet.investment_value'}
+            .planet-tycoons.planet-info-row
+              %span Tycoons:
+              %span.planet-value {{planet.tycoon_count}}
+            .planet-online.planet-info-row
+              %span Online:
+              %span.planet-value {{planet.online_count}}
 
-          .column.is-paddingless-mobile.planet-description {{planet_description(planet)}}
+        .level-item.planet-item.description
+          .content
+            .planet-description {{planet_description(planet)}}
 
-      .column.is-narrow.planet-select
-        %img.planet-image.starpeace-logo.logo-loading.is-hidden-tablet{'v-bind:src':"planet_animation_url(planet)", 'v-on:load':"$event.target.classList.remove('starpeace-logo', 'logo-loading')"}
-        %a.button.is-primary.is-medium.choose-system{'v-on:click.stop.prevent':'select_planet(planet.id)', href:'#'} Select
+        .level-right
+          .level-item
+            %a.button.is-primary.is-medium.is-outlined.workflow-action{'v-on:click.stop.prevent':'select_planet(planet)', 'v-bind:disabled':'!planet.enabled'} Select
+
 </template>
 
 <script lang='coffee'>
+import MoneyText from '~/components/misc/money-text.vue'
+
 export default
+  components:
+    'money-text': MoneyText
+
   props:
-    event_listener: Object
+    client: Object
     game_state: Object
-    planetary_metadata_manager: Object
+
+  computed:
+    planets: ->
+      if @game_state?.common_metadata?.state_counter? && @game_state.has_planets_metadata_fresh_for_current_system()
+        _.sortBy(_.values(@game_state.common_metadata.planets_metadata_by_system_id[@game_state.session_state.system_id]), (planet) -> planet.name)
+      else
+        []
 
   methods:
-    select_planet: (planet_id) ->
-      planet = @planetary_metadata_manager.planet_for_id(planet_id)
-      throw "unknown planet id <#{planetary_system_id}>" unless planet?
-
-      @game_state.set_planet(planet)
-      @event_listener.notify_planet_listeners()
-      window.document.title = "#{@game_state.current_planet.name} - STARPEACE" if window?.document?
+    select_planet: (planet) ->
+      return unless planet.enabled
+      if @game_state.session_state.identity.is_tycoon()
+        corporation = @game_state.session_state.corporation_metadata_for_system_and_planet_id(planet.system_id, planet.id)
+        if corporation?
+          @client.select_corporation(corporation)
+          return
+      @client.select_planet_id(planet.id)
 
     planet_animation_url: (planet) -> "https://cdn.starpeace.io/animations/planet.#{planet.id}.animation.gif"
     planet_description: (planet) ->
@@ -56,71 +72,60 @@ export default
       planet_modifier = 'tropical ' if planet.moisture_baseline > 50 && planet.temperature_baseline > 50
 
       "#{size} sized #{planet_modifier}planet with #{seasons} seasons"
-
-    planets_for_system: -> @game_state?.current_planetary_system?.planets || []
 </script>
 
 <style lang='sass' scoped>
-@import '~bulma/sass/utilities/_all'
+@import '~assets/stylesheets/starpeace-variables'
 
-.planet-image
-  +mobile
-    width: 20vw
+.workflow-action
+  &.button
+    min-width: 7rem
 
-  +tablet
-    width: 7.5rem
-
-  &.starpeace-logo
-    +mobile
-      background-size: 20vw
-      height: 20vw
-      width: 20vw
-
-    +tablet
-      background-size: 7.5rem
-      height: 7.5rem
-      width: 7.5rem
-
-.planet-description
-  border: 0
-  font-size: 1rem
-  vertical-align: top
-
-  +tablet
-    max-width: 10rem
-    padding-left: 1.5rem
-
-.planet-select
-  max-width: 10rem
-  padding-left: 1rem
-  text-align: center
-
-  +tablet
-    width: 10rem
-
-  .planet-image
-    padding-bottom: 2rem
-
-.planet-item
-  background-color: opacify(lighten(#395950, 1%), .3)
-  border: 1px solid rgba(110, 161, 146, .2)
-  padding-bottom: .25rem
-
-  &:not(:first-child)
-    margin-top: .25rem
-
-.planet-info
-  color: #fff
-  font-size: 1rem
-
-  li
-    border-bottom: 1px solid #CCC
+.card
+  &.planet
+    background-color: opacify(lighten($sp-primary-bg, 1%), .3)
+    border: 1px solid rgba(110, 161, 146, .2)
     padding-bottom: .25rem
 
-    &:not(:last-child)
-      margin-bottom: .25rem
+    &:not(:first-child)
+      margin-top: .25rem
 
-  .planet-value
-    float: right
+    > .card-content
+      padding: 1rem
 
+    .planet-row
+      min-height: 5rem
+
+      .planet-image
+        background-size: 7.5rem
+        height: 7.5rem
+        width: 7.5rem
+
+      .planet-item
+        color: #fff
+
+        &.info
+          margin-left: 1rem
+          justify-content: left
+
+        &.description
+          padding-left: 1rem
+          margin-right: 2rem
+          max-width: 14rem
+
+        > .content
+          width: 100%
+
+        .planet-info-row
+          border-bottom: 1px solid darken($sp-primary, 10%)
+          padding-bottom: .25rem
+          margin-bottom: .25rem
+
+        .planet-name
+          font-size: 1.5rem
+          font-weight: 1000
+          margin-bottom: .25rem
+
+        .planet-value
+          margin-left: .5rem
 </style>

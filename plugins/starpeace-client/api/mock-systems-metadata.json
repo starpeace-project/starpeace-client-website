@@ -1,0 +1,45 @@
+[
+  {
+    "id": "system-1",
+    "name": "Alpha Stella",
+    "enabled": true,
+    "population": 0,
+    "online_count": 0,
+    "planets_metadata": [
+      {
+        "id": "planet-1",
+        "name": "Mercury",
+        "enabled": true
+      },
+      {
+        "id": "planet-2",
+        "name": "Venus",
+        "enabled": true
+      },
+      {
+        "id": "planet-3",
+        "name": "Neptune",
+        "enabled": false
+      }
+    ]
+  },
+  {
+    "id": "system-2",
+    "name": "Stellae Beta",
+    "enabled": false,
+    "population": 0,
+    "online_count": 0,
+    "planets_metadata": [
+      {
+        "id": "planet-4",
+        "name": "Mars",
+        "enabled": true
+      },
+      {
+        "id": "planet-5",
+        "name": "Jupiter",
+        "enabled": true
+      }
+    ]
+  }
+]

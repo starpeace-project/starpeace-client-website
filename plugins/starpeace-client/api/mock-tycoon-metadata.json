@@ -1,0 +1,38 @@
+{
+  "tycoon-id-1": {
+    "id": "tycoon-id-1",
+    "name": "Tycoon Name",
+    "corporations": [
+      {
+        "id": "corp-id-1",
+        "name": "Corporation A",
+        "system_id": "system-1",
+        "planet_id": "planet-1",
+        "cash": 100000000,
+        "cashflow": 10000,
+        "company_count": 5,
+        "building_count": 0
+      },
+      {
+        "id": "corp-id-2",
+        "name": "Corporation B",
+        "system_id": "system-1",
+        "planet_id": "planet-3",
+        "cash": 0,
+        "cashflow": 0,
+        "company_count": 0,
+        "building_count": 0
+      },
+      {
+        "id": "corp-id-3",
+        "name": "Corporation C",
+        "system_id": "system-2",
+        "planet_id": "planet-4",
+        "cash": 0,
+        "cashflow": 0,
+        "company_count": 0,
+        "building_count": 0
+      }
+    ]
+  }
+}

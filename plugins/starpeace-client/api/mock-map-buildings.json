@@ -1,0 +1,3003 @@
+{
+  "9x4": [
+    {
+      "id": "cf04f243-e3ff-20fb-c7c1-472cdc9657cc",
+      "tycoon_id": "tycoon-id-4",
+      "key": "dis.car.industry",
+      "x": 195,
+      "y": 94
+    },
+    {
+      "id": "ea323f12-e039-5207-a7c0-29a7cc4d6b6b",
+      "tycoon_id": "tycoon-id-2",
+      "key": "dis.car.store",
+      "x": 199,
+      "y": 94
+    },
+    {
+      "id": "3da69670-e2c1-c8a5-d175-e033a9cb465a",
+      "tycoon_id": "tycoon-id-2",
+      "key": "dis.construction.industry",
+      "x": 195,
+      "y": 98
+    },
+    {
+      "id": "f80272eb-cf0a-9274-34e6-25587b980ce8",
+      "tycoon_id": "tycoon-id-2",
+      "key": "dis.elect.comp.industry",
+      "x": 199,
+      "y": 98
+    }
+  ],
+  "10x4": [
+    {
+      "id": "19dceee4-93bb-12ca-2b74-aac4c67bc5a1",
+      "tycoon_id": "tycoon-id-2",
+      "key": "dis.bank",
+      "x": 201,
+      "y": 94
+    },
+    {
+      "id": "b21aa2e8-6608-c90b-b895-98652e129cfc",
+      "tycoon_id": "tycoon-id-3",
+      "key": "dis.bar",
+      "x": 203,
+      "y": 94
+    },
+    {
+      "id": "da52c146-97b4-adf6-43aa-0392befe6d1f",
+      "tycoon_id": "tycoon-id-2",
+      "key": "dis.book.store",
+      "x": 205,
+      "y": 94
+    },
+    {
+      "id": "952d76b7-b5f0-d941-5aab-f92cfa1ea7bf",
+      "tycoon_id": "tycoon-id-4",
+      "key": "dis.chemical.industry",
+      "x": 215,
+      "y": 95
+    },
+    {
+      "id": "d3ef9b90-b07f-4b03-d625-9ce42cf25321",
+      "tycoon_id": "tycoon-id-1",
+      "key": "dis.bm.industry",
+      "x": 209,
+      "y": 96
+    },
+    {
+      "id": "9d86abdf-b011-fcea-6230-bdbf3656a4a0",
+      "tycoon_id": "tycoon-id-3",
+      "key": "dis.elect.comp.industry.small",
+      "x": 203,
+      "y": 98
+    },
+    {
+      "id": "2d9a9490-2712-2e7b-ce92-5640fe538e3d",
+      "tycoon_id": "tycoon-id-2",
+      "key": "dis.textile.industry",
+      "x": 214,
+      "y": 99
+    },
+    {
+      "id": "05174ec7-f436-9d76-8428-8f51ade9386d",
+      "tycoon_id": "tycoon-id-3",
+      "key": "dis.textile.industry.small",
+      "x": 218,
+      "y": 99
+    }
+  ],
+  "11x4": [
+    {
+      "id": "ae792e1c-e43d-989d-bd73-9fcee7ba2a48",
+      "tycoon_id": "tycoon-id-1",
+      "key": "dis.chemical.industry.small",
+      "x": 220,
+      "y": 95
+    },
+    {
+      "id": "373a2604-cbc3-5eb2-2055-aabb9187b0d4",
+      "tycoon_id": "tycoon-id-5",
+      "key": "dis.clothes.industry",
+      "x": 225,
+      "y": 95
+    },
+    {
+      "id": "c932059c-5634-893e-c1d9-3fc5b74301e9",
+      "tycoon_id": "tycoon-id-5",
+      "key": "dis.clothes.industry.small",
+      "x": 229,
+      "y": 95
+    },
+    {
+      "id": "5f18d122-b20d-cda2-c963-faebc949d34d",
+      "tycoon_id": "tycoon-id-2",
+      "key": "dis.clothes.store",
+      "x": 233,
+      "y": 95
+    },
+    {
+      "id": "840a91ff-37d7-22e6-7fc9-d7f25b26023c",
+      "tycoon_id": "tycoon-id-3",
+      "key": "dis.computing",
+      "x": 235,
+      "y": 95
+    }
+  ],
+  "9x5": [
+    {
+      "id": "58108e05-ec1a-118d-d5d2-ce84790fd93a",
+      "tycoon_id": "tycoon-id-3",
+      "key": "dis.farm",
+      "x": 195,
+      "y": 105
+    },
+    {
+      "id": "6c4a6e8a-f05d-b9dc-8875-fafba72104e9",
+      "tycoon_id": "tycoon-id-5",
+      "key": "dis.school",
+      "x": 195,
+      "y": 108
+    },
+    {
+      "id": "3419cc5a-f50b-1ac8-e8dd-e0820fd5f080",
+      "tycoon_id": "tycoon-id-2",
+      "key": "dis.townhall",
+      "x": 198,
+      "y": 108
+    },
+    {
+      "id": "929a78dd-dee4-c02e-70ef-4d4253cea796",
+      "tycoon_id": "tycoon-id-5",
+      "key": "dis.metal.industry.small",
+      "x": 195,
+      "y": 114
+    },
+    {
+      "id": "3b1e557a-ee0f-5e0c-8017-26ff149fe121",
+      "tycoon_id": "tycoon-id-3",
+      "key": "dis.movie",
+      "x": 199,
+      "y": 114
+    },
+    {
+      "id": "3d0f2654-0da8-fc93-8007-7fde6734e72e",
+      "tycoon_id": "tycoon-id-4",
+      "key": "dis.hi.res.a.empty",
+      "x": 195,
+      "y": 116
+    },
+    {
+      "id": "566b3521-1640-5c9d-ccab-ea14c99128ba",
+      "tycoon_id": "tycoon-id-4",
+      "key": "dis.hi.res.a",
+      "x": 197,
+      "y": 116
+    },
+    {
+      "id": "e6078daa-cc6b-ca9f-236b-a388db524f44",
+      "tycoon_id": "tycoon-id-5",
+      "key": "dis.hi.res.b.empty",
+      "x": 199,
+      "y": 116
+    },
+    {
+      "id": "6aed2272-4355-494c-d8e7-29b9b88f3356",
+      "tycoon_id": "tycoon-id-4",
+      "key": "dis.mi.res.a.empty",
+      "x": 195,
+      "y": 118
+    },
+    {
+      "id": "72419ca7-c804-25f6-576f-9b4ecf9e7989",
+      "tycoon_id": "tycoon-id-3",
+      "key": "dis.mi.res.a",
+      "x": 197,
+      "y": 118
+    },
+    {
+      "id": "6bd0ce81-5c72-e459-4a9e-533e5bb84484",
+      "tycoon_id": "tycoon-id-3",
+      "key": "dis.mi.res.b.empty",
+      "x": 199,
+      "y": 118
+    }
+  ],
+  "10x5": [
+    {
+      "id": "beb94182-c5c8-846f-6dab-b51d5b9d76bf",
+      "tycoon_id": "tycoon-id-3",
+      "key": "dis.farm.small",
+      "x": 200,
+      "y": 105
+    },
+    {
+      "id": "5bffc625-b6a6-8585-c7ff-e42cc3479a6e",
+      "tycoon_id": "tycoon-id-4",
+      "key": "dis.food.store",
+      "x": 203,
+      "y": 105
+    },
+    {
+      "id": "14567e3c-9481-f04b-1549-027c937585a3",
+      "tycoon_id": "tycoon-id-3",
+      "key": "dis.funeral",
+      "x": 205,
+      "y": 105
+    },
+    {
+      "id": "ea526a83-8503-24b5-663e-8e099250a3a9",
+      "tycoon_id": "tycoon-id-2",
+      "key": "dis.furniture.industry",
+      "x": 208,
+      "y": 105
+    },
+    {
+      "id": "32f1f7a8-d9bc-b306-dae0-f8b7dd02fdb2",
+      "tycoon_id": "tycoon-id-4",
+      "key": "dis.furniture.store",
+      "x": 211,
+      "y": 105
+    },
+    {
+      "id": "c82b9758-18b2-954d-c351-e1e6a5376319",
+      "tycoon_id": "tycoon-id-1",
+      "key": "dis.hospital",
+      "x": 214,
+      "y": 105
+    },
+    {
+      "id": "701c7d5c-5326-84ae-db3d-5f5fbfed56ca",
+      "tycoon_id": "tycoon-id-3",
+      "key": "dis.hq.1",
+      "x": 217,
+      "y": 105
+    },
+    {
+      "id": "04e7a33e-a03e-a6af-0e4c-4f2e8f348974",
+      "tycoon_id": "tycoon-id-1",
+      "key": "dis.tradecenter",
+      "x": 200,
+      "y": 108
+    },
+    {
+      "id": "4c3166f8-8c8f-75f5-2a41-5b764ff1aeb9",
+      "tycoon_id": "tycoon-id-3",
+      "key": "dis.hha.industry",
+      "x": 204,
+      "y": 109
+    },
+    {
+      "id": "70508efa-7e4e-ea2e-6355-f3e626868311",
+      "tycoon_id": "tycoon-id-1",
+      "key": "dis.hha.industry.small",
+      "x": 208,
+      "y": 109
+    },
+    {
+      "id": "9d6d8185-7cda-0c3b-5c60-2d4a76682c51",
+      "tycoon_id": "tycoon-id-3",
+      "key": "dis.hha.store",
+      "x": 212,
+      "y": 109
+    },
+    {
+      "id": "6b1d6868-64fc-e2d0-dcca-f93b096abd95",
+      "tycoon_id": "tycoon-id-3",
+      "key": "dis.legal.services",
+      "x": 214,
+      "y": 109
+    },
+    {
+      "id": "efb91369-9008-fff5-e27d-248e10231681",
+      "tycoon_id": "tycoon-id-3",
+      "key": "dis.liquor.industry",
+      "x": 218,
+      "y": 109
+    },
+    {
+      "id": "65e91a95-1f26-46d3-6567-f4df02326497",
+      "tycoon_id": "tycoon-id-1",
+      "key": "dis.office.a.empty",
+      "x": 201,
+      "y": 114
+    },
+    {
+      "id": "a88522bf-4b91-1b3f-ab1c-42a971b55803",
+      "tycoon_id": "tycoon-id-5",
+      "key": "dis.office.a",
+      "x": 203,
+      "y": 114
+    },
+    {
+      "id": "334b92e0-d74e-31a5-5782-0ee7b3b44e89",
+      "tycoon_id": "tycoon-id-1",
+      "key": "dis.office.b.empty",
+      "x": 205,
+      "y": 114
+    },
+    {
+      "id": "7f184c13-3a23-8f5a-61e8-449fe90384f6",
+      "tycoon_id": "tycoon-id-3",
+      "key": "dis.office.b",
+      "x": 207,
+      "y": 114
+    },
+    {
+      "id": "41b77464-d93c-78d2-778e-aa03446c7b23",
+      "tycoon_id": "tycoon-id-5",
+      "key": "dis.office.c.empty",
+      "x": 209,
+      "y": 114
+    },
+    {
+      "id": "21473e09-f210-eb23-0375-def7280f2af3",
+      "tycoon_id": "tycoon-id-5",
+      "key": "dis.office.c",
+      "x": 212,
+      "y": 114
+    },
+    {
+      "id": "b431f154-3e4b-e471-f583-08e4c4658fec",
+      "tycoon_id": "tycoon-id-4",
+      "key": "dis.mine",
+      "x": 217,
+      "y": 115
+    },
+    {
+      "id": "6d3538fe-8a91-90be-662c-2a4343cbdeee",
+      "tycoon_id": "tycoon-id-4",
+      "key": "dis.hi.res.b",
+      "x": 201,
+      "y": 116
+    },
+    {
+      "id": "def90e5b-183f-93e2-788a-31fc981a4aee",
+      "tycoon_id": "tycoon-id-1",
+      "key": "dis.hi.res.c.empty",
+      "x": 203,
+      "y": 116
+    },
+    {
+      "id": "a15666ce-f91b-029f-4be3-5b1060d200c9",
+      "tycoon_id": "tycoon-id-3",
+      "key": "dis.hi.res.c",
+      "x": 205,
+      "y": 116
+    },
+    {
+      "id": "8305b3a8-af58-2420-5012-e217a798b955",
+      "tycoon_id": "tycoon-id-2",
+      "key": "dis.hi.res.d.empty",
+      "x": 207,
+      "y": 116
+    },
+    {
+      "id": "b1ff5105-ae9a-a081-50a7-33acd3ac5935",
+      "tycoon_id": "tycoon-id-1",
+      "key": "dis.hi.res.d",
+      "x": 209,
+      "y": 116
+    },
+    {
+      "id": "16c4adfd-9dde-a0e0-9545-fcc186bdaff3",
+      "tycoon_id": "tycoon-id-4",
+      "key": "dis.lo.cost.hi.res",
+      "x": 212,
+      "y": 116
+    },
+    {
+      "id": "47dafdc0-259b-632c-ca55-7ffac9fead38",
+      "tycoon_id": "tycoon-id-2",
+      "key": "dis.lo.cost.mi.res",
+      "x": 214,
+      "y": 117
+    },
+    {
+      "id": "f072aaaf-cb80-617a-3be2-56610e499115",
+      "tycoon_id": "tycoon-id-5",
+      "key": "dis.lo.res.a.empty",
+      "x": 216,
+      "y": 117
+    },
+    {
+      "id": "e4118a7f-9400-38ca-c911-ebc06c1e9033",
+      "tycoon_id": "tycoon-id-3",
+      "key": "dis.lo.res.a",
+      "x": 218,
+      "y": 117
+    },
+    {
+      "id": "5663711d-6bd3-29e0-5252-6f596edfb560",
+      "tycoon_id": "tycoon-id-2",
+      "key": "dis.mi.res.b",
+      "x": 201,
+      "y": 118
+    },
+    {
+      "id": "9648b11f-36c5-3317-ee7d-e532096d66af",
+      "tycoon_id": "tycoon-id-2",
+      "key": "dis.mi.res.c.empty",
+      "x": 204,
+      "y": 119
+    },
+    {
+      "id": "15413ce1-a5bb-f3bf-8b0d-c21400eca426",
+      "tycoon_id": "tycoon-id-4",
+      "key": "dis.mi.res.c",
+      "x": 207,
+      "y": 119
+    },
+    {
+      "id": "bbb2f407-7497-c6b8-b153-ab9b424dd422",
+      "tycoon_id": "tycoon-id-4",
+      "key": "dis.mi.res.d.empty",
+      "x": 212,
+      "y": 119
+    },
+    {
+      "id": "f84ad3ac-c6ba-d14d-35d1-c678944aff4b",
+      "tycoon_id": "tycoon-id-2",
+      "key": "dis.mi.res.d",
+      "x": 214,
+      "y": 119
+    }
+  ],
+  "11x5": [
+    {
+      "id": "fa5b6495-4bf4-0a97-2da9-2f7c762f640b",
+      "tycoon_id": "tycoon-id-3",
+      "key": "dis.hq.2",
+      "x": 220,
+      "y": 105
+    },
+    {
+      "id": "1283c535-9ebc-36fd-de35-60a9cefea3c0",
+      "tycoon_id": "tycoon-id-1",
+      "key": "dis.hq.3",
+      "x": 223,
+      "y": 105
+    },
+    {
+      "id": "b87b18fc-13fd-7631-7133-6f9e0fccc27a",
+      "tycoon_id": "tycoon-id-3",
+      "key": "dis.hq.4",
+      "x": 226,
+      "y": 105
+    },
+    {
+      "id": "e7db7397-a8f1-2882-1c5d-06166ff5d72e",
+      "tycoon_id": "tycoon-id-1",
+      "key": "dis.hq.5",
+      "x": 229,
+      "y": 105
+    },
+    {
+      "id": "34f35631-dd4c-c8c2-7e6b-94ec32c4f71e",
+      "tycoon_id": "tycoon-id-2",
+      "key": "dis.park.small",
+      "x": 232,
+      "y": 105
+    },
+    {
+      "id": "e06c3e9e-348e-4a00-7109-e1e423562058",
+      "tycoon_id": "tycoon-id-1",
+      "key": "dis.police",
+      "x": 234,
+      "y": 105
+    },
+    {
+      "id": "141279f4-3265-8b3f-7225-c5a8ef62533a",
+      "tycoon_id": "tycoon-id-4",
+      "key": "dis.heavy.industry",
+      "x": 222,
+      "y": 109
+    },
+    {
+      "id": "6537991c-6e27-95cb-5994-22971adab45d",
+      "tycoon_id": "tycoon-id-1",
+      "key": "dis.market.a",
+      "x": 226,
+      "y": 109
+    },
+    {
+      "id": "c737588e-8a17-2563-4991-cc3e1aa31807",
+      "tycoon_id": "tycoon-id-5",
+      "key": "dis.market.b",
+      "x": 229,
+      "y": 109
+    },
+    {
+      "id": "13a9e9b7-378f-e787-2e96-384490791d41",
+      "tycoon_id": "tycoon-id-2",
+      "key": "dis.metal.industry",
+      "x": 234,
+      "y": 109
+    },
+    {
+      "id": "c2c7bac6-2a1c-657b-bd36-5d34dccc0788",
+      "tycoon_id": "tycoon-id-5",
+      "key": "dis.mine.small",
+      "x": 222,
+      "y": 115
+    },
+    {
+      "id": "47a8dc34-25b1-3f85-04aa-79fa7d9b5693",
+      "tycoon_id": "tycoon-id-5",
+      "key": "dis.food.proc",
+      "x": 227,
+      "y": 115
+    },
+    {
+      "id": "aa5a152f-5a94-5564-7571-c9a045878092",
+      "tycoon_id": "tycoon-id-5",
+      "key": "dis.food.proc.small",
+      "x": 234,
+      "y": 115
+    },
+    {
+      "id": "97fd0e47-a847-b5d4-89b0-6f029f75c533",
+      "tycoon_id": "tycoon-id-2",
+      "key": "dis.lo.cost.lo.res",
+      "x": 229,
+      "y": 116
+    },
+    {
+      "id": "abdf524a-4f53-5e37-32af-7cd4c1b71a91",
+      "tycoon_id": "tycoon-id-1",
+      "key": "dis.lo.res.b.empty",
+      "x": 220,
+      "y": 117
+    },
+    {
+      "id": "15ef8432-578d-db64-f717-3cc886fb793f",
+      "tycoon_id": "tycoon-id-2",
+      "key": "dis.lo.res.b",
+      "x": 222,
+      "y": 117
+    },
+    {
+      "id": "e248a5bc-b18a-2114-ea20-e64407284b3f",
+      "tycoon_id": "tycoon-id-3",
+      "key": "dis.lo.res.c.empty",
+      "x": 224,
+      "y": 117
+    },
+    {
+      "id": "52f6f331-c456-341b-8aff-f3b9c692c38f",
+      "tycoon_id": "tycoon-id-1",
+      "key": "dis.lo.res.c",
+      "x": 226,
+      "y": 117
+    },
+    {
+      "id": "d1f2a588-8712-db41-7ac3-a7aecb3860cf",
+      "tycoon_id": "tycoon-id-3",
+      "key": "dis.lo.res.d.empty",
+      "x": 232,
+      "y": 117
+    },
+    {
+      "id": "e56fe182-172c-487b-ce67-f88d1823e468",
+      "tycoon_id": "tycoon-id-3",
+      "key": "dis.lo.res.d",
+      "x": 234,
+      "y": 117
+    },
+    {
+      "id": "0eeaf2eb-2ed6-c227-b1ac-bd6865cf7000",
+      "tycoon_id": "tycoon-id-5",
+      "key": "dis.mi.res.e.empty",
+      "x": 229,
+      "y": 119
+    }
+  ],
+  "9x6": [
+    {
+      "id": "a5c0819a-de84-d031-9ee7-0956cf95e082",
+      "tycoon_id": "tycoon-id-4",
+      "key": "dis.mi.res.e",
+      "x": 195,
+      "y": 123
+    },
+    {
+      "id": "73b53132-e2f4-48e2-e6fd-3006e3b7d64b",
+      "tycoon_id": "tycoon-id-3",
+      "key": "dis.mi.res.f.empty",
+      "x": 198,
+      "y": 123
+    },
+    {
+      "id": "3f0f6c09-8c35-78cf-2971-79ed679b0542",
+      "tycoon_id": "tycoon-id-1",
+      "key": "dis.lumber.2",
+      "x": 198,
+      "y": 138
+    }
+  ],
+  "10x6": [
+    {
+      "id": "988bbf01-e8ca-c524-13ad-fdc31acbcaeb",
+      "tycoon_id": "tycoon-id-3",
+      "key": "dis.mi.res.f",
+      "x": 200,
+      "y": 123
+    },
+    {
+      "id": "9c8ac363-1bc2-9caa-f95a-9a245e859094",
+      "tycoon_id": "tycoon-id-1",
+      "key": "dis.restaurant.a",
+      "x": 202,
+      "y": 123
+    },
+    {
+      "id": "0d106d9f-743b-0d16-97c6-e3c1c4f9b35f",
+      "tycoon_id": "tycoon-id-2",
+      "key": "dis.restaurant.b",
+      "x": 203,
+      "y": 123
+    },
+    {
+      "id": "b3625b10-83a9-6241-934b-e051d8ca4e67",
+      "tycoon_id": "tycoon-id-5",
+      "key": "dis.tv.antenna",
+      "x": 205,
+      "y": 123
+    },
+    {
+      "id": "30c4d602-31f3-b58a-cc96-ec38b5b44491",
+      "tycoon_id": "tycoon-id-5",
+      "key": "dis.tv.station",
+      "x": 208,
+      "y": 123
+    },
+    {
+      "id": "ffac2f5c-553d-6fbb-1fc3-3525cfc9703d",
+      "tycoon_id": "tycoon-id-4",
+      "key": "dis.lumber.0",
+      "x": 218,
+      "y": 128
+    },
+    {
+      "id": "0bc15060-03ef-42db-9029-cfba6b4b05f5",
+      "tycoon_id": "tycoon-id-3",
+      "key": "dis.lumber.3",
+      "x": 206,
+      "y": 138
+    },
+    {
+      "id": "135e37a1-a180-a440-7d12-eafc13a0ea42",
+      "tycoon_id": "tycoon-id-2",
+      "key": "dis.lumber.4",
+      "x": 218,
+      "y": 138
+    }
+  ],
+  "11x6": [
+    {
+      "id": "b0a4e3d2-ec76-0917-31e0-76f5761424b6",
+      "tycoon_id": "tycoon-id-4",
+      "key": "dis.lumber.1",
+      "x": 226,
+      "y": 128
+    },
+    {
+      "id": "c40e7c79-b242-3609-bdd5-cd3d1d023b87",
+      "tycoon_id": "tycoon-id-4",
+      "key": "dis.lumber.5",
+      "x": 226,
+      "y": 138
+    }
+  ],
+  "9x7": [
+    {
+      "id": "0c82209d-26c9-f2a4-7371-e01574247052",
+      "tycoon_id": "tycoon-id-1",
+      "key": "dis.lumber.6",
+      "x": 198,
+      "y": 148
+    },
+    {
+      "id": "0fd1f5f7-643b-3c0e-7357-bf2f418ff442",
+      "tycoon_id": "tycoon-id-5",
+      "key": "generic.capitol",
+      "x": 197,
+      "y": 157
+    }
+  ],
+  "10x7": [
+    {
+      "id": "bee9b2e8-09e4-f334-0b67-83e1bb5828ef",
+      "tycoon_id": "tycoon-id-2",
+      "key": "dis.lumber.7",
+      "x": 218,
+      "y": 148
+    },
+    {
+      "id": "36392568-67e2-6f3a-e8bf-64c3eddd8aaa",
+      "tycoon_id": "tycoon-id-3",
+      "key": "generic.college",
+      "x": 205,
+      "y": 159
+    }
+  ],
+  "11x7": [
+    {
+      "id": "c2b7286f-b840-9130-dddd-dc85fffedb5a",
+      "tycoon_id": "tycoon-id-5",
+      "key": "dis.toy.industry",
+      "x": 226,
+      "y": 148
+    },
+    {
+      "id": "b8031af2-9d57-486c-e220-a08504432af4",
+      "tycoon_id": "tycoon-id-4",
+      "key": "dis.toy.store",
+      "x": 229,
+      "y": 148
+    }
+  ],
+  "9x8": [
+    {
+      "id": "6fd19844-463f-317a-2273-1d3e294dcf90",
+      "tycoon_id": "tycoon-id-4",
+      "key": "generic.dump",
+      "x": 195,
+      "y": 165
+    },
+    {
+      "id": "2b2bf9c4-8c12-8552-55d4-4b2e20faab3c",
+      "tycoon_id": "tycoon-id-5",
+      "key": "generic.park.medium",
+      "x": 195,
+      "y": 175
+    },
+    {
+      "id": "7f426181-3a1a-5874-37c0-14d4e630a730",
+      "tycoon_id": "tycoon-id-2",
+      "key": "generic.construction.4",
+      "x": 195,
+      "y": 179
+    }
+  ],
+  "10x8": [
+    {
+      "id": "fb2bfcce-15d9-c71a-d947-d94464ebb3bc",
+      "tycoon_id": "tycoon-id-2",
+      "key": "generic.jail",
+      "x": 200,
+      "y": 165
+    },
+    {
+      "id": "e5e27067-5b35-e46e-3442-ec77750a6f79",
+      "tycoon_id": "tycoon-id-5",
+      "key": "generic.museum",
+      "x": 205,
+      "y": 165
+    },
+    {
+      "id": "92ca0d54-23fc-bb24-a97f-9d301f36ed1f",
+      "tycoon_id": "tycoon-id-2",
+      "key": "generic.park.alien.a",
+      "x": 213,
+      "y": 165
+    },
+    {
+      "id": "0f008647-f883-3121-7bff-bdccf644d45f",
+      "tycoon_id": "tycoon-id-5",
+      "key": "generic.park.alien.b",
+      "x": 216,
+      "y": 165
+    },
+    {
+      "id": "6a85086a-b523-a06c-bbd5-0d47dd63bbc8",
+      "tycoon_id": "tycoon-id-3",
+      "key": "generic.park.alien.c",
+      "x": 219,
+      "y": 165
+    },
+    {
+      "id": "0322655e-89ae-a424-41e9-6baffbccaf38",
+      "tycoon_id": "tycoon-id-2",
+      "key": "generic.park.small",
+      "x": 200,
+      "y": 175
+    },
+    {
+      "id": "da517de3-bb15-612e-87b4-df8fae1a0314",
+      "tycoon_id": "tycoon-id-5",
+      "key": "generic.portal.in",
+      "x": 204,
+      "y": 175
+    },
+    {
+      "id": "77bc7d06-458e-dd49-23c9-72c2801a01a3",
+      "tycoon_id": "tycoon-id-3",
+      "key": "generic.portal.out",
+      "x": 208,
+      "y": 175
+    },
+    {
+      "id": "0669cf9d-0032-a374-5bfb-4dc78b220c7c",
+      "tycoon_id": "tycoon-id-4",
+      "key": "generic.statue",
+      "x": 214,
+      "y": 175
+    },
+    {
+      "id": "44cc25af-f624-1efb-a0eb-a2b4f4b3fa56",
+      "tycoon_id": "tycoon-id-4",
+      "key": "generic.tennis",
+      "x": 218,
+      "y": 175
+    }
+  ],
+  "11x8": [
+    {
+      "id": "2a6c6ce1-742d-0f06-54d6-1498cad9c09c",
+      "tycoon_id": "tycoon-id-3",
+      "key": "generic.park.alien.d",
+      "x": 222,
+      "y": 165
+    },
+    {
+      "id": "2598f26b-d04a-d732-e5e3-c638a07fd041",
+      "tycoon_id": "tycoon-id-1",
+      "key": "generic.park.central",
+      "x": 229,
+      "y": 169
+    },
+    {
+      "id": "f7c3e106-03e4-02a7-f0f5-d5e84cd26f23",
+      "tycoon_id": "tycoon-id-4",
+      "key": "generic.tower",
+      "x": 222,
+      "y": 175
+    },
+    {
+      "id": "7c4216a0-cf65-71c7-a734-c7472f90fb8e",
+      "tycoon_id": "tycoon-id-3",
+      "key": "generic.construction.1",
+      "x": 226,
+      "y": 175
+    },
+    {
+      "id": "36317da4-1e77-a9fa-939f-8b25e963ef51",
+      "tycoon_id": "tycoon-id-3",
+      "key": "generic.construction.2",
+      "x": 228,
+      "y": 175
+    },
+    {
+      "id": "a42b2f94-a926-63cd-28f0-7cce21536371",
+      "tycoon_id": "tycoon-id-1",
+      "key": "generic.construction.3",
+      "x": 233,
+      "y": 175
+    }
+  ],
+  "9x9": [
+    {
+      "id": "141e4b62-e224-2686-7b4d-85b711bb7066",
+      "tycoon_id": "tycoon-id-1",
+      "key": "generic.construction.5",
+      "x": 195,
+      "y": 185
+    },
+    {
+      "id": "45167dab-d98f-785d-6a37-49e92848eb1c",
+      "tycoon_id": "tycoon-id-1",
+      "key": "generic.mausoleum.paradigm",
+      "x": 195,
+      "y": 193
+    },
+    {
+      "id": "5ae578d1-fc7c-f464-9b24-8981b9df2838",
+      "tycoon_id": "tycoon-id-1",
+      "key": "generic.warehouse.ore",
+      "x": 195,
+      "y": 198
+    }
+  ],
+  "10x9": [
+    {
+      "id": "1b6d4e96-ba0d-c2ac-0055-ca9d1cecd965",
+      "tycoon_id": "tycoon-id-2",
+      "key": "generic.construction.6",
+      "x": 201,
+      "y": 186
+    },
+    {
+      "id": "0e91fbc0-f41d-a85b-7425-dc2a118a3506",
+      "tycoon_id": "tycoon-id-5",
+      "key": "generic.construction.7",
+      "x": 208,
+      "y": 187
+    },
+    {
+      "id": "c1daec6c-5eec-f4e5-a02d-d6bbd119cb2b",
+      "tycoon_id": "tycoon-id-2",
+      "key": "generic.mausoleum.construction",
+      "x": 219,
+      "y": 189
+    },
+    {
+      "id": "f1a9e8d9-77a2-6500-9794-77c5399526de",
+      "tycoon_id": "tycoon-id-1",
+      "key": "generic.warehouse.chemical",
+      "x": 200,
+      "y": 195
+    },
+    {
+      "id": "fb17f03c-762a-3b5b-e387-7f42d9748abf",
+      "tycoon_id": "tycoon-id-5",
+      "key": "generic.warehouse.cold",
+      "x": 205,
+      "y": 195
+    },
+    {
+      "id": "68970569-6ab0-f780-9e19-a81ccfcc35bd",
+      "tycoon_id": "tycoon-id-4",
+      "key": "generic.warehouse.cold.super",
+      "x": 215,
+      "y": 195
+    }
+  ],
+  "11x9": [
+    {
+      "id": "e2ea8f3a-e60d-2c2c-d131-27b2663b022f",
+      "tycoon_id": "tycoon-id-4",
+      "key": "generic.mausoleum.legend",
+      "x": 228,
+      "y": 189
+    },
+    {
+      "id": "6fd320c0-e34f-1f75-de6a-4d48a7e62173",
+      "tycoon_id": "tycoon-id-2",
+      "key": "generic.warehouse.export",
+      "x": 220,
+      "y": 195
+    },
+    {
+      "id": "ed69c988-a2fe-1bd6-165b-0664c2a4b519",
+      "tycoon_id": "tycoon-id-4",
+      "key": "generic.warehouse.fabric",
+      "x": 225,
+      "y": 195
+    },
+    {
+      "id": "bbef6227-5cd1-33d3-0fc6-d8137b7be612",
+      "tycoon_id": "tycoon-id-2",
+      "key": "generic.warehouse.import",
+      "x": 234,
+      "y": 195
+    }
+  ],
+  "9x10": [
+    {
+      "id": "0ceb9b27-f4eb-7590-46a6-fe8676e9549f",
+      "tycoon_id": "tycoon-id-4",
+      "key": "generic.warehouse.univeral",
+      "x": 196,
+      "y": 206
+    },
+    {
+      "id": "bf9d69d2-5eff-cc1b-9b44-32526e621d13",
+      "tycoon_id": "tycoon-id-2",
+      "key": "magna.movie.studios",
+      "x": 198,
+      "y": 218
+    }
+  ],
+  "10x10": [
+    {
+      "id": "760eba75-c014-196a-4d8e-90d29c74c0cb",
+      "tycoon_id": "tycoon-id-1",
+      "key": "magna.research.a",
+      "x": 202,
+      "y": 206
+    },
+    {
+      "id": "27c3bb81-91e0-55c5-864c-04c2a64fc3f7",
+      "tycoon_id": "tycoon-id-2",
+      "key": "magna.research.b",
+      "x": 205,
+      "y": 206
+    },
+    {
+      "id": "d4b50464-bcff-abee-c207-da19a4fb7129",
+      "tycoon_id": "tycoon-id-1",
+      "key": "magna.construction",
+      "x": 208,
+      "y": 206
+    },
+    {
+      "id": "f2e59780-2746-1bd1-26f1-356627a28812",
+      "tycoon_id": "tycoon-id-2",
+      "key": "magna.movie.studios.construction",
+      "x": 218,
+      "y": 208
+    },
+    {
+      "id": "1ce9be8c-abfd-7f30-b0c9-911232b465ee",
+      "tycoon_id": "tycoon-id-4",
+      "key": "magna.cloud.city.empty",
+      "x": 206,
+      "y": 218
+    },
+    {
+      "id": "1c8b58d9-ff7e-c736-bcc9-1d977dafac44",
+      "tycoon_id": "tycoon-id-4",
+      "key": "magna.cloud.city",
+      "x": 209,
+      "y": 218
+    },
+    {
+      "id": "56e1affd-b7a7-722e-0575-9882a8d1475a",
+      "tycoon_id": "tycoon-id-4",
+      "key": "magna.heaven.empty",
+      "x": 213,
+      "y": 218
+    },
+    {
+      "id": "7b0aef41-be07-c38a-e86b-c06aeed37ac5",
+      "tycoon_id": "tycoon-id-2",
+      "key": "magna.heaven",
+      "x": 216,
+      "y": 218
+    },
+    {
+      "id": "7bffc0f0-117c-4670-166b-951f6ffd4485",
+      "tycoon_id": "tycoon-id-3",
+      "key": "magna.hive.empty",
+      "x": 219,
+      "y": 218
+    },
+    {
+      "id": "50f93784-14a6-a3ab-1bde-6bc8ccb60a7a",
+      "tycoon_id": "tycoon-id-4",
+      "key": "magna.mayflower",
+      "x": 201,
+      "y": 219
+    }
+  ],
+  "11x10": [
+    {
+      "id": "eb02a029-b866-afd9-bd36-aa96dfac9d5d",
+      "tycoon_id": "tycoon-id-3",
+      "key": "magna.supermarket.a",
+      "x": 226,
+      "y": 208
+    },
+    {
+      "id": "bc61e486-8daa-ba94-f6d0-0f8a04777643",
+      "tycoon_id": "tycoon-id-2",
+      "key": "magna.supermarket.b",
+      "x": 235,
+      "y": 208
+    },
+    {
+      "id": "7e14f817-05e8-f74d-ac49-5444e2654e7b",
+      "tycoon_id": "tycoon-id-2",
+      "key": "magna.hive",
+      "x": 222,
+      "y": 218
+    },
+    {
+      "id": "a126e0a6-8707-3832-5aff-d8edba26d9d0",
+      "tycoon_id": "tycoon-id-4",
+      "key": "magna.ivory.tower.empty",
+      "x": 225,
+      "y": 218
+    },
+    {
+      "id": "910822e9-897b-b598-e98e-18b07044592c",
+      "tycoon_id": "tycoon-id-1",
+      "key": "magna.ivory.tower",
+      "x": 228,
+      "y": 218
+    },
+    {
+      "id": "53e4f95c-5e3a-76a9-14b4-8ff2270a054f",
+      "tycoon_id": "tycoon-id-2",
+      "key": "magna.mayflower.empty",
+      "x": 233,
+      "y": 218
+    }
+  ],
+  "9x11": [
+    {
+      "id": "b304fc82-0991-db8d-6c2e-7724fe4038a7",
+      "tycoon_id": "tycoon-id-1",
+      "key": "magna.octopus.empty",
+      "x": 195,
+      "y": 223
+    },
+    {
+      "id": "c18db15d-cf93-305c-f993-d94ca5c5e869",
+      "tycoon_id": "tycoon-id-2",
+      "key": "magna.octopus",
+      "x": 198,
+      "y": 223
+    },
+    {
+      "id": "94ca2f73-8e7e-85fe-c062-683c432dd290",
+      "tycoon_id": "tycoon-id-5",
+      "key": "mko.car.industry",
+      "x": 195,
+      "y": 228
+    },
+    {
+      "id": "c019c483-4671-dce9-aadf-57f0c68d3715",
+      "tycoon_id": "tycoon-id-5",
+      "key": "mko.cd.store",
+      "x": 195,
+      "y": 229
+    },
+    {
+      "id": "b307b979-e16c-fbc9-86dd-1d7208ed49f7",
+      "tycoon_id": "tycoon-id-1",
+      "key": "mko.construction.industry",
+      "x": 195,
+      "y": 235
+    },
+    {
+      "id": "9750bbf3-06c1-254a-31d7-da86be3f25f6",
+      "tycoon_id": "tycoon-id-5",
+      "key": "mko.hq.2",
+      "x": 195,
+      "y": 238
+    },
+    {
+      "id": "d87ca82f-4e2d-2e5c-00a4-359152555fe2",
+      "tycoon_id": "tycoon-id-5",
+      "key": "mko.hq.3",
+      "x": 198,
+      "y": 238
+    }
+  ],
+  "10x11": [
+    {
+      "id": "9cb64fb4-8716-69b3-f1e2-5e9d6a0c7144",
+      "tycoon_id": "tycoon-id-2",
+      "key": "magna.sky.dome.empty",
+      "x": 201,
+      "y": 223
+    },
+    {
+      "id": "eeb1aaf7-fcbb-80ab-767f-ca4f2bdfa5ef",
+      "tycoon_id": "tycoon-id-1",
+      "key": "magna.sky.dome",
+      "x": 204,
+      "y": 223
+    },
+    {
+      "id": "c7836f81-b3e1-623c-ba98-b64168a009c5",
+      "tycoon_id": "tycoon-id-2",
+      "key": "magna.solarium.empty",
+      "x": 207,
+      "y": 223
+    },
+    {
+      "id": "03b89b0f-7ff8-df24-e6b6-325f5bd205a3",
+      "tycoon_id": "tycoon-id-1",
+      "key": "magna.solarium",
+      "x": 213,
+      "y": 223
+    },
+    {
+      "id": "0010653d-6c3d-54b6-0ae1-810021566f7e",
+      "tycoon_id": "tycoon-id-1",
+      "key": "magna.the.spring.empty",
+      "x": 216,
+      "y": 223
+    },
+    {
+      "id": "46b09f08-2566-1b6d-5963-b220c9c8a540",
+      "tycoon_id": "tycoon-id-1",
+      "key": "magna.the.spring",
+      "x": 219,
+      "y": 223
+    },
+    {
+      "id": "a858f1a5-ede1-ca2d-a8b8-5c254fb06134",
+      "tycoon_id": "tycoon-id-5",
+      "key": "mko.car.store",
+      "x": 200,
+      "y": 228
+    },
+    {
+      "id": "3a01102c-bab5-6de5-00cf-027a0e960a36",
+      "tycoon_id": "tycoon-id-3",
+      "key": "mko.chemical.industry",
+      "x": 204,
+      "y": 228
+    },
+    {
+      "id": "58085e3c-d4a0-41b9-90db-758b8c474234",
+      "tycoon_id": "tycoon-id-4",
+      "key": "mko.chemical.industry.small",
+      "x": 208,
+      "y": 228
+    },
+    {
+      "id": "8fbe0124-1219-767d-335d-68aa2942ed8b",
+      "tycoon_id": "tycoon-id-5",
+      "key": "mko.plastic.industry",
+      "x": 215,
+      "y": 228
+    },
+    {
+      "id": "abb24852-baec-435b-c228-e5793d768897",
+      "tycoon_id": "tycoon-id-4",
+      "key": "mko.elect.comp.industry",
+      "x": 200,
+      "y": 235
+    },
+    {
+      "id": "349b0e60-0031-bbeb-2ea1-4d3b00335f9f",
+      "tycoon_id": "tycoon-id-3",
+      "key": "mko.elect.comp.industry.small",
+      "x": 204,
+      "y": 235
+    },
+    {
+      "id": "464950e2-0404-5c4f-c26f-d630bfb6dcc4",
+      "tycoon_id": "tycoon-id-2",
+      "key": "mko.textile.industry",
+      "x": 209,
+      "y": 235
+    },
+    {
+      "id": "7bb2b4ce-8674-de4f-f948-ced7de6ee05f",
+      "tycoon_id": "tycoon-id-3",
+      "key": "mko.textile.industry.small",
+      "x": 215,
+      "y": 235
+    },
+    {
+      "id": "cb230696-f459-77d9-e030-dd56e7d396c2",
+      "tycoon_id": "tycoon-id-5",
+      "key": "mko.hq.4",
+      "x": 201,
+      "y": 238
+    },
+    {
+      "id": "9dca6078-114a-96f5-f8fd-318a76ad03e6",
+      "tycoon_id": "tycoon-id-1",
+      "key": "mko.hq.5",
+      "x": 204,
+      "y": 238
+    },
+    {
+      "id": "891b51ff-e2b9-56be-67b8-fad5200dcd23",
+      "tycoon_id": "tycoon-id-3",
+      "key": "mko.police",
+      "x": 207,
+      "y": 238
+    },
+    {
+      "id": "ee6d7ec2-7803-f882-a4a9-4e739878b4ff",
+      "tycoon_id": "tycoon-id-3",
+      "key": "mko.school",
+      "x": 209,
+      "y": 238
+    },
+    {
+      "id": "bd9cbd3c-f377-d95b-8315-9f24ea85f4a8",
+      "tycoon_id": "tycoon-id-4",
+      "key": "mko.townhall",
+      "x": 213,
+      "y": 238
+    },
+    {
+      "id": "be66ceae-428a-7d35-dbaa-3eb033cc228d",
+      "tycoon_id": "tycoon-id-5",
+      "key": "mko.tradecenter",
+      "x": 216,
+      "y": 238
+    }
+  ],
+  "11x11": [
+    {
+      "id": "1b7d831f-12b8-66cc-537a-342b125045ee",
+      "tycoon_id": "tycoon-id-4",
+      "key": "magna.tulip.empty",
+      "x": 222,
+      "y": 223
+    },
+    {
+      "id": "ecbc3062-cd9e-5754-b675-252b18ad30f7",
+      "tycoon_id": "tycoon-id-2",
+      "key": "magna.tulip",
+      "x": 225,
+      "y": 223
+    },
+    {
+      "id": "e3541c02-73e0-42bf-f46d-f9d9ff07c706",
+      "tycoon_id": "tycoon-id-1",
+      "key": "magna.whirlpool.empty",
+      "x": 228,
+      "y": 223
+    },
+    {
+      "id": "bc3785f5-abe3-ead2-fc1e-477c58393acc",
+      "tycoon_id": "tycoon-id-1",
+      "key": "magna.whirlpool",
+      "x": 233,
+      "y": 223
+    },
+    {
+      "id": "cac013a1-09e9-9393-9f1c-3f0a3454ef0e",
+      "tycoon_id": "tycoon-id-5",
+      "key": "mko.clothes.industry",
+      "x": 220,
+      "y": 228
+    },
+    {
+      "id": "0aa762d7-dc7c-5be4-700a-70e800c9850c",
+      "tycoon_id": "tycoon-id-4",
+      "key": "mko.clothes.industry.small",
+      "x": 225,
+      "y": 228
+    },
+    {
+      "id": "e3ac0252-a611-8ac7-ac62-6916783c1bed",
+      "tycoon_id": "tycoon-id-5",
+      "key": "mko.clothes.store",
+      "x": 231,
+      "y": 228
+    },
+    {
+      "id": "bb83513e-f50d-f835-0784-caaf269c9ccd",
+      "tycoon_id": "tycoon-id-1",
+      "key": "mko.cd.industry",
+      "x": 235,
+      "y": 228
+    },
+    {
+      "id": "0ac463b4-bc26-b7ee-7076-bb495709c112",
+      "tycoon_id": "tycoon-id-3",
+      "key": "mko.bm.industry",
+      "x": 229,
+      "y": 229
+    },
+    {
+      "id": "7794b0a7-a236-4c55-397f-7f5e57399956",
+      "tycoon_id": "tycoon-id-1",
+      "key": "mko.computer.store",
+      "x": 233,
+      "y": 229
+    },
+    {
+      "id": "e950756d-5dee-ff11-ef9b-3e3c14bfdeb3",
+      "tycoon_id": "tycoon-id-3",
+      "key": "mko.farm",
+      "x": 220,
+      "y": 235
+    },
+    {
+      "id": "c1485a13-da60-6992-fb29-b557b356ca30",
+      "tycoon_id": "tycoon-id-5",
+      "key": "mko.farm.small",
+      "x": 225,
+      "y": 235
+    },
+    {
+      "id": "611a1bc3-58a1-c27d-87c4-e1b070d48117",
+      "tycoon_id": "tycoon-id-5",
+      "key": "mko.food.store",
+      "x": 231,
+      "y": 235
+    },
+    {
+      "id": "8dd907a7-015b-f007-b88a-e949ce697170",
+      "tycoon_id": "tycoon-id-5",
+      "key": "mko.hospital",
+      "x": 233,
+      "y": 235
+    },
+    {
+      "id": "fee3073a-cdb3-2ba6-6162-9884bcec6ee0",
+      "tycoon_id": "tycoon-id-2",
+      "key": "mko.hq.1",
+      "x": 228,
+      "y": 236
+    }
+  ],
+  "9x12": [
+    {
+      "id": "0bbe9522-fd31-7869-484f-902d06fb5a40",
+      "tycoon_id": "tycoon-id-4",
+      "key": "mko.hha.industry",
+      "x": 195,
+      "y": 245
+    },
+    {
+      "id": "d2a69262-0eef-6b77-e6c1-baf7dc1dfcc6",
+      "tycoon_id": "tycoon-id-2",
+      "key": "mko.metal.industry.small",
+      "x": 195,
+      "y": 255
+    }
+  ],
+  "10x12": [
+    {
+      "id": "e9e09a8a-135c-3ee5-9eae-57b96417092a",
+      "tycoon_id": "tycoon-id-2",
+      "key": "mko.hha.industry.small",
+      "x": 200,
+      "y": 245
+    },
+    {
+      "id": "a5bc75ad-1727-1d6b-46e2-264c5279ee6e",
+      "tycoon_id": "tycoon-id-1",
+      "key": "mko.hha.store",
+      "x": 205,
+      "y": 245
+    },
+    {
+      "id": "22eef582-47cd-ca95-b6b0-f9ee60b4dad4",
+      "tycoon_id": "tycoon-id-5",
+      "key": "mko.heavy.industry",
+      "x": 215,
+      "y": 245
+    },
+    {
+      "id": "16d30db3-c3f0-a2dc-7233-b0524f3e9de8",
+      "tycoon_id": "tycoon-id-5",
+      "key": "mko.office.a.empty",
+      "x": 200,
+      "y": 255
+    },
+    {
+      "id": "1b94689a-fc3d-850b-abc6-9da7a5d07a83",
+      "tycoon_id": "tycoon-id-1",
+      "key": "mko.office.a",
+      "x": 202,
+      "y": 255
+    },
+    {
+      "id": "7584acb9-5dca-e208-3087-d2fa5b9f9445",
+      "tycoon_id": "tycoon-id-4",
+      "key": "mko.office.b.empty",
+      "x": 204,
+      "y": 255
+    },
+    {
+      "id": "3d75a90c-26af-f121-5750-2dcbdc96f5de",
+      "tycoon_id": "tycoon-id-2",
+      "key": "mko.office.b",
+      "x": 206,
+      "y": 255
+    },
+    {
+      "id": "42236e66-a278-d087-a98a-d30e85339cca",
+      "tycoon_id": "tycoon-id-4",
+      "key": "mko.office.c.empty",
+      "x": 208,
+      "y": 255
+    },
+    {
+      "id": "d5831f99-7e74-38be-3b18-545f0bd637cf",
+      "tycoon_id": "tycoon-id-3",
+      "key": "mko.office.c",
+      "x": 209,
+      "y": 255
+    },
+    {
+      "id": "29bdfbdb-2f68-b1c1-9ce5-f7a46fb3162b",
+      "tycoon_id": "tycoon-id-4",
+      "key": "mko.office.d.empty",
+      "x": 211,
+      "y": 255
+    },
+    {
+      "id": "d5a62999-9c1c-8612-3d01-7de70aa19244",
+      "tycoon_id": "tycoon-id-4",
+      "key": "mko.office.d",
+      "x": 212,
+      "y": 255
+    },
+    {
+      "id": "ea8f68d3-7b5a-6340-7b12-5f72c5211327",
+      "tycoon_id": "tycoon-id-4",
+      "key": "mko.office.e.empty",
+      "x": 215,
+      "y": 255
+    },
+    {
+      "id": "e3b77280-aaed-983f-f3f1-c0c1a9d95f84",
+      "tycoon_id": "tycoon-id-4",
+      "key": "mko.office.e",
+      "x": 218,
+      "y": 255
+    }
+  ],
+  "11x12": [
+    {
+      "id": "c9d25f0b-051e-ee97-a743-c2f5d61e6a45",
+      "tycoon_id": "tycoon-id-1",
+      "key": "mko.market.a",
+      "x": 220,
+      "y": 245
+    },
+    {
+      "id": "c91f237b-7332-25a3-f472-c5aeb9e2046c",
+      "tycoon_id": "tycoon-id-1",
+      "key": "mko.market.b",
+      "x": 224,
+      "y": 245
+    },
+    {
+      "id": "b532cb1b-ff6c-5f1b-64a4-b4f4f90f445f",
+      "tycoon_id": "tycoon-id-5",
+      "key": "mko.market.c",
+      "x": 226,
+      "y": 245
+    },
+    {
+      "id": "fcf18031-0686-bc6d-3dc4-217ff950545b",
+      "tycoon_id": "tycoon-id-3",
+      "key": "mko.metal.industry",
+      "x": 235,
+      "y": 245
+    },
+    {
+      "id": "2692483e-a56c-913a-e1af-a2ada880dec6",
+      "tycoon_id": "tycoon-id-4",
+      "key": "mko.office.f.empty",
+      "x": 221,
+      "y": 255
+    },
+    {
+      "id": "d25f021e-4613-909b-5fc8-e29d09bd37a3",
+      "tycoon_id": "tycoon-id-1",
+      "key": "mko.office.f",
+      "x": 223,
+      "y": 255
+    },
+    {
+      "id": "dcbce89d-9355-45b0-6352-f838ac0f60a2",
+      "tycoon_id": "tycoon-id-1",
+      "key": "mko.mine",
+      "x": 228,
+      "y": 255
+    },
+    {
+      "id": "02f9ce18-94cb-9f10-eb63-ee0d51c2db32",
+      "tycoon_id": "tycoon-id-3",
+      "key": "mko.mine.small",
+      "x": 235,
+      "y": 255
+    }
+  ],
+  "9x13": [
+    {
+      "id": "18b8dad7-c4b3-1812-04b0-cd4dcc1da0bf",
+      "tycoon_id": "tycoon-id-3",
+      "key": "mko.food.proc",
+      "x": 195,
+      "y": 265
+    },
+    {
+      "id": "8508d2cb-1268-d9f7-9c00-bc85c5bd1d52",
+      "tycoon_id": "tycoon-id-5",
+      "key": "mko.lo.res.e.empty",
+      "x": 195,
+      "y": 267
+    },
+    {
+      "id": "300e26e6-87b7-7588-3bc8-41e4fa93f9e8",
+      "tycoon_id": "tycoon-id-5",
+      "key": "mko.lo.res.e",
+      "x": 197,
+      "y": 267
+    },
+    {
+      "id": "34ce5c3c-6791-502c-81bc-17362944e39e",
+      "tycoon_id": "tycoon-id-1",
+      "key": "mko.mi.res.a.empty",
+      "x": 199,
+      "y": 267
+    },
+    {
+      "id": "8c5ae427-6fc5-2a89-6cc2-f664b641a903",
+      "tycoon_id": "tycoon-id-5",
+      "key": "mko.warehouse",
+      "x": 195,
+      "y": 275
+    }
+  ],
+  "10x13": [
+    {
+      "id": "a405a07c-da44-9e1f-4d39-f360df3422ea",
+      "tycoon_id": "tycoon-id-5",
+      "key": "mko.food.proc.small",
+      "x": 200,
+      "y": 265
+    },
+    {
+      "id": "211d9082-7c25-0755-49eb-15d436a4d4cc",
+      "tycoon_id": "tycoon-id-2",
+      "key": "mko.hi.res.a.empty",
+      "x": 205,
+      "y": 265
+    },
+    {
+      "id": "1ef8523d-8661-20b0-6d6d-57f00a3bd938",
+      "tycoon_id": "tycoon-id-3",
+      "key": "mko.hi.res.a",
+      "x": 207,
+      "y": 265
+    },
+    {
+      "id": "813d2920-8ace-dca1-726d-a77d4dfe051e",
+      "tycoon_id": "tycoon-id-1",
+      "key": "mko.hi.res.b.empty",
+      "x": 209,
+      "y": 265
+    },
+    {
+      "id": "34c40534-371d-6369-6558-cc63d2d7421e",
+      "tycoon_id": "tycoon-id-5",
+      "key": "mko.hi.res.b",
+      "x": 212,
+      "y": 265
+    },
+    {
+      "id": "08966f49-07db-16c9-68a7-e67d458a1eda",
+      "tycoon_id": "tycoon-id-5",
+      "key": "mko.hi.res.c.empty",
+      "x": 214,
+      "y": 265
+    },
+    {
+      "id": "66ea0b40-a9c9-ae57-0760-fffdf7c94b82",
+      "tycoon_id": "tycoon-id-2",
+      "key": "mko.hi.res.c",
+      "x": 216,
+      "y": 265
+    },
+    {
+      "id": "4e854331-8c64-5ecd-c0a2-8d7a4e7382e1",
+      "tycoon_id": "tycoon-id-2",
+      "key": "mko.lo.res.a.empty",
+      "x": 218,
+      "y": 265
+    },
+    {
+      "id": "1a3e98fc-3c0d-b38e-e181-b649ffe8d744",
+      "tycoon_id": "tycoon-id-4",
+      "key": "mko.lo.res.d",
+      "x": 203,
+      "y": 266
+    },
+    {
+      "id": "6ec4d8be-ba71-4732-545d-08c7d1577dea",
+      "tycoon_id": "tycoon-id-4",
+      "key": "mko.mi.res.a",
+      "x": 205,
+      "y": 267
+    },
+    {
+      "id": "6d39abb0-d7da-d4f2-57dd-39c80cfe41ad",
+      "tycoon_id": "tycoon-id-5",
+      "key": "mko.mi.res.b.empty",
+      "x": 207,
+      "y": 267
+    },
+    {
+      "id": "692ab56f-113b-032f-61c1-cb0a757af8a3",
+      "tycoon_id": "tycoon-id-2",
+      "key": "mko.mi.res.b",
+      "x": 209,
+      "y": 267
+    },
+    {
+      "id": "c2afb216-ea40-4903-d404-3d35c4f765b9",
+      "tycoon_id": "tycoon-id-1",
+      "key": "mko.mi.res.c.empty",
+      "x": 212,
+      "y": 267
+    },
+    {
+      "id": "bebfeb4d-d58a-2b98-1382-ce8d828eb729",
+      "tycoon_id": "tycoon-id-3",
+      "key": "mko.mi.res.c",
+      "x": 214,
+      "y": 267
+    },
+    {
+      "id": "31998e57-a449-f7a6-a0d1-a2b063e18880",
+      "tycoon_id": "tycoon-id-1",
+      "key": "mko.mi.res.d.empty",
+      "x": 216,
+      "y": 267
+    },
+    {
+      "id": "80554f81-0484-2658-e140-1530c95d06b7",
+      "tycoon_id": "tycoon-id-4",
+      "key": "mko.mi.res.d",
+      "x": 218,
+      "y": 267
+    },
+    {
+      "id": "422ca235-3528-f314-36b1-0ae72115b2b3",
+      "tycoon_id": "tycoon-id-4",
+      "key": "moab.car.industry",
+      "x": 201,
+      "y": 276
+    },
+    {
+      "id": "06791c75-13a8-2167-080a-12079bc16812",
+      "tycoon_id": "tycoon-id-1",
+      "key": "moab.car.store",
+      "x": 207,
+      "y": 276
+    },
+    {
+      "id": "dfb5dc42-9038-870c-71cb-83384edf4567",
+      "tycoon_id": "tycoon-id-1",
+      "key": "moab.bar",
+      "x": 209,
+      "y": 276
+    },
+    {
+      "id": "c55ea353-166c-34c9-d4ce-3f44437e7d01",
+      "tycoon_id": "tycoon-id-5",
+      "key": "moab.chemical.industry",
+      "x": 215,
+      "y": 276
+    }
+  ],
+  "11x13": [
+    {
+      "id": "0e4482fa-95bc-88e7-fb53-9f912b0f32d1",
+      "tycoon_id": "tycoon-id-1",
+      "key": "mko.lo.res.a",
+      "x": 220,
+      "y": 265
+    },
+    {
+      "id": "209263c8-c122-8acf-1a98-19370b2641eb",
+      "tycoon_id": "tycoon-id-5",
+      "key": "mko.lo.res.b.empty",
+      "x": 223,
+      "y": 265
+    },
+    {
+      "id": "a649fbd0-c32f-6abc-71b7-6257f5e180f6",
+      "tycoon_id": "tycoon-id-5",
+      "key": "mko.lo.res.b",
+      "x": 226,
+      "y": 265
+    },
+    {
+      "id": "fb07b783-0996-067b-8b76-334841dc75ad",
+      "tycoon_id": "tycoon-id-2",
+      "key": "mko.lo.res.c.empty",
+      "x": 229,
+      "y": 265
+    },
+    {
+      "id": "893978ca-f2f2-6708-1839-d8b5c29ec0fb",
+      "tycoon_id": "tycoon-id-5",
+      "key": "mko.lo.res.c",
+      "x": 232,
+      "y": 265
+    },
+    {
+      "id": "876a73da-e18c-7b25-2c0c-a97da7affe70",
+      "tycoon_id": "tycoon-id-2",
+      "key": "mko.lo.res.d.empty",
+      "x": 235,
+      "y": 265
+    },
+    {
+      "id": "b31cba44-6e37-89f5-d3e1-85bbab0927f9",
+      "tycoon_id": "tycoon-id-2",
+      "key": "mko.mi.res.e.empty",
+      "x": 220,
+      "y": 267
+    },
+    {
+      "id": "02501ff7-ae06-4c68-db2a-8f53df5e589d",
+      "tycoon_id": "tycoon-id-4",
+      "key": "mko.mi.res.e",
+      "x": 222,
+      "y": 267
+    },
+    {
+      "id": "54e61be0-68d2-9983-2a16-2959199f4b27",
+      "tycoon_id": "tycoon-id-5",
+      "key": "mko.mi.res.f.empty",
+      "x": 224,
+      "y": 267
+    },
+    {
+      "id": "fcf8d3f2-a0cc-77c9-a1aa-be49074b443d",
+      "tycoon_id": "tycoon-id-5",
+      "key": "mko.mi.res.f",
+      "x": 226,
+      "y": 267
+    },
+    {
+      "id": "fa9cb1d0-319c-74aa-c933-cc72024d62e5",
+      "tycoon_id": "tycoon-id-2",
+      "key": "mko.mi.res.g.empty",
+      "x": 228,
+      "y": 267
+    },
+    {
+      "id": "86f25762-a2f0-2bd7-7b95-770600b9cad6",
+      "tycoon_id": "tycoon-id-2",
+      "key": "mko.mi.res.g",
+      "x": 232,
+      "y": 267
+    },
+    {
+      "id": "f5c880e9-2a34-9d5d-fdca-1a4d86d51e67",
+      "tycoon_id": "tycoon-id-4",
+      "key": "mko.tv.station",
+      "x": 234,
+      "y": 267
+    },
+    {
+      "id": "67e05247-cb2d-36a6-7942-a249a7020383",
+      "tycoon_id": "tycoon-id-2",
+      "key": "moab.mine",
+      "x": 221,
+      "y": 276
+    },
+    {
+      "id": "094e6e8e-3d5a-358c-d73a-03f9e937d07c",
+      "tycoon_id": "tycoon-id-4",
+      "key": "moab.clothes.industry",
+      "x": 227,
+      "y": 276
+    },
+    {
+      "id": "6af308f1-702d-483c-b526-e886c596cccd",
+      "tycoon_id": "tycoon-id-3",
+      "key": "moab.clothes.store",
+      "x": 231,
+      "y": 276
+    },
+    {
+      "id": "1d2d92b8-f4d6-e30b-444c-ee958b973096",
+      "tycoon_id": "tycoon-id-3",
+      "key": "moab.computing",
+      "x": 233,
+      "y": 276
+    }
+  ],
+  "9x14": [
+    {
+      "id": "f0f4b2e3-cd1f-c056-927a-239f1a70eb57",
+      "tycoon_id": "tycoon-id-2",
+      "key": "moab.bm.industry",
+      "x": 195,
+      "y": 285
+    },
+    {
+      "id": "3a0897d8-fe28-8e35-51b9-044dec49cebf",
+      "tycoon_id": "tycoon-id-1",
+      "key": "moab.correctional.tower",
+      "x": 195,
+      "y": 287
+    },
+    {
+      "id": "d5aec202-9497-f87a-73cf-c19d3d12f3e1",
+      "tycoon_id": "tycoon-id-4",
+      "key": "moab.hq.1",
+      "x": 198,
+      "y": 288
+    },
+    {
+      "id": "4144744b-43e6-5d52-012d-be94fa05531e",
+      "tycoon_id": "tycoon-id-5",
+      "key": "moab.hha.industry",
+      "x": 196,
+      "y": 296
+    },
+    {
+      "id": "13476389-0108-ec40-5293-5c83f5dbec61",
+      "tycoon_id": "tycoon-id-1",
+      "key": "moab.hi.res.a.empty",
+      "x": 195,
+      "y": 299
+    }
+  ],
+  "10x14": [
+    {
+      "id": "57658783-a92f-7cc3-30f1-bd9e2985f01d",
+      "tycoon_id": "tycoon-id-3",
+      "key": "moab.construction.industry",
+      "x": 200,
+      "y": 285
+    },
+    {
+      "id": "9f99b360-faa9-918e-5a02-0df2860a0b0c",
+      "tycoon_id": "tycoon-id-3",
+      "key": "moab.oil.rig",
+      "x": 204,
+      "y": 285
+    },
+    {
+      "id": "347f3deb-a2f6-ded7-258b-0fc823cc9949",
+      "tycoon_id": "tycoon-id-1",
+      "key": "moab.elect.comp.industry",
+      "x": 208,
+      "y": 285
+    },
+    {
+      "id": "4042b2d2-16f9-4c7c-c11a-4add416b372e",
+      "tycoon_id": "tycoon-id-1",
+      "key": "moab.textile.industry",
+      "x": 214,
+      "y": 285
+    },
+    {
+      "id": "26afe0de-0eb9-9557-1289-d56f070556f6",
+      "tycoon_id": "tycoon-id-1",
+      "key": "moab.farm",
+      "x": 218,
+      "y": 285
+    },
+    {
+      "id": "0d4a5ebb-7d1b-0c4f-91b0-96fee8f2727a",
+      "tycoon_id": "tycoon-id-1",
+      "key": "moab.hq.2",
+      "x": 201,
+      "y": 288
+    },
+    {
+      "id": "3d597391-e16f-30bf-b483-cf08efaf5856",
+      "tycoon_id": "tycoon-id-2",
+      "key": "moab.hq.3",
+      "x": 204,
+      "y": 288
+    },
+    {
+      "id": "12328fff-d829-35b1-597e-164cf6c9a0cd",
+      "tycoon_id": "tycoon-id-5",
+      "key": "moab.hq.4",
+      "x": 207,
+      "y": 288
+    },
+    {
+      "id": "19f39528-6ff1-2658-0cc8-e6a36ab1fe6d",
+      "tycoon_id": "tycoon-id-3",
+      "key": "moab.hq.5",
+      "x": 213,
+      "y": 288
+    },
+    {
+      "id": "d043442a-2fbd-8c33-4eef-1f1031c06ea6",
+      "tycoon_id": "tycoon-id-2",
+      "key": "moab.industry.tower",
+      "x": 216,
+      "y": 288
+    },
+    {
+      "id": "a41fce57-5d88-30b4-8b91-af3ba40c4d2f",
+      "tycoon_id": "tycoon-id-3",
+      "key": "moab.market.tower",
+      "x": 218,
+      "y": 288
+    },
+    {
+      "id": "9a52feeb-930f-73c9-9114-1e7ce35c7d2b",
+      "tycoon_id": "tycoon-id-5",
+      "key": "moab.hha.store",
+      "x": 202,
+      "y": 296
+    },
+    {
+      "id": "15a18a1a-5f9f-39fe-7101-00f8c594a1e4",
+      "tycoon_id": "tycoon-id-1",
+      "key": "moab.legal.services",
+      "x": 204,
+      "y": 296
+    },
+    {
+      "id": "09ea918f-ade6-c64b-b2df-135d0243c509",
+      "tycoon_id": "tycoon-id-3",
+      "key": "moab.heavy.industry",
+      "x": 208,
+      "y": 296
+    },
+    {
+      "id": "5942f7f3-5241-d70c-81fa-c8606461074f",
+      "tycoon_id": "tycoon-id-2",
+      "key": "moab.market",
+      "x": 213,
+      "y": 296
+    },
+    {
+      "id": "5b6cef71-092d-3be9-519f-5d025458849c",
+      "tycoon_id": "tycoon-id-4",
+      "key": "moab.metal.industry",
+      "x": 218,
+      "y": 296
+    },
+    {
+      "id": "0741b232-3dec-af20-c26b-581720ce9dd8",
+      "tycoon_id": "tycoon-id-2",
+      "key": "moab.food.proc",
+      "x": 201,
+      "y": 297
+    },
+    {
+      "id": "5fcd83e4-75b8-79f8-611b-57c5730dcc4d",
+      "tycoon_id": "tycoon-id-3",
+      "key": "moab.hi.res.a",
+      "x": 204,
+      "y": 299
+    },
+    {
+      "id": "0aad2755-c74a-e1e7-2fc1-4fec89fcfdfe",
+      "tycoon_id": "tycoon-id-5",
+      "key": "moab.hi.res.b.empty",
+      "x": 207,
+      "y": 299
+    },
+    {
+      "id": "16176ded-2a05-6be8-2cfe-bfae8be2f22e",
+      "tycoon_id": "tycoon-id-3",
+      "key": "moab.hi.res.b",
+      "x": 213,
+      "y": 299
+    },
+    {
+      "id": "e0c349e1-721a-e6cd-ebb2-19d483cba0f7",
+      "tycoon_id": "tycoon-id-1",
+      "key": "moab.hi.res.c.empty",
+      "x": 216,
+      "y": 299
+    },
+    {
+      "id": "9bb058d8-eefd-a5ed-3ec0-fd1c02d69302",
+      "tycoon_id": "tycoon-id-1",
+      "key": "moab.hi.res.c",
+      "x": 218,
+      "y": 299
+    }
+  ],
+  "11x14": [
+    {
+      "id": "47ae6f3c-28b2-74f3-f4ab-895c2c58caa7",
+      "tycoon_id": "tycoon-id-2",
+      "key": "moab.food.store",
+      "x": 222,
+      "y": 285
+    },
+    {
+      "id": "f6cbe70b-2ab0-f82a-6f7b-b4fb0175d667",
+      "tycoon_id": "tycoon-id-1",
+      "key": "moab.funeral",
+      "x": 224,
+      "y": 285
+    },
+    {
+      "id": "5b96ec4a-fb02-ccc0-4229-df683775c53d",
+      "tycoon_id": "tycoon-id-3",
+      "key": "moab.gas.station",
+      "x": 226,
+      "y": 285
+    },
+    {
+      "id": "cb59691e-7c63-3fa0-b635-29f30d492a17",
+      "tycoon_id": "tycoon-id-1",
+      "key": "moab.refinery",
+      "x": 235,
+      "y": 285
+    },
+    {
+      "id": "708df618-bd47-885e-148e-575ddf4f1d36",
+      "tycoon_id": "tycoon-id-5",
+      "key": "moab.cathedral",
+      "x": 221,
+      "y": 286
+    },
+    {
+      "id": "36f6dbf7-0ec5-f8a4-248e-e83d3e3b9a8a",
+      "tycoon_id": "tycoon-id-3",
+      "key": "moab.correctional",
+      "x": 228,
+      "y": 286
+    },
+    {
+      "id": "7978fa77-d496-e982-4337-1f558031cb47",
+      "tycoon_id": "tycoon-id-2",
+      "key": "moab.residential.tower",
+      "x": 220,
+      "y": 288
+    },
+    {
+      "id": "82bddeef-9553-a7b5-3eb7-f89fd49f00c5",
+      "tycoon_id": "tycoon-id-3",
+      "key": "moab.townhall",
+      "x": 224,
+      "y": 288
+    },
+    {
+      "id": "2566a480-dc75-9c82-328f-ad92618eb02d",
+      "tycoon_id": "tycoon-id-1",
+      "key": "moab.tradecenter",
+      "x": 233,
+      "y": 288
+    },
+    {
+      "id": "ad01d043-4556-a9a4-4342-a17f6faa0cf9",
+      "tycoon_id": "tycoon-id-3",
+      "key": "moab.movie",
+      "x": 223,
+      "y": 296
+    },
+    {
+      "id": "f990404a-5075-545e-aa12-ec3b3eba039f",
+      "tycoon_id": "tycoon-id-1",
+      "key": "moab.office.a.empty",
+      "x": 226,
+      "y": 296
+    },
+    {
+      "id": "73417a0a-9ebf-5b0d-19f0-f1d37b1291a9",
+      "tycoon_id": "tycoon-id-4",
+      "key": "moab.office.a",
+      "x": 229,
+      "y": 296
+    },
+    {
+      "id": "57decd63-9c48-71a2-6641-d920caa0704b",
+      "tycoon_id": "tycoon-id-3",
+      "key": "moab.office.b.empty",
+      "x": 232,
+      "y": 296
+    },
+    {
+      "id": "1f32279f-e06d-3a75-88ee-a7c1119280a8",
+      "tycoon_id": "tycoon-id-1",
+      "key": "moab.office.b",
+      "x": 234,
+      "y": 296
+    },
+    {
+      "id": "8eafb49a-e0fa-dcd7-363a-0e34e7254db8",
+      "tycoon_id": "tycoon-id-5",
+      "key": "moab.hi.res.d.empty",
+      "x": 221,
+      "y": 299
+    },
+    {
+      "id": "4bf68c11-cb72-c24b-6236-f43a2d967462",
+      "tycoon_id": "tycoon-id-2",
+      "key": "moab.hi.res.d",
+      "x": 224,
+      "y": 299
+    },
+    {
+      "id": "2b840534-e549-4bc9-c262-bf5132d03748",
+      "tycoon_id": "tycoon-id-3",
+      "key": "moab.lo.cost.mid.res",
+      "x": 227,
+      "y": 299
+    },
+    {
+      "id": "82f403e6-8b5c-7b11-6ea3-0ba7ddf3f331",
+      "tycoon_id": "tycoon-id-5",
+      "key": "moab.lo.res.a.empty",
+      "x": 233,
+      "y": 299
+    }
+  ],
+  "9x15": [
+    {
+      "id": "88bf5395-9dc0-fc51-d780-f576869068be",
+      "tycoon_id": "tycoon-id-3",
+      "key": "moab.lo.res.a",
+      "x": 195,
+      "y": 303
+    },
+    {
+      "id": "193ceeaf-f393-0e62-2a54-9b54627e075c",
+      "tycoon_id": "tycoon-id-1",
+      "key": "moab.lo.res.b.empty",
+      "x": 198,
+      "y": 303
+    },
+    {
+      "id": "ec519934-d25c-2d1d-8c22-42bb70246644",
+      "tycoon_id": "tycoon-id-3",
+      "key": "moab.mi.res.c.empty",
+      "x": 195,
+      "y": 306
+    },
+    {
+      "id": "119f411a-6260-afec-47d1-92f8461a63f9",
+      "tycoon_id": "tycoon-id-5",
+      "key": "moab.mi.res.c",
+      "x": 197,
+      "y": 306
+    },
+    {
+      "id": "60c43b89-ffc9-4b45-0ee3-18377a477ff2",
+      "tycoon_id": "tycoon-id-5",
+      "key": "pgi.clothes.industry",
+      "x": 195,
+      "y": 315
+    },
+    {
+      "id": "b40f60cc-b706-c5b7-1574-dd6bdd364e49",
+      "tycoon_id": "tycoon-id-4",
+      "key": "pgi.farm",
+      "x": 195,
+      "y": 319
+    },
+    {
+      "id": "0e35dc90-af25-981e-e0e3-28ec6a5c10fa",
+      "tycoon_id": "tycoon-id-4",
+      "key": "pgi.farm.small",
+      "x": 199,
+      "y": 319
+    }
+  ],
+  "10x15": [
+    {
+      "id": "e4c821e1-71a6-1b12-6d82-75e24c23440c",
+      "tycoon_id": "tycoon-id-2",
+      "key": "moab.lo.res.b",
+      "x": 201,
+      "y": 303
+    },
+    {
+      "id": "4805a703-9ba5-ec45-1fbb-1aaa785f70ac",
+      "tycoon_id": "tycoon-id-2",
+      "key": "moab.lo.res.c.empty",
+      "x": 204,
+      "y": 303
+    },
+    {
+      "id": "55fd44cc-8f89-4e93-7e13-8d6b985e2010",
+      "tycoon_id": "tycoon-id-1",
+      "key": "moab.lo.res.c",
+      "x": 206,
+      "y": 303
+    },
+    {
+      "id": "4edd985e-3f5e-86df-adee-c24dc549936a",
+      "tycoon_id": "tycoon-id-4",
+      "key": "moab.lo.res.d.empty",
+      "x": 214,
+      "y": 304
+    },
+    {
+      "id": "f7aa0250-e441-ea17-60fe-c5000a0e1526",
+      "tycoon_id": "tycoon-id-2",
+      "key": "moab.lo.res.d",
+      "x": 218,
+      "y": 304
+    },
+    {
+      "id": "5e3cc799-3d4a-59b0-d554-d7bfb932ffe2",
+      "tycoon_id": "tycoon-id-1",
+      "key": "moab.tv.station",
+      "x": 200,
+      "y": 306
+    },
+    {
+      "id": "cab52381-cff5-492a-5aa3-7d47bf2fdb94",
+      "tycoon_id": "tycoon-id-5",
+      "key": "pgi.car.industry",
+      "x": 204,
+      "y": 307
+    },
+    {
+      "id": "72422e9c-53bb-1166-a7b7-73e4bb53955d",
+      "tycoon_id": "tycoon-id-3",
+      "key": "pgi.car.store",
+      "x": 208,
+      "y": 307
+    },
+    {
+      "id": "9a35583c-2667-8867-26c4-1677a50fb6e9",
+      "tycoon_id": "tycoon-id-1",
+      "key": "pgi.bar",
+      "x": 211,
+      "y": 307
+    },
+    {
+      "id": "1c20b1dc-0ac9-8072-f9dc-dab1a2b59b0c",
+      "tycoon_id": "tycoon-id-3",
+      "key": "pgi.printing.plant",
+      "x": 215,
+      "y": 308
+    },
+    {
+      "id": "6f2c4c4a-abd9-24b1-a6d4-f0b4386d966f",
+      "tycoon_id": "tycoon-id-2",
+      "key": "pgi.clothes.industry.small",
+      "x": 200,
+      "y": 315
+    },
+    {
+      "id": "25c3fd96-cd9c-3935-2795-c1f31140b799",
+      "tycoon_id": "tycoon-id-3",
+      "key": "pgi.computing",
+      "x": 203,
+      "y": 315
+    },
+    {
+      "id": "dae80529-a3dc-8254-fd50-109369cdcc4a",
+      "tycoon_id": "tycoon-id-1",
+      "key": "pgi.bm.industry",
+      "x": 207,
+      "y": 315
+    },
+    {
+      "id": "65b267c7-721e-da81-30b0-a22214f588ee",
+      "tycoon_id": "tycoon-id-3",
+      "key": "pgi.const.industry",
+      "x": 214,
+      "y": 315
+    },
+    {
+      "id": "3023de7c-dc08-acba-8da5-ce02aee1e323",
+      "tycoon_id": "tycoon-id-1",
+      "key": "pgi.elect.comp.industry",
+      "x": 219,
+      "y": 315
+    },
+    {
+      "id": "ee6643be-8d3e-c74b-8634-4d37ee0cc844",
+      "tycoon_id": "tycoon-id-2",
+      "key": "pgi.food.store",
+      "x": 202,
+      "y": 319
+    },
+    {
+      "id": "e34ccd42-c057-1ee2-ec59-cde15e09f6fe",
+      "tycoon_id": "tycoon-id-4",
+      "key": "pgi.fire",
+      "x": 204,
+      "y": 319
+    },
+    {
+      "id": "3ef0e065-48a2-644c-db2c-2ae854664824",
+      "tycoon_id": "tycoon-id-5",
+      "key": "pgi.hospital",
+      "x": 206,
+      "y": 319
+    },
+    {
+      "id": "b411f5d3-d542-50e2-afdb-cb3f14d94230",
+      "tycoon_id": "tycoon-id-3",
+      "key": "pgi.hq.1",
+      "x": 209,
+      "y": 319
+    },
+    {
+      "id": "a90d081f-7938-6825-fdeb-3f11f03bd9e8",
+      "tycoon_id": "tycoon-id-2",
+      "key": "pgi.hq.2",
+      "x": 213,
+      "y": 319
+    },
+    {
+      "id": "799f4c79-7f87-8bb9-af8d-280762a39f95",
+      "tycoon_id": "tycoon-id-2",
+      "key": "pgi.hq.3",
+      "x": 216,
+      "y": 319
+    },
+    {
+      "id": "762855e7-4205-f0c0-f83a-374c29e8d538",
+      "tycoon_id": "tycoon-id-5",
+      "key": "pgi.hq.4",
+      "x": 219,
+      "y": 319
+    }
+  ],
+  "11x15": [
+    {
+      "id": "46857245-e8ff-f6a7-b143-9825cc75367b",
+      "tycoon_id": "tycoon-id-1",
+      "key": "moab.mi.res.a.empty",
+      "x": 222,
+      "y": 304
+    },
+    {
+      "id": "f54f642b-f747-961a-6fc5-fcdf39e37716",
+      "tycoon_id": "tycoon-id-3",
+      "key": "moab.mi.res.a",
+      "x": 224,
+      "y": 304
+    },
+    {
+      "id": "09fa37ff-2739-0a11-7adf-945de85da80c",
+      "tycoon_id": "tycoon-id-2",
+      "key": "moab.mi.res.b.empty",
+      "x": 229,
+      "y": 305
+    },
+    {
+      "id": "a5de6b69-6207-63bf-ce77-cfe37ff524ba",
+      "tycoon_id": "tycoon-id-5",
+      "key": "moab.mi.res.b",
+      "x": 235,
+      "y": 305
+    },
+    {
+      "id": "02e4e65d-4deb-ca61-e8f0-4d9451b8b1dd",
+      "tycoon_id": "tycoon-id-2",
+      "key": "pgi.chemical.industry",
+      "x": 220,
+      "y": 309
+    },
+    {
+      "id": "bee5e18e-dd02-3151-922a-c424ef7a23c0",
+      "tycoon_id": "tycoon-id-2",
+      "key": "pgi.chemical.industry.small",
+      "x": 225,
+      "y": 309
+    },
+    {
+      "id": "50579fbc-12e8-bc45-21ab-8ca6ca9e12f1",
+      "tycoon_id": "tycoon-id-4",
+      "key": "pgi.mine",
+      "x": 228,
+      "y": 309
+    },
+    {
+      "id": "45d4268f-1598-1125-7b46-e92d242cc9e5",
+      "tycoon_id": "tycoon-id-2",
+      "key": "pgi.mine.small",
+      "x": 233,
+      "y": 309
+    },
+    {
+      "id": "003b1ab0-755e-40b3-7960-ad5622d84b2b",
+      "tycoon_id": "tycoon-id-2",
+      "key": "pgi.elect.comp.industry.small",
+      "x": 224,
+      "y": 315
+    },
+    {
+      "id": "9ef4b466-6c74-12f7-2235-12fdd32385ad",
+      "tycoon_id": "tycoon-id-5",
+      "key": "pgi.textile.industry",
+      "x": 229,
+      "y": 315
+    },
+    {
+      "id": "fc2a5079-1f6c-a6f1-76a8-ecc8ff784022",
+      "tycoon_id": "tycoon-id-2",
+      "key": "pgi.textile.industry.small",
+      "x": 234,
+      "y": 315
+    },
+    {
+      "id": "d6dc7dff-f258-8365-1d21-eb7b7b73605d",
+      "tycoon_id": "tycoon-id-2",
+      "key": "pgi.hq.5",
+      "x": 222,
+      "y": 319
+    },
+    {
+      "id": "a60afa35-6c06-a875-1ed9-27f87f18cacf",
+      "tycoon_id": "tycoon-id-1",
+      "key": "pgi.police",
+      "x": 225,
+      "y": 319
+    },
+    {
+      "id": "2b683991-3f45-218c-7134-d1f1eda40883",
+      "tycoon_id": "tycoon-id-5",
+      "key": "pgi.school",
+      "x": 227,
+      "y": 319
+    },
+    {
+      "id": "9775262b-c5c4-d2eb-dcdc-ccf3340c565f",
+      "tycoon_id": "tycoon-id-3",
+      "key": "pgi.townhall",
+      "x": 234,
+      "y": 319
+    }
+  ],
+  "9x16": [
+    {
+      "id": "1d86d7f0-9044-0c31-0f65-e62216783eab",
+      "tycoon_id": "tycoon-id-1",
+      "key": "pgi.tradecenter",
+      "x": 195,
+      "y": 322
+    },
+    {
+      "id": "89550572-3c62-d276-446c-a9ebe12b9523",
+      "tycoon_id": "tycoon-id-3",
+      "key": "pgi.metal.industry.small",
+      "x": 195,
+      "y": 326
+    },
+    {
+      "id": "fd529e64-13bf-dde4-3ea2-2ca7a780595e",
+      "tycoon_id": "tycoon-id-5",
+      "key": "pgi.office.a.empty",
+      "x": 197,
+      "y": 327
+    },
+    {
+      "id": "44c44eb4-0441-7d01-daac-70ddae437be9",
+      "tycoon_id": "tycoon-id-5",
+      "key": "pgi.office.a",
+      "x": 199,
+      "y": 327
+    },
+    {
+      "id": "3b4a80c2-cc2f-196c-5102-8955b93e4048",
+      "tycoon_id": "tycoon-id-5",
+      "key": "pgi.pharma.industry",
+      "x": 195,
+      "y": 335
+    },
+    {
+      "id": "164b8b6c-652f-197c-c506-b2341acff19a",
+      "tycoon_id": "tycoon-id-2",
+      "key": "pgi.hi.res.g.empty",
+      "x": 195,
+      "y": 337
+    },
+    {
+      "id": "34d7a6d7-840c-c5bc-8019-499dce585546",
+      "tycoon_id": "tycoon-id-4",
+      "key": "pgi.hi.res.g",
+      "x": 197,
+      "y": 337
+    },
+    {
+      "id": "210b5940-9ed6-9219-dcb1-06606bae9dea",
+      "tycoon_id": "tycoon-id-1",
+      "key": "pgi.hi.res.h.empty",
+      "x": 199,
+      "y": 337
+    },
+    {
+      "id": "aa940355-265c-5fcc-9477-5e6e60101e30",
+      "tycoon_id": "tycoon-id-3",
+      "key": "pgi.lo.res.d",
+      "x": 195,
+      "y": 339
+    },
+    {
+      "id": "f1c073f0-08b4-9eba-aff1-10a21faa0a7a",
+      "tycoon_id": "tycoon-id-3",
+      "key": "pgi.lo.res.e.empty",
+      "x": 197,
+      "y": 339
+    },
+    {
+      "id": "0c572083-95b9-187f-9481-0647ac86fa69",
+      "tycoon_id": "tycoon-id-2",
+      "key": "pgi.lo.res.e",
+      "x": 199,
+      "y": 339
+    }
+  ],
+  "10x16": [
+    {
+      "id": "4cf4b7f7-fcdd-f14f-4295-853bd1e2e240",
+      "tycoon_id": "tycoon-id-1",
+      "key": "pgi.hha.industry",
+      "x": 200,
+      "y": 325
+    },
+    {
+      "id": "a97c0875-f906-10b4-225b-253e04952ba9",
+      "tycoon_id": "tycoon-id-3",
+      "key": "pgi.hha.industry.small",
+      "x": 205,
+      "y": 325
+    },
+    {
+      "id": "d01be2ed-5e64-ce70-9429-83562d9208be",
+      "tycoon_id": "tycoon-id-4",
+      "key": "pgi.legal.services",
+      "x": 208,
+      "y": 325
+    },
+    {
+      "id": "3331e9ee-2b2a-3d8c-4c3d-a7bdeb2b8d7c",
+      "tycoon_id": "tycoon-id-3",
+      "key": "pgi.heavy.industry",
+      "x": 215,
+      "y": 325
+    },
+    {
+      "id": "7cf51cc3-0646-2726-ed69-ed28acda46f3",
+      "tycoon_id": "tycoon-id-1",
+      "key": "pgi.movie.a",
+      "x": 202,
+      "y": 326
+    },
+    {
+      "id": "97a33da9-9805-c524-3a53-b22202897d2a",
+      "tycoon_id": "tycoon-id-3",
+      "key": "pgi.office.b.empty",
+      "x": 204,
+      "y": 327
+    },
+    {
+      "id": "797a564c-3852-db1c-3ba6-a57f055259ba",
+      "tycoon_id": "tycoon-id-4",
+      "key": "pgi.office.b",
+      "x": 206,
+      "y": 327
+    },
+    {
+      "id": "a9e5403f-fffa-b1c8-9e22-c97ad1216096",
+      "tycoon_id": "tycoon-id-1",
+      "key": "pgi.office.c.empty",
+      "x": 208,
+      "y": 327
+    },
+    {
+      "id": "f7dd51be-9f62-ae97-72de-861298cfe938",
+      "tycoon_id": "tycoon-id-4",
+      "key": "pgi.office.c",
+      "x": 212,
+      "y": 327
+    },
+    {
+      "id": "a0d5a639-f356-50b8-a4b7-e622f4e734f2",
+      "tycoon_id": "tycoon-id-3",
+      "key": "pgi.office.d.empty",
+      "x": 214,
+      "y": 327
+    },
+    {
+      "id": "5ea516ac-8fde-1839-9cbd-daf7bad5ffbe",
+      "tycoon_id": "tycoon-id-5",
+      "key": "pgi.office.d",
+      "x": 216,
+      "y": 327
+    },
+    {
+      "id": "6ecd27cd-03c5-49d1-d947-4df788e61029",
+      "tycoon_id": "tycoon-id-5",
+      "key": "pgi.food.proc",
+      "x": 200,
+      "y": 335
+    },
+    {
+      "id": "7fd953c7-e4fa-c610-1b5e-29cbed51b322",
+      "tycoon_id": "tycoon-id-1",
+      "key": "pgi.food.proc.small",
+      "x": 205,
+      "y": 335
+    },
+    {
+      "id": "879650aa-6391-0a52-5dd4-2b9d84f0c5b0",
+      "tycoon_id": "tycoon-id-2",
+      "key": "pgi.hi.res.a.empty",
+      "x": 209,
+      "y": 335
+    },
+    {
+      "id": "4fe2156d-794f-b2b3-5f72-d80428963fd6",
+      "tycoon_id": "tycoon-id-3",
+      "key": "pgi.hi.res.a",
+      "x": 214,
+      "y": 335
+    },
+    {
+      "id": "ec4c8e0e-121c-09a6-db27-030acbb0fa32",
+      "tycoon_id": "tycoon-id-4",
+      "key": "pgi.hi.res.b.empty",
+      "x": 218,
+      "y": 335
+    },
+    {
+      "id": "477c8327-9447-637e-1018-1586c9016cca",
+      "tycoon_id": "tycoon-id-1",
+      "key": "pgi.hi.res.f.empty",
+      "x": 202,
+      "y": 336
+    },
+    {
+      "id": "9a0566d7-2ae3-8d1e-ea02-d7403b081d05",
+      "tycoon_id": "tycoon-id-1",
+      "key": "pgi.hi.res.f",
+      "x": 216,
+      "y": 336
+    },
+    {
+      "id": "5e234719-f857-da78-3517-3ff490aa8654",
+      "tycoon_id": "tycoon-id-5",
+      "key": "pgi.hi.res.h",
+      "x": 204,
+      "y": 337
+    },
+    {
+      "id": "8efbc6e8-c0ab-88b9-c43c-aa55ecbfb85e",
+      "tycoon_id": "tycoon-id-4",
+      "key": "pgi.hi.res.i.empty",
+      "x": 206,
+      "y": 337
+    },
+    {
+      "id": "20f86900-6a4c-9816-49d9-77b3d0a3bb47",
+      "tycoon_id": "tycoon-id-4",
+      "key": "pgi.hi.res.i",
+      "x": 208,
+      "y": 337
+    },
+    {
+      "id": "3dcc7753-1288-7957-85d8-be3c3dd00a0b",
+      "tycoon_id": "tycoon-id-4",
+      "key": "pgi.hi.res.j.empty",
+      "x": 212,
+      "y": 337
+    },
+    {
+      "id": "20be5c90-d71d-3e36-3f6b-13946d53649b",
+      "tycoon_id": "tycoon-id-1",
+      "key": "pgi.hi.res.j",
+      "x": 214,
+      "y": 337
+    },
+    {
+      "id": "b7d4917b-0893-1c46-b795-d9e15a4c2827",
+      "tycoon_id": "tycoon-id-2",
+      "key": "pgi.lo.res.a.empty",
+      "x": 218,
+      "y": 337
+    },
+    {
+      "id": "4d08e436-1ace-1c7e-7d8a-3f2ba06042c9",
+      "tycoon_id": "tycoon-id-2",
+      "key": "pgi.lo.res.f.empty",
+      "x": 201,
+      "y": 339
+    },
+    {
+      "id": "df9605e5-c9be-cfd1-d8c0-9a77632097d9",
+      "tycoon_id": "tycoon-id-1",
+      "key": "pgi.lo.res.f",
+      "x": 203,
+      "y": 339
+    },
+    {
+      "id": "2f0ff64f-71d4-3f55-889f-17805c84e57f",
+      "tycoon_id": "tycoon-id-3",
+      "key": "pgi.mi.res.a.empty",
+      "x": 205,
+      "y": 339
+    },
+    {
+      "id": "70bba88a-1b6a-ab9d-83e2-28d001af9ef3",
+      "tycoon_id": "tycoon-id-3",
+      "key": "pgi.mi.res.a",
+      "x": 207,
+      "y": 339
+    },
+    {
+      "id": "e3115cb5-a96b-3629-ed2b-d155bbb674bd",
+      "tycoon_id": "tycoon-id-4",
+      "key": "pgi.mi.res.b.empty",
+      "x": 209,
+      "y": 339
+    },
+    {
+      "id": "57560a1b-e325-04b6-ef5b-0ef87ffbe6e2",
+      "tycoon_id": "tycoon-id-4",
+      "key": "pgi.mi.res.b",
+      "x": 212,
+      "y": 339
+    },
+    {
+      "id": "c875fb60-8952-9c2c-ca7f-aa4edf3784c6",
+      "tycoon_id": "tycoon-id-4",
+      "key": "pgi.mi.res.c.empty",
+      "x": 214,
+      "y": 339
+    },
+    {
+      "id": "7b69cbec-ac7b-e41c-23d6-5d183fbb134b",
+      "tycoon_id": "tycoon-id-2",
+      "key": "pgi.mi.res.c",
+      "x": 216,
+      "y": 339
+    },
+    {
+      "id": "bcf6d337-b9a5-7c23-ac21-e99ce52119d0",
+      "tycoon_id": "tycoon-id-3",
+      "key": "pgi.mi.res.d.empty",
+      "x": 218,
+      "y": 339
+    }
+  ],
+  "11x16": [
+    {
+      "id": "c804638b-96e0-b280-e5d1-fd2cb1290f89",
+      "tycoon_id": "tycoon-id-2",
+      "key": "pgi.market.a",
+      "x": 220,
+      "y": 325
+    },
+    {
+      "id": "7b10099a-ad1b-e25a-8fd9-bef49d2c5ef8",
+      "tycoon_id": "tycoon-id-4",
+      "key": "pgi.market.b",
+      "x": 224,
+      "y": 325
+    },
+    {
+      "id": "ffd81b6a-0d43-cb85-37f7-fd11de60eca5",
+      "tycoon_id": "tycoon-id-2",
+      "key": "pgi.market.c",
+      "x": 227,
+      "y": 325
+    },
+    {
+      "id": "7bfb2943-9434-e0da-d984-e578cca3f8ba",
+      "tycoon_id": "tycoon-id-2",
+      "key": "pgi.metal.industry",
+      "x": 235,
+      "y": 325
+    },
+    {
+      "id": "9f27524d-9d4a-a3b4-d2d9-9c0fa3486f4d",
+      "tycoon_id": "tycoon-id-3",
+      "key": "pgi.movie.b",
+      "x": 229,
+      "y": 326
+    },
+    {
+      "id": "8ac091b1-2d7b-d069-22a0-8d329c12c80e",
+      "tycoon_id": "tycoon-id-5",
+      "key": "pgi.paper.industry",
+      "x": 220,
+      "y": 329
+    },
+    {
+      "id": "0299c474-744a-9645-1b44-434781df9733",
+      "tycoon_id": "tycoon-id-4",
+      "key": "pgi.drug.store",
+      "x": 224,
+      "y": 329
+    },
+    {
+      "id": "0b2d0ee7-228f-6856-b289-a61fa19c35fb",
+      "tycoon_id": "tycoon-id-5",
+      "key": "pgi.hi.res.by",
+      "x": 220,
+      "y": 335
+    },
+    {
+      "id": "9032f974-a0ee-a190-bcff-9a7818f6b68c",
+      "tycoon_id": "tycoon-id-1",
+      "key": "pgi.hi.res.c.empty",
+      "x": 222,
+      "y": 335
+    },
+    {
+      "id": "46ee8a8e-93d1-2fdd-c60c-ffc9cfefcefe",
+      "tycoon_id": "tycoon-id-5",
+      "key": "pgi.hi.res.c",
+      "x": 224,
+      "y": 335
+    },
+    {
+      "id": "868fb67b-8b6f-1e16-ee42-8418641a6eb3",
+      "tycoon_id": "tycoon-id-2",
+      "key": "pgi.hi.res.d.empty",
+      "x": 226,
+      "y": 335
+    },
+    {
+      "id": "3fa350fb-f4a9-b169-b6de-aa50454cc9a4",
+      "tycoon_id": "tycoon-id-1",
+      "key": "pgi.hi.res.d",
+      "x": 228,
+      "y": 335
+    },
+    {
+      "id": "f4073514-be73-f848-2cd3-ea4f8a26b47a",
+      "tycoon_id": "tycoon-id-3",
+      "key": "pgi.hi.res.e.empty",
+      "x": 232,
+      "y": 335
+    },
+    {
+      "id": "e2967e20-2aff-7d58-117d-4aad8bf9d591",
+      "tycoon_id": "tycoon-id-1",
+      "key": "pgi.hi.res.e",
+      "x": 234,
+      "y": 335
+    },
+    {
+      "id": "cf55538f-f9ef-7de4-1b9c-a26fef516028",
+      "tycoon_id": "tycoon-id-3",
+      "key": "pgi.lo.res.a",
+      "x": 220,
+      "y": 337
+    },
+    {
+      "id": "93d962d2-7fd6-9312-99e6-389c9e96df4d",
+      "tycoon_id": "tycoon-id-5",
+      "key": "pgi.lo.res.b.empty",
+      "x": 223,
+      "y": 338
+    },
+    {
+      "id": "beca3914-2e16-5128-16e6-a1af7b58cd49",
+      "tycoon_id": "tycoon-id-1",
+      "key": "pgi.lo.res.b",
+      "x": 226,
+      "y": 338
+    },
+    {
+      "id": "8bd741ac-dbd6-c64c-5898-ba8884c64130",
+      "tycoon_id": "tycoon-id-2",
+      "key": "pgi.lo.res.c.empty",
+      "x": 229,
+      "y": 338
+    },
+    {
+      "id": "b0c670c4-bb3a-e57f-8b0d-2d708e4c5181",
+      "tycoon_id": "tycoon-id-5",
+      "key": "pgi.lo.res.c",
+      "x": 232,
+      "y": 338
+    },
+    {
+      "id": "4dcfd8b1-7014-20db-8168-35a334d93494",
+      "tycoon_id": "tycoon-id-3",
+      "key": "pgi.lo.res.d.empty",
+      "x": 234,
+      "y": 338
+    },
+    {
+      "id": "c17ba709-895b-c246-acf3-83f5fd65eae0",
+      "tycoon_id": "tycoon-id-3",
+      "key": "pgi.mi.res.d",
+      "x": 220,
+      "y": 339
+    }
+  ],
+  "9x17": [
+    {
+      "id": "897cc01a-b3d1-dfa7-237e-49d78afad537",
+      "tycoon_id": "tycoon-id-3",
+      "key": "pgi.mi.res.e.empty",
+      "x": 195,
+      "y": 342
+    },
+    {
+      "id": "6ba47f2e-bdde-e0df-9fc4-80eda577995f",
+      "tycoon_id": "tycoon-id-1",
+      "key": "pgi.mi.res.e",
+      "x": 197,
+      "y": 342
+    },
+    {
+      "id": "06041af5-11e6-f581-3962-ea2314b599e2",
+      "tycoon_id": "tycoon-id-5",
+      "key": "pgi.restaurant",
+      "x": 199,
+      "y": 342
+    }
+  ],
+  "10x17": [
+    {
+      "id": "8bd707c1-a1cb-9854-d740-d522387d9415",
+      "tycoon_id": "tycoon-id-1",
+      "key": "pgi.tv.station",
+      "x": 202,
+      "y": 343
+    }
+  ]
+}

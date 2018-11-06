@@ -6,7 +6,7 @@ MULTI_MENUBARS = {
 }
 
 MENUBAR_LEFT = {
-  'planetary': true
+  'systems': true
   'bookmarks': true
   'research': true
   'tycoon': true
@@ -30,6 +30,8 @@ export default class MenuState
     @toolbar_body = null
     @toolbar_right = null
 
+    @state_counter = 0
+
   is_toolbar_left_open: () -> @toolbar_left?.length
   is_toolbar_right_open: () -> @toolbar_right?.length
 
@@ -46,6 +48,7 @@ export default class MenuState
     @toolbar_left = null
     @toolbar_body = null
     @toolbar_right = null
+    @state_counter += 1
 
   toggle_menu: (type) ->
     if type == 'hide_all'
@@ -57,18 +60,22 @@ export default class MenuState
         @toolbar_left = null if position == 'left'
         @toolbar_body = null if position == 'body'
         @toolbar_right = null if position == 'right'
+      @state_counter += 1
 
     if MENUBAR_LEFT[type]
       clear_menus(MULTI_MENUBARS[@toolbar_left]) if MULTI_MENUBARS[@toolbar_left]? && @toolbar_left != type
       @toolbar_left = if @toolbar_left == type then null else type
+      @state_counter += 1
 
     if MENUBAR_BODY[type]
       clear_menus(MULTI_MENUBARS[@toolbar_body]) if MULTI_MENUBARS[@toolbar_body]? && @toolbar_body != type
       @toolbar_body = if @toolbar_body == type then null else type
+      @state_counter += 1
 
     if MENUBAR_RIGHT[type]
       clear_menus(MULTI_MENUBARS[@toolbar_right]) if MULTI_MENUBARS[@toolbar_right]? && @toolbar_right != type
       @toolbar_right = if @toolbar_right == type then null else type
+      @state_counter += 1
 
     unless MENUBAR_LEFT[type]? || MENUBAR_BODY[type]? || MENUBAR_RIGHT[type]?
       Logger.info "unknown menu type #{type}"

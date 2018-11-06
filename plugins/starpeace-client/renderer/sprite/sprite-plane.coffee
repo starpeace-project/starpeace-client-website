@@ -5,6 +5,8 @@ global PIXI
 
 import Sprite from '~/plugins/starpeace-client/renderer/sprite/sprite.coffee'
 
+import Logger from '~/plugins/starpeace-client/logger.coffee'
+
 export default class SpritePlane extends Sprite
   constructor: (@textures, @flight_plan) ->
     super()
@@ -16,7 +18,12 @@ export default class SpritePlane extends Sprite
 
     @is_done = false
 
-  width: (viewport) -> viewport.with_scale(@textures[0].width)
+  width: (viewport) ->
+    unless @textures[0]?
+      Logger.warn "plane sprite unexpectedly has no texture"
+      console.log @
+      return 0
+    viewport.with_scale(@textures[0].width)
   height: (viewport) -> viewport.with_scale(@textures[0].height)
 
   render: (sprite, viewport) ->

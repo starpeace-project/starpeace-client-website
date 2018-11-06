@@ -1,5 +1,5 @@
 
-## v0.3 - in progress - updated 2018-10-28
+## v0.3 - in progress - updated 2018-11-05
 ### platform
 * [done] improved building rendering around edges [v0.2.1]
 * [done] improved z-order rendering across layers [v0.2.2]
@@ -9,6 +9,7 @@
 * [done] input interaction support for buildings (selection, rendering) [v0.2.10]
 * [done] internal options simplification and refactoring [v0.2.12]
 * [done] improve client UI grid layout and game menu components [v0.2.12]
+* [done] improve game state workflow and initial API integration (mock) [v0.2.12]
 
 ### assets
 * [done] improved gameplay documentation [v0.2.4]
@@ -23,6 +24,7 @@
 * [done] refactor seal asset organization, integrate more game metadata [v0.2.12]
 * [done] invention metadata and taxonomy [v0.2.12]
 * [done] initial language translation support [v0.2.12]
+* [done] client static news and updates info widget [v0.2.12]
 
 ### gameplay
 * [done] persist client options in localStorage [v0.2.3]

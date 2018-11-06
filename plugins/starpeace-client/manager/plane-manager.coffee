@@ -98,7 +98,7 @@ export default class PlaneManager
     @plane_metadata? && @plane_metadata.atlas.length == Object.keys(@loaded_atlases).length
 
   queue_asset_load: () ->
-    return if @requested_plane_metadata
+    return if @requested_plane_metadata || @plane_metadata?
     @requested_plane_metadata = true
     @asset_manager.queue('metadata.plane', './plane.metadata.json', (resource) =>
       @plane_metadata = resource.data

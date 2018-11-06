@@ -10,8 +10,7 @@
           %tr.row-menu
             %toolbar-menubar{'v-bind:game_state':'game_state', 'v-bind:menu_state':'menu_state', 'v-bind:ui_state':'ui_state'}
             %td.column-tycoon
-              %span.column-tycoon-name
-                Visitor
+              %span.column-tycoon-name {{tycoon_name}}
               %span.column-tycoon-buildings
                 %span.count 0 / 0
                 %font-awesome-icon{':icon':"['far', 'building']"}
@@ -36,8 +35,7 @@
               %table
                 %tbody
                   %tr
-                    %td.column-tycoon-corporation
-                      [VISITOR VISA]
+                    %td.column-tycoon-corporation {{corporation_name}}
                   %tr
                     %td.column-tycoon-cash
                       $0
@@ -87,6 +85,13 @@ export default
     game_music_volume_class: -> if @game_state.game_music_volume then 'music-volume' else 'music-mute'
 
     notification_loading_css_class: -> { 'ajax-loading': (@game_state?.ajax_requests || 0) > 0 }
+
+    tycoon_name: -> if @game_state?.session_state.state_counter && @game_state?.session_state.identity.is_tycoon() then @game_state?.session_state.tycoon_metadata?.name else 'Visitor'
+    corporation_name: ->
+      if @is_ready && @game_state?.session_state.state_counter && @game_state?.session_state.identity.is_tycoon()
+        if @game_state.session_state.corporation_id? then @game_state.name_for_corporation_id(@game_state.session_state.corporation_id) else '[PENDING]'
+      else
+        '[VISITOR VISA]'
 
   methods:
     toggle_game_music: -> @music_manager.toggle_music()
@@ -170,6 +175,7 @@ export default
 
         .game-music
           color: $sp-primary
+          cursor: pointer
           font-size: 1.2rem
           margin-left: 1.5rem
 
@@ -181,12 +187,14 @@ export default
 
         .game-music-next
           color: $sp-primary
+          cursor: pointer
           font-size: 1.5rem
           margin-left: .75rem
           opacity: .5
 
         .game-music-volume
           color: $sp-primary
+          cursor: pointer
           font-size: 1.5rem
           margin-left: .5rem
           min-width: 1.75rem

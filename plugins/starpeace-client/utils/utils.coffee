@@ -15,3 +15,12 @@ export default class Utils
 
   @format_money: (value, decimals=0) ->
     value.toFixed(0).replace(new RegExp('\\d(?=(\\d{3})+$)', 'g'), '$&,')
+
+  @parse_query: (query_string) ->
+    query = {}
+    if query_string?.length
+      pairs = (if query_string[0] == '?' then query_string.substr(1) else query_string).split('&')
+      for pair in pairs
+        query_pair = pair.split('=')
+        query[decodeURIComponent(query_pair[0])] = decodeURIComponent(query_pair[1] || '')
+    query

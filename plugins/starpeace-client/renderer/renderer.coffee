@@ -49,10 +49,6 @@ export default class Renderer
 
   initialize_application: () ->
     return unless document?
-
-    user_agent = navigator?.userAgent || 'unknown'
-    is_iphone = ~user_agent.indexOf('iPhone') || ~user_agent.indexOf('iPod')
-
     setTimeout(scrollTo, 0, 0, 1)
 
     render_container = document.getElementById('render-container')

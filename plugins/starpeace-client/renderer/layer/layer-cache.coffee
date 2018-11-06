@@ -28,7 +28,8 @@ export default class LayerCache
 
   new_sprite: (render_state, options) ->
     render_state[@id] = 0 unless render_state[@id]?
-    textures = if options.textures? then options.textures else [options.texture]
+    textures = _.compact(if options.textures? then options.textures else [options.texture])
+    textures.push PIXI.Texture.EMPTY unless textures.length
 
     if render_state[@id] < @sprite_count
       sprite = @sprite_pool[render_state[@id]]

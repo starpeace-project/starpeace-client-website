@@ -3,7 +3,7 @@
   %sp-header{'v-bind:ui_state':'ui_state'}
   %sp-loading-card{'v-bind:game_state':'game_state'}
   %sp-loading-modal{'v-bind:game_state':'game_state'}
-  %sp-workflow{'v-bind:event_listener':'event_listener', 'v-bind:game_state':'game_state', 'v-bind:planetary_metadata_manager':'planetary_metadata_manager'}
+  %sp-workflow{'v-bind:client':'client', 'v-bind:event_listener':'event_listener', 'v-bind:game_state':'game_state'}
   %sp-body{'v-bind:game_state':'game_state', 'v-bind:ui_state':'ui_state'}
 </template>
 
@@ -41,7 +41,6 @@ export default
     menu_state: @client?.menu_state
     options: @client?.options
     ui_state: @client?.ui_state
-    planetary_metadata_manager: @client?.managers?.planetary_metadata_manager
     camera_manager: @client?.camera_manager
 
     show_header: @client?.options?.option('general.show_header')

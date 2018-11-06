@@ -13,7 +13,7 @@ export default class EventManager
     @static_news.length
 
   queue_asset_load: () ->
-    return if @requested_static_news
+    return if @requested_static_news || @static_news?.length
     @requested_static_news = true
     @asset_manager.queue('news.static.en', './news.static.en.json', (resource) =>
       @static_news = _.shuffle(resource.data)

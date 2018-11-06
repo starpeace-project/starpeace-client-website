@@ -12,7 +12,7 @@ export default class EffectManager
     @effect_metadata? && @effect_metadata.atlas.length == Object.keys(@loaded_atlases).length
 
   queue_asset_load: () ->
-    return if @requested_effect_metadata
+    return if @requested_effect_metadata || @effect_metadata?
     @requested_effect_metadata = true
     @asset_manager.queue('metadata.effect', './effect.metadata.json', (resource) =>
       @effect_metadata = resource.data

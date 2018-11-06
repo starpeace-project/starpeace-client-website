@@ -1,18 +1,19 @@
 <template lang='haml'>
 .sp-section
-  %a.sp-level-0{'v-on:click.stop.prevent':"toggle_section"}
-    %span{'v-show':"items.length && !section_expanded"}
+  %span
+  %a{'v-on:click.stop.prevent':"toggle_section"}
+    %span{'v-show':"has_items && !section_expanded"}
       %font-awesome-icon{':icon':"['fas', 'plus-square']"}
-    %span{'v-show':"items.length && section_expanded"}
+    %span{'v-show':"has_items && section_expanded"}
       %font-awesome-icon{':icon':"['fas', 'minus-square']"}
-    %span.sp-folder-icon{'v-show':"!items.length"}
+    %span.sp-folder-icon{'v-show':"!has_items"}
       %font-awesome-icon{':icon':"['fas', 'square']"}
     %span.sp-section-label {{label_text}}
-  .sp-menu-list{'v-if':'items.length', 'v-show':"section_expanded", ':class':'menu_container_dragging_class'}
+  .sp-menu-list{'v-if':'has_items', 'v-show':"section_expanded", ':class':'menu_container_dragging_class'}
     %template{'v-if':'draggable'}
       %draggable{'v-model':'items_as_options', '@start':'start_move_item', '@choose':'choose_item', ':move':'move_item'}
         %transition-group{name:'menu-section'}
-          %div.draggable-item{'v-for':"child in items_as_options", ':key':"child.id", ':class':"'menu-level-'+child.level"}
+          .draggable-item.bookmark-item{'v-for':"child in items_as_options", ':key':"child.id", ':class':"'menu-level-'+child.level"}
             %template{'v-if':"child.type == 'slot'"}
               %div.slot-item
             %template{'v-else-if':"child.is_folder", 'v-bind:item':'child'}
@@ -30,7 +31,7 @@
                     %font-awesome-icon{':icon':"['far', 'folder']"}
                 %span.sp-folder-label {{child.item_name}}
             %template{'v-else-if':'true'}
-              %a.is-menu-item
+              %a.is-menu-item{'v-on:click.stop.prevent':"select_item(child)"}
                 %span.link-image
                   %template{'v-if':"child.type == 'TOWN'"}
                     %city-icon
@@ -38,7 +39,7 @@
                     %font-awesome-icon{':icon':"['fas', 'map-marker-alt']"}
                 %span.link-label {{child.item_name}}
     %template{'v-else-if':'true'}
-      %div{'v-for':"child in items_as_options", ':key':"child.id"}
+      .bookmark-item{'v-for':"child in items_as_options", ':key':"child.id", ':class':"'menu-level-'+child.level"}
         %template{'v-if':"child.type == 'slot'"}
         %template{'v-else-if':"child.is_folder"}
           %div.sp-folder{'v-show':"!child.hidden"}
@@ -56,7 +57,7 @@
                   %font-awesome-icon{':icon':"['far', 'folder']"}
               %span.sp-folder-label {{child.item_name}}
         %template{'v-else-if':'true'}
-          %a.is-menu-item
+          %a.is-menu-item{'v-on:click.stop.prevent':"select_item(child)"}
             %span.link-image
               %template{'v-if':"child.type == 'TOWN'"}
                 %city-icon
@@ -100,7 +101,6 @@ menu_item_from_bookmark = (existing_option, bookmark_item, tree_item, order, lev
 
 tree_to_options = (existing_options_by_id, items_by_id, items_as_tree) ->
   children = []
-
   add_flattened_child = (level, tree_item) =>
     bookmark_item = items_by_id[tree_item.id]
     existing_option = existing_options_by_id[tree_item.id]
@@ -158,18 +158,23 @@ export default
     bookmark_manager: Object
     root_id: String
     label_text: String
-    items: Array
+    items_by_id: Object
     draggable: Boolean
 
   data: ->
-    section_expanded: false
-    items_as_options: tree_to_options({}, @items_by_id || {}, @items_as_tree || {})
+    items_as_tree = @items_to_tree(@items_by_id)
+    {
+      section_expanded: false
+      items_as_tree: items_as_tree
+      items_as_options: tree_to_options({}, @items_by_id, items_as_tree)
 
-    future_level_after_dragging: 0
+      future_level_after_dragging: 0
+    }
 
   watch:
-    items_as_tree: (new_value, old_value) ->
-      @items_as_options = tree_to_options(@options_by_id, @items_by_id, new_value)
+    items_hash: (new_value, old_value) ->
+      @items_as_tree = @items_to_tree(@items_by_id)
+      @items_as_options = tree_to_options(@options_by_id, @items_by_id, @items_as_tree)
 
     items_as_options: (new_value, old_value) ->
       pending_items = []
@@ -178,46 +183,30 @@ export default
         pending_items.push item
       tree_pairs = options_to_tree_pairs(pending_items, @root_id, 0)
 
-      deltas = []
-      add_to_delta = (item) =>
-        bookmark_item = @items_by_id[item.id]
-        deltas.push item unless bookmark_item.parent_id == item.parent_id && bookmark_item.order == item.order
-        add_to_delta(child) for child in (item.children || [])
-      add_to_delta(item) for item in tree_pairs
+      if @draggable
+        deltas = []
+        add_to_delta = (item) =>
+          bookmark_item = @items_by_id[item.id]
+          deltas.push item unless bookmark_item.parent_id == item.parent_id && bookmark_item.order == item.order
+          add_to_delta(child) for child in (item.children || [])
+        add_to_delta(item) for item in tree_pairs
 
-      @bookmark_manager.merge_bookmark_deltas(deltas)
+        @bookmark_manager.merge_bookmark_deltas(deltas)
 
   computed:
+    has_items: -> Object.keys(@items_by_id).length
+    items_hash: ->
+      hash = ''
+      hash = "#{hash}#{item.id}#{item.parent_id}#{item.order}" for item in _.values(@items_by_id)
+      hash
+
     menu_container_dragging_class: -> "menu-dragging-level-#{@future_level_after_dragging}"
 
-    items_by_id: ->
-      by_id = {}
-      by_id[item.id] = item for item in @items
-      by_id
-
-    items_as_tree: ->
-      pending_items = []
-      pending_items.push item for item in @items
-
-      roots = {}
-      by_id = {}
-      while pending_items.length
-        item = pending_items.shift()
-        if item.parent_id == @root_id
-          by_id[item.id] = roots[item.id] = { id: item.id }
-          by_id[item.id].child_ids = {} if item.is_folder()
-        else if by_id[item.parent_id]
-          by_id[item.id] = by_id[item.parent_id].child_ids[item.id] = { id: item.id }
-          by_id[item.id].child_ids = {} if item.is_folder()
-        else
-          pending_items.push item
-      roots
-
     options_by_id: ->
-      items_by_id = {}
+      by_id = {}
       for item in @items_as_options
-        items_by_id[item.id] = item if item?
-      items_by_id
+        by_id[item.id] = item if item?
+      by_id
 
     index_levels: ->
       index_level = {0: 0}
@@ -238,14 +227,16 @@ export default
 
   methods:
     toggle_section: () -> @section_expanded = !@section_expanded
-
     toggle_item: (item) ->
       item.expanded = !item.expanded
       @items_as_options = tree_to_options(@options_by_id, @items_by_id, @items_as_tree)
 
+    select_item: (item) ->
+      console.log 'select_item'
+      console.log item
+
     start_move_item: (event) ->
       @future_level_after_dragging = @index_levels[event?.oldIndex] if @index_levels[event?.oldIndex]?
-
     choose_item: (event) ->
       @future_level_after_dragging = @index_levels[event?.oldIndex] if @index_levels[event?.oldIndex]?
 
@@ -262,6 +253,26 @@ export default
         draggedElement.attributes.future_level = @index_levels[future_index]
       can_move
 
+
+    items_to_tree: (items_by_id) ->
+      pending_items = []
+      pending_items.push item for item in _.values(items_by_id)
+
+      roots = {}
+      by_id = {}
+      while pending_items.length
+        item = pending_items.shift()
+        if item.parent_id == @root_id
+          by_id[item.id] = roots[item.id] = { id: item.id }
+          by_id[item.id].child_ids = {} if item.is_folder()
+        else if by_id[item.parent_id]
+          by_id[item.id] = by_id[item.parent_id].child_ids[item.id] = { id: item.id }
+          by_id[item.id].child_ids = {} if item.is_folder()
+        else
+          pending_items.push item
+
+      roots
+
 </script>
 
 <style lang='sass' scoped>
@@ -273,6 +284,7 @@ export default
   transition: background-color 0
   transition: display 0
 
+.bookmark-item
   &.menu-level-0
     a
       padding-left: .75rem
@@ -376,7 +388,7 @@ export default
     .sp-folder-icon
       display: inline-block
       min-width: 1.25rem
-      padding-left: .1rem
+      text-align: center
 
     .sp-folder-label
       margin-left: .5rem
@@ -417,8 +429,9 @@ export default
 
 .link-image
   border: 0
-  padding: .25rem
-  max-width: 2rem
+  display: inline-block
+  min-width: 1.25rem
+  text-align: center
 
 .link-label
   font-size: 1rem

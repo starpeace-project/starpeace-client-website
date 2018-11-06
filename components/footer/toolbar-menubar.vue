@@ -13,7 +13,7 @@ export default
 
   data: ->
     menu_options: [{
-      type: 'planetary'
+      type: 'systems'
       tooltip: 'Planetary Systems'
       icon_category: 'fas'
       icon_key: 'globe'

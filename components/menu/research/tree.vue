@@ -1,5 +1,5 @@
 <template lang='haml'>
-#research-tree-container.card.has-header
+#research-tree-container.card.is-starpeace.has-header
   .card-header
     .card-header-title
     .card-header-icon.card-close{'v-on:click.stop.prevent':"menu_state.toggle_menu('research')"}
@@ -223,8 +223,7 @@ export default
       , 50)
 
   computed:
-    state_counter: -> @options.vue_state_counter + @invention_manager.vue_state_counter
-
+    state_counter: -> @game_state.initialized && (@options.vue_state_counter + @invention_manager.vue_state_counter)
     is_visible: ->
       @game_state?.initialized && (@menu_state?.toolbar_left == 'research' || @menu_state?.toolbar_body == 'research' || @menu_state?.toolbar_right == 'research')
 
@@ -247,11 +246,9 @@ export default
       completed
 
     invention_data: ->
-      return [] unless @state_counter?
-
       inventions = {}
       to_search = []
-      for invention_id,invention of @invention_manager.inventions_by_id
+      for invention in @inventions_for_company
         industry_type = invention.industry_type || 'GENERAL'
         if invention.category == @selected_category && industry_type == @selected_industry_type
           inventions[invention.id] = invention
@@ -267,6 +264,15 @@ export default
               to_search.push depends_id
 
       _.values(inventions)
+
+    inventions_for_company: ->
+      return [] unless @state_counter
+
+      if @game_state.session_state.identity.is_tycoon()
+        company_metadata = @game_state.current_company_metadata()
+        if company_metadata? then (@invention_manager.inventions_by_seal[company_metadata.seal_id] || []) else []
+      else
+        _.values(@invention_manager.inventions_by_id)
 
   methods:
     click_item: (item) ->

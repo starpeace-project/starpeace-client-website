@@ -1,5 +1,5 @@
 <template lang='haml'>
-#research-menu-container.card.has-header
+#research-menu-container.card.is-starpeace.has-header
   .card-header
     .card-header-title
       Research & Development
@@ -31,9 +31,9 @@
 import IndustryTypeIcon from '~/components/misc/industry-type-icon.vue'
 import IndustryType from '~/plugins/starpeace-client/industry/industry-type.coffee'
 
-organize_sections = (invention_manager, selected_category) ->
+organize_sections = (inventions, selected_category) ->
   sections_by_category = {}
-  for invention_id,invention of invention_manager.inventions_by_id
+  for invention in inventions
     unless sections_by_category[invention.category]?
       sections_by_category[invention.category] = {
         name: invention.category.replace('_', ' ')
@@ -75,21 +75,32 @@ export default
 
   watch:
     state_counter: (new_value, old_value) ->
-      @sections = organize_sections(@invention_manager, @selected_category)
+      @sections = organize_sections(@inventions_for_company, @selected_category)
     selected_category: (new_value, old_value) ->
-      @sections = organize_sections(@invention_manager, @selected_category)
+      @sections = organize_sections(@inventions_for_company, @selected_category)
+    company_id: (new_value, old_value) ->
+      @sections = organize_sections(@inventions_for_company, @selected_category)
 
   computed:
-    state_counter: -> @options.vue_state_counter + @invention_manager.vue_state_counter
+    state_counter: -> @game_state.initialized && (@options.vue_state_counter + @invention_manager.vue_state_counter)
 
     selected_category: -> @game_state.inventions_selected_category
     selected_industry_type: -> @game_state.inventions_selected_industry_type
 
+    company_id: -> @game_state?.session_state.company_id
+
+    inventions_for_company: ->
+      return [] unless @state_counter
+
+      if @game_state.session_state.identity.is_tycoon()
+        company_metadata = @game_state.current_company_metadata()
+        if company_metadata? then (@invention_manager.inventions_by_seal[company_metadata.seal_id] || []) else []
+      else
+        _.values(@invention_manager.inventions_by_id)
 
   methods:
     filter_class: (type) -> ""
     section_item_class: (item, child) -> { 'is-active': @selected_category == item.category && @selected_industry_type == child.industry_type }
-
 
     select_inventions: (category, industry_type) ->
       @game_state.inventions_selected_category = category

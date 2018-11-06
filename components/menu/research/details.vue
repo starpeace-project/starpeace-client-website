@@ -1,5 +1,5 @@
 <template lang='haml'>
-#research-details-container.card.has-header
+#research-details-container.card.is-starpeace.has-header
   .card-header
     .card-header-title
   .card-content.sp-menu-background.overall-container
@@ -34,7 +34,7 @@
               %span.property-label{'v-bind:class':'option.class'} {{option.type}}:
               %span.property-value{'v-bind:class':'option.class'} {{option.text}}
           %div.is-clearfix
-      .actions-container
+      .actions-container{'v-if':'can_perform_actions'}
         .action-row.invention-status
           %span.invention-status-label Status:
           %span.invention-status-value.available Available for Research
@@ -69,6 +69,8 @@ export default
     menu_state: Object
 
   computed:
+    can_perform_actions: -> @game_state?.initialized && @game_state.session_state.identity.is_tycoon()
+
     selected_invention_id: -> @game_state.inventions_selected_invention_id
     selected_invention: -> if @game_state?.initialized && @selected_invention_id?.length && @invention_manager? then @invention_manager.invention_info_by_id?[@selected_invention_id] else null
 
@@ -129,9 +131,6 @@ export default
 
 <style lang='sass' scoped>
 @import '~assets/stylesheets/starpeace-variables'
-
-$color-positive: #307837
-$color-negative: #ac3939
 
 #research-details-container
   grid-column-start: 3

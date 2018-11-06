@@ -64,7 +64,7 @@ export default class OverlayManager
     @overlay_metadata? && @overlay_metadata.atlas.length == Object.keys(@loaded_atlases).length
 
   queue_asset_load: () ->
-    return if @requested_overlay_metadata
+    return if @requested_overlay_metadata || @overlay_metadata?
     @requested_overlay_metadata = true
     @asset_manager.queue('metadata.overlay', './overlay.metadata.json', (resource) =>
       @overlay_metadata = resource.data
@@ -80,7 +80,7 @@ export default class OverlayManager
 
           # mip-mapping has bigger impact without edge aliasing
           # TODO: why isn't this, or PIXI.settings.MIPMAP_TEXTURES, working?
-          resource.spritesheet.baseTexture.mipmap = false
+          resource.spritesheet.baseTexture.mipmap = false if resource.spritesheet?.baseTexture?.mipmap?
 
           @event_listener.notify_asset_listeners()
         )

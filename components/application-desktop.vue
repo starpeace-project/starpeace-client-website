@@ -3,18 +3,20 @@
   %sp-header{'v-bind:options':'options', 'v-bind:ui_state':'ui_state'}
   %sp-loading-card{'v-bind:game_state':'game_state'}
   %sp-loading-modal{'v-bind:game_state':'game_state'}
-  %sp-workflow{'v-bind:event_listener':'event_listener', 'v-bind:game_state':'game_state', 'v-bind:planetary_metadata_manager':'planetary_metadata_manager'}
+  %sp-workflow{'v-bind:client':'client', 'v-bind:event_listener':'event_listener', 'v-bind:game_state':'game_state'}
+  %menu-corporation-establish{'v-bind:client':'client', 'v-bind:translation_manager':'translation_manager', 'v-bind:game_state':'game_state'}
   %menu-construction{'v-show':"is_menu_visible('construction')", 'v-bind:menu_state':'menu_state'}
   %menu-chat{'v-show':"is_menu_visible('chat')", 'v-bind:menu_state':'menu_state'}
   %menu-bookmarks{'v-show':"is_menu_visible('bookmarks')", 'v-bind:bookmark_manager':'bookmark_manager', 'v-bind:game_state':'game_state', 'v-bind:menu_state':'menu_state', 'v-bind:options':'options'}
   %menu-mail{'v-show':"is_menu_visible('mail')", 'v-bind:menu_state':'menu_state'}
   %menu-options{'v-show':"is_menu_visible('options')", 'v-bind:menu_state':'menu_state', 'v-bind:options':'options', 'v-bind:ui_state':'ui_state'}
-  %menu-planetary{'v-show':"is_menu_visible('planetary')", 'v-bind:bookmark_manager':'bookmark_manager', 'v-bind:game_state':'game_state', 'v-bind:menu_state':'menu_state', 'v-bind:options':'options'}
   %menu-help{'v-show':"is_menu_visible('help')", 'v-bind:menu_state':'menu_state'}
   %menu-release-notes{'v-show':"is_menu_visible('release_notes')", 'v-bind:menu_state':'menu_state'}
   %menu-research-menu{'v-show':"is_menu_visible('research')", 'v-bind:invention_manager':'invention_manager', 'v-bind:translation_manager':'translation_manager', 'v-bind:game_state':'game_state', 'v-bind:menu_state':'menu_state', 'v-bind:options':'options'}
+  %menu-research-no-company{'v-show':"is_menu_visible('research')", 'v-bind:translation_manager':'translation_manager', 'v-bind:game_state':'game_state', 'v-bind:menu_state':'menu_state'}
   %menu-research-tree{'v-show':"is_menu_visible('research')", 'v-bind:invention_manager':'invention_manager', 'v-bind:translation_manager':'translation_manager', 'v-bind:game_state':'game_state', 'v-bind:menu_state':'menu_state', 'v-bind:options':'options'}
   %menu-research-details{'v-show':"is_menu_visible('research')", 'v-bind:invention_manager':'invention_manager', 'v-bind:translation_manager':'translation_manager', 'v-bind:game_state':'game_state', 'v-bind:menu_state':'menu_state', 'v-bind:options':'options'}
+  %menu-system{'v-show':"is_menu_visible('systems')", 'v-bind:client':'client', 'v-bind:game_state':'game_state', 'v-bind:menu_state':'menu_state'}
   %menu-tycoon{'v-show':"is_menu_visible('tycoon')", 'v-bind:bookmark_manager':'bookmark_manager', 'v-bind:game_state':'game_state', 'v-bind:menu_state':'menu_state', 'v-bind:options':'options'}
   %sp-body{'v-bind:game_state':'game_state', 'v-bind:options':'options', 'v-bind:ui_state':'ui_state'}
   %sp-footer-overlay-menu{'v-bind:ui_state':'ui_state'}
@@ -28,17 +30,20 @@ import LoadingCard from '~/components/body/loading-card.vue'
 import LoadingModal from '~/components/body/loading-modal.vue'
 import Workflow from '~/components/workflow/workflow.vue'
 
+import MenuCorporationEstablish from '~/components/menu/corporation/establish.vue'
+
 import MenuConstruction from '~/components/menu/menu-construction.vue'
 import MenuChat from '~/components/menu/menu-chat.vue'
 import MenuBookmarks from '~/components/menu/bookmarks/main-menu.vue'
 import MenuMail from '~/components/menu/menu-mail.vue'
 import MenuOptions from '~/components/menu/menu-options.vue'
-import MenuPlanetarySystem from '~/components/menu/menu-planetary-system.vue'
 import MenuHelp from '~/components/menu/menu-help.vue'
 import MenuReleaseNotes from '~/components/menu/menu-release-notes.vue'
 import MenuResearchMenu from '~/components/menu/research/menu.vue'
+import MenuResearchNoCompany from '~/components/menu/research/no-company.vue'
 import MenuResearchTree from '~/components/menu/research/tree.vue'
 import MenuResearchDetails from '~/components/menu/research/details.vue'
+import MenuSystem from '~/components/menu/system/menu.vue'
 import MenuTycoon from '~/components/menu/menu-tycoon.vue'
 
 import RenderContainer from '~/components/body/render-container.vue'
@@ -59,15 +64,17 @@ export default
     'sp-footer-overlay-menu': FooterOverlayMenu
     'sp-toolbar-details': ToolbarDetails
     'sp-toolbar-ribbon': ToolbarRibbon
+    'menu-corporation-establish': MenuCorporationEstablish
     'menu-construction': MenuConstruction
     'menu-chat': MenuChat
     'menu-bookmarks': MenuBookmarks
     'menu-mail': MenuMail
     'menu-options': MenuOptions
-    'menu-planetary': MenuPlanetarySystem
+    'menu-system': MenuSystem
     'menu-help': MenuHelp
     'menu-release-notes': MenuReleaseNotes
     'menu-research-menu': MenuResearchMenu
+    'menu-research-no-company': MenuResearchNoCompany
     'menu-research-tree': MenuResearchTree
     'menu-research-details': MenuResearchDetails
     'menu-tycoon': MenuTycoon
@@ -77,7 +84,7 @@ export default
       @show_header = @client?.options?.option('general.show_header')
 
   data: ->
-    bookmark_manager: @client?.bookmark_manager
+    bookmark_manager: @client?.managers?.bookmark_manager
     camera_manager: @client?.camera_manager
     event_listener: @client?.event_listener
     invention_manager: @client?.managers?.invention_manager
@@ -87,7 +94,6 @@ export default
     music_manager: @client?.music_manager
     translation_manager: @client?.managers?.translation_manager
     options: @client?.options
-    planetary_metadata_manager: @client?.managers?.planetary_metadata_manager
     ui_state: @client?.ui_state
 
     show_header: @client?.options?.option('general.show_header')

@@ -1,5 +1,5 @@
 <template lang='haml'>
-#bookmarks-container.card.has-header
+#bookmarks-container.card.is-starpeace.has-header
   .card-header
     .card-header-title
       Map Locations
@@ -27,10 +27,10 @@
       %a.filter-toggle.tooltip.is-tooltip-top{'v-bind:class':"filter_class('offices')", 'v-on:click.stop.prevent':"toggle_filter('offices')", 'data-tooltip':'Offices'}
         %img{src:'~/assets/images/icons/offices/office-block.svg'}
     %aside.sp-menu.sp-scrollbar
-      %menu-section{'v-bind:bookmark_manager':'bookmark_manager', root_id:'bookmark-poi', label_text:'Points of Interest', 'v-bind:items':'poi_items', draggable:false}
-      %menu-section{'v-bind:bookmark_manager':'bookmark_manager', root_id:'bookmark-corporation', label_text:'Corporation', 'v-bind:items':'corporation_items', draggable:false}
-      %menu-section{'v-bind:bookmark_manager':'bookmark_manager', root_id:'bookmarks', label_text:'Bookmarks', 'v-bind:items':'bookmark_items', draggable:true}
-    .actions-container
+      %menu-section{'v-if':'show_poi', 'v-bind:bookmark_manager':'bookmark_manager', root_id:'bookmark-poi', label_text:'Points of Interest', 'v-bind:items_by_id':'poi_items_by_id', draggable:false}
+      %menu-section{'v-if':'show_corporation', 'v-bind:bookmark_manager':'bookmark_manager', root_id:'bookmark-corporation', label_text:'Corporation', 'v-bind:items_by_id':'corporation_items_by_id', draggable:false}
+      %menu-section{'v-if':'show_bookmarks', 'v-bind:bookmark_manager':'bookmark_manager', root_id:'bookmarks', label_text:'Bookmarks', 'v-bind:items_by_id':'bookmark_items_by_id', draggable:true}
+    .actions-container{'v-if':'show_bookmarks'}
       .action-column
         %a.button.is-fullwidth.is-starpeace{disabled:'disabled'} Organize
       .action-column
@@ -50,21 +50,34 @@ export default
     game_state: Object
     menu_state: Object
 
-  watch:
-    state_counter: (new_value, old_value) ->
-      @sections = @bookmark_manager?.sections(@options) || []
-
   data: ->
     filter_input_value: ''
 
-    sections: []
-
   computed:
-    state_counter: -> @options.vue_state_counter + @bookmark_manager.vue_state_counter
+    state_counter: -> if @game_state.initialized then (@options.vue_state_counter + (@game_state?.session_state.state_counter || 0)) else 0
+    has_corporation: -> if @state_counter then @game_state.session_state.identity.is_tycoon() && @game_state.session_state.corporation_id?.length else false
 
-    poi_items: -> @bookmark_manager?.points_of_interest_items || []
-    corporation_items: -> @bookmark_manager?.corporation_items || []
-    bookmark_items: -> @bookmark_manager?.bookmark_items || []
+    poi_items_by_id: ->
+      items_by_id = {}
+      if @state_counter
+        if @show_towns && @bookmark_manager?.town_items?.length
+          items_by_id[item.id] = item for item in @bookmark_manager.town_items
+
+        if @show_mausoleums && @bookmark_manager?.mausoleum_items?.length
+          items_by_id[item.id] = item for item in @bookmark_manager.mausoleum_items
+
+      items_by_id
+    corporation_items_by_id: ->
+      by_id = {}
+      by_id[item.id] = item for item in []
+      by_id
+    bookmark_items_by_id: -> if @state_counter then @game_state?.session_state.bookmarks_by_id || {} else {}
+
+    show_towns: -> if @state_counter then @options.option('bookmarks.towns') else true
+    show_mausoleums: -> if @state_counter then @options.option('bookmarks.mausoleums') else true
+    show_poi: -> if @state_counter then @options.option('bookmarks.points_of_interest') && (@show_towns || @show_mausoleums) else true
+    show_corporation: -> if @state_counter then @has_corporation && @options.option('bookmarks.corporation') else true
+    show_bookmarks: -> if @state_counter then @has_corporation else false
 
   methods:
     filter_class: (type) ->

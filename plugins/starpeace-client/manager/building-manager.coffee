@@ -8,7 +8,7 @@ MOCK_DATA = {}
 MOCK_TYCOONS = ['tycoon-id-1', 'tycoon-id-2', 'tycoon-id-3', 'tycoon-id-4', 'tycoon-id-5']
 
 export default class BuildingManager
-  constructor: (@asset_manager, @event_listener, @game_state) ->
+  constructor: (@api, @asset_manager, @event_listener, @game_state) ->
     @chunk_promises = {}
 
     @requested_building_metadata = false
@@ -59,7 +59,7 @@ export default class BuildingManager
 
       # return if ~key.indexOf('tennis')
     @mocks_configured = true
-    # console.log JSON.stringify(MOCK_DATA)
+    #console.log JSON.stringify(MOCK_DATA)
 
   load_chunk: (chunk_x, chunk_y, width, height) ->
     key = "#{chunk_x}x#{chunk_y}"
@@ -83,7 +83,7 @@ export default class BuildingManager
     @building_metadata? && @building_metadata.atlas.length == Object.keys(@loaded_atlases).length
 
   queue_asset_load: () ->
-    return if @requested_building_metadata
+    return if @requested_building_metadata || @building_metadata?
     @requested_building_metadata = true
     @asset_manager.queue('metadata.building', './building.metadata.json', (resource) =>
       @building_metadata = resource.data
@@ -110,3 +110,19 @@ export default class BuildingManager
 
   atlas_for: (key) ->
     @building_metadata.buildings[key].atlas
+
+
+  load_metadata: (company_id) ->
+    new Promise (done, error) =>
+      @game_state.session_state.start_buildings_metadata_request(company_id)
+      @api.buildings_metadata(@game_state.session_state.session_token, company_id)
+        .then (metadata) =>
+          @game_state.session_state.set_buildings_metadata_for_id(company_id, metadata)
+          @game_state.session_state.finish_buildings_metadata_request(company_id)
+          @event_listener.notify_company_metadata_listeners()
+          done()
+
+        .catch (err) =>
+          # FIXME: TODO add error handling
+          @game_state.session_state.finish_buildings_metadata_request(company_id)
+          error()

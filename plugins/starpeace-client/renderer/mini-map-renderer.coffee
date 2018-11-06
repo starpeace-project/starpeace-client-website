@@ -3,7 +3,7 @@ global addResizeListener
 global PIXI
 ###
 
-import PlanetTypeManifest from '~/plugins/starpeace-client/metadata/planet-type-manifest.coffee'
+import PlanetTypeManifest from '~/plugins/starpeace-client/map/planet-type-manifest.coffee'
 
 import ChunkMap from '~/plugins/starpeace-client/map/chunk/chunk-map.coffee'
 import BuildingZone from '~/plugins/starpeace-client/map/types/building-zone.coffee'
@@ -137,8 +137,14 @@ export default class MiniMapRenderer
   initialize: () ->
     @initialize_application() unless @application?
 
+    render_container = document.getElementById('mini-map-webgl-container')
+    render_container.style.visibility = "hidden"
+
     @update_map_data(0, @game_state.game_map.width, 0, @game_state.game_map.height)
-    @pending_refresh = setTimeout((=> @refresh_map_texture()), 1000)
+    @pending_refresh = setTimeout(=>
+      @refresh_map_texture()
+      render_container.style.visibility = "visible"
+    , 500)
 
     @last_mini_map_zoom = 0
     @last_view_offset_x = 0

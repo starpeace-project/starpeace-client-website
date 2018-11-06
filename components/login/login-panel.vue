@@ -1,10 +1,10 @@
 <template lang='haml'>
 #login-container.container
-  .card.text-white.bg-info{style: 'margin-bottom: 2rem'}
+  .card.is-starpeace.text-white.bg-info{style: 'margin-bottom: 2rem'}
     .card-body
       Sign in logic is currently in-progress
 
-  .card
+  .card.is-starpeace
     %h5.card-header Sign In to STARPEACE
     .card-body
       %p.card-text Please sign in with one of the following social identity providers.

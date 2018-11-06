@@ -20,11 +20,11 @@ export default class TranslationManager
     @assets_loaded = true
 
   has_assets: () ->
-    Object.keys(@translations_by_language_code?[@options.language()] || {}).length
+    Object.keys(@translations_by_language_code[@options.language()] || {}).length
 
   queue_asset_load: () ->
     current_language = @options.language()
-    return if @requested_translations[current_language]
+    return if @requested_translations[current_language] || @translations_by_language_code[current_language]?
     @requested_translations[current_language] = true
     @asset_manager.queue("translations.#{current_language.toLowerCase()}", "./translations.#{current_language.toLowerCase()}.json", (resource) =>
       @translations_by_language_code[resource.data.language_code] = {}

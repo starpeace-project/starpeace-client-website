@@ -9,7 +9,7 @@ export default class ConcreteManager
     @concrete_metadata? && @concrete_metadata.atlas.length == Object.keys(@loaded_atlases).length
 
   queue_asset_load: () ->
-    return if @requested_concrete_metadata
+    return if @requested_concrete_metadata || @concrete_metadata?
     @requested_concrete_metadata = true
     @asset_manager.queue('metadata.concrete', './concrete.metadata.json', (resource) =>
       @concrete_metadata = resource.data

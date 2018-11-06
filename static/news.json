@@ -1,0 +1,15 @@
+{
+  "news":[
+    {
+      "date": "2018-11-05",
+      "title": "Client News, improved Systems and Planet menus, and initial internal AJAX structure!",
+      "body": "Hi everyone!\n\nWe're pleased to introduce the STARPEACE client news widget for game updates and other announcements! Watch this space for feature change details, follow on Twitter, or checkout the release notes for version feature information.\n\nAlso further improved corporation, system, and planets workflows and selection interfaces, integrating client login state management and placeholder server AJAX API calls with dummy data responses.",
+      "items": [
+        "client updates UI and recent news integration",
+        "improved system and planet selection interface; integration with corporation and existing companies information",
+        "improved tycoon login workflow, simulated authorization sequence, placeholder game and player metadata",
+        "initial AJAX structure for server API calls, placeholder dummy data responses"
+      ]
+    }
+  ]
+}

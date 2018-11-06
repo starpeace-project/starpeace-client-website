@@ -1,6 +1,6 @@
 <template lang='haml'>
 #help-container
-  .card.has-header
+  .card.is-starpeace.has-header
     .card-header
       .card-header-title
         Help

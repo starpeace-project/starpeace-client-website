@@ -1,5 +1,5 @@
 <template lang='haml'>
-#construction-container.card.has-header
+#construction-container.card.is-starpeace.has-header
   .card-header
     .card-header-title
       Construction

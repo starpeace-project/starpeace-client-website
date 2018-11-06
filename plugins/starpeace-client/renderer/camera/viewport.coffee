@@ -1,4 +1,4 @@
-import PlanetTypeManifest from '~/plugins/starpeace-client/metadata/planet-type-manifest.coffee'
+import PlanetTypeManifest from '~/plugins/starpeace-client/map/planet-type-manifest.coffee'
 
 export default class Viewport
 

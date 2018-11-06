@@ -1,5 +1,5 @@
 <template lang='haml'>
-#tycoon-container.card.has-header
+#tycoon-container.card.is-starpeace.has-header
   .card-header
     .card-header-title
       Tycoon Details
@@ -12,22 +12,9 @@
 
 export default
   props:
-    bookmark_manager: Object
     options: Object
     game_state: Object
     menu_state: Object
-
-  watch:
-    state_counter: (new_value, old_value) ->
-      @sections = @bookmark_manager?.sections(@options) || []
-
-  data: ->
-    filter_input_value: ''
-
-    sections: []
-
-  computed:
-    state_counter: -> @options.vue_state_counter + @bookmark_manager.vue_state_counter
 
 </script>
 

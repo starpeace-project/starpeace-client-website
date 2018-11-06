@@ -65,7 +65,7 @@ export default class RoadManager
     @road_metadata? && @road_metadata.atlas.length == Object.keys(@loaded_atlases).length
 
   queue_asset_load: () ->
-    return if @requested_road_metadata
+    return if @requested_road_metadata || @road_metadata?
     @requested_road_metadata = true
     @asset_manager.queue('metadata.road', './road.metadata.json', (resource) =>
       @road_metadata = resource.data

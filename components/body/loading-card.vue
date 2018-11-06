@@ -1,7 +1,7 @@
 <template lang='haml'>
 #loading-container.level{'v-show':'is_loading'}
   .level-item
-    .card
+    .card.is-starpeace
       .card-content
         %img.starpeace-logo
         .label-loading Loading...

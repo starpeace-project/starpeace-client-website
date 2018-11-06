@@ -1,9 +1,10 @@
 
 import moment from 'moment'
 
+import CommonMetadata from '~/plugins/starpeace-client/state/common-metadata.coffee'
+import SessinState from '~/plugins/starpeace-client/state/session-state.coffee'
+
 import Logger from '~/plugins/starpeace-client/logger.coffee'
-import Identity from '~/plugins/starpeace-client/identity/identity.coffee'
-import Account from '~/plugins/starpeace-client/account/account.coffee'
 
 MONTH_SEASONS = {
   0: 'winter'
@@ -25,23 +26,13 @@ export default class GameState
     @initialized = false
     @loading = false
     @has_assets = false
+    @has_planet_details = false
+    @has_player_metadata = false
 
     @ajax_requests = 0
 
-    @current_identity_authentication = Identity.from_local_storage()
-      .then (identity) =>
-        @current_identity = identity
-        @current_identity_authentication = null
-        Logger.debug "initialized identity <#{@current_identity}> from localStorage"
-      .catch (error) ->
-        # FIXME: TODO: figure out error handling
-    @current_identity = null
-    @current_account_authorization = null
-    @current_account = null
-
-    @current_planetary_system = null
-    @current_planet = null
-    # FIXME: TODO: consider loading state from url parameters (planet_id)
+    @common_metadata = new CommonMetadata(@)
+    @session_state = new SessinState(@) # FIXME: TODO: consider loading state from url parameters (planet_id)
 
     @game_music_playing = false
     @game_music_volume = true
@@ -74,20 +65,21 @@ export default class GameState
   start_ajax: () -> @ajax_requests += 1
   finish_ajax: () -> @ajax_requests -= 1
 
-  proceed_as_visitor: () ->
-    @current_identity.reset_and_destroy() if @current_identity?
-    @current_identity = Identity.visitor()
-    Logger.debug "proceeding with visitor identity <#{@current_identity}>"
+  current_system_metadata: () -> if @session_state.system_id? then @common_metadata.systems_metadata_by_id[@session_state.system_id] else null
+  current_planet_metadata: () -> if @session_state.planet_id? then @common_metadata.planets_metadata_by_id[@session_state.planet_id] else null
+  current_company_metadata: () -> if @session_state.company_id? then @session_state.corporation_company_metadata_by_id[@session_state.company_id] else null
 
-    @current_account_authorization = Account.for_identity(@current_identity)
-      .then (account) =>
-        @current_account = account
-        @current_account_authorization = null
-        Logger.debug "successfully retrieved account <#{@current_account}> for identity"
+  is_refreshing_planets_metadata_for_current_system: () -> if @session_state.system_id? then @common_metadata.is_refreshing_planets_metadata_for_system_id(@session_state.system_id) else false
+  has_planets_metadata_fresh_for_current_system: () -> if @session_state.system_id? then @common_metadata.has_planets_metadata_fresh_for_system_id(@session_state.system_id) else false
 
-      .catch (error) ->
-        # FIXME: TODO: figure out error handling
+  enabled_for_system_id: (system_id) ->
+    return @common_metadata.systems_metadata_by_id[system_id]?.enabled if @common_metadata.systems_metadata_by_id[system_id]?.enabled?
+    false
+  enabled_for_planet_id: (planet_id) ->
+    return @common_metadata.planets_metadata_by_id[planet_id]?.enabled if @common_metadata.planets_metadata_by_id[planet_id]?.enabled?
+    return @common_metadata.system_planets_metadata_by_id[planet_id]?.enabled if @common_metadata.system_planets_metadata_by_id[planet_id]?.enabled?
+    false
 
-  set_planet: (planet) ->
-    @current_planet = planet
-    Logger.debug "proceeding with planet <#{@current_planet}>"
+  name_for_system_id: (system_id) -> @common_metadata.systems_metadata_by_id[system_id]?.name
+  name_for_planet_id: (planet_id) -> @common_metadata.planets_metadata_by_id[planet_id]?.name || @common_metadata.system_planets_metadata_by_id[planet_id]?.name
+  name_for_corporation_id: (corporation_id) -> @session_state.corporation_metadata?.name || @session_state.tycoon_corporation_metadata_by_id[corporation_id]?.name
