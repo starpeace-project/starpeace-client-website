@@ -5,11 +5,11 @@
     #application-body
       .columns
         .column.is-8.is-offset-2
-          .card.notes-container
+          .card.is-starpeace.notes-container
             .card-header
               .card-header-title Release Notes - Latest
             .card-content.release-notes{'v-html':'release_notes_latest_html'}
-          .card.notes-container
+          .card.is-starpeace.notes-container
             .card-header
               .card-header-title Release Notes - Archive
             .card-content.release-notes{'v-html':'release_notes_archive_html'}
