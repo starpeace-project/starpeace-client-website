@@ -105,10 +105,10 @@ export default class LayerManager
       select_building_callback = () =>
         if tile_item.tile_info.building_info.id == @game_state.selected_building_id
           @game_state.selected_building_id = null
-          @game_state.selected_tycoon_id = null
+          @game_state.selected_corporation_id = null
         else
           @game_state.selected_building_id = tile_item.tile_info.building_info.id
-          @game_state.selected_tycoon_id = tile_item.tile_info.building_info.tycoon_id
+          @game_state.selected_corporation_id = tile_item.tile_info.building_info.corporation_id
           console.log tile_item.tile_info.building_info
 
       sprite_cache = if tile_item.sprite_info.building.is_animated then @with_height_animated_sprite_cache else @with_height_static_sprite_cache

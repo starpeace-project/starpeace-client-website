@@ -125,9 +125,7 @@ export default class MiniMapRenderer
 
     mini_map_zoom = @options.option('mini_map.zoom')
     @sprite = new PIXI.Sprite(PIXI.utils.TextureCache[MINI_MAP_TEXTURE_KEY])
-    # @sprite.anchor.set(0.5)
     @sprite.interactive = true
-    #@sprite.position = new PIXI.Point(@game_state.game_map.width * .5, @game_state.game_map.height * .5)
     @sprite.scale = new PIXI.Point(mini_map_zoom, mini_map_zoom)
     @sprite.x = @map_offset_x
     @sprite.y = @map_offset_y
@@ -173,7 +171,7 @@ export default class MiniMapRenderer
     iso_x = (y_ratio + x_ratio) * 0.5
     iso_y = (y_ratio - x_ratio) * 0.5
 
-    viewport.recenter_at(iso_x, iso_y)
+    viewport.top_left_at(iso_x, iso_y)
 
   offset: (delta_x, delta_y) ->
     @map_offset_x -= delta_x unless delta_x == 0

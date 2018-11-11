@@ -6,6 +6,8 @@ global PIXI
 ###
 
 import ChunkMap from '~/plugins/starpeace-client/map/chunk/chunk-map.coffee'
+import PlanetTypeManifest from '~/plugins/starpeace-client/map/planet-type-manifest.coffee'
+
 import Viewport from '~/plugins/starpeace-client/renderer/camera/viewport.coffee'
 import Layers from '~/plugins/starpeace-client/renderer/layer/layers.coffee'
 

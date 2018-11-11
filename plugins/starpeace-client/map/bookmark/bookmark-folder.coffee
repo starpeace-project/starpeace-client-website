@@ -5,7 +5,8 @@ export default class BookmarkFolder
     @children = []
 
     @type = if options.type?.length then options.type else 'GENERIC'
-    @seal = if options.seal?.length then options.seal else null
+    @seal_id = if options.seal_id?.length then options.seal_id else null
+    @industry_type = if options.industry_type?.length then options.industry_type else null
     @draggable = if options.draggable? then options.draggable else false
 
     @expanded = false

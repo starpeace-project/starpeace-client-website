@@ -7,7 +7,7 @@
   %menu-corporation-establish{'v-bind:client':'client', 'v-bind:translation_manager':'translation_manager', 'v-bind:game_state':'game_state'}
   %menu-construction{'v-show':"is_menu_visible('construction')", 'v-bind:menu_state':'menu_state'}
   %menu-chat{'v-show':"is_menu_visible('chat')", 'v-bind:menu_state':'menu_state'}
-  %menu-bookmarks{'v-show':"is_menu_visible('bookmarks')", 'v-bind:bookmark_manager':'bookmark_manager', 'v-bind:game_state':'game_state', 'v-bind:menu_state':'menu_state', 'v-bind:options':'options'}
+  %menu-bookmarks{'v-show':"is_menu_visible('bookmarks')", 'v-bind:client':'client', 'v-bind:translation_manager':'translation_manager', 'v-bind:building_manager':'building_manager', 'v-bind:bookmark_manager':'bookmark_manager', 'v-bind:game_state':'game_state', 'v-bind:menu_state':'menu_state', 'v-bind:options':'options'}
   %menu-mail{'v-show':"is_menu_visible('mail')", 'v-bind:menu_state':'menu_state'}
   %menu-options{'v-show':"is_menu_visible('options')", 'v-bind:menu_state':'menu_state', 'v-bind:options':'options', 'v-bind:ui_state':'ui_state'}
   %menu-help{'v-show':"is_menu_visible('help')", 'v-bind:menu_state':'menu_state'}
@@ -85,6 +85,7 @@ export default
 
   data: ->
     bookmark_manager: @client?.managers?.bookmark_manager
+    building_manager: @client?.managers?.building_manager
     camera_manager: @client?.camera_manager
     event_listener: @client?.event_listener
     invention_manager: @client?.managers?.invention_manager

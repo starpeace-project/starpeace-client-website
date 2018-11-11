@@ -1,12 +1,11 @@
 <template lang='haml'>
 .content.is-marginless
-  .card.system{'v-for':'system in systems'}
+  .card.system{'v-for':'system in systems', 'v-bind:class':"system.enabled ? '' : 'is-disabled'"}
     .card-content
       .level.is-mobile.system-row
         .level-left
           .level-item
             %img.system-image.starpeace-logo.logo-loading{'v-bind:src':"system_animation_url(system)", 'v-on:load':"$event.target.classList.remove('logo-loading')"}
-
         .level-item.system-item.info
           .content
             .system-name {{system.name}}
@@ -19,11 +18,10 @@
             .system-online.system-info-row
               %span Online:
               %span.planet-value {{system.online_count}}
-
         .level-right
           .level-item
             %a.button.is-primary.is-medium.is-outlined.workflow-action{'v-on:click.stop.prevent':'select_system(system)', 'v-bind:disabled':'!system.enabled'} Inspect
-
+    .disabled-overlay
 </template>
 
 <script lang='coffee'>
@@ -52,11 +50,28 @@ export default
   &.button
     min-width: 7rem
 
+.disabled-overlay
+  background-color: #000
+  cursor: not-allowed
+  display: none
+  height: 100%
+  left: 0
+  opacity: .5
+  position: absolute
+  top: 0
+  width: 100%
+
 .card
   &.system
     background-color: opacify(lighten($sp-primary-bg, 1%), .3)
     border: 1px solid rgba(110, 161, 146, .2)
     padding-bottom: .25rem
+
+    &.is-disabled
+      border: 1px solid rgba(8, 59, 44, .8)
+
+      .disabled-overlay
+        display: block
 
     &:not(:first-child)
       margin-top: .25rem

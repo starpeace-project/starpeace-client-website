@@ -29,7 +29,7 @@
         "parent_id": "my-folder-1",
         "name": "My Bookmark 3",
         "order": 0,
-        "map_x": 256,
+        "map_x": 128,
         "map_y": 256
       },
       {
@@ -39,7 +39,7 @@
         "name": "My Bookmark 6",
         "order": 0,
         "map_x": 256,
-        "map_y": 256
+        "map_y": 128
       },
       {
         "type": "LOCATION",
@@ -56,8 +56,8 @@
         "parent_id": "my-folder-2",
         "name": "My Bookmark 5",
         "order": 2,
-        "map_x": 256,
-        "map_y": 256
+        "map_x": 128,
+        "map_y": 128
       },
       {
         "type": "LOCATION",
@@ -65,7 +65,7 @@
         "parent_id": "bookmarks",
         "name": "My Bookmark 1",
         "order": 2,
-        "map_x": 256,
+        "map_x": 512,
         "map_y": 256
       },
       {
@@ -75,7 +75,7 @@
         "name": "My Bookmark 2",
         "order": 3,
         "map_x": 256,
-        "map_y": 256
+        "map_y": 512
       }
     ]
   }

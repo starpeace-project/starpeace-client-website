@@ -8,13 +8,12 @@
         %span.system-name {{system_name}}
   .card-content
     .content
-      .card.corporation{'v-for':'corporation in existing_corporations'}
+      .card.corporation{'v-for':'corporation in existing_corporations', 'v-bind:class':"system_or_planet_disabled(corporation.system_id, corporation.planet_id) ? 'is-disabled' : ''"}
         .card-content
           .level.is-mobile.corporation-row
             .level-left
               .level-item
                 %img.corporation-logo.starpeace-logo.logo-primary-color{'v-bind:src':"", 'v-on:load':"$event.target.classList.remove('logo-loading')"}
-
             .level-item.corporation-item.info
               .content
                 .corporation-name {{corporation.name}}
@@ -26,7 +25,6 @@
                   %span {{corporation.company_count}} {{corporation.company_count == 1 ? 'company' : 'companies'}}
                   %span.detail-spacer |
                   %span {{corporation.building_count}} {{corporation.building_count == 1 ? 'building' : 'buildings'}}
-
             .level-item.corporation-item.cash
               .content
                 .corporation-cash
@@ -34,11 +32,10 @@
                 .corporation-cashflow
                   %money-text{'v-bind:value':'corporation.cashflow'}
                   %span.unit \/h
-
             .level-right
               .level-item
                 %a.button.is-primary.is-medium.workflow-action{'v-bind:class':'corporation_action_css_class(corporation)', 'v-on:click.stop.prevent':'select_corporation(corporation)', 'v-bind:disabled':'system_or_planet_disabled(corporation.system_id, corporation.planet_id)'} Select
-
+        .disabled-overlay
 </template>
 
 <script lang='coffee'>
@@ -85,6 +82,17 @@ export default
   &.button
     min-width: 7rem
 
+.disabled-overlay
+  background-color: #000
+  cursor: not-allowed
+  display: none
+  height: 100%
+  left: 0
+  opacity: .5
+  position: absolute
+  top: 0
+  width: 100%
+
 .card
   &.sp-scrollbar
     overflow-y: auto
@@ -108,6 +116,12 @@ export default
   &.corporation
     background-color: opacify(lighten($sp-primary-bg, 1%), .3)
     border: 1px solid rgba(110, 161, 146, .2)
+
+    &.is-disabled
+      border: 1px solid rgba(8, 59, 44, .8)
+
+      .disabled-overlay
+        display: block
 
     &:not(:first-child)
       margin-top: .25rem

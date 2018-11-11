@@ -33,7 +33,7 @@ export default class SpritePlane extends Sprite
       @is_done = true
       return
 
-    view_center = viewport.map_center()
+    view_center = viewport.top_left()
     iso = viewport.map_to_iso(viewport.with_scale(@current_map_x), viewport.with_scale(@current_map_y))
     canvas = viewport.iso_to_canvas(iso.i_exact, iso.j_exact, view_center)
 

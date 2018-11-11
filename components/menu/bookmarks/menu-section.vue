@@ -1,6 +1,5 @@
 <template lang='haml'>
 .sp-section
-  %span
   %a{'v-on:click.stop.prevent':"toggle_section"}
     %span{'v-show':"has_items && !section_expanded"}
       %font-awesome-icon{':icon':"['fas', 'plus-square']"}
@@ -17,9 +16,11 @@
             %template{'v-if':"child.type == 'slot'"}
               %div.slot-item
             %template{'v-else-if':"child.is_folder", 'v-bind:item':'child'}
-              %a.is-folder-item{'v-on:click.stop.prevent':"toggle_item(child)"}
+              %a.is-folder-item{'v-on:click.stop.prevent':"toggle_item(child)", 'v-bind:class':"child.has_children ? '' : 'is-empty-folder'"}
                 %template{'v-if':"child.type == 'CORPORATION'"}
-                  %company-seal-icon{'v-bind:seal_id':"child.seal"}
+                  %company-seal-icon{'v-bind:seal_id':"child.seal_id"}
+                %template{'v-else-if':"child.type == 'INDUSTRY'"}
+                  %industry-type-icon{'v-bind:industry_type':"child.industry_type", 'v-bind:small':'true'}
                 %template{'v-else-if':"child.type == 'TOWN'"}
                   %city-icon
                 %template{'v-else-if':"true"}
@@ -43,9 +44,11 @@
         %template{'v-if':"child.type == 'slot'"}
         %template{'v-else-if':"child.is_folder"}
           %div.sp-folder{'v-show':"!child.hidden"}
-            %a.is-folder-item{'v-on:click.stop.prevent':"toggle_item(child)"}
+            %a.is-folder-item{'v-on:click.stop.prevent':"toggle_item(child)", 'v-bind:class':"child.has_children ? '' : 'is-empty-folder'"}
               %template{'v-if':"child.type == 'CORPORATION'"}
-                %company-seal-icon{'v-bind:seal_id':"child.seal"}
+                %company-seal-icon{'v-bind:seal_id':"child.seal_id"}
+              %template{'v-else-if':"child.type == 'INDUSTRY'"}
+                %industry-type-icon{'v-bind:industry_type':"child.industry_type", 'v-bind:small':'true'}
               %template{'v-else-if':"child.type == 'TOWN'"}
                 %city-icon
               %template{'v-else-if':"true"}
@@ -71,6 +74,7 @@
 import draggable from 'vuedraggable'
 import CityIcon from '~/components/misc/city-icon.vue'
 import CompanySealIcon from '~/components/misc/company-seal-icon.vue'
+import IndustryTypeIcon from '~/components/misc/industry-type-icon.vue'
 
 menu_item_slot = (id, order, level) ->
   {
@@ -92,7 +96,8 @@ menu_item_from_bookmark = (existing_option, bookmark_item, tree_item, order, lev
     is_folder: bookmark_item.is_folder()
     has_children: Object.keys(tree_item.child_ids || {}).length
     type: bookmark_item.type
-    seal: if bookmark_item.type == 'CORPORATION' then bookmark_item.seal else null
+    seal_id: if bookmark_item.type == 'CORPORATION' then bookmark_item.seal_id else null
+    industry_type: if bookmark_item.type == 'INDUSTRY' then bookmark_item.industry_type else null
     item_name: bookmark_item.name
     hidden: false
     expanded: if existing_option? then existing_option.expanded else false
@@ -152,14 +157,21 @@ export default
     'draggable': draggable
     'company-seal-icon': CompanySealIcon
     'city-icon': CityIcon
+    'industry-type-icon': IndustryTypeIcon
 
   name: 'menu-section'
   props:
+    client: Object
     bookmark_manager: Object
     root_id: String
     label_text: String
     items_by_id: Object
     draggable: Boolean
+
+  mounted: ->
+    if @root_id == 'bookmarks'
+      @$root.$on('add_folder_action', () => @section_expanded = true unless @section_expanded)
+      @$root.$on('add_bookmark_action', () => @section_expanded = true unless @section_expanded)
 
   data: ->
     items_as_tree = @items_to_tree(@items_by_id)
@@ -232,8 +244,11 @@ export default
       @items_as_options = tree_to_options(@options_by_id, @items_by_id, @items_as_tree)
 
     select_item: (item) ->
-      console.log 'select_item'
-      console.log item
+      return if item.is_folder
+      return unless @items_by_id[item.id]?
+      @client.game_state.selected_building_id = @items_by_id[item.id].building_id if (item.type == 'TOWN' || item.type == 'BUILDING') && @items_by_id[item.id].building_id?
+      @client.game_state.selected_corporation_id = @items_by_id[item.id].corporation_id if (item.type == 'TOWN' || item.type == 'BUILDING') && @items_by_id[item.id].corporation_id?
+      @client.renderer?.viewport()?.recenter_at(@items_by_id[item.id].map_x, @items_by_id[item.id].map_y) if item.type == 'TOWN' || item.type == 'LOCATION' || item.type == 'BUILDING'
 
     start_move_item: (event) ->
       @future_level_after_dragging = @index_levels[event?.oldIndex] if @index_levels[event?.oldIndex]?
@@ -384,6 +399,10 @@ export default
       &.active
         background-color: darken($sp-primary-bg, 4%)
         border-bottom: 1px solid darken($sp-primary-bg, 6%)
+
+    &.disabled,
+    &.is-empty-folder
+      cursor: not-allowed
 
     .sp-folder-icon
       display: inline-block

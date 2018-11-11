@@ -4,6 +4,12 @@ export default class Bookmark
     @hidden = false
 
     @type = options?.type || 'LOCATION'
+
+    @building_id = if options?.building_id?.length then options.building_id else null
+    @corporation_id = if options?.corporation_id?.length then options.corporation_id else null
+
+    @type = options?.type || 'LOCATION'
+
     @draggable = if options.draggable? then options.draggable else false
 
   is_folder: -> false

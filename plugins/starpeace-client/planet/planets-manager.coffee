@@ -1,3 +1,4 @@
+import moment from 'moment'
 
 export default class PlanetsManager
   constructor: (@api, @event_listener, @game_state) ->
@@ -22,6 +23,8 @@ export default class PlanetsManager
       @api.planet_details(@game_state.session_state.session_token, planet_id)
         .then (details) =>
           @game_state.session_state.set_planet_details(details)
+          @game_state.current_date = details.date
+          @game_state.current_season = details.season
           @game_state.session_state.finish_planet_details_request()
           @event_listener.notify_planet_details_listeners()
           done()
@@ -29,5 +32,28 @@ export default class PlanetsManager
         .catch (err) =>
           # FIXME: TODO: add error handling (failed to get planets metadata)
           @game_state.session_state.finish_planet_details_request()
+          console.log err
+          error()
+
+  load_events: (planet_id) ->
+    return unless @game_state.session_state.session_token?.length
+    return if @game_state.session_state.planet_events_request
+
+    last_update = @game_state.session_state.planet_events_as_of || @game_state.session_state.planet_details_as_of
+    return unless last_update?
+
+    new Promise (done, error) =>
+      @game_state.session_state.start_planet_events_request()
+      @api.planet_events(@game_state.session_state.session_token, planet_id, last_update)
+        .then (planet_event) =>
+          @game_state.current_date = planet_event.date
+          @game_state.current_season = planet_event.season
+          @game_state.session_state.planet_events_as_of = moment()
+          @game_state.session_state.finish_planet_events_request()
+          done()
+
+        .catch (err) =>
+          # FIXME: TODO: add error handling (failed to get planets metadata)
+          @game_state.session_state.finish_planet_events_request()
           console.log err
           error()

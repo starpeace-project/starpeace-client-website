@@ -11,7 +11,7 @@
         %img.loading-image.starpeace-logo.logo-loading
       %template{'v-else-if':'true'}
         %template{'v-for':'system in systems', 'v-bind:disabled':'!system.enabled'}
-          .card.system
+          .card.system{'v-bind:class':"system.enabled ? '' : 'is-disabled'"}
             .card-content
               %a{'v-on:click.stop.prevent':'select_system(system)', 'v-bind:disabled':'!system.enabled'}
                 .level.is-mobile.system-row
@@ -30,10 +30,11 @@
                       .system-online.system-info-row
                         %span Online:
                         %span.planet-value {{system.online_count}}
+            .disabled-overlay
           %template{'v-if':"system.id == selected_system_id && is_planets_loading"}
             %img.loading-image.starpeace-logo.logo-loading
           %template{'v-else-if':"system.id == selected_system_id"}
-            .card.planet{'v-for':'planet in planets', 'v-bind:disabled':'!planet.enabled'}
+            .card.planet{'v-for':'planet in planets', 'v-bind:disabled':'!planet.enabled', 'v-bind:class':"planet.enabled ? '' : 'is-disabled'"}
               .card-content
                 %a{'v-on:click.stop.prevent':'select_planet(planet)', 'v-bind:disabled':'!planet.enabled'}
                   .level.is-mobile.planet-row
@@ -56,6 +57,7 @@
                         .planet-online.planet-info-row
                           %span Online:
                           %span.planet-value {{planet.online_count}}
+              .disabled-overlay
 
 </template>
 
@@ -84,7 +86,7 @@ export default
     selected_system_id: null
 
   computed:
-    state_counter: -> @options.vue_state_counter + @bookmark_manager.vue_state_counter
+    state_counter: -> @options.vue_state_counter
 
     is_visible: -> if @game_state?.initialized && @game_state.common_metadata.state_counter then @menu_state?.is_visible('systems') else false
     is_system_loading: -> @is_visible && @game_state?.common_metadata?.state_counter? && @game_state.common_metadata.is_refreshing_systems_metadata()
@@ -153,6 +155,16 @@ export default
   margin: 1rem 0
   width: 5rem
 
+.disabled-overlay
+  background-color: #000
+  cursor: not-allowed
+  display: none
+  height: 100%
+  left: 0
+  opacity: .5
+  position: absolute
+  top: 0
+  width: 100%
 
 .card
   &#systems-container
@@ -182,8 +194,11 @@ export default
     border: 1px solid rgba(110, 161, 146, .2)
     margin-top: .25rem
 
-    &[disabled]
-      background-color: opacify(darken($sp-primary-bg, 1%), .3)
+    &.is-disabled
+      border: 1px solid rgba(8, 59, 44, .8)
+
+      .disabled-overlay
+        display: block
 
     .card-content
       padding: .5rem
@@ -225,8 +240,11 @@ export default
     margin-top: .25rem
     padding-bottom: .25rem
 
-    &[disabled]
-      background-color: opacify(darken($sp-primary-bg, 3%), .3)
+    &.is-disabled
+      border: 1px solid rgba(8, 59, 44, .8)
+
+      .disabled-overlay
+        display: block
 
     .card-content
       padding: .5rem

@@ -23,11 +23,17 @@ export default class Viewport
     y = (i + j) * @half_tile_height
     x = (i - j) * @half_tile_width
 
+    @game_state.view_offset_x = (x - @half_canvas_width + @offset * Math.sin(@omega)) / @game_state.game_scale
+    @game_state.view_offset_y = (y - @half_canvas_height + @offset * Math.cos(@omega)) / @game_state.game_scale
+
+  top_left_at: (i, j) ->
+    y = (i + j) * @half_tile_height
+    x = (i - j) * @half_tile_width
+
     @game_state.view_offset_x = (x + @offset * Math.sin(@omega)) / @game_state.game_scale
     @game_state.view_offset_y = (y + @offset * Math.cos(@omega)) / @game_state.game_scale
 
-  # FIXME: might really be top-left corner of viewport; rename?
-  map_center: () ->
+  top_left: () ->
     x = @game_state.game_scale * @game_state.view_offset_x - @offset * Math.sin(@omega)
     y = @game_state.game_scale * @game_state.view_offset_y - @offset * Math.cos(@omega)
     {

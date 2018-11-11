@@ -1,5 +1,5 @@
 <template lang='haml'>
-  %span.industry-type-icon-wrapper
+  %span.industry-type-icon-wrapper{'v-bind:class':"small ? 'is-small' : ''"}
     %template{'v-if':"industry_type == 'AUTOMOBILE'"}
       %img{src: '~/assets/images/icons/industries/car.svg'}
     %template{'v-else-if':"industry_type == 'BANKING'"}
@@ -91,16 +91,25 @@ export default
   name: 'industry-type-icon'
   props:
     industry_type: String
+    small: Boolean
 </script>
 
 <style lang='sass' scoped>
 @import '~assets/stylesheets/starpeace-variables'
 
 .industry-type-icon-wrapper
+  display: inline-block
+  vertical-align: middle
+
   img
     filter: invert(75%) sepia(8%) saturate(1308%) hue-rotate(111deg) brightness(93%) contrast(83%)
     height: 1.2rem
     width: 1.2rem
+
+  &.is-small
+    img
+      height: 1rem
+      width: 1rem
 
 .is-active
   img

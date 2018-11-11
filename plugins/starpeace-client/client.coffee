@@ -31,12 +31,12 @@ export default class Client
     @event_listener.subscribe_company_metadata_listener(=> @notify_player_metadata_changed())
     @event_listener.subscribe_asset_listener(=> @notify_assets_changed())
 
-    @api = new APIClient()
-
     @options = new Options()
     @game_state = new GameState()
     @menu_state = new MenuState()
     @ui_state = new UIState(@options)
+
+    @api = new APIClient()
 
     @managers = new Managers(@api, @event_listener, @options, @game_state, @ui_state)
     @music_manager = new MusicManager(@game_state)
@@ -47,10 +47,13 @@ export default class Client
     @input_handler = new InputHandler(@game_state, @menu_state, @camera_manager, @renderer)
 
     @initialize_callback = null
+    @refresh_events_interval = null
 
     Logger.banner()
 
   prepare_for_initialization: () ->
+    clearTimeout(@refresh_events_interval) if @refresh_events_interval?
+
     @game_state.has_assets = false
     @game_state.has_planet_details = false
     @game_state.has_player_metadata = false
@@ -60,6 +63,14 @@ export default class Client
     @menu_state.hide_all_menus()
     @event_listener.notify_asset_listeners()
 
+  finish_initialization: () ->
+    @game_state.loading = false
+
+    clearTimeout(@refresh_events_interval) if @refresh_events_interval?
+    @refresh_events_interval = setInterval(=>
+      @managers.refresh_planet_events()
+      @managers.refresh_corporation_events() if @game_state.session_state.corporation_id?.length
+    , 5000)
 
   initialize_if_ready: () ->
     return unless !@game_state.initialized && @game_state.has_assets && @game_state.has_planet_details
@@ -80,7 +91,7 @@ export default class Client
       @mini_map_renderer.initialize()
       @game_state.initialized = true
 
-      setTimeout (=> @game_state.loading = false), 500
+      setTimeout (=> @finish_initialization()), 500
     , 500)
 
   notify_planet_details_changed: () ->

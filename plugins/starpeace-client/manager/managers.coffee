@@ -22,8 +22,9 @@ import Logger from '~/plugins/starpeace-client/logger.coffee'
 export default class Managers
   constructor: (api, @event_listener, options, @game_state, @ui_state) ->
     @asset_manager = new AssetManager(@game_state)
+    @translation_manager = new TranslationManager(@asset_manager, @event_listener, options, @game_state)
     @bookmark_manager = new BookmarkManager(api, @event_listener, @game_state)
-    @building_manager = new BuildingManager(api, @asset_manager, @event_listener, @game_state)
+    @building_manager = new BuildingManager(api, @asset_manager, @translation_manager, @event_listener, @game_state)
     @concrete_manager = new ConcreteManager(@asset_manager, @event_listener)
     @corporation_manager = new CorporationManager(api, @event_listener, @game_state)
     @effect_manager = new EffectManager(@asset_manager, @event_listener)
@@ -36,7 +37,6 @@ export default class Managers
     @planets_manager = new PlanetsManager(api, @event_listener, @game_state)
     @road_manager = new RoadManager(@asset_manager, @event_listener, @game_state)
     @systems_manager = new SystemsManager(api, @game_state)
-    @translation_manager = new TranslationManager(@asset_manager, @event_listener, options, @game_state)
     @tycoon_manager = new TycoonManager(api, @game_state)
 
     @event_listener.subscribe_session_listener(=>
@@ -106,6 +106,14 @@ export default class Managers
         Logger.debug "loaded planet details"
       .catch (err) ->
         console.log "error loading planet details #{err}" # FIXME: TODO: figure out error handling
+  refresh_planet_events: () ->
+    return unless @game_state.session_state.planet_id?.length
+    return if @game_state.session_state.is_refreshing_planet_events()
+    @planets_manager.load_events(@game_state.session_state.planet_id)
+      .then ->
+        Logger.debug "loaded planet events"
+      .catch (err) ->
+        console.log "error loading planet events #{err}" # FIXME: TODO: figure out error handling
 
   refresh_tycoon_metadata: () ->
     return if @game_state.session_state.is_refreshing_tycoon_metadata() || @game_state.session_state.has_tycoon_metadata_fresh()
@@ -123,6 +131,14 @@ export default class Managers
         Logger.debug "loaded corporation metadata"
       .catch (err) ->
         console.log "error loading corporation metadata #{err}" # FIXME: TODO: figure out error handling
+  refresh_corporation_events: () ->
+    return unless @game_state.session_state.corporation_id?.length
+    return if @game_state.session_state.is_refreshing_corporation_events()
+    @corporation_manager.load_events(@game_state.session_state.corporation_id)
+      .then ->
+        Logger.debug "loaded corporation events"
+      .catch (err) ->
+        console.log "error loading corporation_id events #{err}" # FIXME: TODO: figure out error handling
 
   refresh_bookmarks_metadata: () ->
     return if @game_state.session_state.is_refreshing_bookmarks_metadata() || @game_state.session_state.has_bookmarks_metadata_fresh()

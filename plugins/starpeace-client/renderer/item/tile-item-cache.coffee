@@ -39,7 +39,7 @@ export default class TileItemCache
   should_clear_cache: () ->
     return true if @game_state.game_scale != @last_scale_rendered || @game_state.current_season != @last_season_rendered ||
       @ui_state.show_zones != @last_rendered_zones || @ui_state.show_overlay != @last_rendered_overlay || @ui_state.current_overlay.type != @last_rendered_overlay_type ||
-      @game_state.selected_building_id != @last_rendered_selection_options.building_id || @game_state.selected_tycoon_id != @last_rendered_selection_options.tycoon_id
+      @game_state.selected_building_id != @last_rendered_selection_options.building_id || @game_state.selected_corporation_id != @last_rendered_selection_options.corporation_id
 
     for option in RENDER_OPTIONS
       return true unless @options.option(option) == @last_rendered_render_options[option]
@@ -54,7 +54,7 @@ export default class TileItemCache
     @last_rendered_overlay_type = @ui_state.current_overlay.type
 
     @last_rendered_selection_options.building_id = @game_state.selected_building_id
-    @last_rendered_selection_options.tycoon_id = @game_state.selected_tycoon_id
+    @last_rendered_selection_options.corporation_id = @game_state.selected_corporation_id
 
     @last_rendered_render_options[option] = @options.option(option) for option in RENDER_OPTIONS
 
@@ -166,7 +166,7 @@ export default class TileItemCache
         effects.push(new SpriteEffect(effect_textures, effect, effect_metadata))
 
     is_selected = if @game_state.selected_building_id?.length then @game_state.selected_building_id == tile_info.building_info.id else false
-    is_filtered = if @game_state.selected_tycoon_id?.length then @game_state.selected_tycoon_id != tile_info.building_info.tycoon_id else false
+    is_filtered = if @game_state.selected_corporation_id?.length then @game_state.selected_corporation_id != tile_info.building_info.corporation_id else false
 
     new SpriteBuilding(textures, is_animated, is_selected, is_filtered, metadata, effects)
 

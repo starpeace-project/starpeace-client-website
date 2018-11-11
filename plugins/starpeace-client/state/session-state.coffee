@@ -35,14 +35,22 @@ export default class SessionState
     @planet_details_as_of = null
     @planet_details = null
 
+    @planet_events_request = null
+    @planet_events_as_of = null
+
     @corporation_metadata_request = null
     @corporation_metadata_as_of = null
     @corporation_metadata = null
     @corporation_company_metadata_by_id = {}
 
+    @corporation_events_request = null
+    @corporation_events_as_of = null
+
     @bookmarks_by_id_request = null
     @bookmarks_by_id_as_of = null
     @bookmarks_by_id = null
+
+    @bookmarks_changing_request = null
 
     @mail_by_id_request = null
     @mail_by_id_as_of = null
@@ -56,6 +64,18 @@ export default class SessionState
     @inventions_metadata_by_company_id_as_of = {}
     @inventions_metadata_by_company_id = {}
 
+    @corporation = {
+      cash: 0
+      cashflow: 0
+      companies_by_id: {}
+      update_companies: (companies) ->
+        @companies_by_id = {}
+        for company in companies
+          @companies_by_id[company.id] = {
+            id: company.id
+            cashflow: company.cashflow
+          }
+    }
 
   start_tycoon_metadata_request: () ->
     @tycoon_metadata_request = true
@@ -74,6 +94,14 @@ export default class SessionState
     @planet_details_request = null
     @state_counter += 1
     @game_state.finish_ajax()
+  start_planet_events_request: () ->
+    @planet_events_request = true
+    @state_counter += 1
+    @game_state.start_ajax()
+  finish_planet_events_request: () ->
+    @planet_events_request = null
+    @state_counter += 1
+    @game_state.finish_ajax()
 
   start_corporation_metadata_request: () ->
     @corporation_metadata_request = true
@@ -81,6 +109,14 @@ export default class SessionState
     @game_state.start_ajax()
   finish_corporation_metadata_request: () ->
     @corporation_metadata_request = null
+    @state_counter += 1
+    @game_state.finish_ajax()
+  start_corporation_events_request: () ->
+    @corporation_events_request = true
+    @state_counter += 1
+    @game_state.start_ajax()
+  finish_corporation_events_request: () ->
+    @corporation_events_request = null
     @state_counter += 1
     @game_state.finish_ajax()
 
@@ -92,6 +128,15 @@ export default class SessionState
     @bookmarks_by_id_request = null
     @state_counter += 1
     @game_state.finish_ajax()
+  start_bookmarks_change_request: () ->
+    @bookmarks_changing_request = true
+    @state_counter += 1
+    @game_state.start_ajax()
+  finish_bookmarks_change_request: () ->
+    @bookmarks_changing_request = null
+    @state_counter += 1
+    @game_state.finish_ajax()
+
   start_mail_metadata_request: () ->
     @mail_by_id_request = true
     @state_counter += 1
@@ -121,7 +166,9 @@ export default class SessionState
 
   is_refreshing_tycoon_metadata: () -> @tycoon_metadata_request || false
   is_refreshing_planet_details: () -> @planet_details_request || false
+  is_refreshing_planet_events: () -> @planet_events_request || false
   is_refreshing_corporation_metadata: () -> @corporation_metadata_request || false
+  is_refreshing_corporation_events: () -> @corporation_events_request || false
   is_refreshing_bookmarks_metadata: () -> @bookmarks_by_id_request || false
   is_refreshing_mail_metadata: () -> @mail_by_id_request || false
 
@@ -158,6 +205,11 @@ export default class SessionState
     Vue.set(@bookmarks_by_id, item.id, item) for item in (bookmarks_items || [])
     @bookmarks_by_id_as_of = moment()
     @state_counter += 1
+  add_bookmarks_metadata: (bookmark_item) ->
+    Vue.set(@bookmarks_by_id, bookmark_item.id, bookmark_item)
+    @bookmarks_by_id_as_of = moment()
+    @state_counter += 1
+
   set_mail_metadata: (mail_metadata) ->
     @mail_by_id = {}
     Vue.set(@mail_by_id, item.id, item) for item in (mail_metadata || [])

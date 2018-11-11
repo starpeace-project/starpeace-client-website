@@ -32,24 +32,15 @@
           %tr
             %td.column-news-ticker {{ ticker_message }}
             %td.column-tycoon-details
-              %table
-                %tbody
-                  %tr
-                    %td.column-tycoon-corporation {{corporation_name}}
-                  %tr
-                    %td.column-tycoon-cash
-                      $0
-                  %tr
-                    %td.column-tycoon-cashflow
-                      ($0/h)
-                  %tr
-                    %td.column-date {{ current_date }}
+              %toolbar-corporation{'v-bind:game_state':'game_state'}
 </template>
 
 <script lang='coffee'>
 import moment from 'moment'
 
+import ToolbarCorporation from '~/components/footer/toolbar-corporation.vue'
 import ToolbarMenubar from '~/components/footer/toolbar-menubar.vue'
+import MoneyText from '~/components/misc/money-text.vue'
 
 export default
   props:
@@ -62,7 +53,9 @@ export default
     ui_state: Object
 
   components:
+    'toolbar-corporation': ToolbarCorporation
     'toolbar-menubar': ToolbarMenubar
+    'money-text': MoneyText
 
   data: ->
     client_version: process.env.CLIENT_VERSION
@@ -87,11 +80,6 @@ export default
     notification_loading_css_class: -> { 'ajax-loading': (@game_state?.ajax_requests || 0) > 0 }
 
     tycoon_name: -> if @game_state?.session_state.state_counter && @game_state?.session_state.identity.is_tycoon() then @game_state?.session_state.tycoon_metadata?.name else 'Visitor'
-    corporation_name: ->
-      if @is_ready && @game_state?.session_state.state_counter && @game_state?.session_state.identity.is_tycoon()
-        if @game_state.session_state.corporation_id? then @game_state.name_for_corporation_id(@game_state.session_state.corporation_id) else '[PENDING]'
-      else
-        '[VISITOR VISA]'
 
   methods:
     toggle_game_music: -> @music_manager.toggle_music()
@@ -115,6 +103,7 @@ export default
   grid-row-start: 5
   grid-row-end: 6
   margin: 0
+  position: relative
 
   table
     width: 100%
@@ -223,30 +212,6 @@ export default
     .column-tycoon-details
       background: linear-gradient(to right, #395950, #000)
       padding: 0
-
-      td
-        padding: .25rem .75rem
-
-      .column-tycoon-corporation
-        color: #fff
-
-      .column-tycoon-cash
-        color: $sp-primary
-        font-size: 1.5rem
-        font-weight: 1000
-        line-height: 1.25rem
-
-      .column-tycoon-cashflow
-        color: $sp-primary
-        padding-bottom: 0
-        padding-top: .25rem
-        vertical-align: bottom
-
-      .column-date
-        color: $sp-primary
-        padding-top: 0
-        padding-bottom: 1rem
-        vertical-align: top
 
     .column-news-ticker
       background-color: #2a453f

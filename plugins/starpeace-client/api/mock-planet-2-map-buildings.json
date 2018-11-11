@@ -1,0 +1,3694 @@
+{
+  "27x29": [
+    {
+      "id": "townhall-eppe",
+      "tycoon_id": "IFEL",
+      "name": "Townhall",
+      "key": "pgi.townhall",
+      "x": 542,
+      "y": 591,
+    "corporation_id": "IFEL",
+    "company_id": "IFEL"
+    },
+    {
+      "id": "tradecenter-eppe",
+      "tycoon_id": "IFEL",
+      "name": "Tradecenter",
+      "key": "pgi.tradecenter",
+      "x": 542,
+      "y": 594,
+      "corporation_id": "IFEL",
+      "company_id": "IFEL"
+    },
+    {
+      "id": "portal-eppe",
+      "tycoon_id": "IFEL",
+      "name": "Outbound Portal",
+      "key": "generic.portal.out",
+      "x": 546,
+      "y": 591,
+      "corporation_id": "IFEL",
+      "company_id": "IFEL"
+    }
+  ],
+  "40x42": [
+    {
+      "id": "townhall-croma",
+      "tycoon_id": "IFEL",
+      "name": "Townhall",
+      "key": "mko.townhall",
+      "x": 817,
+      "y": 848,
+      "corporation_id": "IFEL",
+      "company_id": "IFEL"
+    },
+    {
+      "id": "tradecenter-croma",
+      "tycoon_id": "IFEL",
+      "name": "Tradecenter",
+      "key": "mko.tradecenter",
+      "x": 817,
+      "y": 851,
+      "corporation_id": "IFEL",
+      "company_id": "IFEL"
+    },
+    {
+      "id": "portal-croma",
+      "tycoon_id": "IFEL",
+      "name": "Outbound Portal",
+      "key": "generic.portal.out",
+      "x": 813,
+      "y": 848,
+      "corporation_id": "IFEL",
+      "company_id": "IFEL"
+    }
+  ],
+  "13x23": [
+    {
+      "id": "townhall-perceo",
+      "tycoon_id": "IFEL",
+      "name": "Townhall",
+      "key": "pgi.townhall",
+      "x": 271,
+      "y": 472,
+      "corporation_id": "IFEL",
+      "company_id": "IFEL"
+    },
+    {
+      "id": "tradecenter-perceo",
+      "tycoon_id": "IFEL",
+      "name": "Tradecenter",
+      "key": "pgi.tradecenter",
+      "x": 271,
+      "y": 475,
+      "corporation_id": "IFEL",
+      "company_id": "IFEL"
+    },
+    {
+      "id": "portal-perceo",
+      "tycoon_id": "IFEL",
+      "name": "Outbound Portal",
+      "key": "generic.portal.out",
+      "x": 275,
+      "y": 472,
+      "corporation_id": "IFEL",
+      "company_id": "IFEL"
+    }
+  ],
+  "16x4": [
+    {
+      "id": "townhall-treloba",
+      "tycoon_id": "IFEL",
+      "name": "Townhall",
+      "key": "dis.townhall",
+      "x": 335,
+      "y": 92,
+      "corporation_id": "IFEL",
+      "company_id": "IFEL"
+    },
+    {
+      "id": "tradecenter-treloba",
+      "tycoon_id": "IFEL",
+      "name": "Tradecenter",
+      "key": "dis.tradecenter",
+      "x": 335,
+      "y": 95,
+      "corporation_id": "IFEL",
+      "company_id": "IFEL"
+    },
+    {
+      "id": "portal-treloba",
+      "tycoon_id": "IFEL",
+      "name": "Outbound Portal",
+      "key": "generic.portal.out",
+      "x": 331,
+      "y": 92,
+      "corporation_id": "IFEL",
+      "company_id": "IFEL"
+    }
+  ],
+  "42x26": [
+    {
+      "id": "townhall-el-rio",
+      "tycoon_id": "IFEL",
+      "name": "Townhall",
+      "key": "dis.townhall",
+      "x": 847,
+      "y": 533,
+      "corporation_id": "IFEL",
+      "company_id": "IFEL"
+    },
+    {
+      "id": "tradecenter-el-rio",
+      "tycoon_id": "IFEL",
+      "name": "Tradecenter",
+      "key": "dis.tradecenter",
+      "x": 847,
+      "y": 536,
+      "corporation_id": "IFEL",
+      "company_id": "IFEL"
+    },
+    {
+      "id": "portal-el-rio",
+      "tycoon_id": "IFEL",
+      "name": "Outbound Portal",
+      "key": "generic.portal.out",
+      "x": 851,
+      "y": 533,
+      "corporation_id": "IFEL",
+      "company_id": "IFEL"
+    }
+  ],
+  "26x13": [
+    {
+      "id": "townhall-ilase",
+      "tycoon_id": "IFEL",
+      "name": "Townhall",
+      "key": "pgi.townhall",
+      "x": 529,
+      "y": 279,
+      "corporation_id": "IFEL",
+      "company_id": "IFEL"
+    },
+    {
+      "id": "tradecenter-ilase",
+      "tycoon_id": "IFEL",
+      "name": "Tradecenter",
+      "key": "pgi.tradecenter",
+      "x": 529,
+      "y": 276,
+      "corporation_id": "IFEL",
+      "company_id": "IFEL"
+    },
+    {
+      "id": "portal-ilase",
+      "tycoon_id": "IFEL",
+      "name": "Inbound Portal",
+      "key": "generic.portal.in",
+      "x": 533,
+      "y": 279,
+      "corporation_id": "IFEL",
+      "company_id": "IFEL"
+    }
+  ],
+  "20x35": [
+    {
+      "id": "townhall-loi-mei",
+      "tycoon_id": "IFEL",
+      "name": "Townhall",
+      "key": "mko.townhall",
+      "x": 405,
+      "y": 710,
+      "corporation_id": "IFEL",
+      "company_id": "IFEL"
+    },
+    {
+      "id": "tradecenter-loi-mei",
+      "tycoon_id": "IFEL",
+      "name": "Tradecenter",
+      "key": "mko.tradecenter",
+      "x": 405,
+      "y": 713,
+      "corporation_id": "IFEL",
+      "company_id": "IFEL"
+    },
+    {
+      "id": "portal-loi-mei",
+      "tycoon_id": "IFEL",
+      "name": "Inbound Portal",
+      "key": "generic.portal.in",
+      "x": 409,
+      "y": 710,
+      "corporation_id": "IFEL",
+      "company_id": "IFEL"
+    }
+  ],
+  "6x21": [
+    {
+      "id": "townhall-wa-ka",
+      "tycoon_id": "IFEL",
+      "name": "Townhall",
+      "key": "mko.townhall",
+      "x": 123,
+      "y": 426,
+      "corporation_id": "IFEL",
+      "company_id": "IFEL"
+    },
+    {
+      "id": "tradecenter-wa-ka",
+      "tycoon_id": "IFEL",
+      "name": "Tradecenter",
+      "key": "mko.tradecenter",
+      "x": 123,
+      "y": 429,
+      "corporation_id": "IFEL",
+      "company_id": "IFEL"
+    },
+    {
+      "id": "portal-wa-ka",
+      "tycoon_id": "IFEL",
+      "name": "Inbound Portal",
+      "key": "generic.portal.in",
+      "x": 127,
+      "y": 426,
+      "corporation_id": "IFEL",
+      "company_id": "IFEL"
+    }
+  ],
+  "4x9": [
+    {
+      "id": "townhall-dromeda",
+      "tycoon_id": "IFEL",
+      "name": "Townhall",
+      "key": "moab.townhall",
+      "x": 98,
+      "y": 198,
+      "corporation_id": "IFEL",
+      "company_id": "IFEL"
+    },
+    {
+      "id": "tradecenter-dromeda",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Tradecenter",
+      "key": "moab.tradecenter",
+      "x": 98,
+      "y": 195,
+      "corporation_id": "IFEL",
+      "company_id": "IFEL"
+    },
+    {
+      "id": "portal-dromeda",
+      "tycoon_id": "IFEL",
+      "name": "Inbound Portal",
+      "key": "generic.portal.in",
+      "x": 94,
+      "y": 198,
+      "corporation_id": "IFEL",
+      "company_id": "IFEL"
+    }
+  ],
+  "39x6": [
+    {
+      "id": "townhall-zelti",
+      "tycoon_id": "IFEL",
+      "name": "Townhall",
+      "key": "moab.townhall",
+      "x": 785,
+      "y": 135,
+      "corporation_id": "IFEL",
+      "company_id": "IFEL"
+    },
+    {
+      "id": "tradecenter-zelti",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Tradecenter",
+      "key": "moab.tradecenter",
+      "x": 785,
+      "y": 138,
+      "corporation_id": "IFEL",
+      "company_id": "IFEL"
+    },
+    {
+      "id": "portal-zelti",
+      "tycoon_id": "IFEL",
+      "name": "Inbound Portal",
+      "key": "generic.portal.in",
+      "x": 789,
+      "y": 135,
+      "corporation_id": "IFEL",
+      "company_id": "IFEL"
+    }
+  ],
+  "29x44": [
+    {
+      "id": "townhall-oloc",
+      "tycoon_id": "IFEL",
+      "name": "Townhall",
+      "key": "moab.townhall",
+      "x": 590,
+      "y": 894,
+      "corporation_id": "IFEL",
+      "company_id": "IFEL"
+    },
+    {
+      "id": "tradecenter-oloc",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Tradecenter",
+      "key": "moab.tradecenter",
+      "x": 590,
+      "y": 897,
+      "corporation_id": "IFEL",
+      "company_id": "IFEL"
+    },
+    {
+      "id": "portal-oloc",
+      "tycoon_id": "IFEL",
+      "name": "Inbound Portal",
+      "key": "generic.portal.in",
+      "x": 594,
+      "y": 894,
+      "corporation_id": "IFEL",
+      "company_id": "IFEL"
+    }
+  ],
+  "9x4": [
+    {
+      "id": "eee62871-9aa9-5883-3f63-fcd3dd8e104b",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Automobile Factory 1",
+      "key": "dis.car.industry",
+      "x": 195,
+      "y": 94
+    },
+    {
+      "id": "9b6cc840-08e1-b0f1-21cb-27581954a132",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Automobile Dealership 1",
+      "key": "dis.car.store",
+      "x": 199,
+      "y": 94
+    },
+    {
+      "id": "ad90ca03-674f-62e5-0ceb-63703ad2562b",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Computer Services 1",
+      "key": "dis.computing",
+      "x": 195,
+      "y": 96
+    },
+    {
+      "id": "e4e602bd-d5b0-9638-067c-4d3446b24ce9",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Construction Workyard 1",
+      "key": "dis.construction.industry",
+      "x": 199,
+      "y": 98
+    }
+  ],
+  "10x4": [
+    {
+      "id": "443c7045-ead8-a56f-b6c1-e91ebaf8cd55",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Bank 1",
+      "key": "dis.bank",
+      "x": 201,
+      "y": 94
+    },
+    {
+      "id": "014956b2-cc56-f1aa-5d48-812ea053cbf2",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Bar 1",
+      "key": "dis.bar",
+      "x": 203,
+      "y": 94
+    },
+    {
+      "id": "a53b70ed-3c9b-3586-37a5-dcd6e4dfbaa0",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Book Store 1",
+      "key": "dis.book.store",
+      "x": 205,
+      "y": 94
+    },
+    {
+      "id": "6c780d70-caf4-d48b-2980-2d22278b97f5",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Chemical Plant 1",
+      "key": "dis.chemical.industry",
+      "x": 215,
+      "y": 95
+    },
+    {
+      "id": "e3a6a0af-e564-fb73-1e2c-63a7bae0484d",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Computer Factory 1",
+      "key": "dis.bm.industry",
+      "x": 209,
+      "y": 96
+    },
+    {
+      "id": "bf064976-0ce2-3d5d-7612-be59f993601e",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Electronic Component Factory 1",
+      "key": "dis.elect.comp.industry",
+      "x": 203,
+      "y": 98
+    },
+    {
+      "id": "e1d1d018-69f2-8390-0ce5-8f15108db7fb",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Small Electronic Component Factory 1",
+      "key": "dis.elect.comp.industry.small",
+      "x": 214,
+      "y": 99
+    },
+    {
+      "id": "58ca8580-e544-2660-f617-8bbeed256d5f",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Textile Factory 1",
+      "key": "dis.textile.industry",
+      "x": 218,
+      "y": 99
+    }
+  ],
+  "11x4": [
+    {
+      "id": "05bb0c28-9330-f0e9-cbba-990c9c1ba86c",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Small Chemical Plant 1",
+      "key": "dis.chemical.industry.small",
+      "x": 220,
+      "y": 95
+    },
+    {
+      "id": "5f22ea18-7a4e-77bf-fddc-13cc6e6b5c57",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Clothing Factory 1",
+      "key": "dis.clothes.industry",
+      "x": 225,
+      "y": 95
+    },
+    {
+      "id": "f326faaf-aa9e-ebab-e360-f117dbb41d1e",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Small Clothing Factory 1",
+      "key": "dis.clothes.industry.small",
+      "x": 229,
+      "y": 95
+    },
+    {
+      "id": "3948de20-1b00-c944-a288-bba206603a56",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Clothes Store 1",
+      "key": "dis.clothes.store",
+      "x": 233,
+      "y": 95
+    },
+    {
+      "id": "fe0b321b-5cbb-455d-fb9c-248e097d971e",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Small Textile Factory 1",
+      "key": "dis.textile.industry.small",
+      "x": 222,
+      "y": 99
+    }
+  ],
+  "9x5": [
+    {
+      "id": "d36671ae-8aaa-f94a-d073-2fedabdb74f1",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Farm 1",
+      "key": "dis.farm",
+      "x": 195,
+      "y": 105
+    },
+    {
+      "id": "84e084f4-0485-f6d0-af91-af9fa9ca277c",
+      "tycoon_id": "tycoon-id-6",
+      "name": "School 1",
+      "key": "dis.school",
+      "x": 195,
+      "y": 108
+    },
+    {
+      "id": "e9b3c1b8-3263-6122-40e6-fe113c4814c5",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Small Metal Factory 1",
+      "key": "dis.metal.industry.small",
+      "x": 195,
+      "y": 114
+    },
+    {
+      "id": "d30a1f2b-cb4e-d928-a1af-deee14caeac4",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Movie Theater 1",
+      "key": "dis.movie",
+      "x": 199,
+      "y": 114
+    },
+    {
+      "id": "cca71144-7147-7019-aa38-790c6719ccd8",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Needle 1",
+      "key": "dis.hi.res.a.empty",
+      "x": 195,
+      "y": 116
+    },
+    {
+      "id": "10c0f626-4433-ea0a-86c8-4bd7d98ad261",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Needle 1",
+      "key": "dis.hi.res.a",
+      "x": 197,
+      "y": 116
+    },
+    {
+      "id": "4035d7c1-85b8-a4eb-eeea-886802ad6df8",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Balloon House 1",
+      "key": "dis.hi.res.b.empty",
+      "x": 199,
+      "y": 116
+    },
+    {
+      "id": "806eb20c-14ab-ea37-2c77-2b5720d2a616",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Dreams Tower 1",
+      "key": "dis.mi.res.a.empty",
+      "x": 195,
+      "y": 118
+    },
+    {
+      "id": "ad0420a9-f9bd-4317-d408-7fdfc14733f5",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Dreams Tower 1",
+      "key": "dis.mi.res.a",
+      "x": 197,
+      "y": 118
+    },
+    {
+      "id": "f0f51c35-5ca6-196f-bd1a-7d503ed526c4",
+      "tycoon_id": "tycoon-id-4",
+      "name": "The Mushrooms 1",
+      "key": "dis.mi.res.b.empty",
+      "x": 199,
+      "y": 118
+    }
+  ],
+  "10x5": [
+    {
+      "id": "eb57e2d3-5e80-539e-0d3d-9f3dbb87d6c8",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Small Farm 1",
+      "key": "dis.farm.small",
+      "x": 200,
+      "y": 105
+    },
+    {
+      "id": "3e191044-b005-bd0e-5067-eb7a32520e95",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Fast Food 1",
+      "key": "dis.food.store",
+      "x": 203,
+      "y": 105
+    },
+    {
+      "id": "2f5a42fb-afd2-e75b-dcc6-f959591c91c6",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Funeral Parlor 1",
+      "key": "dis.funeral",
+      "x": 205,
+      "y": 105
+    },
+    {
+      "id": "dc0bc9e0-fb01-4f97-d235-5e1e91bf7222",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Furniture Factory 1",
+      "key": "dis.furniture.industry",
+      "x": 208,
+      "y": 105
+    },
+    {
+      "id": "f9ab01a8-084e-30f0-1750-073d35b43a37",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Furniture Store 1",
+      "key": "dis.furniture.store",
+      "x": 211,
+      "y": 105
+    },
+    {
+      "id": "a630f3a6-3885-ffc7-acc0-a2198108e237",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Hospital 1",
+      "key": "dis.hospital",
+      "x": 214,
+      "y": 105
+    },
+    {
+      "id": "2dc3d739-c102-dd33-1696-05f557efa4a7",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Headquarters 1",
+      "key": "dis.hq.1",
+      "x": 217,
+      "y": 105
+    },
+    {
+      "id": "be4e9d93-e01a-d77f-6e1d-38f5ab679083",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Appliances Factory 1",
+      "key": "dis.hha.industry",
+      "x": 204,
+      "y": 109
+    },
+    {
+      "id": "ba356c42-5950-4cfe-5ab9-5d31b8ca82db",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Small Appliances Factory 1",
+      "key": "dis.hha.industry.small",
+      "x": 208,
+      "y": 109
+    },
+    {
+      "id": "753fb74a-62af-5bc0-84f7-64b95969cd0d",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Appliances Store 1",
+      "key": "dis.hha.store",
+      "x": 212,
+      "y": 109
+    },
+    {
+      "id": "2293d236-36c6-07cf-f461-24f217834e34",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Law Firm 1",
+      "key": "dis.legal.services",
+      "x": 214,
+      "y": 109
+    },
+    {
+      "id": "dca15233-1b70-893f-cbee-412db0f78d80",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Distillery 1",
+      "key": "dis.liquor.industry",
+      "x": 218,
+      "y": 109
+    },
+    {
+      "id": "76103b92-e19e-0de9-2818-8c4b242c6f7f",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Ribs 1",
+      "key": "dis.office.a.empty",
+      "x": 201,
+      "y": 114
+    },
+    {
+      "id": "6b6c31b5-72ad-3658-f4d2-98546a3484bf",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Ribs 1",
+      "key": "dis.office.a",
+      "x": 203,
+      "y": 114
+    },
+    {
+      "id": "8659d173-84c1-6d01-081d-e57a12de30c3",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Red Ball 1",
+      "key": "dis.office.b.empty",
+      "x": 205,
+      "y": 114
+    },
+    {
+      "id": "62f8a200-efc9-f770-f4a8-288f515331d8",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Red Ball 1",
+      "key": "dis.office.b",
+      "x": 207,
+      "y": 114
+    },
+    {
+      "id": "0971bb13-ccb2-961b-121f-711bfc6d3316",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Duango 1",
+      "key": "dis.office.c.empty",
+      "x": 209,
+      "y": 114
+    },
+    {
+      "id": "c5c88304-2c87-89ab-b84d-4613a60bcf71",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Duango 1",
+      "key": "dis.office.c",
+      "x": 212,
+      "y": 114
+    },
+    {
+      "id": "9a3c473d-b3b6-2422-652a-20ba0a7ab8e8",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Ore Mine 1",
+      "key": "dis.mine",
+      "x": 217,
+      "y": 115
+    },
+    {
+      "id": "f4479d33-5aaf-58a1-9fba-d60425499f3e",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Balloon House 1",
+      "key": "dis.hi.res.b",
+      "x": 201,
+      "y": 116
+    },
+    {
+      "id": "ed0ce2cd-3e3f-327e-6b05-46e53c011821",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Funnel 1",
+      "key": "dis.hi.res.c.empty",
+      "x": 203,
+      "y": 116
+    },
+    {
+      "id": "79697270-1622-ceed-4225-1a79228a1283",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Funnel 1",
+      "key": "dis.hi.res.c",
+      "x": 205,
+      "y": 116
+    },
+    {
+      "id": "d47cd0f4-4b44-697c-e87d-3f024a57d398",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Cottage 1",
+      "key": "dis.hi.res.d.empty",
+      "x": 207,
+      "y": 116
+    },
+    {
+      "id": "da90bc27-7282-31e1-4724-df251ea3ada6",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Cottage 1",
+      "key": "dis.hi.res.d",
+      "x": 209,
+      "y": 116
+    },
+    {
+      "id": "b6ce5e65-b6ad-b7cf-4c41-1bb078bb3598",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Generic high class building 1",
+      "key": "dis.lo.cost.hi.res",
+      "x": 212,
+      "y": 116
+    },
+    {
+      "id": "098b89db-29df-8c92-88d8-7fc7e87674d6",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Generic middle class building 1",
+      "key": "dis.lo.cost.mi.res",
+      "x": 214,
+      "y": 117
+    },
+    {
+      "id": "a2a351fc-6c69-b208-8056-0aa6bea59ecb",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Recycled Homes 1",
+      "key": "dis.lo.res.a.empty",
+      "x": 216,
+      "y": 117
+    },
+    {
+      "id": "3803b6d4-c6cd-725f-a93d-67520672cabf",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Recycled Homes 1",
+      "key": "dis.lo.res.a",
+      "x": 218,
+      "y": 117
+    },
+    {
+      "id": "a182ef3e-4834-9b90-1918-4af3ce710f04",
+      "tycoon_id": "tycoon-id-2",
+      "name": "The Mushrooms 1",
+      "key": "dis.mi.res.b",
+      "x": 201,
+      "y": 118
+    },
+    {
+      "id": "f4dadd80-e7d1-3572-417d-fa7b8c4e184e",
+      "tycoon_id": "tycoon-id-3",
+      "name": "The Bushings 1",
+      "key": "dis.mi.res.c.empty",
+      "x": 204,
+      "y": 119
+    },
+    {
+      "id": "44c3136f-ee15-9bd6-15f3-8f99e0973180",
+      "tycoon_id": "tycoon-id-2",
+      "name": "The Bushings 1",
+      "key": "dis.mi.res.c",
+      "x": 207,
+      "y": 119
+    },
+    {
+      "id": "eba8bd0b-5099-8ceb-6ecd-a289f138115b",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Screwer 1",
+      "key": "dis.mi.res.d.empty",
+      "x": 212,
+      "y": 119
+    },
+    {
+      "id": "5246c6d8-4750-0129-e750-8fd760cc3df5",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Screwer 1",
+      "key": "dis.mi.res.d",
+      "x": 214,
+      "y": 119
+    }
+  ],
+  "11x5": [
+    {
+      "id": "27c96528-e2f5-e5ee-3102-98118436251e",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Headquarters 1",
+      "key": "dis.hq.2",
+      "x": 220,
+      "y": 105
+    },
+    {
+      "id": "887498d8-545c-886f-9af4-c5650c1f7a0c",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Headquarters 1",
+      "key": "dis.hq.3",
+      "x": 223,
+      "y": 105
+    },
+    {
+      "id": "34d560d6-c9f1-b24c-3c53-4d2e9765fa16",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Headquarters 1",
+      "key": "dis.hq.4",
+      "x": 226,
+      "y": 105
+    },
+    {
+      "id": "c874ed53-6bd6-d3ce-8c93-8b75045ebf12",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Headquarters 1",
+      "key": "dis.hq.5",
+      "x": 229,
+      "y": 105
+    },
+    {
+      "id": "bb1ed677-b0d0-110f-7ed8-afa09120dc02",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Small Park 1",
+      "key": "dis.park.small",
+      "x": 232,
+      "y": 105
+    },
+    {
+      "id": "5c3c9379-efa0-37c9-8dc9-1249c70efdd1",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Police Station 1",
+      "key": "dis.police",
+      "x": 234,
+      "y": 105
+    },
+    {
+      "id": "73420f76-7758-a1de-5b57-c49d59c5ffc4",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Machinery Factory 1",
+      "key": "dis.heavy.industry",
+      "x": 222,
+      "y": 109
+    },
+    {
+      "id": "75027204-a6ed-b521-361e-e08c56b58623",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Big Market 1",
+      "key": "dis.market.a",
+      "x": 226,
+      "y": 109
+    },
+    {
+      "id": "b7eb92e1-4b50-1a8e-2a22-1b9199a666c3",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Flea Market 1",
+      "key": "dis.market.b",
+      "x": 229,
+      "y": 109
+    },
+    {
+      "id": "fdaae1b6-94b6-7fef-ff29-688ba75de69e",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Metal Factory 1",
+      "key": "dis.metal.industry",
+      "x": 234,
+      "y": 109
+    },
+    {
+      "id": "84ec51be-4317-49c5-204a-2ce3fcb0707e",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Small Ore Mine 1",
+      "key": "dis.mine.small",
+      "x": 222,
+      "y": 115
+    },
+    {
+      "id": "9461d6bd-7da7-5729-6488-b3876a07dc23",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Food Processor 1",
+      "key": "dis.food.proc",
+      "x": 227,
+      "y": 115
+    },
+    {
+      "id": "a06473b4-e0bf-4254-b961-6c35ad95cc1f",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Small Food Processor 1",
+      "key": "dis.food.proc.small",
+      "x": 234,
+      "y": 115
+    },
+    {
+      "id": "79c8c530-861b-1106-b8f3-acf41cfaeb13",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Generic low class building 1",
+      "key": "dis.lo.cost.lo.res",
+      "x": 229,
+      "y": 116
+    },
+    {
+      "id": "003db0b2-1940-4716-6e5e-6aa4e7008e2e",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Recycled Buildings 1",
+      "key": "dis.lo.res.b.empty",
+      "x": 220,
+      "y": 117
+    },
+    {
+      "id": "939d57a1-b0e3-542e-d178-e20d2aefd594",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Recycled Buildings 1",
+      "key": "dis.lo.res.b",
+      "x": 222,
+      "y": 117
+    },
+    {
+      "id": "f92b2e20-90b0-3e99-1a32-c9b155781d2a",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Sardine Cans 1",
+      "key": "dis.lo.res.c.empty",
+      "x": 224,
+      "y": 117
+    },
+    {
+      "id": "91780485-df30-d7f2-e73b-1b05c4d51811",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Sardine Cans 1",
+      "key": "dis.lo.res.c",
+      "x": 226,
+      "y": 117
+    },
+    {
+      "id": "d5667149-5d0c-8abd-2454-e744dc7f171e",
+      "tycoon_id": "tycoon-id-3",
+      "name": "The Barracks 1",
+      "key": "dis.lo.res.d.empty",
+      "x": 232,
+      "y": 117
+    },
+    {
+      "id": "fe64543e-2487-4f9c-d818-3a561bab262e",
+      "tycoon_id": "tycoon-id-4",
+      "name": "The Barracks 1",
+      "key": "dis.lo.res.d",
+      "x": 234,
+      "y": 117
+    },
+    {
+      "id": "54eab7b3-0c4c-4004-8fb5-44ebfa92d8b6",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Castles 1",
+      "key": "dis.mi.res.e.empty",
+      "x": 229,
+      "y": 119
+    }
+  ],
+  "9x6": [
+    {
+      "id": "00fbe5aa-9dc9-dbaf-73d2-6a8b6bec776e",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Castles 1",
+      "key": "dis.mi.res.e",
+      "x": 195,
+      "y": 123
+    },
+    {
+      "id": "99f22e32-1e79-aac8-1155-ccb5ae0058a5",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Spire 1",
+      "key": "dis.mi.res.f.empty",
+      "x": 198,
+      "y": 123
+    },
+    {
+      "id": "40f2775f-12ae-c60a-5a95-aef7c53c688f",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Lumber Mill 1",
+      "key": "dis.lumber.2",
+      "x": 198,
+      "y": 138
+    }
+  ],
+  "10x6": [
+    {
+      "id": "488323e2-bf0f-f50e-f4d6-7462bfdde047",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Spire 1",
+      "key": "dis.mi.res.f",
+      "x": 200,
+      "y": 123
+    },
+    {
+      "id": "b296d373-cae7-5826-f401-8a25931a62a8",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Restaurant 1",
+      "key": "dis.restaurant.a",
+      "x": 202,
+      "y": 123
+    },
+    {
+      "id": "e597434a-d261-c5d1-3810-248378647a7d",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Restaurant 1",
+      "key": "dis.restaurant.b",
+      "x": 203,
+      "y": 123
+    },
+    {
+      "id": "6ed934b1-cf75-830f-fa42-462cdf2b96ce",
+      "tycoon_id": "tycoon-id-5",
+      "name": "TV Antenna 1",
+      "key": "dis.tv.antenna",
+      "x": 205,
+      "y": 123
+    },
+    {
+      "id": "288a6e8c-3dc2-3e83-c8e3-bc4439ab1841",
+      "tycoon_id": "tycoon-id-3",
+      "name": "TV Station 1",
+      "key": "dis.tv.station",
+      "x": 208,
+      "y": 123
+    },
+    {
+      "id": "b56ba4d1-bf51-272f-480a-bd490ff17f5c",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Lumber Mill 1",
+      "key": "dis.lumber.0",
+      "x": 218,
+      "y": 128
+    },
+    {
+      "id": "7d314976-c10b-fbf9-73e1-69babba1f6e4",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Lumber Mill 1",
+      "key": "dis.lumber.3",
+      "x": 206,
+      "y": 138
+    },
+    {
+      "id": "3974e711-1af6-1e08-f4f6-d74e523ca966",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Lumber Mill 1",
+      "key": "dis.lumber.4",
+      "x": 218,
+      "y": 138
+    }
+  ],
+  "11x6": [
+    {
+      "id": "3dbd64e3-739c-0ad5-1f4a-842612a728c6",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Lumber Mill 1",
+      "key": "dis.lumber.1",
+      "x": 226,
+      "y": 128
+    },
+    {
+      "id": "f00ef84e-187a-6a6d-1912-9981c1440e1c",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Lumber Mill 1",
+      "key": "dis.lumber.5",
+      "x": 226,
+      "y": 138
+    }
+  ],
+  "9x7": [
+    {
+      "id": "c54e1ae6-e43b-9ec3-ca58-9214ac3130bf",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Lumber Mill 1",
+      "key": "dis.lumber.6",
+      "x": 198,
+      "y": 148
+    },
+    {
+      "id": "a6743a55-d736-2595-6a13-7f2c630c9702",
+      "tycoon_id": "tycoon-id-3",
+      "name": "College 1",
+      "key": "generic.college",
+      "x": 198,
+      "y": 158
+    }
+  ],
+  "10x7": [
+    {
+      "id": "3a811823-c4af-6619-1701-18075a5d4d7d",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Lumber Mill 1",
+      "key": "dis.lumber.7",
+      "x": 206,
+      "y": 148
+    },
+    {
+      "id": "4c7f7e1d-c347-5bd5-a30e-9a024a44bae1",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Toy Factory 1",
+      "key": "dis.toy.industry",
+      "x": 214,
+      "y": 148
+    },
+    {
+      "id": "c7e42777-9d47-811d-7caa-af2fcf1f2f8e",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Toy Store 1",
+      "key": "dis.toy.store",
+      "x": 217,
+      "y": 148
+    },
+    {
+      "id": "c2463b11-9d34-61b2-2b8a-d87c39f7927d",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Dump 1",
+      "key": "generic.dump",
+      "x": 206,
+      "y": 158
+    },
+    {
+      "id": "b9c815e4-73ac-40eb-652b-0309fbd01bc3",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Jail 1",
+      "key": "generic.jail",
+      "x": 215,
+      "y": 158
+    },
+    {
+      "id": "93b7e5a8-4ad3-37ad-c73f-4962cdd3e787",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Alien Park 1",
+      "key": "generic.park.alien.d",
+      "x": 201,
+      "y": 159
+    }
+  ],
+  "11x7": [
+    {
+      "id": "069df651-6ada-ecab-1a7e-2c194846ce18",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Capitol 1",
+      "key": "generic.capitol",
+      "x": 224,
+      "y": 148
+    },
+    {
+      "id": "f70c5486-fa69-202f-a936-f358a4bac211",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Museum 1",
+      "key": "generic.museum",
+      "x": 220,
+      "y": 158
+    },
+    {
+      "id": "d474de07-07cd-ae58-2368-9242d5a02c04",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Lizzard Park 1",
+      "key": "generic.park.alien.a",
+      "x": 225,
+      "y": 158
+    },
+    {
+      "id": "ec8915a3-02b0-5cb9-3ab8-7a3775bb0005",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Gobblin Park 1",
+      "key": "generic.park.alien.b",
+      "x": 228,
+      "y": 158
+    },
+    {
+      "id": "c1f475d9-68b2-5120-068e-833dbd54b6f9",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Chicken Park 1",
+      "key": "generic.park.alien.c",
+      "x": 233,
+      "y": 158
+    }
+  ],
+  "9x8": [
+    {
+      "id": "d8b07485-44a5-5098-35dd-f1cebac79091",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Central Park 1",
+      "key": "generic.park.central",
+      "x": 197,
+      "y": 167
+    },
+    {
+      "id": "96a66dc5-8d77-0dd8-dad0-dd9887ca0209",
+      "tycoon_id": "tycoon-id-4",
+      "name": "undefined 1",
+      "key": "generic.construction.1",
+      "x": 195,
+      "y": 168
+    },
+    {
+      "id": "9884da46-3ca5-0a32-f5d2-4f0481a717f0",
+      "tycoon_id": "tycoon-id-5",
+      "name": "undefined 1",
+      "key": "generic.construction.2",
+      "x": 199,
+      "y": 168
+    },
+    {
+      "id": "dc5c4f3f-eaf5-ed6e-b72b-68c0092bb965",
+      "tycoon_id": "tycoon-id-3",
+      "name": "undefined 1",
+      "key": "generic.construction.4",
+      "x": 195,
+      "y": 174
+    }
+  ],
+  "10x8": [
+    {
+      "id": "89ea1d88-585d-1904-c1e3-beef54c06639",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Park 1",
+      "key": "generic.park.medium",
+      "x": 204,
+      "y": 167
+    },
+    {
+      "id": "d0d386bd-125e-4f31-12d2-2b4ca93d0f43",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Small Park 1",
+      "key": "generic.park.small",
+      "x": 209,
+      "y": 167
+    },
+    {
+      "id": "9b80afb3-dcc3-fa05-7c68-22c9faa47542",
+      "tycoon_id": "tycoon-id-6",
+      "name": "undefined 1",
+      "key": "generic.construction.5",
+      "x": 200,
+      "y": 175
+    },
+    {
+      "id": "cdbdab26-c11d-ac20-a9dc-b2466b7a93b6",
+      "tycoon_id": "tycoon-id-4",
+      "name": "undefined 1",
+      "key": "generic.construction.6",
+      "x": 206,
+      "y": 176
+    },
+    {
+      "id": "7c34281f-093b-99f5-b0ee-7fffec6ad6d4",
+      "tycoon_id": "tycoon-id-3",
+      "name": "undefined 1",
+      "key": "generic.construction.7",
+      "x": 217,
+      "y": 177
+    }
+  ],
+  "11x8": [
+    {
+      "id": "55cecafa-753e-4056-ddcc-35ab28c9688e",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Statue 1",
+      "key": "generic.statue",
+      "x": 222,
+      "y": 167
+    },
+    {
+      "id": "e7acb326-1dbe-ce1b-c3e8-48b1ea4637d9",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Tennis Court 1",
+      "key": "generic.tennis",
+      "x": 226,
+      "y": 167
+    },
+    {
+      "id": "1dd4d417-f481-4cac-138a-1e1953bb9ce6",
+      "tycoon_id": "tycoon-id-4",
+      "name": "civ 1",
+      "key": "generic.tower",
+      "x": 234,
+      "y": 167
+    },
+    {
+      "id": "21a61c9b-4502-201e-be13-2a130f061512",
+      "tycoon_id": "tycoon-id-6",
+      "name": "undefined 1",
+      "key": "generic.construction.3",
+      "x": 229,
+      "y": 168
+    },
+    {
+      "id": "938f4564-4675-cd79-52b2-d552764069a1",
+      "tycoon_id": "tycoon-id-5",
+      "name": "undefined 1",
+      "key": "generic.mausoleum.construction",
+      "x": 226,
+      "y": 179
+    }
+  ],
+  "9x9": [
+    {
+      "id": "4f20544d-bf28-c641-2cba-9ca0c6a9e3a5",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Legend Mausoleum 1",
+      "key": "generic.mausoleum.legend",
+      "x": 199,
+      "y": 189
+    },
+    {
+      "id": "812ae4fc-73e3-a4dd-e746-77b1ca898b8c",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Fabrics Storage 1",
+      "key": "generic.warehouse.fabric",
+      "x": 195,
+      "y": 195
+    }
+  ],
+  "10x9": [
+    {
+      "id": "2b058d65-f74b-247b-cded-b355ddec63ed",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Paradigm Mausoleum 1",
+      "key": "generic.mausoleum.paradigm",
+      "x": 208,
+      "y": 189
+    },
+    {
+      "id": "212568b8-20bc-087c-225d-eee39a82d4be",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Chemical Storage 1",
+      "key": "generic.warehouse.chemical",
+      "x": 215,
+      "y": 189
+    },
+    {
+      "id": "feca9046-866b-096e-c1ea-5b127daead9f",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Import Storage 1",
+      "key": "generic.warehouse.import",
+      "x": 200,
+      "y": 195
+    },
+    {
+      "id": "ab38ebe2-439c-3cc2-0ac5-7bb0f630fee1",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Ore Storage 1",
+      "key": "generic.warehouse.ore",
+      "x": 205,
+      "y": 195
+    },
+    {
+      "id": "fca001ac-85db-4a86-3a9d-721b1c1f0a3a",
+      "tycoon_id": "tycoon-id-5",
+      "name": "General Storage 1",
+      "key": "generic.warehouse.univeral",
+      "x": 216,
+      "y": 196
+    }
+  ],
+  "11x9": [
+    {
+      "id": "c123f874-5359-2b5b-34b7-7305ecfeac5f",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Cold Storage 1",
+      "key": "generic.warehouse.cold",
+      "x": 220,
+      "y": 189
+    },
+    {
+      "id": "cd571c5a-ea18-bd75-806c-2569c8441af5",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Super Cold Storage 1",
+      "key": "generic.warehouse.cold.super",
+      "x": 225,
+      "y": 189
+    },
+    {
+      "id": "c65d729b-8306-e5f6-a108-02f1d654f3c8",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Export Storage 1",
+      "key": "generic.warehouse.export",
+      "x": 234,
+      "y": 189
+    },
+    {
+      "id": "092cd7c1-97cb-1c61-8742-2a2abdadbde4",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Magna Headquarters 1",
+      "key": "magna.research.a",
+      "x": 222,
+      "y": 196
+    },
+    {
+      "id": "0a9debd3-2f25-db42-8b01-2ee3d04a8bf6",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Magna Research Center 1",
+      "key": "magna.research.b",
+      "x": 225,
+      "y": 196
+    },
+    {
+      "id": "d6ff56e5-ed68-cd53-94ac-e47476877152",
+      "tycoon_id": "tycoon-id-5",
+      "name": "undefined 1",
+      "key": "magna.construction",
+      "x": 228,
+      "y": 196
+    },
+    {
+      "id": "d49f17f8-a16d-c99d-4aa2-705c74b4b954",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Sky Seller 1",
+      "key": "magna.supermarket.a",
+      "x": 235,
+      "y": 196
+    }
+  ],
+  "9x10": [
+    {
+      "id": "4a008d64-6a04-eab2-3bc5-9d34c02bbb8f",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Galaxie 1",
+      "key": "magna.supermarket.b",
+      "x": 195,
+      "y": 205
+    },
+    {
+      "id": "1bcc21b7-3e36-44e0-63ee-c1c5c8807731",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Worker's Heaven 1",
+      "key": "magna.heaven",
+      "x": 195,
+      "y": 209
+    },
+    {
+      "id": "ed12dcd8-7d3d-ee35-916c-744b9029acea",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Ivory Tower 1",
+      "key": "magna.ivory.tower",
+      "x": 195,
+      "y": 213
+    },
+    {
+      "id": "cea031b2-f708-b975-e3c4-609f07f7a82c",
+      "tycoon_id": "tycoon-id-4",
+      "name": "May Flower 1",
+      "key": "magna.mayflower.empty",
+      "x": 198,
+      "y": 213
+    },
+    {
+      "id": "146a270a-34e2-4f64-18cd-cb460db508dd",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Tulip 1",
+      "key": "magna.tulip",
+      "x": 195,
+      "y": 216
+    },
+    {
+      "id": "420fdd99-230a-d84e-b0fd-9fe905ad575d",
+      "tycoon_id": "tycoon-id-2",
+      "name": "The Whirlpool 1",
+      "key": "magna.whirlpool.empty",
+      "x": 198,
+      "y": 216
+    }
+  ],
+  "10x10": [
+    {
+      "id": "eeaf3009-6b95-e37d-732c-f476b05deb97",
+      "tycoon_id": "tycoon-id-2",
+      "name": "undefined 1",
+      "key": "magna.movie.studios.construction",
+      "x": 203,
+      "y": 208
+    },
+    {
+      "id": "36b1095d-9eb5-6c5d-9b0d-33ac1bb5c18d",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Movie Studios 1",
+      "key": "magna.movie.studios",
+      "x": 218,
+      "y": 208
+    },
+    {
+      "id": "693880ad-cde2-8ef0-9793-86a106bb02f2",
+      "tycoon_id": "tycoon-id-6",
+      "name": "The Hive 1",
+      "key": "magna.hive.empty",
+      "x": 206,
+      "y": 209
+    },
+    {
+      "id": "137291aa-5f01-7202-a7d7-81bd8613276f",
+      "tycoon_id": "tycoon-id-6",
+      "name": "The Hive 1",
+      "key": "magna.hive",
+      "x": 209,
+      "y": 209
+    },
+    {
+      "id": "07ccabee-1e5f-221b-7a26-9a3011c1ca4a",
+      "tycoon_id": "tycoon-id-5",
+      "name": "May Flower 1",
+      "key": "magna.mayflower",
+      "x": 201,
+      "y": 213
+    },
+    {
+      "id": "d59e3283-74ee-160f-db0f-143482d9fdbf",
+      "tycoon_id": "tycoon-id-6",
+      "name": "The Octopus 1",
+      "key": "magna.octopus.empty",
+      "x": 204,
+      "y": 213
+    },
+    {
+      "id": "dca9f601-e654-72d2-7d24-cb7daeec233f",
+      "tycoon_id": "tycoon-id-5",
+      "name": "The Octopus 1",
+      "key": "magna.octopus",
+      "x": 207,
+      "y": 213
+    },
+    {
+      "id": "c715e16d-1838-dbb6-3092-cae0cff6133a",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Sky Dome 1",
+      "key": "magna.sky.dome.empty",
+      "x": 213,
+      "y": 213
+    },
+    {
+      "id": "61477eba-2ae3-380f-2ab1-b850f93a7923",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Sky Dome 1",
+      "key": "magna.sky.dome",
+      "x": 216,
+      "y": 213
+    },
+    {
+      "id": "c8c80bd0-50d3-0be6-d147-7adf6d450356",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Solarium 1",
+      "key": "magna.solarium.empty",
+      "x": 219,
+      "y": 213
+    },
+    {
+      "id": "8600e80b-deb6-b8f2-6801-91fd8e80ae9f",
+      "tycoon_id": "tycoon-id-3",
+      "name": "The Whirlpool 1",
+      "key": "magna.whirlpool",
+      "x": 201,
+      "y": 216
+    },
+    {
+      "id": "d2743b12-bfab-90cb-0c58-91db1cb135e5",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Automobile Factory 1",
+      "key": "mko.car.industry",
+      "x": 206,
+      "y": 218
+    },
+    {
+      "id": "cf305174-31b7-e066-8821-b4bf84363a4e",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Automobile Dealership 1",
+      "key": "mko.car.store",
+      "x": 212,
+      "y": 218
+    },
+    {
+      "id": "b1c0267f-0422-a518-b158-cf19436a1e73",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Chemical Plant 1",
+      "key": "mko.chemical.industry",
+      "x": 216,
+      "y": 218
+    }
+  ],
+  "11x10": [
+    {
+      "id": "7ce7ae4c-b74d-1303-bdcf-548cf54ad68a",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Cloud City 1",
+      "key": "magna.cloud.city.empty",
+      "x": 226,
+      "y": 208
+    },
+    {
+      "id": "e65144cb-7e26-0180-7ea8-e5ea482e56f9",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Cloud City 1",
+      "key": "magna.cloud.city",
+      "x": 229,
+      "y": 208
+    },
+    {
+      "id": "f130bacc-aee0-10c3-e99e-65af8cb4a202",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Worker's Heaven 1",
+      "key": "magna.heaven.empty",
+      "x": 233,
+      "y": 208
+    },
+    {
+      "id": "0900f1b1-4981-6812-ecdb-3181f0f37d6d",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Ivory Tower 1",
+      "key": "magna.ivory.tower.empty",
+      "x": 221,
+      "y": 209
+    },
+    {
+      "id": "9d4b5dff-384c-9168-658c-9ba7354e16db",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Solarium 1",
+      "key": "magna.solarium",
+      "x": 222,
+      "y": 213
+    },
+    {
+      "id": "773d27a0-79f9-bc90-81fb-23dba2f7f3f2",
+      "tycoon_id": "tycoon-id-6",
+      "name": "The Spring 1",
+      "key": "magna.the.spring.empty",
+      "x": 225,
+      "y": 213
+    },
+    {
+      "id": "d4abe8f6-b534-8618-2658-a8e9a4c19655",
+      "tycoon_id": "tycoon-id-2",
+      "name": "The Spring 1",
+      "key": "magna.the.spring",
+      "x": 228,
+      "y": 213
+    },
+    {
+      "id": "274d6f88-216b-218a-10f5-ebf25f98bc86",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Tulip 1",
+      "key": "magna.tulip.empty",
+      "x": 233,
+      "y": 213
+    },
+    {
+      "id": "15ad02c6-f327-c9e4-44ae-b3609f7d53ec",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Small Chemical Plant 1",
+      "key": "mko.chemical.industry.small",
+      "x": 220,
+      "y": 218
+    },
+    {
+      "id": "a8c0499c-a15d-e699-f073-d65d90e9813a",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Plastic Factory 1",
+      "key": "mko.plastic.industry",
+      "x": 225,
+      "y": 218
+    },
+    {
+      "id": "4a70afca-6ebb-3c3f-f75f-e0de946a2823",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Clothing Factory 1",
+      "key": "mko.clothes.industry",
+      "x": 235,
+      "y": 218
+    }
+  ],
+  "9x11": [
+    {
+      "id": "18ad93bb-4cd6-1c40-82ec-25d5222258d2",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Small Clothing Factory 1",
+      "key": "mko.clothes.industry.small",
+      "x": 195,
+      "y": 225
+    },
+    {
+      "id": "cce27e1a-a0cc-837c-473f-bd85f32f9d15",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Textile Factory 1",
+      "key": "mko.textile.industry",
+      "x": 195,
+      "y": 235
+    },
+    {
+      "id": "f6e049b5-5cf0-7c36-114e-4f5787cf115c",
+      "tycoon_id": "tycoon-id-4",
+      "name": "School 1",
+      "key": "mko.school",
+      "x": 195,
+      "y": 237
+    }
+  ],
+  "10x11": [
+    {
+      "id": "9f3faf02-bf30-27dc-393d-06472ca937b5",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Clothes Store 1",
+      "key": "mko.clothes.store",
+      "x": 200,
+      "y": 225
+    },
+    {
+      "id": "901346ba-4310-ea77-5019-3bc66e3d7e12",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Compact Disc Factory 1",
+      "key": "mko.cd.industry",
+      "x": 204,
+      "y": 225
+    },
+    {
+      "id": "ca29533e-b486-2aec-1d76-3ccd027ab562",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Compact Disc Store 1",
+      "key": "mko.cd.store",
+      "x": 208,
+      "y": 225
+    },
+    {
+      "id": "8f386210-c373-96a2-6acd-9e35b5dcd54e",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Computer Factory 1",
+      "key": "mko.bm.industry",
+      "x": 214,
+      "y": 225
+    },
+    {
+      "id": "dc24ede9-d66c-6e16-6b90-d59b9616f72d",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Computer Store 1",
+      "key": "mko.computer.store",
+      "x": 218,
+      "y": 225
+    },
+    {
+      "id": "af51536e-abe1-adb1-d6bb-c2066df23c21",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Small Textile Factory 1",
+      "key": "mko.textile.industry.small",
+      "x": 200,
+      "y": 235
+    },
+    {
+      "id": "e56471e4-a2e9-c55f-bc26-f0486dcb6a2d",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Farm 1",
+      "key": "mko.farm",
+      "x": 205,
+      "y": 235
+    },
+    {
+      "id": "e395c606-2a9c-01db-3247-c332b45f4000",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Small Farm 1",
+      "key": "mko.farm.small",
+      "x": 215,
+      "y": 235
+    },
+    {
+      "id": "3b1a657f-af1c-1212-c9b7-2b6a8a09a46f",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Headquarters 1",
+      "key": "mko.hq.4",
+      "x": 208,
+      "y": 236
+    },
+    {
+      "id": "054fa2dd-6480-b523-1c29-e62c337e62fb",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Headquarters 1",
+      "key": "mko.hq.5",
+      "x": 218,
+      "y": 236
+    }
+  ],
+  "11x11": [
+    {
+      "id": "6e36fde6-12c4-6a4b-122e-a4bc13c67d61",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Construction Workyard 1",
+      "key": "mko.construction.industry",
+      "x": 223,
+      "y": 225
+    },
+    {
+      "id": "a8dd8028-82dd-e468-5d05-c4eda7992e7d",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Electronic Component Factory 1",
+      "key": "mko.elect.comp.industry",
+      "x": 228,
+      "y": 225
+    },
+    {
+      "id": "cf9e92d3-3848-3620-0761-e1e09c2253b5",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Small Electronic Component Factory 1",
+      "key": "mko.elect.comp.industry.small",
+      "x": 234,
+      "y": 225
+    },
+    {
+      "id": "fc829446-3b0e-6e14-6820-0f105c767d27",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Fast Food 1",
+      "key": "mko.food.store",
+      "x": 220,
+      "y": 235
+    },
+    {
+      "id": "d7e198d8-a75a-b54a-ee66-eb1666cccc74",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Hospital 1",
+      "key": "mko.hospital",
+      "x": 222,
+      "y": 235
+    },
+    {
+      "id": "1e26dbca-b994-3587-66ab-64daa09530b0",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Headquarters 1",
+      "key": "mko.hq.1",
+      "x": 225,
+      "y": 235
+    },
+    {
+      "id": "58a6f40a-8249-6ce0-3d92-103a041a6509",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Headquarters 1",
+      "key": "mko.hq.2",
+      "x": 228,
+      "y": 235
+    },
+    {
+      "id": "84ca3662-0b32-f2b1-607a-9cb77b51e4fe",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Headquarters 1",
+      "key": "mko.hq.3",
+      "x": 233,
+      "y": 235
+    },
+    {
+      "id": "e5a19858-c4d6-ac9c-f2a4-d77b78c1c1ad",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Police Station 1",
+      "key": "mko.police",
+      "x": 235,
+      "y": 236
+    }
+  ],
+  "9x12": [
+    {
+      "id": "37edc492-1861-7dae-148b-c912e1e59003",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Appliances Factory 1",
+      "key": "mko.hha.industry",
+      "x": 195,
+      "y": 245
+    },
+    {
+      "id": "bb71f2c6-4484-20eb-4ef0-140209241f55",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Small Metal Factory 1",
+      "key": "mko.metal.industry.small",
+      "x": 195,
+      "y": 255
+    }
+  ],
+  "10x12": [
+    {
+      "id": "c7c019fa-16b4-6209-87a6-971c7b8be7b7",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Small Appliances Factory 1",
+      "key": "mko.hha.industry.small",
+      "x": 200,
+      "y": 245
+    },
+    {
+      "id": "5833eb39-e780-6407-a581-3f54d482e2fa",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Appliances Store 1",
+      "key": "mko.hha.store",
+      "x": 205,
+      "y": 245
+    },
+    {
+      "id": "8c883f20-ce45-2af5-b8b9-4f027d631690",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Machinery Factory 1",
+      "key": "mko.heavy.industry",
+      "x": 215,
+      "y": 245
+    },
+    {
+      "id": "b9253194-eef3-b06d-b0f5-3e5f5ddec00f",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Yamamoto 1",
+      "key": "mko.office.a.empty",
+      "x": 200,
+      "y": 255
+    },
+    {
+      "id": "2b69cfbb-bea3-4634-19a7-57928b4d8920",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Yamamoto 1",
+      "key": "mko.office.a",
+      "x": 202,
+      "y": 255
+    },
+    {
+      "id": "bcbe16d7-130c-7673-3372-6eeaf8c8ab31",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Tanakuta 1",
+      "key": "mko.office.b.empty",
+      "x": 204,
+      "y": 255
+    },
+    {
+      "id": "03cecaef-da41-7ad3-b766-b2c2b4fece83",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Tanakuta 1",
+      "key": "mko.office.b",
+      "x": 206,
+      "y": 255
+    },
+    {
+      "id": "c3e31b47-0bc6-fb8b-ad0a-e656e2f55ebc",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Sato Scraper 1",
+      "key": "mko.office.c.empty",
+      "x": 208,
+      "y": 255
+    },
+    {
+      "id": "9a3ae02e-7721-3747-4114-c5461d52e752",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Sato Scraper 1",
+      "key": "mko.office.c",
+      "x": 209,
+      "y": 255
+    },
+    {
+      "id": "af4b3f50-0432-ebf1-7237-b967c63cf2a8",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Kunawa Scraper 1",
+      "key": "mko.office.d.empty",
+      "x": 211,
+      "y": 255
+    },
+    {
+      "id": "60519d74-cbfb-0265-d53d-f9e7210676eb",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Kunawa Scraper 1",
+      "key": "mko.office.d",
+      "x": 212,
+      "y": 255
+    },
+    {
+      "id": "15fd55a4-7791-a8d4-85ac-a12cae8e29ad",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Koto-ku 1",
+      "key": "mko.office.e.empty",
+      "x": 215,
+      "y": 255
+    },
+    {
+      "id": "b617cc5a-0db0-a139-a6e8-c64b0ed93472",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Koto-ku 1",
+      "key": "mko.office.e",
+      "x": 218,
+      "y": 255
+    }
+  ],
+  "11x12": [
+    {
+      "id": "f3bbc7cb-38da-e887-eb80-52bff2b3e856",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Takuri Market 1",
+      "key": "mko.market.a",
+      "x": 220,
+      "y": 245
+    },
+    {
+      "id": "b3c9b2f5-490f-b62f-3a3a-94e91ed53326",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Tamakura Market 1",
+      "key": "mko.market.b",
+      "x": 224,
+      "y": 245
+    },
+    {
+      "id": "855bff2d-6b0c-963a-1d4c-5eb27832b3a4",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Satoi Market 1",
+      "key": "mko.market.c",
+      "x": 226,
+      "y": 245
+    },
+    {
+      "id": "5b428635-5882-9444-78a0-0bb3d47c14df",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Metal Factory 1",
+      "key": "mko.metal.industry",
+      "x": 235,
+      "y": 245
+    },
+    {
+      "id": "f929c71d-690e-f9ee-d817-a23abd773ce7",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Small Koto 1",
+      "key": "mko.office.f.empty",
+      "x": 221,
+      "y": 255
+    },
+    {
+      "id": "67b10651-cb4d-2164-725d-f69889a88068",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Small Koto 1",
+      "key": "mko.office.f",
+      "x": 223,
+      "y": 255
+    },
+    {
+      "id": "b09c9ef8-0513-d70a-2787-eb665db90ee8",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Ore Mine 1",
+      "key": "mko.mine",
+      "x": 228,
+      "y": 255
+    },
+    {
+      "id": "6b6f2438-93f1-eb7c-4139-c8acf73b3a87",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Small Ore Mine 1",
+      "key": "mko.mine.small",
+      "x": 235,
+      "y": 255
+    }
+  ],
+  "9x13": [
+    {
+      "id": "06ce2d40-b1e6-b0d8-9681-105ed48610fa",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Food Processor 1",
+      "key": "mko.food.proc",
+      "x": 195,
+      "y": 265
+    },
+    {
+      "id": "a6757618-9424-0d5d-d129-1db09210860b",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Hisogari Building 1",
+      "key": "mko.lo.res.d",
+      "x": 195,
+      "y": 268
+    },
+    {
+      "id": "69dca745-1aca-64a4-f02b-dabe05d83097",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Taramagushi 1",
+      "key": "mko.lo.res.e.empty",
+      "x": 198,
+      "y": 268
+    },
+    {
+      "id": "6480e4d9-70cd-fd3c-d0b9-40ae6061bef6",
+      "tycoon_id": "tycoon-id-6",
+      "name": "TV Station 1",
+      "key": "mko.tv.station",
+      "x": 195,
+      "y": 272
+    },
+    {
+      "id": "2ad1e006-7033-17c5-0746-00a06e02abb8",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Clothes Store 1",
+      "key": "moab.clothes.store",
+      "x": 195,
+      "y": 277
+    },
+    {
+      "id": "f988f3e7-9b0b-ba74-cad5-c39327b7d00a",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Computer Services 1",
+      "key": "moab.computing",
+      "x": 197,
+      "y": 277
+    }
+  ],
+  "10x13": [
+    {
+      "id": "c4ffad27-052a-c42b-5977-cbe55d2583e7",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Small Food Processor 1",
+      "key": "mko.food.proc.small",
+      "x": 200,
+      "y": 265
+    },
+    {
+      "id": "ced46ba2-a864-b5ee-ce40-b22f59e3f678",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Katana House 1",
+      "key": "mko.hi.res.a.empty",
+      "x": 205,
+      "y": 265
+    },
+    {
+      "id": "872771e7-0f35-23d2-e123-c4f16812318b",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Katana House 1",
+      "key": "mko.hi.res.a",
+      "x": 207,
+      "y": 265
+    },
+    {
+      "id": "d6d2a026-c08f-59dd-c327-d570fb2111f4",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Sohei House 1",
+      "key": "mko.hi.res.b.empty",
+      "x": 209,
+      "y": 265
+    },
+    {
+      "id": "a1f1a307-9f15-2093-6ec0-3eac76464327",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Sohei House 1",
+      "key": "mko.hi.res.b",
+      "x": 212,
+      "y": 265
+    },
+    {
+      "id": "1dd3a933-726e-f800-b8b4-03821476d6c1",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Tarakawa House 1",
+      "key": "mko.hi.res.c.empty",
+      "x": 214,
+      "y": 265
+    },
+    {
+      "id": "23e12875-4800-59ed-ad8c-3130da62d6a6",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Tarakawa House 1",
+      "key": "mko.hi.res.c",
+      "x": 216,
+      "y": 265
+    },
+    {
+      "id": "ae8a18d4-90ac-82b6-d954-b5bc471caf05",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Katana Building 1",
+      "key": "mko.lo.res.a.empty",
+      "x": 218,
+      "y": 265
+    },
+    {
+      "id": "c3b0d488-3b4a-78fe-bd23-32cfda2cc0c4",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Hisogari Building 1",
+      "key": "mko.lo.res.d.empty",
+      "x": 203,
+      "y": 266
+    },
+    {
+      "id": "e9557b3a-c099-e606-6426-15fa07a8d884",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Taramagushi 1",
+      "key": "mko.lo.res.e",
+      "x": 200,
+      "y": 268
+    },
+    {
+      "id": "103ffdbc-fa39-b003-1d9f-e1a4766c6f44",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Somsei-Taj Rooms 1",
+      "key": "mko.mi.res.a.empty",
+      "x": 202,
+      "y": 268
+    },
+    {
+      "id": "82dc2fd0-d80b-61da-cbb3-f47005344d1d",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Somsei-Taj Rooms 1",
+      "key": "mko.mi.res.a",
+      "x": 204,
+      "y": 268
+    },
+    {
+      "id": "84098928-43f2-62a9-d0e8-8b7646f6de93",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Marakas Rooms 1",
+      "key": "mko.mi.res.b.empty",
+      "x": 206,
+      "y": 268
+    },
+    {
+      "id": "1c122622-2a01-dd91-16a4-c7afbf8f3c15",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Marakas Rooms 1",
+      "key": "mko.mi.res.b",
+      "x": 208,
+      "y": 268
+    },
+    {
+      "id": "430a3dde-0bb7-171a-fd7e-42fb77b23b9e",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Yohito Rooms 1",
+      "key": "mko.mi.res.c.empty",
+      "x": 212,
+      "y": 268
+    },
+    {
+      "id": "8698d0e1-0c65-48f5-91cc-3d823e5251ce",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Yohito Rooms 1",
+      "key": "mko.mi.res.c",
+      "x": 214,
+      "y": 268
+    },
+    {
+      "id": "0fcfc640-b4f1-1487-b8d5-ee6ec257b3a7",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Hirijoto-Manko Rooms 1",
+      "key": "mko.mi.res.d.empty",
+      "x": 216,
+      "y": 268
+    },
+    {
+      "id": "64782658-0899-9b20-590d-cd755e082af6",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Hirijoto-Manko Rooms 1",
+      "key": "mko.mi.res.d",
+      "x": 218,
+      "y": 268
+    },
+    {
+      "id": "5a0a4151-068c-4bd1-64b0-33e397c1861a",
+      "tycoon_id": "tycoon-id-5",
+      "name": "General Storage 1",
+      "key": "mko.warehouse",
+      "x": 200,
+      "y": 275
+    },
+    {
+      "id": "117c0120-271e-512f-5250-e4fc4f7f78f9",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Automobile Dome 1",
+      "key": "moab.car.industry",
+      "x": 206,
+      "y": 276
+    },
+    {
+      "id": "d6961c7a-7038-03b5-a7e4-c260ebdc9595",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Autombile Dealership 1",
+      "key": "moab.car.store",
+      "x": 212,
+      "y": 276
+    },
+    {
+      "id": "2829cfaf-457f-2ee4-fb55-07291644eb9b",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Dome of Joy 1",
+      "key": "moab.bar",
+      "x": 214,
+      "y": 276
+    },
+    {
+      "id": "0b0a3517-65ac-44d8-bbb1-4f110173b6e0",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Chemical Dome 1",
+      "key": "moab.chemical.industry",
+      "x": 219,
+      "y": 276
+    }
+  ],
+  "11x13": [
+    {
+      "id": "c94789dd-f9f8-47f5-94d9-fb3da736347f",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Katana Building 1",
+      "key": "mko.lo.res.a",
+      "x": 220,
+      "y": 265
+    },
+    {
+      "id": "0eeef53d-181c-ad17-89c6-e5a3902c65fd",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Nikotori Building 1",
+      "key": "mko.lo.res.b.empty",
+      "x": 223,
+      "y": 265
+    },
+    {
+      "id": "fbe8542e-76d4-af61-5cd3-fe35512a36b2",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Nikotori Building 1",
+      "key": "mko.lo.res.b",
+      "x": 226,
+      "y": 265
+    },
+    {
+      "id": "28530d8e-70c4-91fb-14ad-ecb9fba92b27",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Hazobito Building 1",
+      "key": "mko.lo.res.c.empty",
+      "x": 229,
+      "y": 265
+    },
+    {
+      "id": "514f65e4-bcdc-e5aa-77f7-2d4922326c46",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Hazobito Building 1",
+      "key": "mko.lo.res.c",
+      "x": 232,
+      "y": 265
+    },
+    {
+      "id": "5a760e08-24fc-56cc-1420-495662217bfc",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Blue Rooms 1",
+      "key": "mko.mi.res.e.empty",
+      "x": 220,
+      "y": 268
+    },
+    {
+      "id": "c990e38c-6fa4-186e-d330-37e8ce66309b",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Blue Rooms 1",
+      "key": "mko.mi.res.e",
+      "x": 222,
+      "y": 268
+    },
+    {
+      "id": "fd8622fb-408d-fa97-edc0-b554be925618",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Purple Delight 1",
+      "key": "mko.mi.res.f.empty",
+      "x": 224,
+      "y": 268
+    },
+    {
+      "id": "8035a42e-e83f-14d4-7529-370b9cf7356b",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Purple Delight 1",
+      "key": "mko.mi.res.f",
+      "x": 226,
+      "y": 268
+    },
+    {
+      "id": "a156af50-38ef-d131-ff91-3fe3896768c5",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Round Mariko 1",
+      "key": "mko.mi.res.g.empty",
+      "x": 228,
+      "y": 268
+    },
+    {
+      "id": "2ac5590d-e3b8-dddc-e3c8-e273c43e4169",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Round Mariko 1",
+      "key": "mko.mi.res.g",
+      "x": 232,
+      "y": 268
+    },
+    {
+      "id": "82ab8460-e9e2-0b29-e406-235892e61385",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Chemical Mine 1",
+      "key": "moab.mine",
+      "x": 225,
+      "y": 276
+    },
+    {
+      "id": "a6ffbf19-8bfc-cb03-ffd3-b90cd391e4d3",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Dome of Clothes 1",
+      "key": "moab.clothes.industry",
+      "x": 234,
+      "y": 276
+    }
+  ],
+  "9x14": [
+    {
+      "id": "f23a516d-5d25-bef5-5a3f-20cdb472164b",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Computer Dome 1",
+      "key": "moab.bm.industry",
+      "x": 195,
+      "y": 285
+    },
+    {
+      "id": "138ebc52-46e5-e9e1-b7b3-8731a05cb3e8",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Civic Affairs Tower 1",
+      "key": "moab.correctional.tower",
+      "x": 195,
+      "y": 287
+    },
+    {
+      "id": "a034efd1-4366-bb8b-cb23-7c0febf78887",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Headquarters 1",
+      "key": "moab.hq.1",
+      "x": 198,
+      "y": 288
+    },
+    {
+      "id": "ecabdef3-123a-3cdd-1439-788971d92a4f",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Appliances Dome 1",
+      "key": "moab.hha.industry",
+      "x": 196,
+      "y": 296
+    },
+    {
+      "id": "ae9c2cee-4a9d-4df7-3663-486540ff8bb6",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Zharot Palace 1",
+      "key": "moab.hi.res.a.empty",
+      "x": 195,
+      "y": 299
+    }
+  ],
+  "10x14": [
+    {
+      "id": "08a0f038-0918-870f-7550-b32d87a82a02",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Construction Dome 1",
+      "key": "moab.construction.industry",
+      "x": 200,
+      "y": 285
+    },
+    {
+      "id": "e5508d9a-3285-23b8-a778-23a79b7201c8",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Oil Rig 1",
+      "key": "moab.oil.rig",
+      "x": 204,
+      "y": 285
+    },
+    {
+      "id": "3883ac4f-321e-ebd1-8afb-d88b15b1aeaa",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Dome of Chips 1",
+      "key": "moab.elect.comp.industry",
+      "x": 208,
+      "y": 285
+    },
+    {
+      "id": "e4308dd4-bc4a-f541-23a9-bfa30a0918ac",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Dome of Threads 1",
+      "key": "moab.textile.industry",
+      "x": 214,
+      "y": 285
+    },
+    {
+      "id": "6e70cc31-caaf-deab-04dc-34cd99ae30ec",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Food Crater 1",
+      "key": "moab.farm",
+      "x": 218,
+      "y": 285
+    },
+    {
+      "id": "e7fb88bc-1284-cd70-1416-decb904ffd35",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Headquarters 1",
+      "key": "moab.hq.2",
+      "x": 201,
+      "y": 288
+    },
+    {
+      "id": "53c15d66-4698-76cf-9dcc-baf270329e79",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Headquarters 1",
+      "key": "moab.hq.3",
+      "x": 204,
+      "y": 288
+    },
+    {
+      "id": "8334b038-e872-a30a-87bd-2e1fdcae3b55",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Headquarters 1",
+      "key": "moab.hq.4",
+      "x": 207,
+      "y": 288
+    },
+    {
+      "id": "896af032-2db4-7d36-4d7a-2e3ce0ee6f3b",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Headquarters 1",
+      "key": "moab.hq.5",
+      "x": 213,
+      "y": 288
+    },
+    {
+      "id": "232f7b3f-ba5c-3f5b-5b0b-a0afb92fa60a",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Industries Tower 1",
+      "key": "moab.industry.tower",
+      "x": 216,
+      "y": 288
+    },
+    {
+      "id": "7b011ab8-0be0-ba25-fc0f-1bfc72024aa9",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Commerce Tower 1",
+      "key": "moab.market.tower",
+      "x": 218,
+      "y": 288
+    },
+    {
+      "id": "08c6d3f1-c17b-2127-643b-928fc18c300b",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Appliances Store 1",
+      "key": "moab.hha.store",
+      "x": 202,
+      "y": 296
+    },
+    {
+      "id": "5f94c176-3397-ef4d-b5f5-b2b8ea8197cd",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Law Firm 1",
+      "key": "moab.legal.services",
+      "x": 204,
+      "y": 296
+    },
+    {
+      "id": "d2255c36-a703-6ddd-8216-921ab5130b37",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Machinery Dome 1",
+      "key": "moab.heavy.industry",
+      "x": 208,
+      "y": 296
+    },
+    {
+      "id": "0b9908ac-c50e-0fd3-976d-39483b4272a4",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Moab Supermarket 1",
+      "key": "moab.market",
+      "x": 213,
+      "y": 296
+    },
+    {
+      "id": "53f019bb-af6d-0ebe-97c1-64d8289c7df7",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Metals Dome 1",
+      "key": "moab.metal.industry",
+      "x": 218,
+      "y": 296
+    },
+    {
+      "id": "170e713a-d9b5-a239-4411-2cacd3f52830",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Food Dome 1",
+      "key": "moab.food.proc",
+      "x": 201,
+      "y": 297
+    },
+    {
+      "id": "d230367f-a116-af3c-9c9e-a7a1a75dfa08",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Zharot Palace 1",
+      "key": "moab.hi.res.a",
+      "x": 204,
+      "y": 299
+    },
+    {
+      "id": "290437fa-ebb0-30b0-4ff4-92355cfe64b2",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Black Palace 1",
+      "key": "moab.hi.res.b.empty",
+      "x": 207,
+      "y": 299
+    },
+    {
+      "id": "2442c470-a79e-f1ee-0750-1b634ca99a15",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Black Palace 1",
+      "key": "moab.hi.res.b",
+      "x": 213,
+      "y": 299
+    },
+    {
+      "id": "da91748b-d213-33e9-c53a-9f8aebec5bbc",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Knights Dome 1",
+      "key": "moab.hi.res.c.empty",
+      "x": 216,
+      "y": 299
+    },
+    {
+      "id": "6921038e-cc16-04ea-7eb5-ac19b094db7e",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Knights Dome 1",
+      "key": "moab.hi.res.c",
+      "x": 218,
+      "y": 299
+    }
+  ],
+  "11x14": [
+    {
+      "id": "5e290dbc-12a8-f71b-6ac0-97af6facf49c",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Fast Food 1",
+      "key": "moab.food.store",
+      "x": 222,
+      "y": 285
+    },
+    {
+      "id": "5f1f9d18-d03a-d53a-25f4-4abbf55ee479",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Funeral Parlor 1",
+      "key": "moab.funeral",
+      "x": 224,
+      "y": 285
+    },
+    {
+      "id": "7fcac183-2f60-e02e-74c0-bea77d37ab9d",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Gas Station 1",
+      "key": "moab.gas.station",
+      "x": 226,
+      "y": 285
+    },
+    {
+      "id": "ce6569b3-aca6-b0fa-f730-df0a6cdc1290",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Refinery Dome 1",
+      "key": "moab.refinery",
+      "x": 235,
+      "y": 285
+    },
+    {
+      "id": "499b55f6-9ce3-c0da-c4de-e1c0d4cf7253",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Moab Cathedral 1",
+      "key": "moab.cathedral",
+      "x": 221,
+      "y": 286
+    },
+    {
+      "id": "48d3f895-38f3-2e1c-b6b1-9bd3fe544140",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Moab Correctional 1",
+      "key": "moab.correctional",
+      "x": 228,
+      "y": 286
+    },
+    {
+      "id": "c448d7b8-0c43-c5ec-dc80-9d39cbf1092b",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Real Estate Tower 1",
+      "key": "moab.residential.tower",
+      "x": 220,
+      "y": 288
+    },
+    {
+      "id": "7b410b9c-3e14-022e-bf8f-8cea6e5afcdd",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Movie Theater 1",
+      "key": "moab.movie",
+      "x": 223,
+      "y": 296
+    },
+    {
+      "id": "947c449b-9cc9-100b-f3bc-1bfc6946f34b",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Moab Basilica 1",
+      "key": "moab.office.a.empty",
+      "x": 226,
+      "y": 296
+    },
+    {
+      "id": "94e45183-1d7c-1074-bd06-c5e04ad87c77",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Moab Basilica 1",
+      "key": "moab.office.a",
+      "x": 229,
+      "y": 296
+    },
+    {
+      "id": "17301ab7-cf85-e93c-b1fc-ef06443c236c",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Dark Crysler 1",
+      "key": "moab.office.b.empty",
+      "x": 232,
+      "y": 296
+    },
+    {
+      "id": "d43f1358-9556-ad29-1dba-1d14ad3e88c4",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Dark Crysler 1",
+      "key": "moab.office.b",
+      "x": 234,
+      "y": 296
+    },
+    {
+      "id": "695376cc-2a9a-c7b7-5625-0ce5d2694ecc",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Knights Bungalow 1",
+      "key": "moab.hi.res.d.empty",
+      "x": 221,
+      "y": 299
+    },
+    {
+      "id": "5ce7d0ae-d9bc-55e3-d6b3-4e23ecc978f7",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Knights Bungalow 1",
+      "key": "moab.hi.res.d",
+      "x": 224,
+      "y": 299
+    },
+    {
+      "id": "ab571c3d-ccb9-0582-b435-937443346bbb",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Guruh Dome 1",
+      "key": "moab.lo.res.a.empty",
+      "x": 227,
+      "y": 299
+    },
+    {
+      "id": "dafb9ffb-f551-b39e-988c-8fb228ebda08",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Guruh Dome 1",
+      "key": "moab.lo.res.a",
+      "x": 233,
+      "y": 299
+    }
+  ],
+  "9x15": [
+    {
+      "id": "09372e83-47b3-d953-7bc6-115ef2563932",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Lothar Dome 1",
+      "key": "moab.lo.res.b.empty",
+      "x": 195,
+      "y": 303
+    },
+    {
+      "id": "cf6105e2-1e83-0969-0759-bcd8395cd700",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Lothar Dome 1",
+      "key": "moab.lo.res.b",
+      "x": 198,
+      "y": 303
+    },
+    {
+      "id": "ee0b0d64-4704-b15f-c877-be9123b74ddd",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Nurse Rooms 1",
+      "key": "moab.mi.res.c.empty",
+      "x": 195,
+      "y": 306
+    },
+    {
+      "id": "63977d9d-4026-9de0-cdf1-f9dfeed21519",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Nurse Rooms 1",
+      "key": "moab.mi.res.c",
+      "x": 197,
+      "y": 306
+    },
+    {
+      "id": "b0c65011-f0ca-b1dc-954d-371e67e6796b",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Nurse Fraternity 1",
+      "key": "moab.mi.res.d",
+      "x": 199,
+      "y": 306
+    },
+    {
+      "id": "182ccdb3-d612-055a-22a9-a69f3e9fa426",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Clothing Factory 1",
+      "key": "pgi.clothes.industry",
+      "x": 195,
+      "y": 315
+    },
+    {
+      "id": "810b8084-effa-96c6-50ae-f29c0608edbd",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Small Electronic Component Factory 1",
+      "key": "pgi.elect.comp.industry.small",
+      "x": 195,
+      "y": 318
+    }
+  ],
+  "10x15": [
+    {
+      "id": "980e2d69-9042-5e72-7edd-e60af2d4d823",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Black Bowl 1",
+      "key": "moab.lo.res.c.empty",
+      "x": 201,
+      "y": 303
+    },
+    {
+      "id": "d077c97e-2a41-99fd-4eaa-349c2e0d1187",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Black Bowl 1",
+      "key": "moab.lo.res.c",
+      "x": 203,
+      "y": 303
+    },
+    {
+      "id": "b4b6aabb-21a5-d2ac-bca4-85b0fd6804ee",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Souls Dome 1",
+      "key": "moab.lo.res.d.empty",
+      "x": 207,
+      "y": 304
+    },
+    {
+      "id": "32bd019a-a32b-296e-187a-5ca6d9a05e10",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Souls Dome 1",
+      "key": "moab.lo.res.d",
+      "x": 214,
+      "y": 304
+    },
+    {
+      "id": "64fa4527-7d76-795c-d3f6-91d40c306419",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Nurse Dome 1",
+      "key": "moab.mi.res.a.empty",
+      "x": 218,
+      "y": 304
+    },
+    {
+      "id": "1856a6ea-052e-3a19-723e-bb64385c2ae3",
+      "tycoon_id": "tycoon-id-4",
+      "name": "TV Station 1",
+      "key": "moab.tv.station",
+      "x": 202,
+      "y": 306
+    },
+    {
+      "id": "56aebb44-005b-056f-f7ec-67f743dc13c8",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Automobile Dealership 1",
+      "key": "pgi.car.store",
+      "x": 204,
+      "y": 307
+    },
+    {
+      "id": "b9d60119-114c-aac7-1bfb-c2cef4836b8d",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Bar 1",
+      "key": "pgi.bar",
+      "x": 206,
+      "y": 307
+    },
+    {
+      "id": "a657469e-8093-1275-8298-4fcb37418c74",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Printing Plant 1",
+      "key": "pgi.printing.plant",
+      "x": 214,
+      "y": 308
+    },
+    {
+      "id": "43de4db9-12a1-a3f1-d6c4-a0db27539b56",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Large Chemical Plant 1",
+      "key": "pgi.chemical.industry",
+      "x": 219,
+      "y": 309
+    },
+    {
+      "id": "d8a39f0b-9d20-81df-37ba-00923bc18261",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Small Clothing Factory 1",
+      "key": "pgi.clothes.industry.small",
+      "x": 200,
+      "y": 315
+    },
+    {
+      "id": "d203aec6-c971-43a8-4236-8cabd3fcb4f1",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Computer Services 1",
+      "key": "pgi.computing",
+      "x": 203,
+      "y": 315
+    },
+    {
+      "id": "22b17975-7fec-4a6f-35c6-a8c0a614f895",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Computer Factory 1",
+      "key": "pgi.bm.industry",
+      "x": 207,
+      "y": 315
+    },
+    {
+      "id": "d56b6c78-c2a5-588e-f5f1-e81340354fa5",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Construction Workyard 1",
+      "key": "pgi.const.industry",
+      "x": 214,
+      "y": 315
+    },
+    {
+      "id": "75f80caa-b47b-463e-395e-c19909cd7169",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Electronic Component Factory 1",
+      "key": "pgi.elect.comp.industry",
+      "x": 219,
+      "y": 315
+    }
+  ],
+  "11x15": [
+    {
+      "id": "63ae52df-003e-7ade-a19d-3111e23367f3",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Nurse Dome 1",
+      "key": "moab.mi.res.a",
+      "x": 220,
+      "y": 304
+    },
+    {
+      "id": "7962746f-6175-a18f-b675-52403b347904",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Nurse Zoo 1",
+      "key": "moab.mi.res.b.empty",
+      "x": 225,
+      "y": 305
+    },
+    {
+      "id": "b8690cff-c80b-7eae-3301-3f477446e2cb",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Nurse Zoo 1",
+      "key": "moab.mi.res.b",
+      "x": 235,
+      "y": 305
+    },
+    {
+      "id": "9bf6060f-9c98-dbbc-a4b3-45f023d30b13",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Automobile Factory 1",
+      "key": "pgi.car.industry",
+      "x": 229,
+      "y": 306
+    },
+    {
+      "id": "6395e4ff-376f-046c-9b90-2d0912ebc4a4",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Chemical Plant 1",
+      "key": "pgi.chemical.industry.small",
+      "x": 224,
+      "y": 309
+    },
+    {
+      "id": "bbe20e5e-b54c-1a77-33dd-8f0ada95eb0b",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Chemical Mine 1",
+      "key": "pgi.mine",
+      "x": 227,
+      "y": 309
+    },
+    {
+      "id": "c28ceb94-cc05-7633-29e1-874654675900",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Small Chemical Mine 1",
+      "key": "pgi.mine.small",
+      "x": 233,
+      "y": 309
+    }
+  ],
+  "9x16": [
+    {
+      "id": "77ddc7e6-b362-faaf-18fc-88dc0ac4fa16",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Textile Factory 1",
+      "key": "pgi.textile.industry",
+      "x": 195,
+      "y": 325
+    },
+    {
+      "id": "a09b0b63-4525-504b-72a3-7c46fbb30f31",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Headquarters 1",
+      "key": "pgi.hq.4",
+      "x": 195,
+      "y": 328
+    },
+    {
+      "id": "ac75ec9e-9a53-86ce-5105-fa581f39c44a",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Headquarters 1",
+      "key": "pgi.hq.5",
+      "x": 198,
+      "y": 328
+    },
+    {
+      "id": "2e5a2c1c-3b7b-0101-a65e-53d743614ffe",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Large Appliances Factory 1",
+      "key": "pgi.hha.industry",
+      "x": 195,
+      "y": 335
+    },
+    {
+      "id": "a92d5dcb-ce4c-6021-e59b-24c24827db97",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Metal Factory 1",
+      "key": "pgi.metal.industry.small",
+      "x": 199,
+      "y": 336
+    },
+    {
+      "id": "835afe6d-334c-de14-b181-9333cc9d7ea2",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Movie Theater 1",
+      "key": "pgi.movie.b",
+      "x": 195,
+      "y": 337
+    }
+  ],
+  "10x16": [
+    {
+      "id": "8b4dc806-1ed6-9755-9b3d-701dc006ebf0",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Small Textile Factory 1",
+      "key": "pgi.textile.industry.small",
+      "x": 200,
+      "y": 325
+    },
+    {
+      "id": "47162ab6-2206-0d3c-ed43-a43fcfc88b85",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Large Farm 1",
+      "key": "pgi.farm",
+      "x": 214,
+      "y": 325
+    },
+    {
+      "id": "cf430142-9966-6bfd-8c62-0f362e524f00",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Farm 1",
+      "key": "pgi.farm.small",
+      "x": 218,
+      "y": 325
+    },
+    {
+      "id": "1e406eb1-6cea-cdd7-c838-d10f0b4c791f",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Headquarters 1",
+      "key": "pgi.hq.3",
+      "x": 209,
+      "y": 326
+    },
+    {
+      "id": "8666db57-065a-3506-08d4-df4dc7f0eab2",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Police Station 1",
+      "key": "pgi.police",
+      "x": 201,
+      "y": 328
+    },
+    {
+      "id": "78a4aa15-4107-0759-bd76-0b3dfd09278e",
+      "tycoon_id": "tycoon-id-4",
+      "name": "School 1",
+      "key": "pgi.school",
+      "x": 206,
+      "y": 328
+    },
+    {
+      "id": "872730fc-451b-54a1-7ddd-77a24cb320f5",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Appliances Factory 1",
+      "key": "pgi.hha.industry.small",
+      "x": 205,
+      "y": 335
+    },
+    {
+      "id": "f21b6f26-a803-1273-6354-df25df4e265d",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Law Firm 1",
+      "key": "pgi.legal.services",
+      "x": 208,
+      "y": 335
+    },
+    {
+      "id": "9b9da760-21bf-4930-5909-a52b4659b2e0",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Machinery Factory 1",
+      "key": "pgi.heavy.industry",
+      "x": 215,
+      "y": 335
+    },
+    {
+      "id": "ad505c40-55cd-bcb9-4cbb-cd3b482477a8",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Sting 1",
+      "key": "pgi.office.a.empty",
+      "x": 203,
+      "y": 337
+    },
+    {
+      "id": "82240ab5-98e3-24fb-6416-0bb6ca05577a",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Sting 1",
+      "key": "pgi.office.a",
+      "x": 205,
+      "y": 337
+    },
+    {
+      "id": "d8bb94cf-1a2d-a3ca-4df7-8f3ce04274f0",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Davis Bow 1",
+      "key": "pgi.office.b.empty",
+      "x": 207,
+      "y": 337
+    },
+    {
+      "id": "604e37d8-1883-b3aa-6a52-d48912672abe",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Davis Bow 1",
+      "key": "pgi.office.b",
+      "x": 209,
+      "y": 337
+    },
+    {
+      "id": "704c455f-cb9a-d998-9ac9-8b22bf374189",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Mc Neon Tower 1",
+      "key": "pgi.office.c.empty",
+      "x": 212,
+      "y": 337
+    },
+    {
+      "id": "5e93594c-d73f-2953-6b2f-53a71153895c",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Mc Neon Tower 1",
+      "key": "pgi.office.c",
+      "x": 214,
+      "y": 337
+    },
+    {
+      "id": "e2447c77-fe3c-8c50-fa7e-01e7b77bc703",
+      "tycoon_id": "tycoon-id-6",
+      "name": "The Spire 1",
+      "key": "pgi.office.d.empty",
+      "x": 216,
+      "y": 337
+    },
+    {
+      "id": "01ae556f-5c51-a5a7-bb9f-c0640eae8191",
+      "tycoon_id": "tycoon-id-2",
+      "name": "The Spire 1",
+      "key": "pgi.office.d",
+      "x": 218,
+      "y": 337
+    }
+  ],
+  "11x16": [
+    {
+      "id": "28754db8-54ef-64bb-a422-ab78c8297b19",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Fast Food 1",
+      "key": "pgi.food.store",
+      "x": 221,
+      "y": 325
+    },
+    {
+      "id": "893432f0-a71f-b640-e64a-6c4f557524b4",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Fire Station 1",
+      "key": "pgi.fire",
+      "x": 223,
+      "y": 325
+    },
+    {
+      "id": "6f3d3a10-6e8f-caae-d039-463009a63baf",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Hospital 1",
+      "key": "pgi.hospital",
+      "x": 225,
+      "y": 325
+    },
+    {
+      "id": "34eec888-09a2-7497-27f7-3abc5c328d07",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Headquarters 1",
+      "key": "pgi.hq.1",
+      "x": 228,
+      "y": 325
+    },
+    {
+      "id": "ad183c01-e326-2c38-68e3-ddbc8cf7b163",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Headquarters 1",
+      "key": "pgi.hq.2",
+      "x": 233,
+      "y": 325
+    },
+    {
+      "id": "1c6c926b-42f0-395e-b154-ca88dfae7c52",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Mall 1",
+      "key": "pgi.market.a",
+      "x": 220,
+      "y": 335
+    },
+    {
+      "id": "6c17e22b-05b4-1866-cea6-914ce99ce209",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Supermarket 1",
+      "key": "pgi.market.b",
+      "x": 224,
+      "y": 335
+    },
+    {
+      "id": "55d37e2e-3642-8cd0-93ba-74d5260ba60d",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Mart 1",
+      "key": "pgi.market.c",
+      "x": 227,
+      "y": 335
+    },
+    {
+      "id": "e4fc8b8c-1225-82db-d848-37ae40d6e0fd",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Large Metal Factory 1",
+      "key": "pgi.metal.industry",
+      "x": 235,
+      "y": 335
+    },
+    {
+      "id": "ef20eab0-a091-78d4-3860-d21442e8d8c2",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Movie Theater 1",
+      "key": "pgi.movie.a",
+      "x": 229,
+      "y": 336
+    },
+    {
+      "id": "397316b4-9a02-cb50-8491-9f0f56cca162",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Paper Mill 1",
+      "key": "pgi.paper.industry",
+      "x": 222,
+      "y": 339
+    },
+    {
+      "id": "3e012417-f61b-f9d9-fc7b-11200524eac2",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Drug Store 1",
+      "key": "pgi.drug.store",
+      "x": 226,
+      "y": 339
+    }
+  ],
+  "10x17": [
+    {
+      "id": "60fcaf56-498f-2d90-85b8-96a6feda8952",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Pharmaceutical Factory 1",
+      "key": "pgi.pharma.industry",
+      "x": 204,
+      "y": 345
+    },
+    {
+      "id": "6f29ed49-e8ae-d751-5160-bb1aad787b2b",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Large Food Processor 1",
+      "key": "pgi.food.proc",
+      "x": 209,
+      "y": 345
+    },
+    {
+      "id": "59d0f85a-b9e3-7e58-f219-c674a2239851",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Food Processor 1",
+      "key": "pgi.food.proc.small",
+      "x": 214,
+      "y": 345
+    },
+    {
+      "id": "e2e3eb9a-124f-03bf-0e1e-dfbad46aa38d",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Xanadu Palace 1",
+      "key": "pgi.hi.res.a.empty",
+      "x": 218,
+      "y": 345
+    },
+    {
+      "id": "8a7663cd-3a61-b0fc-22ec-fac1866b2e62",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Kent Square 1",
+      "key": "pgi.hi.res.e",
+      "x": 200,
+      "y": 347
+    },
+    {
+      "id": "2eb0ba18-0ce7-924f-8246-33cc08b5da9d",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Lisgar Towers 1",
+      "key": "pgi.hi.res.f.empty",
+      "x": 202,
+      "y": 347
+    },
+    {
+      "id": "8023d614-1c30-1f8c-d638-8faf90c453c3",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Lisgar Towers 1",
+      "key": "pgi.hi.res.f",
+      "x": 204,
+      "y": 347
+    },
+    {
+      "id": "feb5858a-4fcc-6fe8-53bc-acb82f21b8d6",
+      "tycoon_id": "tycoon-id-5",
+      "name": "White Hut 1",
+      "key": "pgi.hi.res.g.empty",
+      "x": 206,
+      "y": 347
+    },
+    {
+      "id": "9debafc0-9a30-04c7-5c86-1db204330a52",
+      "tycoon_id": "tycoon-id-3",
+      "name": "White Hut 1",
+      "key": "pgi.hi.res.g",
+      "x": 208,
+      "y": 347
+    },
+    {
+      "id": "aca31bc8-c41f-1f3e-b0a6-bd87a09ce5d8",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Lyon Rooms 1",
+      "key": "pgi.hi.res.h.empty",
+      "x": 212,
+      "y": 347
+    },
+    {
+      "id": "b8d22fb0-9296-2419-29c6-7a7617c8b0a4",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Lyon Rooms 1",
+      "key": "pgi.hi.res.h",
+      "x": 214,
+      "y": 347
+    },
+    {
+      "id": "a30ea1ea-cba7-32f4-dc0d-2887a64b61ef",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Blue Mansion 1",
+      "key": "pgi.hi.res.i.empty",
+      "x": 216,
+      "y": 347
+    },
+    {
+      "id": "c708b804-f867-e38a-b694-e713faf59e99",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Blue Mansion 1",
+      "key": "pgi.hi.res.i",
+      "x": 218,
+      "y": 347
+    },
+    {
+      "id": "333feeca-9aed-85d0-6376-1131c74ac4cc",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Caesar's Atrium 1",
+      "key": "pgi.lo.res.c",
+      "x": 200,
+      "y": 349
+    },
+    {
+      "id": "b082daf2-cc77-86ff-89b9-ad4dd92cb489",
+      "tycoon_id": "tycoon-id-5",
+      "name": "The Sicily 1",
+      "key": "pgi.lo.res.d.empty",
+      "x": 202,
+      "y": 349
+    },
+    {
+      "id": "4711dfbd-0030-dc1d-60c3-e7f925e888d5",
+      "tycoon_id": "tycoon-id-2",
+      "name": "The Sicily 1",
+      "key": "pgi.lo.res.d",
+      "x": 204,
+      "y": 349
+    },
+    {
+      "id": "b907c57f-417e-79b4-0598-e3be1be49440",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Mountbatten Rooms 1",
+      "key": "pgi.lo.res.e.empty",
+      "x": 206,
+      "y": 349
+    },
+    {
+      "id": "fe1322d4-facf-1ed6-fe63-9cbd44ccfc7d",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Mountbatten Rooms 1",
+      "key": "pgi.lo.res.e",
+      "x": 208,
+      "y": 349
+    },
+    {
+      "id": "d07048f6-7b84-d9ad-096d-e5a691699caf",
+      "tycoon_id": "tycoon-id-5",
+      "name": "The Ambassador 1",
+      "key": "pgi.lo.res.f.empty",
+      "x": 212,
+      "y": 349
+    },
+    {
+      "id": "b976c7ca-d323-f98c-b34d-6cda15734c6f",
+      "tycoon_id": "tycoon-id-3",
+      "name": "The Ambassador 1",
+      "key": "pgi.lo.res.f",
+      "x": 214,
+      "y": 349
+    },
+    {
+      "id": "8b19fccf-9195-e52d-1f70-9fc0cbc1cd03",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Gladston Apts. 1",
+      "key": "pgi.mi.res.a.empty",
+      "x": 216,
+      "y": 349
+    },
+    {
+      "id": "2bb490d8-f1f3-951a-5a18-c4f57699ca1b",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Gladston Apts. 1",
+      "key": "pgi.mi.res.a",
+      "x": 218,
+      "y": 349
+    },
+    {
+      "id": "e798d07b-a3ab-d262-d2c5-2535c5b57b63",
+      "tycoon_id": "tycoon-id-4",
+      "name": "TV Station 1",
+      "key": "pgi.tv.station",
+      "x": 202,
+      "y": 353
+    }
+  ],
+  "11x17": [
+    {
+      "id": "90fc435e-7086-be8c-b5c4-7a0bfdd042ae",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Xanadu Palace 1",
+      "key": "pgi.hi.res.a",
+      "x": 222,
+      "y": 345
+    },
+    {
+      "id": "f9957d89-5945-6ed5-ec0a-27bf0ca6e918",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Atrium 1",
+      "key": "pgi.hi.res.b.empty",
+      "x": 226,
+      "y": 345
+    },
+    {
+      "id": "756856c1-5929-ed41-5c7b-0ec16c77d991",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Atrium 1",
+      "key": "pgi.hi.res.b",
+      "x": 228,
+      "y": 345
+    },
+    {
+      "id": "ce13fc95-134e-3c2e-194c-e8e02091bd3d",
+      "tycoon_id": "tycoon-id-6",
+      "name": "The Willington 1",
+      "key": "pgi.hi.res.c.empty",
+      "x": 232,
+      "y": 345
+    },
+    {
+      "id": "305f352f-a929-b1ed-fb3b-bf2d8db8de17",
+      "tycoon_id": "tycoon-id-2",
+      "name": "The Willington 1",
+      "key": "pgi.hi.res.c",
+      "x": 234,
+      "y": 345
+    },
+    {
+      "id": "8ef01edd-1a7b-1f2f-4729-fc8ebf2256d3",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Kent Square 1",
+      "key": "pgi.hi.res.e.empty",
+      "x": 224,
+      "y": 346
+    },
+    {
+      "id": "7a32e5cd-f036-e266-edb7-678e92cd2b05",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Pink Mansion 1",
+      "key": "pgi.hi.res.j.empty",
+      "x": 220,
+      "y": 347
+    },
+    {
+      "id": "9b881f50-ceb5-425c-dabe-e6b6dd270200",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Pink Mansion 1",
+      "key": "pgi.hi.res.j",
+      "x": 222,
+      "y": 347
+    },
+    {
+      "id": "32abbfd6-3482-af1d-26dc-50a8aa996e54",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Playfair Towers 1",
+      "key": "pgi.lo.res.a.empty",
+      "x": 226,
+      "y": 347
+    },
+    {
+      "id": "6a4d8cfa-3478-a748-9e77-2d18b8cef1d2",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Playfair Towers 1",
+      "key": "pgi.lo.res.a",
+      "x": 228,
+      "y": 347
+    },
+    {
+      "id": "e489484c-6651-0316-f500-60b0a94d98e1",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Arlington Rooms 1",
+      "key": "pgi.lo.res.b.empty",
+      "x": 233,
+      "y": 348
+    },
+    {
+      "id": "1c4577be-8571-d388-754a-d8aac8d5ceb9",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Quincy 1",
+      "key": "pgi.mi.res.b.empty",
+      "x": 220,
+      "y": 349
+    },
+    {
+      "id": "42af35b4-64ad-3be1-6256-f60a706bb9fc",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Quincy 1",
+      "key": "pgi.mi.res.b",
+      "x": 222,
+      "y": 349
+    },
+    {
+      "id": "b6f720e5-0870-38c5-818f-39392d16c0c0",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Metcalfe Towers 1",
+      "key": "pgi.mi.res.c.empty",
+      "x": 224,
+      "y": 349
+    },
+    {
+      "id": "19fe7945-2634-7730-baa9-afaa17e973ce",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Metcalfe Towers 1",
+      "key": "pgi.mi.res.c",
+      "x": 226,
+      "y": 349
+    },
+    {
+      "id": "f5b015aa-ca3e-8f47-324a-d2d785529065",
+      "tycoon_id": "tycoon-id-5",
+      "name": "Delmar Apts. 1",
+      "key": "pgi.mi.res.d.empty",
+      "x": 228,
+      "y": 349
+    },
+    {
+      "id": "be4e37c3-a26f-9a3c-8312-63d942f6bd72",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Delmar Apts. 1",
+      "key": "pgi.mi.res.d",
+      "x": 235,
+      "y": 349
+    }
+  ],
+  "9x17": [
+    {
+      "id": "37a3a001-79bb-4d4d-4b47-dfe184b70f5e",
+      "tycoon_id": "tycoon-id-6",
+      "name": "Golden Cap 1",
+      "key": "pgi.hi.res.d.empty",
+      "x": 196,
+      "y": 346
+    },
+    {
+      "id": "027e1510-517d-629c-329c-66f1530c4d5b",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Golden Cap 1",
+      "key": "pgi.hi.res.d",
+      "x": 198,
+      "y": 346
+    },
+    {
+      "id": "4dd3fd4e-4cae-d912-eedd-ed54104c5e37",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Arlington Rooms 1",
+      "key": "pgi.lo.res.b",
+      "x": 195,
+      "y": 349
+    },
+    {
+      "id": "2bcad552-6ba5-b4d4-b2b3-304ab58ce560",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Caesar's Atrium 1",
+      "key": "pgi.lo.res.c.empty",
+      "x": 198,
+      "y": 349
+    },
+    {
+      "id": "f4a5c70d-81ca-9ffb-8786-5e29c1564341",
+      "tycoon_id": "tycoon-id-4",
+      "name": "Sunset Apts. 1",
+      "key": "pgi.mi.res.e.empty",
+      "x": 195,
+      "y": 352
+    },
+    {
+      "id": "e1f37d37-d7c8-46e6-89c4-764454ccd795",
+      "tycoon_id": "tycoon-id-3",
+      "name": "Sunset Apts. 1",
+      "key": "pgi.mi.res.e",
+      "x": 197,
+      "y": 352
+    },
+    {
+      "id": "54725018-d8e7-8089-9726-5b30f3d88e57",
+      "tycoon_id": "tycoon-id-2",
+      "name": "Restaurant 1",
+      "key": "pgi.restaurant",
+      "x": 199,
+      "y": 352
+    }
+  ]
+}

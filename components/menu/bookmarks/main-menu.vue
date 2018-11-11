@@ -27,17 +27,23 @@
       %a.filter-toggle.tooltip.is-tooltip-top{'v-bind:class':"filter_class('offices')", 'v-on:click.stop.prevent':"toggle_filter('offices')", 'data-tooltip':'Offices'}
         %img{src:'~/assets/images/icons/offices/office-block.svg'}
     %aside.sp-menu.sp-scrollbar
-      %menu-section{'v-if':'show_poi', 'v-bind:bookmark_manager':'bookmark_manager', root_id:'bookmark-poi', label_text:'Points of Interest', 'v-bind:items_by_id':'poi_items_by_id', draggable:false}
-      %menu-section{'v-if':'show_corporation', 'v-bind:bookmark_manager':'bookmark_manager', root_id:'bookmark-corporation', label_text:'Corporation', 'v-bind:items_by_id':'corporation_items_by_id', draggable:false}
-      %menu-section{'v-if':'show_bookmarks', 'v-bind:bookmark_manager':'bookmark_manager', root_id:'bookmarks', label_text:'Bookmarks', 'v-bind:items_by_id':'bookmark_items_by_id', draggable:true}
-    .actions-container{'v-if':'show_bookmarks'}
-      .action-column
+      %menu-section{'v-if':'show_poi', 'v-bind:client':'client', 'v-bind:bookmark_manager':'bookmark_manager', root_id:'bookmark-poi', label_text:'Points of Interest', 'v-bind:items_by_id':'poi_items_by_id', draggable:false}
+      %menu-section{'v-if':'show_corporation', 'v-bind:client':'client', 'v-bind:bookmark_manager':'bookmark_manager', root_id:'bookmark-corporation', label_text:'Corporation', 'v-bind:items_by_id':'corporation_items_by_id', draggable:false}
+      %menu-section{'v-if':'has_corporation', 'v-bind:client':'client', 'v-bind:bookmark_manager':'bookmark_manager', root_id:'bookmarks', label_text:'Bookmarks', 'v-bind:items_by_id':'bookmark_items_by_id', draggable:true}
+    .actions-container.level.is-mobile
+      .level-item.action-column
         %a.button.is-fullwidth.is-starpeace{disabled:'disabled'} Organize
-      .action-column
-        %a.button.is-fullwidth.is-starpeace Add Bookmark
+      .level-item.action-column
+        %a.button.is-fullwidth.is-starpeace{'v-bind:disabled':'actions_disabled', 'v-on:click.stop.prevent':'add_folder'} Add Folder
+      .level-item.action-column
+        %a.button.is-fullwidth.is-starpeace{'v-bind:disabled':'actions_disabled', 'v-on:click.stop.prevent':'add_bookmark'} Add Bookmark
 </template>
 
 <script lang='coffee'>
+import IndustryType from '~/plugins/starpeace-client/industry/industry-type.coffee'
+import Bookmark from '~/plugins/starpeace-client/map/bookmark/bookmark.coffee'
+import BookmarkFolder from '~/plugins/starpeace-client/map/bookmark/bookmark-folder.coffee'
+
 import MenuSection from '~/components/menu/bookmarks/menu-section.vue'
 
 export default
@@ -45,7 +51,10 @@ export default
     'menu-section': MenuSection
 
   props:
+    client: Object
+    translation_manager: Object
     bookmark_manager: Object
+    building_manager: Object
     options: Object
     game_state: Object
     menu_state: Object
@@ -68,8 +77,29 @@ export default
 
       items_by_id
     corporation_items_by_id: ->
+      items = []
+      if @game_state.initialized && @game_state?.session_state.identity.is_tycoon() && @game_state?.session_state.corporation?
+        for company,index in _.sortBy(_.values(@game_state?.session_state.corporation.companies_by_id || {}), (company) => @game_state.name_for_company_id(company.id))
+          company_root_id = "bookmark-corp-#{company.id}"
+          items.push new BookmarkFolder('bookmark-corporation', company_root_id, @game_state.name_for_company_id(company.id), index, {type:'CORPORATION', seal_id:@game_state.seal_for_company_id(company.id)})
+
+          industry_items = {}
+          for building in (@game_state.session_state.buildings_metadata_by_company_id[company.id] || [])
+            building_info = @building_manager.building_metadata?.buildings?[building.key]
+            industry_type = IndustryType.TYPES[building_info.industry_type]
+            continue unless building_info? && industry_type?
+            industry_items[building_info.industry_type] = { type: building_info.industry_type, type_name:@translation_manager.text(industry_type.text_key), items:[] } unless industry_items[building_info.industry_type]?
+            industry_items[building_info.industry_type].items.push building
+
+          for buildings_for_industry,items_index in _.sortBy(_.values(industry_items), (items) -> items.type_name)
+            industry_root_id = "bookmark-corp-#{company.id}-#{buildings_for_industry.type}"
+            items.push new BookmarkFolder(company_root_id, industry_root_id, buildings_for_industry.type_name, items_index, {type:'INDUSTRY', industry_type:buildings_for_industry.type})
+
+            for building,building_index in _.sortBy(buildings_for_industry.items, (items) -> items.name)
+              items.push new Bookmark(industry_root_id, "bookmark-building-#{building.id}", building.name, building_index, building.x, building.y, {type:'BUILDING', corporation_id:building.corporation_id, building_id:building.id})
+
       by_id = {}
-      by_id[item.id] = item for item in []
+      by_id[item.id] = item for item in items
       by_id
     bookmark_items_by_id: -> if @state_counter then @game_state?.session_state.bookmarks_by_id || {} else {}
 
@@ -77,13 +107,23 @@ export default
     show_mausoleums: -> if @state_counter then @options.option('bookmarks.mausoleums') else true
     show_poi: -> if @state_counter then @options.option('bookmarks.points_of_interest') && (@show_towns || @show_mausoleums) else true
     show_corporation: -> if @state_counter then @has_corporation && @options.option('bookmarks.corporation') else true
-    show_bookmarks: -> if @state_counter then @has_corporation else false
+
+    actions_disabled: -> if @state_counter then !@has_corporation || @game_state.session_state.bookmarks_changing_request else false
 
   methods:
     filter_class: (type) ->
       ""
     toggle_filter: (type) ->
       console.log "toggle #{type}"
+
+    add_folder: () ->
+      @bookmark_manager?.new_bookmark_folder()
+      @$root.$emit('add_folder_action')
+
+    add_bookmark: () ->
+
+      @$root.$emit('add_bookmark_action')
+
 
 </script>
 
@@ -163,12 +203,5 @@ export default
   height: 3rem
   padding: .5rem
   width: 100%
-
-  .action-column
-    display: inline-block
-    width: calc(50% - .25rem)
-
-    &:not(:first-child)
-      margin-left: .5rem
 
 </style>

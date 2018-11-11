@@ -48,7 +48,7 @@ class InputHandler
 
       if do_action && @last_x == @start_x && @last_y == @start_y
         @game_state.selected_building_id = null
-        @game_state.selected_tycoon_id = null
+        @game_state.selected_corporation_id = null
 
     do_move = (event) =>
       event = event?.data

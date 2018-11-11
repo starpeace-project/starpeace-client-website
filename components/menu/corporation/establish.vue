@@ -14,13 +14,13 @@
         %p.info
           Establish a corporation to participate in the planet economy. IFEL Regulations limit each Tycoon to a single corporation per planet, though multiple companies can be formed under each corporation.
         %p.info
-          Corporation name is unique across all systems and tycoons; name may be re-used across multiple planets if claimed by Tycoon.
+          Corporation name is unique across all systems and tycoons; name may be re-used across multiple planets once claimed by Tycoon.
     %footer.card-footer
       .card-footer-item.level.is-mobile
         .level-left
           %a.button.is-primary.is-medium.is-outlined{'v-on:click.stop.prevent':'cancel()'} Back to Planetary Systems
         .level-right
-          %a.button.is-primary.is-medium{href:'#', 'v-on:click.stop.prevent':'establish()', href: '#'} Establish Corporation
+          %a.button.is-primary.is-medium{'v-on:click.stop.prevent':'establish()'} Establish Corporation
 
 </template>
 
@@ -69,6 +69,7 @@ export default
   > .card
     background-color: $sp-dark-bg
     margin: auto
+    margin-top: 25vh
     max-width: 50rem
     z-index: 1500
 

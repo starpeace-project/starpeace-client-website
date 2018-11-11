@@ -46,7 +46,7 @@ export default class Layers
     @tile_item_cache.reset_cache()
 
     viewport = @renderer.viewport()
-    view_center = viewport.map_center()
+    view_center = viewport.top_left()
     iso_start = viewport.map_to_iso(view_center.x, view_center.y)
     iso_max_i = viewport.map_to_iso(view_center.x + viewport.canvas_width, view_center.y + viewport.canvas_height)
     iso_max_j = viewport.map_to_iso(view_center.x, view_center.y + viewport.canvas_height)

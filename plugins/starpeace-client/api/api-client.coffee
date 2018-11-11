@@ -60,6 +60,18 @@ export default class APIClient
           else
             done(result.planet)
         )
+  planet_events: (session_token, planet_id, last_update) ->
+    new Promise (done, error) =>
+      request
+        .get("#{@root_url}/planets/events")
+        .query({ session_token: session_token, planet_id: planet_id, last_update: last_update.format() })
+        .set('accept', 'json')
+        .end((request_error, result) =>
+          if request_error
+            error(request_error)
+          else
+            done(result.planet)
+        )
 
   tycoon_metadata: (session_token, tycoon_id) ->
     new Promise (done, error) =>
@@ -74,11 +86,23 @@ export default class APIClient
             done(result.tycoon)
         )
 
-  corporation_metadata: (session_token, corportion_id) ->
+  corporation_metadata: (session_token, corporation_id) ->
     new Promise (done, error) =>
       request
         .get("#{@root_url}/corporation/metadata")
-        .query({ session_token: session_token, corporation_id: corportion_id })
+        .query({ session_token: session_token, corporation_id: corporation_id })
+        .set('accept', 'json')
+        .end((request_error, result) =>
+          if request_error
+            error(request_error)
+          else
+            done(result.corporation)
+        )
+  corporation_events: (session_token, corporation_id, last_update) ->
+    new Promise (done, error) =>
+      request
+        .get("#{@root_url}/corporation/events")
+        .query({ session_token: session_token, corporation_id: corporation_id, last_update: last_update.format() })
         .set('accept', 'json')
         .end((request_error, result) =>
           if request_error
@@ -87,11 +111,11 @@ export default class APIClient
             done(result.corporation)
         )
 
-  bookmarks_metadata: (session_token, corportion_id) ->
+  bookmarks_metadata: (session_token, corporation_id) ->
     new Promise (done, error) =>
       request
         .get("#{@root_url}/bookmarks/metadata")
-        .query({ session_token: session_token, corporation_id: corportion_id })
+        .query({ session_token: session_token, corporation_id: corporation_id })
         .set('accept', 'json')
         .end((request_error, result) =>
           if request_error
@@ -99,11 +123,11 @@ export default class APIClient
           else
             done(result.bookmarks)
         )
-  update_bookmarks_metadata: (session_token, corportion_id, bookmark_deltas) ->
+  update_bookmarks_metadata: (session_token, corporation_id, bookmark_deltas) ->
     new Promise (done, error) =>
       request
         .post("#{@root_url}/bookmarks/update")
-        .send({ session_token: session_token, corporation_id: corportion_id, deltas: bookmark_deltas })
+        .send({ session_token: session_token, corporation_id: corporation_id, deltas: bookmark_deltas })
         .set('accept', 'json')
         .end((request_error, result) =>
           if request_error
@@ -112,12 +136,25 @@ export default class APIClient
             done(result.bookmarks)
         )
 
+  add_bookmark_folder: (session_token, corporation_id, parent_id, folder_name) ->
+    new Promise (done, error) =>
+      request
+        .post("#{@root_url}/bookmarks/new")
+        .send({ session_token: session_token, corporation_id: corporation_id, type: 'FOLDER', parent_id: parent_id, name: folder_name })
+        .set('accept', 'json')
+        .end((request_error, result) =>
+          if request_error
+            error(request_error)
+          else
+            done(result.bookmark)
+        )
 
-  mail_metadata: (session_token, corportion_id) ->
+
+  mail_metadata: (session_token, corporation_id) ->
     new Promise (done, error) =>
       request
         .get("#{@root_url}/mail/metadata")
-        .query({ session_token: session_token, corporation_id: corportion_id })
+        .query({ session_token: session_token, corporation_id: corporation_id })
         .set('accept', 'json')
         .end((request_error, result) =>
           if request_error
@@ -150,4 +187,17 @@ export default class APIClient
             error(request_error)
           else
             done(result.inventions)
+        )
+
+  map_buildings_data: (session_token, planet_id, chunk_x, chunk_y) ->
+    new Promise (done, error) =>
+      request
+        .get("#{@root_url}/map/buildings")
+        .query({ session_token: session_token, planet_id: planet_id, chunk_x: chunk_x, chunk_y: chunk_y })
+        .set('accept', 'json')
+        .end((request_error, result) =>
+          if request_error
+            error(request_error)
+          else
+            done(result.buildings)
         )

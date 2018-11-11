@@ -1,12 +1,11 @@
 <template lang='haml'>
 .content.is-marginless
-  .card.planet{'v-for':'planet in planets'}
+  .card.planet{'v-for':'planet in planets', 'v-bind:class':"planet.enabled ? '' : 'is-disabled'"}
     .card-content
       .level.is-mobile.planet-row
         .level-left
           .level-item
             %img.planet-image.starpeace-logo.logo-loading{'v-bind:src':"planet_animation_url(planet)", 'v-on:load':"$event.target.classList.remove('starpeace-logo', 'logo-loading')"}
-
         .level-item.planet-item.info
           .content
             .planet-name {{planet.name}}
@@ -23,15 +22,13 @@
             .planet-online.planet-info-row
               %span Online:
               %span.planet-value {{planet.online_count}}
-
         .level-item.planet-item.description
           .content
             .planet-description {{planet_description(planet)}}
-
         .level-right
           .level-item
             %a.button.is-primary.is-medium.is-outlined.workflow-action{'v-on:click.stop.prevent':'select_planet(planet)', 'v-bind:disabled':'!planet.enabled'} Select
-
+    .disabled-overlay
 </template>
 
 <script lang='coffee'>
@@ -81,11 +78,28 @@ export default
   &.button
     min-width: 7rem
 
+.disabled-overlay
+  background-color: #000
+  cursor: not-allowed
+  display: none
+  height: 100%
+  left: 0
+  opacity: .5
+  position: absolute
+  top: 0
+  width: 100%
+
 .card
   &.planet
     background-color: opacify(lighten($sp-primary-bg, 1%), .3)
     border: 1px solid rgba(110, 161, 146, .2)
     padding-bottom: .25rem
+
+    &.is-disabled
+      border: 1px solid rgba(8, 59, 44, .8)
+
+      .disabled-overlay
+        display: block
 
     &:not(:first-child)
       margin-top: .25rem

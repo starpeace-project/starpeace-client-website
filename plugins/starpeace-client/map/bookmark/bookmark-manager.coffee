@@ -8,17 +8,17 @@ import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
 export default class BookmarkManager
   constructor: (@api, @event_listener, @game_state) ->
     @corporation_items = []
+    @town_items = []
+    @mausoleum_items = []
 
+  initialize: () ->
     @town_items = []
     @town_items.push new BookmarkFolder('bookmark-poi', 'bookmark-towns', 'Towns', 0, {type:'TOWN'})
     @mausoleum_items = []
     @mausoleum_items.push new BookmarkFolder('bookmark-poi', 'bookmark-mausoleums', 'Mausoleums', 1)
 
-    @vue_state_counter = 0
-
-  initialize: () ->
     for town,index in _.sortBy(@game_state.session_state.planet_details.towns, (town) -> town.name)
-      @town_items.push new Bookmark('bookmark-towns', "bookmark-town-#{town.id}", town.name, index, town.map_x, town.map_y, {type:'TOWN'})
+      @town_items.push new Bookmark('bookmark-towns', "bookmark-town-#{town.id}", town.name, index, 1000 - town.map_y, 1000 - town.map_x, {type:'TOWN', corporation_id:'IFEL', building_id:town.building_id})
 
     #@corporation_items.push new BookmarkFolder('bookmark-corporation', 'company-1', 'Dissidents Company', 0, {type:'CORPORATION', seal:'DIS'})
     #@corporation_items.push new BookmarkFolder('bookmark-corporation', 'company-2', 'Magna Corp Company', 1, {type:'CORPORATION', seal:'MAGNA'})
@@ -65,4 +65,22 @@ export default class BookmarkManager
       .catch (err) =>
         # FIXME: TODO add error handling
         @game_state.session_state.finish_bookmarks_metadata_request()
+        console.log err
+
+  new_bookmark_folder: () ->
+    return unless @game_state.session_state.corporation_id?.length
+    return if @game_state.session_state.bookmarks_changing_request
+
+    folder_count = _.filter(_.values(@game_state.session_state.bookmarks_by_id), (item) -> item.is_folder()).length
+    folder_name = "New Folder #{folder_count + 1}"
+
+    @game_state.session_state.start_bookmarks_change_request()
+    @api.add_bookmark_folder(@game_state.session_state.session_token, @game_state.session_state.corporation_id, 'bookmarks', folder_name)
+      .then (item) =>
+        @game_state.session_state.add_bookmarks_metadata(new BookmarkFolder(item.parent_id, item.id, item.name, item.order, {draggable:true}))
+        @game_state.session_state.finish_bookmarks_change_request()
+
+      .catch (err) =>
+        # FIXME: TODO add error handling
+        @game_state.session_state.finish_bookmarks_change_request()
         console.log err

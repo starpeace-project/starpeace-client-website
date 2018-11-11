@@ -6,9 +6,51 @@ import RoadManager from '~/plugins/starpeace-client/manager/road-manager.coffee'
 
 MOCK_DATA = {}
 MOCK_TYCOONS = ['tycoon-id-1', 'tycoon-id-2', 'tycoon-id-3', 'tycoon-id-4', 'tycoon-id-5']
+TYCOON_ID_CORP_ID_COMPANY_IDS = {
+  'tycoon-id-1': {
+    corporation_id: 'corp-id-1'
+    'DIS': 'company-id-1'
+    'MAGNA': 'company-id-2'
+    'MKO': 'company-id-3'
+    'MOAB': 'company-id-4'
+    'PGI': 'company-id-5'
+  },
+  'tycoon-id-2': {
+    corporation_id: 'corp-id-4'
+    'DIS': 'company-id-6'
+    'MAGNA': 'company-id-7'
+    'MKO': 'company-id-8'
+    'MOAB': 'company-id-9'
+    'PGI': 'company-id-10'
+  },
+  'tycoon-id-3': {
+    corporation_id: 'corp-id-5'
+    'DIS': 'company-id-11'
+    'MAGNA': 'company-id-12'
+    'MKO': 'company-id-13'
+    'MOAB': 'company-id-14'
+    'PGI': 'company-id-15'
+  },
+  'tycoon-id-4': {
+    corporation_id: 'corp-id-6'
+    'DIS': 'company-id-16'
+    'MAGNA': 'company-id-17'
+    'MKO': 'company-id-18'
+    'MOAB': 'company-id-19'
+    'PGI': 'company-id-20'
+  },
+  'tycoon-id-5': {
+    corporation_id: 'corp-id-7'
+    'DIS': 'company-id-21'
+    'MAGNA': 'company-id-22'
+    'MKO': 'company-id-23'
+    'MOAB': 'company-id-24'
+    'PGI': 'company-id-25'
+  }
+}
 
 export default class BuildingManager
-  constructor: (@api, @asset_manager, @event_listener, @game_state) ->
+  constructor: (@api, @asset_manager, @translation_manager, @event_listener, @game_state) ->
     @chunk_promises = {}
 
     @requested_building_metadata = false
@@ -31,24 +73,31 @@ export default class BuildingManager
         for i in [0...info.w]
           mock_map_buildings[1000 * (yt - j) + (xt - i)] = info
 
+    buildings_for_company = {}
     x = 195
     y = 90
     for key,info of @building_metadata.buildings
       found_position = false
       until found_position
         if can_place(x, y, info)
-          # console.log info
           found_position = true
           place_mock(x, y, info)
           chunk_key = "#{Math.floor(x/20)}x#{Math.floor(y/20)}"
-          MOCK_DATA[chunk_key] ||= []
-          MOCK_DATA[chunk_key].push {
+          item = {
             id: Utils.uuid()
             tycoon_id: MOCK_TYCOONS[Math.floor(Math.random() * MOCK_TYCOONS.length)]
+            name: "#{@translation_manager.text(info.name_key)} 1"
             key: key
             x: x
             y: y
           }
+          item.corporation_id = TYCOON_ID_CORP_ID_COMPANY_IDS[item.tycoon_id].corporation_id
+          item.company_id = TYCOON_ID_CORP_ID_COMPANY_IDS[item.tycoon_id][info.seal_ids[Math.floor(Math.random() * info.seal_ids.length)]]
+          MOCK_DATA[chunk_key] ||= []
+          MOCK_DATA[chunk_key].push item
+          if item.tycoon_id == 'tycoon-id-1'
+            buildings_for_company[item.company_id] ||= []
+            buildings_for_company[item.company_id].push item
           x += info.w
         else
           x += 1
@@ -59,25 +108,28 @@ export default class BuildingManager
 
       # return if ~key.indexOf('tennis')
     @mocks_configured = true
-    #console.log JSON.stringify(MOCK_DATA)
+    console.log JSON.stringify(MOCK_DATA)
+    console.log JSON.stringify(buildings_for_company)
 
   load_chunk: (chunk_x, chunk_y, width, height) ->
     key = "#{chunk_x}x#{chunk_y}"
     return if @chunk_promises[key]?
 
-    Logger.debug("attempting to load building chunk at #{chunk_x}x#{chunk_y}")
     @game_state.start_ajax()
     @chunk_promises[key] = new Promise (done) =>
-      setTimeout(=>
-        delete @chunk_promises[key]
+      @api.map_buildings_data(@game_state.session_state.session_token, @game_state.session_state.planet_id, chunk_x, chunk_y)
+        .then (building_data) =>
+          Logger.debug("loaded building chunk at #{chunk_x}x#{chunk_y}")
+          delete @chunk_promises[key]
 
-        data = []
-        @setup_mocks() unless @mocks_configured
-        data = MOCK_DATA[key] if MOCK_DATA[key]?
+          # @setup_mocks() unless @mocks_configured
+          @game_state.finish_ajax()
+          done(building_data)
 
-        done(data)
-        @game_state.finish_ajax()
-      , 500)
+        .catch (err) =>
+          @game_state.finish_ajax()
+          console.log err
+          # FIXME: TODO: add error handling
 
   has_assets: () ->
     @building_metadata? && @building_metadata.atlas.length == Object.keys(@loaded_atlases).length
