@@ -6,9 +6,7 @@ import TimeUtils from '~/plugins/starpeace-client/utils/time-utils.coffee'
 import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
 
 import BOOKMARKS_METADATA from '~/plugins/starpeace-client/api/mock-bookmarks-metadata.json'
-import CORPORATION_METADATA from '~/plugins/starpeace-client/api/mock-corporation-metadata.json'
 import PLANETS_DETAILS from '~/plugins/starpeace-client/api/mock-planet-details.json'
-import PLANETS_METADATA_BY_SYSTEM_ID from '~/plugins/starpeace-client/api/mock-planets-metadata.json'
 import SYSTEMS_METADATA from '~/plugins/starpeace-client/api/mock-systems-metadata.json'
 import TYCOON_METADATA from '~/plugins/starpeace-client/api/mock-tycoon-metadata.json'
 
@@ -39,7 +37,7 @@ MONTH_SEASONS = {
 PLANET_ID_DATES = {}
 for system in SYSTEMS_METADATA
   if system.enabled
-    for planet in PLANETS_METADATA_BY_SYSTEM_ID[system.id]
+    for planet in system.planets_metadata
       if planet.enabled
         PLANET_ID_DATES[planet.id] = moment('2235-01-01')
 
@@ -49,14 +47,14 @@ for tycoon_id,tycoon of TYCOON_METADATA
   for corporation in tycoon.corporations
     system = _.find(SYSTEMS_METADATA, (system) -> system.id == corporation.system_id)
     planet = _.find(system?.planets_metadata || [], (planet) -> planet.id == corporation.planet_id)
-    if system?.enabled && planet?.enabled && CORPORATION_METADATA[corporation.id]?
+    if system?.enabled && planet?.enabled
       CORPORATION_ID_EVENTS[corporation.id] = {
         cash: corporation.cash
         companies_by_id: {}
         cashflow: () -> _.reduce(_.values(@companies_by_id), ((sum, company) -> sum + company.cashflow), 0)
         increment_cash: () -> @cash = @cash + 24 * @cashflow()
       }
-      for company in CORPORATION_METADATA[corporation.id].companies
+      for company in corporation.companies
         CORPORATION_ID_EVENTS[corporation.id].companies_by_id[company.id] = {
           id: company.id
           cashflow: company.cashflow
@@ -66,7 +64,7 @@ for tycoon_id,tycoon of TYCOON_METADATA
 
 
 SESSION_TOKENS = {}
-valid_session = (token) -> SESSION_TOKENS[token]? && TimeUtils.within_minutes(SESSION_TOKENS[token], 15)
+valid_session = (token) -> SESSION_TOKENS[token]? && TimeUtils.within_minutes(SESSION_TOKENS[token], 60)
 register_session = () ->
   token = Utils.uuid()
   SESSION_TOKENS[token] = moment()
@@ -115,15 +113,7 @@ export default [
           systems: SYSTEMS_METADATA
         }
 
-      if root_path == '/planets/metadata'
-        throw new Error(404) unless context.method == 'get'
-        throw new Error(401) unless valid_session(query_parameters.session_token)
-        throw new Error(400) unless query_parameters.system_id?.length
-        throw new Error(404) unless PLANETS_METADATA_BY_SYSTEM_ID[query_parameters.system_id]?.length
-        return {
-          planets: PLANETS_METADATA_BY_SYSTEM_ID[query_parameters.system_id]
-        }
-      if root_path == '/planets/details'
+      if root_path == '/planet/details'
         throw new Error(404) unless context.method == 'get'
         throw new Error(401) unless valid_session(query_parameters.session_token)
         throw new Error(400) unless query_parameters.planet_id?.length
@@ -134,7 +124,7 @@ export default [
         return {
           planet: details
         }
-      if root_path == '/planets/events'
+      if root_path == '/planet/events'
         throw new Error(404) unless context.method == 'get'
         throw new Error(401) unless valid_session(query_parameters.session_token)
         throw new Error(400) unless query_parameters.planet_id?.length
@@ -147,7 +137,7 @@ export default [
           }
         }
 
-      if root_path == '/tycoons/metadata'
+      if root_path == '/tycoon/metadata'
         throw new Error(404) unless context.method == 'get'
         throw new Error(401) unless valid_session(query_parameters.session_token)
         throw new Error(400) unless query_parameters.tycoon_id?.length
@@ -160,10 +150,13 @@ export default [
         throw new Error(404) unless context.method == 'get'
         throw new Error(401) unless valid_session(query_parameters.session_token)
         throw new Error(400) unless query_parameters.corporation_id?.length
-        throw new Error(404) unless CORPORATION_METADATA[query_parameters.corporation_id]?
-        return {
-          corporation: CORPORATION_METADATA[query_parameters.corporation_id]
-        }
+        for tycoon_id,tycoon of TYCOON_METADATA
+          for corporation in tycoon.corporations
+            if corporation.id == query_parameters.corporation_id
+              corporation.tycoon_id = tycoon_id unless corporation.tycoon_id?
+              return { corporation: corporation }
+        throw new Error(404)
+
       if root_path == '/corporation/events'
         throw new Error(404) unless context.method == 'get'
         throw new Error(401) unless valid_session(query_parameters.session_token)
@@ -223,11 +216,37 @@ export default [
 
         if params.type == 'FOLDER'
           item = {
-            type: "FOLDER"
+            type: 'FOLDER'
             id: Utils.uuid()
             parent_id: params.parent_id
             name: params.name
             order: order
+          }
+        else if params.type == 'LOCATION'
+          throw new Error(400) unless params.map_x?
+          throw new Error(400) unless params.map_y?
+          item = {
+            type: 'LOCATION'
+            id: Utils.uuid()
+            parent_id: params.parent_id
+            name: params.name
+            order: order
+            map_x: params.map_x
+            map_y: params.map_y
+          }
+        else if params.type == 'BUILDING'
+          throw new Error(400) unless params.building_id?.length
+          throw new Error(400) unless params.map_x?
+          throw new Error(400) unless params.map_y?
+          item = {
+            type: 'BUILDING'
+            id: Utils.uuid()
+            parent_id: params.parent_id
+            name: params.name
+            order: order
+            building_id: params.building_id
+            map_x: params.map_x
+            map_y: params.map_y
           }
         else
           throw new Error(400)
@@ -246,9 +265,16 @@ export default [
           mail: MAIL_METADATA[query_parameters.corporation_id] || []
         }
 
+      if root_path == '/inventions/metadata'
+        throw new Error(404) unless context.method == 'get'
+        throw new Error(401) unless valid_session(query_parameters.session_token)
+        throw new Error(400) unless query_parameters.company_id?.length
+        inventions = []
+        # buildings = PLANET_1_TYCOON_1_BUILDINGS[query_parameters.company_id] if PLANET_1_TYCOON_1_BUILDINGS[query_parameters.company_id]?
+        return {
+          inventions: inventions || []
+        }
 
-
-      return {} if root_path == '/inventions/metadata'
       return {} if root_path == '/inventions/status'
 
       if root_path == '/buildings/metadata'

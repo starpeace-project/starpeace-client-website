@@ -4,7 +4,7 @@
     .card-header
       .card-header-title
         Client Options
-      .card-header-icon.card-close{'v-on:click.stop.prevent':"menu_state.toggle_menu('options')"}
+      .card-header-icon.card-close{'v-on:click.stop.prevent':"client_state.menu.toggle_menu('options')"}
         %font-awesome-icon{':icon':"['fas', 'times']"}
     .card-content.sp-menu-background
       %form.columns
@@ -199,8 +199,7 @@
 export default
   props:
     options: Object
-    menu_state: Object
-    ui_state: Object
+    client_state: Object
 
   data: ->
     can_reset: @options?.can_reset()

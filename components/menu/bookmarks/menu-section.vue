@@ -161,7 +161,7 @@ export default
 
   name: 'menu-section'
   props:
-    client: Object
+    client_state: Object
     bookmark_manager: Object
     root_id: String
     label_text: String
@@ -203,7 +203,7 @@ export default
           add_to_delta(child) for child in (item.children || [])
         add_to_delta(item) for item in tree_pairs
 
-        @bookmark_manager.merge_bookmark_deltas(deltas)
+        await @bookmark_manager.merge_bookmark_deltas(deltas) if deltas.length
 
   computed:
     has_items: -> Object.keys(@items_by_id).length
@@ -246,9 +246,9 @@ export default
     select_item: (item) ->
       return if item.is_folder
       return unless @items_by_id[item.id]?
-      @client.game_state.selected_building_id = @items_by_id[item.id].building_id if (item.type == 'TOWN' || item.type == 'BUILDING') && @items_by_id[item.id].building_id?
-      @client.game_state.selected_corporation_id = @items_by_id[item.id].corporation_id if (item.type == 'TOWN' || item.type == 'BUILDING') && @items_by_id[item.id].corporation_id?
-      @client.renderer?.viewport()?.recenter_at(@items_by_id[item.id].map_x, @items_by_id[item.id].map_y) if item.type == 'TOWN' || item.type == 'LOCATION' || item.type == 'BUILDING'
+
+      @client_state.interface.select_building_id(@items_by_id[item.id].building_id) if (item.type == 'TOWN' || item.type == 'BUILDING') && @items_by_id[item.id].building_id?
+      @client_state.camera.recenter_at(@items_by_id[item.id].map_x, @items_by_id[item.id].map_y) if item.type == 'TOWN' || item.type == 'LOCATION' || item.type == 'BUILDING'
 
     start_move_item: (event) ->
       @future_level_after_dragging = @index_levels[event?.oldIndex] if @index_levels[event?.oldIndex]?

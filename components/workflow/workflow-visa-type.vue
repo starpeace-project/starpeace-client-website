@@ -36,7 +36,7 @@
           Build an Empire!
       %a.button.is-medium.is-info.login{'v-on:click.stop.prevent':'proceed_as_tycoon()'} Tycoon Visa
 
-  .news-container.is-hidden-touch
+  .news-container
     .news-header
       %span News and Updates
       %a.version{href:'/release'} {{client_version}}
@@ -58,8 +58,7 @@
 <script lang='coffee'>
 export default
   props:
-    client: Object
-    game_state: Object
+    client_state: Object
 
   data: ->
     client_version: process.env.CLIENT_VERSION
@@ -72,12 +71,9 @@ export default
       @news = JSON.parse(request.responseText).news if request.status >= 200 && request.status < 400
     request.send()
 
-  computed:
-    is_visible: -> @game_state? && !@game_state.current_visa_type?
-
   methods:
-    proceed_as_visitor: -> @client?.proceed_as_visitor()
-    proceed_as_tycoon: -> @client?.proceed_as_tycoon()
+    proceed_as_visitor: -> @client_state.identity.set_visa_type('visitor')
+    proceed_as_tycoon: -> @client_state.identity.set_visa_type('tycoon')
 
     news_item_html: (value) -> value.replace(/\n/g, '<br>')
 </script>

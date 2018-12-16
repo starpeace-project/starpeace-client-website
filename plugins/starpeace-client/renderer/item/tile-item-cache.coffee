@@ -1,4 +1,6 @@
 
+import _ from 'lodash'
+
 import TileItem from '~/plugins/starpeace-client/renderer/item/tile-item.coffee'
 
 import SpriteBuilding from '~/plugins/starpeace-client/renderer/sprite/sprite-building.coffee'
@@ -22,7 +24,7 @@ RENDER_OPTIONS = [
 ]
 
 export default class TileItemCache
-  constructor: (@building_manager, @effect_manager, @plane_manager, @game_state, @options, @ui_state) ->
+  constructor: (@building_manager, @effect_manager, @plane_manager, @client_state, @options) ->
     @is_dirty = true
 
     @last_scale_rendered = 0
@@ -37,9 +39,9 @@ export default class TileItemCache
     @tile_items = []
 
   should_clear_cache: () ->
-    return true if @game_state.game_scale != @last_scale_rendered || @game_state.current_season != @last_season_rendered ||
-      @ui_state.show_zones != @last_rendered_zones || @ui_state.show_overlay != @last_rendered_overlay || @ui_state.current_overlay.type != @last_rendered_overlay_type ||
-      @game_state.selected_building_id != @last_rendered_selection_options.building_id || @game_state.selected_corporation_id != @last_rendered_selection_options.corporation_id
+    return true if @client_state.camera.game_scale != @last_scale_rendered || @client_state.planet.current_season != @last_season_rendered ||
+      @client_state.interface.show_zones != @last_rendered_zones || @client_state.interface.show_overlay != @last_rendered_overlay || @client_state.interface.current_overlay.type != @last_rendered_overlay_type ||
+      @client_state.interface.selected_building_id != @last_rendered_selection_options.building_id
 
     for option in RENDER_OPTIONS
       return true unless @options.option(option) == @last_rendered_render_options[option]
@@ -47,24 +49,23 @@ export default class TileItemCache
     false
 
   reset_cache: () ->
-    @last_scale_rendered = @game_state.game_scale
-    @last_season_rendered = @game_state.current_season
-    @last_rendered_zones = @ui_state.show_zones
-    @last_rendered_overlay = @ui_state.show_overlay
-    @last_rendered_overlay_type = @ui_state.current_overlay.type
+    @last_scale_rendered = @client_state.camera.game_scale
+    @last_season_rendered = @client_state.planet.current_season
+    @last_rendered_zones = @client_state.interface.show_zones
+    @last_rendered_overlay = @client_state.interface.show_overlay
+    @last_rendered_overlay_type = @client_state.interface.current_overlay.type
 
-    @last_rendered_selection_options.building_id = @game_state.selected_building_id
-    @last_rendered_selection_options.corporation_id = @game_state.selected_corporation_id
+    @last_rendered_selection_options.building_id = @client_state.interface.selected_building_id
 
     @last_rendered_render_options[option] = @options.option(option) for option in RENDER_OPTIONS
 
     @is_dirty = false
 
   clear_cache: (source_x, target_x, source_y, target_y) ->
-    if source_x? && target_x? && source_y? && target_y?
+    if @client_state.planet.game_map? && source_x? && target_x? && source_y? && target_y?
       for y in [source_y..target_y]
         for x in [source_x..target_x]
-          index = y * @game_state.game_map.width + x
+          index = y * @client_state.planet.game_map.width + x
           @tile_items[index] = undefined if @tile_items[index]?
     else
       @tile_items = []
@@ -72,10 +73,10 @@ export default class TileItemCache
     @is_dirty = true
 
   cache_item: (x, y) ->
-    return @tile_items[y * @game_state.game_map.width + x] if @tile_items[y * @game_state.game_map.width + x]?
-    tile_info = @game_state.game_map.info_for_tile(x, y)
+    return @tile_items[y * @client_state.planet.game_map.width + x] if @tile_items[y * @client_state.planet.game_map.width + x]?
+    tile_info = @client_state.planet.game_map.info_for_tile(x, y)
     is_building_root_tile = tile_info.building_info? && tile_info.building_info.x == x && tile_info.building_info.y == y
-    @tile_items[y * @game_state.game_map.width + x] = new TileItem(tile_info, x, y, {
+    @tile_items[y * @client_state.planet.game_map.width + x] = new TileItem(tile_info, x, y, {
         land: @land_sprite_info_for(tile_info)
         concrete: @concrete_sprite_info_for(tile_info)
         road: @road_sprite_info_for(tile_info)
@@ -89,12 +90,12 @@ export default class TileItemCache
   land_sprite_info_for: (tile_info, viewport) ->
     return null unless tile_info.land_info?
 
-    texture_id = _.values(tile_info.land_info?.textures?['0deg']?[@game_state.current_season] || {})[0]
+    texture_id = _.values(tile_info.land_info?.textures?['0deg']?[@client_state.planet.current_season] || {})[0]
     texture = PIXI.utils.TextureCache[texture_id] if texture_id?.length
 
     unless texture?
       Logger.debug("unable to find ground texture <#{texture_id}>, falling back to default")
-      texture_id = "#{@game_state.current_season}.255.border.center.1"
+      texture_id = "#{@client_state.planet.current_season}.255.border.center.1"
       texture = PIXI.utils.TextureCache[texture_id]
 
     new SpriteLand(texture, tile_info.is_chunk_data_loaded)
@@ -123,7 +124,7 @@ export default class TileItemCache
 
   tree_sprite_info_for: (tile_info) ->
     return null unless tile_info.tree_info?
-    texture_id = tile_info.tree_info?.textures?[@game_state.current_season]
+    texture_id = tile_info.tree_info?.textures?[@client_state.planet.current_season]
     return null unless texture_id?.length
 
     texture = PIXI.utils.TextureCache[texture_id]
@@ -142,7 +143,7 @@ export default class TileItemCache
 
   foundation_sprite_info_for: (tile_info) ->
     return null unless tile_info.building_info?
-    metadata = @building_manager.building_metadata.buildings[tile_info.building_info.key]
+    metadata = @client_state.core.building_library.metadata_by_id[tile_info.building_info.key]
     return null unless metadata?
     texture = PIXI.utils.TextureCache["overlay.#{metadata.w}"]
     return null unless texture?
@@ -151,26 +152,31 @@ export default class TileItemCache
 
   building_sprite_info_for: (tile_info) ->
     return null unless tile_info.building_info?
-    textures = @building_manager.building_textures[tile_info.building_info.key]
+    metadata = @client_state.core.building_library.metadata_by_id[tile_info.building_info.key]
+
+    textures = _.map(metadata?.frames || [], (texture_id) -> PIXI.utils.TextureCache[texture_id])
     return null unless textures?.length && textures[0]?
 
     is_animated = textures.length > 1 && @options.option('renderer.building_animations')
-    metadata = @building_manager.building_metadata.buildings[tile_info.building_info.key]
 
     effects = []
     if metadata.effects? && @options.option('renderer.building_effects')
       for effect in metadata.effects
-        effect_metadata = @effect_manager.effect_metadata.effects[effect.type]
-        effect_textures = @effect_manager.effect_textures[effect.type]
-        continue unless effect_metadata? && effect_textures?.length
+        effect_metadata = @client_state.core.effect_library.metadata_by_id[effect.type]
+        effect_textures = _.map(effect_metadata?.frames || [], (texture_id) -> PIXI.utils.TextureCache[texture_id])
+        continue unless effect_metadata? && effect_textures.length
         effects.push(new SpriteEffect(effect_textures, effect, effect_metadata))
 
-    is_selected = if @game_state.selected_building_id?.length then @game_state.selected_building_id == tile_info.building_info.id else false
-    is_filtered = if @game_state.selected_corporation_id?.length then @game_state.selected_corporation_id != tile_info.building_info.corporation_id else false
+    is_selected = false
+    is_filtered = false
+    if @client_state.interface.selected_building_id?.length
+      is_selected = @client_state.interface.selected_building_id == tile_info.building_info.id
+      selected_corporation_id = @client_state.selected_building_metadata()?.corporation_id
+      is_filtered = if selected_corporation_id?.length then selected_corporation_id != tile_info.building_info.corporation_id else true
 
     new SpriteBuilding(textures, is_animated, is_selected, is_filtered, metadata, effects)
 
   plane_sprite_info_for: (flight_plan) ->
-    textures = @plane_manager.plane_textures[flight_plan.plane_info.key]
+    textures = @client_state.core.plane_library.texture_for_id(flight_plan.plane_info.id)
     return null unless textures?.length
     new SpritePlane(textures, flight_plan)

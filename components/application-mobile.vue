@@ -1,16 +1,18 @@
 <template lang='haml'>
 #application-container{'v-bind:class':'application_css_class', 'v-cloak':true}
-  %sp-header{'v-bind:ui_state':'ui_state'}
-  %sp-loading-card{'v-bind:game_state':'game_state'}
-  %sp-loading-modal{'v-bind:game_state':'game_state'}
-  %sp-workflow{'v-bind:client':'client', 'v-bind:event_listener':'event_listener', 'v-bind:game_state':'game_state'}
-  %sp-body{'v-bind:game_state':'game_state', 'v-bind:ui_state':'ui_state'}
+  %sp-header{'v-bind:client_state':'client_state'}
+  %sp-loading-card{'v-bind:client_state':'client_state'}
+  %sp-loading-modal{'v-bind:client_state':'client_state'}
+  %sp-webgl-warning-modal{'v-bind:client_state':'client_state'}
+  %sp-workflow{'v-bind:client':'client', 'v-bind:client_state':'client_state'}
+  %sp-body{'v-bind:client_state':'client_state'}
 </template>
 
 <script lang='coffee'>
 import Header from '~/components/page-layout/header.vue'
-import LoadingCard from '~/components/body/loading-card.vue'
-import LoadingModal from '~/components/body/loading-modal.vue'
+import LoadingCard from '~/components/misc/card-loading.vue'
+import LoadingModal from '~/components/misc/modal-loading.vue'
+import WebGLWarningCard from '~/components/misc/card-webgl-warning.vue'
 import Workflow from '~/components/workflow/workflow.vue'
 import RenderContainer from '~/components/body/render-container.vue'
 import FooterOverlayMenu from '~/components/footer/overlay-menu.vue'
@@ -23,27 +25,23 @@ export default
     'sp-header': Header
     'sp-loading-card': LoadingCard
     'sp-loading-modal': LoadingModal
+    'sp-webgl-warning-card': WebGLWarningCard
     'sp-workflow': Workflow
     'sp-body': RenderContainer
     'sp-footer-overlay-menu': FooterOverlayMenu
 
-  watch:
-    state_counter: (new_value, old_value) ->
-      @show_header = @client?.options?.option('general.show_header')
-
-  computed:
-    state_counter: -> @options.vue_state_counter
-    application_css_class: -> if @show_header then [] else ['no-header']
+  mounted: ->
+    @client.options?.subscribe_options_listener =>
+      @show_header = @client.options.option('general.show_header')
 
   data: ->
-    event_listener: @client?.event_listener
-    game_state: @client?.game_state
-    menu_state: @client?.menu_state
+    client_state: @client?.client_state
     options: @client?.options
-    ui_state: @client?.ui_state
-    camera_manager: @client?.camera_manager
 
     show_header: @client?.options?.option('general.show_header')
+
+  computed:
+    application_css_class: -> if @show_header then [] else ['no-header']
 </script>
 
 <style lang='sass' scoped>

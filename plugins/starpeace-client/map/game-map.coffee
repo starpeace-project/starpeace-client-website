@@ -5,12 +5,12 @@ import LandMap from '~/plugins/starpeace-client/map/land-map.coffee'
 import OverlayMap from '~/plugins/starpeace-client/map/overlay-map.coffee'
 import RoadMap from '~/plugins/starpeace-client/map/road-map.coffee'
 
-import Concrete from '~/plugins/starpeace-client/map/types/concrete.coffee'
+import Concrete from '~/plugins/starpeace-client/building/concrete.coffee'
 
 import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
 
 export default class GameMap
-  constructor: (event_listener, building_manager, road_manager, overlay_manager, manifest, texture, @options, @ui_state) ->
+  constructor: (building_manager, road_manager, overlay_manager, land_metadata, texture, @client_state, @options) ->
     @width = texture.texture.width
     @height = texture.texture.height
 
@@ -18,11 +18,11 @@ export default class GameMap
     map_height = texture.texture.height
 
     @raw_map_rgba_pixels = Utils.pixels_for_image(texture.data)
-    @ground_map = LandMap.from_pixel_data(manifest, @width, @height, @raw_map_rgba_pixels)
-    @building_map = new BuildingMap(event_listener, @ground_map, building_manager, road_manager, @width, @height)
-    @concrete_map = new ConcreteMap(event_listener, @ground_map, @building_map, @width, @height)
-    @road_map = new RoadMap(event_listener, @ground_map, @building_map, @concrete_map, @width, @height)
-    @overlay_map = new OverlayMap(event_listener, overlay_manager, @width, @height)
+    @ground_map = LandMap.from_pixel_data(land_metadata, @width, @height, @raw_map_rgba_pixels)
+    @building_map = new BuildingMap(@client_state, building_manager, road_manager, @width, @height)
+    @concrete_map = new ConcreteMap(@client_state, @ground_map, @building_map, @width, @height)
+    @road_map = new RoadMap(@client_state, @ground_map, @building_map, @concrete_map, @width, @height)
+    @overlay_map = new OverlayMap(@client_state, overlay_manager, @width, @height)
 
   info_for_tile: (x, y) ->
     building_chunk_info = @building_map.chunk_building_info_at(x, y)
@@ -38,19 +38,19 @@ export default class GameMap
     concrete_info = null
 
     if building_chunk_info? && road_chunk_info?
-      if @ui_state.show_zones
+      if @client_state.interface.show_zones
         zone_chunk_info = @overlay_map.chunk_info_at('ZONES', x, y)
         if zone_chunk_info?.is_current()
           zone_info = @overlay_map.overlay_at('ZONES', x, y)
         else
           @overlay_map.chunk_update_at('ZONES', x, y)
 
-      else if @ui_state.show_overlay
-        overlay_chunk_info = @overlay_map.chunk_info_at(@ui_state.current_overlay.type, x, y)
+      else if @client_state.interface.show_overlay
+        overlay_chunk_info = @overlay_map.chunk_info_at(@client_state.interface.current_overlay.type, x, y)
         if overlay_chunk_info?.is_current()
-          overlay_info = @overlay_map.overlay_at(@ui_state.current_overlay.type, x, y)
+          overlay_info = @overlay_map.overlay_at(@client_state.interface.current_overlay.type, x, y)
         else
-          @overlay_map.chunk_update_at(@ui_state.current_overlay.type, x, y)
+          @overlay_map.chunk_update_at(@client_state.interface.current_overlay.type, x, y)
 
       building_info = @building_map.building_info_at(x, y)
       road_info = @road_map.road_info_at(x, y)

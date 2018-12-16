@@ -1,10 +1,11 @@
 
-import Logger from '~/plugins/starpeace-client/logger.coffee'
+import Overlay from '~/plugins/starpeace-client/overlay/overlay.coffee'
 import ChunkMap from '~/plugins/starpeace-client/map/chunk/chunk-map.coffee'
-import Overlay from '~/plugins/starpeace-client/map/types/overlay.coffee'
+
+import Logger from '~/plugins/starpeace-client/logger.coffee'
 
 export default class OverlayMap
-  constructor: (@event_listener, @overlay_manager, @width, @height) ->
+  constructor: (client_state, @overlay_manager, @width, @height) ->
     @overlay_data = {}
     @chunks = {}
 
@@ -24,7 +25,7 @@ export default class OverlayMap
               chunk_index = y * ChunkMap.CHUNK_WIDTH + x
               @overlay_data[type][(y + chunk_y_offset) * @width + (x + chunk_x_offset)] = data[chunk_index] unless data[chunk_index]?.type == 'NONE'
 
-          @event_listener.notify_map_data_listeners({ type: 'overlay', info: chunk_info })
+          client_state.planet.notify_map_data_listeners({ type: 'overlay', info: chunk_info })
         )
       true
 

@@ -1,5 +1,5 @@
 
-import BuildingZone from '~/plugins/starpeace-client/map/types/building-zone.coffee'
+import BuildingZone from '~/plugins/starpeace-client/overlay/building-zone.coffee'
 
 import Sprite from '~/plugins/starpeace-client/renderer/sprite/sprite.coffee'
 

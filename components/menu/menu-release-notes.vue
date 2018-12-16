@@ -4,7 +4,7 @@
     .card-header
       .card-header-title
         Release Notes
-      .card-header-icon.card-close{'v-on:click.stop.prevent':"menu_state.toggle_menu('release_notes')"}
+      .card-header-icon.card-close{'v-on:click.stop.prevent':"client_state.menu.toggle_menu('release_notes')"}
         %font-awesome-icon{':icon':"['fas', 'times']"}
     .card-content.sp-menu-background.release-notes
       .card-description
@@ -18,7 +18,7 @@
 <script lang='coffee'>
 export default
   props:
-    menu_state: Object
+    client_state: Object
 
   data: ->
     release_notes_html: process.env.RELEASE_NOTES_HTML

@@ -8,20 +8,18 @@
 <script lang='coffee'>
 export default
   props:
-    game_state: Object
+    client_state: Object
     options: Object
-    ui_state: Object
 
-  watch:
-    state_counter: (new_value, old_value) ->
+  mounted: ->
+    @options?.subscribe_options_listener =>
       @show_fps = @options?.option('general.show_fps')
 
   data: ->
     show_fps: @options?.option('general.show_fps')
 
   computed:
-    state_counter: -> @options.vue_state_counter
-    is_ready: -> @game_state.initialized
+    is_ready: -> @client_state.initialized && @client_state.workflow_status == 'ready'
 
 </script>
 

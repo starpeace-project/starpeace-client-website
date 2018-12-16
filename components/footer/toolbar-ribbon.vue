@@ -6,20 +6,20 @@
         %tbody
           %tr
             %td.column-camera-controls
-              %a.button.is-starpeace.is-small{'v-on:click.stop.prevent':'camera_manager.zoom_in()'}
+              %a.button.is-starpeace.is-small{'v-on:click.stop.prevent':'client_state.camera.camera_zoom_in()'}
                 %font-awesome-icon{':icon':"['fas', 'plus']"}
             %td.column-camera-controls
-              %a.button.is-starpeace.is-small{'v-on:click.stop.prevent':'camera_manager.zoom_out()'}
+              %a.button.is-starpeace.is-small{'v-on:click.stop.prevent':'client_state.camera.camera_zoom_out()'}
                 %font-awesome-icon{':icon':"['fas', 'minus']"}
             %td.column-overlays
-              %a.button.is-starpeace.is-starpeace-light.is-small{'v-bind:class':'menu_class_overlay', 'v-on:click.stop.prevent':'ui_state.toggle_overlay()'}
+              %a.button.is-starpeace.is-starpeace-light.is-small{'v-bind:class':'menu_class_overlay', 'v-on:click.stop.prevent':'interface_state.toggle_overlay()'}
                 Overlay
             %td.column-inspect{rowspan: 2}
               %a.button.is-starpeace.is-starpeace-light.is-small
                 Inspect
             %td.column-details-ticker.primary
               Welcome to STARPEACE! If you enjoy your time as a Visitor, become a Tycoon!
-            %toolbar-minimap{'v-bind:mini_map_renderer':'mini_map_renderer', 'v-bind:options':'options', 'v-bind:ui_state':'ui_state'}
+            %toolbar-minimap{'v-bind:options':'options', 'v-bind:client_state':'client_state'}
           %tr
             %td.column-camera-controls
               %a.button.is-starpeace.is-small{}
@@ -28,7 +28,7 @@
               %a.button.is-starpeace.is-small{}
                 %font-awesome-icon{':icon':"['fas', 'undo-alt']"}
             %td.column-overlays
-              %a.button.is-starpeace.is-starpeace-light.is-small{'v-bind:class':'menu_class_zones', 'v-on:click.stop.prevent':'ui_state.toggle_zones()'}
+              %a.button.is-starpeace.is-starpeace-light.is-small{'v-bind:class':'menu_class_zones', 'v-on:click.stop.prevent':'interface_state.toggle_zones()'}
                 City Zones
             %td.column-details-ticker.secondary
               HINT: Tycoons can start companies and invest in different industries and real estate.
@@ -39,20 +39,18 @@ import ToolbarMinimap from '~/components/footer/toolbar-minimap.vue'
 
 export default
   props:
-    camera_manager: Object
-    game_state: Object
-    mini_map_renderer: Object
+    client_state: Object
     options: Object
-    ui_state: Object
 
   components:
     'toolbar-minimap': ToolbarMinimap
 
   computed:
-    is_ready: -> @game_state?.initialized
+    interface_state: -> @client_state.interface
+    is_ready: -> @client_state.initialized && @client_state?.workflow_status == 'ready'
 
-    menu_class_overlay: -> { 'is-active': @ui_state?.show_overlay || false }
-    menu_class_zones: -> { 'is-active': @ui_state?.show_zones || false }
+    menu_class_overlay: -> { 'is-active': @interface_state?.show_overlay || false }
+    menu_class_zones: -> { 'is-active': @interface_state?.show_zones || false }
 </script>
 
 <style lang='sass' scoped>

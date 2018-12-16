@@ -10,8 +10,39 @@
         "planet_id": "planet-1",
         "cash": 100000000,
         "cashflow": 10000,
-        "company_count": 5,
-        "building_count": 0
+        "building_count": 0,
+        "companies": [
+          {
+            "id": "company-id-1",
+            "name": "Dissidents Company",
+            "seal_id": "DIS",
+            "cashflow": 2000
+          },
+          {
+            "id": "company-id-2",
+            "name": "Magna Corp Company",
+            "seal_id": "MAGNA",
+            "cashflow": 4000
+          },
+          {
+            "id": "company-id-3",
+            "name": "Mariko Enterprises Company",
+            "seal_id": "MKO",
+            "cashflow": 3000
+          },
+          {
+            "id": "company-id-4",
+            "name": "The Moab Company",
+            "seal_id": "MOAB",
+            "cashflow": 0
+          },
+          {
+            "id": "company-id-5",
+            "name": "Pure Gaba Initiative Company",
+            "seal_id": "PGI",
+            "cashflow": 1000
+          }
+        ]
       },
       {
         "id": "corp-id-2",
@@ -20,8 +51,8 @@
         "planet_id": "planet-3",
         "cash": 0,
         "cashflow": 0,
-        "company_count": 0,
-        "building_count": 0
+        "building_count": 0,
+        "companies": []
       },
       {
         "id": "corp-id-3",
@@ -30,8 +61,8 @@
         "planet_id": "planet-4",
         "cash": 0,
         "cashflow": 0,
-        "company_count": 0,
-        "building_count": 0
+        "building_count": 0,
+        "companies": []
       }
     ]
   }

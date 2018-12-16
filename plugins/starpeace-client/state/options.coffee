@@ -1,4 +1,6 @@
 
+import EventListener from '~/plugins/starpeace-client/state/event-listener.coffee'
+
 OPTIONS = [
   {name: 'general.show_header', _default: true},
   {name: 'general.show_fps', _default: true},
@@ -25,11 +27,15 @@ OPTIONS = [
 
 export default class Options
   constructor: () ->
-    @vue_state_counter = 0 # vue doesn't track state of maps, using version counter instead
+    @event_listener = new EventListener()
+
     @options_saved = {}
     @options_current = {}
 
     @load_state()
+
+  subscribe_options_listener: (listener_callback) -> @event_listener.subscribe('options', listener_callback)
+  notify_options_listeners: () -> @event_listener.notify_listeners('options')
 
   load_state: () ->
     for option in OPTIONS
@@ -40,19 +46,19 @@ export default class Options
         else if typeof option._default is 'boolean'
           saved_value = saved_value == 'true'
       @options_saved[option.name] = @options_current[option.name] = if saved_value? then saved_value else option._default
-    @vue_state_counter += 1
+    @notify_options_listeners()
 
   reset_state: () ->
     for option in OPTIONS
       localStorage.removeItem(option.name)
       @options_current[option.name] = option._default
-    @vue_state_counter += 1
+    @notify_options_listeners()
 
   save_state: () ->
     for option in OPTIONS
       localStorage.setItem(option.name, @options_current[option.name].toString())
       @options_saved[option.name] = @options_current[option.name]
-    @vue_state_counter += 1
+    @notify_options_listeners()
 
   can_reset: () ->
     matches_default = true
@@ -74,8 +80,8 @@ export default class Options
   set_and_save_option: (name, value) ->
     @options_saved[name] = @options_current[name] = value
     localStorage.setItem(name, value.toString())
-    @vue_state_counter += 1
+    @notify_options_listeners()
 
   toggle: (name) ->
     @options_current[name] = !@options_current[name]
-    @vue_state_counter += 1
+    @notify_options_listeners()

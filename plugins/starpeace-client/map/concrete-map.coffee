@@ -1,17 +1,17 @@
 
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 
+import BuildingZone from '~/plugins/starpeace-client/overlay/building-zone.coffee'
+import Concrete from '~/plugins/starpeace-client/building/concrete.coffee'
 import ChunkMap from '~/plugins/starpeace-client/map/chunk/chunk-map.coffee'
-import BuildingZone from '~/plugins/starpeace-client/map/types/building-zone.coffee'
-import Concrete from '~/plugins/starpeace-client/map/types/concrete.coffee'
 
 export default class ConcreteMap
-  constructor: (event_listener, @ground_map, @building_map, @width, @height) ->
+  constructor: (client_state, @ground_map, @building_map, @width, @height) ->
     @concrete_fill_types = new Array(@width * @height)
     @concrete_post_process = new Array(@width * @height)
     @concrete_info = new Array(@width * @height)
 
-    event_listener.subscribe_map_data_listener (chunk_event) =>
+    client_state.planet.subscribe_map_data_listener (chunk_event) =>
       @refresh_concrete(chunk_event.info.chunk_x, chunk_event.info.chunk_y) if chunk_event.type == 'building' || chunk_event.type == 'road'
 
   concrete_info_at: (x, y) -> @concrete_info[y * @width + x]

@@ -1,33 +1,35 @@
 <template lang='haml'>
 #application-container{'v-bind:class':'application_css_class', 'v-cloak':true}
-  %sp-header{'v-bind:options':'options', 'v-bind:ui_state':'ui_state'}
-  %sp-loading-card{'v-bind:game_state':'game_state'}
-  %sp-loading-modal{'v-bind:game_state':'game_state'}
-  %sp-workflow{'v-bind:client':'client', 'v-bind:event_listener':'event_listener', 'v-bind:game_state':'game_state'}
-  %menu-corporation-establish{'v-bind:client':'client', 'v-bind:translation_manager':'translation_manager', 'v-bind:game_state':'game_state'}
-  %menu-construction{'v-show':"is_menu_visible('construction')", 'v-bind:menu_state':'menu_state'}
-  %menu-chat{'v-show':"is_menu_visible('chat')", 'v-bind:menu_state':'menu_state'}
-  %menu-bookmarks{'v-show':"is_menu_visible('bookmarks')", 'v-bind:client':'client', 'v-bind:translation_manager':'translation_manager', 'v-bind:building_manager':'building_manager', 'v-bind:bookmark_manager':'bookmark_manager', 'v-bind:game_state':'game_state', 'v-bind:menu_state':'menu_state', 'v-bind:options':'options'}
-  %menu-mail{'v-show':"is_menu_visible('mail')", 'v-bind:menu_state':'menu_state'}
-  %menu-options{'v-show':"is_menu_visible('options')", 'v-bind:menu_state':'menu_state', 'v-bind:options':'options', 'v-bind:ui_state':'ui_state'}
-  %menu-help{'v-show':"is_menu_visible('help')", 'v-bind:menu_state':'menu_state'}
-  %menu-release-notes{'v-show':"is_menu_visible('release_notes')", 'v-bind:menu_state':'menu_state'}
-  %menu-research-menu{'v-show':"is_menu_visible('research')", 'v-bind:invention_manager':'invention_manager', 'v-bind:translation_manager':'translation_manager', 'v-bind:game_state':'game_state', 'v-bind:menu_state':'menu_state', 'v-bind:options':'options'}
-  %menu-research-no-company{'v-show':"is_menu_visible('research')", 'v-bind:translation_manager':'translation_manager', 'v-bind:game_state':'game_state', 'v-bind:menu_state':'menu_state'}
-  %menu-research-tree{'v-show':"is_menu_visible('research')", 'v-bind:invention_manager':'invention_manager', 'v-bind:translation_manager':'translation_manager', 'v-bind:game_state':'game_state', 'v-bind:menu_state':'menu_state', 'v-bind:options':'options'}
-  %menu-research-details{'v-show':"is_menu_visible('research')", 'v-bind:invention_manager':'invention_manager', 'v-bind:translation_manager':'translation_manager', 'v-bind:game_state':'game_state', 'v-bind:menu_state':'menu_state', 'v-bind:options':'options'}
-  %menu-system{'v-show':"is_menu_visible('systems')", 'v-bind:client':'client', 'v-bind:game_state':'game_state', 'v-bind:menu_state':'menu_state'}
-  %menu-tycoon{'v-show':"is_menu_visible('tycoon')", 'v-bind:bookmark_manager':'bookmark_manager', 'v-bind:game_state':'game_state', 'v-bind:menu_state':'menu_state', 'v-bind:options':'options'}
-  %sp-body{'v-bind:game_state':'game_state', 'v-bind:options':'options', 'v-bind:ui_state':'ui_state'}
-  %sp-footer-overlay-menu{'v-bind:ui_state':'ui_state'}
-  %sp-toolbar-ribbon{'v-bind:camera_manager':'camera_manager', 'v-bind:game_state':'game_state', 'v-bind:mini_map_renderer':'mini_map_renderer', 'v-bind:options':'options', 'v-bind:ui_state':'ui_state'}
-  %sp-toolbar-details{'v-bind:camera_manager':'camera_manager', 'v-bind:game_state':'game_state', 'v-bind:menu_state':'menu_state', 'v-bind:mini_map_renderer':'mini_map_renderer', 'v-bind:options':'options', 'v-bind:ui_state':'ui_state', 'v-bind:music_manager':'music_manager'}
+  %sp-header{'v-bind:options':'options', 'v-bind:client_state':'client_state'}
+  %sp-loading-card{'v-bind:client_state':'client_state'}
+  %sp-loading-modal{'v-bind:client_state':'client_state'}
+  %sp-webgl-warning-card{'v-bind:client_state':'client_state'}
+  %sp-workflow{'v-bind:client':'client', 'v-bind:client_state':'client_state'}
+  %menu-corporation-establish{'v-bind:client':'client', 'v-bind:managers':'managers', 'v-bind:client_state':'client_state'}
+  %menu-construction{'v-show':"is_menu_visible('construction')", 'v-bind:client_state':'client_state'}
+  %menu-chat{'v-show':"is_menu_visible('chat')", 'v-bind:client_state':'client_state'}
+  %menu-bookmarks{'v-show':"is_menu_visible('bookmarks')", 'v-bind:managers':'managers', ':ajax_state':'ajax_state', 'v-bind:client_state':'client_state', 'v-bind:options':'options'}
+  %menu-mail{'v-show':"is_menu_visible('mail')", 'v-bind:client_state':'client_state'}
+  %menu-options{'v-show':"is_menu_visible('options')", 'v-bind:client_state':'client_state', 'v-bind:options':'options'}
+  %menu-help{'v-show':"is_menu_visible('help')", 'v-bind:client_state':'client_state'}
+  %menu-release-notes{'v-show':"is_menu_visible('release_notes')", 'v-bind:client_state':'client_state'}
+  %menu-research-menu{'v-show':"is_menu_visible('research')", 'v-bind:client_state':'client_state', 'v-bind:options':'options'}
+  %menu-research-no-company{'v-show':"is_menu_visible('research')", 'v-bind:client_state':'client_state'}
+  %menu-research-tree{'v-show':"is_menu_visible('research')", 'v-bind:managers':'managers', 'v-bind:client_state':'client_state', 'v-bind:options':'options'}
+  %menu-research-details{'v-show':"is_menu_visible('research')", 'v-bind:managers':'managers', 'v-bind:client_state':'client_state', 'v-bind:options':'options'}
+  %menu-system{'v-show':"is_menu_visible('systems')", 'v-bind:client_state':'client_state', 'v-bind:ajax_state':'ajax_state', 'v-bind:managers':'managers'}
+  %menu-tycoon{'v-show':"is_menu_visible('tycoon')", 'v-bind:managers':'managers', 'v-bind:client_state':'client_state', 'v-bind:options':'options'}
+  %sp-body{'v-bind:client_state':'client_state', 'v-bind:options':'options'}
+  %sp-footer-overlay-menu{'v-bind:client_state':'client_state'}
+  %sp-toolbar-ribbon{'v-bind:managers':'managers', 'v-bind:mini_map_renderer':'mini_map_renderer', 'v-bind:client_state':'client_state', 'v-bind:options':'options'}
+  %sp-toolbar-details{'v-bind:managers':'managers', 'v-bind:client_state':'client_state', 'v-bind:options':'options'}
 </template>
 
 <script lang='coffee'>
 import Header from '~/components/page-layout/header.vue'
-import LoadingCard from '~/components/body/loading-card.vue'
-import LoadingModal from '~/components/body/loading-modal.vue'
+import LoadingCard from '~/components/misc/card-loading.vue'
+import LoadingModal from '~/components/misc/modal-loading.vue'
+import WebGLWarningCard from '~/components/misc/card-webgl-warning.vue'
 import Workflow from '~/components/workflow/workflow.vue'
 
 import MenuCorporationEstablish from '~/components/menu/corporation/establish.vue'
@@ -64,6 +66,7 @@ export default
     'sp-footer-overlay-menu': FooterOverlayMenu
     'sp-toolbar-details': ToolbarDetails
     'sp-toolbar-ribbon': ToolbarRibbon
+    'sp-webgl-warning-card': WebGLWarningCard
     'menu-corporation-establish': MenuCorporationEstablish
     'menu-construction': MenuConstruction
     'menu-chat': MenuChat
@@ -79,37 +82,39 @@ export default
     'menu-research-details': MenuResearchDetails
     'menu-tycoon': MenuTycoon
 
-  watch:
-    state_counter: (new_value, old_value) ->
-      @show_header = @client?.options?.option('general.show_header')
+  mounted: ->
+    @client.options?.subscribe_options_listener =>
+      @show_header = @client.options.option('general.show_header')
+
+    @client.client_state?.menu?.subscribe_menu_listener =>
+      @$forceUpdate()
 
   data: ->
-    bookmark_manager: @client?.managers?.bookmark_manager
-    building_manager: @client?.managers?.building_manager
-    camera_manager: @client?.camera_manager
-    event_listener: @client?.event_listener
-    invention_manager: @client?.managers?.invention_manager
-    game_state: @client?.game_state
-    menu_state: @client?.menu_state
-    mini_map_renderer: @client?.mini_map_renderer
-    music_manager: @client?.music_manager
-    translation_manager: @client?.managers?.translation_manager
     options: @client?.options
-    ui_state: @client?.ui_state
+    client_state: @client?.client_state
+    ajax_state: @client?.ajax_state
 
     show_header: @client?.options?.option('general.show_header')
 
   computed:
-    state_counter: -> @options.vue_state_counter
+    managers: -> @client?.managers
+    mini_map_renderer: -> @client?.mini_map_renderer
+
+    webgl_warning_visible: -> (@client_state?.initialized || false) && (@client_state?.webgl_warning || false)
+    loading_visible: -> (@client_state?.initialized || false) && (@client_state?.loading || false)
+
+    is_toolbar_left_open: -> @client_state?.menu?.toolbar_left?.length
+    is_toolbar_right_open: -> @client_state?.menu?.toolbar_right?.length
+
     application_css_class: ->
       classes = []
       classes.push 'no-header' unless @show_header
-      classes.push 'is-toolbar-left' if @menu_state.is_toolbar_left_open()
-      classes.push 'is-toolbar-right' if @menu_state.is_toolbar_right_open()
+      classes.push 'is-toolbar-left' if @is_toolbar_left_open
+      classes.push 'is-toolbar-right' if @is_toolbar_right_open
       classes
 
   methods:
-    is_menu_visible: (type) -> @game_state?.initialized && @menu_state?.is_visible(type)
+    is_menu_visible: (type) -> @client_state.initialized && @client_state?.workflow_status == 'ready' && @client_state?.menu?.is_visible(type)
 </script>
 
 <style lang='sass' scoped>

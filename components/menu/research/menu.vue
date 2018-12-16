@@ -62,49 +62,45 @@ export default
     'industry-type-icon': IndustryTypeIcon
 
   props:
-    invention_manager: Object
-    translation_manager: Object
+    client_state: Object
     options: Object
-    game_state: Object
-    menu_state: Object
 
   data: ->
+    menu_visible: @client_state?.menu?.is_visible('research')
+
     filter_input_value: ''
 
-    sections: []
+    sections: organize_sections(@inventions_for_company(), @selected_category)
+
+  mounted: ->
+    @client_state?.menu?.subscribe_menu_listener =>
+      @menu_visible = @client_state?.menu?.is_visible('research')
 
   watch:
-    state_counter: (new_value, old_value) ->
-      @sections = organize_sections(@inventions_for_company, @selected_category)
+    is_visible: (new_value, old_value) ->
+      @sections = organize_sections(@inventions_for_company(), @selected_category) if new_value
     selected_category: (new_value, old_value) ->
-      @sections = organize_sections(@inventions_for_company, @selected_category)
+      @sections = organize_sections(@inventions_for_company(), @selected_category)
     company_id: (new_value, old_value) ->
-      @sections = organize_sections(@inventions_for_company, @selected_category)
+      @sections = organize_sections(@inventions_for_company(), @selected_category)
 
   computed:
-    state_counter: -> @game_state.initialized && (@options.vue_state_counter + @invention_manager.vue_state_counter)
+    is_visible: -> @client_state.workflow_status == 'ready' && @menu_visible
 
-    selected_category: -> @game_state.inventions_selected_category
-    selected_industry_type: -> @game_state.inventions_selected_industry_type
+    selected_category: -> @client_state.interface.inventions_selected_category
+    selected_industry_type: -> @client_state.interface.inventions_selected_industry_type
 
-    company_id: -> @game_state?.session_state.company_id
-
-    inventions_for_company: ->
-      return [] unless @state_counter
-
-      if @game_state.session_state.identity.is_tycoon()
-        company_metadata = @game_state.current_company_metadata()
-        if company_metadata? then (@invention_manager.inventions_by_seal[company_metadata.seal_id] || []) else []
-      else
-        _.values(@invention_manager.inventions_by_id)
+    company_id: -> @client_state.player.company_id
 
   methods:
     filter_class: (type) -> ""
     section_item_class: (item, child) -> { 'is-active': @selected_category == item.category && @selected_industry_type == child.industry_type }
 
+    inventions_for_company: -> @client_state.inventions_for_company()
+
     select_inventions: (category, industry_type) ->
-      @game_state.inventions_selected_category = category
-      @game_state.inventions_selected_industry_type = industry_type
+      @client_state.interface.inventions_selected_category = category
+      @client_state.interface.inventions_selected_industry_type = industry_type
 
 </script>
 

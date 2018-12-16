@@ -2,7 +2,7 @@
 #research-tree-container.card.is-starpeace.has-header
   .card-header
     .card-header-title
-    .card-header-icon.card-close{'v-on:click.stop.prevent':"menu_state.toggle_menu('research')"}
+    .card-header-icon.card-close{'v-on:click.stop.prevent':"client_state.menu.toggle_menu('research')"}
       %font-awesome-icon{':icon':"['fas', 'times']"}
   .card-content.sp-menu-background.overall-container
     .tree-list-container.sp-scrollbar
@@ -67,25 +67,30 @@ EDGE = {
   }
 }
 
-update_tree_state = (invention_manager, tree_data, tree_links, selected_invention_id, hover_invention_id) ->
-  selected_invention = if selected_invention_id?.length then invention_manager.invention_info_by_id[selected_invention_id] else null
-  hover_invention = if hover_invention_id?.length then invention_manager.invention_info_by_id[hover_invention_id] else null
+update_tree_state = (invention_library, tree_data, tree_links, selected_invention_id, hover_invention_id) ->
+  selected_invention = if selected_invention_id?.length then invention_library.metadata_for_id(selected_invention_id) else null
+  hover_invention = if hover_invention_id?.length then invention_library.metadata_for_id(hover_invention_id) else null
+
+  selected_downstream_ids = if selected_invention? then invention_library.downstream_ids_for(selected_invention_id) else []
+  selected_upstream_ids = if selected_invention? then invention_library.upstream_ids_for(selected_invention_id) else []
+  hover_downstream_ids = if hover_invention? then invention_library.downstream_ids_for(hover_invention_id) else []
+  hover_upstream_ids = if hover_invention? then invention_library.upstream_ids_for(hover_invention_id) else []
 
   for data in tree_data
     data.fixed = true
-    if data.name == hover_invention?.invention?.id
+    if data.name == hover_invention?.id
       data.itemStyle.borderColor = ITEM_PENDING.hover.borderColor
       data.itemStyle.color = ITEM_PENDING.hover.color
       data.itemStyle.opacity = ITEM_PENDING.hover.opacity
-    else if data.name == selected_invention?.invention?.id
+    else if data.name == selected_invention?.id
       data.itemStyle.borderColor = ITEM_PENDING.selected.borderColor
       data.itemStyle.color = ITEM_PENDING.selected.color
       data.itemStyle.opacity = ITEM_PENDING.selected.opacity
-    else if hover_invention?.upstream[data.name]? || hover_invention?.downstream[data.name]?
+    else if hover_upstream_ids.indexOf(data.name) >= 0 || hover_downstream_ids.indexOf(data.name) >= 0
       data.itemStyle.borderColor = ITEM_PENDING.hover_related.borderColor
       data.itemStyle.color = ITEM_PENDING.hover_related.color
       data.itemStyle.opacity = ITEM_PENDING.hover_related.opacity
-    else if selected_invention?.upstream[data.name]? || selected_invention?.downstream[data.name]?
+    else if selected_upstream_ids.indexOf(data.name) >= 0 || selected_downstream_ids.indexOf(data.name) >= 0
       data.itemStyle.borderColor = ITEM_PENDING.selected_related.borderColor
       data.itemStyle.color = ITEM_PENDING.selected_related.color
       data.itemStyle.opacity = ITEM_PENDING.selected_related.opacity
@@ -94,9 +99,17 @@ update_tree_state = (invention_manager, tree_data, tree_links, selected_inventio
       data.itemStyle.color = ITEM_PENDING.color
       data.itemStyle.opacity = if hover_invention? then .1 else ITEM_PENDING.opacity
 
+  is_selected_related = (link) =>
+    link.source == selected_invention.id || link.target == selected_invention.id ||
+        (selected_upstream_ids.indexOf(link.source) >= 0 && selected_upstream_ids.indexOf(link.target) >= 0) ||
+        (selected_downstream_ids.indexOf(link.source) >= 0 && selected_downstream_ids.indexOf(link.target) >= 0)
+  is_hover_related = (link) =>
+    link.source == hover_invention.id || link.target == hover_invention.id ||
+        (hover_upstream_ids.indexOf(link.source) >= 0 && hover_upstream_ids.indexOf(link.target) >= 0) ||
+        (hover_downstream_ids.indexOf(link.source) >= 0 && hover_downstream_ids.indexOf(link.target) >= 0)
+
   for link in tree_links
-    if selected_invention? && (link.source == selected_invention.invention.id || link.target == selected_invention.invention.id || selected_invention.is_related(link)) ||
-        hover_invention? && (link.source == hover_invention.invention.id || link.target == hover_invention.invention.id || hover_invention.is_related(link))
+    if selected_invention? && is_selected_related(link) || hover_invention? && is_hover_related(link)
       link.lineStyle.opacity = EDGE.selected_related.opacity
       link.lineStyle.width = EDGE.selected_related.width
     else
@@ -105,15 +118,12 @@ update_tree_state = (invention_manager, tree_data, tree_links, selected_inventio
 
 export default
   props:
-    invention_manager: Object
-    translation_manager: Object
-    game_state: Object
-    menu_state: Object
+    managers: Object
+    client_state: Object
     options: Object
 
   data: ->
-    filter_input_value: ''
-    sections: []
+    inventions_for_company: @client_state.inventions_for_company()
 
     layout_locked: false
 
@@ -166,11 +176,14 @@ export default
         links: []
       }]
 
+
   watch:
     is_visible: (new_value, old_value) ->
       if !@is_visible && @layout_locked
         data.fixed = false for data in @tree_options.series[0].data
         @layout_locked = false
+      else if @is_visible
+        @inventions_for_company = @client_state.inventions_for_company()
 
     invention_data: (new_value, old_value) ->
       data = []
@@ -179,7 +192,7 @@ export default
       for invention in new_value
         data.push {
           name: invention.id
-          value: @translation_manager.text(invention.name_key)
+          value: @managers.translation_manager.text(invention.name_key)
           itemStyle:
             color: ITEM_PENDING.color
             borderColor: ITEM_PENDING.borderColor
@@ -203,47 +216,36 @@ export default
     selected_invention_id: (new_value, old_value) ->
       invention_within_selection = _.find(@invention_data, (invention) -> invention.id == new_value)
       unless invention_within_selection?
-        new_item = @invention_manager.inventions_by_id[new_value]
-        @game_state.inventions_selected_category = new_item.category
-        @game_state.inventions_selected_industry_type = new_item.industry_type
+        invention_metadata = @client_state.core.invention_library.metadata_for_id(new_value)
+        @interface_state.inventions_selected_category = invention_metadata.category
+        @interface_state.inventions_selected_industry_type = invention_metadata.industry_type
 
-      update_tree_state(@invention_manager, @tree_options.series[0].data, @tree_options.series[0].links, @selected_invention_id, @hover_invention_id)
+      update_tree_state(@client_state.core.invention_library, @tree_options.series[0].data, @tree_options.series[0].links, @selected_invention_id, @hover_invention_id)
       @layout_locked = true
     hover_invention_id: (new_value, old_value) ->
-      update_tree_state(@invention_manager, @tree_options.series[0].data, @tree_options.series[0].links, @selected_invention_id, @hover_invention_id)
+      update_tree_state(@client_state.core.invention_library, @tree_options.series[0].data, @tree_options.series[0].links, @selected_invention_id, @hover_invention_id)
       @layout_locked = true
 
     selected_category:  (new_value, old_value) ->
+      console.log 'cat'
       setTimeout(=>
-        update_tree_state(@invention_manager, @tree_options.series[0].data, @tree_options.series[0].links, @selected_invention_id, @hover_invention_id)  if @is_visible
+        update_tree_state(@client_state.core.invention_library, @tree_options.series[0].data, @tree_options.series[0].links, @selected_invention_id, @hover_invention_id)  if @is_visible
       , 50)
     selected_industry_type:  (new_value, old_value) ->
+      console.log 'ind'
       setTimeout(=>
-        update_tree_state(@invention_manager, @tree_options.series[0].data, @tree_options.series[0].links, @selected_invention_id, @hover_invention_id)  if @is_visible
+        update_tree_state(@client_state.core.invention_library, @tree_options.series[0].data, @tree_options.series[0].links, @selected_invention_id, @hover_invention_id)  if @is_visible
       , 50)
 
   computed:
-    state_counter: -> @game_state.initialized && (@options.vue_state_counter + @invention_manager.vue_state_counter)
-    is_visible: ->
-      @game_state?.initialized && (@menu_state?.toolbar_left == 'research' || @menu_state?.toolbar_body == 'research' || @menu_state?.toolbar_right == 'research')
+    is_visible: -> @client_state?.workflow_status == 'ready' && @client_state?.menu?.is_visible('research')
 
-    selected_category: -> @game_state.inventions_selected_category
-    selected_industry_type: -> @game_state.inventions_selected_industry_type
-    selected_invention_id: -> @game_state.inventions_selected_invention_id
-    hover_invention_id: -> @game_state.inventions_hover_invention_id
+    interface_state: -> @client_state?.interface
 
-    research_available: ->
-      available = []
-      for invention in @invention_data
-        if invention.id?
-          available.push { id: invention.id, text: @translation_manager.text(invention.name_key) }
-      _.sortBy(available, (invention) -> invention.text)
-    research_in_progress: ->
-      in_progres = []
-      in_progres
-    research_completed: ->
-      completed = []
-      completed
+    selected_category: -> @interface_state?.inventions_selected_category
+    selected_industry_type: -> @interface_state?.inventions_selected_industry_type
+    selected_invention_id: -> @interface_state?.inventions_selected_invention_id
+    hover_invention_id: -> @interface_state?.inventions_hover_invention_id
 
     invention_data: ->
       inventions = {}
@@ -256,39 +258,44 @@ export default
 
       while to_search.length
         invention_id = to_search.pop()
+        invention_metadata = @client_state.core.invention_library.metadata_for_id(invention_id)
 
-        if @invention_manager.inventions_by_id[invention_id].depends_on?.length
-          for depends_id in @invention_manager.inventions_by_id[invention_id].depends_on
-            unless inventions[depends_id]?
-              inventions[depends_id] = @invention_manager.inventions_by_id[depends_id]
-              to_search.push depends_id
+        for depends_id in (invention_metadata?.depends_on || [])
+          unless inventions[depends_id]?
+            inventions[depends_id] = @client_state.core.invention_library.metadata_for_id(depends_id)
+            to_search.push depends_id
 
       _.values(inventions)
 
-    inventions_for_company: ->
-      return [] unless @state_counter
+    research_available: ->
+      available = []
+      for invention in @invention_data
+        if invention.id?
+          available.push { id: invention.id, text: @managers.translation_manager.text(invention.name_key) }
+      _.sortBy(available, (invention) -> invention.text)
+    research_in_progress: ->
+      in_progres = []
+      in_progres
+    research_completed: ->
+      completed = []
+      completed
 
-      if @game_state.session_state.identity.is_tycoon()
-        company_metadata = @game_state.current_company_metadata()
-        if company_metadata? then (@invention_manager.inventions_by_seal[company_metadata.seal_id] || []) else []
-      else
-        _.values(@invention_manager.inventions_by_id)
 
   methods:
     click_item: (item) ->
       return unless item.dataType == "node"
-      @game_state.inventions_selected_invention_id = item.data.name
+      @interface_state.inventions_selected_invention_id = item.data.name
 
     focus_item: (item) ->
       return unless item.dataType == 'node'
-      @game_state.inventions_hover_invention_id = item.data.name
+      @interface_state.inventions_hover_invention_id = item.data.name
 
     unfocus_item: (item) ->
       return unless item.dataType == 'node'
-      @game_state.inventions_hover_invention_id = '' if @game_state.inventions_hover_invention_id == item.data.name
+      @interface_state.inventions_hover_invention_id = '' if @interface_state.inventions_hover_invention_id == item.data.name
 
     select_invention: (invention_id) ->
-      @game_state.inventions_selected_invention_id = invention_id
+      @interface_state.inventions_selected_invention_id = invention_id
 </script>
 
 <style lang='sass' scoped>

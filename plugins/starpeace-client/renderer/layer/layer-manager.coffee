@@ -10,7 +10,7 @@ import Logger from '~/plugins/starpeace-client/logger.coffee'
 export default class LayerManager
   @MAX_PARTICLES: 65536
 
-  constructor: (@game_state, @ui_state) ->
+  constructor: (@client_state) ->
     @land_container = new PIXI.particles.ParticleContainer(LayerManager.MAX_PARTICLES, { tint: true, uvs: true, vertices: true })
     @land_container.zIndex = 0
     @land_sprite_cache = new LayerCache(@land_container, null, LayerManager.MAX_PARTICLES, false, false)
@@ -103,12 +103,10 @@ export default class LayerManager
 
     if tile_item.sprite_info.building?.within_canvas(canvas, viewport)
       select_building_callback = () =>
-        if tile_item.tile_info.building_info.id == @game_state.selected_building_id
-          @game_state.selected_building_id = null
-          @game_state.selected_corporation_id = null
+        if tile_item.tile_info.building_info.id == @client_state.interface.selected_building_id
+          @client_state.interface.selected_building_id = null
         else
-          @game_state.selected_building_id = tile_item.tile_info.building_info.id
-          @game_state.selected_corporation_id = tile_item.tile_info.building_info.corporation_id
+          @client_state.interface.selected_building_id = tile_item.tile_info.building_info.id
           console.log tile_item.tile_info.building_info
 
       sprite_cache = if tile_item.sprite_info.building.is_animated then @with_height_animated_sprite_cache else @with_height_static_sprite_cache

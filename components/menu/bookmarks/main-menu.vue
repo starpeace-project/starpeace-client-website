@@ -3,7 +3,7 @@
   .card-header
     .card-header-title
       Map Locations
-    .card-header-icon.card-close{'v-on:click.stop.prevent':"menu_state.toggle_menu('bookmarks')"}
+    .card-header-icon.card-close{'v-on:click.stop.prevent':"client_state.menu.toggle_menu('bookmarks')"}
       %font-awesome-icon{':icon':"['fas', 'times']"}
   .card-content.sp-menu-background.overall-container
     .field.filter-input-container
@@ -27,9 +27,9 @@
       %a.filter-toggle.tooltip.is-tooltip-top{'v-bind:class':"filter_class('offices')", 'v-on:click.stop.prevent':"toggle_filter('offices')", 'data-tooltip':'Offices'}
         %img{src:'~/assets/images/icons/offices/office-block.svg'}
     %aside.sp-menu.sp-scrollbar
-      %menu-section{'v-if':'show_poi', 'v-bind:client':'client', 'v-bind:bookmark_manager':'bookmark_manager', root_id:'bookmark-poi', label_text:'Points of Interest', 'v-bind:items_by_id':'poi_items_by_id', draggable:false}
-      %menu-section{'v-if':'show_corporation', 'v-bind:client':'client', 'v-bind:bookmark_manager':'bookmark_manager', root_id:'bookmark-corporation', label_text:'Corporation', 'v-bind:items_by_id':'corporation_items_by_id', draggable:false}
-      %menu-section{'v-if':'has_corporation', 'v-bind:client':'client', 'v-bind:bookmark_manager':'bookmark_manager', root_id:'bookmarks', label_text:'Bookmarks', 'v-bind:items_by_id':'bookmark_items_by_id', draggable:true}
+      %menu-section{'v-if':'show_poi && (show_towns || show_mausoleums)', 'v-bind:client_state':'client_state', root_id:'bookmark-poi', label_text:'Points of Interest', 'v-bind:items_by_id':'poi_items_by_id', draggable:false}
+      %menu-section{'v-if':'show_corporation && has_corporation', 'v-bind:client_state':'client_state', root_id:'bookmark-corporation', label_text:'Corporation', 'v-bind:items_by_id':'corporation_items_by_id', draggable:false}
+      %menu-section{'v-if':'has_corporation', 'v-bind:client_state':'client_state', ':bookmark_manager':'bookmark_manager', root_id:'bookmarks', label_text:'Bookmarks', 'v-bind:items_by_id':'bookmark_items_by_id', draggable:true}
     .actions-container.level.is-mobile
       .level-item.action-column
         %a.button.is-fullwidth.is-starpeace{disabled:'disabled'} Organize
@@ -41,8 +41,8 @@
 
 <script lang='coffee'>
 import IndustryType from '~/plugins/starpeace-client/industry/industry-type.coffee'
-import Bookmark from '~/plugins/starpeace-client/map/bookmark/bookmark.coffee'
-import BookmarkFolder from '~/plugins/starpeace-client/map/bookmark/bookmark-folder.coffee'
+import Bookmark from '~/plugins/starpeace-client/bookmark/bookmark.coffee'
+import BookmarkFolder from '~/plugins/starpeace-client/bookmark/bookmark-folder.coffee'
 
 import MenuSection from '~/components/menu/bookmarks/menu-section.vue'
 
@@ -51,64 +51,62 @@ export default
     'menu-section': MenuSection
 
   props:
-    client: Object
-    translation_manager: Object
-    bookmark_manager: Object
-    building_manager: Object
+    managers: Object
+    ajax_state: Object
+    client_state: Object
     options: Object
-    game_state: Object
-    menu_state: Object
 
   data: ->
+    menu_visible: @client_state?.menu?.is_visible('bookmarks')
+
     filter_input_value: ''
 
+    show_towns: @options.option('bookmarks.towns')
+    show_mausoleums: @options.option('bookmarks.mausoleums')
+    show_poi: @options.option('bookmarks.points_of_interest')
+    show_corporation: @options.option('bookmarks.corporation')
+
+  mounted: ->
+    @options?.subscribe_options_listener =>
+      @show_towns = @options.option('bookmarks.towns')
+      @show_mausoleums = @options.option('bookmarks.mausoleums')
+      @show_poi = @options.option('bookmarks.points_of_interest')
+      @show_corporation = @options.option('bookmarks.corporation')
+
+    @client_state?.menu?.subscribe_menu_listener =>
+      @menu_visible = @client_state?.menu?.is_visible('bookmarks')
+
   computed:
-    state_counter: -> if @game_state.initialized then (@options.vue_state_counter + (@game_state?.session_state.state_counter || 0)) else 0
-    has_corporation: -> if @state_counter then @game_state.session_state.identity.is_tycoon() && @game_state.session_state.corporation_id?.length else false
+    bookmark_manager: -> @managers.bookmark_manager
+    is_ready: -> @client_state.workflow_status == 'ready'
+    has_corporation: -> if @is_ready then @client_state.identity.identity.is_tycoon() && @client_state.player.corporation_id?.length else false
 
     poi_items_by_id: ->
       items_by_id = {}
-      if @state_counter
-        if @show_towns && @bookmark_manager?.town_items?.length
-          items_by_id[item.id] = item for item in @bookmark_manager.town_items
+      if @is_ready && @menu_visible
+        if @show_towns && @client_state.bookmarks.town_items?.length
+          items_by_id[item.id] = item for item in @client_state.bookmarks.town_items
 
-        if @show_mausoleums && @bookmark_manager?.mausoleum_items?.length
-          items_by_id[item.id] = item for item in @bookmark_manager.mausoleum_items
+        if @show_mausoleums && @client_state.bookmarks.mausoleum_items?.length
+          items_by_id[item.id] = item for item in @client_state.bookmarks.mausoleum_items
 
       items_by_id
+
     corporation_items_by_id: ->
-      items = []
-      if @game_state.initialized && @game_state?.session_state.identity.is_tycoon() && @game_state?.session_state.corporation?
-        for company,index in _.sortBy(_.values(@game_state?.session_state.corporation.companies_by_id || {}), (company) => @game_state.name_for_company_id(company.id))
-          company_root_id = "bookmark-corp-#{company.id}"
-          items.push new BookmarkFolder('bookmark-corporation', company_root_id, @game_state.name_for_company_id(company.id), index, {type:'CORPORATION', seal_id:@game_state.seal_for_company_id(company.id)})
-
-          industry_items = {}
-          for building in (@game_state.session_state.buildings_metadata_by_company_id[company.id] || [])
-            building_info = @building_manager.building_metadata?.buildings?[building.key]
-            industry_type = IndustryType.TYPES[building_info.industry_type]
-            continue unless building_info? && industry_type?
-            industry_items[building_info.industry_type] = { type: building_info.industry_type, type_name:@translation_manager.text(industry_type.text_key), items:[] } unless industry_items[building_info.industry_type]?
-            industry_items[building_info.industry_type].items.push building
-
-          for buildings_for_industry,items_index in _.sortBy(_.values(industry_items), (items) -> items.type_name)
-            industry_root_id = "bookmark-corp-#{company.id}-#{buildings_for_industry.type}"
-            items.push new BookmarkFolder(company_root_id, industry_root_id, buildings_for_industry.type_name, items_index, {type:'INDUSTRY', industry_type:buildings_for_industry.type})
-
-            for building,building_index in _.sortBy(buildings_for_industry.items, (items) -> items.name)
-              items.push new Bookmark(industry_root_id, "bookmark-building-#{building.id}", building.name, building_index, building.x, building.y, {type:'BUILDING', corporation_id:building.corporation_id, building_id:building.id})
-
       by_id = {}
-      by_id[item.id] = item for item in items
+      if @is_ready && @menu_visible
+        by_id[item.id] = item for item in @client_state.bookmarks.corporation_items
       by_id
-    bookmark_items_by_id: -> if @state_counter then @game_state?.session_state.bookmarks_by_id || {} else {}
 
-    show_towns: -> if @state_counter then @options.option('bookmarks.towns') else true
-    show_mausoleums: -> if @state_counter then @options.option('bookmarks.mausoleums') else true
-    show_poi: -> if @state_counter then @options.option('bookmarks.points_of_interest') && (@show_towns || @show_mausoleums) else true
-    show_corporation: -> if @state_counter then @has_corporation && @options.option('bookmarks.corporation') else true
+    bookmark_items_by_id: -> if @is_ready then @client_state?.bookmarks.bookmarks_by_id else {}
 
-    actions_disabled: -> if @state_counter then !@has_corporation || @game_state.session_state.bookmarks_changing_request else false
+    actions_disabled: ->
+      return true unless @is_ready || @has_corporation
+
+      @ajax_state.request_mutex.bookmark_metadata?[@client_state.player.corporation_id] ||
+          @ajax_state.request_mutex.update_bookmark?[@client_state.player.corporation_id] ||
+          @ajax_state.request_mutex.new_bookmark_folder?[@client_state.player.corporation_id] ||
+          @ajax_state.request_mutex.new_bookmark_item?[@client_state.player.corporation_id]
 
   methods:
     filter_class: (type) ->
@@ -117,12 +115,12 @@ export default
       console.log "toggle #{type}"
 
     add_folder: () ->
-      @bookmark_manager?.new_bookmark_folder()
-      @$root.$emit('add_folder_action')
+      @bookmark_manager?.new_bookmark_folder().then =>
+        @$root.$emit('add_folder_action')
 
     add_bookmark: () ->
-
-      @$root.$emit('add_bookmark_action')
+      @bookmark_manager?.new_bookmark_item().then =>
+        @$root.$emit('add_bookmark_action')
 
 
 </script>

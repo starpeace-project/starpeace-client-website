@@ -1,6 +1,6 @@
 <template lang='haml'>
 .content.is-marginless
-  .card.planet{'v-for':'planet in planets', 'v-bind:class':"planet.enabled ? '' : 'is-disabled'"}
+  .card.planet{'v-for':'planet in planets()', 'v-bind:class':"planet.enabled ? '' : 'is-disabled'"}
     .card-content
       .level.is-mobile.planet-row
         .level-left
@@ -39,25 +39,19 @@ export default
     'money-text': MoneyText
 
   props:
-    client: Object
-    game_state: Object
-
-  computed:
-    planets: ->
-      if @game_state?.common_metadata?.state_counter? && @game_state.has_planets_metadata_fresh_for_current_system()
-        _.sortBy(_.values(@game_state.common_metadata.planets_metadata_by_system_id[@game_state.session_state.system_id]), (planet) -> planet.name)
-      else
-        []
+    client_state: Object
 
   methods:
+    planets: ->
+      return [] unless @client_state.player.system_id?
+      system_metadata = @client_state?.current_system_metadata()
+      _.sortBy(system_metadata?.planets_metadata || [], (planet) -> planet.name)
+
     select_planet: (planet) ->
       return unless planet.enabled
-      if @game_state.session_state.identity.is_tycoon()
-        corporation = @game_state.session_state.corporation_metadata_for_system_and_planet_id(planet.system_id, planet.id)
-        if corporation?
-          @client.select_corporation(corporation)
-          return
-      @client.select_planet_id(planet.id)
+
+      @client_state.player.set_planet_id(planet.id)
+      window.document.title = "#{planet.name} - STARPEACE" if window?.document?
 
     planet_animation_url: (planet) -> "https://cdn.starpeace.io/animations/planet.#{planet.id}.animation.gif"
     planet_description: (planet) ->

@@ -62,20 +62,18 @@ property_percent = (type, value) ->
 
 export default
   props:
-    invention_manager: Object
-    translation_manager: Object
+    managers: Object
+    client_state: Object
     options: Object
-    game_state: Object
-    menu_state: Object
 
   computed:
-    can_perform_actions: -> @game_state?.initialized && @game_state.session_state.identity.is_tycoon()
+    can_perform_actions: -> @client_state?.workflow_status == 'ready' && @client_state.identity.identity.is_tycoon()
 
-    selected_invention_id: -> @game_state.inventions_selected_invention_id
-    selected_invention: -> if @game_state?.initialized && @selected_invention_id?.length && @invention_manager? then @invention_manager.invention_info_by_id?[@selected_invention_id] else null
+    selected_invention_id: -> @client_state.interface.inventions_selected_invention_id
+    selected_invention: -> if @selected_invention_id? then @client_state.core.invention_library.metadata_for_id(@selected_invention_id) else null
 
-    invention_name: -> if @selected_invention? then @translation_manager.text(@selected_invention.invention.name_key) else ''
-    invention_description: -> if @selected_invention? then @translation_manager.text(@selected_invention.invention.description_key) else ''
+    invention_name: -> if @selected_invention? then @managers.translation_manager.text(@selected_invention.name_key) else ''
+    invention_description: -> if @selected_invention? then @managers.translation_manager.text(@selected_invention.description_key) else ''
     invention_level: -> @selected_invention?.invention?.properties?.level || ''
     invention_cost: ->
       cost = @selected_invention?.invention?.properties?.price || 0
@@ -87,7 +85,7 @@ export default
         for invention_id,invention of @selected_invention.upstream
           upstream.push {
             id: invention.id
-            text: @translation_manager.text(invention.name_key)
+            text: @managers.translation_manager.text(invention.name_key)
           }
       upstream
 
@@ -97,7 +95,7 @@ export default
         for invention_id,invention of @selected_invention.downstream
           downstream.push {
             id: invention.id
-            text: @translation_manager.text(invention.name_key)
+            text: @managers.translation_manager.text(invention.name_key)
           }
       downstream
     invention_allows_leftover: ->
@@ -108,7 +106,7 @@ export default
       properties = []
       if @selected_invention?
         properties_by_type = {}
-        properties_by_type[key] = value for key,value of @selected_invention.invention.properties
+        properties_by_type[key] = value for key,value of @selected_invention.properties
 
         properties.push property_points('Prestige', properties_by_type.prestige) if properties_by_type.prestige?
         properties.push property_percent('Beauty', properties_by_type.beauty) if properties_by_type.beauty?
@@ -125,7 +123,7 @@ export default
 
   methods:
     select_invention: (invention_id) ->
-      @game_state.inventions_selected_invention_id = invention_id
+      @client_state.interface.inventions_selected_invention_id = invention_id
 
 </script>
 

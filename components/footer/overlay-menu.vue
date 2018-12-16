@@ -22,18 +22,22 @@
 </template>
 
 <script lang='coffee'>
-import Overlay from '~/plugins/starpeace-client/map/types/overlay.coffee'
+import Overlay from '~/plugins/starpeace-client/overlay/overlay.coffee'
 
 export default
   props:
-    ui_state: Object
+    client_state: Object
+
+  data: ->
+    interface_state: @client_state?.interface
 
   computed:
-    show_overlay_menu: -> @ui_state?.show_overlay || false
-    current_overlay: -> @ui_state?.current_overlay || Overlay.TYPES.NONE
+    show_overlay_menu: -> if @interface_state?.show_overlay? then @interface_state.show_overlay else false
+    current_overlay: -> if @interface_state?.current_overlay? then @interface_state.current_overlay else Overlay.TYPES.NONE
     current_overlay_value: -> @current_overlay.type
 
-    show_losing_facilities: -> @ui_state?.show_losing_facilities || false
+    show_losing_facilities: -> if @interface_state?.show_losing_facilities? then @interface_state?.show_losing_facilities else false
+
   methods:
     overlays: ->
       overlays = []
@@ -41,10 +45,10 @@ export default
         overlays.push(overlay) unless key == 'NONE' || key == 'ZONES'
       overlays
 
-    overlay_item_css_class: (overlay) -> { 'is-active': @ui_state?.current_overlay?.type == overlay.type }
-    change_overlay: (overlay) -> @ui_state.current_overlay = overlay
+    overlay_item_css_class: (overlay) -> { 'is-active': @current_overlay_value == overlay.type }
+    change_overlay: (overlay) -> @interface_state?.current_overlay = overlay
 
-    toggle_losing_facilities: () -> @ui_state.show_losing_facilities = !@ui_state.show_losing_facilities
+    toggle_losing_facilities: () -> @interface_state.show_losing_facilities = !@interface_state.show_losing_facilities
 </script>
 
 <style lang='sass' scoped>

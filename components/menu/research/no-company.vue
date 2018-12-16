@@ -10,16 +10,12 @@
 <script lang='coffee'>
 export default
   props:
-    translation_manager: Object
-    game_state: Object
-    menu_state: Object
+    client_state: Object
 
   computed:
-    state_counter: -> @game_state?.initialized & (@game_state.session_state.state_counter)
-
     is_visible: ->
-      return false unless @game_state?.initialized && @state_counter
-      @game_state.session_state.identity.is_tycoon() && !@game_state.current_company_metadata()?
+      return false unless @client_state?.workflow_status == 'ready'
+      @client_state.identity.identity.is_tycoon() && !@client_state.player.company_id?
 
 </script>
 

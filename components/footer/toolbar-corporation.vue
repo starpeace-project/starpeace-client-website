@@ -3,23 +3,23 @@
   .level-left.content.corporation-panel
     %p.corporation-name {{corporation_name}}
     %p.corporation-cash
-      %money-text{'v-bind:value':'corporation_cash'}
+      %money-text{':value':'corporation_cash'}
     %p.corporation-cashflow
       %span (
-      %money-text{'v-bind:value':'corporation_cashflow'}
+      %money-text{':value':'corporation_cashflow'}
       %span \/h)
     %p.planet-date {{current_date}}
   .level-item.company-container
-    .company-panel{'v-for':'company in companies', 'v-bind:class':"is_selected(company.id) ? 'is-selected' : ''", 'v-on:click.stop.prevent':"select_company(company.id)"}
+    .company-panel{'v-for':'company in companies', ':class':"is_selected(company.id) ? 'is-selected' : ''", 'v-on:click.stop.prevent':"select_company(company.id)"}
       .company-name-row
-        %company-seal-icon.company-seal{'v-bind:seal_id':"seal_for_company_id(company.id)"}
-        %span.company-name {{name_for_company_id(company.id)}}
+        %company-seal-icon.company-seal{':seal_id':"client_state.seal_for_company_id(company.id)"}
+        %span.company-name {{client_state.name_for_company_id(company.id)}}
       .company-building-count
         %font-awesome-icon{':icon':"['far', 'building']"}
         %span.count {{building_count_for_company_id(company.id)}}
       %p.company-cashflow
         %span (
-        %money-text{'v-bind:value':'company.cashflow'}
+        %money-text{':value':'company.cashflow'}
         %span \/h)
 </template>
 
@@ -31,38 +31,38 @@ import CompanySealIcon from '~/components/misc/company-seal-icon.vue'
 
 export default
   props:
-    game_state: Object
+    client_state: Object
 
   components:
     'money-text': MoneyText
     'company-seal-icon': CompanySealIcon
 
   computed:
-    is_ready: -> @game_state?.initialized
-    current_date: -> moment(@game_state?.current_date).format('MMM D, YYYY')
+    is_ready: -> @client_state?.workflow_status == 'ready'
+    current_date: -> if @client_state?.planet?.current_date? then moment(@client_state?.planet?.current_date).format('MMM D, YYYY') else ''
 
-    can_form_company: -> @is_ready && @game_state?.session_state.state_counter && @game_state?.session_state.identity?.is_tycoon() && @game_state.session_state.corporation_id?.length
+    is_tycoon: -> @is_ready && @client_state?.identity?.identity?.is_tycoon()
+    can_form_company: -> @is_tycoon && @client_state.player.corporation_id?.length
     companies: ->
-      if @is_ready && @game_state?.session_state.state_counter && @game_state?.session_state.identity.is_tycoon() && @game_state?.session_state.corporation?
-        _.sortBy(_.values(@game_state?.session_state.corporation.companies_by_id || {}), (company) => @name_for_company_id(company.id))
+      if @is_ready && @is_tycoon && @client_state?.corporation?.company_ids?.length
+        _.map(_.sortBy(@client_state.corporation.company_ids, (id) => @client_state.name_for_company_id(id)), (id) => @client_state.core.company_cache.metadata_for_id(id))
       else
         []
 
+    corporation_metadata: -> if @is_ready && @client_state.player.corporation_id?.length then @client_state.current_corporation_metadata() else null
     corporation_name: ->
-      if @is_ready && @game_state?.session_state.state_counter && @game_state?.session_state.identity.is_tycoon()
-        if @game_state.session_state.corporation_id? then @game_state.name_for_corporation_id(@game_state.session_state.corporation_id) else '[PENDING]'
+      if @is_tycoon
+        if @corporation_metadata? then @corporation_metadata.name else '[PENDING]'
       else
         '[VISITOR VISA]'
-    corporation_cash: -> if @is_ready then @game_state.session_state.corporation?.cash || 0 else 0
-    corporation_cashflow: -> if @is_ready then @game_state.session_state.corporation?.cashflow || 0 else 0
+    corporation_cash: -> if @is_ready && @corporation_metadata?.cash? then @corporation_metadata.cash else 0
+    corporation_cashflow: -> if @is_ready && @corporation_metadata?.cashflow? then @corporation_metadata.cashflow else 0
 
   methods:
-    seal_for_company_id: (company_id) -> @game_state.seal_for_company_id(company_id)
-    name_for_company_id: (company_id) -> @game_state.name_for_company_id(company_id)
-    building_count_for_company_id: (company_id) -> (@game_state.session_state.buildings_metadata_by_company_id?[company_id] || []).length
+    building_count_for_company_id: (company_id) -> (@client_state.corporation.buildings_metadata_by_company_id?[company_id] || []).length
 
-    is_selected: (company_id) -> @game_state.session_state.company_id == company_id
-    select_company: (company_id) -> @game_state.session_state.company_id = company_id
+    is_selected: (company_id) -> @client_state.player.company_id == company_id
+    select_company: (company_id) -> @client_state.player.company_id = company_id
 </script>
 
 <style lang='sass' scoped>
@@ -75,6 +75,7 @@ export default
 .corporation-panel
   align-items: start
   flex-direction: column
+  margin-right: 1rem
   padding: .5rem
   padding-left: 1rem
 

@@ -3,7 +3,7 @@
   .card-header
     .card-header-title
       Tycoon Details
-    .card-header-icon.card-close{'v-on:click.stop.prevent':"menu_state.toggle_menu('tycoon')"}
+    .card-header-icon.card-close{'v-on:click.stop.prevent':"client_state.menu.toggle_menu('tycoon')"}
       %font-awesome-icon{':icon':"['fas', 'times']"}
   .card-content.sp-menu-background.overall-container
 </template>
@@ -12,9 +12,7 @@
 
 export default
   props:
-    options: Object
-    game_state: Object
-    menu_state: Object
+    client_state: Object
 
 </script>
 

@@ -7,9 +7,7 @@
 <script lang='coffee'>
 export default
   props:
-    game_state: Object
-    menu_state: Object
-    ui_state: Object
+    client_state: Object
 
   data: ->
     menu_options: [{
@@ -75,17 +73,13 @@ export default
       menu_class: ''
     }]
 
-  watch:
-    menu_state_counter: (new_value, old_value) ->
-      option.menu_class = (if @menu_state?.is_visible(option.type) then 'is-active' else '') for option in @menu_options
-
-  computed:
-    menu_state_counter: ->
-      (@menu_state?.toolbar_left || '') + (@menu_state?.toolbar_body || '') + (@menu_state?.toolbar_right || '')
+  mounted: ->
+    @client_state?.menu?.subscribe_menu_listener =>
+      option.menu_class = (if @client_state.menu.is_visible(option.type) then 'is-active' else '') for option in @menu_options
 
   methods:
     toggle_menu: (option) ->
-      @menu_state.toggle_menu(option.type)
+      @client_state.menu.toggle_menu(option.type)
 </script>
 
 <style lang='sass' scoped>

@@ -3,14 +3,14 @@
   .card-header
     .card-header-title
       Planetary Systems
-    .card-header-icon.card-close{'v-on:click.stop.prevent':"menu_state.toggle_menu('systems')"}
+    .card-header-icon.card-close{'v-on:click.stop.prevent':"client_state.menu.toggle_menu('systems')"}
       %font-awesome-icon{':icon':"['fas', 'times']"}
   .card-content.sp-menu-background.overall-container
     .content.sp-scrollbar
       %template{'v-if':'is_system_loading'}
         %img.loading-image.starpeace-logo.logo-loading
       %template{'v-else-if':'true'}
-        %template{'v-for':'system in systems', 'v-bind:disabled':'!system.enabled'}
+        %template{'v-for':'system in systems()', 'v-bind:disabled':'!system.enabled'}
           .card.system{'v-bind:class':"system.enabled ? '' : 'is-disabled'"}
             .card-content
               %a{'v-on:click.stop.prevent':'select_system(system)', 'v-bind:disabled':'!system.enabled'}
@@ -31,10 +31,8 @@
                         %span Online:
                         %span.planet-value {{system.online_count}}
             .disabled-overlay
-          %template{'v-if':"system.id == selected_system_id && is_planets_loading"}
-            %img.loading-image.starpeace-logo.logo-loading
-          %template{'v-else-if':"system.id == selected_system_id"}
-            .card.planet{'v-for':'planet in planets', 'v-bind:disabled':'!planet.enabled', 'v-bind:class':"planet.enabled ? '' : 'is-disabled'"}
+          %template{'v-if':"system.id == selected_system_id"}
+            .card.planet{'v-for':'planet in planets()', 'v-bind:disabled':'!planet.enabled', 'v-bind:class':"planet.enabled ? '' : 'is-disabled'"}
               .card-content
                 %a{'v-on:click.stop.prevent':'select_planet(planet)', 'v-bind:disabled':'!planet.enabled'}
                   .level.is-mobile.planet-row
@@ -69,40 +67,26 @@ export default
     'money-text': MoneyText
 
   props:
-    client: Object
-    game_state: Object
-    menu_state: Object
+    client_state: Object
+    ajax_state: Object
+    managers: Object
+
+  mounted: ->
+    @client_state?.menu?.subscribe_menu_listener =>
+      @menu_visible = @client_state?.menu?.is_visible('systems')
 
   watch:
     is_visible: (new_value, old_value) ->
-      if new_value == true
-        @client.managers.refresh_systems_metadata() unless @game_state.common_metadata.has_systems_metadata_fresh()
-
-    selected_system_id: (new_value, old_value) ->
-      @client.managers.refresh_systems_metadata() unless @game_state.common_metadata.has_systems_metadata_fresh()
-      @client.managers.refresh_planets_metadata(new_value) if new_value?.length && !@game_state.common_metadata.has_planets_metadata_fresh_for_system_id(new_value)
+      @managers.systems_manager.load_metadata() unless !@is_visible || @client_state.core.systems_cache.has_systems_metadata_fresh()
 
   data: ->
-    selected_system_id: null
+    menu_visible: @client_state?.menu?.is_visible('systems')
 
   computed:
-    state_counter: -> @options.vue_state_counter
+    is_visible: -> if @client_state?.initialized then @menu_visible else false
+    is_system_loading: -> @is_visible && @ajax_state?.is_locked('systems_metadata', 'ALL')
 
-    is_visible: -> if @game_state?.initialized && @game_state.common_metadata.state_counter then @menu_state?.is_visible('systems') else false
-    is_system_loading: -> @is_visible && @game_state?.common_metadata?.state_counter? && @game_state.common_metadata.is_refreshing_systems_metadata()
-    is_planets_loading: -> @is_visible && @game_state?.common_metadata?.state_counter? && @selected_system_id?.length && @game_state.common_metadata.is_refreshing_planets_metadata_for_system_id(@selected_system_id)
-
-    systems: ->
-      if @game_state?.common_metadata?.state_counter? && @game_state.common_metadata.has_systems_metadata_any()
-        _.sortBy(_.values(@game_state.common_metadata.systems_metadata_by_id), (system) -> system.name)
-      else
-        []
-
-    planets: ->
-      if @game_state?.common_metadata?.state_counter? && @game_state.common_metadata.has_planets_metadata_any_for_system_id(@selected_system_id)
-        _.sortBy(_.values(@game_state.common_metadata.planets_metadata_by_system_id[@selected_system_id]), (planet) -> planet.name)
-      else
-        []
+    selected_system_id: -> @client_state?.interface?.systems_menu_selected_system_id
 
   methods:
     format_money: (value) ->
@@ -110,27 +94,30 @@ export default
     system_animation_url: (system) -> ''
     planet_animation_url: (planet) -> "https://cdn.starpeace.io/animations/planet.#{planet.id}.animation.gif"
 
+    systems: ->
+      if @client_state.initialized && @client_state.core.systems_cache.has_systems_metadata_any()
+        _.sortBy(@client_state.core.systems_cache.all_systems(), (system) -> system.name)
+      else
+        []
+
+    planets: ->
+      if @client_state.initialized && @selected_system_id? && @client_state.core.systems_cache.system_exists(@selected_system_id)
+        _.sortBy(@client_state.core.systems_cache.metadata_for_id(@selected_system_id)?.planets_metadata || [], (planet) -> planet.name)
+      else
+        []
+
     select_system: (system) ->
       return unless system.enabled
       if @selected_system_id == system.id
-        @selected_system_id = null
+        @client_state.interface.systems_menu_selected_system_id = null
       else
-        @selected_system_id = system.id
-        @client.managers.refresh_planets_metadata(system.id) unless @game_state.common_metadata.has_planets_metadata_fresh_for_system_id(system.id)
+        @client_state.interface.systems_menu_selected_system_id = system.id
 
     select_planet: (planet) ->
       return if !planet.enabled
-      if @game_state.session_state.planet_id == planet.id
-        @menu_state.toggle_menu('systems')
-        return
-
-      if @game_state.session_state.identity.is_tycoon()
-        corporation = @game_state.session_state.corporation_metadata_for_system_and_planet_id(planet.system_id, planet.id)
-        if corporation?
-          @client.select_corporation(corporation)
-          return
-
-      @client.select_planet_id(planet.id)
+      @client_state.menu.toggle_menu('systems')
+      @client_state.interface.systems_menu_selected_system_id = null
+      @client_state.change_planet_id(planet.id) unless @client_state.player.planet_id == planet.id
 
 </script>
 

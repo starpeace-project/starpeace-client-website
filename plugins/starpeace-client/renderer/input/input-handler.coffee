@@ -2,8 +2,8 @@
 ZOOM_DISABLED = false
 AUTO_SCROLL_DISABLED = true
 
-class InputHandler
-  constructor: (@game_state, @menu_state, @camera_manager, @renderer) ->
+export default class InputHandler
+  constructor: (@renderer, @client_state) ->
     @initialized = false
 
     @is_moving = false
@@ -15,9 +15,11 @@ class InputHandler
     @auto_scroll_x = 0
     @auto_scroll_y = 0
 
+  reset_state: () ->
+    @client_state.input_handler_initialized = false
 
   initialize: () ->
-    return unless @renderer?.initialized && !@initialized
+    return unless @client_state?.renderer_initialized && !@client_state.input_handler_initialized
 
     within_screen = (x, y) =>
       lhs_min = @renderer.offset?.left || 0
@@ -29,30 +31,32 @@ class InputHandler
       x >= lhs_min && x <= rhs_max && y >= ths_min && y <= bhs_max
 
     start_moving = (event) =>
+      return unless @client_state.initialized && @client_state?.workflow_status == 'ready'
       @is_moving = true
       event = event?.data
-      return unless @renderer?.initialized && event? && event.isPrimary
+      return unless @client_state?.renderer_initialized && event? && event.isPrimary
 
       @start_x = @last_x = Math.round(event.global.x)
       @start_y = @last_y = Math.round(event.global.y)
 
     finish_moving = (event) =>
-      return unless @is_moving
+      return unless @client_state.initialized && @client_state?.workflow_status == 'ready' && @is_moving
       @is_moving = false
 
       do_action = !event.stopped
       event = event?.data
-      return unless @renderer?.initialized && event? && event.isPrimary
+      return unless @client_state?.renderer_initialized && event? && event.isPrimary
       @last_x = Math.round(event.global.x)
       @last_y = Math.round(event.global.y)
 
       if do_action && @last_x == @start_x && @last_y == @start_y
-        @game_state.selected_building_id = null
-        @game_state.selected_corporation_id = null
+        # FIXME: TODO: move to interface state
+        @client_state.interface.selected_building_id = null
 
     do_move = (event) =>
+      return unless @client_state.initialized && @client_state?.workflow_status == 'ready'
       event = event?.data
-      return unless @is_moving && @renderer?.initialized && event? && event.isPrimary
+      return unless @is_moving && @client_state?.renderer_initialized && event? && event.isPrimary
 
       event_x = Math.round(event.global.x)
       event_y = Math.round(event.global.y)
@@ -62,7 +66,7 @@ class InputHandler
       @last_x = event_x
       @last_y = event_y
 
-      @camera_manager.pan_camera(delta_x / @game_state.game_scale, delta_y / @game_state.game_scale)
+      @client_state.camera.pan_camera(delta_x, delta_y)
 
     stop_auto_scroll = (event) =>
       clearInterval(@auto_scroll) if @auto_scroll?
@@ -78,7 +82,7 @@ class InputHandler
       event_x = Math.round(event.clientX)
       event_y = Math.round(event.clientY)
 
-      return unless @renderer?.initialized && within_screen(event_x, event_y)
+      return unless @client_state?.renderer_initialized && within_screen(event_x, event_y)
 
       lhs_min = @renderer.offset?.left || 0
       lhs_max = lhs_min + 100
@@ -101,7 +105,7 @@ class InputHandler
         counter = 0
         @auto_scroll = setInterval(=>
           counter += 1
-          @camera_manager.pan_camera(delta_x * 25, delta_y * 25) if counter > 6
+          @client_state.interface.pan_camera(delta_x * 25, delta_y * 25) if counter > 6
         , 25)
 
       @auto_scroll_x = delta_x
@@ -119,17 +123,16 @@ class InputHandler
 
 
     do_scale = (event) =>
-      return true if ZOOM_DISABLED || @menu_state.is_any_menu_open()
+      return unless @client_state.initialized && @client_state?.workflow_status == 'ready'
+      return if ZOOM_DISABLED || @client_state.menu.is_any_menu_open()
       return unless event?.deltaY?
       return unless within_screen(event.clientX, event.clientY)
 
       if event.deltaY > 0
-        @camera_manager.zoom_out()
+        @client_state.camera.camera_zoom_out()
       else if event.deltaY < 0
-        @camera_manager.zoom_in()
+        @client_state.camera.camera_zoom_in()
 
     document.addEventListener('mousewheel', do_scale, false)
 
-    @initialized = true
-
-export default InputHandler
+    @client_state.input_handler_initialized = true

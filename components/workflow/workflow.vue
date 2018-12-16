@@ -2,7 +2,7 @@
 %no-ssr
   %transition{name:'fade-in'}
     #workflow-container{'v-show':'is_active'}
-      %workflow-corporation{'v-show':"status == 'pending_system' || status == 'pending_planet'", 'v-bind:client':'client', 'v-bind:game_state':'game_state', 'v-bind:system_name':'current_system_name'}
+      %workflow-corporation{'v-show':"status == 'pending_system' || status == 'pending_planet'", 'v-bind:client':'client', 'v-bind:client_state':'client_state', 'v-bind:system_name':'current_system_name'}
 
       .card.is-starpeace{'v-bind:style':'workflow_card_style', 'v-bind:class':'workflow_card_class'}
         .card-header{'v-show':'has_header'}
@@ -16,18 +16,18 @@
         .card-content
           %menu-loading{'v-show':"status == 'initializing'", message:'Initializing...'}
 
-          %menu-visa-type{'v-show':"status == 'pending_visa_type'", 'v-bind:client':'client', 'v-bind:game_state':'game_state'}
-
+          %menu-visa-type{'v-show':"status == 'pending_visa_type'", 'v-bind:client':'client', 'v-bind:client_state':'client_state'}
           %menu-loading{'v-show':"status == 'pending_identity'", message:'Simulating identity authentication with provider...'}
           %menu-loading{'v-show':"status == 'pending_session'", message:'Authorizing session for identity...'}
 
           %menu-loading{'v-show':"status == 'pending_tycoon_metadata'", message:'Retrieving tycoon information...'}
           %menu-loading{'v-show':"status == 'pending_system_metadata'", message:'Retrieving planetary systems information...'}
-          %menu-system{'v-show':"status == 'pending_system'", 'v-bind:client':'client', 'v-bind:game_state':'game_state'}
-          %menu-loading{'v-show':"status == 'pending_planet_metadata'", message:'Retrieving system information...'}
-          %menu-planet{'v-show':"status == 'pending_planet'", 'v-bind:client':'client', 'v-bind:game_state':'game_state'}
+          %menu-system{'v-show':"status == 'pending_system'", 'v-bind:client':'client', 'v-bind:client_state':'client_state'}
+          %menu-planet{'v-show':"status == 'pending_planet'", 'v-bind:client':'client', 'v-bind:client_state':'client_state'}
 
           %menu-loading{'v-show':"status == 'pending_assets'", message:'Loading assets and resources...'}
+          %menu-loading{'v-show':"status == 'pending_planet_details'", message:'Loading planet details...'}
+          %menu-loading{'v-show':"status == 'pending_player_data'", message:'Loading tycoon and corporation data...'}
           %menu-loading{'v-show':"status == 'pending_initialization'", message:'Initializing client environment...'}
           %menu-loading{'v-show':"status == 'ready'", message:'Initializing...'}
 </template>
@@ -65,34 +65,10 @@ export default
 
   props:
     client: Object
-    event_listener: Object
-    game_state: Object
-
-  watch:
-    status: (new_value, old_value) ->
-      @client.managers.refresh_systems_metadata() if new_value == 'pending_system_metadata' && !@game_state.common_metadata.is_refreshing_systems_metadata()
-      @client.managers.refresh_planets_metadata() if new_value == 'pending_planet_metadata' && !@game_state.is_refreshing_planets_metadata_for_current_system()
+    client_state: Object
 
   computed:
-    status: ->
-      return 'initializing' unless @game_state? && @game_state.common_metadata.state_counter? && @game_state.session_state.state_counter?
-
-      unless @game_state.initialized
-        return 'pending_visa_type' unless @game_state.session_state.visa_type?
-        return 'pending_identity' unless @game_state.session_state.identity?
-        return 'pending_session' unless @game_state.session_state.session_token?
-
-        return 'pending_tycoon_metadata' if @game_state.session_state.identity.is_tycoon() && !@game_state.session_state.has_tycoon_metadata_fresh()
-        return 'pending_system_metadata' unless @game_state.common_metadata.has_systems_metadata_fresh()
-        return 'pending_system' unless @game_state.session_state.system_id?
-        return 'pending_planet_metadata' unless @game_state.has_planets_metadata_fresh_for_current_system()
-        return 'pending_planet' unless @game_state.session_state.planet_id?
-
-        return 'pending_assets' unless @game_state.has_assets
-        return 'pending_initialization'
-
-      'ready'
-
+    status: -> @client_state.workflow_status
     is_active: -> @status != 'ready'
 
     workflow_card_class: -> { 'has-header': @has_header, 'full-height': @status == 'pending_visa_type', 'sp-scrollbar': @status == 'pending_system' || @status == 'pending_planet' }
@@ -102,10 +78,12 @@ export default
     max_width: -> STATUS_MAX_WIDTHS[@status]
     max_height: -> if @status == 'pending_visa_type' then '60rem' else 'inherit'
 
-    current_system_name: -> if @game_state?.session_state.system_id? then @game_state.current_system_metadata()?.name else ''
+    current_system_name: -> if @client_state?.player?.system_id? then @client_state.current_system_metadata()?.name else ''
 
   methods:
-    reset_planetary_system: -> @client.reset_system()
+    reset_planetary_system: ->
+      @client_state.reset_system()
+      window.document.title = "STARPEACE" if window?.document?
 </script>
 
 <style lang='sass' scoped>

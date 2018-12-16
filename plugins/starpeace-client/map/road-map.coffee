@@ -1,15 +1,15 @@
 
+import ChunkMap from '~/plugins/starpeace-client/map/chunk/chunk-map.coffee'
+import Road from '~/plugins/starpeace-client/road/road.coffee'
+
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 
-import ChunkMap from '~/plugins/starpeace-client/map/chunk/chunk-map.coffee'
-import Road from '~/plugins/starpeace-client/map/types/road.coffee'
-
 export default class RoadMap
-  constructor: (event_listener, @ground_map, @building_map, @concrete_map, @width, @height) ->
+  constructor: (client_state, @ground_map, @building_map, @concrete_map, @width, @height) ->
     @road_buffer = new Array(@width * @height)
     @road_info = new Array(@width * @height)
 
-    event_listener.subscribe_map_data_listener (chunk_event) =>
+    client_state.planet.subscribe_map_data_listener (chunk_event) =>
       @refresh_roads(chunk_event.info.chunk_x, chunk_event.info.chunk_y) if chunk_event.type == 'building' || chunk_event.type == 'road'
 
   road_info_at: (x, y) -> @road_info[y * @width + x]

@@ -9,17 +9,41 @@
       {
         "id": "planet-1",
         "name": "Mercury",
-        "enabled": true
+        "enabled": true,
+        "planet_type": "earth",
+        "planet_width": 1000,
+        "planet_height": 1000,
+        "map_id": "aries",
+        "population": 0,
+        "investment_value": 0,
+        "tycoon_count": 0,
+        "online_count": 0
       },
       {
         "id": "planet-2",
         "name": "Venus",
-        "enabled": true
+        "enabled": true,
+        "planet_type": "earth",
+        "planet_width": 1000,
+        "planet_height": 1000,
+        "map_id": "ancoeus",
+        "population": 0,
+        "investment_value": 0,
+        "tycoon_count": 0,
+        "online_count": 0
       },
       {
         "id": "planet-3",
         "name": "Neptune",
-        "enabled": false
+        "enabled": false,
+        "planet_type": "earth",
+        "planet_width": 1000,
+        "planet_height": 1000,
+        "map_id": "mondronia",
+        "population": 0,
+        "investment_value": 0,
+        "tycoon_count": 0,
+        "online_count": 0
       }
     ]
   },
@@ -33,12 +57,28 @@
       {
         "id": "planet-4",
         "name": "Mars",
-        "enabled": true
+        "enabled": true,
+        "planet_type": "earth",
+        "planet_width": 1000,
+        "planet_height": 1000,
+        "map_id": "darkadia",
+        "population": 0,
+        "investment_value": 0,
+        "tycoon_count": 0,
+        "online_count": 0
       },
       {
         "id": "planet-5",
         "name": "Jupiter",
-        "enabled": true
+        "enabled": true,
+        "planet_type": "earth",
+        "planet_width": 1000,
+        "planet_height": 1000,
+        "map_id": "cymoril",
+        "population": 0,
+        "investment_value": 0,
+        "tycoon_count": 0,
+        "online_count": 0
       }
     ]
   }

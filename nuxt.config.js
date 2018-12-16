@@ -9,12 +9,6 @@ const pjson = require('./package.json')
 
 const is_development = process.env.NODE_ENV === 'development'
 
-// var git_version = pjson.version;
-// if (!git_version || !git_version.length) {
-//   const GitRevisionPlugin = require('git-revision-webpack-plugin')
-//   const gitRevisionPlugin = new GitRevisionPlugin({lightweightTags: true})
-//   git_version = gitRevisionPlugin.version();
-// }
 const client_version = 'v' + pjson.version + '-' + moment().tz('America/Los_Angeles').format('YYYY-MM-DD');
 
 var render_and_convert_markdown = function(markdown) {

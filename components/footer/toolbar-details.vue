@@ -8,7 +8,7 @@
       %table.table.row-footer-primary
         %tbody
           %tr.row-menu
-            %toolbar-menubar{'v-bind:game_state':'game_state', 'v-bind:menu_state':'menu_state', 'v-bind:ui_state':'ui_state'}
+            %toolbar-menubar{'v-bind:client_state':'client_state'}
             %td.column-tycoon
               %span.column-tycoon-name {{tycoon_name}}
               %span.column-tycoon-buildings
@@ -16,15 +16,15 @@
                 %font-awesome-icon{':icon':"['far', 'building']"}
               .column-notification-icons.level
                 .level-item.client-version
-                  %a{'v-bind:class':'menu_class_release_notes', 'v-on:click.stop.prevent':"menu_state.toggle_menu('release_notes')"} {{client_version}}
+                  %a{'v-bind:class':'menu_class_release_notes', 'v-on:click.stop.prevent':"client_state.menu.toggle_menu('release_notes')"} {{client_version}}
                 .level-item.game-music{'v-bind:class':'game_music_class', 'v-show':"show_game_music"}
-                  %font-awesome-icon{':icon':"['fas', 'play']", 'v-show':'!game_state.game_music_playing', 'v-on:click.stop.prevent':'toggle_game_music()'}
-                  %font-awesome-icon{':icon':"['fas', 'pause']", 'v-show':'game_state.game_music_playing', 'v-on:click.stop.prevent':'toggle_game_music()'}
+                  %font-awesome-icon{':icon':"['fas', 'play']", 'v-show':'!music_state.game_music_playing', 'v-on:click.stop.prevent':'music_state.toggle_music()'}
+                  %font-awesome-icon{':icon':"['fas', 'pause']", 'v-show':'music_state.game_music_playing', 'v-on:click.stop.prevent':'music_state.toggle_music()'}
                 .level-item.game-music-next{'v-bind:class':'game_music_volume_class', 'v-show':"show_game_music"}
-                  %font-awesome-icon{':icon':"['fas', 'fast-forward']", 'v-on:click.stop.prevent':'toggle_next_game_music()'}
+                  %font-awesome-icon{':icon':"['fas', 'fast-forward']", 'v-on:click.stop.prevent':'music_state.next_song()'}
                 .level-item.game-music-volume{'v-bind:class':'game_music_volume_class', 'v-show':"show_game_music"}
-                  %font-awesome-icon{':icon':"['fas', 'volume-up']", 'v-show':'game_state.game_music_volume', 'v-on:click.stop.prevent':'toggle_game_music_volume()'}
-                  %font-awesome-icon{':icon':"['fas', 'volume-off']", 'v-show':'!game_state.game_music_volume', 'v-on:click.stop.prevent':'toggle_game_music_volume()'}
+                  %font-awesome-icon{':icon':"['fas', 'volume-up']", 'v-show':'music_state.game_music_volume', 'v-on:click.stop.prevent':'music_state.toggle_volume()'}
+                  %font-awesome-icon{':icon':"['fas', 'volume-off']", 'v-show':'!music_state.game_music_volume', 'v-on:click.stop.prevent':'music_state.toggle_volume()'}
                 .level-item.notification-mail
                   %font-awesome-icon{':icon':"['far', 'envelope']"}
                 .level-item.notification-loading
@@ -32,7 +32,7 @@
           %tr
             %td.column-news-ticker {{ ticker_message }}
             %td.column-tycoon-details
-              %toolbar-corporation{'v-bind:game_state':'game_state'}
+              %toolbar-corporation{'v-bind:client_state':'client_state'}
 </template>
 
 <script lang='coffee'>
@@ -44,13 +44,9 @@ import MoneyText from '~/components/misc/money-text.vue'
 
 export default
   props:
-    camera_manager: Object
-    game_state: Object
-    menu_state: Object
-    mini_map_renderer: Object
-    music_manager: Object
+    client_state: Object
+    managers: Object
     options: Object
-    ui_state: Object
 
   components:
     'toolbar-corporation': ToolbarCorporation
@@ -61,30 +57,24 @@ export default
     client_version: process.env.CLIENT_VERSION
     show_game_music: @options?.option('music.show_game_music')
 
-  watch:
-    state_counter: (new_value, old_value) ->
+  mounted: ->
+    @options?.subscribe_options_listener =>
       @show_game_music = @options?.option('music.show_game_music')
 
   computed:
-    state_counter: -> @options?.vue_state_counter
+    music_state: -> @client_state?.music
 
-    is_ready: -> @game_state?.initialized
-    ticker_message: -> @ui_state?.event_ticker_message || ''
-    current_date: -> moment(@game_state?.current_date).format('MMM D, YYYY')
+    is_ready: -> @client_state.initialized && @client_state?.workflow_status == 'ready'
+    ticker_message: -> @client_state?.interface?.event_ticker_message || ''
 
-    menu_class_release_notes: -> { 'is-active': @menu_state?.show_menu_release_notes || false }
+    menu_class_release_notes: -> { 'is-active': @client_state?.menu?.is_visible('release_notes') || false }
 
-    game_music_class: -> if @game_state.game_music_playing then 'music-pause' else 'music-play'
-    game_music_volume_class: -> if @game_state.game_music_volume then 'music-volume' else 'music-mute'
+    game_music_class: -> if @music_state.game_music_playing then 'music-pause' else 'music-play'
+    game_music_volume_class: -> if @music_state.game_music_volume then 'music-volume' else 'music-mute'
 
-    notification_loading_css_class: -> { 'ajax-loading': (@game_state?.ajax_requests || 0) > 0 }
+    notification_loading_css_class: -> { 'ajax-loading': (@ajax_state?.ajax_requests || 0) > 0 }
 
-    tycoon_name: -> if @game_state?.session_state.state_counter && @game_state?.session_state.identity.is_tycoon() then @game_state?.session_state.tycoon_metadata?.name else 'Visitor'
-
-  methods:
-    toggle_game_music: -> @music_manager.toggle_music()
-    toggle_next_game_music: -> @music_manager.next_song()
-    toggle_game_music_volume: -> @music_manager.toggle_volume()
+    tycoon_name: -> if @is_ready && @client_state?.identity?.identity?.is_tycoon() then @client_state?.current_tycoon_metadata()?.name || '' else 'Visitor'
 </script>
 
 <style lang='sass' scoped>

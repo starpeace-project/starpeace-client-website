@@ -34,7 +34,6 @@
     "cross-env": "^5.2.0",
     "del-cli": "^1.1.0",
     "fpsmeter": "^0.3.1",
-    "git-revision-webpack-plugin": "^3.0.3",
     "haml-loader": "^0.1.0",
     "hamljs": "^0.6.2",
     "howler": "^2.0.15",

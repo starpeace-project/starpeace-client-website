@@ -3,30 +3,27 @@ global addResizeListener
 global PIXI
 ###
 
-import PlanetTypeManifest from '~/plugins/starpeace-client/map/planet-type-manifest.coffee'
+import MetadataLand from '~/plugins/starpeace-client/land/metadata-land.coffee'
 
 import ChunkMap from '~/plugins/starpeace-client/map/chunk/chunk-map.coffee'
-import BuildingZone from '~/plugins/starpeace-client/map/types/building-zone.coffee'
+import BuildingZone from '~/plugins/starpeace-client/overlay/building-zone.coffee'
 
 import MiniMapInputHandler from '~/plugins/starpeace-client/renderer/input/mini-map-input-handler.coffee'
 
 MINI_MAP_TEXTURE_KEY = 'rendered-mini-map'
-MINI_MAP_ZOOM_MIN = .25
-MINI_MAP_ZOOM_STEP = .25
 
 MINI_MAP_TILE_WIDTH = Math.sqrt(2)
 MINI_MAP_TILE_HEIGHT = MINI_MAP_TILE_WIDTH * .5
 
 export default class MiniMapRenderer
-  constructor: (event_listener, @managers, @renderer, @game_state, @options, @ui_state) ->
-    @initialized = false
+  constructor: (@managers, @renderer, @client_state, @options) ->
     @rgba_buffer = null
 
     @dragging = false
     @map_offset_x = 0
     @map_offset_y = 0
 
-    event_listener.subscribe_map_data_listener (chunk_event) =>
+    @client_state.planet.subscribe_map_data_listener (chunk_event) =>
       source_x = (chunk_event.info.chunk_x - 0) * ChunkMap.CHUNK_WIDTH - 10
       target_x = (chunk_event.info.chunk_x + 1) * ChunkMap.CHUNK_WIDTH + 10
       source_y = (chunk_event.info.chunk_y - 0) * ChunkMap.CHUNK_HEIGHT - 10
@@ -37,26 +34,27 @@ export default class MiniMapRenderer
       unless @pending_refresh?
         @pending_refresh = setTimeout((=> @refresh_map_texture()), 500)
 
-    event_listener.subscribe_viewport_listener (event) => @upate_viewport()
+    @client_state.camera.subscribe_viewport_listener (event) => @upate_viewport()
+    @client_state.interface.subscribe_mini_map_zoom_listener => @update_mini_map_scale()
 
   update_map_data: (source_x, target_x, source_y, target_y) ->
-    return unless @game_state.game_map?.raw_map_rgba_pixels?
+    return unless @client_state.planet.game_map?.raw_map_rgba_pixels?
 
-    @rgba_buffer = new Uint8ClampedArray(@game_state.game_map.width * @game_state.game_map.height * 4) unless @rgba_buffer?
+    @rgba_buffer = new Uint8ClampedArray(@client_state.planet.game_map.width * @client_state.planet.game_map.height * 4) unless @rgba_buffer?
     for y in [source_y...target_y]
       for x in [source_x...target_x]
-        index = (y * @game_state.game_map.width + x) * 4
-        source_index = ((@game_state.game_map.height - x) * @game_state.game_map.width + (@game_state.game_map.width - y)) * 4
+        index = (y * @client_state.planet.game_map.width + x) * 4
+        source_index = ((@client_state.planet.game_map.height - x) * @client_state.planet.game_map.width + (@client_state.planet.game_map.width - y)) * 4
 
         @rgba_buffer[index + 3] = 255
 
-        building_chunk_info = @game_state.game_map.building_map.chunk_building_info_at(x, y)
-        road_chunk_info = @game_state.game_map.building_map.chunk_road_info_at(x, y)
+        building_chunk_info = @client_state.planet.game_map.building_map.chunk_building_info_at(x, y)
+        road_chunk_info = @client_state.planet.game_map.building_map.chunk_road_info_at(x, y)
 
         if building_chunk_info?.is_current() && road_chunk_info?.is_current()
-          building_info = @game_state.game_map.building_map.building_info_at(x, y)
-          building_metadata = if building_info? then @managers.building_manager.building_metadata.buildings[building_info.key] else null
-          if @game_state.game_map.road_map.road_info_at(x, y)
+          building_info = @client_state.planet.game_map.building_map.building_info_at(x, y)
+          building_metadata = if building_info? then @client_state.core.building_library.metadata_by_id[building_info.key] else null
+          if @client_state.planet.game_map.road_map.road_info_at(x, y)
             @rgba_buffer[index + 0] = 30
             @rgba_buffer[index + 1] = 30
             @rgba_buffer[index + 2] = 30
@@ -67,16 +65,17 @@ export default class MiniMapRenderer
             @rgba_buffer[index + 1] = (color & 0x00FF00) >> 8
             @rgba_buffer[index + 2] = (color & 0x0000FF) >> 0
           else
-            @rgba_buffer[index + 0] = @game_state.game_map.raw_map_rgba_pixels[source_index + 0]
-            @rgba_buffer[index + 1] = @game_state.game_map.raw_map_rgba_pixels[source_index + 1]
-            @rgba_buffer[index + 2] = @game_state.game_map.raw_map_rgba_pixels[source_index + 2]
+            @rgba_buffer[index + 0] = @client_state.planet.game_map.raw_map_rgba_pixels[source_index + 0]
+            @rgba_buffer[index + 1] = @client_state.planet.game_map.raw_map_rgba_pixels[source_index + 1]
+            @rgba_buffer[index + 2] = @client_state.planet.game_map.raw_map_rgba_pixels[source_index + 2]
         else
-          @rgba_buffer[index + 0] = @game_state.game_map.raw_map_rgba_pixels[source_index + 0] - @game_state.game_map.raw_map_rgba_pixels[source_index + 0] * .5
-          @rgba_buffer[index + 1] = @game_state.game_map.raw_map_rgba_pixels[source_index + 1] - @game_state.game_map.raw_map_rgba_pixels[source_index + 1] * .5
-          @rgba_buffer[index + 2] = @game_state.game_map.raw_map_rgba_pixels[source_index + 2] - @game_state.game_map.raw_map_rgba_pixels[source_index + 2] * .5
+          @rgba_buffer[index + 0] = @client_state.planet.game_map.raw_map_rgba_pixels[source_index + 0] - @client_state.planet.game_map.raw_map_rgba_pixels[source_index + 0] * .5
+          @rgba_buffer[index + 1] = @client_state.planet.game_map.raw_map_rgba_pixels[source_index + 1] - @client_state.planet.game_map.raw_map_rgba_pixels[source_index + 1] * .5
+          @rgba_buffer[index + 2] = @client_state.planet.game_map.raw_map_rgba_pixels[source_index + 2] - @client_state.planet.game_map.raw_map_rgba_pixels[source_index + 2] * .5
 
   refresh_map_texture: () ->
-    image_data = new ImageData(@rgba_buffer, @game_state.game_map.width, @game_state.game_map.height)
+    return unless @client_state.initialized && @client_state.workflow_status == 'ready'
+    image_data = new ImageData(@rgba_buffer, @client_state.planet.game_map.width, @client_state.planet.game_map.height)
 
     dom_buffer = document.createElement('canvas')
     dom_buffer.width = image_data.width
@@ -138,7 +137,8 @@ export default class MiniMapRenderer
     render_container = document.getElementById('mini-map-webgl-container')
     render_container.style.visibility = "hidden"
 
-    @update_map_data(0, @game_state.game_map.width, 0, @game_state.game_map.height)
+    @update_map_data(0, @client_state.planet.game_map.width, 0, @client_state.planet.game_map.height)
+    clearTimeout(@pending_refresh) if @pending_refresh?
     @pending_refresh = setTimeout(=>
       @refresh_map_texture()
       render_container.style.visibility = "visible"
@@ -148,7 +148,7 @@ export default class MiniMapRenderer
     @last_view_offset_x = 0
     @last_view_offset_y = 0
 
-    @initialized = true
+    @client_state.mini_map_renderer_initialized = true
 
   recenter_at: (mini_canvas_x, mini_canvas_y) ->
     mini_map_zoom = @options.option('mini_map.zoom')
@@ -156,12 +156,11 @@ export default class MiniMapRenderer
     mini_canvas_x = mini_canvas_x - @map_offset_x
     mini_canvas_y = mini_canvas_y - @map_offset_y * .5
 
-    ratio_x = mini_map_zoom * MINI_MAP_TILE_WIDTH / PlanetTypeManifest.DEFAULT_TILE_WIDTH
-    ratio_y = mini_map_zoom * MINI_MAP_TILE_HEIGHT / PlanetTypeManifest.DEFAULT_TILE_HEIGHT
+    ratio_x = mini_map_zoom * MINI_MAP_TILE_WIDTH / MetadataLand.DEFAULT_TILE_WIDTH
+    ratio_y = mini_map_zoom * MINI_MAP_TILE_HEIGHT / MetadataLand.DEFAULT_TILE_HEIGHT
 
-    viewport = @renderer.viewport()
-    half_viewport_width = Math.round(ratio_x * viewport.canvas_width / (2 * @game_state.game_scale))
-    half_viewport_height = Math.round(ratio_y * viewport.canvas_height / (2 * @game_state.game_scale))
+    half_viewport_width = Math.round(ratio_x * @client_state.camera.canvas_width / (2 * @client_state.camera.game_scale))
+    half_viewport_height = Math.round(ratio_y * @client_state.camera.canvas_height / (2 * @client_state.camera.game_scale))
 
     mini_canvas_x = mini_canvas_x - half_viewport_width
     mini_canvas_y = mini_canvas_y - half_viewport_height
@@ -171,7 +170,7 @@ export default class MiniMapRenderer
     iso_x = (y_ratio + x_ratio) * 0.5
     iso_y = (y_ratio - x_ratio) * 0.5
 
-    viewport.top_left_at(iso_x, iso_y)
+    @client_state.camera.top_left_at(iso_x, iso_y)
 
   offset: (delta_x, delta_y) ->
     @map_offset_x -= delta_x unless delta_x == 0
@@ -179,29 +178,25 @@ export default class MiniMapRenderer
 
     @upate_viewport()
 
-  zoom_and_scale: (delta) ->
-    if @ui_state.update_mini_map_zoom(delta)
-      mini_map_zoom = @options.option('mini_map.zoom')
-      @sprite.scale = new PIXI.Point(mini_map_zoom, mini_map_zoom) if @sprite?
-  zoom_in: () -> @zoom_and_scale(MINI_MAP_ZOOM_STEP)
-  zoom_out: () -> @zoom_and_scale(-MINI_MAP_ZOOM_STEP)
+  update_mini_map_scale: () ->
+    mini_map_zoom = @options.option('mini_map.zoom')
+    @sprite.scale = new PIXI.Point(mini_map_zoom, mini_map_zoom) if @sprite?
 
   upate_viewport: () ->
-    return unless @initialized && @sprite?
+    return unless @client_state.mini_map_renderer_initialized && @sprite?
 
     mini_map_zoom = @options.option('mini_map.zoom')
 
-    ratio_x = mini_map_zoom * MINI_MAP_TILE_WIDTH / PlanetTypeManifest.DEFAULT_TILE_WIDTH
-    ratio_y = mini_map_zoom * MINI_MAP_TILE_HEIGHT / PlanetTypeManifest.DEFAULT_TILE_HEIGHT
+    ratio_x = mini_map_zoom * MINI_MAP_TILE_WIDTH / MetadataLand.DEFAULT_TILE_WIDTH
+    ratio_y = mini_map_zoom * MINI_MAP_TILE_HEIGHT / MetadataLand.DEFAULT_TILE_HEIGHT
 
-    viewport = @renderer.viewport()
-    viewport_width = Math.round(ratio_x * viewport.canvas_width  / @game_state.game_scale)
-    viewport_height = Math.round(ratio_y * viewport.canvas_height / @game_state.game_scale)
+    viewport_width = Math.round(ratio_x * @client_state.camera.canvas_width  / @client_state.camera.game_scale)
+    viewport_height = Math.round(ratio_y * @client_state.camera.canvas_height / @client_state.camera.game_scale)
 
-    mini_map_x = Math.round(@game_state.view_offset_x * ratio_x - viewport_width * .5 + @map_offset_x)
-    mini_map_y = Math.round(@game_state.view_offset_y * ratio_y - viewport_height * .5 + .5 * @map_offset_y)
+    mini_map_x = Math.round(@client_state.camera.view_offset_x * ratio_x - viewport_width * .5 + @map_offset_x)
+    mini_map_y = Math.round(@client_state.camera.view_offset_y * ratio_y - viewport_height * .5 + .5 * @map_offset_y)
 
-    if @last_view_offset_x != @game_state.view_offset_x || @last_view_offset_y != @game_state.view_offset_y
+    if @last_view_offset_x != @client_state.camera.view_offset_x || @last_view_offset_y != @client_state.camera.view_offset_y
       center_offset_x = mini_map_x - (@renderer_width * .5 - viewport_width * .5)
       center_offset_y = mini_map_y - (@renderer_height * .5 - viewport_height * .5)
 
@@ -209,7 +204,7 @@ export default class MiniMapRenderer
       @map_offset_y = Math.round(@map_offset_y - 2 * center_offset_y)
 
       mini_map_x = Math.round(mini_map_x - center_offset_x)
-      mini_map_y = Math.round(@game_state.view_offset_y * ratio_y - viewport_height * .5 + .5 * @map_offset_y)
+      mini_map_y = Math.round(@client_state.camera.view_offset_y * ratio_y - viewport_height * .5 + .5 * @map_offset_y)
 
     @sprite?.x = @map_offset_x
     @sprite?.y = @map_offset_y
@@ -219,10 +214,15 @@ export default class MiniMapRenderer
     @viewport.drawRect(mini_map_x, mini_map_y, viewport_width, viewport_height)
 
     @last_mini_map_zoom = mini_map_zoom
-    @last_game_scale = @game_state.game_scale
-    @last_view_offset_x = @game_state.view_offset_x
-    @last_view_offset_y = @game_state.view_offset_y
+    @last_game_scale = @client_state.camera.game_scale
+    @last_view_offset_x = @client_state.camera.view_offset_x
+    @last_view_offset_y = @client_state.camera.view_offset_y
+
+  needs_update: () ->
+    @last_mini_map_zoom != @options.option('mini_map.zoom') || @last_game_scale != @client_state.camera.game_scale ||
+        @last_view_offset_x != @client_state.camera.view_offset_x || @last_view_offset_y != @client_state.camera.view_offset_y
 
   tick: () ->
+    return unless @client_state.mini_map_renderer_initialized
     @initialize_mini_map_sprite() unless @sprite? || !PIXI.utils.TextureCache[MINI_MAP_TEXTURE_KEY]?
-    @upate_viewport() if @last_mini_map_zoom != @options.option('mini_map.zoom') ||  @last_game_scale != @game_state.game_scale || @last_view_offset_x != @game_state.view_offset_x || @last_view_offset_y != @game_state.view_offset_y
+    @upate_viewport() if @needs_update()

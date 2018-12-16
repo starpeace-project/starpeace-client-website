@@ -1,6 +1,6 @@
 <template lang='haml'>
 .content.is-marginless
-  .card.system{'v-for':'system in systems', 'v-bind:class':"system.enabled ? '' : 'is-disabled'"}
+  .card.system{'v-for':'system in systems()', 'v-bind:class':"system.enabled ? '' : 'is-disabled'"}
     .card-content
       .level.is-mobile.system-row
         .level-left
@@ -27,20 +27,22 @@
 <script lang='coffee'>
 export default
   props:
-    client: Object
-    game_state: Object
+    client_state: Object
 
-  computed:
-    systems: ->
-      # FIXME: TODO: add better stale state support
-      if @game_state?.common_metadata?.state_counter? && @game_state.common_metadata.has_systems_metadata_fresh()
-        _.sortBy(_.values(@game_state.common_metadata.systems_metadata_by_id), (system) -> system.name)
-      else
-        []
+  mounted: ->
+    @client_state.core?.systems_cache?.subscribe_systems_metadata_listener => @$forceUpdate()
 
   methods:
     system_animation_url: (system) -> ''
-    select_system: (system) -> @client.select_system_id(system.id) if system.enabled
+
+    systems: ->
+      return [] unless @client_state?.core.systems_cache?
+      _.sortBy(@client_state?.core.systems_cache.all_systems(), (system) -> system.name)
+
+    select_system: (system) ->
+      return unless system.enabled
+      @client_state.player.set_system_id(system.id)
+      window.document.title = "#{system.name} - STARPEACE" if window?.document? && system.name?
 </script>
 
 <style lang='sass' scoped>

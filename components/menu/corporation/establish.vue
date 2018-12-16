@@ -9,10 +9,10 @@
       .content
         %p.intro
           Welcome to
-          %span.planet-name {{planet_name}}
+          %span.planet-name {{planet_name()}}
           , Tycoon!
         %p.info
-          Establish a corporation to participate in the planet economy. IFEL Regulations limit each Tycoon to a single corporation per planet, though multiple companies can be formed under each corporation.
+          Establish a corporation to participate in the planet economy. IFEL Regulations limit Tycoons to a single corporation per planet; one or more companies can be formed under each corporation.
         %p.info
           Corporation name is unique across all systems and tycoons; name may be re-used across multiple planets once claimed by Tycoon.
     %footer.card-footer
@@ -29,16 +29,17 @@ export default
   props:
     client: Object
     translation_manager: Object
-    game_state: Object
+    client_state: Object
 
   computed:
-    state_counter: -> if @game_state?.initialized then @game_state.session_state.state_counter else 0
-    is_visible: -> @state_counter && @game_state.session_state.identity.is_tycoon() && !@game_state.session_state.corporation_id?.length
-
-    planet_name: -> if @game_state?.session_state.planet_id?.length then @game_state.name_for_planet_id(@game_state.session_state.planet_id) else ''
+    is_visible: -> @client_state.initialized && @client_state.workflow_status == 'ready' && @client_state.identity.identity.is_tycoon() && !@client_state.player.corporation_id?.length
 
   methods:
-    cancel: () -> @client.reset_system()
+    planet_name: -> @client_state?.current_planet_metadata().name
+
+    cancel: () ->
+      @client_state.change_planet_id(null)
+      window.document.title = "STARPEACE" if window?.document?
 
     establish: () ->
       console.log 'establish corp'

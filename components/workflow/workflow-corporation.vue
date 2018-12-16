@@ -1,5 +1,5 @@
 <template lang='haml'>
-.card.is-starpeace.sp-scrollbar.corporations-container{'v-if':"existing_corporations.length"}
+.card.is-starpeace.sp-scrollbar.corporations-container{'v-if':"existing_corporations().length"}
   .card-header
     .card-header-title
       Corporations
@@ -8,7 +8,7 @@
         %span.system-name {{system_name}}
   .card-content
     .content
-      .card.corporation{'v-for':'corporation in existing_corporations', 'v-bind:class':"system_or_planet_disabled(corporation.system_id, corporation.planet_id) ? 'is-disabled' : ''"}
+      .card.corporation{'v-for':'corporation in existing_corporations()', 'v-bind:class':"system_or_planet_disabled(corporation.system_id, corporation.planet_id) ? 'is-disabled' : ''"}
         .card-content
           .level.is-mobile.corporation-row
             .level-left
@@ -28,9 +28,9 @@
             .level-item.corporation-item.cash
               .content
                 .corporation-cash
-                  %money-text{'v-bind:value':'corporation.cash'}
+                  %money-text{'v-bind:value':'corporation.cash || 0'}
                 .corporation-cashflow
-                  %money-text{'v-bind:value':'corporation.cashflow'}
+                  %money-text{'v-bind:value':'corporation.cashflow || 0'}
                   %span.unit \/h
             .level-right
               .level-item
@@ -47,32 +47,29 @@ export default
 
   props:
     client: Object
-    game_state: Object
-    status: String
+    client_state: Object
     system_name: String
 
-  computed:
+  methods:
+    sort_by: (corps) -> _.sortBy(corps, (corp) => @name_for_system_id(corp.system_id) + @name_for_planet_id(corp.system_id) + corp.name)
     existing_corporations: ->
-      sort_by = (corps) => _.sortBy(corps, (corp) => @name_for_system_id(corp.system_id) + @name_for_planet_id(corp.system_id) + corp.name)
-      if @game_state? && @game_state.session_state.state_counter? && @game_state.session_state.tycoon_metadata?
-        corporations = @game_state.session_state.tycoon_metadata.corporations
-        if @game_state.session_state.system_id?
-          sort_by(_.filter(corporations, (corp) => corp.system_id == @game_state.session_state.system_id))
-        else
-          sort_by(corporations)
+      if @client_state.session?.tycoon_id?
+        corporations = @client_state.core.corporation_cache.corporations_for_tycoon_id(@client_state.session.tycoon_id)
+        @sort_by(if @client_state.player?.system_id? then _.filter(corporations, (corp) => corp.system_id == @client_state.player.system_id) else corporations)
       else
         []
 
-  methods:
-    select_corporation: (corporation) -> @client.select_corporation(corporation)
+    select_corporation: (corporation) ->
+      @client_state.player.set_corporation_id(corporation.id)
+      window.document.title = "#{@client_state.name_for_planet_id(corporation.planet_id)} - STARPEACE" if window?.document?
 
     corporation_action_css_class: (corporation) -> if @system_or_planet_disabled(corporation.system_id, corporation.planet_id) then 'is-outlined' else ''
     system_animation_url: (system) -> ''
 
-    name_for_system_id: (system_id) -> @game_state?.name_for_system_id(system_id) || ''
-    name_for_planet_id: (planet_id) -> @game_state?.name_for_planet_id(planet_id) || ''
+    name_for_system_id: (system_id) -> @client_state?.name_for_system_id(system_id) || ''
+    name_for_planet_id: (planet_id) -> @client_state?.name_for_planet_id(planet_id) || ''
 
-    system_or_planet_disabled: (system_id, planet_id) -> !@game_state?.enabled_for_system_id(system_id) || !@game_state?.enabled_for_planet_id(planet_id)
+    system_or_planet_disabled: (system_id, planet_id) -> !@client_state?.enabled_for_system_id(system_id) || !@client_state?.enabled_for_planet_id(planet_id)
 </script>
 
 <style lang='sass' scoped>

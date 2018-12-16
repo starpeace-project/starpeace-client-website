@@ -3,7 +3,7 @@
   .card-header
     .card-header-title
       Construction
-    .card-header-icon.card-close{'v-on:click.stop.prevent':"menu_state.toggle_menu('construction')"}
+    .card-header-icon.card-close{'v-on:click.stop.prevent':"client_state.menu.toggle_menu('construction')"}
       %font-awesome-icon{':icon':"['fas', 'times']"}
 
   .card-content.sp-menu-background
@@ -13,7 +13,7 @@
 <script lang='coffee'>
 export default
   props:
-    menu_state: Object
+    client_state: Object
 </script>
 
 <style lang='sass' scoped>
