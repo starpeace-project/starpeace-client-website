@@ -227,12 +227,10 @@ export default
       @layout_locked = true
 
     selected_category:  (new_value, old_value) ->
-      console.log 'cat'
       setTimeout(=>
         update_tree_state(@client_state.core.invention_library, @tree_options.series[0].data, @tree_options.series[0].links, @selected_invention_id, @hover_invention_id)  if @is_visible
       , 50)
     selected_industry_type:  (new_value, old_value) ->
-      console.log 'ind'
       setTimeout(=>
         update_tree_state(@client_state.core.invention_library, @tree_options.series[0].data, @tree_options.series[0].links, @selected_invention_id, @hover_invention_id)  if @is_visible
       , 50)

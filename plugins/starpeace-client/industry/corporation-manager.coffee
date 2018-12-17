@@ -10,7 +10,7 @@ export default class CorporationManager
 
   load_metadata: (corporation_id) ->
     new Promise (done, error) =>
-      if !@client_state.session.session_token? || !corporation_id? || @ajax_state.is_locked('corporation_metadata', corporation_id)
+      if !@client_state.has_session() || !corporation_id? || @ajax_state.is_locked('corporation_metadata', corporation_id)
         done()
       else
         @ajax_state.lock('corporation_metadata', corporation_id)
@@ -36,7 +36,7 @@ export default class CorporationManager
       corporation_id = @client_state.player.corporation_id
       last_update = @client_state.corporation.events_as_of || @client_state.corporation.details_as_of
 
-      if !@client_state.session.session_token? || !corporation_id? || !last_update? || @ajax_state.is_locked('corporation_events', corporation_id)
+      if !@client_state.has_session() || !corporation_id? || !last_update? || @ajax_state.is_locked('corporation_events', corporation_id)
         done()
       else
         @ajax_state.lock('corporation_events', corporation_id)

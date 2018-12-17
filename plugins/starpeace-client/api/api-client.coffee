@@ -4,22 +4,11 @@ import request from 'superagent'
 import configuration from '~/plugins/starpeace-client/api/mock-api-configuration.coffee'
 import superagentMock from 'superagent-mock'
 
-import TimeUtils from '~/plugins/starpeace-client/utils/time-utils.coffee'
-
 superagentMock(request, configuration)
 
 export default class APIClient
-  constructor: (@ajax_state) ->
+  constructor: (@client_state) ->
     @root_url = 'https://api.starpeace.io'
-
-  handle_authorization_error: () ->
-    if @ajax_state.invalid_session_as_of? && TimeUtils.within_minutes(@ajax_state.invalid_session_as_of, 5)
-      @ajax_state.invalid_session_counter += 1
-    else
-      @ajax_state.invalid_session_counter = 1
-    @ajax_state.invalid_session_as_of = moment()
-
-    #@client.show_session_error_and_reset() if @ajax_state.invalid_session_counter > 3
 
   register_session: (identity) ->
     new Promise (done, error) =>
@@ -42,7 +31,7 @@ export default class APIClient
         .set('accept', 'json')
         .end((request_error, result) =>
           if request_error
-            @handle_authorization_error() if result.status == 401
+            @client_state.handle_authorization_error() if result.status == 401
             error(request_error)
           else
             done(result.systems || [])
@@ -56,7 +45,7 @@ export default class APIClient
         .set('accept', 'json')
         .end((request_error, result) =>
           if request_error
-            @handle_authorization_error() if result.status == 401
+            @client_state.handle_authorization_error() if result.status == 401
             error(request_error)
           else
             done(result.planet)
@@ -69,7 +58,7 @@ export default class APIClient
         .set('accept', 'json')
         .end((request_error, result) =>
           if request_error
-            @handle_authorization_error() if result.status == 401
+            @client_state.handle_authorization_error() if result.status == 401
             error(request_error)
           else
             done(result.planet)
@@ -83,7 +72,7 @@ export default class APIClient
         .set('accept', 'json')
         .end((request_error, result) =>
           if request_error
-            @handle_authorization_error() if result.status == 401
+            @client_state.handle_authorization_error() if result.status == 401
             error(request_error)
           else
             done(result.tycoon)
@@ -97,7 +86,7 @@ export default class APIClient
         .set('accept', 'json')
         .end((request_error, result) =>
           if request_error
-            @handle_authorization_error() if result.status == 401
+            @client_state.handle_authorization_error() if result.status == 401
             error(request_error)
           else
             done(result.corporation)
@@ -110,7 +99,7 @@ export default class APIClient
         .set('accept', 'json')
         .end((request_error, result) =>
           if request_error
-            @handle_authorization_error() if result.status == 401
+            @client_state.handle_authorization_error() if result.status == 401
             error(request_error)
           else
             done(result.corporation)
@@ -124,7 +113,7 @@ export default class APIClient
         .set('accept', 'json')
         .end((request_error, result) =>
           if request_error
-            @handle_authorization_error() if result.status == 401
+            @client_state.handle_authorization_error() if result.status == 401
             error(request_error)
           else
             done(result.bookmarks)
@@ -137,7 +126,7 @@ export default class APIClient
         .set('accept', 'json')
         .end((request_error, result) =>
           if request_error
-            @handle_authorization_error() if result.status == 401
+            @client_state.handle_authorization_error() if result.status == 401
             error(request_error)
           else
             done(result.bookmarks)
@@ -152,7 +141,7 @@ export default class APIClient
         .set('accept', 'json')
         .end((request_error, result) =>
           if request_error
-            @handle_authorization_error() if result.status == 401
+            @client_state.handle_authorization_error() if result.status == 401
             error(request_error)
           else
             done(result.bookmark)
@@ -172,7 +161,7 @@ export default class APIClient
         .set('accept', 'json')
         .end((request_error, result) =>
           if request_error
-            @handle_authorization_error() if result.status == 401
+            @client_state.handle_authorization_error() if result.status == 401
             error(request_error)
           else
             done(result.mail)
@@ -186,7 +175,7 @@ export default class APIClient
         .set('accept', 'json')
         .end((request_error, result) =>
           if request_error
-            @handle_authorization_error() if result.status == 401
+            @client_state.handle_authorization_error() if result.status == 401
             error(request_error)
           else
             done(result.buildings)
@@ -200,7 +189,7 @@ export default class APIClient
         .set('accept', 'json')
         .end((request_error, result) =>
           if request_error
-            @handle_authorization_error() if result.status == 401
+            @client_state.handle_authorization_error() if result.status == 401
             error(request_error)
           else
             done(result.inventions)
@@ -214,7 +203,7 @@ export default class APIClient
         .set('accept', 'json')
         .end((request_error, result) =>
           if request_error
-            @handle_authorization_error() if result.status == 401
+            @client_state.handle_authorization_error() if result.status == 401
             error(request_error)
           else
             done(result.buildings)

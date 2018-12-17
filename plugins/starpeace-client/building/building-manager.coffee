@@ -16,7 +16,7 @@ export default class BuildingManager
     key = "#{chunk_x}x#{chunk_y}"
     return if @chunk_promises[key]?
 
-    return unless @client_state.session.session_token? && @client_state.player.planet_id?
+    return unless @client_state.has_session() && @client_state.player.planet_id?
 
     @ajax_state.start_ajax()
     @chunk_promises[key] = new Promise (done) =>
@@ -52,7 +52,7 @@ export default class BuildingManager
 
   load_metadata: (company_id) ->
     new Promise (done, error) =>
-      if !@client_state.session.session_token? || !company_id? || @ajax_state.is_locked('building_metadata', company_id)
+      if !@client_state.has_session() || !company_id? || @ajax_state.is_locked('building_metadata', company_id)
         done()
       else
         @ajax_state.lock('building_metadata', company_id)

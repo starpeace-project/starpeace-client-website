@@ -17,10 +17,13 @@ import InterfaceState from '~/plugins/starpeace-client/state/ui/interface-state.
 import MenuState from '~/plugins/starpeace-client/state/ui/menu-state.coffee'
 import MusicState from '~/plugins/starpeace-client/state/ui/music-state.coffee'
 
+import TimeUtils from '~/plugins/starpeace-client/utils/time-utils.coffee'
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 
+MAX_FAILED_AUTH_ERRORS = 3
+
 export default class ClientState
-  constructor: (@options) ->
+  constructor: (@options, @ajax_state) ->
     @event_listener = new EventListener()
 
     @core = new CoreState()
@@ -75,12 +78,15 @@ export default class ClientState
 
   reset_full_state: () ->
     @webgl_warning = false
+    @session_expired_warning = false
+
     @loading = false
     @workflow_status = 'initializing'
 
     @renderer_initialized = false
     @mini_map_renderer_initialized = false
 
+    @ajax_state.reset_state()
     @core.corporation_cache.reset_state()
     @core.planets_cache.reset_state()
     @core.systems_cache.reset_state()
@@ -147,6 +153,19 @@ export default class ClientState
   state_needs_player_data: () ->
     # console.log "#{@identity.identity.is_tycoon()} && #{@player.corporation_id?} && (#{!@player.has_data()} || #{!@corporation.has_data()} || #{!@bookmarks.has_data()})"
     @identity.identity.is_tycoon() && @player.corporation_id? && (!@player.has_data() || !@corporation.has_data() || !@bookmarks.has_data())
+
+
+  has_session: () -> @session.session_token? && @ajax_state.invalid_session_counter < MAX_FAILED_AUTH_ERRORS
+  handle_authorization_error: () ->
+    if @ajax_state.invalid_session_as_of? && TimeUtils.within_minutes(@ajax_state.invalid_session_as_of, 5)
+      @ajax_state.invalid_session_counter += 1
+    else
+      @ajax_state.invalid_session_counter = 1
+    @ajax_state.invalid_session_as_of = moment()
+
+    if @ajax_state.invalid_session_counter >= MAX_FAILED_AUTH_ERRORS && !@session_expired_warning
+      @session_expired_warning = true
+      setTimeout (=> @reset_full_state()), 3000
 
 
   reset_system: ->

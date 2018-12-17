@@ -59,14 +59,6 @@ export default
   overflow: hidden
   z-index: 1500
 
-  .modal-background
-    background-color: #000
-    height: 100%
-    opacity: .7
-    position: absolute
-    width: 100%
-    z-index: 1495
-
   > .card
     background-color: $sp-dark-bg
     margin: auto

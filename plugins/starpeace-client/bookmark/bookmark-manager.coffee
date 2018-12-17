@@ -42,7 +42,7 @@ export default class BookmarkManager
 
   load_metadata: (corporation_id) ->
     new Promise (done, error) =>
-      if !@client_state.session.session_token? || !corporation_id? || @ajax_state.is_locked('bookmark_metadata', corporation_id)
+      if !@client_state.has_session() || !corporation_id? || @ajax_state.is_locked('bookmark_metadata', corporation_id)
         done()
       else
         @ajax_state.lock('bookmark_metadata', corporation_id)
@@ -70,7 +70,7 @@ export default class BookmarkManager
   merge_bookmark_deltas: (deltas) ->
     new Promise (done, error) =>
       corporation_id = @client_state.player.corporation_id
-      if !@client_state.session.session_token? || !corporation_id? || @ajax_state.is_locked('update_bookmark', corporation_id)
+      if !@client_state.has_session() || !corporation_id? || @ajax_state.is_locked('update_bookmark', corporation_id)
         done()
       else
         for delta in deltas
@@ -93,7 +93,7 @@ export default class BookmarkManager
   new_bookmark_folder: () ->
     new Promise (done, error) =>
       corporation_id = @client_state.player.corporation_id
-      if !@client_state.session.session_token? || !corporation_id? || @ajax_state.is_locked('new_bookmark_folder', corporation_id)
+      if !@client_state.has_session() || !corporation_id? || @ajax_state.is_locked('new_bookmark_folder', corporation_id)
         done()
       else
         folder_name = "New Folder #{@client_state.bookmarks.folder_count() + 1}"
@@ -116,7 +116,7 @@ export default class BookmarkManager
       building_id = @client_state.interface.selected_building_id
       building = if building_id?.length then @client_state.core.building_cache.building_metadata_for_id(building_id) else null
 
-      if !@client_state.session.session_token? || !corporation_id? || @ajax_state.is_locked('new_bookmark_item', corporation_id) || (building_id?.length && !building?)
+      if !@client_state.has_session() || !corporation_id? || @ajax_state.is_locked('new_bookmark_item', corporation_id) || (building_id?.length && !building?)
         done()
       else
         item_name = if building? then building.name else "My Bookmark #{@client_state.bookmarks.item_count() + 1}"

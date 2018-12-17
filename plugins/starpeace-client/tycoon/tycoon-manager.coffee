@@ -8,7 +8,7 @@ export default class TycoonManager
 
   load_metadata: () ->
     tycoon_id = @client_state.session.tycoon_id
-    return if !@client_state.session.session_token? || !@client_state.identity.identity.is_tycoon() || !tycoon_id? || @ajax_state.is_locked('tycoon_metadata', tycoon_id)
+    return if !@client_state.has_session() || !@client_state.identity.identity.is_tycoon() || !tycoon_id? || @ajax_state.is_locked('tycoon_metadata', tycoon_id)
 
     @ajax_state.lock('tycoon_metadata', tycoon_id)
     @api.tycoon_metadata(@client_state.session.session_token, tycoon_id)

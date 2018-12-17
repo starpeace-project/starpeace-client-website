@@ -8,7 +8,7 @@ export default class PlanetsManager
 
   load_details: (planet_id) ->
     new Promise (done, error) =>
-      if !@client_state.session.session_token? || !planet_id? || @ajax_state.is_locked('planet_details', planet_id)
+      if !@client_state.has_session() || !planet_id? || @ajax_state.is_locked('planet_details', planet_id)
         done()
       else
         @ajax_state.lock('planet_details', planet_id)
@@ -32,7 +32,7 @@ export default class PlanetsManager
       planet_id = @client_state.player.planet_id
       last_update = @client_state.planet.events_as_of || @client_state.planet.details_as_of
 
-      if !@client_state.session.session_token? || !planet_id? || !last_update? || @ajax_state.is_locked('planet_events', planet_id)
+      if !@client_state.has_session() || !planet_id? || !last_update? || @ajax_state.is_locked('planet_events', planet_id)
         done()
       else
         @ajax_state.lock('planet_events', planet_id)

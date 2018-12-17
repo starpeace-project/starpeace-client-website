@@ -1,34 +1,36 @@
 <template lang='haml'>
-#application-container{'v-bind:class':'application_css_class', 'v-cloak':true}
-  %sp-header{'v-bind:options':'options', 'v-bind:client_state':'client_state'}
-  %sp-loading-card{'v-bind:client_state':'client_state'}
-  %sp-loading-modal{'v-bind:client_state':'client_state'}
-  %sp-webgl-warning-card{'v-bind:client_state':'client_state'}
-  %sp-workflow{'v-bind:client':'client', 'v-bind:client_state':'client_state'}
-  %menu-corporation-establish{'v-bind:client':'client', 'v-bind:managers':'managers', 'v-bind:client_state':'client_state'}
-  %menu-construction{'v-show':"is_menu_visible('construction')", 'v-bind:client_state':'client_state'}
-  %menu-chat{'v-show':"is_menu_visible('chat')", 'v-bind:client_state':'client_state'}
-  %menu-bookmarks{'v-show':"is_menu_visible('bookmarks')", 'v-bind:managers':'managers', ':ajax_state':'ajax_state', 'v-bind:client_state':'client_state', 'v-bind:options':'options'}
-  %menu-mail{'v-show':"is_menu_visible('mail')", 'v-bind:client_state':'client_state'}
-  %menu-options{'v-show':"is_menu_visible('options')", 'v-bind:client_state':'client_state', 'v-bind:options':'options'}
-  %menu-help{'v-show':"is_menu_visible('help')", 'v-bind:client_state':'client_state'}
-  %menu-release-notes{'v-show':"is_menu_visible('release_notes')", 'v-bind:client_state':'client_state'}
-  %menu-research-menu{'v-show':"is_menu_visible('research')", 'v-bind:client_state':'client_state', 'v-bind:options':'options'}
-  %menu-research-no-company{'v-show':"is_menu_visible('research')", 'v-bind:client_state':'client_state'}
-  %menu-research-tree{'v-show':"is_menu_visible('research')", 'v-bind:managers':'managers', 'v-bind:client_state':'client_state', 'v-bind:options':'options'}
-  %menu-research-details{'v-show':"is_menu_visible('research')", 'v-bind:managers':'managers', 'v-bind:client_state':'client_state', 'v-bind:options':'options'}
-  %menu-system{'v-show':"is_menu_visible('systems')", 'v-bind:client_state':'client_state', 'v-bind:ajax_state':'ajax_state', 'v-bind:managers':'managers'}
-  %menu-tycoon{'v-show':"is_menu_visible('tycoon')", 'v-bind:managers':'managers', 'v-bind:client_state':'client_state', 'v-bind:options':'options'}
-  %sp-body{'v-bind:client_state':'client_state', 'v-bind:options':'options'}
-  %sp-footer-overlay-menu{'v-bind:client_state':'client_state'}
-  %sp-toolbar-ribbon{'v-bind:managers':'managers', 'v-bind:mini_map_renderer':'mini_map_renderer', 'v-bind:client_state':'client_state', 'v-bind:options':'options'}
-  %sp-toolbar-details{'v-bind:managers':'managers', 'v-bind:client_state':'client_state', 'v-bind:options':'options'}
+#application-container{':class':'application_css_class', 'v-cloak':true}
+  %sp-header{':options':'options', ':client_state':'client_state'}
+  %sp-loading-card{':client_state':'client_state'}
+  %sp-loading-modal{':client_state':'client_state'}
+  %sp-session-expired-warning-card{':client_state':'client_state'}
+  %sp-webgl-warning-card{':client_state':'client_state'}
+  %sp-workflow{':client':'client', ':client_state':'client_state'}
+  %menu-corporation-establish{':client':'client', ':managers':'managers', ':client_state':'client_state'}
+  %menu-construction{'v-show':"is_menu_visible('construction')", ':client_state':'client_state'}
+  %menu-chat{'v-show':"is_menu_visible('chat')", ':client_state':'client_state'}
+  %menu-bookmarks{'v-show':"is_menu_visible('bookmarks')", ':managers':'managers', ':ajax_state':'ajax_state', ':client_state':'client_state', ':options':'options'}
+  %menu-mail{'v-show':"is_menu_visible('mail')", ':client_state':'client_state'}
+  %menu-options{'v-show':"is_menu_visible('options')", ':client_state':'client_state', ':options':'options'}
+  %menu-help{'v-show':"is_menu_visible('help')", ':client_state':'client_state'}
+  %menu-release-notes{'v-show':"is_menu_visible('release_notes')", ':client_state':'client_state'}
+  %menu-research-menu{'v-show':"is_menu_visible('research')", ':client_state':'client_state', ':options':'options'}
+  %menu-research-no-company{'v-show':"is_menu_visible('research')", ':client_state':'client_state'}
+  %menu-research-tree{'v-show':"is_menu_visible('research')", ':managers':'managers', ':client_state':'client_state', ':options':'options'}
+  %menu-research-details{'v-show':"is_menu_visible('research')", ':managers':'managers', ':client_state':'client_state', ':options':'options'}
+  %menu-system{'v-show':"is_menu_visible('systems')", ':client_state':'client_state', ':ajax_state':'ajax_state', ':managers':'managers'}
+  %menu-tycoon{'v-show':"is_menu_visible('tycoon')", ':managers':'managers', ':client_state':'client_state', ':options':'options'}
+  %sp-body{':client_state':'client_state', ':options':'options'}
+  %sp-footer-overlay-menu{':client_state':'client_state'}
+  %sp-toolbar-ribbon{':managers':'managers', ':mini_map_renderer':'mini_map_renderer', ':client_state':'client_state', ':options':'options'}
+  %sp-toolbar-details{':managers':'managers', ':client_state':'client_state', ':options':'options'}
 </template>
 
 <script lang='coffee'>
 import Header from '~/components/page-layout/header.vue'
 import LoadingCard from '~/components/misc/card-loading.vue'
 import LoadingModal from '~/components/misc/modal-loading.vue'
+import SessionExpiredWarningCard from '~/components/misc/card-session-expired-warning.vue'
 import WebGLWarningCard from '~/components/misc/card-webgl-warning.vue'
 import Workflow from '~/components/workflow/workflow.vue'
 
@@ -66,6 +68,7 @@ export default
     'sp-footer-overlay-menu': FooterOverlayMenu
     'sp-toolbar-details': ToolbarDetails
     'sp-toolbar-ribbon': ToolbarRibbon
+    'sp-session-expired-warning-card': SessionExpiredWarningCard
     'sp-webgl-warning-card': WebGLWarningCard
     'menu-corporation-establish': MenuCorporationEstablish
     'menu-construction': MenuConstruction

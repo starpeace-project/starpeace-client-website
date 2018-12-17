@@ -6,7 +6,7 @@ export default class MailManager
 
   load_metadata: (corporation_id) ->
     new Promise (done, error) =>
-      if !@client_state.session.session_token? || !corporation_id? || @ajax_state.is_locked('mail_metadata', corporation_id)
+      if !@client_state.has_session() || !corporation_id? || @ajax_state.is_locked('mail_metadata', corporation_id)
         done()
       else
         @ajax_state.lock('mail_metadata', corporation_id)

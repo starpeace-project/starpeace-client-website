@@ -26,7 +26,7 @@ export default class InventionManager
 
   load_metadata: (company_id) ->
     new Promise (done, error) =>
-      if !@client_state.session.session_token? || !company_id? || @ajax_state.is_locked('player.inventions_metadata', company_id)
+      if !@client_state.has_session() || !company_id? || @ajax_state.is_locked('player.inventions_metadata', company_id)
         done()
       else
         @ajax_state.lock('player.inventions_metadata', company_id)

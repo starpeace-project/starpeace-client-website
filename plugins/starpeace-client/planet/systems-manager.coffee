@@ -9,7 +9,7 @@ export default class SystemsManager
 
   load_metadata: () ->
     new Promise (done, error) =>
-      if !@client_state.session.session_token? || @ajax_state.is_locked('systems_metadata', 'ALL')
+      if !@client_state.has_session() || @ajax_state.is_locked('systems_metadata', 'ALL')
         done()
       else
         @ajax_state.lock('systems_metadata', 'ALL')
@@ -24,6 +24,5 @@ export default class SystemsManager
             done()
 
           .catch (err) =>
-            console.log err
             @ajax_state.unlock('systems_metadata', 'ALL') # FIXME: TODO add error handling
             error()

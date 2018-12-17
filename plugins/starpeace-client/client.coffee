@@ -20,10 +20,10 @@ export default class Client
   constructor: () ->
     @options = new Options()
     @ajax_state = new AjaxState()
-    @client_state = new ClientState(@options)
+    @client_state = new ClientState(@options, @ajax_state)
     @client_state.subscribe_workflow_status_listener(=> @notify_workflow_changed())
 
-    @api = new APIClient(@ajax_state)
+    @api = new APIClient(@client_state)
 
     @managers = new Managers(@api, @options, @ajax_state, @client_state)
 
