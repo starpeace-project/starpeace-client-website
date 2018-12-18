@@ -12,6 +12,7 @@ import TYCOON_METADATA from '~/plugins/starpeace-client/api/mock-tycoon-metadata
 
 import PLANET_1_MAP_BUILDINGS from '~/plugins/starpeace-client/api/mock-planet-1-map-buildings.json'
 import PLANET_1_TYCOON_1_BUILDINGS from '~/plugins/starpeace-client/api/mock-planet-1-tycoon-1-buildings.json'
+import PLANET_1_TYCOON_1_INVENTIONS from '~/plugins/starpeace-client/api/mock-planet-1-tycoon-1-inventions.json'
 import PLANET_2_MAP_BUILDINGS from '~/plugins/starpeace-client/api/mock-planet-2-map-buildings.json'
 import PLANET_2_TYCOON_1_BUILDINGS from '~/plugins/starpeace-client/api/mock-planet-2-tycoon-1-buildings.json'
 
@@ -43,6 +44,8 @@ for system in SYSTEMS_METADATA
 
 
 CORPORATION_ID_EVENTS = {}
+COMPANY_ID_INVENTIONS = {}
+
 for tycoon_id,tycoon of TYCOON_METADATA
   for corporation in tycoon.corporations
     system = _.find(SYSTEMS_METADATA, (system) -> system.id == corporation.system_id)
@@ -59,8 +62,14 @@ for tycoon_id,tycoon of TYCOON_METADATA
           id: company.id
           cashflow: company.cashflow
           original_cashflow: company.cashflow
-          adjust_cashflow: () -> @cashflow = @original_cashflow + (Math.floor(Math.random() * 500) - 250)
+          adjust_cashflow: (temporary_delta) -> @cashflow = @original_cashflow + (Math.floor(Math.random() * 500) - 250) + temporary_delta
         }
+
+        for company_inventions in [PLANET_1_TYCOON_1_INVENTIONS]
+          if company_inventions[company.id]?
+            COMPANY_ID_INVENTIONS[company.id] = company_inventions[company.id]
+            COMPANY_ID_INVENTIONS[company.id].corporation_id = corporation.id
+            COMPANY_ID_INVENTIONS[company.id].tycoon_id = tycoon_id
 
 
 SESSION_TOKENS = {}
@@ -70,12 +79,54 @@ register_session = () ->
   SESSION_TOKENS[token] = moment()
   token
 
+cost_for_invention_id = (invention_id) ->
+  if window?.starpeace_client?.client_state?.core?.invention_library?
+    window.starpeace_client.client_state.core.invention_library.metadata_by_id[invention_id]?.properties?.price || 0
+  else
+    0
+
+QUEUED_EVENTS = []
 
 setInterval(=>
   PLANET_ID_DATES[id].add(1, 'day') for id,date of PLANET_ID_DATES
 
   for corp_id,corp_events of CORPORATION_ID_EVENTS
-    company.adjust_cashflow() for company_id,company of corp_events.companies_by_id
+    for company_id,company of corp_events.companies_by_id
+      cashflow_adjustment = 0
+
+      to_remove = []
+      for event,index in QUEUED_EVENTS
+        if event.company_id == company_id
+          to_remove.push index
+          if event.type == 'SELL_RESEARCH'
+            cashflow_adjustment += (cost_for_invention_id(event.invention_id) / 24)
+          else if event.type == 'CANCEL_RESEARCH'
+            cashflow_adjustment += (event.refund / 24)
+      QUEUED_EVENTS.splice(index, 1) for index in to_remove.sort((lhs, rhs) -> rhs - lhs)
+
+      inventions = COMPANY_ID_INVENTIONS[company_id]
+      if inventions?.pending_inventions?.length
+        to_remove = []
+        for pending,index in inventions.pending_inventions
+          continue unless index == 0
+
+          unless pending.step_increment?
+            pending.cost = cost_for_invention_id(pending.id)
+            pending.step_increment = Math.max(50000, Math.round(pending.cost / 30))
+          pending.spent += pending.step_increment
+          cashflow_adjustment -= (pending.step_increment / 24)
+
+          pending.progress = Math.min(100, Math.round(pending.spent / pending.cost * 100))
+          if pending.spent >= pending.cost
+            to_remove.push index
+            inventions.completed_ids.push pending.id
+
+        for index in to_remove.sort((lhs, rhs) -> rhs - lhs)
+          inventions.pending_inventions.splice(index, 1)
+        inventions.pending_inventions[index].order = index for index in [0...inventions.pending_inventions.length]
+
+      company.adjust_cashflow(cashflow_adjustment)
+
     corp_events.increment_cash()
 
 , 1000)
@@ -95,11 +146,11 @@ export default [
       if root_path == '/session/register'
         throw new Error(404) unless context.method == 'post'
         if params.type == 'visitor'
-          return {
+          return _.cloneDeep {
             session_token: register_session()
           }
         else if params.type == 'tycoon'
-          return {
+          return _.cloneDeep {
             session_token: register_session()
             tycoon_id: 'tycoon-id-1'
           }
@@ -109,7 +160,7 @@ export default [
       if root_path == '/systems/metadata'
         throw new Error(404) unless context.method == 'get'
         throw new Error(401) unless valid_session(query_parameters.session_token)
-        return {
+        return _.cloneDeep {
           systems: SYSTEMS_METADATA
         }
 
@@ -121,7 +172,7 @@ export default [
         details = PLANETS_DETAILS[query_parameters.planet_id]
         details.date = PLANET_ID_DATES[query_parameters.planet_id].format('YYYY-MM-DD')
         details.season = MONTH_SEASONS[PLANET_ID_DATES[query_parameters.planet_id].month()]
-        return {
+        return _.cloneDeep {
           planet: details
         }
       if root_path == '/planet/events'
@@ -130,7 +181,7 @@ export default [
         throw new Error(400) unless query_parameters.planet_id?.length
         throw new Error(400) unless query_parameters.last_update?.length
         throw new Error(404) unless PLANET_ID_DATES[query_parameters.planet_id]?
-        return {
+        return _.cloneDeep {
           planet: {
             date: PLANET_ID_DATES[query_parameters.planet_id].format('YYYY-MM-DD')
             season: MONTH_SEASONS[PLANET_ID_DATES[query_parameters.planet_id].month()]
@@ -142,7 +193,7 @@ export default [
         throw new Error(401) unless valid_session(query_parameters.session_token)
         throw new Error(400) unless query_parameters.tycoon_id?.length
         throw new Error(404) unless TYCOON_METADATA[query_parameters.tycoon_id]?
-        return {
+        return _.cloneDeep {
           tycoon: TYCOON_METADATA[query_parameters.tycoon_id]
         }
 
@@ -175,7 +226,7 @@ export default [
             id: company.id
             cashflow: company.cashflow
           }
-        return {
+        return _.cloneDeep {
           corporation: corp_metadata
         }
 
@@ -184,7 +235,7 @@ export default [
         throw new Error(404) unless context.method == 'get'
         throw new Error(401) unless valid_session(query_parameters.session_token)
         throw new Error(400) unless query_parameters.corporation_id?.length
-        return {
+        return _.cloneDeep {
           bookmarks: BOOKMARKS_METADATA[query_parameters.corporation_id] || []
         }
       if root_path == '/bookmarks/update'
@@ -201,7 +252,7 @@ export default [
             existing.order = delta.order if delta.order?
             updated.push existing
 
-        return {
+        return _.cloneDeep {
           bookmarks: updated
         }
       if root_path == '/bookmarks/new'
@@ -252,7 +303,7 @@ export default [
           throw new Error(400)
 
         BOOKMARKS_METADATA[params.corporation_id].bookmarks.push item
-        return {
+        return _.cloneDeep {
           bookmark: item
         }
 
@@ -261,7 +312,7 @@ export default [
         throw new Error(404) unless context.method == 'get'
         throw new Error(401) unless valid_session(query_parameters.session_token)
         throw new Error(400) unless query_parameters.corporation_id?.length
-        return {
+        return _.cloneDeep {
           mail: MAIL_METADATA[query_parameters.corporation_id] || []
         }
 
@@ -269,10 +320,65 @@ export default [
         throw new Error(404) unless context.method == 'get'
         throw new Error(401) unless valid_session(query_parameters.session_token)
         throw new Error(400) unless query_parameters.company_id?.length
-        inventions = []
-        # buildings = PLANET_1_TYCOON_1_BUILDINGS[query_parameters.company_id] if PLANET_1_TYCOON_1_BUILDINGS[query_parameters.company_id]?
-        return {
-          inventions: inventions || []
+        return _.cloneDeep {
+          inventions: {
+            company_id: query_parameters.company_id
+            pending_inventions: (COMPANY_ID_INVENTIONS[query_parameters.company_id]?.pending_inventions || [])
+            completed_ids: (COMPANY_ID_INVENTIONS[query_parameters.company_id]?.completed_ids || [])
+          }
+        }
+      if root_path == '/inventions/sell'
+        throw new Error(404) unless context.method == 'post'
+        throw new Error(401) unless valid_session(params.session_token)
+        throw new Error(400) unless params.company_id?.length
+        throw new Error(400) unless params.invention_id?.length
+        throw new Error(404) unless COMPANY_ID_INVENTIONS[params.company_id]?
+
+        inventions = COMPANY_ID_INVENTIONS[params.company_id]
+        completed_index = inventions.completed_ids.indexOf(params.invention_id)
+        pending_index = _.findIndex(inventions.pending_inventions, (pending) => pending.id == params.invention_id)
+        if completed_index >= 0
+          QUEUED_EVENTS.push { type: 'SELL_RESEARCH', company_id: params.company_id, invention_id: params.invention_id }
+          inventions.completed_ids.splice(completed_index, 1)
+        else if pending_index >= 0
+          QUEUED_EVENTS.push { type: 'CANCEL_RESEARCH', company_id: params.company_id, invention_id: params.invention_id, refund: inventions.pending_inventions[pending_index].spent }
+          inventions.pending_inventions[index].order -= 1 for index in [pending_index...inventions.pending_inventions.length]
+          inventions.pending_inventions.splice(pending_index, 1)
+
+        return _.cloneDeep {
+          inventions: {
+            company_id: params.company_id
+            pending_inventions: (inventions.pending_inventions || [])
+            completed_ids: (inventions.completed_ids || [])
+          }
+        }
+      if root_path == '/inventions/queue'
+        throw new Error(404) unless context.method == 'post'
+        throw new Error(401) unless valid_session(params.session_token)
+        throw new Error(400) unless params.company_id?.length
+        throw new Error(400) unless params.invention_id?.length
+        throw new Error(404) unless COMPANY_ID_INVENTIONS[params.company_id]?
+
+        inventions = COMPANY_ID_INVENTIONS[params.company_id]
+        completed_index = inventions.completed_ids.indexOf(params.invention_id)
+        pending_index = _.findIndex(inventions.pending_inventions, (pending) => pending.id == params.invention_id)
+        if completed_index >= 0 || pending_index >= 0
+          throw new Error(404)
+          inventions.completed_ids.splice(completed_index, 1)
+        else
+          inventions.pending_inventions.push {
+            id: params.invention_id
+            progress: 0
+            order: inventions.pending_inventions.length
+            spent: 0
+          }
+
+        return _.cloneDeep {
+          inventions: {
+            company_id: params.company_id
+            pending_inventions: (inventions.pending_inventions || [])
+            completed_ids: (inventions.completed_ids || [])
+          }
         }
 
       return {} if root_path == '/inventions/status'
@@ -283,7 +389,7 @@ export default [
         throw new Error(400) unless query_parameters.company_id?.length
         buildings = []
         buildings = PLANET_1_TYCOON_1_BUILDINGS[query_parameters.company_id] if PLANET_1_TYCOON_1_BUILDINGS[query_parameters.company_id]?
-        return {
+        return _.cloneDeep {
           buildings: buildings || []
         }
 
@@ -297,7 +403,7 @@ export default [
         buildings = []
         buildings = PLANET_1_MAP_BUILDINGS[chunk_key] if query_parameters.planet_id == 'planet-1'
         buildings = PLANET_2_MAP_BUILDINGS[chunk_key] if query_parameters.planet_id == 'planet-2'
-        return {
+        return _.cloneDeep {
           buildings: buildings || []
         }
 

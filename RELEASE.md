@@ -1,5 +1,5 @@
 
-## v0.3 - in progress - updated 2018-12-16
+## v0.3 - in progress - updated 2018-12-17
 ### platform
 * [done] improved building rendering around edges [v0.2.1]
 * [done] improved z-order rendering across layers [v0.2.2]
@@ -42,5 +42,5 @@
 * [done] improve concrete rendering (edges, roads) [v0.2.9]
 * [done] mini-map rendering [v0.2.11]
 * [done] basic map favorites integration [v0.2.12]
-* [in progress] basic research and development UI and menu support [v0.2.12]
-* [pending] map place building interaction support
+* [done] basic research and development UI and menu support [v0.2.12]
+* [in progress] map place building interaction support

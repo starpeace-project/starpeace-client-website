@@ -17,7 +17,7 @@
   %menu-research-menu{'v-show':"is_menu_visible('research')", ':client_state':'client_state', ':options':'options'}
   %menu-research-no-company{'v-show':"is_menu_visible('research')", ':client_state':'client_state'}
   %menu-research-tree{'v-show':"is_menu_visible('research')", ':managers':'managers', ':client_state':'client_state', ':options':'options'}
-  %menu-research-details{'v-show':"is_menu_visible('research')", ':managers':'managers', ':client_state':'client_state', ':options':'options'}
+  %menu-research-details{'v-show':"is_menu_visible('research')", ':managers':'managers', ':ajax_state':'ajax_state', ':client_state':'client_state', ':options':'options'}
   %menu-system{'v-show':"is_menu_visible('systems')", ':client_state':'client_state', ':ajax_state':'ajax_state', ':managers':'managers'}
   %menu-tycoon{'v-show':"is_menu_visible('tycoon')", ':managers':'managers', ':client_state':'client_state', ':options':'options'}
   %sp-body{':client_state':'client_state', ':options':'options'}
@@ -103,7 +103,6 @@ export default
     managers: -> @client?.managers
     mini_map_renderer: -> @client?.mini_map_renderer
 
-    webgl_warning_visible: -> (@client_state?.initialized || false) && (@client_state?.webgl_warning || false)
     loading_visible: -> (@client_state?.initialized || false) && (@client_state?.loading || false)
 
     is_toolbar_left_open: -> @client_state?.menu?.toolbar_left?.length
@@ -112,12 +111,12 @@ export default
     application_css_class: ->
       classes = []
       classes.push 'no-header' unless @show_header
-      classes.push 'is-toolbar-left' if @is_toolbar_left_open
-      classes.push 'is-toolbar-right' if @is_toolbar_right_open
+      classes.push 'is-toolbar-left' if !@client_state.session_expired_warning && @is_toolbar_left_open
+      classes.push 'is-toolbar-right' if !@client_state.session_expired_warning && @is_toolbar_right_open
       classes
 
   methods:
-    is_menu_visible: (type) -> @client_state.initialized && @client_state?.workflow_status == 'ready' && @client_state?.menu?.is_visible(type)
+    is_menu_visible: (type) -> @client_state.initialized && !@client_state.session_expired_warning && @client_state?.workflow_status == 'ready' && @client_state?.menu?.is_visible(type)
 </script>
 
 <style lang='sass' scoped>

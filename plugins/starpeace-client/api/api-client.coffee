@@ -195,6 +195,33 @@ export default class APIClient
             done(result.inventions)
         )
 
+  inventions_sell: (session_token, company_id, invention_id) ->
+    new Promise (done, error) =>
+      request
+        .post("#{@root_url}/inventions/sell")
+        .send({ session_token: session_token, company_id: company_id, invention_id: invention_id })
+        .set('accept', 'json')
+        .end((request_error, result) =>
+          if request_error
+            @client_state.handle_authorization_error() if result.status == 401
+            error(request_error)
+          else
+            done(result.inventions)
+        )
+  inventions_queue: (session_token, company_id, invention_id) ->
+    new Promise (done, error) =>
+      request
+        .post("#{@root_url}/inventions/queue")
+        .send({ session_token: session_token, company_id: company_id, invention_id: invention_id })
+        .set('accept', 'json')
+        .end((request_error, result) =>
+          if request_error
+            @client_state.handle_authorization_error() if result.status == 401
+            error(request_error)
+          else
+            done(result.inventions)
+        )
+
   map_buildings_data: (session_token, planet_id, chunk_x, chunk_y) ->
     new Promise (done, error) =>
       request

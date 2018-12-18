@@ -34,12 +34,22 @@
               %span.property-label{'v-bind:class':'option.class'} {{option.type}}:
               %span.property-value{'v-bind:class':'option.class'} {{option.text}}
           %div.is-clearfix
-      .actions-container{'v-if':'can_perform_actions'}
+      .actions-container{'v-if':"invention_status != 'NONE'"}
         .action-row.invention-status
           %span.invention-status-label Status:
-          %span.invention-status-value.available Available for Research
+          %span.invention-status-value.available{'v-if':"invention_status == 'AVAILABLE'"} Available for Research
+          %span.invention-status-value.blocked{'v-else-if':"invention_status == 'AVAILABLE_BLOCKED'"} Dependencies Required
+          %span.invention-status-value.pending{'v-else-if':"invention_status == 'PENDING'"}
+            %span{'v-if':"company_pending_invention.order == 0"} In Progress
+            %span{'v-else-if':"company_pending_invention.order > 0"} Queued
+            %span{'v-if':"company_pending_invention.progress > 0 && company_pending_invention.progress < 100"}&nbsp;- {{Math.round(company_pending_invention.progress)}}%
+          %span.invention-status-value.completed{'v-else-if':"invention_status == 'COMPLETED' || invention_status == 'COMPLETED_SUPPORT'"} Researched
         .action-row
-          %a.button.is-fullwidth.is-starpeace Start Research
+          %a.button.is-fullwidth.is-starpeace{'v-if':"invention_status == 'AVAILABLE'", 'v-on:click.stop.prevent':'queue_invention', ':disabled':'actions_disabled'} Start Research
+          %a.button.is-fullwidth.is-starpeace{'v-else-if':"invention_status == 'AVAILABLE_BLOCKED'", 'disabled':true} Start Research
+          %a.button.is-fullwidth.is-starpeace{'v-else-if':"invention_status == 'PENDING'", 'v-on:click.stop.prevent':'sell_invention', ':disabled':'actions_disabled'} Cancel Research
+          %a.button.is-fullwidth.is-starpeace{'v-else-if':"invention_status == 'COMPLETED'", 'v-on:click.stop.prevent':'sell_invention', ':disabled':'actions_disabled'} Sell Research
+          %a.button.is-fullwidth.is-starpeace{'v-else-if':"invention_status == 'COMPLETED_SUPPORT'", 'disabled':true} Sell Research
 
 </template>
 
@@ -63,41 +73,51 @@ property_percent = (type, value) ->
 export default
   props:
     managers: Object
+    ajax_state: Object
     client_state: Object
     options: Object
 
   computed:
-    can_perform_actions: -> @client_state?.workflow_status == 'ready' && @client_state.identity.identity.is_tycoon()
+    is_ready: -> @client_state?.workflow_status == 'ready'
 
     selected_invention_id: -> @client_state.interface.inventions_selected_invention_id
     selected_invention: -> if @selected_invention_id? then @client_state.core.invention_library.metadata_for_id(@selected_invention_id) else null
 
     invention_name: -> if @selected_invention? then @managers.translation_manager.text(@selected_invention.name_key) else ''
     invention_description: -> if @selected_invention? then @managers.translation_manager.text(@selected_invention.description_key) else ''
-    invention_level: -> @selected_invention?.invention?.properties?.level || ''
+    invention_level: -> @selected_invention?.properties?.level || ''
     invention_cost: ->
-      cost = @selected_invention?.invention?.properties?.price || 0
+      cost = @selected_invention?.properties?.price || 0
       if cost > 0 then "$#{Utils.format_money(cost)}" else ''
+
+    invention_ids_for_company: ->
+      if @client_state.identity?.identity?.is_tycoon() && @client_state.player.company_id?
+        company_metadata = @client_state.current_company_metadata()
+        if company_metadata? then _.map(@client_state.core.invention_library.metadata_for_seal_id(company_metadata.seal_id), (invention) -> invention.id) else []
+      else
+        _.map(@client_state.core.invention_library.all_metadata(), (invention) -> invention.id)
 
     invention_requires: ->
       upstream = []
-      if @selected_invention?
-        for invention_id,invention of @selected_invention.upstream
+      for invention_id in (if @selected_invention? then @client_state.core.invention_library.upstream_ids_for(@selected_invention.id) else [])
+        metadata = @client_state.core.invention_library.metadata_for_id(invention_id)
+        if metadata? && @invention_ids_for_company.indexOf(metadata.id) >= 0
           upstream.push {
-            id: invention.id
-            text: @managers.translation_manager.text(invention.name_key)
+            id: metadata.id
+            text: @managers.translation_manager.text(metadata.name_key)
           }
-      upstream
+      _.sortBy(upstream, (invention) -> invention.text)
 
     invention_allows: ->
       downstream = []
-      if @selected_invention?
-        for invention_id,invention of @selected_invention.downstream
+      for invention_id in (if @selected_invention? then @client_state.core.invention_library.downstream_ids_for(@selected_invention.id) else [])
+        metadata = @client_state.core.invention_library.metadata_for_id(invention_id)
+        if metadata? && @invention_ids_for_company.indexOf(metadata.id) >= 0
           downstream.push {
-            id: invention.id
-            text: @managers.translation_manager.text(invention.name_key)
+            id: metadata.id
+            text: @managers.translation_manager.text(metadata.name_key)
           }
-      downstream
+      _.sortBy(downstream, (invention) -> invention.text)
     invention_allows_leftover: ->
       others = @invention_allows.length - 3
       if others <= 0 then '' else if others == 1 then '1 other' else "#{others} others"
@@ -121,9 +141,41 @@ export default
 
       properties
 
+    company_inventions: -> if @is_ready && @client_state.player.company_id? then @client_state.corporation.inventions_metadata_by_company_id[@client_state.player.company_id] else null
+    company_pending_invention: -> if @selected_invention_id? && @company_inventions? then _.find(@company_inventions.pending_inventions, (pending) => pending.id == @selected_invention_id) else null
+
+    invention_status: ->
+      return 'NONE' unless @selected_invention? && @company_inventions?
+      if @company_pending_invention?
+        'PENDING'
+      else if @is_invention_completed(@selected_invention_id)
+        for allows in @invention_allows
+          return 'COMPLETED_SUPPORT' if @is_invention_in_progress(allows.id) || @is_invention_completed(allows.id)
+        'COMPLETED'
+      else
+        for requires in @invention_requires
+          return 'AVAILABLE_BLOCKED' unless @is_invention_completed(requires.id)
+        'AVAILABLE'
+
+    actions_disabled: ->
+      return true unless @is_ready && @company_inventions?
+      @ajax_state.request_mutex['player.sell_invention']?[@client_state.player.company_id] || @ajax_state.request_mutex['player.queue_invention']?[@client_state.player.company_id]
+
   methods:
-    select_invention: (invention_id) ->
-      @client_state.interface.inventions_selected_invention_id = invention_id
+    is_invention_in_progress: (invention_id) -> @company_inventions? && _.find(@company_inventions.pending_inventions, (pending) => pending.id == invention_id)
+    is_invention_completed: (invention_id) -> @company_inventions? && @company_inventions.completed_ids.indexOf(invention_id) >= 0
+
+    select_invention: (invention_id) -> @client_state.interface.inventions_selected_invention_id = invention_id
+
+    sell_invention: () ->
+      return unless @selected_invention_id? && @company_inventions? && (@invention_status == 'PENDING' || @invention_status == 'COMPLETED')
+      @managers.invention_manager.sell_invention(@client_state.player.company_id, @selected_invention_id).then =>
+        @$forceUpdate()
+
+    queue_invention: () ->
+      return unless @selected_invention_id? && @company_inventions? && @invention_status == 'AVAILABLE'
+      @managers.invention_manager.queue_invention(@client_state.player.company_id, @selected_invention_id).then =>
+        @$forceUpdate()
 
 </script>
 
@@ -256,10 +308,10 @@ export default
           &.blocked
             color: $color-negative
 
-          &.in-progress
+          &.pending
             font-style: italic
 
-          &.done
+          &.completed
             font-weight: bold
             color: $color-positive
 

@@ -26,6 +26,9 @@ export default class CorporationState
       return false unless @buildings_ids_by_company_id[company_id]? && @inventions_metadata_by_company_id[company_id]?
     true
 
+  company_ids_with_pending_inventions: () ->
+    _.filter(@company_ids, (id) => @inventions_metadata_by_company_id[id]?.pending_inventions?.length)
+
   subscribe_company_buildings_listener: (listener_callback) -> @event_listener.subscribe('corporation.company_buildings', listener_callback)
   notify_company_buildings_listeners: () -> @event_listener.notify_listeners('corporation.company_buildings')
   subscribe_company_inventions_listener: (listener_callback) -> @event_listener.subscribe('corporation.company_inventions', listener_callback)
@@ -39,6 +42,20 @@ export default class CorporationState
     Vue.set(@buildings_ids_by_company_id, company_id, building_ids)
     @notify_company_buildings_listeners()
 
-  set_company_inventions_metadata: (company_id, inventions_metadata) ->
-    Vue.set(@inventions_metadata_by_company_id, company_id, inventions_metadata)
-    @notify_company_inventions_listeners()
+  update_company_pending_inventions: (company_id, new_pending_inventions) ->
+    return false if _.isEqual(@inventions_metadata_by_company_id[company_id].pending_inventions, new_pending_inventions)
+    @inventions_metadata_by_company_id[company_id].pending_inventions = new_pending_inventions
+    true
+  update_company_completed_inventions: (company_id, new_completed_ids) ->
+    return false if _.isEqual(@inventions_metadata_by_company_id[company_id].completed_ids, new_completed_ids)
+    @inventions_metadata_by_company_id[company_id].completed_ids = new_completed_ids
+    true
+
+  update_company_inventions_metadata: (company_id, inventions_metadata) ->
+    unless @inventions_metadata_by_company_id[company_id]?
+      Vue.set(@inventions_metadata_by_company_id, company_id, inventions_metadata)
+      @notify_company_inventions_listeners()
+    else
+      changed_pending = @update_company_pending_inventions(company_id, inventions_metadata.pending_inventions)
+      changed_completed = @update_company_completed_inventions(company_id, inventions_metadata.completed_ids)
+      @notify_company_inventions_listeners() if changed_pending || changed_completed
