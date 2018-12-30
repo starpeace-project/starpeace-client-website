@@ -145,23 +145,31 @@ export default class TileItemCache
     return null unless tile_info.building_info?
     metadata = @client_state.core.building_library.metadata_by_id[tile_info.building_info.key]
     return null unless metadata?
-    texture = PIXI.utils.TextureCache["overlay.#{metadata.w}"]
+    image_metadata = @client_state.core.building_library.images_by_id[metadata.image_id]
+    return null unless image_metadata?
+
+    texture = PIXI.utils.TextureCache["overlay.#{image_metadata.w}"]
     return null unless texture?
 
-    new SpriteBuildingFootprint(texture, metadata)
+    zone_color = BuildingZone.TYPES[metadata.zone]?.color
+
+    new SpriteBuildingFootprint(texture, image_metadata, zone_color)
 
   building_sprite_info_for: (tile_info) ->
     return null unless tile_info.building_info?
     metadata = @client_state.core.building_library.metadata_by_id[tile_info.building_info.key]
+    return null unless metadata?
+    image_metadata = @client_state.core.building_library.images_by_id[metadata.image_id]
+    return null unless image_metadata?
 
-    textures = _.map(metadata?.frames || [], (texture_id) -> PIXI.utils.TextureCache[texture_id])
+    textures = _.map(image_metadata?.frames || [], (texture_id) -> PIXI.utils.TextureCache[texture_id])
     return null unless textures?.length && textures[0]?
 
     is_animated = textures.length > 1 && @options.option('renderer.building_animations')
 
     effects = []
-    if metadata.effects? && @options.option('renderer.building_effects')
-      for effect in metadata.effects
+    if image_metadata.effects? && @options.option('renderer.building_effects')
+      for effect in image_metadata.effects
         effect_metadata = @client_state.core.effect_library.metadata_by_id[effect.type]
         effect_textures = _.map(effect_metadata?.frames || [], (texture_id) -> PIXI.utils.TextureCache[texture_id])
         continue unless effect_metadata? && effect_textures.length
@@ -174,7 +182,7 @@ export default class TileItemCache
       selected_corporation_id = @client_state.selected_building_metadata()?.corporation_id
       is_filtered = if selected_corporation_id?.length then selected_corporation_id != tile_info.building_info.corporation_id else true
 
-    new SpriteBuilding(textures, is_animated, is_selected, is_filtered, metadata, effects)
+    new SpriteBuilding(textures, is_animated, is_selected, is_filtered, image_metadata, effects)
 
   plane_sprite_info_for: (flight_plan) ->
     textures = @client_state.core.plane_library.texture_for_id(flight_plan.plane_info.id)

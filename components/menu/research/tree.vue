@@ -287,7 +287,8 @@ export default
       @tree_options.series[0].links = links
 
     selected_invention_id: (new_value, old_value) ->
-      if new_value?
+      invention_within_selection = _.find(@invention_data, (invention) -> invention.id == new_value)
+      if !invention_within_selection? && new_value?
         invention_metadata = @client_state.core.invention_library.metadata_for_id(new_value)
         if invention_metadata?
           @interface_state.inventions_selected_category = invention_metadata.category

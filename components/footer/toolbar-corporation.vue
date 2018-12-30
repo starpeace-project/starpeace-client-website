@@ -12,7 +12,8 @@
   .level-item.company-container
     .company-panel{'v-for':'company in companies', ':class':"is_selected(company.id) ? 'is-selected' : ''", 'v-on:click.stop.prevent':"select_company(company.id)"}
       .company-name-row
-        %company-seal-icon.company-seal{':seal_id':"client_state.seal_for_company_id(company.id)"}
+        %span.company-icon-wrapper
+          %company-seal-icon.company-seal{':seal_id':"client_state.seal_for_company_id(company.id)"}
         %span.company-name {{client_state.name_for_company_id(company.id)}}
       .company-building-count
         %font-awesome-icon{':icon':"['far', 'building']"}
@@ -120,6 +121,10 @@ export default
     margin-left: .5rem
     min-width: 10rem
     padding: .5rem
+
+    .company-icon-wrapper
+      height: 1.2rem
+      width: 1.2rem
 
     .company-seal
       color: $sp-primary

@@ -145,6 +145,7 @@ export default class MiniMapRenderer
     , 500)
 
     @last_mini_map_zoom = 0
+    @last_game_scale = 0
     @last_view_offset_x = 0
     @last_view_offset_y = 0
 

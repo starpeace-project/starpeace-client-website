@@ -1,17 +1,17 @@
 <template lang='haml'>
 #application-container{':class':'application_css_class', 'v-cloak':true}
-  %sp-header{':options':'options', ':client_state':'client_state'}
+  %sp-header{':client_state':'client_state'}
   %sp-loading-card{':client_state':'client_state'}
   %sp-loading-modal{':client_state':'client_state'}
   %sp-session-expired-warning-card{':client_state':'client_state'}
   %sp-webgl-warning-card{':client_state':'client_state'}
   %sp-workflow{':client':'client', ':client_state':'client_state'}
   %menu-corporation-establish{':client':'client', ':managers':'managers', ':client_state':'client_state'}
-  %menu-construction{'v-show':"is_menu_visible('construction')", ':client_state':'client_state'}
+  %menu-construction{'v-show':"is_menu_visible('construction')", ':managers':'managers', ':client_state':'client_state'}
   %menu-chat{'v-show':"is_menu_visible('chat')", ':client_state':'client_state'}
   %menu-bookmarks{'v-show':"is_menu_visible('bookmarks')", ':managers':'managers', ':ajax_state':'ajax_state', ':client_state':'client_state', ':options':'options'}
   %menu-mail{'v-show':"is_menu_visible('mail')", ':client_state':'client_state'}
-  %menu-options{'v-show':"is_menu_visible('options')", ':client_state':'client_state', ':options':'options'}
+  %menu-options{'v-show':"is_menu_visible('options')", ':client_state':'client_state'}
   %menu-help{'v-show':"is_menu_visible('help')", ':client_state':'client_state'}
   %menu-release-notes{'v-show':"is_menu_visible('release_notes')", ':client_state':'client_state'}
   %menu-research-menu{'v-show':"is_menu_visible('research')", ':client_state':'client_state', ':options':'options'}
@@ -20,10 +20,11 @@
   %menu-research-details{'v-show':"is_menu_visible('research')", ':managers':'managers', ':ajax_state':'ajax_state', ':client_state':'client_state', ':options':'options'}
   %menu-system{'v-show':"is_menu_visible('systems')", ':client_state':'client_state', ':ajax_state':'ajax_state', ':managers':'managers'}
   %menu-tycoon{'v-show':"is_menu_visible('tycoon')", ':managers':'managers', ':client_state':'client_state', ':options':'options'}
+  %menu-tycoon-search{'v-show':"is_menu_visible('search')", ':managers':'managers', ':client_state':'client_state'}
   %sp-body{':client_state':'client_state', ':options':'options'}
   %sp-footer-overlay-menu{':client_state':'client_state'}
   %sp-toolbar-ribbon{':managers':'managers', ':mini_map_renderer':'mini_map_renderer', ':client_state':'client_state', ':options':'options'}
-  %sp-toolbar-details{':managers':'managers', ':client_state':'client_state', ':options':'options'}
+  %sp-toolbar-details{':ajax_state':'ajax_state', ':client_state':'client_state', ':options':'options'}
 </template>
 
 <script lang='coffee'>
@@ -36,11 +37,11 @@ import Workflow from '~/components/workflow/workflow.vue'
 
 import MenuCorporationEstablish from '~/components/menu/corporation/establish.vue'
 
-import MenuConstruction from '~/components/menu/menu-construction.vue'
+import MenuConstruction from '~/components/menu/construction/main-menu.vue'
 import MenuChat from '~/components/menu/menu-chat.vue'
 import MenuBookmarks from '~/components/menu/bookmarks/main-menu.vue'
 import MenuMail from '~/components/menu/menu-mail.vue'
-import MenuOptions from '~/components/menu/menu-options.vue'
+import MenuOptions from '~/components/menu/options/main-menu.vue'
 import MenuHelp from '~/components/menu/menu-help.vue'
 import MenuReleaseNotes from '~/components/menu/menu-release-notes.vue'
 import MenuResearchMenu from '~/components/menu/research/menu.vue'
@@ -49,6 +50,7 @@ import MenuResearchTree from '~/components/menu/research/tree.vue'
 import MenuResearchDetails from '~/components/menu/research/details.vue'
 import MenuSystem from '~/components/menu/system/menu.vue'
 import MenuTycoon from '~/components/menu/menu-tycoon.vue'
+import MenuTycoonSearch from '~/components/menu/search/main-menu.vue'
 
 import RenderContainer from '~/components/body/render-container.vue'
 import ToolbarDetails from '~/components/footer/toolbar-details.vue'
@@ -84,6 +86,7 @@ export default
     'menu-research-tree': MenuResearchTree
     'menu-research-details': MenuResearchDetails
     'menu-tycoon': MenuTycoon
+    'menu-tycoon-search': MenuTycoonSearch
 
   mounted: ->
     @client.options?.subscribe_options_listener =>

@@ -4,31 +4,42 @@ Some of the tentative future features and rough planned version are outlined bel
 
 ## v0.4
 ### platform
-* [pending] API authentication
-* [pending] metadata and gameplay resources from API's
-* [pending] basic state API integration (new account setup, tycoon info, building data)
-* [pending] player multi-company and role support
+* [pending] document metadata and gameplay resources
+* [pending] document API integration (tycoon info, building data, inventions, mail)
+* [pending] manage corporation and company mock API's
+* [pending] manage mail API integration (mock)
+* [pending] search and rankings API integration (mock)
 
 ### assets
+* [pending] initial building construction metadata (commerce, civics, headquarters, government)
+* [pending] finish language translation for assets
 * [pending] car assets
 * [pending] street light and intersection lamp assets
 
 ### gameplay
+* [pending] update UI and menus for better concept of galaxies
+* [pending] tycoon search menu
+* [pending] tycoon and industry rankings menu
+* [pending] corporation and company formation menus
+* [pending] client language translations and menu option
 * [pending] car rendering
 * [pending] street light and intersection lamp rendering
 * [pending] onscreen building text rendering on selection
 * [pending] building selection rendering effects (container box, negative-income tinting)
-* [pending] footer menu company and role support
+* [pending] footer menu company support (add, scroll)
+* [pending] city detection from current camera
+* [pending] city-specific ribbon ticker updates
+* [pending] world events and news ticker integration
+* [pending] menu filter widget (bookmarks, research, construction)
+
 
 ## v0.5
 ### platform
+* [pending] API authentication
 * [pending] integrate player and world events with news ticker
 
 ### assets
 
 ### gameplay
 * [pending] camera rotation perspectives
-* [pending] city detection from current camera
-* [pending] city-specific ticker updates
-* [pending] typed event and news ticker
 * [pending] auto-scroll and interaction of inspect and hint menu details

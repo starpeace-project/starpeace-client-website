@@ -44,8 +44,8 @@ import MoneyText from '~/components/misc/money-text.vue'
 
 export default
   props:
+    ajax_state: Object
     client_state: Object
-    managers: Object
     options: Object
 
   components:

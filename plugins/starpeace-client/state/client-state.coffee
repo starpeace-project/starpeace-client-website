@@ -85,6 +85,7 @@ export default class ClientState
 
     @renderer_initialized = false
     @mini_map_renderer_initialized = false
+    @construction_preview_renderer_initialized = false
 
     @ajax_state.reset_state()
     @core.corporation_cache.reset_state()
@@ -129,7 +130,7 @@ export default class ClientState
       @notify_workflow_status_listeners()
 
   determine_state: () ->
-    unless @initialized && @renderer_initialized && @mini_map_renderer_initialized
+    unless @initialized && @renderer_initialized && @mini_map_renderer_initialized && @construction_preview_renderer_initialized
       return 'pending_visa_type' unless @identity.visa_type?
       return 'pending_identity' unless @identity.identity?
       return 'pending_session' unless @session.session_token?

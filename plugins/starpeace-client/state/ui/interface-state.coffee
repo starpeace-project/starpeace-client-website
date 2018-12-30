@@ -34,6 +34,8 @@ export default class InterfaceState
     @inventions_selected_invention_id = ''
     @inventions_hover_invention_id = ''
 
+    @construction_selected_category = null
+    @construction_selected_building_id = null
 
   subscribe_mini_map_zoom_listener: (listener_callback) -> @event_listener.subscribe('interface.mini_map_zoom', listener_callback)
   notify_mini_map_zoom_listeners: () -> @event_listener.notify_listeners('interface.mini_map_zoom')

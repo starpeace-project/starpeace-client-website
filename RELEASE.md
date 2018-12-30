@@ -26,6 +26,7 @@
 * [done] invention metadata and taxonomy [v0.2.12]
 * [done] initial language translation support [v0.2.12]
 * [done] client static news and updates info widget [v0.2.12]
+* [in progress] initial building construction metadata (industry, warehouse, television) [v0.3.0]
 
 ### gameplay
 * [done] persist client options in localStorage [v0.2.3]
@@ -43,4 +44,4 @@
 * [done] mini-map rendering [v0.2.11]
 * [done] basic map favorites integration [v0.2.12]
 * [done] basic research and development UI and menu support [v0.2.12]
-* [in progress] map place building interaction support
+* [in progress] building construction menu and interaction support [v0.3.0]

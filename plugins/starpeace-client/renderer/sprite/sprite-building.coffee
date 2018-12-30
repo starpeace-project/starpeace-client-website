@@ -2,12 +2,12 @@
 import Sprite from '~/plugins/starpeace-client/renderer/sprite/sprite.coffee'
 
 export default class SpriteBuilding extends Sprite
-  constructor: (@textures, @is_animated, @is_selected, @is_filtered, @metadata, @effects) ->
+  constructor: (@textures, @is_animated, @is_selected, @is_filtered, @image_metadata, @effects) ->
     super()
 
-    @_hit_area = @metadata.hit_area || []
+    @_hit_area = @image_metadata.hit_area || []
 
-  width: (viewport) -> @metadata.w * viewport.tile_width + 1
+  width: (viewport) -> @image_metadata.w * viewport.tile_width + 1
   height: (viewport) -> Math.ceil(@textures[0].height * (@width(viewport) / @textures[0].width)) + 1
 
   hit_area: (viewport) ->
@@ -26,4 +26,4 @@ export default class SpriteBuilding extends Sprite
     sprite.height = height
     sprite.tint = 0xFFFFFF
 
-    sprite.zOrder = -1 * (sprite.y + sprite.height - Math.round(.5 * @metadata.h * viewport.tile_height))
+    sprite.zOrder = -1 * (sprite.y + sprite.height - Math.round(.5 * @image_metadata.h * viewport.tile_height))

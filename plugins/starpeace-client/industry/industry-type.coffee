@@ -4,6 +4,9 @@ export default class IndustryType
     NONE:
       type: 'NONE'
       text_key: 'industry.type.none.label'
+    APPLIANCE:
+      type: 'APPLIANCE'
+      text_key: 'industry.type.appliance.label'
     AUTOMOBILE:
       type: 'AUTOMOBILE'
       text_key: 'industry.type.automobile.label'
@@ -70,9 +73,6 @@ export default class IndustryType
     GARBAGE:
       type: 'GARBAGE'
       text_key: 'industry.type.garbage.label'
-    HOUSEHOLD_APPLIANCE:
-      type: 'HOUSEHOLD_APPLIANCE'
-      text_key: 'industry.type.household_appliance.label'
     HEADQUARTERS:
       type: 'HEADQUARTERS'
       text_key: 'industry.type.headquarters.label'

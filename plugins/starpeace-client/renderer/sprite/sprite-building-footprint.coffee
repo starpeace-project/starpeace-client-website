@@ -4,10 +4,10 @@ import BuildingZone from '~/plugins/starpeace-client/overlay/building-zone.coffe
 import Sprite from '~/plugins/starpeace-client/renderer/sprite/sprite.coffee'
 
 export default class SpriteBuildingFootprint extends Sprite
-  constructor: (@texture, @metadata, @zone_color) ->
+  constructor: (@texture, @image_metadata, @zone_color) ->
     super()
 
-  width: (viewport) -> @metadata.w * viewport.tile_width - 0.25
+  width: (viewport) -> @image_metadata.w * viewport.tile_width - 0.25
   height: (viewport) -> Math.ceil(@texture.height * (@width(viewport) / @texture.width)) - 0.25
 
   render: (sprite, canvas, viewport) ->
@@ -20,4 +20,4 @@ export default class SpriteBuildingFootprint extends Sprite
     sprite.y = canvas.y - (height - viewport.tile_height)
     sprite.width = width
     sprite.height = height
-    sprite.tint = BuildingZone.TYPES[@metadata.zone]?.color || BuildingZone.TYPES.RESERVED.color
+    sprite.tint = @zone_color || BuildingZone.TYPES.RESERVED.color

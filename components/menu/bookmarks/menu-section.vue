@@ -18,7 +18,8 @@
             %template{'v-else-if':"child.is_folder", 'v-bind:item':'child'}
               %a.is-folder-item{'v-on:click.stop.prevent':"toggle_item(child)", 'v-bind:class':"child.has_children ? '' : 'is-empty-folder'"}
                 %template{'v-if':"child.type == 'CORPORATION'"}
-                  %company-seal-icon{'v-bind:seal_id':"child.seal_id"}
+                  %span.company-icon-wrapper
+                    %company-seal-icon{'v-bind:seal_id':"child.seal_id"}
                 %template{'v-else-if':"child.type == 'INDUSTRY'"}
                   %industry-type-icon{'v-bind:industry_type':"child.industry_type", 'v-bind:small':'true'}
                 %template{'v-else-if':"child.type == 'TOWN'"}
@@ -46,7 +47,8 @@
           %div.sp-folder{'v-show':"!child.hidden"}
             %a.is-folder-item{'v-on:click.stop.prevent':"toggle_item(child)", 'v-bind:class':"child.has_children ? '' : 'is-empty-folder'"}
               %template{'v-if':"child.type == 'CORPORATION'"}
-                %company-seal-icon{'v-bind:seal_id':"child.seal_id"}
+                %span.company-icon-wrapper
+                  %company-seal-icon{'v-bind:seal_id':"child.seal_id"}
               %template{'v-else-if':"child.type == 'INDUSTRY'"}
                 %industry-type-icon{'v-bind:industry_type':"child.industry_type", 'v-bind:small':'true'}
               %template{'v-else-if':"child.type == 'TOWN'"}
@@ -411,6 +413,10 @@ export default
 
     .sp-folder-label
       margin-left: .5rem
+
+    .company-icon-wrapper
+      height: 1.2rem
+      width: 1.2rem
 
   .sortable-chosen
     .is-folder-item

@@ -17,55 +17,71 @@ export default
       icon_key: 'globe'
       extra_class: 'first-option'
       menu_class: ''
-    }, {
+    },
+    {
       type: 'bookmarks'
       tooltip: 'Map Locations'
       icon_category: 'fas'
       icon_key: 'map-marker-alt'
       menu_class: ''
-    }, {
+    },
+    {
       type: 'hide_all'
       tooltip: 'Hide Menus'
       icon_category: 'far'
       icon_key: 'eye'
       menu_class: ''
-    }, {
+    },
+    {
+      type: 'search'
+      tooltip: 'Tycoon Search'
+      icon_category: 'fas'
+      icon_key: 'search'
+      menu_class: ''
+    },
+    {
       type: 'tycoon'
       tooltip: 'Tycoon Details'
       icon_category: 'fas'
       icon_key: 'user-tie'
       menu_class: ''
-    }, {
+    },
+    {
       type: 'research'
       tooltip: 'R & D'
       icon_category: 'fas'
       icon_key: 'flask'
       menu_class: ''
-    }, {
+    },
+    {
       type: 'construction'
       tooltip: 'Construction'
       icon_category: 'fas'
       icon_key: 'toolbox'
       menu_class: ''
-    }, {
+    },
+    {
       type: 'mail'
       tooltip: 'Mail'
       icon_category: 'far'
       icon_key: 'envelope'
       menu_class: ''
-    }, {
+    },
+    {
       type: 'chat'
       tooltip: 'Chat'
       icon_category: 'far'
       icon_key: 'comments'
       menu_class: ''
-    }, {
+    },
+    {
       type: 'options'
       tooltip: 'Options'
       icon_category: 'fas'
       icon_key: 'cogs'
       menu_class: ''
-    }, {
+    },
+    {
       type: 'help'
       tooltip: 'Help'
       icon_category: 'far'
@@ -99,10 +115,9 @@ td
 
   &.column-menu
     background: linear-gradient(to top, #395950, #000)
-    max-width: 34rem
     padding: .25rem
     text-align: center
-    width: 34rem
+    width: 36rem
 
     .button
       height: 2.5rem

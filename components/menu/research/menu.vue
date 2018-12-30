@@ -21,8 +21,8 @@
           %span.sp-section-label {{item.name}}
         %ul.sp-section-items{'v-show':"item.children.length && item.expanded"}
           %li{'v-for':"child in item.children"}
-            %a.is-menu-item{'v-on:click.stop.prevent':"select_inventions(item.category, child.industry_type)", 'v-bind:class':"section_item_class(item, child)"}
-              %industry-type-icon{'v-bind:industry_type':"child.industry_type", 'v-bind:class':"['sp-section-item-image', 'sp-indusry-icon']"}
+            %a.is-menu-item{'v-on:click.stop.prevent':"select_inventions(item.category, child.industry_type)", ':class':"section_item_class(item, child)"}
+              %industry-type-icon{':industry_type':"child.industry_type", ':class':"['sp-section-item-image', 'sp-indusry-icon']", ':default_research':'true'}
               %span.sp-section-item-label {{child.name}}
 
 </template>

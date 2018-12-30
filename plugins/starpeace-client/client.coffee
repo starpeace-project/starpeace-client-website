@@ -9,6 +9,7 @@ import AjaxState from '~/plugins/starpeace-client/state/ajax-state.coffee'
 import ClientState from '~/plugins/starpeace-client/state/client-state.coffee'
 import Options from '~/plugins/starpeace-client/state/options.coffee'
 
+import BuildingImageRenderer from '~/plugins/starpeace-client/renderer/building-image-renderer.coffee'
 import MiniMapRenderer from '~/plugins/starpeace-client/renderer/mini-map-renderer.coffee'
 import Renderer from '~/plugins/starpeace-client/renderer/renderer.coffee'
 import InputHandler from '~/plugins/starpeace-client/renderer/input/input-handler.coffee'
@@ -29,6 +30,8 @@ export default class Client
 
     @renderer = new Renderer(@managers, @client_state, @options)
     @mini_map_renderer = new MiniMapRenderer(@managers, @renderer, @client_state, @options)
+    @construction_preview_renderer = new BuildingImageRenderer(@managers, @client_state, @options)
+
     @input_handler = new InputHandler(@renderer, @client_state)
 
     @refresh_events_interval = null
@@ -37,7 +40,6 @@ export default class Client
 
 
   notify_workflow_changed: () ->
-
     if @client_state.workflow_status == 'pending_tycoon_metadata' && @client_state.state_needs_tycoon_metadata() && !@ajax_state.is_locked('tycoon_metadata', @client_state.session.tycoon_id)
       @managers.tycoon_manager.load_metadata()
 
@@ -51,6 +53,7 @@ export default class Client
       @renderer.initialize()
       @input_handler.initialize()
       @mini_map_renderer.initialize()
+      @construction_preview_renderer.initialize()
 
       @client_state.finish_initialization()
 
@@ -76,3 +79,4 @@ export default class Client
     if @client_state.initialized && @client_state.workflow_status == 'ready'
       @renderer.tick() if @client_state.renderer_initialized
       @mini_map_renderer.tick() if @client_state.mini_map_renderer_initialized
+      @construction_preview_renderer.tick() if @client_state.construction_preview_renderer_initialized

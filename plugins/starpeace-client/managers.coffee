@@ -123,5 +123,7 @@ export default class Managers
         @client_state.core.map_library.texture_for_id(planet_metadata.map_id), @client_state, @options))
 
     @event_manager.update_message()
+
+    @building_manager.initialize()
     @invention_manager.initialize()
     @bookmark_manager.initialize()

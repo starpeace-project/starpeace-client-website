@@ -16,6 +16,13 @@ export default class Utils
   @format_money: (value, decimals=0) ->
     value.toFixed(0).replace(new RegExp('\\d(?=(\\d{3})+$)', 'g'), '$&,')
 
+  @join_with_oxford_comma: (parts) ->
+    if parts.length > 2
+      last = parts.pop()
+      "#{parts.join(', ')}, and #{last}"
+    else
+      parts.join(' and ')
+
   @parse_query: (query_string) ->
     query = {}
     if query_string?.length

@@ -530,7 +530,7 @@
       "id": "cca71144-7147-7019-aa38-790c6719ccd8",
       "tycoon_id": "tycoon-id-3",
       "name": "Needle 1",
-      "key": "dis.hi.res.a.empty",
+      "key": "dis.hi.res.a",
       "x": 195,
       "y": 116
     },
@@ -546,7 +546,7 @@
       "id": "4035d7c1-85b8-a4eb-eeea-886802ad6df8",
       "tycoon_id": "tycoon-id-4",
       "name": "Balloon House 1",
-      "key": "dis.hi.res.b.empty",
+      "key": "dis.hi.res.b",
       "x": 199,
       "y": 116
     },
@@ -554,7 +554,7 @@
       "id": "806eb20c-14ab-ea37-2c77-2b5720d2a616",
       "tycoon_id": "tycoon-id-3",
       "name": "Dreams Tower 1",
-      "key": "dis.mi.res.a.empty",
+      "key": "dis.mi.res.a",
       "x": 195,
       "y": 118
     },
@@ -570,7 +570,7 @@
       "id": "f0f51c35-5ca6-196f-bd1a-7d503ed526c4",
       "tycoon_id": "tycoon-id-4",
       "name": "The Mushrooms 1",
-      "key": "dis.mi.res.b.empty",
+      "key": "dis.mi.res.b",
       "x": 199,
       "y": 118
     }
@@ -628,7 +628,7 @@
       "id": "2dc3d739-c102-dd33-1696-05f557efa4a7",
       "tycoon_id": "tycoon-id-5",
       "name": "Headquarters 1",
-      "key": "dis.hq.1",
+      "key": "dis.hq",
       "x": 217,
       "y": 105
     },
@@ -676,7 +676,7 @@
       "id": "76103b92-e19e-0de9-2818-8c4b242c6f7f",
       "tycoon_id": "tycoon-id-2",
       "name": "Ribs 1",
-      "key": "dis.office.a.empty",
+      "key": "dis.office.a",
       "x": 201,
       "y": 114
     },
@@ -692,7 +692,7 @@
       "id": "8659d173-84c1-6d01-081d-e57a12de30c3",
       "tycoon_id": "tycoon-id-6",
       "name": "Red Ball 1",
-      "key": "dis.office.b.empty",
+      "key": "dis.office.b",
       "x": 205,
       "y": 114
     },
@@ -708,7 +708,7 @@
       "id": "0971bb13-ccb2-961b-121f-711bfc6d3316",
       "tycoon_id": "tycoon-id-5",
       "name": "Duango 1",
-      "key": "dis.office.c.empty",
+      "key": "dis.office.c",
       "x": 209,
       "y": 114
     },
@@ -740,7 +740,7 @@
       "id": "ed0ce2cd-3e3f-327e-6b05-46e53c011821",
       "tycoon_id": "tycoon-id-4",
       "name": "Funnel 1",
-      "key": "dis.hi.res.c.empty",
+      "key": "dis.hi.res.c",
       "x": 203,
       "y": 116
     },
@@ -756,7 +756,7 @@
       "id": "d47cd0f4-4b44-697c-e87d-3f024a57d398",
       "tycoon_id": "tycoon-id-5",
       "name": "Cottage 1",
-      "key": "dis.hi.res.d.empty",
+      "key": "dis.hi.res.d",
       "x": 207,
       "y": 116
     },
@@ -788,7 +788,7 @@
       "id": "a2a351fc-6c69-b208-8056-0aa6bea59ecb",
       "tycoon_id": "tycoon-id-6",
       "name": "Recycled Homes 1",
-      "key": "dis.lo.res.a.empty",
+      "key": "dis.lo.res.a",
       "x": 216,
       "y": 117
     },
@@ -812,7 +812,7 @@
       "id": "f4dadd80-e7d1-3572-417d-fa7b8c4e184e",
       "tycoon_id": "tycoon-id-3",
       "name": "The Bushings 1",
-      "key": "dis.mi.res.c.empty",
+      "key": "dis.mi.res.c",
       "x": 204,
       "y": 119
     },
@@ -828,7 +828,7 @@
       "id": "eba8bd0b-5099-8ceb-6ecd-a289f138115b",
       "tycoon_id": "tycoon-id-2",
       "name": "Screwer 1",
-      "key": "dis.mi.res.d.empty",
+      "key": "dis.mi.res.d",
       "x": 212,
       "y": 119
     },
@@ -846,7 +846,7 @@
       "id": "27c96528-e2f5-e5ee-3102-98118436251e",
       "tycoon_id": "tycoon-id-5",
       "name": "Headquarters 1",
-      "key": "dis.hq.2",
+      "key": "dis.hq",
       "x": 220,
       "y": 105
     },
@@ -854,7 +854,7 @@
       "id": "887498d8-545c-886f-9af4-c5650c1f7a0c",
       "tycoon_id": "tycoon-id-5",
       "name": "Headquarters 1",
-      "key": "dis.hq.3",
+      "key": "dis.hq",
       "x": 223,
       "y": 105
     },
@@ -862,7 +862,7 @@
       "id": "34d560d6-c9f1-b24c-3c53-4d2e9765fa16",
       "tycoon_id": "tycoon-id-3",
       "name": "Headquarters 1",
-      "key": "dis.hq.4",
+      "key": "dis.hq",
       "x": 226,
       "y": 105
     },
@@ -870,7 +870,7 @@
       "id": "c874ed53-6bd6-d3ce-8c93-8b75045ebf12",
       "tycoon_id": "tycoon-id-3",
       "name": "Headquarters 1",
-      "key": "dis.hq.5",
+      "key": "dis.hq",
       "x": 229,
       "y": 105
     },
@@ -958,7 +958,7 @@
       "id": "003db0b2-1940-4716-6e5e-6aa4e7008e2e",
       "tycoon_id": "tycoon-id-2",
       "name": "Recycled Buildings 1",
-      "key": "dis.lo.res.b.empty",
+      "key": "dis.lo.res.b",
       "x": 220,
       "y": 117
     },
@@ -974,7 +974,7 @@
       "id": "f92b2e20-90b0-3e99-1a32-c9b155781d2a",
       "tycoon_id": "tycoon-id-2",
       "name": "Sardine Cans 1",
-      "key": "dis.lo.res.c.empty",
+      "key": "dis.lo.res.c",
       "x": 224,
       "y": 117
     },
@@ -990,7 +990,7 @@
       "id": "d5667149-5d0c-8abd-2454-e744dc7f171e",
       "tycoon_id": "tycoon-id-3",
       "name": "The Barracks 1",
-      "key": "dis.lo.res.d.empty",
+      "key": "dis.lo.res.d",
       "x": 232,
       "y": 117
     },
@@ -1006,7 +1006,7 @@
       "id": "54eab7b3-0c4c-4004-8fb5-44ebfa92d8b6",
       "tycoon_id": "tycoon-id-2",
       "name": "Castles 1",
-      "key": "dis.mi.res.e.empty",
+      "key": "dis.mi.res.e",
       "x": 229,
       "y": 119
     }
@@ -1024,7 +1024,7 @@
       "id": "99f22e32-1e79-aac8-1155-ccb5ae0058a5",
       "tycoon_id": "tycoon-id-3",
       "name": "Spire 1",
-      "key": "dis.mi.res.f.empty",
+      "key": "dis.mi.res.f",
       "x": 198,
       "y": 123
     },
@@ -1032,7 +1032,7 @@
       "id": "40f2775f-12ae-c60a-5a95-aef7c53c688f",
       "tycoon_id": "tycoon-id-5",
       "name": "Lumber Mill 1",
-      "key": "dis.lumber.2",
+      "key": "dis.lumber",
       "x": 198,
       "y": 138
     }
@@ -1082,7 +1082,7 @@
       "id": "b56ba4d1-bf51-272f-480a-bd490ff17f5c",
       "tycoon_id": "tycoon-id-4",
       "name": "Lumber Mill 1",
-      "key": "dis.lumber.0",
+      "key": "dis.lumber",
       "x": 218,
       "y": 128
     },
@@ -1090,7 +1090,7 @@
       "id": "7d314976-c10b-fbf9-73e1-69babba1f6e4",
       "tycoon_id": "tycoon-id-4",
       "name": "Lumber Mill 1",
-      "key": "dis.lumber.3",
+      "key": "dis.lumber",
       "x": 206,
       "y": 138
     },
@@ -1098,7 +1098,7 @@
       "id": "3974e711-1af6-1e08-f4f6-d74e523ca966",
       "tycoon_id": "tycoon-id-6",
       "name": "Lumber Mill 1",
-      "key": "dis.lumber.4",
+      "key": "dis.lumber",
       "x": 218,
       "y": 138
     }
@@ -1108,7 +1108,7 @@
       "id": "3dbd64e3-739c-0ad5-1f4a-842612a728c6",
       "tycoon_id": "tycoon-id-3",
       "name": "Lumber Mill 1",
-      "key": "dis.lumber.1",
+      "key": "dis.lumber",
       "x": 226,
       "y": 128
     },
@@ -1116,7 +1116,7 @@
       "id": "f00ef84e-187a-6a6d-1912-9981c1440e1c",
       "tycoon_id": "tycoon-id-4",
       "name": "Lumber Mill 1",
-      "key": "dis.lumber.5",
+      "key": "dis.lumber",
       "x": 226,
       "y": 138
     }
@@ -1126,7 +1126,7 @@
       "id": "c54e1ae6-e43b-9ec3-ca58-9214ac3130bf",
       "tycoon_id": "tycoon-id-4",
       "name": "Lumber Mill 1",
-      "key": "dis.lumber.6",
+      "key": "dis.lumber",
       "x": 198,
       "y": 148
     },
@@ -1144,7 +1144,7 @@
       "id": "3a811823-c4af-6619-1701-18075a5d4d7d",
       "tycoon_id": "tycoon-id-2",
       "name": "Lumber Mill 1",
-      "key": "dis.lumber.7",
+      "key": "dis.lumber",
       "x": 206,
       "y": 148
     },
@@ -1496,7 +1496,7 @@
       "id": "cea031b2-f708-b975-e3c4-609f07f7a82c",
       "tycoon_id": "tycoon-id-4",
       "name": "May Flower 1",
-      "key": "magna.mayflower.empty",
+      "key": "magna.mayflower",
       "x": 198,
       "y": 213
     },
@@ -1512,7 +1512,7 @@
       "id": "420fdd99-230a-d84e-b0fd-9fe905ad575d",
       "tycoon_id": "tycoon-id-2",
       "name": "The Whirlpool 1",
-      "key": "magna.whirlpool.empty",
+      "key": "magna.whirlpool",
       "x": 198,
       "y": 216
     }
@@ -1538,7 +1538,7 @@
       "id": "693880ad-cde2-8ef0-9793-86a106bb02f2",
       "tycoon_id": "tycoon-id-6",
       "name": "The Hive 1",
-      "key": "magna.hive.empty",
+      "key": "magna.hive",
       "x": 206,
       "y": 209
     },
@@ -1562,7 +1562,7 @@
       "id": "d59e3283-74ee-160f-db0f-143482d9fdbf",
       "tycoon_id": "tycoon-id-6",
       "name": "The Octopus 1",
-      "key": "magna.octopus.empty",
+      "key": "magna.octopus",
       "x": 204,
       "y": 213
     },
@@ -1578,7 +1578,7 @@
       "id": "c715e16d-1838-dbb6-3092-cae0cff6133a",
       "tycoon_id": "tycoon-id-6",
       "name": "Sky Dome 1",
-      "key": "magna.sky.dome.empty",
+      "key": "magna.sky.dome",
       "x": 213,
       "y": 213
     },
@@ -1594,7 +1594,7 @@
       "id": "c8c80bd0-50d3-0be6-d147-7adf6d450356",
       "tycoon_id": "tycoon-id-6",
       "name": "Solarium 1",
-      "key": "magna.solarium.empty",
+      "key": "magna.solarium",
       "x": 219,
       "y": 213
     },
@@ -1636,7 +1636,7 @@
       "id": "7ce7ae4c-b74d-1303-bdcf-548cf54ad68a",
       "tycoon_id": "tycoon-id-2",
       "name": "Cloud City 1",
-      "key": "magna.cloud.city.empty",
+      "key": "magna.cloud.city",
       "x": 226,
       "y": 208
     },
@@ -1652,7 +1652,7 @@
       "id": "f130bacc-aee0-10c3-e99e-65af8cb4a202",
       "tycoon_id": "tycoon-id-6",
       "name": "Worker's Heaven 1",
-      "key": "magna.heaven.empty",
+      "key": "magna.heaven",
       "x": 233,
       "y": 208
     },
@@ -1660,7 +1660,7 @@
       "id": "0900f1b1-4981-6812-ecdb-3181f0f37d6d",
       "tycoon_id": "tycoon-id-6",
       "name": "Ivory Tower 1",
-      "key": "magna.ivory.tower.empty",
+      "key": "magna.ivory.tower",
       "x": 221,
       "y": 209
     },
@@ -1676,7 +1676,7 @@
       "id": "773d27a0-79f9-bc90-81fb-23dba2f7f3f2",
       "tycoon_id": "tycoon-id-6",
       "name": "The Spring 1",
-      "key": "magna.the.spring.empty",
+      "key": "magna.the.spring",
       "x": 225,
       "y": 213
     },
@@ -1692,7 +1692,7 @@
       "id": "274d6f88-216b-218a-10f5-ebf25f98bc86",
       "tycoon_id": "tycoon-id-5",
       "name": "Tulip 1",
-      "key": "magna.tulip.empty",
+      "key": "magna.tulip",
       "x": 233,
       "y": 213
     },
@@ -1816,7 +1816,7 @@
       "id": "3b1a657f-af1c-1212-c9b7-2b6a8a09a46f",
       "tycoon_id": "tycoon-id-2",
       "name": "Headquarters 1",
-      "key": "mko.hq.4",
+      "key": "mko.hq",
       "x": 208,
       "y": 236
     },
@@ -1824,7 +1824,7 @@
       "id": "054fa2dd-6480-b523-1c29-e62c337e62fb",
       "tycoon_id": "tycoon-id-4",
       "name": "Headquarters 1",
-      "key": "mko.hq.5",
+      "key": "mko.hq",
       "x": 218,
       "y": 236
     }
@@ -1874,7 +1874,7 @@
       "id": "1e26dbca-b994-3587-66ab-64daa09530b0",
       "tycoon_id": "tycoon-id-6",
       "name": "Headquarters 1",
-      "key": "mko.hq.1",
+      "key": "mko.hq",
       "x": 225,
       "y": 235
     },
@@ -1882,7 +1882,7 @@
       "id": "58a6f40a-8249-6ce0-3d92-103a041a6509",
       "tycoon_id": "tycoon-id-4",
       "name": "Headquarters 1",
-      "key": "mko.hq.2",
+      "key": "mko.hq",
       "x": 228,
       "y": 235
     },
@@ -1890,7 +1890,7 @@
       "id": "84ca3662-0b32-f2b1-607a-9cb77b51e4fe",
       "tycoon_id": "tycoon-id-6",
       "name": "Headquarters 1",
-      "key": "mko.hq.3",
+      "key": "mko.hq",
       "x": 233,
       "y": 235
     },
@@ -1950,7 +1950,7 @@
       "id": "b9253194-eef3-b06d-b0f5-3e5f5ddec00f",
       "tycoon_id": "tycoon-id-5",
       "name": "Yamamoto 1",
-      "key": "mko.office.a.empty",
+      "key": "mko.office.a",
       "x": 200,
       "y": 255
     },
@@ -1966,7 +1966,7 @@
       "id": "bcbe16d7-130c-7673-3372-6eeaf8c8ab31",
       "tycoon_id": "tycoon-id-2",
       "name": "Tanakuta 1",
-      "key": "mko.office.b.empty",
+      "key": "mko.office.b",
       "x": 204,
       "y": 255
     },
@@ -1982,7 +1982,7 @@
       "id": "c3e31b47-0bc6-fb8b-ad0a-e656e2f55ebc",
       "tycoon_id": "tycoon-id-4",
       "name": "Sato Scraper 1",
-      "key": "mko.office.c.empty",
+      "key": "mko.office.c",
       "x": 208,
       "y": 255
     },
@@ -1998,7 +1998,7 @@
       "id": "af4b3f50-0432-ebf1-7237-b967c63cf2a8",
       "tycoon_id": "tycoon-id-2",
       "name": "Kunawa Scraper 1",
-      "key": "mko.office.d.empty",
+      "key": "mko.office.d",
       "x": 211,
       "y": 255
     },
@@ -2014,7 +2014,7 @@
       "id": "15fd55a4-7791-a8d4-85ac-a12cae8e29ad",
       "tycoon_id": "tycoon-id-5",
       "name": "Koto-ku 1",
-      "key": "mko.office.e.empty",
+      "key": "mko.office.e",
       "x": 215,
       "y": 255
     },
@@ -2064,7 +2064,7 @@
       "id": "f929c71d-690e-f9ee-d817-a23abd773ce7",
       "tycoon_id": "tycoon-id-6",
       "name": "Small Koto 1",
-      "key": "mko.office.f.empty",
+      "key": "mko.office.f",
       "x": 221,
       "y": 255
     },
@@ -2114,7 +2114,7 @@
       "id": "69dca745-1aca-64a4-f02b-dabe05d83097",
       "tycoon_id": "tycoon-id-3",
       "name": "Taramagushi 1",
-      "key": "mko.lo.res.e.empty",
+      "key": "mko.lo.res.e",
       "x": 198,
       "y": 268
     },
@@ -2156,7 +2156,7 @@
       "id": "ced46ba2-a864-b5ee-ce40-b22f59e3f678",
       "tycoon_id": "tycoon-id-2",
       "name": "Katana House 1",
-      "key": "mko.hi.res.a.empty",
+      "key": "mko.hi.res.a",
       "x": 205,
       "y": 265
     },
@@ -2172,7 +2172,7 @@
       "id": "d6d2a026-c08f-59dd-c327-d570fb2111f4",
       "tycoon_id": "tycoon-id-3",
       "name": "Sohei House 1",
-      "key": "mko.hi.res.b.empty",
+      "key": "mko.hi.res.b",
       "x": 209,
       "y": 265
     },
@@ -2188,7 +2188,7 @@
       "id": "1dd3a933-726e-f800-b8b4-03821476d6c1",
       "tycoon_id": "tycoon-id-5",
       "name": "Tarakawa House 1",
-      "key": "mko.hi.res.c.empty",
+      "key": "mko.hi.res.c",
       "x": 214,
       "y": 265
     },
@@ -2204,7 +2204,7 @@
       "id": "ae8a18d4-90ac-82b6-d954-b5bc471caf05",
       "tycoon_id": "tycoon-id-4",
       "name": "Katana Building 1",
-      "key": "mko.lo.res.a.empty",
+      "key": "mko.lo.res.a",
       "x": 218,
       "y": 265
     },
@@ -2212,7 +2212,7 @@
       "id": "c3b0d488-3b4a-78fe-bd23-32cfda2cc0c4",
       "tycoon_id": "tycoon-id-6",
       "name": "Hisogari Building 1",
-      "key": "mko.lo.res.d.empty",
+      "key": "mko.lo.res.d",
       "x": 203,
       "y": 266
     },
@@ -2228,7 +2228,7 @@
       "id": "103ffdbc-fa39-b003-1d9f-e1a4766c6f44",
       "tycoon_id": "tycoon-id-4",
       "name": "Somsei-Taj Rooms 1",
-      "key": "mko.mi.res.a.empty",
+      "key": "mko.mi.res.a",
       "x": 202,
       "y": 268
     },
@@ -2244,7 +2244,7 @@
       "id": "84098928-43f2-62a9-d0e8-8b7646f6de93",
       "tycoon_id": "tycoon-id-4",
       "name": "Marakas Rooms 1",
-      "key": "mko.mi.res.b.empty",
+      "key": "mko.mi.res.b",
       "x": 206,
       "y": 268
     },
@@ -2260,7 +2260,7 @@
       "id": "430a3dde-0bb7-171a-fd7e-42fb77b23b9e",
       "tycoon_id": "tycoon-id-5",
       "name": "Yohito Rooms 1",
-      "key": "mko.mi.res.c.empty",
+      "key": "mko.mi.res.c",
       "x": 212,
       "y": 268
     },
@@ -2276,7 +2276,7 @@
       "id": "0fcfc640-b4f1-1487-b8d5-ee6ec257b3a7",
       "tycoon_id": "tycoon-id-3",
       "name": "Hirijoto-Manko Rooms 1",
-      "key": "mko.mi.res.d.empty",
+      "key": "mko.mi.res.d",
       "x": 216,
       "y": 268
     },
@@ -2287,14 +2287,6 @@
       "key": "mko.mi.res.d",
       "x": 218,
       "y": 268
-    },
-    {
-      "id": "5a0a4151-068c-4bd1-64b0-33e397c1861a",
-      "tycoon_id": "tycoon-id-5",
-      "name": "General Storage 1",
-      "key": "mko.warehouse",
-      "x": 200,
-      "y": 275
     },
     {
       "id": "117c0120-271e-512f-5250-e4fc4f7f78f9",
@@ -2342,7 +2334,7 @@
       "id": "0eeef53d-181c-ad17-89c6-e5a3902c65fd",
       "tycoon_id": "tycoon-id-5",
       "name": "Nikotori Building 1",
-      "key": "mko.lo.res.b.empty",
+      "key": "mko.lo.res.b",
       "x": 223,
       "y": 265
     },
@@ -2358,7 +2350,7 @@
       "id": "28530d8e-70c4-91fb-14ad-ecb9fba92b27",
       "tycoon_id": "tycoon-id-3",
       "name": "Hazobito Building 1",
-      "key": "mko.lo.res.c.empty",
+      "key": "mko.lo.res.c",
       "x": 229,
       "y": 265
     },
@@ -2374,7 +2366,7 @@
       "id": "5a760e08-24fc-56cc-1420-495662217bfc",
       "tycoon_id": "tycoon-id-2",
       "name": "Blue Rooms 1",
-      "key": "mko.mi.res.e.empty",
+      "key": "mko.mi.res.e",
       "x": 220,
       "y": 268
     },
@@ -2390,7 +2382,7 @@
       "id": "fd8622fb-408d-fa97-edc0-b554be925618",
       "tycoon_id": "tycoon-id-4",
       "name": "Purple Delight 1",
-      "key": "mko.mi.res.f.empty",
+      "key": "mko.mi.res.f",
       "x": 224,
       "y": 268
     },
@@ -2406,7 +2398,7 @@
       "id": "a156af50-38ef-d131-ff91-3fe3896768c5",
       "tycoon_id": "tycoon-id-2",
       "name": "Round Mariko 1",
-      "key": "mko.mi.res.g.empty",
+      "key": "mko.mi.res.g",
       "x": 228,
       "y": 268
     },
@@ -2456,7 +2448,7 @@
       "id": "a034efd1-4366-bb8b-cb23-7c0febf78887",
       "tycoon_id": "tycoon-id-4",
       "name": "Headquarters 1",
-      "key": "moab.hq.1",
+      "key": "moab.hq",
       "x": 198,
       "y": 288
     },
@@ -2472,7 +2464,7 @@
       "id": "ae9c2cee-4a9d-4df7-3663-486540ff8bb6",
       "tycoon_id": "tycoon-id-2",
       "name": "Zharot Palace 1",
-      "key": "moab.hi.res.a.empty",
+      "key": "moab.hi.res.a",
       "x": 195,
       "y": 299
     }
@@ -2522,7 +2514,7 @@
       "id": "e7fb88bc-1284-cd70-1416-decb904ffd35",
       "tycoon_id": "tycoon-id-3",
       "name": "Headquarters 1",
-      "key": "moab.hq.2",
+      "key": "moab.hq",
       "x": 201,
       "y": 288
     },
@@ -2530,7 +2522,7 @@
       "id": "53c15d66-4698-76cf-9dcc-baf270329e79",
       "tycoon_id": "tycoon-id-6",
       "name": "Headquarters 1",
-      "key": "moab.hq.3",
+      "key": "moab.hq",
       "x": 204,
       "y": 288
     },
@@ -2538,7 +2530,7 @@
       "id": "8334b038-e872-a30a-87bd-2e1fdcae3b55",
       "tycoon_id": "tycoon-id-2",
       "name": "Headquarters 1",
-      "key": "moab.hq.4",
+      "key": "moab.hq",
       "x": 207,
       "y": 288
     },
@@ -2546,7 +2538,7 @@
       "id": "896af032-2db4-7d36-4d7a-2e3ce0ee6f3b",
       "tycoon_id": "tycoon-id-4",
       "name": "Headquarters 1",
-      "key": "moab.hq.5",
+      "key": "moab.hq",
       "x": 213,
       "y": 288
     },
@@ -2626,7 +2618,7 @@
       "id": "290437fa-ebb0-30b0-4ff4-92355cfe64b2",
       "tycoon_id": "tycoon-id-2",
       "name": "Black Palace 1",
-      "key": "moab.hi.res.b.empty",
+      "key": "moab.hi.res.b",
       "x": 207,
       "y": 299
     },
@@ -2642,7 +2634,7 @@
       "id": "da91748b-d213-33e9-c53a-9f8aebec5bbc",
       "tycoon_id": "tycoon-id-2",
       "name": "Knights Dome 1",
-      "key": "moab.hi.res.c.empty",
+      "key": "moab.hi.res.c",
       "x": 216,
       "y": 299
     },
@@ -2724,7 +2716,7 @@
       "id": "947c449b-9cc9-100b-f3bc-1bfc6946f34b",
       "tycoon_id": "tycoon-id-2",
       "name": "Moab Basilica 1",
-      "key": "moab.office.a.empty",
+      "key": "moab.office.a",
       "x": 226,
       "y": 296
     },
@@ -2740,7 +2732,7 @@
       "id": "17301ab7-cf85-e93c-b1fc-ef06443c236c",
       "tycoon_id": "tycoon-id-3",
       "name": "Dark Crysler 1",
-      "key": "moab.office.b.empty",
+      "key": "moab.office.b",
       "x": 232,
       "y": 296
     },
@@ -2756,7 +2748,7 @@
       "id": "695376cc-2a9a-c7b7-5625-0ce5d2694ecc",
       "tycoon_id": "tycoon-id-5",
       "name": "Knights Bungalow 1",
-      "key": "moab.hi.res.d.empty",
+      "key": "moab.hi.res.d",
       "x": 221,
       "y": 299
     },
@@ -2772,7 +2764,7 @@
       "id": "ab571c3d-ccb9-0582-b435-937443346bbb",
       "tycoon_id": "tycoon-id-6",
       "name": "Guruh Dome 1",
-      "key": "moab.lo.res.a.empty",
+      "key": "moab.lo.res.a",
       "x": 227,
       "y": 299
     },
@@ -2790,7 +2782,7 @@
       "id": "09372e83-47b3-d953-7bc6-115ef2563932",
       "tycoon_id": "tycoon-id-3",
       "name": "Lothar Dome 1",
-      "key": "moab.lo.res.b.empty",
+      "key": "moab.lo.res.b",
       "x": 195,
       "y": 303
     },
@@ -2806,7 +2798,7 @@
       "id": "ee0b0d64-4704-b15f-c877-be9123b74ddd",
       "tycoon_id": "tycoon-id-3",
       "name": "Nurse Rooms 1",
-      "key": "moab.mi.res.c.empty",
+      "key": "moab.mi.res.c",
       "x": 195,
       "y": 306
     },
@@ -2848,7 +2840,7 @@
       "id": "980e2d69-9042-5e72-7edd-e60af2d4d823",
       "tycoon_id": "tycoon-id-6",
       "name": "Black Bowl 1",
-      "key": "moab.lo.res.c.empty",
+      "key": "moab.lo.res.c",
       "x": 201,
       "y": 303
     },
@@ -2864,7 +2856,7 @@
       "id": "b4b6aabb-21a5-d2ac-bca4-85b0fd6804ee",
       "tycoon_id": "tycoon-id-2",
       "name": "Souls Dome 1",
-      "key": "moab.lo.res.d.empty",
+      "key": "moab.lo.res.d",
       "x": 207,
       "y": 304
     },
@@ -2880,7 +2872,7 @@
       "id": "64fa4527-7d76-795c-d3f6-91d40c306419",
       "tycoon_id": "tycoon-id-6",
       "name": "Nurse Dome 1",
-      "key": "moab.mi.res.a.empty",
+      "key": "moab.mi.res.a",
       "x": 218,
       "y": 304
     },
@@ -2978,7 +2970,7 @@
       "id": "7962746f-6175-a18f-b675-52403b347904",
       "tycoon_id": "tycoon-id-2",
       "name": "Nurse Zoo 1",
-      "key": "moab.mi.res.b.empty",
+      "key": "moab.mi.res.b",
       "x": 225,
       "y": 305
     },
@@ -3036,7 +3028,7 @@
       "id": "a09b0b63-4525-504b-72a3-7c46fbb30f31",
       "tycoon_id": "tycoon-id-6",
       "name": "Headquarters 1",
-      "key": "pgi.hq.4",
+      "key": "pgi.hq",
       "x": 195,
       "y": 328
     },
@@ -3044,7 +3036,7 @@
       "id": "ac75ec9e-9a53-86ce-5105-fa581f39c44a",
       "tycoon_id": "tycoon-id-2",
       "name": "Headquarters 1",
-      "key": "pgi.hq.5",
+      "key": "pgi.hq",
       "x": 198,
       "y": 328
     },
@@ -3102,7 +3094,7 @@
       "id": "1e406eb1-6cea-cdd7-c838-d10f0b4c791f",
       "tycoon_id": "tycoon-id-5",
       "name": "Headquarters 1",
-      "key": "pgi.hq.3",
+      "key": "pgi.hq",
       "x": 209,
       "y": 326
     },
@@ -3150,7 +3142,7 @@
       "id": "ad505c40-55cd-bcb9-4cbb-cd3b482477a8",
       "tycoon_id": "tycoon-id-6",
       "name": "Sting 1",
-      "key": "pgi.office.a.empty",
+      "key": "pgi.office.a",
       "x": 203,
       "y": 337
     },
@@ -3166,7 +3158,7 @@
       "id": "d8bb94cf-1a2d-a3ca-4df7-8f3ce04274f0",
       "tycoon_id": "tycoon-id-3",
       "name": "Davis Bow 1",
-      "key": "pgi.office.b.empty",
+      "key": "pgi.office.b",
       "x": 207,
       "y": 337
     },
@@ -3182,7 +3174,7 @@
       "id": "704c455f-cb9a-d998-9ac9-8b22bf374189",
       "tycoon_id": "tycoon-id-3",
       "name": "Mc Neon Tower 1",
-      "key": "pgi.office.c.empty",
+      "key": "pgi.office.c",
       "x": 212,
       "y": 337
     },
@@ -3198,7 +3190,7 @@
       "id": "e2447c77-fe3c-8c50-fa7e-01e7b77bc703",
       "tycoon_id": "tycoon-id-6",
       "name": "The Spire 1",
-      "key": "pgi.office.d.empty",
+      "key": "pgi.office.d",
       "x": 216,
       "y": 337
     },
@@ -3240,7 +3232,7 @@
       "id": "34eec888-09a2-7497-27f7-3abc5c328d07",
       "tycoon_id": "tycoon-id-4",
       "name": "Headquarters 1",
-      "key": "pgi.hq.1",
+      "key": "pgi.hq",
       "x": 228,
       "y": 325
     },
@@ -3248,7 +3240,7 @@
       "id": "ad183c01-e326-2c38-68e3-ddbc8cf7b163",
       "tycoon_id": "tycoon-id-4",
       "name": "Headquarters 1",
-      "key": "pgi.hq.2",
+      "key": "pgi.hq",
       "x": 233,
       "y": 325
     },
@@ -3338,7 +3330,7 @@
       "id": "e2e3eb9a-124f-03bf-0e1e-dfbad46aa38d",
       "tycoon_id": "tycoon-id-5",
       "name": "Xanadu Palace 1",
-      "key": "pgi.hi.res.a.empty",
+      "key": "pgi.hi.res.a",
       "x": 218,
       "y": 345
     },
@@ -3354,7 +3346,7 @@
       "id": "2eb0ba18-0ce7-924f-8246-33cc08b5da9d",
       "tycoon_id": "tycoon-id-4",
       "name": "Lisgar Towers 1",
-      "key": "pgi.hi.res.f.empty",
+      "key": "pgi.hi.res.f",
       "x": 202,
       "y": 347
     },
@@ -3370,7 +3362,7 @@
       "id": "feb5858a-4fcc-6fe8-53bc-acb82f21b8d6",
       "tycoon_id": "tycoon-id-5",
       "name": "White Hut 1",
-      "key": "pgi.hi.res.g.empty",
+      "key": "pgi.hi.res.g",
       "x": 206,
       "y": 347
     },
@@ -3386,7 +3378,7 @@
       "id": "aca31bc8-c41f-1f3e-b0a6-bd87a09ce5d8",
       "tycoon_id": "tycoon-id-4",
       "name": "Lyon Rooms 1",
-      "key": "pgi.hi.res.h.empty",
+      "key": "pgi.hi.res.h",
       "x": 212,
       "y": 347
     },
@@ -3402,7 +3394,7 @@
       "id": "a30ea1ea-cba7-32f4-dc0d-2887a64b61ef",
       "tycoon_id": "tycoon-id-4",
       "name": "Blue Mansion 1",
-      "key": "pgi.hi.res.i.empty",
+      "key": "pgi.hi.res.i",
       "x": 216,
       "y": 347
     },
@@ -3426,7 +3418,7 @@
       "id": "b082daf2-cc77-86ff-89b9-ad4dd92cb489",
       "tycoon_id": "tycoon-id-5",
       "name": "The Sicily 1",
-      "key": "pgi.lo.res.d.empty",
+      "key": "pgi.lo.res.d",
       "x": 202,
       "y": 349
     },
@@ -3442,7 +3434,7 @@
       "id": "b907c57f-417e-79b4-0598-e3be1be49440",
       "tycoon_id": "tycoon-id-3",
       "name": "Mountbatten Rooms 1",
-      "key": "pgi.lo.res.e.empty",
+      "key": "pgi.lo.res.e",
       "x": 206,
       "y": 349
     },
@@ -3458,7 +3450,7 @@
       "id": "d07048f6-7b84-d9ad-096d-e5a691699caf",
       "tycoon_id": "tycoon-id-5",
       "name": "The Ambassador 1",
-      "key": "pgi.lo.res.f.empty",
+      "key": "pgi.lo.res.f",
       "x": 212,
       "y": 349
     },
@@ -3474,7 +3466,7 @@
       "id": "8b19fccf-9195-e52d-1f70-9fc0cbc1cd03",
       "tycoon_id": "tycoon-id-5",
       "name": "Gladston Apts. 1",
-      "key": "pgi.mi.res.a.empty",
+      "key": "pgi.mi.res.a",
       "x": 216,
       "y": 349
     },
@@ -3508,7 +3500,7 @@
       "id": "f9957d89-5945-6ed5-ec0a-27bf0ca6e918",
       "tycoon_id": "tycoon-id-4",
       "name": "Atrium 1",
-      "key": "pgi.hi.res.b.empty",
+      "key": "pgi.hi.res.b",
       "x": 226,
       "y": 345
     },
@@ -3524,7 +3516,7 @@
       "id": "ce13fc95-134e-3c2e-194c-e8e02091bd3d",
       "tycoon_id": "tycoon-id-6",
       "name": "The Willington 1",
-      "key": "pgi.hi.res.c.empty",
+      "key": "pgi.hi.res.c",
       "x": 232,
       "y": 345
     },
@@ -3540,7 +3532,7 @@
       "id": "8ef01edd-1a7b-1f2f-4729-fc8ebf2256d3",
       "tycoon_id": "tycoon-id-2",
       "name": "Kent Square 1",
-      "key": "pgi.hi.res.e.empty",
+      "key": "pgi.hi.res.e",
       "x": 224,
       "y": 346
     },
@@ -3548,7 +3540,7 @@
       "id": "7a32e5cd-f036-e266-edb7-678e92cd2b05",
       "tycoon_id": "tycoon-id-6",
       "name": "Pink Mansion 1",
-      "key": "pgi.hi.res.j.empty",
+      "key": "pgi.hi.res.j",
       "x": 220,
       "y": 347
     },
@@ -3564,7 +3556,7 @@
       "id": "32abbfd6-3482-af1d-26dc-50a8aa996e54",
       "tycoon_id": "tycoon-id-2",
       "name": "Playfair Towers 1",
-      "key": "pgi.lo.res.a.empty",
+      "key": "pgi.lo.res.a",
       "x": 226,
       "y": 347
     },
@@ -3580,7 +3572,7 @@
       "id": "e489484c-6651-0316-f500-60b0a94d98e1",
       "tycoon_id": "tycoon-id-2",
       "name": "Arlington Rooms 1",
-      "key": "pgi.lo.res.b.empty",
+      "key": "pgi.lo.res.b",
       "x": 233,
       "y": 348
     },
@@ -3588,7 +3580,7 @@
       "id": "1c4577be-8571-d388-754a-d8aac8d5ceb9",
       "tycoon_id": "tycoon-id-2",
       "name": "Quincy 1",
-      "key": "pgi.mi.res.b.empty",
+      "key": "pgi.mi.res.b",
       "x": 220,
       "y": 349
     },
@@ -3604,7 +3596,7 @@
       "id": "b6f720e5-0870-38c5-818f-39392d16c0c0",
       "tycoon_id": "tycoon-id-6",
       "name": "Metcalfe Towers 1",
-      "key": "pgi.mi.res.c.empty",
+      "key": "pgi.mi.res.c",
       "x": 224,
       "y": 349
     },
@@ -3620,7 +3612,7 @@
       "id": "f5b015aa-ca3e-8f47-324a-d2d785529065",
       "tycoon_id": "tycoon-id-5",
       "name": "Delmar Apts. 1",
-      "key": "pgi.mi.res.d.empty",
+      "key": "pgi.mi.res.d",
       "x": 228,
       "y": 349
     },
@@ -3638,7 +3630,7 @@
       "id": "37a3a001-79bb-4d4d-4b47-dfe184b70f5e",
       "tycoon_id": "tycoon-id-6",
       "name": "Golden Cap 1",
-      "key": "pgi.hi.res.d.empty",
+      "key": "pgi.hi.res.d",
       "x": 196,
       "y": 346
     },
@@ -3662,7 +3654,7 @@
       "id": "2bcad552-6ba5-b4d4-b2b3-304ab58ce560",
       "tycoon_id": "tycoon-id-2",
       "name": "Caesar's Atrium 1",
-      "key": "pgi.lo.res.c.empty",
+      "key": "pgi.lo.res.c",
       "x": 198,
       "y": 349
     },
@@ -3670,7 +3662,7 @@
       "id": "f4a5c70d-81ca-9ffb-8786-5e29c1564341",
       "tycoon_id": "tycoon-id-4",
       "name": "Sunset Apts. 1",
-      "key": "pgi.mi.res.e.empty",
+      "key": "pgi.mi.res.e",
       "x": 195,
       "y": 352
     },

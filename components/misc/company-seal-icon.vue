@@ -22,10 +22,4 @@ export default
 </script>
 
 <style lang='sass' scoped>
-@import '~assets/stylesheets/starpeace-variables'
-
-.company-seal-icon-wrapper
-  height: 1.2rem
-  width: 1.2rem
-
 </style>

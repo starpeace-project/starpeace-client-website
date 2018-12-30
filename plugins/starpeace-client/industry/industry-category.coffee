@@ -3,22 +3,22 @@ export default class IndustryCategory
   @CATEGORIES:
     NONE:
       category: 'NONE'
-      string: 'industry.category.none.label'
-    CIVICS:
-      type: 'CIVICS'
-      string: 'industry.category.civics.label'
+      text_key: 'industry.category.none.label'
+    CIVIC:
+      type: 'CIVIC'
+      text_key: 'industry.category.civic.label'
     COMMERCE:
       type: 'COMMERCE'
-      string: 'industry.category.commerce.label'
+      text_key: 'industry.category.commerce.label'
     INDUSTRY:
       type: 'INDUSTRY'
-      string: 'industry.category.industry.label'
+      text_key: 'industry.category.industry.label'
     LOGISTICS:
       type: 'LOGISTICS'
-      string: 'industry.category.logistics.label'
+      text_key: 'industry.category.logistics.label'
     REAL_ESTATE:
       type: 'REAL_ESTATE'
-      string: 'industry.category.real_estate.label'
-    SERVICES:
-      category: 'SERVICES'
-      string: 'industry.category.services.label'
+      text_key: 'industry.category.real_estate.label'
+    SERVICE:
+      category: 'SERVICE'
+      text_key: 'industry.category.service.label'

@@ -20,6 +20,7 @@ OPTIONS = [
   {name: 'renderer.planes', _default: true},
 
   {name: 'bookmarks.points_of_interest', _default: true},
+  {name: 'bookmarks.capital', _default: true},
   {name: 'bookmarks.towns', _default: true},
   {name: 'bookmarks.mausoleums', _default: true},
   {name: 'bookmarks.corporation', _default: true}

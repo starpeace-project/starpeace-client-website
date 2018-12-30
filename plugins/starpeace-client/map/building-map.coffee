@@ -50,13 +50,18 @@ export default class BuildingMap
     building = @client_state.core.building_cache.building_metadata_by_id[building_id]
     metadata = @client_state.core.building_library.metadata_by_id[building.key]
     unless metadata?
-      Logger.debug("unable to load building metadata for #{building.key}")
+      Logger.debug("unable to load building definition metadata for #{building.key}")
       # FIXME: TODO: add dummy/empty placeholder
       return
 
+    image_metadata = @client_state.core.building_library.images_by_id[metadata.image_id]
+    unless image_metadata?
+      Logger.debug("unable to load building image metadata for #{building.key}")
+      return
+
     building.has_concrete = has_concrete = metadata.zone != BuildingZone.TYPES.NONE.type && metadata.zone != BuildingZone.TYPES.INDUSTRIAL.type && metadata.zone != BuildingZone.TYPES.WAREHOUSE.type
-    for y in [0...metadata.h]
-      for x in [0...metadata.w]
+    for y in [0...image_metadata.h]
+      for x in [0...image_metadata.w]
         map_index = (building.y - y) * @width + (building.x - x)
         @tile_info_building[map_index] = building
         @tile_info_concrete[map_index] = if has_concrete then Concrete.FILL_TYPE.FILLED else Concrete.FILL_TYPE.NO_FILL

@@ -163,7 +163,7 @@
     {
       "id": "3d0f2654-0da8-fc93-8007-7fde6734e72e",
       "tycoon_id": "tycoon-id-4",
-      "key": "dis.hi.res.a.empty",
+      "key": "dis.hi.res.a",
       "x": 195,
       "y": 116
     },
@@ -177,14 +177,14 @@
     {
       "id": "e6078daa-cc6b-ca9f-236b-a388db524f44",
       "tycoon_id": "tycoon-id-5",
-      "key": "dis.hi.res.b.empty",
+      "key": "dis.hi.res.b",
       "x": 199,
       "y": 116
     },
     {
       "id": "6aed2272-4355-494c-d8e7-29b9b88f3356",
       "tycoon_id": "tycoon-id-4",
-      "key": "dis.mi.res.a.empty",
+      "key": "dis.mi.res.a",
       "x": 195,
       "y": 118
     },
@@ -198,7 +198,7 @@
     {
       "id": "6bd0ce81-5c72-e459-4a9e-533e5bb84484",
       "tycoon_id": "tycoon-id-3",
-      "key": "dis.mi.res.b.empty",
+      "key": "dis.mi.res.b",
       "x": 199,
       "y": 118
     }
@@ -249,7 +249,7 @@
     {
       "id": "701c7d5c-5326-84ae-db3d-5f5fbfed56ca",
       "tycoon_id": "tycoon-id-3",
-      "key": "dis.hq.1",
+      "key": "dis.hq",
       "x": 217,
       "y": 105
     },
@@ -298,7 +298,7 @@
     {
       "id": "65e91a95-1f26-46d3-6567-f4df02326497",
       "tycoon_id": "tycoon-id-1",
-      "key": "dis.office.a.empty",
+      "key": "dis.office.a",
       "x": 201,
       "y": 114
     },
@@ -312,7 +312,7 @@
     {
       "id": "334b92e0-d74e-31a5-5782-0ee7b3b44e89",
       "tycoon_id": "tycoon-id-1",
-      "key": "dis.office.b.empty",
+      "key": "dis.office.b",
       "x": 205,
       "y": 114
     },
@@ -326,7 +326,7 @@
     {
       "id": "41b77464-d93c-78d2-778e-aa03446c7b23",
       "tycoon_id": "tycoon-id-5",
-      "key": "dis.office.c.empty",
+      "key": "dis.office.c",
       "x": 209,
       "y": 114
     },
@@ -354,7 +354,7 @@
     {
       "id": "def90e5b-183f-93e2-788a-31fc981a4aee",
       "tycoon_id": "tycoon-id-1",
-      "key": "dis.hi.res.c.empty",
+      "key": "dis.hi.res.c",
       "x": 203,
       "y": 116
     },
@@ -368,7 +368,7 @@
     {
       "id": "8305b3a8-af58-2420-5012-e217a798b955",
       "tycoon_id": "tycoon-id-2",
-      "key": "dis.hi.res.d.empty",
+      "key": "dis.hi.res.d",
       "x": 207,
       "y": 116
     },
@@ -396,7 +396,7 @@
     {
       "id": "f072aaaf-cb80-617a-3be2-56610e499115",
       "tycoon_id": "tycoon-id-5",
-      "key": "dis.lo.res.a.empty",
+      "key": "dis.lo.res.a",
       "x": 216,
       "y": 117
     },
@@ -417,7 +417,7 @@
     {
       "id": "9648b11f-36c5-3317-ee7d-e532096d66af",
       "tycoon_id": "tycoon-id-2",
-      "key": "dis.mi.res.c.empty",
+      "key": "dis.mi.res.c",
       "x": 204,
       "y": 119
     },
@@ -431,7 +431,7 @@
     {
       "id": "bbb2f407-7497-c6b8-b153-ab9b424dd422",
       "tycoon_id": "tycoon-id-4",
-      "key": "dis.mi.res.d.empty",
+      "key": "dis.mi.res.d",
       "x": 212,
       "y": 119
     },
@@ -447,28 +447,28 @@
     {
       "id": "fa5b6495-4bf4-0a97-2da9-2f7c762f640b",
       "tycoon_id": "tycoon-id-3",
-      "key": "dis.hq.2",
+      "key": "dis.hq",
       "x": 220,
       "y": 105
     },
     {
       "id": "1283c535-9ebc-36fd-de35-60a9cefea3c0",
       "tycoon_id": "tycoon-id-1",
-      "key": "dis.hq.3",
+      "key": "dis.hq",
       "x": 223,
       "y": 105
     },
     {
       "id": "b87b18fc-13fd-7631-7133-6f9e0fccc27a",
       "tycoon_id": "tycoon-id-3",
-      "key": "dis.hq.4",
+      "key": "dis.hq",
       "x": 226,
       "y": 105
     },
     {
       "id": "e7db7397-a8f1-2882-1c5d-06166ff5d72e",
       "tycoon_id": "tycoon-id-1",
-      "key": "dis.hq.5",
+      "key": "dis.hq",
       "x": 229,
       "y": 105
     },
@@ -545,7 +545,7 @@
     {
       "id": "abdf524a-4f53-5e37-32af-7cd4c1b71a91",
       "tycoon_id": "tycoon-id-1",
-      "key": "dis.lo.res.b.empty",
+      "key": "dis.lo.res.b",
       "x": 220,
       "y": 117
     },
@@ -559,7 +559,7 @@
     {
       "id": "e248a5bc-b18a-2114-ea20-e64407284b3f",
       "tycoon_id": "tycoon-id-3",
-      "key": "dis.lo.res.c.empty",
+      "key": "dis.lo.res.c",
       "x": 224,
       "y": 117
     },
@@ -573,7 +573,7 @@
     {
       "id": "d1f2a588-8712-db41-7ac3-a7aecb3860cf",
       "tycoon_id": "tycoon-id-3",
-      "key": "dis.lo.res.d.empty",
+      "key": "dis.lo.res.d",
       "x": 232,
       "y": 117
     },
@@ -587,7 +587,7 @@
     {
       "id": "0eeaf2eb-2ed6-c227-b1ac-bd6865cf7000",
       "tycoon_id": "tycoon-id-5",
-      "key": "dis.mi.res.e.empty",
+      "key": "dis.mi.res.e",
       "x": 229,
       "y": 119
     }
@@ -603,14 +603,14 @@
     {
       "id": "73b53132-e2f4-48e2-e6fd-3006e3b7d64b",
       "tycoon_id": "tycoon-id-3",
-      "key": "dis.mi.res.f.empty",
+      "key": "dis.mi.res.f",
       "x": 198,
       "y": 123
     },
     {
       "id": "3f0f6c09-8c35-78cf-2971-79ed679b0542",
       "tycoon_id": "tycoon-id-1",
-      "key": "dis.lumber.2",
+      "key": "dis.lumber",
       "x": 198,
       "y": 138
     }
@@ -654,21 +654,21 @@
     {
       "id": "ffac2f5c-553d-6fbb-1fc3-3525cfc9703d",
       "tycoon_id": "tycoon-id-4",
-      "key": "dis.lumber.0",
+      "key": "dis.lumber",
       "x": 218,
       "y": 128
     },
     {
       "id": "0bc15060-03ef-42db-9029-cfba6b4b05f5",
       "tycoon_id": "tycoon-id-3",
-      "key": "dis.lumber.3",
+      "key": "dis.lumber",
       "x": 206,
       "y": 138
     },
     {
       "id": "135e37a1-a180-a440-7d12-eafc13a0ea42",
       "tycoon_id": "tycoon-id-2",
-      "key": "dis.lumber.4",
+      "key": "dis.lumber",
       "x": 218,
       "y": 138
     }
@@ -677,14 +677,14 @@
     {
       "id": "b0a4e3d2-ec76-0917-31e0-76f5761424b6",
       "tycoon_id": "tycoon-id-4",
-      "key": "dis.lumber.1",
+      "key": "dis.lumber",
       "x": 226,
       "y": 128
     },
     {
       "id": "c40e7c79-b242-3609-bdd5-cd3d1d023b87",
       "tycoon_id": "tycoon-id-4",
-      "key": "dis.lumber.5",
+      "key": "dis.lumber",
       "x": 226,
       "y": 138
     }
@@ -693,7 +693,7 @@
     {
       "id": "0c82209d-26c9-f2a4-7371-e01574247052",
       "tycoon_id": "tycoon-id-1",
-      "key": "dis.lumber.6",
+      "key": "dis.lumber",
       "x": 198,
       "y": 148
     },
@@ -709,7 +709,7 @@
     {
       "id": "bee9b2e8-09e4-f334-0b67-83e1bb5828ef",
       "tycoon_id": "tycoon-id-2",
-      "key": "dis.lumber.7",
+      "key": "dis.lumber",
       "x": 218,
       "y": 148
     },
@@ -1021,7 +1021,7 @@
     {
       "id": "1ce9be8c-abfd-7f30-b0c9-911232b465ee",
       "tycoon_id": "tycoon-id-4",
-      "key": "magna.cloud.city.empty",
+      "key": "magna.cloud.city",
       "x": 206,
       "y": 218
     },
@@ -1035,7 +1035,7 @@
     {
       "id": "56e1affd-b7a7-722e-0575-9882a8d1475a",
       "tycoon_id": "tycoon-id-4",
-      "key": "magna.heaven.empty",
+      "key": "magna.heaven",
       "x": 213,
       "y": 218
     },
@@ -1049,7 +1049,7 @@
     {
       "id": "7bffc0f0-117c-4670-166b-951f6ffd4485",
       "tycoon_id": "tycoon-id-3",
-      "key": "magna.hive.empty",
+      "key": "magna.hive",
       "x": 219,
       "y": 218
     },
@@ -1086,7 +1086,7 @@
     {
       "id": "a126e0a6-8707-3832-5aff-d8edba26d9d0",
       "tycoon_id": "tycoon-id-4",
-      "key": "magna.ivory.tower.empty",
+      "key": "magna.ivory.tower",
       "x": 225,
       "y": 218
     },
@@ -1100,7 +1100,7 @@
     {
       "id": "53e4f95c-5e3a-76a9-14b4-8ff2270a054f",
       "tycoon_id": "tycoon-id-2",
-      "key": "magna.mayflower.empty",
+      "key": "magna.mayflower",
       "x": 233,
       "y": 218
     }
@@ -1109,7 +1109,7 @@
     {
       "id": "b304fc82-0991-db8d-6c2e-7724fe4038a7",
       "tycoon_id": "tycoon-id-1",
-      "key": "magna.octopus.empty",
+      "key": "magna.octopus",
       "x": 195,
       "y": 223
     },
@@ -1144,14 +1144,14 @@
     {
       "id": "9750bbf3-06c1-254a-31d7-da86be3f25f6",
       "tycoon_id": "tycoon-id-5",
-      "key": "mko.hq.2",
+      "key": "mko.hq",
       "x": 195,
       "y": 238
     },
     {
       "id": "d87ca82f-4e2d-2e5c-00a4-359152555fe2",
       "tycoon_id": "tycoon-id-5",
-      "key": "mko.hq.3",
+      "key": "mko.hq",
       "x": 198,
       "y": 238
     }
@@ -1160,7 +1160,7 @@
     {
       "id": "9cb64fb4-8716-69b3-f1e2-5e9d6a0c7144",
       "tycoon_id": "tycoon-id-2",
-      "key": "magna.sky.dome.empty",
+      "key": "magna.sky.dome",
       "x": 201,
       "y": 223
     },
@@ -1174,7 +1174,7 @@
     {
       "id": "c7836f81-b3e1-623c-ba98-b64168a009c5",
       "tycoon_id": "tycoon-id-2",
-      "key": "magna.solarium.empty",
+      "key": "magna.solarium",
       "x": 207,
       "y": 223
     },
@@ -1188,7 +1188,7 @@
     {
       "id": "0010653d-6c3d-54b6-0ae1-810021566f7e",
       "tycoon_id": "tycoon-id-1",
-      "key": "magna.the.spring.empty",
+      "key": "magna.the.spring",
       "x": 216,
       "y": 223
     },
@@ -1258,14 +1258,14 @@
     {
       "id": "cb230696-f459-77d9-e030-dd56e7d396c2",
       "tycoon_id": "tycoon-id-5",
-      "key": "mko.hq.4",
+      "key": "mko.hq",
       "x": 201,
       "y": 238
     },
     {
       "id": "9dca6078-114a-96f5-f8fd-318a76ad03e6",
       "tycoon_id": "tycoon-id-1",
-      "key": "mko.hq.5",
+      "key": "mko.hq",
       "x": 204,
       "y": 238
     },
@@ -1302,7 +1302,7 @@
     {
       "id": "1b7d831f-12b8-66cc-537a-342b125045ee",
       "tycoon_id": "tycoon-id-4",
-      "key": "magna.tulip.empty",
+      "key": "magna.tulip",
       "x": 222,
       "y": 223
     },
@@ -1316,7 +1316,7 @@
     {
       "id": "e3541c02-73e0-42bf-f46d-f9d9ff07c706",
       "tycoon_id": "tycoon-id-1",
-      "key": "magna.whirlpool.empty",
+      "key": "magna.whirlpool",
       "x": 228,
       "y": 223
     },
@@ -1400,7 +1400,7 @@
     {
       "id": "fee3073a-cdb3-2ba6-6162-9884bcec6ee0",
       "tycoon_id": "tycoon-id-2",
-      "key": "mko.hq.1",
+      "key": "mko.hq",
       "x": 228,
       "y": 236
     }
@@ -1446,7 +1446,7 @@
     {
       "id": "16d30db3-c3f0-a2dc-7233-b0524f3e9de8",
       "tycoon_id": "tycoon-id-5",
-      "key": "mko.office.a.empty",
+      "key": "mko.office.a",
       "x": 200,
       "y": 255
     },
@@ -1460,7 +1460,7 @@
     {
       "id": "7584acb9-5dca-e208-3087-d2fa5b9f9445",
       "tycoon_id": "tycoon-id-4",
-      "key": "mko.office.b.empty",
+      "key": "mko.office.b",
       "x": 204,
       "y": 255
     },
@@ -1474,7 +1474,7 @@
     {
       "id": "42236e66-a278-d087-a98a-d30e85339cca",
       "tycoon_id": "tycoon-id-4",
-      "key": "mko.office.c.empty",
+      "key": "mko.office.c",
       "x": 208,
       "y": 255
     },
@@ -1488,7 +1488,7 @@
     {
       "id": "29bdfbdb-2f68-b1c1-9ce5-f7a46fb3162b",
       "tycoon_id": "tycoon-id-4",
-      "key": "mko.office.d.empty",
+      "key": "mko.office.d",
       "x": 211,
       "y": 255
     },
@@ -1502,7 +1502,7 @@
     {
       "id": "ea8f68d3-7b5a-6340-7b12-5f72c5211327",
       "tycoon_id": "tycoon-id-4",
-      "key": "mko.office.e.empty",
+      "key": "mko.office.e",
       "x": 215,
       "y": 255
     },
@@ -1546,7 +1546,7 @@
     {
       "id": "2692483e-a56c-913a-e1af-a2ada880dec6",
       "tycoon_id": "tycoon-id-4",
-      "key": "mko.office.f.empty",
+      "key": "mko.office.f",
       "x": 221,
       "y": 255
     },
@@ -1583,7 +1583,7 @@
     {
       "id": "8508d2cb-1268-d9f7-9c00-bc85c5bd1d52",
       "tycoon_id": "tycoon-id-5",
-      "key": "mko.lo.res.e.empty",
+      "key": "mko.lo.res.e",
       "x": 195,
       "y": 267
     },
@@ -1597,16 +1597,9 @@
     {
       "id": "34ce5c3c-6791-502c-81bc-17362944e39e",
       "tycoon_id": "tycoon-id-1",
-      "key": "mko.mi.res.a.empty",
+      "key": "mko.mi.res.a",
       "x": 199,
       "y": 267
-    },
-    {
-      "id": "8c5ae427-6fc5-2a89-6cc2-f664b641a903",
-      "tycoon_id": "tycoon-id-5",
-      "key": "mko.warehouse",
-      "x": 195,
-      "y": 275
     }
   ],
   "10x13": [
@@ -1620,7 +1613,7 @@
     {
       "id": "211d9082-7c25-0755-49eb-15d436a4d4cc",
       "tycoon_id": "tycoon-id-2",
-      "key": "mko.hi.res.a.empty",
+      "key": "mko.hi.res.a",
       "x": 205,
       "y": 265
     },
@@ -1634,7 +1627,7 @@
     {
       "id": "813d2920-8ace-dca1-726d-a77d4dfe051e",
       "tycoon_id": "tycoon-id-1",
-      "key": "mko.hi.res.b.empty",
+      "key": "mko.hi.res.b",
       "x": 209,
       "y": 265
     },
@@ -1648,7 +1641,7 @@
     {
       "id": "08966f49-07db-16c9-68a7-e67d458a1eda",
       "tycoon_id": "tycoon-id-5",
-      "key": "mko.hi.res.c.empty",
+      "key": "mko.hi.res.c",
       "x": 214,
       "y": 265
     },
@@ -1662,7 +1655,7 @@
     {
       "id": "4e854331-8c64-5ecd-c0a2-8d7a4e7382e1",
       "tycoon_id": "tycoon-id-2",
-      "key": "mko.lo.res.a.empty",
+      "key": "mko.lo.res.a",
       "x": 218,
       "y": 265
     },
@@ -1683,7 +1676,7 @@
     {
       "id": "6d39abb0-d7da-d4f2-57dd-39c80cfe41ad",
       "tycoon_id": "tycoon-id-5",
-      "key": "mko.mi.res.b.empty",
+      "key": "mko.mi.res.b",
       "x": 207,
       "y": 267
     },
@@ -1697,7 +1690,7 @@
     {
       "id": "c2afb216-ea40-4903-d404-3d35c4f765b9",
       "tycoon_id": "tycoon-id-1",
-      "key": "mko.mi.res.c.empty",
+      "key": "mko.mi.res.c",
       "x": 212,
       "y": 267
     },
@@ -1711,7 +1704,7 @@
     {
       "id": "31998e57-a449-f7a6-a0d1-a2b063e18880",
       "tycoon_id": "tycoon-id-1",
-      "key": "mko.mi.res.d.empty",
+      "key": "mko.mi.res.d",
       "x": 216,
       "y": 267
     },
@@ -1762,7 +1755,7 @@
     {
       "id": "209263c8-c122-8acf-1a98-19370b2641eb",
       "tycoon_id": "tycoon-id-5",
-      "key": "mko.lo.res.b.empty",
+      "key": "mko.lo.res.b",
       "x": 223,
       "y": 265
     },
@@ -1776,7 +1769,7 @@
     {
       "id": "fb07b783-0996-067b-8b76-334841dc75ad",
       "tycoon_id": "tycoon-id-2",
-      "key": "mko.lo.res.c.empty",
+      "key": "mko.lo.res.c",
       "x": 229,
       "y": 265
     },
@@ -1790,14 +1783,14 @@
     {
       "id": "876a73da-e18c-7b25-2c0c-a97da7affe70",
       "tycoon_id": "tycoon-id-2",
-      "key": "mko.lo.res.d.empty",
+      "key": "mko.lo.res.d",
       "x": 235,
       "y": 265
     },
     {
       "id": "b31cba44-6e37-89f5-d3e1-85bbab0927f9",
       "tycoon_id": "tycoon-id-2",
-      "key": "mko.mi.res.e.empty",
+      "key": "mko.mi.res.e",
       "x": 220,
       "y": 267
     },
@@ -1811,7 +1804,7 @@
     {
       "id": "54e61be0-68d2-9983-2a16-2959199f4b27",
       "tycoon_id": "tycoon-id-5",
-      "key": "mko.mi.res.f.empty",
+      "key": "mko.mi.res.f",
       "x": 224,
       "y": 267
     },
@@ -1825,7 +1818,7 @@
     {
       "id": "fa9cb1d0-319c-74aa-c933-cc72024d62e5",
       "tycoon_id": "tycoon-id-2",
-      "key": "mko.mi.res.g.empty",
+      "key": "mko.mi.res.g",
       "x": 228,
       "y": 267
     },
@@ -1890,7 +1883,7 @@
     {
       "id": "d5aec202-9497-f87a-73cf-c19d3d12f3e1",
       "tycoon_id": "tycoon-id-4",
-      "key": "moab.hq.1",
+      "key": "moab.hq",
       "x": 198,
       "y": 288
     },
@@ -1904,7 +1897,7 @@
     {
       "id": "13476389-0108-ec40-5293-5c83f5dbec61",
       "tycoon_id": "tycoon-id-1",
-      "key": "moab.hi.res.a.empty",
+      "key": "moab.hi.res.a",
       "x": 195,
       "y": 299
     }
@@ -1948,28 +1941,28 @@
     {
       "id": "0d4a5ebb-7d1b-0c4f-91b0-96fee8f2727a",
       "tycoon_id": "tycoon-id-1",
-      "key": "moab.hq.2",
+      "key": "moab.hq",
       "x": 201,
       "y": 288
     },
     {
       "id": "3d597391-e16f-30bf-b483-cf08efaf5856",
       "tycoon_id": "tycoon-id-2",
-      "key": "moab.hq.3",
+      "key": "moab.hq",
       "x": 204,
       "y": 288
     },
     {
       "id": "12328fff-d829-35b1-597e-164cf6c9a0cd",
       "tycoon_id": "tycoon-id-5",
-      "key": "moab.hq.4",
+      "key": "moab.hq",
       "x": 207,
       "y": 288
     },
     {
       "id": "19f39528-6ff1-2658-0cc8-e6a36ab1fe6d",
       "tycoon_id": "tycoon-id-3",
-      "key": "moab.hq.5",
+      "key": "moab.hq",
       "x": 213,
       "y": 288
     },
@@ -2039,7 +2032,7 @@
     {
       "id": "0aad2755-c74a-e1e7-2fc1-4fec89fcfdfe",
       "tycoon_id": "tycoon-id-5",
-      "key": "moab.hi.res.b.empty",
+      "key": "moab.hi.res.b",
       "x": 207,
       "y": 299
     },
@@ -2053,7 +2046,7 @@
     {
       "id": "e0c349e1-721a-e6cd-ebb2-19d483cba0f7",
       "tycoon_id": "tycoon-id-1",
-      "key": "moab.hi.res.c.empty",
+      "key": "moab.hi.res.c",
       "x": 216,
       "y": 299
     },
@@ -2139,7 +2132,7 @@
     {
       "id": "f990404a-5075-545e-aa12-ec3b3eba039f",
       "tycoon_id": "tycoon-id-1",
-      "key": "moab.office.a.empty",
+      "key": "moab.office.a",
       "x": 226,
       "y": 296
     },
@@ -2153,7 +2146,7 @@
     {
       "id": "57decd63-9c48-71a2-6641-d920caa0704b",
       "tycoon_id": "tycoon-id-3",
-      "key": "moab.office.b.empty",
+      "key": "moab.office.b",
       "x": 232,
       "y": 296
     },
@@ -2167,7 +2160,7 @@
     {
       "id": "8eafb49a-e0fa-dcd7-363a-0e34e7254db8",
       "tycoon_id": "tycoon-id-5",
-      "key": "moab.hi.res.d.empty",
+      "key": "moab.hi.res.d",
       "x": 221,
       "y": 299
     },
@@ -2188,7 +2181,7 @@
     {
       "id": "82f403e6-8b5c-7b11-6ea3-0ba7ddf3f331",
       "tycoon_id": "tycoon-id-5",
-      "key": "moab.lo.res.a.empty",
+      "key": "moab.lo.res.a",
       "x": 233,
       "y": 299
     }
@@ -2204,14 +2197,14 @@
     {
       "id": "193ceeaf-f393-0e62-2a54-9b54627e075c",
       "tycoon_id": "tycoon-id-1",
-      "key": "moab.lo.res.b.empty",
+      "key": "moab.lo.res.b",
       "x": 198,
       "y": 303
     },
     {
       "id": "ec519934-d25c-2d1d-8c22-42bb70246644",
       "tycoon_id": "tycoon-id-3",
-      "key": "moab.mi.res.c.empty",
+      "key": "moab.mi.res.c",
       "x": 195,
       "y": 306
     },
@@ -2255,7 +2248,7 @@
     {
       "id": "4805a703-9ba5-ec45-1fbb-1aaa785f70ac",
       "tycoon_id": "tycoon-id-2",
-      "key": "moab.lo.res.c.empty",
+      "key": "moab.lo.res.c",
       "x": 204,
       "y": 303
     },
@@ -2269,7 +2262,7 @@
     {
       "id": "4edd985e-3f5e-86df-adee-c24dc549936a",
       "tycoon_id": "tycoon-id-4",
-      "key": "moab.lo.res.d.empty",
+      "key": "moab.lo.res.d",
       "x": 214,
       "y": 304
     },
@@ -2374,28 +2367,28 @@
     {
       "id": "b411f5d3-d542-50e2-afdb-cb3f14d94230",
       "tycoon_id": "tycoon-id-3",
-      "key": "pgi.hq.1",
+      "key": "pgi.hq",
       "x": 209,
       "y": 319
     },
     {
       "id": "a90d081f-7938-6825-fdeb-3f11f03bd9e8",
       "tycoon_id": "tycoon-id-2",
-      "key": "pgi.hq.2",
+      "key": "pgi.hq",
       "x": 213,
       "y": 319
     },
     {
       "id": "799f4c79-7f87-8bb9-af8d-280762a39f95",
       "tycoon_id": "tycoon-id-2",
-      "key": "pgi.hq.3",
+      "key": "pgi.hq",
       "x": 216,
       "y": 319
     },
     {
       "id": "762855e7-4205-f0c0-f83a-374c29e8d538",
       "tycoon_id": "tycoon-id-5",
-      "key": "pgi.hq.4",
+      "key": "pgi.hq",
       "x": 219,
       "y": 319
     }
@@ -2404,7 +2397,7 @@
     {
       "id": "46857245-e8ff-f6a7-b143-9825cc75367b",
       "tycoon_id": "tycoon-id-1",
-      "key": "moab.mi.res.a.empty",
+      "key": "moab.mi.res.a",
       "x": 222,
       "y": 304
     },
@@ -2418,7 +2411,7 @@
     {
       "id": "09fa37ff-2739-0a11-7adf-945de85da80c",
       "tycoon_id": "tycoon-id-2",
-      "key": "moab.mi.res.b.empty",
+      "key": "moab.mi.res.b",
       "x": 229,
       "y": 305
     },
@@ -2481,7 +2474,7 @@
     {
       "id": "d6dc7dff-f258-8365-1d21-eb7b7b73605d",
       "tycoon_id": "tycoon-id-2",
-      "key": "pgi.hq.5",
+      "key": "pgi.hq",
       "x": 222,
       "y": 319
     },
@@ -2525,7 +2518,7 @@
     {
       "id": "fd529e64-13bf-dde4-3ea2-2ca7a780595e",
       "tycoon_id": "tycoon-id-5",
-      "key": "pgi.office.a.empty",
+      "key": "pgi.office.a",
       "x": 197,
       "y": 327
     },
@@ -2546,7 +2539,7 @@
     {
       "id": "164b8b6c-652f-197c-c506-b2341acff19a",
       "tycoon_id": "tycoon-id-2",
-      "key": "pgi.hi.res.g.empty",
+      "key": "pgi.hi.res.g",
       "x": 195,
       "y": 337
     },
@@ -2560,7 +2553,7 @@
     {
       "id": "210b5940-9ed6-9219-dcb1-06606bae9dea",
       "tycoon_id": "tycoon-id-1",
-      "key": "pgi.hi.res.h.empty",
+      "key": "pgi.hi.res.h",
       "x": 199,
       "y": 337
     },
@@ -2574,7 +2567,7 @@
     {
       "id": "f1c073f0-08b4-9eba-aff1-10a21faa0a7a",
       "tycoon_id": "tycoon-id-3",
-      "key": "pgi.lo.res.e.empty",
+      "key": "pgi.lo.res.e",
       "x": 197,
       "y": 339
     },
@@ -2625,7 +2618,7 @@
     {
       "id": "97a33da9-9805-c524-3a53-b22202897d2a",
       "tycoon_id": "tycoon-id-3",
-      "key": "pgi.office.b.empty",
+      "key": "pgi.office.b",
       "x": 204,
       "y": 327
     },
@@ -2639,7 +2632,7 @@
     {
       "id": "a9e5403f-fffa-b1c8-9e22-c97ad1216096",
       "tycoon_id": "tycoon-id-1",
-      "key": "pgi.office.c.empty",
+      "key": "pgi.office.c",
       "x": 208,
       "y": 327
     },
@@ -2653,7 +2646,7 @@
     {
       "id": "a0d5a639-f356-50b8-a4b7-e622f4e734f2",
       "tycoon_id": "tycoon-id-3",
-      "key": "pgi.office.d.empty",
+      "key": "pgi.office.d",
       "x": 214,
       "y": 327
     },
@@ -2681,7 +2674,7 @@
     {
       "id": "879650aa-6391-0a52-5dd4-2b9d84f0c5b0",
       "tycoon_id": "tycoon-id-2",
-      "key": "pgi.hi.res.a.empty",
+      "key": "pgi.hi.res.a",
       "x": 209,
       "y": 335
     },
@@ -2695,14 +2688,14 @@
     {
       "id": "ec4c8e0e-121c-09a6-db27-030acbb0fa32",
       "tycoon_id": "tycoon-id-4",
-      "key": "pgi.hi.res.b.empty",
+      "key": "pgi.hi.res.b",
       "x": 218,
       "y": 335
     },
     {
       "id": "477c8327-9447-637e-1018-1586c9016cca",
       "tycoon_id": "tycoon-id-1",
-      "key": "pgi.hi.res.f.empty",
+      "key": "pgi.hi.res.f",
       "x": 202,
       "y": 336
     },
@@ -2723,7 +2716,7 @@
     {
       "id": "8efbc6e8-c0ab-88b9-c43c-aa55ecbfb85e",
       "tycoon_id": "tycoon-id-4",
-      "key": "pgi.hi.res.i.empty",
+      "key": "pgi.hi.res.i",
       "x": 206,
       "y": 337
     },
@@ -2737,7 +2730,7 @@
     {
       "id": "3dcc7753-1288-7957-85d8-be3c3dd00a0b",
       "tycoon_id": "tycoon-id-4",
-      "key": "pgi.hi.res.j.empty",
+      "key": "pgi.hi.res.j",
       "x": 212,
       "y": 337
     },
@@ -2751,14 +2744,14 @@
     {
       "id": "b7d4917b-0893-1c46-b795-d9e15a4c2827",
       "tycoon_id": "tycoon-id-2",
-      "key": "pgi.lo.res.a.empty",
+      "key": "pgi.lo.res.a",
       "x": 218,
       "y": 337
     },
     {
       "id": "4d08e436-1ace-1c7e-7d8a-3f2ba06042c9",
       "tycoon_id": "tycoon-id-2",
-      "key": "pgi.lo.res.f.empty",
+      "key": "pgi.lo.res.f",
       "x": 201,
       "y": 339
     },
@@ -2772,7 +2765,7 @@
     {
       "id": "2f0ff64f-71d4-3f55-889f-17805c84e57f",
       "tycoon_id": "tycoon-id-3",
-      "key": "pgi.mi.res.a.empty",
+      "key": "pgi.mi.res.a",
       "x": 205,
       "y": 339
     },
@@ -2786,7 +2779,7 @@
     {
       "id": "e3115cb5-a96b-3629-ed2b-d155bbb674bd",
       "tycoon_id": "tycoon-id-4",
-      "key": "pgi.mi.res.b.empty",
+      "key": "pgi.mi.res.b",
       "x": 209,
       "y": 339
     },
@@ -2800,7 +2793,7 @@
     {
       "id": "c875fb60-8952-9c2c-ca7f-aa4edf3784c6",
       "tycoon_id": "tycoon-id-4",
-      "key": "pgi.mi.res.c.empty",
+      "key": "pgi.mi.res.c",
       "x": 214,
       "y": 339
     },
@@ -2814,7 +2807,7 @@
     {
       "id": "bcf6d337-b9a5-7c23-ac21-e99ce52119d0",
       "tycoon_id": "tycoon-id-3",
-      "key": "pgi.mi.res.d.empty",
+      "key": "pgi.mi.res.d",
       "x": 218,
       "y": 339
     }
@@ -2879,7 +2872,7 @@
     {
       "id": "9032f974-a0ee-a190-bcff-9a7818f6b68c",
       "tycoon_id": "tycoon-id-1",
-      "key": "pgi.hi.res.c.empty",
+      "key": "pgi.hi.res.c",
       "x": 222,
       "y": 335
     },
@@ -2893,7 +2886,7 @@
     {
       "id": "868fb67b-8b6f-1e16-ee42-8418641a6eb3",
       "tycoon_id": "tycoon-id-2",
-      "key": "pgi.hi.res.d.empty",
+      "key": "pgi.hi.res.d",
       "x": 226,
       "y": 335
     },
@@ -2907,7 +2900,7 @@
     {
       "id": "f4073514-be73-f848-2cd3-ea4f8a26b47a",
       "tycoon_id": "tycoon-id-3",
-      "key": "pgi.hi.res.e.empty",
+      "key": "pgi.hi.res.e",
       "x": 232,
       "y": 335
     },
@@ -2928,7 +2921,7 @@
     {
       "id": "93d962d2-7fd6-9312-99e6-389c9e96df4d",
       "tycoon_id": "tycoon-id-5",
-      "key": "pgi.lo.res.b.empty",
+      "key": "pgi.lo.res.b",
       "x": 223,
       "y": 338
     },
@@ -2942,7 +2935,7 @@
     {
       "id": "8bd741ac-dbd6-c64c-5898-ba8884c64130",
       "tycoon_id": "tycoon-id-2",
-      "key": "pgi.lo.res.c.empty",
+      "key": "pgi.lo.res.c",
       "x": 229,
       "y": 338
     },
@@ -2956,7 +2949,7 @@
     {
       "id": "4dcfd8b1-7014-20db-8168-35a334d93494",
       "tycoon_id": "tycoon-id-3",
-      "key": "pgi.lo.res.d.empty",
+      "key": "pgi.lo.res.d",
       "x": 234,
       "y": 338
     },

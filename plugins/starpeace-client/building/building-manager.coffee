@@ -1,4 +1,8 @@
 
+import MetadataBuilding from '~/plugins/starpeace-client/building/metadata-building.coffee'
+
+import ResourceType from '~/plugins/starpeace-client/industry/resource-type.coffee'
+
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
 
@@ -6,11 +10,32 @@ export default class BuildingManager
   constructor: (@api, @asset_manager, @translation_manager, @ajax_state, @client_state) ->
     @chunk_promises = {}
 
-    @requested_building_metadata = false
-    @building_metadata = null
-    @loaded_atlases = {}
-    @building_textures = {}
+  initialize: () ->
+    @client_state.core.building_library.initialize()
 
+  description_for_building: (building_definition) ->
+    if building_definition.industry?
+      template_description = _.template(@translation_manager.text('building.description.industry.label'))
+      template_output = _.template(@translation_manager.text('building.description.industry.output.label'))
+      template_input = _.template(@translation_manager.text('building.description.industry.input.label'))
+
+      text_for_resource = (item) => if ResourceType.TYPES[item.resource]? then @translation_manager.text(ResourceType.TYPES[item.resource].text_key) else item.resource
+
+      description_parts = []
+
+      output_label_parts = _.map(building_definition.industry.outputs, (output) =>
+        unit_for_resource = if ResourceType.TYPES[output.resource]? then @translation_manager.text(ResourceType.TYPES[output.resource].unit.text_key) else output.resource
+        template_output({amount: output.max, unit: unit_for_resource, duration: 'day', resource: text_for_resource(output)})
+      )
+      description_parts.push template_description({output: Utils.join_with_oxford_comma(output_label_parts)})
+
+      input_resources = _.filter(building_definition.industry.required_inputs, (input) -> input.resource != "WORK_FORCE_HI" && input.resource != "WORK_FORCE_MID" && input.resource != "WORK_FORCE_LO")
+      inputs = _.map(input_resources, text_for_resource)
+      description_parts.push template_input({input: Utils.join_with_oxford_comma(inputs)}) if inputs.length
+
+      return description_parts.join(' ')
+
+    ''
 
   load_chunk: (chunk_x, chunk_y, width, height) ->
     key = "#{chunk_x}x#{chunk_y}"
@@ -41,7 +66,8 @@ export default class BuildingManager
     @ajax_state.lock('assets.building_metadata', 'ALL')
     @asset_manager.queue('metadata.building', './building.metadata.json', (resource) =>
       # FIXME: TODO: convert json to object
-      @client_state.core.building_library.load_buildings(_.values(resource.data.buildings))
+      definitions = _.map(resource.data.definitions, (json) -> MetadataBuilding.from_json(json))
+      @client_state.core.building_library.load_buildings(definitions, resource.data.images)
       @client_state.core.building_library.load_required_atlases(resource.data.atlas)
 
       @asset_manager.queue_and_load_atlases((resource.data?.atlas || []), (atlas_path, atlas) => @client_state.core.building_library.load_atlas(atlas_path, atlas))

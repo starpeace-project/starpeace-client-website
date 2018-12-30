@@ -29,6 +29,8 @@ export default class CorporationState
   company_ids_with_pending_inventions: () ->
     _.filter(@company_ids, (id) => @inventions_metadata_by_company_id[id]?.pending_inventions?.length)
 
+  completed_invention_ids_for_company: (company_id) -> _.uniq(@inventions_metadata_by_company_id[company_id]?.completed_ids || [])
+
   subscribe_company_buildings_listener: (listener_callback) -> @event_listener.subscribe('corporation.company_buildings', listener_callback)
   notify_company_buildings_listeners: () -> @event_listener.notify_listeners('corporation.company_buildings')
   subscribe_company_inventions_listener: (listener_callback) -> @event_listener.subscribe('corporation.company_inventions', listener_callback)

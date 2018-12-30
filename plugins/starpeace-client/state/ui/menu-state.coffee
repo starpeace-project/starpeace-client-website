@@ -24,6 +24,7 @@ MENUBAR_BODY = {
 MENUBAR_RIGHT = {
   'construction': true
   'research': true
+  'search': true
 }
 
 export default class MenuState
