@@ -3,6 +3,9 @@ EN_STRINGS = {
   'building.description.industry.label': 'Produces up to <%= output %>.'
   'building.description.industry.output.label': '<%= amount %> <%= unit %>/<%= duration %> of <%= resource %>'
   'building.description.industry.input.label': 'Requires <%= input %>.'
+  'building.description.warehouse.label': 'Stores up to <%= storage %>.'
+  'building.description.warehouse.output.label': '<%= amount %> <%= unit %> of <%= resource %>'
+
 
   'industry.category.none.label': 'None'
   'industry.category.civic.label': 'Civic'

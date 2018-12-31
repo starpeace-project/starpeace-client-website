@@ -13,29 +13,40 @@ export default class BuildingManager
   initialize: () ->
     @client_state.core.building_library.initialize()
 
+  text_for_resource: (item) -> if ResourceType.TYPES[item.resource]? then @translation_manager.text(ResourceType.TYPES[item.resource].text_key) else item.resource
   description_for_building: (building_definition) ->
     if building_definition.industry?
       template_description = _.template(@translation_manager.text('building.description.industry.label'))
       template_output = _.template(@translation_manager.text('building.description.industry.output.label'))
       template_input = _.template(@translation_manager.text('building.description.industry.input.label'))
 
-      text_for_resource = (item) => if ResourceType.TYPES[item.resource]? then @translation_manager.text(ResourceType.TYPES[item.resource].text_key) else item.resource
-
       description_parts = []
 
       output_label_parts = _.map(building_definition.industry.outputs, (output) =>
         unit_for_resource = if ResourceType.TYPES[output.resource]? then @translation_manager.text(ResourceType.TYPES[output.resource].unit.text_key) else output.resource
-        template_output({amount: output.max, unit: unit_for_resource, duration: 'day', resource: text_for_resource(output)})
+        template_output({amount: output.max, unit: unit_for_resource, duration: 'day', resource: @text_for_resource(output)})
       )
       description_parts.push template_description({output: Utils.join_with_oxford_comma(output_label_parts)})
 
       input_resources = _.filter(building_definition.industry.required_inputs, (input) -> input.resource != "WORK_FORCE_HI" && input.resource != "WORK_FORCE_MID" && input.resource != "WORK_FORCE_LO")
-      inputs = _.map(input_resources, text_for_resource)
+      inputs = _.map(input_resources, (input) => @text_for_resource(input))
       description_parts.push template_input({input: Utils.join_with_oxford_comma(inputs)}) if inputs.length
 
       return description_parts.join(' ')
 
+    if building_definition.warehouse?
+      template_description = _.template(@translation_manager.text('building.description.warehouse.label'))
+      template_output = _.template(@translation_manager.text('building.description.warehouse.output.label'))
+
+      storage_parts = _.map(building_definition.warehouse.storage, (storage) =>
+        unit_for_resource = if ResourceType.TYPES[storage.resource]? then @translation_manager.text(ResourceType.TYPES[storage.resource].unit.text_key) else storage.resource
+        template_output({amount: storage.max, unit: unit_for_resource, resource: @text_for_resource(storage)})
+      )
+
+      return template_description({storage: Utils.join_with_oxford_comma(storage_parts)})
+
     ''
+
 
   load_chunk: (chunk_x, chunk_y, width, height) ->
     key = "#{chunk_x}x#{chunk_y}"

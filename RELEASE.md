@@ -26,7 +26,7 @@
 * [done] invention metadata and taxonomy [v0.2.12]
 * [done] initial language translation support [v0.2.12]
 * [done] client static news and updates info widget [v0.2.12]
-* [in progress] initial building construction metadata (industry, warehouse, television) [v0.3.0]
+* [done] initial building construction metadata (industry, warehouse) [v0.3.0]
 
 ### gameplay
 * [done] persist client options in localStorage [v0.2.3]

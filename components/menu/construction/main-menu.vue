@@ -42,26 +42,26 @@
             %span.is-building-label {{building_name(info)}}
             .construction-disabled{'v-show':"!can_construct_building(info)"}
 
-          .tile.is-ancestor.is-item-details{'v-show':"selected_building_id == info.id"}
-            .tile.is-parent.is-vertical
-              .tile.is-parent.is-item-details-top
-                %article.tile.is-child.is-7{':ref':"'previewItem.' + info.id"}
-                %article.tile.is-child
-                  .building-cost
-                    %money-text{':value':'info.cost()', 'no_styling':true, 'as_thousands':true}
-                  .building-size {{building_size(info)}}m&sup2;
-                  %a.button.is-fullwidth.is-starpeace.construct-action{':disabled':'!can_construct_building(info)'} Build
-              .tile.is-parent.is-item-details-bottom
-                %article.tile.is-child
-                  .building-description {{building_description(info)}}
-                  .building-research{'v-show':"info.required_invention_ids.length"}
-                    %span.research-label Requires:
-                    %template{'v-for':'id,index in info.required_invention_ids'}
-                      %template{'v-if':'is_invention_completed(id)'}
-                        %span.research-completed {{invention_name(id)}}
-                      %template{'v-else-if':'true'}
-                        %a{'v-on:click.stop.prevent':'select_invention(id)'} {{invention_name(id)}}
-                      %span.research-separator{'v-if':"index < info.required_invention_ids.length - 1"} {{separator_label_for_index(index, info.required_invention_ids.length)}}
+          %a.construct-action{':disabled':'!can_construct_building(info)'}
+            .tile.is-ancestor.is-item-details{'v-show':"selected_building_id == info.id"}
+              .tile.is-parent.is-vertical
+                .tile.is-parent.is-item-details-top
+                  %article.tile.is-child.is-7{':ref':"'previewItem.' + info.id"}
+                  %article.tile.is-child
+                    .building-cost
+                      %money-text{':value':'info.cost()', 'no_styling':true, 'as_thousands':true}
+                    .building-size {{building_size(info)}}m&sup2;
+                .tile.is-parent.is-item-details-bottom
+                  %article.tile.is-child
+                    .building-description {{building_description(info)}}
+                    .building-research{'v-show':"info.required_invention_ids.length"}
+                      %span.research-label Requires:
+                      %template{'v-for':'id,index in info.required_invention_ids'}
+                        %template{'v-if':'is_invention_completed(id)'}
+                          %span.research-completed {{invention_name(id)}}
+                        %template{'v-else-if':'true'}
+                          %a{'v-on:click.stop.prevent':'select_invention(id)'} {{invention_name(id)}}
+                        %span.research-separator{'v-if':"index < info.required_invention_ids.length - 1"} {{separator_label_for_index(index, info.required_invention_ids.length)}}
 
     %template{'v-else-if':"true"}
       %aside.sp-menu-overall.sp-scrollbar
@@ -160,7 +160,7 @@ export default
       return false unless @company_id?
       for id in (building_info.required_invention_ids || [])
         return false unless @is_invention_completed(id)
-      (@client_state.current_corporation_metadata()?.cash || 0) > building_info.cost()
+      (@client_state.current_corporation_metadata()?.cash || 0) >= building_info.cost()
 
     building_name: (building_info) -> @managers.translation_manager.text(building_info.name_key)
     building_description: (building_info) -> @managers.building_manager.description_for_building(building_info)
@@ -286,7 +286,8 @@ export default
       width: 100%
       z-index: 1000
 
-    &:not(.disabled)
+    &:not(.disabled),
+    &:not([disabled])
       &:hover
         background-color: darken($sp-primary-bg, 6.5%)
         border-bottom: 1px solid darken($sp-primary-bg, 9%)
@@ -318,6 +319,10 @@ export default
     .is-item-details-bottom
       padding-top: .25rem
 
+  .construct-action
+    &[disabled]
+      cursor: not-allowed
+
     article
       position: relative
 
@@ -328,10 +333,6 @@ export default
 
     .building-size
       text-align: right
-
-    .construct-action
-      bottom: 0
-      position: absolute
 
     .research-label
       margin-right: .5rem
