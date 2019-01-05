@@ -40,6 +40,15 @@ export default class CameraState
     @offset = Math.ceil(Math.sqrt(@half_canvas_width * @half_canvas_width + @half_canvas_height * @half_canvas_height))
     @omega = Math.atan2(@canvas_width / 4, @canvas_height / 4)
 
+
+  position_from_top_left: (x, y) ->
+    top_left = @top_left()
+    {
+      x: Math.round(top_left.x + x + @half_tile_width)
+      y: Math.round(top_left.y + y + @half_tile_height)
+    }
+
+
   recenter_at: (i, j) ->
     y = (i + j) * @half_tile_height
     x = (i - j) * @half_tile_width

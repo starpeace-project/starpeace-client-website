@@ -45,7 +45,7 @@
         %img.starpeace-logo.logo-loading
     %template{'v-else-if':'news.length'}
       .news-content.sp-scrollbar
-        .is-mobile.news-item{'v-for':'news_item in news'}
+        .news-item{'v-for':'news_item in news'}
           .news-date {{news_item.date}}
           .news-title {{news_item.title}}
           .news-body.content
@@ -68,7 +68,7 @@ export default
     request = new XMLHttpRequest()
     request.open('GET', '/news.json', true)
     request.onload = () =>
-      @news = JSON.parse(request.responseText).news if request.status >= 200 && request.status < 400
+      @news = [JSON.parse(request.responseText).news[0]] if request.status >= 200 && request.status < 400
     request.send()
 
   methods:

@@ -53,7 +53,6 @@ export default class CoreState
     @tycoon_cache.reset_state()
 
   has_assets: (language_code, map_id, planet_type) ->
-    # console.log "#{@building_library.has_assets()} #{@concrete_library.has_assets()} #{@effect_library.has_assets()} #{@invention_library.has_metadata()} #{@land_library.has_assets(planet_type)} #{@map_library.has_assets(map_id)} #{@news_library.has_metadata()} #{@overlay_library.has_assets()} #{@plane_library.has_assets()} #{@road_library.has_assets()} #{@translations_library.has_metadata(language_code)}"
     @building_library.has_assets() && @concrete_library.has_assets() && @effect_library.has_assets() &&
         @invention_library.has_metadata() && @land_library.has_assets(planet_type) && @map_library.has_assets(map_id) &&
         @news_library.has_metadata() && @overlay_library.has_assets() && @plane_library.has_assets() &&

@@ -71,7 +71,6 @@ export default class ClientState
     @player.subscribe_mail_metadata_listener => @update_state()
     @planet.subscribe_planet_details_listener => @update_state()
 
-    # @event_listener.subscribe_corporation_metadata_listener(=> @notify_corporation_metadata_changed())
 
   subscribe_workflow_status_listener: (listener_callback) -> @event_listener.subscribe('workflow_status', listener_callback)
   notify_workflow_status_listeners: () -> @event_listener.notify_listeners('workflow_status')
@@ -152,7 +151,6 @@ export default class ClientState
   state_needs_tycoon_metadata: () -> @identity.identity.is_tycoon() && !@core.tycoon_cache.has_tycoon_metadata_fresh(@session.tycoon_id)
   state_needs_system_metadata: () -> !@core.systems_cache.has_systems_metadata_fresh()
   state_needs_player_data: () ->
-    # console.log "#{@identity.identity.is_tycoon()} && #{@player.corporation_id?} && (#{!@player.has_data()} || #{!@corporation.has_data()} || #{!@bookmarks.has_data()})"
     @identity.identity.is_tycoon() && @player.corporation_id? && (!@player.has_data() || !@corporation.has_data() || !@bookmarks.has_data())
 
 
@@ -217,3 +215,35 @@ export default class ClientState
       if company_metadata? then @core.invention_library.metadata_for_seal_id(company_metadata.seal_id) else []
     else
       @core.invention_library.all_metadata()
+
+  has_construction_requirements: (building_id) ->
+    return false unless @player.company_id? && building_id?
+
+    metadata = @core.building_library.metadata_by_id[building_id]
+    return false unless metadata?
+
+    completed_invention_ids = @corporation.completed_invention_ids_for_company(@player.company_id)
+    for id in (metadata.required_invention_ids || [])
+      return false unless completed_invention_ids.indexOf(id) >= 0
+
+    (@current_corporation_metadata()?.cash || 0) >= metadata.cost()
+
+  can_construct_building: () ->
+    return false unless @has_construction_requirements(@interface.construction_building_id)
+    @planet.can_place_building(@interface.construction_building_map_x, @interface.construction_building_map_y, @interface.construction_building_zone, @interface.construction_building_width, @interface.construction_building_height)
+
+  initiate_building_construction: (building_id) ->
+    view_center = @camera.center()
+    iso_start = @camera.map_to_iso(view_center.x, view_center.y)
+
+    metadata = @core.building_library.metadata_by_id[building_id]
+    image_metadata = if metadata? then @core.building_library.images_by_id[metadata.image_id] else null
+
+    @interface.construction_building_id = building_id
+    @interface.construction_building_map_x = iso_start.i
+    @interface.construction_building_map_y = iso_start.j
+    @interface.construction_building_zone = metadata.zone
+    @interface.construction_building_width = if image_metadata? then image_metadata.w else 1
+    @interface.construction_building_height = if image_metadata? then image_metadata.h else 1
+
+    @interface.toggle_zones() unless @interface.show_zones

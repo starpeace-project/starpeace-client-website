@@ -34,70 +34,69 @@
     #construction-image-pending{'ref':"pendingContainer"}
       #construction-image-webgl-container{'ref':"previewContainer"}
 
-    %template{'v-if':"selected_menu_category"}
-      %aside.sp-menu-category.sp-scrollbar
-        %template{'v-for':"info in sort_buildings(buildings_for_company_by_category[selected_menu_category])"}
-          %a.is-building-item{'v-on:click.stop.prevent':"select_building(info)", ':class':"selected_building_id == info.id ? 'active' : ''"}
-            %industry-type-icon{':industry_type':"info.industry_type", ':small':'true'}
-            %span.is-building-label {{building_name(info)}}
-            .construction-disabled{'v-show':"!can_construct_building(info)"}
+    %aside.sp-menu-category.sp-scrollbar{'v-show':"has_selected_menu_category"}
+      %template{'v-for':"info in sort_buildings(buildings_for_company_by_category[selected_menu_category])"}
+        %a.is-building-item{'v-on:click.stop.prevent':"toggle_building(info)", ':class':"selected_building_id == info.id ? 'active' : ''"}
+          %industry-type-icon{':industry_type':"info.industry_type", ':small':'true'}
+          %span.is-building-label {{building_name(info)}}
+          .construction-disabled{'v-show':"!can_construct_building(info)"}
 
-          %a.construct-action{':disabled':'!can_construct_building(info)'}
-            .tile.is-ancestor.is-item-details{'v-show':"selected_building_id == info.id"}
-              .tile.is-parent.is-vertical
-                .tile.is-parent.is-item-details-top
-                  %article.tile.is-child.is-7{':ref':"'previewItem.' + info.id"}
-                  %article.tile.is-child
-                    .building-cost
-                      %money-text{':value':'info.cost()', 'no_styling':true, 'as_thousands':true}
-                    .building-size {{building_size(info)}}m&sup2;
-                .tile.is-parent.is-item-details-bottom
-                  %article.tile.is-child
-                    .building-description {{building_description(info)}}
-                    .building-research{'v-show':"info.required_invention_ids.length"}
-                      %span.research-label Requires:
-                      %template{'v-for':'id,index in info.required_invention_ids'}
-                        %template{'v-if':'is_invention_completed(id)'}
-                          %span.research-completed {{invention_name(id)}}
-                        %template{'v-else-if':'true'}
-                          %a{'v-on:click.stop.prevent':'select_invention(id)'} {{invention_name(id)}}
-                        %span.research-separator{'v-if':"index < info.required_invention_ids.length - 1"} {{separator_label_for_index(index, info.required_invention_ids.length)}}
+        %a.construct-action{'v-on:click.stop.prevent':"select_building(info)", ':disabled':'!can_construct_building(info)'}
+          .tile.is-ancestor.is-item-details{'v-show':"selected_building_id == info.id"}
+            .tile.is-parent.is-vertical
+              .tile.is-parent.is-item-details-top
+                %article.tile.is-child.is-7{':ref':"'previewItem.' + info.id"}
+                %article.tile.is-child
+                  .building-cost
+                    %money-text{':value':'info.cost()', 'no_styling':true, 'as_thousands':true}
+                  .building-size {{building_size(info)}}m&sup2;
+              .tile.is-parent.is-item-details-bottom
+                %article.tile.is-child
+                  .building-description {{building_description(info)}}
+                  .building-research{'v-show':"info.required_invention_ids.length"}
+                    %span.research-label Requires:
+                    %template{'v-for':'id,index in info.required_invention_ids'}
+                      %template{'v-if':'is_invention_completed(id)'}
+                        %span.research-completed {{invention_name(id)}}
+                      %template{'v-else-if':'true'}
+                        %a{'v-on:click.stop.prevent':'select_invention(id)'} {{invention_name(id)}}
+                      %span.research-separator{'v-if':"index < info.required_invention_ids.length - 1"} {{separator_label_for_index(index, info.required_invention_ids.length)}}
+                  %a.button.is-fullwidth.is-starpeace.construct-button{'v-on:click.stop.prevent':"select_building(info)", ':disabled':'!can_construct_building(info)'} Construct Building
 
-    %template{'v-else-if':"true"}
-      %aside.sp-menu-overall.sp-scrollbar
-        .tile.is-ancestor.construction-items
-          .tile.is-6.is-vertical.is-parent
-            .tile.is-child
-              %a.construction-toggle{'v-on:click.stop.prevent':"select_category('SERVICE')", ':disabled':"!category_has_buildings('SERVICE')"}
-                %img{src:'~/assets/images/icons/services/headquarters.svg'}
-                %span.toggle-label {{text_for_category('SERVICE')}}
-                .disabled-overlay
-            .tile.is-child
-              %a.construction-toggle{'v-on:click.stop.prevent':"select_category('INDUSTRY')", ':disabled':"!category_has_buildings('INDUSTRY')"}
-                %img{src:'~/assets/images/icons/industries/factory.svg'}
-                %span.toggle-label {{text_for_category('INDUSTRY')}}
-                .disabled-overlay
-            .tile.is-child
-              %a.construction-toggle{'v-on:click.stop.prevent':"select_category('LOGISTICS')", ':disabled':"!category_has_buildings('LOGISTICS')"}
-                %img{src:'~/assets/images/icons/logistics/warehouse.svg'}
-                %span.toggle-label {{text_for_category('LOGISTICS')}}
-                .disabled-overlay
-          .tile.is-6.is-vertical.is-parent
-            .tile.is-child
-              %a.construction-toggle{'v-on:click.stop.prevent':"select_category('CIVIC')", ':disabled':"!category_has_buildings('CIVIC')"}
-                %img{src:'~/assets/images/icons/civics/fountain.svg'}
-                %span.toggle-label {{text_for_category('CIVIC')}}
-                .disabled-overlay
-            .tile.is-child
-              %a.construction-toggle{'v-on:click.stop.prevent':"select_category('COMMERCE')", ':disabled':"!category_has_buildings('COMMERCE')"}
-                %img{src:'~/assets/images/icons/commerce/shop.svg'}
-                %span.toggle-label {{text_for_category('COMMERCE')}}
-                .disabled-overlay
-            .tile.is-child
-              %a.construction-toggle{'v-on:click.stop.prevent':"select_category('REAL_ESTATE')", ':disabled':"!category_has_buildings('REAL_ESTATE')"}
-                %img{src:'~/assets/images/icons/offices/office-block.svg'}
-                %span.toggle-label {{text_for_category('REAL_ESTATE')}}
-                .disabled-overlay
+    %aside.sp-menu-overall.sp-scrollbar{'v-show':"!has_selected_menu_category"}
+      .tile.is-ancestor.construction-items
+        .tile.is-6.is-vertical.is-parent
+          .tile.is-child
+            %a.construction-toggle{'v-on:click.stop.prevent':"select_category('SERVICE')", ':disabled':"!category_has_buildings('SERVICE')"}
+              %img{src:'~/assets/images/icons/services/headquarters.svg'}
+              %span.toggle-label {{text_for_category('SERVICE')}}
+              .disabled-overlay
+          .tile.is-child
+            %a.construction-toggle{'v-on:click.stop.prevent':"select_category('INDUSTRY')", ':disabled':"!category_has_buildings('INDUSTRY')"}
+              %img{src:'~/assets/images/icons/industries/factory.svg'}
+              %span.toggle-label {{text_for_category('INDUSTRY')}}
+              .disabled-overlay
+          .tile.is-child
+            %a.construction-toggle{'v-on:click.stop.prevent':"select_category('LOGISTICS')", ':disabled':"!category_has_buildings('LOGISTICS')"}
+              %img{src:'~/assets/images/icons/logistics/warehouse.svg'}
+              %span.toggle-label {{text_for_category('LOGISTICS')}}
+              .disabled-overlay
+        .tile.is-6.is-vertical.is-parent
+          .tile.is-child
+            %a.construction-toggle{'v-on:click.stop.prevent':"select_category('CIVIC')", ':disabled':"!category_has_buildings('CIVIC')"}
+              %img{src:'~/assets/images/icons/civics/fountain.svg'}
+              %span.toggle-label {{text_for_category('CIVIC')}}
+              .disabled-overlay
+          .tile.is-child
+            %a.construction-toggle{'v-on:click.stop.prevent':"select_category('COMMERCE')", ':disabled':"!category_has_buildings('COMMERCE')"}
+              %img{src:'~/assets/images/icons/commerce/shop.svg'}
+              %span.toggle-label {{text_for_category('COMMERCE')}}
+              .disabled-overlay
+          .tile.is-child
+            %a.construction-toggle{'v-on:click.stop.prevent':"select_category('REAL_ESTATE')", ':disabled':"!category_has_buildings('REAL_ESTATE')"}
+              %img{src:'~/assets/images/icons/offices/office-block.svg'}
+              %span.toggle-label {{text_for_category('REAL_ESTATE')}}
+              .disabled-overlay
 
 </template>
 
@@ -132,6 +131,7 @@ export default
 
     root_breadcrumb_class: -> if @selected_menu_category? then '' else 'is-active'
 
+    has_selected_menu_category: -> @selected_menu_category?
     selected_menu_category: -> @client_state.interface.construction_selected_category
     selected_building_id: -> @client_state.interface.construction_selected_building_id
 
@@ -142,6 +142,7 @@ export default
   watch:
     company_id: (new_value, old_value) ->
       @client_state.interface.construction_selected_category = null
+      @client_state.interface.construction_building_id = null
 
   mounted: ->
     @client_state.corporation.subscribe_company_inventions_listener => @$forceUpdate() if @is_visible
@@ -156,11 +157,7 @@ export default
     category_has_buildings: (category) -> @buildings_for_company_by_category[category]?.length
     text_for_category: (category) -> if category? then @managers.translation_manager.text(IndustryCategory.CATEGORIES[category].text_key) else ''
 
-    can_construct_building: (building_info) ->
-      return false unless @company_id?
-      for id in (building_info.required_invention_ids || [])
-        return false unless @is_invention_completed(id)
-      (@client_state.current_corporation_metadata()?.cash || 0) >= building_info.cost()
+    can_construct_building: (building_info) -> @client_state.has_construction_requirements(building_info.id)
 
     building_name: (building_info) -> @managers.translation_manager.text(building_info.name_key)
     building_description: (building_info) -> @managers.building_manager.description_for_building(building_info)
@@ -193,7 +190,7 @@ export default
       return unless @category_has_buildings(category)
       @client_state.interface.construction_selected_category = category
 
-    select_building: (info) ->
+    toggle_building: (info) ->
       @$refs.previewContainer.parentElement.removeChild(@$refs.previewContainer)
       if @selected_building_id == info.id
         @client_state.interface.construction_selected_building_id = null
@@ -204,12 +201,9 @@ export default
         preview_container = preview_container[0] if Array.isArray(preview_container)
         preview_container.appendChild(@$refs.previewContainer)
 
-
-      #building_definition = @client_state.core.building_library.metadata_by_id[info.id]
-      #building_image = @client_state.core.building_library.images_by_id[building_definition.image_id]
-
-      #textures = _.map(building_image.frames || [], (texture_id) -> PIXI.utils.TextureCache[texture_id])
-      #texture = if textures?.length then textures[0] else null
+    select_building: (info) ->
+      return unless @can_construct_building(info)
+      @client_state.initiate_building_construction(info.id)
 
     select_invention: (id) ->
       @client_state.interface.inventions_selected_invention_id = id
@@ -270,6 +264,7 @@ export default
   .is-building-item
     background-color: darken($sp-primary-bg, 9%)
     border-bottom: 1px solid darken($sp-primary-bg, 11%)
+    cursor: zoom-in
     display: inline-block
     padding: .5rem .75rem
     position: relative
@@ -300,6 +295,9 @@ export default
         background-color: darken($sp-primary-bg, 4%)
         border-bottom: 1px solid darken($sp-primary-bg, 6%)
 
+      &.active
+        cursor: zoom-out
+
     &.disabled
       cursor: not-allowed
 
@@ -320,6 +318,8 @@ export default
       padding-top: .25rem
 
   .construct-action
+    cursor: pointer
+
     &[disabled]
       cursor: not-allowed
 
@@ -339,6 +339,9 @@ export default
 
     .research-completed
       font-style: italic
+
+    .construct-button
+      margin-top: .5rem
 
   .construction-toggle
     border: 1px solid lighten($sp-primary-bg, 5%)

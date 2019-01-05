@@ -57,7 +57,7 @@ export default
       type: 'construction'
       tooltip: 'Construction'
       icon_category: 'fas'
-      icon_key: 'toolbox'
+      icon_key: 'tools'
       menu_class: ''
     },
     {

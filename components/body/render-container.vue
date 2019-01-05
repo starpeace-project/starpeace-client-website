@@ -2,7 +2,7 @@
 %transition{name:'fade'}
   #render-parent-container{'v-show':'is_ready', 'v-cloak':true}
     #fps-container{'v-show':'show_fps'}
-    #render-container
+    #render-container{':class':'render_css_class'}
 </template>
 
 <script lang='coffee'>
@@ -20,7 +20,12 @@ export default
 
   computed:
     is_ready: -> @client_state.initialized && @client_state.workflow_status == 'ready'
+    is_construction_mode: -> if @is_ready then @client_state.interface.construction_building_id?.length else false
 
+    render_css_class: ->
+      classes = []
+      classes.push 'construction-mode' if @is_construction_mode
+      classes
 </script>
 
 <style lang='sass' scoped>
@@ -45,5 +50,8 @@ export default
   top: 0
   width: 100%
   z-index: 1000
+
+  &.construction-mode
+    cursor: crosshair
 
 </style>

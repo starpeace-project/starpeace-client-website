@@ -12,7 +12,6 @@ import Options from '~/plugins/starpeace-client/state/options.coffee'
 import BuildingImageRenderer from '~/plugins/starpeace-client/renderer/building-image-renderer.coffee'
 import MiniMapRenderer from '~/plugins/starpeace-client/renderer/mini-map-renderer.coffee'
 import Renderer from '~/plugins/starpeace-client/renderer/renderer.coffee'
-import InputHandler from '~/plugins/starpeace-client/renderer/input/input-handler.coffee'
 
 import Identity from '~/plugins/starpeace-client/identity/identity.coffee'
 import APIClient from '~/plugins/starpeace-client/api/api-client.coffee'
@@ -32,8 +31,6 @@ export default class Client
     @mini_map_renderer = new MiniMapRenderer(@managers, @renderer, @client_state, @options)
     @construction_preview_renderer = new BuildingImageRenderer(@managers, @client_state, @options)
 
-    @input_handler = new InputHandler(@renderer, @client_state)
-
     @refresh_events_interval = null
 
     Logger.banner()
@@ -51,7 +48,6 @@ export default class Client
 
       @managers.initialize()
       @renderer.initialize()
-      @input_handler.initialize()
       @mini_map_renderer.initialize()
       @construction_preview_renderer.initialize()
 

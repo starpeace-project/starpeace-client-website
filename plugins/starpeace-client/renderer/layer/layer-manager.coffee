@@ -66,8 +66,8 @@ export default class LayerManager
   plane_sprite_with: (textures) ->
     @plane_sprite_cache.new_sprite({}, { textures })
 
-  render_tile_item: (render_state, tile_item, canvas, viewport) ->
-    if tile_item.sprite_info.land?.within_canvas(canvas, viewport)
+  render_tile_item: (render_state, tile_item, construction_item, within_construction, canvas, viewport) ->
+    if (within_construction || !within_construction && !tile_item.sprite_info.tree?) && tile_item.sprite_info.land?.within_canvas(canvas, viewport)
       land = @land_sprite_cache.new_sprite(render_state, { texture:tile_item.sprite_info.land.texture })
       tile_item.sprite_info.land.render(land, canvas, viewport)
 
@@ -91,7 +91,7 @@ export default class LayerManager
       underlay = @underlay_sprite_cache.new_sprite(render_state, { texture:tile_item.sprite_info.underlay.texture })
       tile_item.sprite_info.underlay.render(underlay, null, false, canvas, viewport)
 
-    if tile_item.sprite_info.tree?.within_canvas(canvas, viewport)
+    if !within_construction && tile_item.sprite_info.tree?.within_canvas(canvas, viewport)
       tree = @with_height_static_sprite_cache.new_sprite(render_state, { texture:tile_item.sprite_info.tree.texture })
       tree_underlay = @with_height_static_sprite_cache.new_sprite(render_state, { texture:tile_item.sprite_info.underlay.texture }) if tile_item.sprite_info.underlay?
       tile_item.sprite_info.tree.render(tree, canvas, viewport)
@@ -103,11 +103,14 @@ export default class LayerManager
 
     if tile_item.sprite_info.building?.within_canvas(canvas, viewport)
       select_building_callback = () =>
+        return false if @client_state.interface.construction_building_id?.length
         if tile_item.tile_info.building_info.id == @client_state.interface.selected_building_id
           @client_state.interface.selected_building_id = null
         else
           @client_state.interface.selected_building_id = tile_item.tile_info.building_info.id
-          console.log tile_item.tile_info.building_info
+        console.log "selected_id: #{@client_state.interface.selected_building_id}"
+        @client_state.interface.is_mouse_primary_down = false if @client_state.interface.is_mouse_primary_down
+        true
 
       sprite_cache = if tile_item.sprite_info.building.is_animated then @with_height_animated_sprite_cache else @with_height_static_sprite_cache
       building = sprite_cache.new_sprite(render_state, { textures:tile_item.sprite_info.building.textures, speed:.15, hit_area:tile_item.sprite_info.building.hit_area(viewport), click_callback:select_building_callback })
@@ -116,6 +119,12 @@ export default class LayerManager
       for effect_info in tile_item.sprite_info.building.effects
         effect = @with_height_animated_sprite_cache.new_sprite(render_state, { textures:effect_info.textures, speed:.1 })
         effect_info.render(effect, building, canvas, viewport)
+
+    if construction_item?.within_canvas(canvas, viewport)
+      sprite_cache = if construction_item.is_animated then @with_height_animated_sprite_cache else @with_height_static_sprite_cache
+      building_construction = sprite_cache.new_sprite(render_state, { textures:construction_item.textures, speed:.15, hit_area:construction_item.hit_area(viewport) })
+      construction_item.render(building_construction, canvas, viewport)
+
 
     if tile_item.sprite_info.overlay?.within_canvas(canvas, viewport)
       overlay = @overlay_sprite_cache.new_sprite(render_state, { texture:tile_item.sprite_info.overlay.texture })

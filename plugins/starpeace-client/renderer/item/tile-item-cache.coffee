@@ -4,6 +4,7 @@ import _ from 'lodash'
 import TileItem from '~/plugins/starpeace-client/renderer/item/tile-item.coffee'
 
 import SpriteBuilding from '~/plugins/starpeace-client/renderer/sprite/sprite-building.coffee'
+import SpriteBuildingConstruction from '~/plugins/starpeace-client/renderer/sprite/sprite-building-construction.coffee'
 import SpriteBuildingFootprint from '~/plugins/starpeace-client/renderer/sprite/sprite-building-footprint.coffee'
 import SpriteConcrete from '~/plugins/starpeace-client/renderer/sprite/sprite-concrete.coffee'
 import SpriteEffect from '~/plugins/starpeace-client/renderer/sprite/sprite-effect.coffee'
@@ -33,7 +34,7 @@ export default class TileItemCache
     @last_rendered_overlay = false
     @last_rendered_overlay_type = null
 
-    @last_rendered_selection_options = { building_id: null, tycoon_id: null }
+    @last_rendered_selection_options = { building_id: null }
     @last_rendered_render_options = { }
 
     @tile_items = []
@@ -183,6 +184,19 @@ export default class TileItemCache
       is_filtered = if selected_corporation_id?.length then selected_corporation_id != tile_info.building_info.corporation_id else true
 
     new SpriteBuilding(textures, is_animated, is_selected, is_filtered, image_metadata, effects)
+
+  building_construction_sprite_info_for: (building_id, is_valid_location) ->
+    metadata = @client_state.core.building_library.metadata_by_id[building_id]
+    return null unless metadata?
+    image_metadata = @client_state.core.building_library.images_by_id[metadata.image_id]
+    return null unless image_metadata?
+
+    textures = _.map(image_metadata?.frames || [], (texture_id) -> PIXI.utils.TextureCache[texture_id])
+    return null unless textures?.length && textures[0]?
+
+    is_animated = textures.length > 1 && @options.option('renderer.building_animations')
+
+    new SpriteBuildingConstruction(textures, is_animated, is_valid_location, image_metadata)
 
   plane_sprite_info_for: (flight_plan) ->
     textures = @client_state.core.plane_library.texture_for_id(flight_plan.plane_info.id)

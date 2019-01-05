@@ -10,170 +10,70 @@
       %ul
         %template{'v-if':"research_available.length"}
           %li{'v-for':"research in research_available"}
-            %a{'v-on:click.stop.prevent':"select_invention(research.id)"} {{research.text}}
+            %a{'v-on:click.stop.prevent':"select_invention_id(research.id)"} {{research.text}}
         %template{'v-else-if':"true"}
           %li None
       .status-title In Progress
       %ul
         %template{'v-if':"research_in_progress.length"}
           %li{'v-for':"research in research_in_progress"}
-            %a{'v-on:click.stop.prevent':"select_invention(research.id)"} {{research.text}}
+            %a{'v-on:click.stop.prevent':"select_invention_id(research.id)"} {{research.text}}
         %template{'v-else-if':"true"}
           %li None
       .status-title Completed
       %ul
         %template{'v-if':"research_completed.length"}
           %li{'v-for':"research in research_completed"}
-            %a{'v-on:click.stop.prevent':"select_invention(research.id)"} {{research.text}}
+            %a{'v-on:click.stop.prevent':"select_invention_id(research.id)"} {{research.text}}
         %template{'v-else-if':"true"}
           %li None
     .tree-container
-      %chart.inverse-card{':options':'tree_options', ':initOptions':'tree_init_options', ':auto-resize':'true', 'v-on:click':"click_item", 'v-on:mouseover':'focus_item', 'v-on:mouseout':'unfocus_item'}
+      %v-network.inverse-card{'ref':'tree_network', ':options':'tree_options', ':nodes':'tree_nodes', ':edges':'tree_edges', 'v-on:select-node':"select_tree_node", 'v-on:deselect-node':'deselect_tree_node'}
 
 </template>
 
 <script lang='coffee'>
 import _ from 'lodash'
 
-ITEM_AVAILABLE = {
-  borderColor: '#083B2C'
-  color: '#558879'
-  opacity: .3
-  hover: {
-    borderColor: '#3C6F60'
-    color: '#558879'
-    opacity: 1
-  }
-  hover_related: {
-    borderColor: '#3C6F60'
-    color: '#558879'
-    opacity: .5
-  }
-  selected: {
-    borderColor: '#56897A'
-    color: '#558879'
-    opacity: 1
-  }
-  selected_related: {
-    borderColor: '#3C6F60'
-    color: '#558879'
-    opacity: .6
-  }
+NODE_CONFIG = {
+  available:
+    borderColor: '#083B2C'
+    color: 'rgba(85,136,121,0.5)'
+    hover:
+      borderColor: '#3C6F60'
+      color: 'rgba(85,136,121,1)'
+    selected:
+      borderColor: '#56897A'
+      color: 'rgba(85,136,121,1)'
+  pending:
+    borderColor: '#12083B'
+    color: 'rgba(94,84,135,0.5)'
+    hover:
+      borderColor: '#12083B'
+      color: 'rgba(94,84,135,1)'
+    selected:
+      borderColor: '#12083B'
+      color: 'rgba(94,84,135,1)'
+  completed:
+    borderColor: '#313B08'
+    color: 'rgba(125,135,84,0.8)'
+    hover:
+      borderColor: '#313B08'
+      color: 'rgba(125,135,84,1)'
+    selected:
+      borderColor: '#313B08'
+      color: 'rgba(125,135,84,1)'
 }
 
-ITEM_PENDING = {
-  borderColor: '#12083B'
-  color: '#5E5487'
-  opacity: .5
-  hover: {
-    borderColor: '#12083B'
-    color: '#5E5487'
-    opacity: 1
-  }
-  hover_related: {
-    borderColor: '#12083B'
-    color: '#5E5487'
-    opacity: .6
-  }
-  selected: {
-    borderColor: '#12083B'
-    color: '#5E5487'
-    opacity: 1
-  }
-  selected_related: {
-    borderColor: '#12083B'
-    color: '#5E5487'
-    opacity: .7
-  }
+EDGE_CONFIG = {
+  width: 4
+  borderColor: 'rgba(8,59,44,0.4)'
+  hover:
+    borderColor: 'rgba(8,59,44,0.7)'
+  selected:
+    borderColor: 'rgba(8,59,44,1)'
 }
 
-ITEM_COMPLETED = {
-  borderColor: '#313B08'
-  color: '#7D8754'
-  opacity: .8
-  hover: {
-    borderColor: '#313B08'
-    color: '#7D8754'
-    opacity: 1
-  }
-  hover_related: {
-    borderColor: '#313B08'
-    color: '#7D8754'
-    opacity: .9
-  }
-  selected: {
-    borderColor: '#313B08'
-    color: '#7D8754'
-    opacity: 1
-  }
-  selected_related: {
-    borderColor: '#313B08'
-    color: '#7D8754'
-    opacity: .9
-  }
-}
-
-EDGE = {
-  opacity: .1
-  width: 2
-  selected_related: {
-    opacity: .4
-    width: 4
-  }
-}
-
-update_tree_state = (invention_library, company_inventions, tree_data, tree_links, selected_invention_id, hover_invention_id) ->
-  selected_invention = if selected_invention_id?.length then invention_library.metadata_for_id(selected_invention_id) else null
-  hover_invention = if hover_invention_id?.length then invention_library.metadata_for_id(hover_invention_id) else null
-
-  selected_downstream_ids = if selected_invention? then invention_library.downstream_ids_for(selected_invention_id) else []
-  selected_upstream_ids = if selected_invention? then invention_library.upstream_ids_for(selected_invention_id) else []
-  hover_downstream_ids = if hover_invention? then invention_library.downstream_ids_for(hover_invention_id) else []
-  hover_upstream_ids = if hover_invention? then invention_library.upstream_ids_for(hover_invention_id) else []
-
-  for data in tree_data
-    item_styling = ITEM_AVAILABLE
-    item_styling = ITEM_PENDING if company_inventions? && _.find(company_inventions.pending_inventions, (pending) => pending.id == data.name)?
-    item_styling = ITEM_COMPLETED if company_inventions? && company_inventions.completed_ids.indexOf(data.name) >= 0
-
-    data.fixed = true
-    if data.name == hover_invention?.id
-      data.itemStyle.borderColor = item_styling.hover.borderColor
-      data.itemStyle.color = item_styling.hover.color
-      data.itemStyle.opacity = item_styling.hover.opacity
-    else if data.name == selected_invention?.id
-      data.itemStyle.borderColor = item_styling.selected.borderColor
-      data.itemStyle.color = item_styling.selected.color
-      data.itemStyle.opacity = item_styling.selected.opacity
-    else if hover_upstream_ids.indexOf(data.name) >= 0 || hover_downstream_ids.indexOf(data.name) >= 0
-      data.itemStyle.borderColor = item_styling.hover_related.borderColor
-      data.itemStyle.color = item_styling.hover_related.color
-      data.itemStyle.opacity = item_styling.hover_related.opacity
-    else if selected_upstream_ids.indexOf(data.name) >= 0 || selected_downstream_ids.indexOf(data.name) >= 0
-      data.itemStyle.borderColor = item_styling.selected_related.borderColor
-      data.itemStyle.color = item_styling.selected_related.color
-      data.itemStyle.opacity = item_styling.selected_related.opacity
-    else
-      data.itemStyle.borderColor = item_styling.borderColor
-      data.itemStyle.color = item_styling.color
-      data.itemStyle.opacity = if hover_invention? then .1 else item_styling.opacity
-
-  is_selected_related = (link) =>
-    link.source == selected_invention.id || link.target == selected_invention.id ||
-        (selected_upstream_ids.indexOf(link.source) >= 0 && selected_upstream_ids.indexOf(link.target) >= 0) ||
-        (selected_downstream_ids.indexOf(link.source) >= 0 && selected_downstream_ids.indexOf(link.target) >= 0)
-  is_hover_related = (link) =>
-    link.source == hover_invention.id || link.target == hover_invention.id ||
-        (hover_upstream_ids.indexOf(link.source) >= 0 && hover_upstream_ids.indexOf(link.target) >= 0) ||
-        (hover_downstream_ids.indexOf(link.source) >= 0 && hover_downstream_ids.indexOf(link.target) >= 0)
-
-  for link in tree_links
-    if selected_invention? && is_selected_related(link) || hover_invention? && is_hover_related(link)
-      link.lineStyle.opacity = EDGE.selected_related.opacity
-      link.lineStyle.width = EDGE.selected_related.width
-    else
-      link.lineStyle.opacity = if hover_invention? then .05 else EDGE.opacity
-      link.lineStyle.width = EDGE.width
 
 export default
   props:
@@ -181,75 +81,41 @@ export default
     client_state: Object
     options: Object
 
-  mounted: ->
-    @client_state.corporation.subscribe_company_inventions_listener =>
-      if @is_visible
-        @inventions_for_company = @client_state.inventions_for_company()
-        update_tree_state(@client_state.core.invention_library, @company_inventions, @tree_options.series[0].data, @tree_options.series[0].links, @selected_invention_id, @hover_invention_id)
-        @$forceUpdate()
-
   data: ->
     inventions_for_company: @client_state.inventions_for_company()
 
     layout_locked: false
 
-    tree_init_options:
-      height: 'auto'
-      width: 'auto'
-
+    tree_nodes: []
+    tree_edges: []
     tree_options:
-      tooltip:
-        show: false
-      animation: false
-      series: [{
-        type: 'graph'
-        layout: 'force'
-        roam: true
-        focusNodeAdjacency: false
-        force:
-          edgeLength: 250
-          layoutAnimation: false
-          repulsion: 1000
-        label:
-          normal:
-            show: true
-            formatter: '{c}'
-        symbol: 'rect'
-        symbolSize: (value, params) ->
-          [value.length * 7 + 10, 50]
-        edgeSymbol: ['none', 'arrow']
-        edgeSymbolSize: [0, 15]
-        edgeLabel:
-          show: false
-        itemStyle:
-          borderColor: ITEM_AVAILABLE.borderColor
-          borderWidth: 1
-          color: ITEM_AVAILABLE.color
-          opacity: ITEM_AVAILABLE.opacity
-        lineStyle:
-          normal:
-            opacity: EDGE.opacity
-            width: EDGE.width
-            curveness: 0.1
-        emphasis:
-          itemStyle:
-            borderColor: ITEM_AVAILABLE.hover.borderColor
-            borderWidth: 1
-            color: ITEM_AVAILABLE.hover.color
-            opacity: ITEM_AVAILABLE.hover.opacity
+      interaction:
+        hover: true
 
-        data: []
-        links: []
-      }]
+      layout:
+        randomSeed: 0
 
+      physics:
+        solver: 'repulsion'
+
+      nodes:
+        font:
+          color: '#DDDDDD'
+        margin: 10
+        shape: 'box'
+
+  mounted: ->
+    @client_state.corporation.subscribe_company_inventions_listener =>
+      if @is_visible
+        @inventions_for_company = @client_state.inventions_for_company()
+        node.color = @color_for_node(node.id) for node in @tree_nodes
+        @$refs.tree_network.fit()
 
   watch:
     is_visible: (new_value, old_value) ->
-      if !@is_visible && @layout_locked
-        data.fixed = false for data in @tree_options.series[0].data
-        @layout_locked = false
-      else if @is_visible
+      if @is_visible
         @inventions_for_company = @client_state.inventions_for_company()
+        @$refs.tree_network.fit()
 
     'client_state.player.company_id': (new_value, old_value) ->
       @inventions_for_company = @client_state.inventions_for_company() if @is_visible
@@ -259,32 +125,35 @@ export default
       links = []
 
       for invention in new_value
-        item_styling = ITEM_AVAILABLE
-        item_styling = ITEM_PENDING if @company_inventions? && _.find(@company_inventions.pending_inventions, (pending) => pending.id == invention.id)?
-        item_styling = ITEM_COMPLETED if @company_inventions? && @company_inventions.completed_ids.indexOf(invention.id) >= 0
-
         data.push {
-          name: invention.id
-          value: @managers.translation_manager.text(invention.name_key)
-          itemStyle:
-            color: item_styling.color
-            borderColor: item_styling.borderColor
-            opacity: item_styling.opacity
-          emphasis:
-            itemStyle:
-              opacity: 1
+          id: invention.id
+          label: @managers.translation_manager.text(invention.name_key)
+          color: @color_for_node(invention.id)
         }
+
         if invention.depends_on?.length
-          for depends_on_id in invention.depends_on
+          for depends_on_id,index in invention.depends_on
             links.push {
-              source: depends_on_id
-              target: invention.id
-              lineStyle:
-                opacity: EDGE.opacity
+              id: "#{depends_on_id}-#{invention.id}"
+              from: depends_on_id
+              to: invention.id
+              arrows:
+                to:
+                  enabled: true
+                  scaleFactor: .5
+              color:
+                color: EDGE_CONFIG.borderColor
+                hover: EDGE_CONFIG.hover.borderColor
+                highlight: EDGE_CONFIG.selected.borderColor
+              width: EDGE_CONFIG.width
             }
 
-      @tree_options.series[0].data = data
-      @tree_options.series[0].links = links
+      @tree_nodes = data
+      @tree_edges = links
+      setTimeout(=>
+        @$refs.tree_network.fit()
+        @$refs.tree_network.selectNodes([@selected_invention_id]) if @selected_invention_id? && @$refs.tree_network.getNode(@selected_invention_id)?
+      , 100)
 
     selected_invention_id: (new_value, old_value) ->
       invention_within_selection = _.find(@invention_data, (invention) -> invention.id == new_value)
@@ -294,20 +163,10 @@ export default
           @interface_state.inventions_selected_category = invention_metadata.category
           @interface_state.inventions_selected_industry_type = invention_metadata.industry_type
 
-      update_tree_state(@client_state.core.invention_library, @company_inventions, @tree_options.series[0].data, @tree_options.series[0].links, @selected_invention_id, @hover_invention_id)
-      @layout_locked = true
-    hover_invention_id: (new_value, old_value) ->
-      update_tree_state(@client_state.core.invention_library, @company_inventions, @tree_options.series[0].data, @tree_options.series[0].links, @selected_invention_id, @hover_invention_id)
-      @layout_locked = true
+      setTimeout(=>
+        @$refs.tree_network.selectNodes([@selected_invention_id]) if @selected_invention_id? && @$refs.tree_network.getNode(@selected_invention_id)?
+      , 100)
 
-    selected_category:  (new_value, old_value) ->
-      setTimeout(=>
-        update_tree_state(@client_state.core.invention_library, @company_inventions, @tree_options.series[0].data, @tree_options.series[0].links, @selected_invention_id, @hover_invention_id)  if @is_visible
-      , 50)
-    selected_industry_type:  (new_value, old_value) ->
-      setTimeout(=>
-        update_tree_state(@client_state.core.invention_library, @company_inventions, @tree_options.series[0].data, @tree_options.series[0].links, @selected_invention_id, @hover_invention_id)  if @is_visible
-      , 50)
 
   computed:
     is_ready: -> @client_state?.workflow_status == 'ready'
@@ -318,7 +177,6 @@ export default
     selected_category: -> @interface_state?.inventions_selected_category
     selected_industry_type: -> @interface_state?.inventions_selected_industry_type
     selected_invention_id: -> @interface_state?.inventions_selected_invention_id
-    hover_invention_id: -> @interface_state?.inventions_hover_invention_id
 
     invention_data: ->
       inventions = {}
@@ -362,22 +220,29 @@ export default
 
 
   methods:
+    color_for_node: (invention_id) ->
+      item_styling = NODE_CONFIG.available
+      item_styling = NODE_CONFIG.pending if @company_inventions? && _.find(@company_inventions.pending_inventions, (pending) => pending.id == invention_id)?
+      item_styling = NODE_CONFIG.completed if @company_inventions? && @company_inventions.completed_ids.indexOf(invention_id) >= 0
+
+      {
+        background: item_styling.color
+        border: item_styling.borderColor
+        hover:
+          background: item_styling.hover.color
+          border: item_styling.hover.borderColor
+        highlight:
+          background: item_styling.selected.color
+          border: item_styling.selected.borderColor
+      }
+
     is_invention_in_progress: (invention_id) -> @company_inventions? && _.find(@company_inventions.pending_inventions, (pending) => pending.id == invention_id)
     is_invention_completed: (invention_id) -> @company_inventions? && @company_inventions.completed_ids.indexOf(invention_id) >= 0
 
-    click_item: (item) ->
-      return unless item.dataType == "node"
-      @interface_state.inventions_selected_invention_id = if @interface_state.inventions_selected_invention_id == item.data.name then null else item.data.name
+    select_tree_node: (item) -> @select_invention_id(if item.nodes?.length then item.nodes[0] else null)
+    deselect_tree_node: (item) -> @select_invention_id(null)
 
-    focus_item: (item) ->
-      return unless item.dataType == 'node'
-      @interface_state.inventions_hover_invention_id = item.data.name
-
-    unfocus_item: (item) ->
-      return unless item.dataType == 'node'
-      @interface_state.inventions_hover_invention_id = '' if @interface_state.inventions_hover_invention_id == item.data.name
-
-    select_invention: (invention_id) ->
+    select_invention_id: (invention_id) ->
       @interface_state.inventions_selected_invention_id = invention_id
 </script>
 
@@ -444,12 +309,13 @@ export default
       margin-left: 20rem
       width: calc(100% - 20rem)
 
-    .echarts
-      background-color: #000
-      height: 100% !important
-      margin: 0
-      padding: 0
-      width: 100% !important
+      .inverse-card
+        background-color: #000
+        border: 0 !important
+        height: 100% !important
+        margin: 0
+        padding: 0
+        width: 100% !important
 
 .filter-items
   height: 2.6rem

@@ -7,6 +7,7 @@ global PIXI
 
 import ChunkMap from '~/plugins/starpeace-client/map/chunk/chunk-map.coffee'
 
+import InputHandler from '~/plugins/starpeace-client/renderer/input/input-handler.coffee'
 import Layers from '~/plugins/starpeace-client/renderer/layer/layers.coffee'
 
 export default class Renderer
@@ -56,6 +57,8 @@ export default class Renderer
     @client_state.webgl_warning = !(@application.renderer instanceof PIXI.WebGLRenderer)
 
     render_container.appendChild(@application.view)
+
+    @input_handler = new InputHandler(@, render_container, @client_state)
 
     fps_el = document?.getElementById('fps-container')
     @fps_meter = new FPSMeter(fps_el, { theme: 'colorful' }) if fps_el?

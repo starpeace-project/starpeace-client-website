@@ -25,17 +25,30 @@ export default class InterfaceState
 
     @show_zones = false
 
+    @is_mouse_primary_down = false
+    @start_mouse_x = -1
+    @start_mouse_y = -1
+    @last_mouse_x = -1
+    @last_mouse_y = -1
+
     @selected_building_id = null
 
     @systems_menu_selected_system_id = null
 
     @inventions_selected_category = 'SERVICE'
     @inventions_selected_industry_type = 'GENERAL'
-    @inventions_selected_invention_id = ''
-    @inventions_hover_invention_id = ''
+    @inventions_selected_invention_id = null
 
     @construction_selected_category = null
     @construction_selected_building_id = null
+
+    @construction_building_id = null
+    @construction_building_map_x = 0
+    @construction_building_map_y = 0
+    @construction_building_zone = null
+    @construction_building_width = 0
+    @construction_building_height = 0
+
 
   subscribe_mini_map_zoom_listener: (listener_callback) -> @event_listener.subscribe('interface.mini_map_zoom', listener_callback)
   notify_mini_map_zoom_listeners: () -> @event_listener.notify_listeners('interface.mini_map_zoom')
@@ -78,3 +91,9 @@ export default class InterfaceState
 
   select_building_id: (building_id) ->
     @selected_building_id = building_id
+
+
+  primary_mouse_down: (mouse_x, mouse_y) ->
+    @is_moving = true
+    @start_mouse_x = @last_mouse_x = mouse_x
+    @start_mouse_y = @last_mouse_y = mouse_y

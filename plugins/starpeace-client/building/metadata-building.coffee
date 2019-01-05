@@ -1,4 +1,6 @@
 
+import BuildingZone from '~/plugins/starpeace-client/overlay/building-zone.coffee'
+
 import MetadataBuildingIndustry from '~/plugins/starpeace-client/building/metadata-building-industry.coffee'
 import MetadataBuildingWarehouse from '~/plugins/starpeace-client/building/metadata-building-warehouse.coffee'
 
@@ -19,7 +21,7 @@ export default class MetadataBuilding
 
     metadata.category = json.category
     metadata.industry_type = json.industry_type
-    metadata.zone = json.zone
+    metadata.zone = BuildingZone.from_string(json.zone)
     metadata.restricted = true if json.restricted
 
     metadata.required_invention_ids = json.required_invention_ids || []

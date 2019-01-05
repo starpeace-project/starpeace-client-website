@@ -24,19 +24,21 @@ export default class MusicState
     @game_music_playing = false
     @game_music_volume = true
 
+  current_song: () -> @music[@music_index]
   toggle_music: () ->
-    if @music[@music_index].playing()
-      @music[@music_index].pause()
+    @game_music_playing = @current_song().playing()
+    if @game_music_playing
+      @current_song().pause()
     else
-      @music[@music_index].play()
+      @current_song().play()
     @game_music_playing = !@game_music_playing
 
   next_song: () ->
-    @music[@music_index].stop() if @music[@music_index].playing()
+    @current_song().stop() if @current_song().playing()
 
     @music_index += 1
     @music_index = 0 if @music_index >= MUSIC_MP3.length
-    @music[@music_index].play()
+    @current_song().play()
 
   toggle_volume: () ->
     @game_music_volume = !@game_music_volume

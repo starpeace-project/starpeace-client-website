@@ -30,12 +30,12 @@ export default
     client_state: Object
 
   mounted: ->
-    @client_state.options.subscribe_options_listener =>
-      @show_header = @client_state.options?.option('general.show_header')
+    @client_state?.options?.subscribe_options_listener =>
+      @show_header = @client_state?.options?.option('general.show_header')
       @show_header = true unless @show_header?
 
   data: ->
-    show_header: if @client_state.options? then @client_state.options.option('general.show_header') else true
+    show_header: if @client_state?.options? then @client_state.options.option('general.show_header') else true
 
 </script>
 

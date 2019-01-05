@@ -63,7 +63,7 @@ export default class GameMap
     is_concrete_needs_land = concrete_info? && (concrete_info.type != Concrete.TYPES.CENTER && concrete_info.type != Concrete.TYPES.CENTER_TREEABLE)
 
     tree_info = if @options.option('renderer.trees') && !road_info? && !concrete_info? && !building_info? && is_position_within_map then @ground_map.tree_at(x, y) else null
-    land_info = if is_position_within_map && (is_road_needs_land || !road_info?) && (is_concrete_needs_land || !concrete_info?) && !tree_info? then @ground_map.ground_at(x, y) else null
+    land_info = if is_position_within_map && (is_road_needs_land || !road_info?) && (is_concrete_needs_land || !concrete_info?) then @ground_map.ground_at(x, y) else null
 
     {
       is_position_within_map

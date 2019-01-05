@@ -54,6 +54,16 @@ export default class BuildingZone
       type: 'MAUSOLEUM'
       color: 0xFFFFFF
 
+  @from_string: (type) -> if BuildingZone.TYPES[type]? then BuildingZone.TYPES[type] else BuildingZone.TYPES.NONE
+
+  @zones_match: (city_zone, building_zone) ->
+    return true if city_zone == building_zone || city_zone == BuildingZone.TYPES.NONE
+    return true if building_zone == BuildingZone.TYPES.SERVICE && city_zone == BuildingZone.TYPES.COMMERCIAL
+    return true if building_zone == BuildingZone.TYPES.WAREHOUSE && city_zone == BuildingZone.TYPES.INDUSTRIAL
+    return true if building_zone == BuildingZone.TYPES.LC_RESIDENTIAL && city_zone == BuildingZone.TYPES.RESIDENTIAL
+    return true if building_zone == BuildingZone.TYPES.MC_RESIDENTIAL && city_zone == BuildingZone.TYPES.RESIDENTIAL
+    return true if building_zone == BuildingZone.TYPES.HC_RESIDENTIAL && city_zone == BuildingZone.TYPES.RESIDENTIAL
+    false
 
   @deserialize_chunk: (width, height, data) ->
     zones = new Array(width * height)

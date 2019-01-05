@@ -53,16 +53,17 @@ export default class LayerCache
           event.currentTarget.event_pointer_down_x = Math.round(event.data?.global?.x || 0)
           event.currentTarget.event_pointer_down_y = Math.round(event.data?.global?.y || 0)
         )
-        sprite.on('pointerup', (event) ->
+        sprite.on('pointerup', (event) =>
           return unless event.currentTarget.click_callback?
 
           delta_x = Math.round(event.data?.global?.x || 0) - (event.currentTarget.event_pointer_down_x || 0)
           delta_y = Math.round(event.data?.global?.y || 0) - (event.currentTarget.event_pointer_down_y || 0)
           return if delta_x > 0 || delta_y > 0
 
-          event.currentTarget.click_callback()
-          event.data?.originalEvent?.preventDefault()
-          event.stopPropagation()
+          if event.currentTarget.click_callback()
+            event.data?.originalEvent?.preventDefault()
+            event.data?.originalEvent?.stopPropagation()
+            event.stopPropagation()
           false
         )
       @container.addChild(sprite)

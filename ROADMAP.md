@@ -24,6 +24,7 @@ Some of the tentative future features and rough planned version are outlined bel
 * [pending] client language translations and menu option
 * [pending] car rendering
 * [pending] street light and intersection lamp rendering
+* [pending] road construction, improved orientation metadata
 * [pending] onscreen building text rendering on selection
 * [pending] building selection rendering effects (container box, negative-income tinting)
 * [pending] footer menu company support (add, scroll)

@@ -18,8 +18,8 @@
                 .level-item.client-version
                   %a{'v-bind:class':'menu_class_release_notes', 'v-on:click.stop.prevent':"client_state.menu.toggle_menu('release_notes')"} {{client_version}}
                 .level-item.game-music{'v-bind:class':'game_music_class', 'v-show':"show_game_music"}
-                  %font-awesome-icon{':icon':"['fas', 'play']", 'v-show':'!music_state.game_music_playing', 'v-on:click.stop.prevent':'music_state.toggle_music()'}
-                  %font-awesome-icon{':icon':"['fas', 'pause']", 'v-show':'music_state.game_music_playing', 'v-on:click.stop.prevent':'music_state.toggle_music()'}
+                  %font-awesome-icon{':icon':"['fas', 'play']", 'v-show':'!game_music_playing', 'v-on:click.stop.prevent':'music_state.toggle_music()'}
+                  %font-awesome-icon{':icon':"['fas', 'pause']", 'v-show':'game_music_playing', 'v-on:click.stop.prevent':'music_state.toggle_music()'}
                 .level-item.game-music-next{'v-bind:class':'game_music_volume_class', 'v-show':"show_game_music"}
                   %font-awesome-icon{':icon':"['fas', 'fast-forward']", 'v-on:click.stop.prevent':'music_state.next_song()'}
                 .level-item.game-music-volume{'v-bind:class':'game_music_volume_class', 'v-show':"show_game_music"}
@@ -69,6 +69,7 @@ export default
 
     menu_class_release_notes: -> { 'is-active': @client_state?.menu?.is_visible('release_notes') || false }
 
+    game_music_playing: -> @music_state.game_music_playing
     game_music_class: -> if @music_state.game_music_playing then 'music-pause' else 'music-play'
     game_music_volume_class: -> if @music_state.game_music_volume then 'music-volume' else 'music-mute'
 

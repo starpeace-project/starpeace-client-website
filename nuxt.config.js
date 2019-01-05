@@ -103,12 +103,12 @@ module.exports = {
     '@nuxtjs/moment', ['@nuxtjs/google-analytics', { id: 'UA-120729341-2', debug: { sendHitTask: !is_development } }]
   ],
   plugins: [
-    { src: '~/plugins/echarts', ssr: false },
     { src: '~/plugins/element-queries', ssr: false },
     { src: '~/plugins/flaticon', ssr: false },
     { src: '~/plugins/fpsmeter', ssr: false },
     { src: '~/plugins/font-awesome', ssr: false },
     { src: '~/plugins/google-analytics', ssr: false },
-    { src: '~/plugins/pixi/pixi', ssr: false }
+    { src: '~/plugins/pixi/pixi', ssr: false },
+    { src: '~/plugins/vue2viz', ssr: false }
   ]
 }

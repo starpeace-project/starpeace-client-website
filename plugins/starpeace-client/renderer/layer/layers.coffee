@@ -12,6 +12,9 @@ export default class Layers
 
     @last_view_offset_x = 0
     @last_view_offset_y = 0
+    @last_construction_building_id = null
+    @last_construction_building_x = 0
+    @last_construction_building_y = 0
 
     @check_loop = setInterval(=>
       return unless @client_state.initialized && @options.option('renderer.planes')
@@ -34,7 +37,8 @@ export default class Layers
 
   should_refresh: () ->
     @last_view_offset_x != @client_state.camera.view_offset_x || @last_view_offset_y != @client_state.camera.view_offset_y ||
-        @tile_item_cache.is_dirty || @tile_item_cache.should_clear_cache()
+      @last_construction_building_id != @client_state.interface.construction_building_id || @last_construction_building_x != @client_state.interface.construction_building_map_x ||
+      @last_construction_building_y != @client_state.interface.construction_building_map_y || @tile_item_cache.is_dirty || @tile_item_cache.should_clear_cache()
 
   refresh_planes: () ->
     return unless @client_state.plane_sprites.length
@@ -80,13 +84,19 @@ export default class Layers
 
     render_state = {}
 
+    construction_x = if @client_state.interface.construction_building_id? then @client_state.interface.construction_building_map_x else -1
+    construction_y = if @client_state.interface.construction_building_id? then @client_state.interface.construction_building_map_y else -1
+
     x = i_start
     while x < i_max
       j = j_start - n
       while j < (j_start + m)
         if j > 0 && j < @client_state.planet.game_map.height && x > 0 && x < @client_state.planet.game_map.width
           tile_item = @tile_item_cache.cache_item(x, j)
-          @layer_manager.render_tile_item(render_state, tile_item, viewport.iso_to_canvas(x, j, view_center), viewport) if tile_item?
+          construction_item = if @client_state.interface.construction_building_id? && construction_x == x && construction_y == j then @tile_item_cache.building_construction_sprite_info_for(@client_state.interface.construction_building_id, @client_state.can_construct_building()) else null
+          within_construction = construction_x >= 0 && x > construction_x - @client_state.interface.construction_building_width && x <= construction_x &&
+              construction_y >= 0 && j > construction_y - @client_state.interface.construction_building_height && j <= construction_y
+          @layer_manager.render_tile_item(render_state, tile_item, construction_item, within_construction, viewport.iso_to_canvas(x, j, view_center), viewport) if tile_item?
 
         j += 1
 
@@ -114,3 +124,6 @@ export default class Layers
     @layer_manager.clear_cache_sprites(render_state)
     @last_view_offset_x = @client_state.camera.view_offset_x
     @last_view_offset_y = @client_state.camera.view_offset_y
+    @last_construction_building_id = @client_state.interface.construction_building_id
+    @last_construction_building_x = @client_state.interface.construction_building_map_x
+    @last_construction_building_y = @client_state.interface.construction_building_map_y

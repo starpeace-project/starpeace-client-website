@@ -37,7 +37,7 @@ import {
   faTimes,
   faToggleOff,
   faToggleOn,
-  faToolbox,
+  faTools,
   faUndoAlt,
   faUserSecret,
   faUserTie,
@@ -46,7 +46,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 library.add(faAngleUp, faCheck, faCogs, faFastForward, faFlask, faFolder, faFolderOpen, faGlobe, faMagic, faMapMarkerAlt, faMapPin,
   faMinus, faMinusSquare, faParking, faPause, faPlay, faPlus, faPlusSquare, faRedoAlt, faSearch, faSearchLocation, faSquare, faTimes,
-  faToggleOff, faToggleOn, faToolbox, faUndoAlt, faUserSecret, faUserTie, faVolumeOff, faVolumeUp)
+  faToggleOff, faToggleOn, faTools, faUndoAlt, faUserSecret, faUserTie, faVolumeOff, faVolumeUp)
 
 import { faBimobject, faDiscord, faGithub, faMegaport, faMizuni, faMonero, faTwitter } from '@fortawesome/free-brands-svg-icons'
 library.add(faBimobject, faDiscord, faGithub, faMegaport, faMizuni, faMonero, faTwitter)

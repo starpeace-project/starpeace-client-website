@@ -34,6 +34,10 @@ export default class InventionLibrary extends AssetLibrary
           category_industry_type_seals[info.category][info.industry_type] = {} unless category_industry_type_seals[info.category][info.industry_type]?
           category_industry_type_seals[info.category][info.industry_type][seal_id] = true unless category_industry_type_seals[info.category][info.industry_type][seal_id]?
 
+          if info.industry_type == 'LC_RESIDENTIAL' || info.industry_type == 'MC_RESIDENTIAL' || info.industry_type == 'HC_RESIDENTIAL'
+            category_industry_type_seals[info.category]['RESIDENTIAL'] = {} unless category_industry_type_seals[info.category]['RESIDENTIAL']?
+            category_industry_type_seals[info.category]['RESIDENTIAL'][seal_id] = true unless category_industry_type_seals[info.category]['RESIDENTIAL'][seal_id]?
+
       @inventions_without_seal = []
       @inventions_by_seal = {}
       for id,invention of @metadata_by_id
