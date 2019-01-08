@@ -59,7 +59,7 @@ export default class MiniMapRenderer
             @rgba_buffer[index + 1] = 30
             @rgba_buffer[index + 2] = 30
           else if building_info? && building_metadata?
-            zone = BuildingZone.TYPES[building_metadata.zone] || BuildingZone.TYPES.RESERVED
+            zone = building_metadata.zone || BuildingZone.TYPES.RESERVED
             color = if zone == BuildingZone.TYPES.CIVICS then 0x1E1E1E else zone.color
             @rgba_buffer[index + 0] = (color & 0xFF0000) >> 16
             @rgba_buffer[index + 1] = (color & 0x00FF00) >> 8

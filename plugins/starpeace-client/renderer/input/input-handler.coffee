@@ -74,8 +74,7 @@ export default class InputHandler
       if !event.stopped && @client_state.interface.last_mouse_x == @client_state.interface.start_mouse_x && @client_state.interface.last_mouse_y == @client_state.interface.start_mouse_y
         unless is_right_click
           if @client_state.interface.construction_building_id?.length
-            if @client_state.can_construct_building()
-              console.log "construct #{@client_state.interface.construction_building_id} at #{@client_state.interface.construction_building_map_x},#{@client_state.interface.construction_building_map_y}"
+            @client_state.construct_building() if @client_state.can_construct_building()
             @client_state.interface.construction_building_id = null
 
           else if @client_state.interface.selected_building_id?.length

@@ -1,7 +1,6 @@
 
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 
-import BuildingZone from '~/plugins/starpeace-client/overlay/building-zone.coffee'
 import Concrete from '~/plugins/starpeace-client/building/concrete.coffee'
 import ChunkMap from '~/plugins/starpeace-client/map/chunk/chunk-map.coffee'
 

@@ -1,6 +1,8 @@
 
 import _ from 'lodash'
 
+import BuildingZone from '~/plugins/starpeace-client/overlay/building-zone.coffee'
+
 import TileItem from '~/plugins/starpeace-client/renderer/item/tile-item.coffee'
 
 import SpriteBuilding from '~/plugins/starpeace-client/renderer/sprite/sprite-building.coffee'
@@ -152,7 +154,7 @@ export default class TileItemCache
     texture = PIXI.utils.TextureCache["overlay.#{image_metadata.w}"]
     return null unless texture?
 
-    zone_color = BuildingZone.TYPES[metadata.zone]?.color
+    zone_color = if metadata.zone? then metadata.zone.color else BuildingZone.TYPES.NONE.color
 
     new SpriteBuildingFootprint(texture, image_metadata, zone_color)
 
@@ -161,6 +163,8 @@ export default class TileItemCache
     metadata = @client_state.core.building_library.metadata_by_id[tile_info.building_info.key]
     return null unless metadata?
     image_metadata = @client_state.core.building_library.images_by_id[metadata.image_id]
+    if tile_info.building_info.stage?
+      image_metadata = if tile_info.building_info.stage >= 0 then image_metadata else @client_state.core.building_library.images_by_id[metadata.construction_image_id]
     return null unless image_metadata?
 
     textures = _.map(image_metadata?.frames || [], (texture_id) -> PIXI.utils.TextureCache[texture_id])
