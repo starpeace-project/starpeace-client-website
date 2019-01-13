@@ -59,9 +59,11 @@ export default class Client
       clearTimeout(@refresh_events_interval) if @refresh_events_interval?
       @refresh_events_interval = setInterval(=>
         if @client_state.workflow_status == 'ready'
-          refresh_promises = [@managers.planets_manager.load_events()]
+          refresh_promises = []
+          refresh_promises.push @managers.planets_manager.load_events()
           refresh_promises.push @managers.corporation_manager.load_events() if @client_state.player.corporation_id?.length
           refresh_promises.push @managers.invention_manager.load_metadata(company_id) for company_id in @client_state.corporation.company_ids_with_pending_inventions()
+          refresh_promises.push @managers.building_manager.load_building_metadata(@client_state.interface.selected_building_id) if @client_state.interface.selected_building_id?.length
 
           Promise.all(refresh_promises).then ->
             Logger.debug "refreshed events"

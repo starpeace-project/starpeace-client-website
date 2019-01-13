@@ -97,6 +97,9 @@ export default class IndustryType
     MARKET:
       type: 'MARKET'
       text_key: 'industry.type.market.label'
+    MAUSOLEUM:
+      type: 'MAUSOLEUM'
+      text_key: 'industry.type.mausoleum.label'
     MC_RESIDENTIAL:
       type: 'MC_RESIDENTIAL'
       text_key: 'industry.type.mc_residential.label'

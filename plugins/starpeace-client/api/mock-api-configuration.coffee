@@ -2,6 +2,7 @@
 import moment from 'moment'
 import _ from 'lodash'
 
+import ChunkMap from '~/plugins/starpeace-client/map/chunk/chunk-map.coffee'
 import TimeUtils from '~/plugins/starpeace-client/utils/time-utils.coffee'
 import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
 
@@ -11,10 +12,13 @@ import SYSTEMS_METADATA from '~/plugins/starpeace-client/api/mock-systems-metada
 import TYCOON_METADATA from '~/plugins/starpeace-client/api/mock-tycoon-metadata.json'
 
 import PLANET_1_MAP_BUILDINGS from '~/plugins/starpeace-client/api/mock-planet-1-map-buildings.json'
-import PLANET_1_TYCOON_1_BUILDINGS from '~/plugins/starpeace-client/api/mock-planet-1-tycoon-1-buildings.json'
 import PLANET_1_TYCOON_1_INVENTIONS from '~/plugins/starpeace-client/api/mock-planet-1-tycoon-1-inventions.json'
 import PLANET_2_MAP_BUILDINGS from '~/plugins/starpeace-client/api/mock-planet-2-map-buildings.json'
-import PLANET_2_TYCOON_1_BUILDINGS from '~/plugins/starpeace-client/api/mock-planet-2-tycoon-1-buildings.json'
+
+PLANET_MAP_BUILDINGS = {
+  'planet-1': PLANET_1_MAP_BUILDINGS
+  'planet-2': PLANET_2_MAP_BUILDINGS
+}
 
 API_DELAY = 500
 
@@ -44,6 +48,7 @@ for system in SYSTEMS_METADATA
 
 
 CORPORATION_ID_EVENTS = {}
+COMPANY_ID_INFO = {}
 COMPANY_ID_INVENTIONS = {}
 
 for tycoon_id,tycoon of TYCOON_METADATA
@@ -58,6 +63,12 @@ for tycoon_id,tycoon of TYCOON_METADATA
         increment_cash: () -> @cash = @cash + 24 * @cashflow()
       }
       for company in corporation.companies
+        COMPANY_ID_INFO[company.id] = {
+          tycoon_id: tycoon_id
+          corporation_id: corporation.id
+          planet_id: corporation.planet_id
+        }
+
         CORPORATION_ID_EVENTS[corporation.id].companies_by_id[company.id] = {
           id: company.id
           cashflow: company.cashflow
@@ -70,6 +81,16 @@ for tycoon_id,tycoon of TYCOON_METADATA
             COMPANY_ID_INVENTIONS[company.id] = company_inventions[company.id]
             COMPANY_ID_INVENTIONS[company.id].corporation_id = corporation.id
             COMPANY_ID_INVENTIONS[company.id].tycoon_id = tycoon_id
+
+
+COMPANY_ID_BUILDINGS = {}
+BUILDING_ID_BUILDING = {}
+for planet_id,planet_buildings of PLANET_MAP_BUILDINGS
+  for chunk_id,chunk_buildings of planet_buildings
+    for building in chunk_buildings
+      COMPANY_ID_BUILDINGS[building.company_id] = [] unless COMPANY_ID_BUILDINGS[building.company_id]?
+      COMPANY_ID_BUILDINGS[building.company_id].push building
+      BUILDING_ID_BUILDING[building.id] = building
 
 
 SESSION_TOKENS = {}
@@ -86,6 +107,9 @@ cost_for_invention_id = (invention_id) ->
     0
 
 QUEUED_EVENTS = []
+COMPANY_CONSTRUCTION_BUIDLINGS = {}
+
+BUILDING_EVENTS = []
 
 setInterval(=>
   PLANET_ID_DATES[id].add(1, 'day') for id,date of PLANET_ID_DATES
@@ -124,6 +148,23 @@ setInterval(=>
         for index in to_remove.sort((lhs, rhs) -> rhs - lhs)
           inventions.pending_inventions.splice(index, 1)
         inventions.pending_inventions[index].order = index for index in [0...inventions.pending_inventions.length]
+
+      if COMPANY_CONSTRUCTION_BUIDLINGS[company_id]?.length
+        to_remove = []
+        for building,index in COMPANY_CONSTRUCTION_BUIDLINGS[company_id]
+          if building.stage == -1
+            building.progress = 22 + (building.progress || 0)
+            building.progress = 100 if building.progress > 100
+
+            cashflow_adjustment -= (5000 + Math.random() * 5000)
+
+            if building.progress == 100
+              building.stage = 0
+              BUILDING_EVENTS.push {'type':'stage', 'id':building.id, 'definition_id':building.key, 'x':building.x, 'y':building.y}
+              to_remove.push index
+          else
+            to_remove.push index
+        COMPANY_CONSTRUCTION_BUIDLINGS[company_id].splice(index, 1) for index in to_remove.sort((lhs, rhs) -> rhs - lhs)
 
       company.adjust_cashflow(cashflow_adjustment)
 
@@ -181,10 +222,14 @@ export default [
         throw new Error(400) unless query_parameters.planet_id?.length
         throw new Error(400) unless query_parameters.last_update?.length
         throw new Error(404) unless PLANET_ID_DATES[query_parameters.planet_id]?
+
+        events = if BUILDING_EVENTS.length then BUILDING_EVENTS else []
+        BUILDING_EVENTS = [] if events.length
         return _.cloneDeep {
           planet: {
             date: PLANET_ID_DATES[query_parameters.planet_id].format('YYYY-MM-DD')
             season: MONTH_SEASONS[PLANET_ID_DATES[query_parameters.planet_id].month()]
+            building_events: events
           }
         }
 
@@ -383,14 +428,62 @@ export default [
 
       return {} if root_path == '/inventions/status'
 
+
       if root_path == '/buildings/metadata'
         throw new Error(404) unless context.method == 'get'
         throw new Error(401) unless valid_session(query_parameters.session_token)
-        throw new Error(400) unless query_parameters.company_id?.length
         buildings = []
-        buildings = PLANET_1_TYCOON_1_BUILDINGS[query_parameters.company_id] if PLANET_1_TYCOON_1_BUILDINGS[query_parameters.company_id]?
+        if query_parameters.company_id?.length
+          buildings = COMPANY_ID_BUILDINGS[query_parameters.company_id] if COMPANY_ID_BUILDINGS[query_parameters.company_id]?
+        else if query_parameters.building_id?.length
+          buildings.push BUILDING_ID_BUILDING[query_parameters.building_id] if BUILDING_ID_BUILDING[query_parameters.building_id]?
+        else
+          throw new Error(400)
         return _.cloneDeep {
           buildings: buildings || []
+        }
+
+      if root_path == '/buildings/construct'
+        throw new Error(404) unless context.method == 'post'
+        throw new Error(401) unless valid_session(params.session_token)
+        throw new Error(400) unless params.company_id?.length
+        throw new Error(400) unless params.definition_id?.length
+        throw new Error(400) unless params.name?.length
+        throw new Error(400) unless params.map_x?
+        throw new Error(400) unless params.map_y?
+
+        throw new Error(404) unless COMPANY_ID_INFO[params.company_id]?
+        throw new Error(404) unless PLANET_MAP_BUILDINGS[COMPANY_ID_INFO[params.company_id].planet_id]?
+
+        building_info = {
+          id: Utils.uuid()
+          name: params.name
+          tycoon_id: COMPANY_ID_INFO[params.company_id].tycoon_id
+          corporation_id: COMPANY_ID_INFO[params.company_id].corporation_id
+          company_id: params.company_id
+          key: params.definition_id
+          x: params.map_x
+          y: params.map_y
+          stage: -1
+          progress: 0
+        }
+
+        chunk_x = Math.floor(params.map_x / ChunkMap.CHUNK_WIDTH)
+        chunk_y = Math.floor(params.map_y / ChunkMap.CHUNK_HEIGHT)
+        chunk_key = "#{chunk_x}x#{chunk_y}"
+
+        PLANET_MAP_BUILDINGS[COMPANY_ID_INFO[params.company_id].planet_id][chunk_key] = [] unless PLANET_MAP_BUILDINGS[COMPANY_ID_INFO[params.company_id].planet_id][chunk_key]?
+        PLANET_MAP_BUILDINGS[COMPANY_ID_INFO[params.company_id].planet_id][chunk_key].push building_info
+        COMPANY_ID_BUILDINGS[params.company_id] = [] unless COMPANY_ID_BUILDINGS[params.company_id]?
+        COMPANY_ID_BUILDINGS[params.company_id].push building_info
+        BUILDING_ID_BUILDING[building_info.id] = building_info
+        COMPANY_CONSTRUCTION_BUIDLINGS[params.company_id] = [] unless COMPANY_CONSTRUCTION_BUIDLINGS[params.company_id]?
+        COMPANY_CONSTRUCTION_BUIDLINGS[params.company_id].push building_info
+
+        BUILDING_EVENTS.push {'type':'construct', 'id':building_info.id, 'definition_id':building_info.key, 'x':building_info.x, 'y':building_info.y}
+
+        return _.cloneDeep {
+          building: building_info
         }
 
       if root_path == '/map/buildings'
@@ -398,13 +491,11 @@ export default [
         throw new Error(401) unless valid_session(query_parameters.session_token)
         throw new Error(400) unless query_parameters.planet_id?.length
         throw new Error(400) unless query_parameters.chunk_x? && query_parameters.chunk_y?
+        throw new Error(404) unless PLANET_MAP_BUILDINGS[query_parameters.planet_id]?
 
         chunk_key = "#{query_parameters.chunk_x}x#{query_parameters.chunk_y}"
-        buildings = []
-        buildings = PLANET_1_MAP_BUILDINGS[chunk_key] if query_parameters.planet_id == 'planet-1'
-        buildings = PLANET_2_MAP_BUILDINGS[chunk_key] if query_parameters.planet_id == 'planet-2'
         return _.cloneDeep {
-          buildings: buildings || []
+          buildings: PLANET_MAP_BUILDINGS[query_parameters.planet_id][chunk_key] || []
         }
 
 

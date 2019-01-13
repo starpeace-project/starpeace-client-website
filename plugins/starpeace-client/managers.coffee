@@ -31,7 +31,7 @@ export default class Managers
     @translation_manager = new TranslationManager(@asset_manager, @ajax_state, @client_state, @options)
 
     @bookmark_manager = new BookmarkManager(@api, @translation_manager, @ajax_state, @client_state)
-    @building_manager = new BuildingManager(@api, @asset_manager, @translation_manager, @ajax_state, @client_state)
+    @building_manager = new BuildingManager(@api, @asset_manager, @bookmark_manager, @translation_manager, @ajax_state, @client_state)
     @concrete_manager = new ConcreteManager(@asset_manager, @ajax_state, @client_state)
     @corporation_manager = new CorporationManager(@api, @ajax_state, @client_state)
     @effect_manager = new EffectManager(@asset_manager, @ajax_state, @client_state)

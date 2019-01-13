@@ -1,6 +1,15 @@
 {
   "news":[
     {
+      "date": "2019-01-13",
+      "title": "New Year, New Milestone",
+      "body": "Happy New Year!\n\nWe're excited to announce STARPEACE client v0.3.0 with initial building construction gameplay and menu integration! With sufficient cash, research, and other requirements, buildings can be selected for construction and placed on available land or water.\n\nThis also concludes the v0.2.x project milestone; see archives for full history. Visit the release notes to learn more about upcoming features and the focus of the next client milestone.",
+      "items": [
+        "initial building industry and warehouse resource metadata",
+        "building construction menu and basic game-map integration"
+      ]
+    },
+    {
       "date": "2018-11-05",
       "title": "Client News, improved Systems and Planet menus, and initial internal AJAX structure!",
       "body": "Hi everyone!\n\nWe're pleased to introduce the STARPEACE client news widget for game updates and other announcements! Watch this space for feature change details, follow on Twitter, or checkout the release notes for version feature information.\n\nAlso further improved corporation, system, and planets workflows and selection interfaces, integrating client login state management and placeholder server AJAX API calls with dummy data responses.",

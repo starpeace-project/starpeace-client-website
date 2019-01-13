@@ -203,6 +203,6 @@ export default class TileItemCache
     new SpriteBuildingConstruction(textures, is_animated, is_valid_location, image_metadata)
 
   plane_sprite_info_for: (flight_plan) ->
-    textures = @client_state.core.plane_library.texture_for_id(flight_plan.plane_info.id)
+    textures = _.map(flight_plan.plane_info.frames, (frame_id) => @client_state.core.plane_library.texture_for_id(frame_id))
     return null unless textures?.length
     new SpritePlane(textures, flight_plan)

@@ -60,7 +60,7 @@ export default
     corporation_cashflow: -> if @is_ready && @corporation_metadata?.cashflow? then @corporation_metadata.cashflow else 0
 
   methods:
-    building_count_for_company_id: (company_id) -> (@client_state.corporation.buildings_metadata_by_company_id?[company_id] || []).length
+    building_count_for_company_id: (company_id) -> (@client_state.corporation.buildings_ids_by_company_id?[company_id] || []).length
 
     is_selected: (company_id) -> @client_state.player.company_id == company_id
     select_company: (company_id) -> @client_state.player.company_id = company_id

@@ -180,6 +180,40 @@ export default class APIClient
           else
             done(result.buildings)
         )
+  building_metadata: (session_token, building_id) ->
+    new Promise (done, error) =>
+      request
+        .get("#{@root_url}/buildings/metadata")
+        .query({ session_token: session_token, building_id: building_id })
+        .set('accept', 'json')
+        .end((request_error, result) =>
+          if request_error
+            @client_state.handle_authorization_error() if result.status == 401
+            error(request_error)
+          else
+            done(if result.buildings.length then result.buildings[0] else null)
+        )
+  construct_building: (session_token, company_id, definition_id, name, map_x, map_y) ->
+    new Promise (done, error) =>
+      request
+        .post("#{@root_url}/buildings/construct")
+        .send({
+          session_token: session_token
+          company_id: company_id
+          definition_id: definition_id
+          name: name
+          map_x: map_x
+          map_y: map_y
+        })
+        .set('accept', 'json')
+        .end((request_error, result) =>
+          if request_error
+            @client_state.handle_authorization_error() if result.status == 401
+            error(request_error)
+          else
+            done(result.building)
+        )
+
 
   inventions_metadata: (session_token, company_id) ->
     new Promise (done, error) =>

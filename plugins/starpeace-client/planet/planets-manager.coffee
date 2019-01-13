@@ -43,6 +43,11 @@ export default class PlanetsManager
             @client_state.planet.current_season = planet_event.season
             @client_state.planet.events_as_of = moment()
 
+            if planet_event.building_events?.length
+              for building_event in planet_event.building_events
+                building_chunk_info = @client_state.planet.game_map.building_map.chunk_building_info_at(building_event.x, building_event.y)
+                @client_state.planet.game_map.building_map.chunk_building_update_at(building_event.x, building_event.y) if building_chunk_info?
+
             @ajax_state.unlock('planet_events', planet_id)
             done()
 

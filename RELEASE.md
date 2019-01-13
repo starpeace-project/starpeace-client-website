@@ -1,47 +1,38 @@
 
-## v0.3 - in progress - updated 2019-01-05
+## v0.4 - in progress - updated 2019-01-13
 ### platform
-* [done] improved building rendering around edges [v0.2.1]
-* [done] improved z-order rendering across layers [v0.2.2]
-* [done] fix broken z-order rendering for buildings, trees, tree concrete, and platforms [v0.2.7]
-* [done] sprite layer render refactor and fixes, caching optimizations [v0.2.7]
-* [done] initial dynamic layout support (desktop, mobile) [v0.2.8]
-* [done] input interaction support for buildings (selection, rendering) [v0.2.10]
-* [done] internal options simplification and refactoring [v0.2.12]
-* [done] improve client UI grid layout and game menu components [v0.2.12]
-* [done] improve game state workflow and initial API integration (mock) [v0.2.12]
-* [done] major internal refactor and reorganization of state handling (metadata, game data, player data) [v0.2.12]
+* [pending] document metadata and gameplay resources
+* [pending] document API integration (tycoon info, building data and construction, events, inventions, mail)
+* [pending] manage corporation and company mock API's
+* [pending] manage mail API integration (mock)
+* [pending] search and rankings API integration (mock)
+* [pending] system messages and basic error messages
 
 ### assets
-* [done] improved gameplay documentation [v0.2.4]
-* [done] improved asset versioning [v0.2.4]
-* [done] plane assets [v0.2.4]
-* [done] effects assets and building metadata [v0.2.5]
-* [done] concrete and platform assets [v0.2.6]
-* [done] road and bridge assets [v0.2.7]
-* [done] game background music [v0.2.8]
-* [done] formal asset versioning [v0.2.9]
-* [done] building asset interaction hitboxes [v0.2.10]
-* [done] refactor seal asset organization, integrate more game metadata [v0.2.12]
-* [done] invention metadata and taxonomy [v0.2.12]
-* [done] initial language translation support [v0.2.12]
-* [done] client static news and updates info widget [v0.2.12]
-* [done] initial building construction metadata (industry, warehouse) [v0.3.0]
+* [pending] initial building construction metadata (commerce, civics, headquarters, government)
+* [pending] formal building stage metadata (timber, movies, farms)
+* [pending] building requirements for research per seal
+* [pending] finish language translation for assets
+* [pending] car assets
+* [pending] street light and intersection lamp assets
 
 ### gameplay
-* [done] persist client options in localStorage [v0.2.3]
-* [done] improve building animation tying render frame to game clock [v0.2.3]
-* [done] plane rendering [v0.2.4]
-* [done] rendering options support [v0.2.5]
-* [done] building footprint layer rendering [v0.2.5]
-* [done] building effect layer rendering [v0.2.5]
-* [done] improve tree layer rendering [v0.2.6]
-* [done] concrete and platform rendering [v0.2.6]
-* [done] road rendering [v0.2.7]
-* [done] game music controls [v0.2.8]
-* [done] bridge rendering [v0.2.9]
-* [done] improve concrete rendering (edges, roads) [v0.2.9]
-* [done] mini-map rendering [v0.2.11]
-* [done] basic map favorites integration [v0.2.12]
-* [done] basic research and development UI and menu support [v0.2.12]
-* [in progress] building construction menu and interaction support [v0.3.0]
+* [pending] update UI and menus for better concept of galaxies
+* [pending] tycoon search menu
+* [pending] tycoon and industry rankings menu
+* [pending] corporation and company formation menus
+* [pending] client language translations and menu option
+* [pending] car rendering
+* [pending] street light and intersection lamp rendering
+* [pending] road construction, improved orientation metadata
+* [pending] road proximity building construction rules
+* [pending] waterquest and water building construction rules
+* [pending] onscreen building text rendering on selection
+* [pending] building selection rendering effects (container box, negative-income tinting)
+* [pending] building stage support (timber, movies, farms)
+* [pending] limit research unless constructed required buildings
+* [pending] footer menu company support (add, scroll)
+* [pending] city detection from current camera
+* [pending] city-specific ribbon ticker updates
+* [pending] world events and news ticker integration
+* [pending] menu filter widget (bookmarks, research, construction)

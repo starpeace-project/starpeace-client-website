@@ -17,8 +17,6 @@ import InterfaceState from '~/plugins/starpeace-client/state/ui/interface-state.
 import MenuState from '~/plugins/starpeace-client/state/ui/menu-state.coffee'
 import MusicState from '~/plugins/starpeace-client/state/ui/music-state.coffee'
 
-import ChunkMap from '~/plugins/starpeace-client/map/chunk/chunk-map.coffee'
-
 import TimeUtils from '~/plugins/starpeace-client/utils/time-utils.coffee'
 import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
 import Logger from '~/plugins/starpeace-client/logger.coffee'
@@ -219,6 +217,16 @@ export default class ClientState
     else
       @core.invention_library.all_metadata()
 
+  building_count_for_company: (building_definition_id) ->
+    count = 0
+    if @identity?.identity?.is_tycoon() && @player.company_id?.length
+      for id in @corporation.building_ids_for_company(@player.company_id)
+        metadata = @core.building_cache.building_metadata_for_id(id)
+        count += 1 if metadata?.key == building_definition_id
+      count
+    count
+
+
 
   has_construction_requirements: (building_id) ->
     return false unless @player.company_id? && building_id?
@@ -251,26 +259,3 @@ export default class ClientState
     @interface.construction_building_height = if image_metadata? then image_metadata.h else 1
 
     @interface.toggle_zones() unless @interface.show_zones
-
-  construct_building: () ->
-    metadata = @core.building_library.metadata_by_id[@interface.construction_building_id]
-    image_metadata = if metadata? then @core.building_library.images_by_id[metadata.image_id] else null
-    return false unless metadata?
-
-    temporary_building = {
-      id: Utils.uuid()
-      tycoon_id: @session.tycoon_id
-      corporation_id: @player.corporation_id
-      company_id: @player.company_id
-      key: metadata.id
-      x: @interface.construction_building_map_x
-      y: @interface.construction_building_map_y
-      chunk_x: @interface.construction_building_map_x / ChunkMap.CHUNK_WIDTH
-      chunk_y: @interface.construction_building_map_y / ChunkMap.CHUNK_HEIGHT
-      is_temporary: true
-      stage: -1
-    }
-
-    @core.building_cache.load_metadata(temporary_building)
-    @planet.game_map.building_map.add_building(temporary_building.id)
-    @planet.notify_map_data_listeners({ type: 'building', info: {chunk_x: temporary_building.chunk_x, chunk_y: temporary_building.chunk_y} })

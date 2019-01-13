@@ -46,6 +46,7 @@ EN_STRINGS = {
   'industry.type.liquor.label': 'Liquor'
   'industry.type.machinery.label': 'Machinery'
   'industry.type.market.label': 'Market'
+  'industry.type.mausoleum.label': 'Mausoleum'
   'industry.type.mc_residential.label': 'Middle-class Residential'
   'industry.type.metal.label': 'Metallurgy'
   'industry.type.movie.label': 'Movie'

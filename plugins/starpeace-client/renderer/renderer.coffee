@@ -58,7 +58,7 @@ export default class Renderer
 
     render_container.appendChild(@application.view)
 
-    @input_handler = new InputHandler(@, render_container, @client_state)
+    @input_handler = new InputHandler(@managers, @, render_container, @client_state)
 
     fps_el = document?.getElementById('fps-container')
     @fps_meter = new FPSMeter(fps_el, { theme: 'colorful' }) if fps_el?

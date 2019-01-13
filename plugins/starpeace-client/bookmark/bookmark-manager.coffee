@@ -17,27 +17,29 @@ export default class BookmarkManager
     for town,index in _.sortBy(@client_state.current_planet_details()?.towns_metadata || [], (town) -> town.name)
       @client_state.bookmarks.town_items.push new Bookmark('bookmark-towns', "bookmark-town-#{town.id}", town.name, index, 1000 - town.map_y, 1000 - town.map_x, {type:'TOWN', corporation_id:'IFEL', building_id:town.building_id})
 
-    sorted_company_ids = _.sortBy(@client_state.corporation.company_ids, (id) => @client_state.name_for_company_id(id))
-    for company_id,index in sorted_company_ids
-      company_root_id = "bookmark-corp-#{company_id}"
-      @client_state.bookmarks.corporation_items.push new BookmarkFolder('bookmark-corporation', company_root_id, @client_state.name_for_company_id(company_id), index, {type:'CORPORATION', seal_id:@client_state.seal_for_company_id(company_id)})
+    for company_id in @client_state.corporation.company_ids
+      @add_company_folder(company_id, false)
+      @add_building_bookmark(building_id, false) for building_id in @client_state.corporation.building_ids_for_company(company_id)
+    @client_state.bookmarks.sort_all_corporation_bookmarks()
 
-      industry_items = {}
-      for building_id in @client_state.corporation.building_ids_for_company(company_id)
-        metadata = @client_state.core.building_cache.building_metadata_for_id(building_id)
-        definition = @client_state.core.building_library.metadata_by_id[metadata.key]
-        industry_type = IndustryType.TYPES[definition.industry_type]
-        continue unless metadata? && definition? && industry_type?
+  add_company_folder: (company_id, do_sort=false) ->
+    @client_state.bookmarks.set_company_folder(company_id, new BookmarkFolder('bookmark-corporation', "bookmark-corp-#{company_id}", @client_state.name_for_company_id(company_id), -1, {type:'CORPORATION', seal_id:@client_state.seal_for_company_id(company_id)}))
+    @client_state.bookmarks.sort_company_folders() if do_sort
 
-        industry_items[industry_type.type] = { type: industry_type.type, type_name:@translation_manager.text(industry_type.text_key), items:[] } unless industry_items[industry_type.type]?
-        industry_items[industry_type.type].items.push metadata
+  add_building_bookmark: (building_id, do_sort=false) ->
+    metadata = @client_state.core.building_cache.building_metadata_for_id(building_id)
+    definition = @client_state.core.building_library.metadata_by_id[metadata.key]
+    industry_type = IndustryType.TYPES[definition.industry_type]
+    return unless metadata? && definition? && industry_type?
 
-      for buildings_for_industry,items_index in _.sortBy(_.values(industry_items), (items) -> items.type_name)
-        industry_root_id = "bookmark-corp-#{company_id}-#{buildings_for_industry.type}"
-        @client_state.bookmarks.corporation_items.push new BookmarkFolder(company_root_id, industry_root_id, buildings_for_industry.type_name, items_index, {type:'INDUSTRY', industry_type:buildings_for_industry.type})
+    industry_root_id = "bookmark-corp-#{metadata.company_id}-#{industry_type.type}"
+    unless @client_state.bookmarks.has_company_industry_type_folder(metadata.company_id, industry_type.type)
+      @client_state.bookmarks.set_company_industry_type_folder(metadata.company_id, industry_type.type, new BookmarkFolder("bookmark-corp-#{metadata.company_id}", industry_root_id, @translation_manager.text(industry_type.text_key), -1, {type:'INDUSTRY', industry_type:industry_type.type}))
+      @client_state.bookmarks.sort_company_industry_type_folders(metadata.company_id) if do_sort
 
-        for building,building_index in _.sortBy(buildings_for_industry.items, (items) -> items.name)
-          @client_state.bookmarks.corporation_items.push new Bookmark(industry_root_id, "bookmark-building-#{building.id}", building.name, building_index, building.x, building.y, {type:'BUILDING', corporation_id:building.corporation_id, building_id:building.id})
+    unless @client_state.bookmarks.has_company_building_item(metadata.company_id, industry_type.type, building_id)
+      @client_state.bookmarks.set_company_building_item(metadata.company_id, industry_type.type, building_id, new Bookmark(industry_root_id, "bookmark-building-#{building_id}", metadata.name, -1, metadata.x, metadata.y, {type:'BUILDING', building_id:building_id}))
+      @client_state.bookmarks.sort_company_building_items(metadata.company_id, industry_type.type) if do_sort
 
 
   load_metadata: (corporation_id) ->

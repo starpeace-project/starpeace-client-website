@@ -44,6 +44,11 @@ export default class CorporationState
     Vue.set(@buildings_ids_by_company_id, company_id, building_ids)
     @notify_company_buildings_listeners()
 
+  add_company_building_id: (company_id, building_id) ->
+    Vue.set(@buildings_ids_by_company_id, company_id, []) unless @buildings_ids_by_company_id[company_id]?
+    @buildings_ids_by_company_id[company_id].push building_id
+    @notify_company_buildings_listeners()
+
   update_company_pending_inventions: (company_id, new_pending_inventions) ->
     return false if _.isEqual(@inventions_metadata_by_company_id[company_id].pending_inventions, new_pending_inventions)
     @inventions_metadata_by_company_id[company_id].pending_inventions = new_pending_inventions

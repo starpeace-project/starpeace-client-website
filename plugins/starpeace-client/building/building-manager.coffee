@@ -2,12 +2,13 @@
 import MetadataBuilding from '~/plugins/starpeace-client/building/metadata-building.coffee'
 
 import ResourceType from '~/plugins/starpeace-client/industry/resource-type.coffee'
+import ChunkMap from '~/plugins/starpeace-client/map/chunk/chunk-map.coffee'
 
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
 
 export default class BuildingManager
-  constructor: (@api, @asset_manager, @translation_manager, @ajax_state, @client_state) ->
+  constructor: (@api, @asset_manager, @bookmark_manager, @translation_manager, @ajax_state, @client_state) ->
     @chunk_promises = {}
 
   initialize: () ->
@@ -103,4 +104,68 @@ export default class BuildingManager
 
           .catch (err) =>
             @ajax_state.unlock('building_metadata', company_id) # FIXME: TODO add error handling
+            error()
+  load_building_metadata: (building_id) ->
+    new Promise (done, error) =>
+      if !@client_state.has_session() || !building_id? || @ajax_state.is_locked('building_metadata', building_id)
+        done()
+      else
+        @ajax_state.lock('building_metadata', building_id)
+        @api.building_metadata(@client_state.session.session_token, building_id)
+          .then (metadata) =>
+            @client_state.core.building_cache.load_metadata(metadata)
+            # FIXME: TODO: notify change if different?
+
+            @ajax_state.unlock('building_metadata', building_id)
+            done()
+
+          .catch (err) =>
+            @ajax_state.unlock('building_metadata', building_id) # FIXME: TODO add error handling
+            error()
+
+  construct_building: () ->
+    building_metadata = @client_state.core.building_library.metadata_by_id[@client_state.interface.construction_building_id]
+
+    new Promise (done, error) =>
+      if !@client_state.has_session() || !building_metadata? || @ajax_state.is_locked('building_construction', 'ALL')
+        done()
+      else
+        temporary_building = {
+          id: Utils.uuid()
+          name: "#{@translation_manager.text(building_metadata.name_key)} ##{@client_state.building_count_for_company(building_metadata.id) + 1}"
+          tycoon_id: @client_state.session.tycoon_id
+          corporation_id: @client_state.player.corporation_id
+          company_id: @client_state.player.company_id
+          key: building_metadata.id
+          x: @client_state.interface.construction_building_map_x
+          y: @client_state.interface.construction_building_map_y
+          is_temporary: true
+          stage: -1
+        }
+
+        @client_state.core.building_cache.load_metadata(temporary_building)
+        @client_state.planet.game_map.building_map.add_building(temporary_building.id)
+        @client_state.planet.notify_map_data_listeners({ type: 'building', info: {chunk_x: temporary_building.x / ChunkMap.CHUNK_WIDTH, chunk_y: temporary_building.y / ChunkMap.CHUNK_HEIGHT} })
+
+        @ajax_state.lock('building_construction', 'ALL')
+        @api.construct_building(@client_state.session.session_token, temporary_building.company_id, temporary_building.key, temporary_building.name, temporary_building.x, temporary_building.y)
+          .then (building_info) =>
+            @client_state.core.building_cache.load_metadata(building_info)
+            @client_state.planet.game_map.building_map.remove_building(temporary_building.id)
+            @client_state.planet.game_map.building_map.add_building(building_info.id)
+            @client_state.corporation.add_company_building_id(building_info.company_id, building_info.id)
+            @client_state.core.building_cache.remove_metadata(temporary_building)
+            @client_state.planet.notify_map_data_listeners({ type: 'building', info: {chunk_x: building_info.y / ChunkMap.CHUNK_HEIGHT, chunk_y: building_info.y / ChunkMap.CHUNK_HEIGHT} })
+
+            @bookmark_manager.add_building_bookmark(building_info.id, true)
+
+            # FIXME: TODO: add corp bookmark
+            @client_state.interface.selected_building_id = building_info.id
+
+            @ajax_state.unlock('building_construction', 'ALL')
+            done()
+
+          .catch (err) =>
+            # FIXME: TODO add error handling (remove temporary, add sys message)
+            @ajax_state.unlock('building_construction', 'ALL')
             error()

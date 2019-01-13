@@ -14,4 +14,10 @@ export default class BuildingCache
     else
       @building_metadata_by_id[building_metadata.id] = building_metadata
 
+  remove_metadata: (building_metadata) ->
+    if Array.isArray(building_metadata)
+      delete @building_metadata_by_id[metadata.id] for metadata in building_metadata
+    else
+      delete @building_metadata_by_id[building_metadata.id]
+
   building_metadata_for_id: (building_id) -> @building_metadata_by_id[building_id]

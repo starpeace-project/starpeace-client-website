@@ -83,7 +83,7 @@ export default
 
     poi_items_by_id: ->
       items_by_id = {}
-      if @is_ready && @menu_visible
+      if @is_ready
         if @show_towns && @client_state.bookmarks.town_items?.length
           items_by_id[item.id] = item for item in @client_state.bookmarks.town_items
 
@@ -94,8 +94,15 @@ export default
 
     corporation_items_by_id: ->
       by_id = {}
-      if @is_ready && @menu_visible
-        by_id[item.id] = item for item in @client_state.bookmarks.corporation_items
+      if @is_ready
+        for company_id,company_items of @client_state.bookmarks.company_folders_by_id
+          by_id[company_items.root.id] = company_items.root if company_items.root?
+
+          for industry_type,industry_items of company_items.by_industry_type
+            by_id[industry_items.root.id] = industry_items.root if industry_items.root?
+
+            for building_id,building_item of industry_items.items_by_id
+              by_id[building_item.id] = building_item
       by_id
 
     bookmark_items_by_id: -> if @is_ready then @client_state?.bookmarks.bookmarks_by_id else {}

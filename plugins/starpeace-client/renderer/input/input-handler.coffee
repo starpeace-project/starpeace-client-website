@@ -3,7 +3,7 @@ ZOOM_DISABLED = false
 AUTO_SCROLL_DISABLED = true
 
 export default class InputHandler
-  constructor: (@renderer, @renderer_dom, @client_state) ->
+  constructor: (@managers, @renderer, @renderer_dom, @client_state) ->
     @is_moving = false
 
     @last_x = -1
@@ -74,7 +74,7 @@ export default class InputHandler
       if !event.stopped && @client_state.interface.last_mouse_x == @client_state.interface.start_mouse_x && @client_state.interface.last_mouse_y == @client_state.interface.start_mouse_y
         unless is_right_click
           if @client_state.interface.construction_building_id?.length
-            @client_state.construct_building() if @client_state.can_construct_building()
+            @managers.building_manager.construct_building() if @client_state.can_construct_building()
             @client_state.interface.construction_building_id = null
 
           else if @client_state.interface.selected_building_id?.length

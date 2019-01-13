@@ -63,8 +63,11 @@ export default class LayerManager
   clear_cache_sprites: (render_state) ->
     cache.clear_cache(render_state) for cache in @sprite_caches
 
-  plane_sprite_with: (textures) ->
-    @plane_sprite_cache.new_sprite({}, { textures })
+  clear_cache_plane_sprites: (render_state) ->
+    @plane_sprite_cache.clear_cache(render_state)
+
+  plane_sprite_with: (render_state, textures) ->
+    @plane_sprite_cache.new_sprite(render_state, { textures })
 
   render_tile_item: (render_state, tile_item, construction_item, within_construction, canvas, viewport) ->
     if (within_construction || !within_construction && !tile_item.sprite_info.tree?) && tile_item.sprite_info.land?.within_canvas(canvas, viewport)
@@ -108,7 +111,6 @@ export default class LayerManager
           @client_state.interface.selected_building_id = null
         else
           @client_state.interface.selected_building_id = tile_item.tile_info.building_info.id
-        console.log "selected_id: #{@client_state.interface.selected_building_id}"
         @client_state.interface.is_mouse_primary_down = false if @client_state.interface.is_mouse_primary_down
         true
 

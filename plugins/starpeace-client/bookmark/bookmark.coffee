@@ -6,7 +6,6 @@ export default class Bookmark
     @type = options?.type || 'LOCATION'
 
     @building_id = if options?.building_id?.length then options.building_id else null
-    @corporation_id = if options?.corporation_id?.length then options.corporation_id else null
 
     @draggable = if options.draggable? then options.draggable else false
 

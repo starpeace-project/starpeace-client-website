@@ -66,6 +66,21 @@ export default class BuildingMap
         @tile_info_building[map_index] = building
         @tile_info_concrete[map_index] = if has_concrete then Concrete.FILL_TYPE.FILLED else Concrete.FILL_TYPE.NO_FILL
 
+  remove_building: (building_id) ->
+    building = @client_state.core.building_cache.building_metadata_by_id[building_id]
+    metadata = if building? then @client_state.core.building_library.metadata_by_id[building.key] else null
+    image_metadata = if metadata? then @client_state.core.building_library.images_by_id[metadata.image_id] else null
+
+    unless metadata? && image_metadata?
+      Logger.debug("unable to load building metadata for #{building_id} of type #{building?.key || 'UNKNOWN'}")
+      return
+
+    for y in [0...image_metadata.h]
+      for x in [0...image_metadata.w]
+        map_index = (building.y - y) * @width + (building.x - x)
+        delete @tile_info_building[map_index]
+        delete @tile_info_concrete[map_index]
+
   update_roads: (chunk_info, road_data) ->
     for y in [0...ChunkMap.CHUNK_HEIGHT]
       for x in [0...ChunkMap.CHUNK_WIDTH]

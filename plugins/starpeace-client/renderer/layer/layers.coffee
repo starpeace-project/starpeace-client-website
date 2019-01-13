@@ -3,7 +3,7 @@ import TileItemCache from '~/plugins/starpeace-client/renderer/item/tile-item-ca
 import LayerManager from '~/plugins/starpeace-client/renderer/layer/layer-manager.coffee'
 
 PLANE_CHECK_SPEED = 5000
-PLANE_COUNT = 0
+PLANE_COUNT = 6
 
 export default class Layers
   constructor: (@renderer, building_manager, effect_manager, @plane_manager, @client_state, @options) ->
@@ -20,9 +20,10 @@ export default class Layers
       return unless @client_state.initialized && @options.option('renderer.planes')
 
       while @client_state.plane_sprites.length < PLANE_COUNT
-        sprite = @tile_item_cache.plane_sprite_info_for(@plane_manager.random_flight_plan(@client_state.camera))
+        flight_plan = @plane_manager.random_flight_plan(@client_state.camera)
+        sprite = @tile_item_cache.plane_sprite_info_for(flight_plan)
         return unless sprite?
-        @client_state.plane_sprites.push sprite
+        @client_state.plane_sprites[@client_state.plane_sprites.length] = sprite # need to be careful to avoid Vue state wrapper
 
     , PLANE_CHECK_SPEED)
 
@@ -41,19 +42,21 @@ export default class Layers
       @last_construction_building_y != @client_state.interface.construction_building_map_y || @tile_item_cache.is_dirty || @tile_item_cache.should_clear_cache()
 
   refresh_planes: () ->
-    return unless @client_state.plane_sprites.length
+    return unless @client_state.initialized && @client_state.renderer_initialized && @client_state.plane_sprites.length
     if !@options.option('renderer.planes')
       @client_state.plane_sprites = []
       return
 
+    render_state = {}
     to_remove = []
     for sprite,index in @client_state.plane_sprites
-      if sprite.is_done || !sprite.sprite?
+      if sprite.is_done
         to_remove.push index
       else
-        sprite.sprite = @layer_manager.plane_sprite_with(sprite.textures)
+        sprite.sprite = @layer_manager.plane_sprite_with(render_state, sprite.textures)
         sprite.render(sprite.sprite, @client_state.camera)
 
+    @layer_manager.clear_cache_plane_sprites(render_state)
     @client_state.plane_sprites.splice(index, 1) for index in to_remove.reverse()
 
   refresh: () ->
