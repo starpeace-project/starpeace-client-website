@@ -28,8 +28,8 @@ export default class CorporationCache
     @notify_corporation_metadata_listeners()
 
   metadata_for_id: (corporation_id) -> @corporation_metadata_by_id[corporation_id]
-  corporation_metadata_for_system_planet_tycoon_id: (system_id, planet_id, tycoon_id) ->
-    _.find(_.values(@corporation_metadata_by_id), (corporation) -> corporation.system_id == system_id && corporation.planet_id == planet_id && corporation.tycoon_id == tycoon_id)
+  corporation_metadata_for_planet_tycoon_id: (planet_id, tycoon_id) ->
+    _.find(_.values(@corporation_metadata_by_id), (corporation) -> corporation.planet_id == planet_id && corporation.tycoon_id == tycoon_id)
 
   corporations_for_tycoon_id: (tycoon_id) ->
     _.filter(_.values(@corporation_metadata_by_id), (corporation) -> corporation.tycoon_id == tycoon_id)

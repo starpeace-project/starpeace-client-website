@@ -73,6 +73,9 @@ export default class IndustryType
     GARBAGE:
       type: 'GARBAGE'
       text_key: 'industry.type.garbage.label'
+    GENERAL:
+      type: 'GENERAL'
+      text_key: 'industry.type.general.label'
     HEADQUARTERS:
       type: 'HEADQUARTERS'
       text_key: 'industry.type.headquarters.label'
@@ -142,6 +145,9 @@ export default class IndustryType
     RAW_CHEMICAL:
       type: 'RAW_CHEMICAL'
       text_key: 'industry.type.raw_chemical.label'
+    RESIDENTIAL:
+      type: 'RESIDENTIAL'
+      text_key: 'industry.type.residential.label'
     RESTAURANT:
       type: 'RESTAURANT'
       text_key: 'industry.type.restaurant.label'

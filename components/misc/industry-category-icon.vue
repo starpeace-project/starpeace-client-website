@@ -1,19 +1,19 @@
-<template lang='haml'>
-  %span.industry-category-icon{':class':"icon_class"}
-    %template{'v-if':"industry_category == 'CIVIC'"}
-      %img{src:'~/assets/images/icons/civics/fountain.svg'}
-    %template{'v-else-if':"industry_category == 'COMMERCE'"}
-      %img{src:'~/assets/images/icons/commerce/shop.svg'}
-    %template{'v-else-if':"industry_category == 'INDUSTRY'"}
-      %img{src:'~/assets/images/icons/industries/factory.svg'}
-    %template{'v-else-if':"industry_category == 'LOGISTICS'"}
-      %img{src:'~/assets/images/icons/logistics/warehouse.svg'}
-    %template{'v-else-if':"industry_category == 'REAL_ESTATE'"}
-      %img{src:'~/assets/images/icons/offices/office-block.svg'}
-    %template{'v-else-if':"industry_category == 'SERVICE'"}
-      %img{src:'~/assets/images/icons/services/headquarters.svg'}
-    %template{'v-else-if':"true"}
-      %font-awesome-icon{':icon':"['far', 'circle']"}
+(v-els<template lang='pug'>
+  span.industry-category-icon(:class="icon_class")
+    template(v-if="industry_category == 'CIVIC'")
+      img(src='~/assets/images/icons/civics/fountain.svg')
+    template(v-else-if="industry_category == 'COMMERCE'")
+      img(src='~/assets/images/icons/commerce/shop.svg')
+    template(v-else-if="industry_category == 'INDUSTRY'")
+      img(src='~/assets/images/icons/industries/factory.svg')
+    template(v-else-if="industry_category == 'LOGISTICS'")
+      img(src='~/assets/images/icons/logistics/warehouse.svg')
+    template(v-else-if="industry_category == 'REAL_ESTATE'")
+      img(src='~/assets/images/icons/offices/office-block.svg')
+    template(v-else-if="industry_category == 'SERVICE'")
+      img(src='~/assets/images/icons/services/headquarters.svg')
+    template(v-else-if="true")
+      font-awesome-icon(:icon="['far', 'circle']")
 </template>
 
 <script lang='coffee'>

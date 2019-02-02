@@ -1,34 +1,34 @@
-<template lang='haml'>
+<template lang='pug'>
 #research-tree-container.card.is-starpeace.has-header
   .card-header
     .card-header-title
-    .card-header-icon.card-close{'v-on:click.stop.prevent':"client_state.menu.toggle_menu('research')"}
-      %font-awesome-icon{':icon':"['fas', 'times']"}
+    .card-header-icon.card-close(v-on:click.stop.prevent="client_state.menu.toggle_menu('research')")
+      font-awesome-icon(:icon="['fas', 'times']")
   .card-content.sp-menu-background.overall-container
     .tree-list-container.sp-scrollbar
-      .status-title Available
-      %ul
-        %template{'v-if':"research_available.length"}
-          %li{'v-for':"research in research_available"}
-            %a{'v-on:click.stop.prevent':"select_invention_id(research.id)"} {{research.text}}
-        %template{'v-else-if':"true"}
-          %li None
-      .status-title In Progress
-      %ul
-        %template{'v-if':"research_in_progress.length"}
-          %li{'v-for':"research in research_in_progress"}
-            %a{'v-on:click.stop.prevent':"select_invention_id(research.id)"} {{research.text}}
-        %template{'v-else-if':"true"}
-          %li None
-      .status-title Completed
-      %ul
-        %template{'v-if':"research_completed.length"}
-          %li{'v-for':"research in research_completed"}
-            %a{'v-on:click.stop.prevent':"select_invention_id(research.id)"} {{research.text}}
-        %template{'v-else-if':"true"}
-          %li None
+      .status-title {{translate('ui.menu.research.status.available')}}
+      ul
+        template(v-if="research_available.length")
+          li(v-for="research in research_available")
+            a(v-on:click.stop.prevent="select_invention_id(research.id)") {{translate(research.text_key)}}
+        template(v-else-if='true')
+          li {{translate('ui.menu.research.none.label')}}
+      .status-title {{translate('ui.menu.research.status.in_progress')}}
+      ul
+        template(v-if="research_in_progress.length")
+          li(v-for="research in research_in_progress")
+            a(v-on:click.stop.prevent="select_invention_id(research.id)") {{translate(research.text_key)}}
+        template(v-else-if="true")
+          li {{translate('ui.menu.research.none.label')}}
+      .status-title {{translate('ui.menu.research.status.completed')}}
+      ul
+        template(v-if="research_completed.length")
+          li(v-for="research in research_completed")
+            a(v-on:click.stop.prevent="select_invention_id(research.id)") {{translate(research.text_key)}}
+        template(v-else-if="true")
+          li {{translate('ui.menu.research.none.label')}}
     .tree-container
-      %v-network.inverse-card{'ref':'tree_network', ':options':'tree_options', ':nodes':'tree_nodes', ':edges':'tree_edges', 'v-on:select-node':"select_tree_node", 'v-on:deselect-node':'deselect_tree_node'}
+      v-network.inverse-card(ref='tree_network', :options='tree_options', :nodes='tree_nodes', :edges='tree_edges', v-on:select-node="select_tree_node", v-on:deselect-node='deselect_tree_node')
 
 </template>
 
@@ -79,7 +79,6 @@ export default
   props:
     managers: Object
     client_state: Object
-    options: Object
 
   data: ->
     inventions_for_company: @client_state.inventions_for_company()
@@ -105,11 +104,9 @@ export default
         shape: 'box'
 
   mounted: ->
-    @client_state.corporation.subscribe_company_inventions_listener =>
-      if @is_visible
-        @inventions_for_company = @client_state.inventions_for_company()
-        node.color = @color_for_node(node.id) for node in @tree_nodes
-        @$refs.tree_network.fit()
+    @client_state.corporation.subscribe_company_inventions_listener => @refresh_tree()
+    @client_state.options.subscribe_options_listener => @refresh_invention_data()
+    @client_state.core.translations_library.subscribe_listener => @refresh_invention_data()
 
   watch:
     is_visible: (new_value, old_value) ->
@@ -120,40 +117,7 @@ export default
     'client_state.player.company_id': (new_value, old_value) ->
       @inventions_for_company = @client_state.inventions_for_company() if @is_visible
 
-    invention_data: (new_value, old_value) ->
-      data = []
-      links = []
-
-      for invention in new_value
-        data.push {
-          id: invention.id
-          label: @managers.translation_manager.text(invention.name_key)
-          color: @color_for_node(invention.id)
-        }
-
-        if invention.depends_on?.length
-          for depends_on_id,index in invention.depends_on
-            links.push {
-              id: "#{depends_on_id}-#{invention.id}"
-              from: depends_on_id
-              to: invention.id
-              arrows:
-                to:
-                  enabled: true
-                  scaleFactor: .5
-              color:
-                color: EDGE_CONFIG.borderColor
-                hover: EDGE_CONFIG.hover.borderColor
-                highlight: EDGE_CONFIG.selected.borderColor
-              width: EDGE_CONFIG.width
-            }
-
-      @tree_nodes = data
-      @tree_edges = links
-      setTimeout(=>
-        @$refs.tree_network.fit()
-        @$refs.tree_network.selectNodes([@selected_invention_id]) if @selected_invention_id? && @$refs.tree_network.getNode(@selected_invention_id)?
-      , 100)
+    invention_data: (new_value, old_value) -> @refresh_invention_data()
 
     selected_invention_id: (new_value, old_value) ->
       invention_within_selection = _.find(@invention_data, (invention) -> invention.id == new_value)
@@ -203,23 +167,68 @@ export default
     research_available: ->
       available = []
       for invention in @invention_data
-        available.push { id: invention.id, text: @managers.translation_manager.text(invention.name_key) } unless @is_invention_in_progress(invention.id) || @is_invention_completed(invention.id)
+        available.push { id: invention.id, text_key: invention.name_key } unless @is_invention_in_progress(invention.id) || @is_invention_completed(invention.id)
       _.sortBy(available, (invention) -> invention.text)
     research_in_progress: ->
       in_progress = []
       if @company_inventions?
         for invention in @invention_data
-          in_progress.push { id: invention.id, text: @managers.translation_manager.text(invention.name_key) } if @is_invention_in_progress(invention.id)
+          in_progress.push { id: invention.id, text_key: invention.name_key } if @is_invention_in_progress(invention.id)
       _.sortBy(in_progress, (invention) -> invention.text)
     research_completed: ->
       completed = []
       if @company_inventions?
         for invention in @invention_data
-          completed.push { id: invention.id, text: @managers.translation_manager.text(invention.name_key) } if @is_invention_completed(invention.id)
+          completed.push { id: invention.id, text_key: invention.name_key } if @is_invention_completed(invention.id)
       _.sortBy(completed, (invention) -> invention.text)
 
 
   methods:
+    translate: (text_key) -> @managers?.translation_manager?.text(text_key)
+
+    refresh_tree: () ->
+      if @is_visible
+        @inventions_for_company = @client_state.inventions_for_company()
+        node.color = @color_for_node(node.id) for node in @tree_nodes
+        @$refs.tree_network.fit()
+
+    refresh_invention_data: () ->
+      data = []
+      links = []
+
+      for invention in @invention_data
+        data.push {
+          id: invention.id
+          label: @translate(invention.name_key)
+          color: @color_for_node(invention.id)
+        }
+
+        if invention.depends_on?.length
+          for depends_on_id,index in invention.depends_on
+            links.push {
+              id: "#{depends_on_id}-#{invention.id}"
+              from: depends_on_id
+              to: invention.id
+              arrows:
+                to:
+                  enabled: true
+                  scaleFactor: .5
+              color:
+                color: EDGE_CONFIG.borderColor
+                hover: EDGE_CONFIG.hover.borderColor
+                highlight: EDGE_CONFIG.selected.borderColor
+              width: EDGE_CONFIG.width
+            }
+
+      @tree_nodes = data
+      @tree_edges = links
+
+      if @is_visible
+        setTimeout(=>
+          @$refs.tree_network.fit()
+          @$refs.tree_network.selectNodes([@selected_invention_id]) if @selected_invention_id? && @$refs.tree_network.getNode(@selected_invention_id)?
+        , 100)
+
     color_for_node: (invention_id) ->
       item_styling = NODE_CONFIG.available
       item_styling = NODE_CONFIG.pending if @company_inventions? && _.find(@company_inventions.pending_inventions, (pending) => pending.id == invention_id)?

@@ -1,0 +1,67 @@
+{
+  "ui.menu.construction.header": {
+    "DE": "Konstruktion",
+    "EN": "Construction",
+    "ES": "Construcción",
+    "FR": "Construction",
+    "IT": "Costruzione",
+    "PT": "Construção"
+  },
+  "ui.menu.construction.requires": {
+    "DE": "Erfordern",
+    "EN": "Requires",
+    "ES": "Necesitar",
+    "FR": "Nécessiter",
+    "IT": "Necessitare",
+    "PT": "Necessitar"
+  },
+  "ui.menu.construction.construct_building": {
+    "DE": "Gebäude Bauen",
+    "EN": "Construct Building",
+    "ES": "Construir Edificio",
+    "FR": "Construire L'Édifice",
+    "IT": "Costruisci la Edificio",
+    "PT": "Construir Edifício"
+  },
+  "ui.menu.construction.description.industry.label": {
+    "DE": "Produziert bis <%= output %>.",
+    "EN": "Produces up to <%= output %>.",
+    "ES": "Produce hasta <%= output %>.",
+    "FR": "Produit jusqu'à <%= output %>.",
+    "IT": "Produce fino a <%= output %>.",
+    "PT": "Produz até <%= output %>."
+  },
+  "ui.menu.construction.description.industry.output.label": {
+    "DE": "<%= amount %> <%= unit %>/<%= duration %> von <%= resource %>",
+    "EN": "<%= amount %> <%= unit %>/<%= duration %> of <%= resource %>",
+    "ES": "<%= amount %> <%= unit %>/<%= duration %> de <%= resource %>",
+    "FR": "<%= amount %> <%= unit %>/<%= duration %> de <%= resource %>",
+    "IT": "<%= amount %> <%= unit %>/<%= duration %> di <%= resource %>",
+    "PT": "<%= amount %> <%= unit %>/<%= duration %> do <%= resource %>"
+  },
+  "ui.menu.construction.description.industry.input.label": {
+    "DE": "Erfordern <%= input %>.",
+    "EN": "Requires <%= input %>.",
+    "ES": "Necesitar <%= input %>.",
+    "FR": "Nécessiter <%= input %>.",
+    "IT": "Necessitare <%= input %>.",
+    "PT": "Necessitar <%= input %>."
+  },
+  "ui.menu.construction.description.warehouse.label": {
+    "DE": "Speichert bis zu <%= storage %>.",
+    "EN": "Stores up to <%= storage %>.",
+    "ES": "Almacena hasta <%= storage %>.",
+    "FR": "Stocke jusqu'à <%= storage %>.",
+    "IT": "Memorizza fino a <%= storage %>.",
+    "PT": "Armazena até <%= storage %>."
+  },
+  "ui.menu.construction.description.warehouse.output.label": {
+    "DE": "<%= amount %> <%= unit %> von <%= resource %>",
+    "EN": "<%= amount %> <%= unit %> of <%= resource %>",
+    "ES": "<%= amount %> <%= unit %> de <%= resource %>",
+    "FR": "<%= amount %> <%= unit %> de <%= resource %>",
+    "IT": "<%= amount %> <%= unit %> di <%= resource %>",
+    "PT": "<%= amount %> <%= unit %> do <%= resource %>"
+  }
+
+}

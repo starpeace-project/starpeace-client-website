@@ -66,14 +66,14 @@ export default class BookmarkState
 
   sort_company_folders: () ->
     bookmark.order = index for bookmark,index in _.sortBy(_.map(@company_folders_by_id, (item) -> item.root), 'name')
-  sort_company_industry_type_folders: (company_id) ->
-    bookmark.order = index for bookmark,index in _.sortBy(_.map(@company_folders_by_id[company_id]?.by_industry_type || {}, (item) -> item.root), 'name')
+  sort_company_industry_type_folders: (translation_manager, company_id) ->
+    bookmark.order = index for bookmark,index in _.sortBy(_.map(@company_folders_by_id[company_id]?.by_industry_type || {}, (item) -> item.root), (item) -> if item.name_key?.length then translation_manager.text(item.name_key) else item.name)
   sort_company_building_items: (company_id, industry_type) ->
     bookmark.order = index for bookmark,index in _.sortBy(_.values(@company_folders_by_id[company_id]?.by_industry_type?[industry_type]?.items_by_id || {}), 'name')
 
-  sort_all_corporation_bookmarks: () ->
+  sort_all_corporation_bookmarks: (translation_manager) ->
     @sort_company_folders()
     for company_id,company_items of @company_folders_by_id
-      @sort_company_industry_type_folders(company_id)
+      @sort_company_industry_type_folders(translation_manager, company_id)
       for industry_type,industry_items of @company_folders_by_id[company_id]?.by_industry_type
         @sort_company_building_items(company_id, industry_type)

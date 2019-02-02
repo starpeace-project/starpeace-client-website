@@ -10,7 +10,6 @@ export default class MetadataCorporation
     metadata = new MetadataCorporation(json.id)
     metadata.tycoon_id = tycoon_id
     metadata.name = json.name
-    metadata.system_id = json.system_id
     metadata.planet_id = json.planet_id
     metadata.cash = if json.cash? then +json.cash else 0
     metadata.cashflow = if json.cashflow? then +json.cashflow else 0

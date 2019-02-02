@@ -1,101 +1,100 @@
-<template lang='haml'>
+<template lang='pug'>
 #construction-container.card.is-starpeace.has-header
   .card-header
-    .card-header-title
-      Construction
-    .card-header-icon.card-close{'v-on:click.stop.prevent':"client_state.menu.toggle_menu('construction')"}
-      %font-awesome-icon{':icon':"['fas', 'times']"}
+    .card-header-title {{translate('ui.menu.construction.header')}}
+    .card-header-icon.card-close(v-on:click.stop.prevent="client_state.menu.toggle_menu('construction')")
+      font-awesome-icon(:icon="['fas', 'times']")
 
   .card-content.sp-menu-background.overall-container
     .field.filter-input-container
       .control.has-icons-left.is-expanded
-        %input.input{type:"text", placeholder:"Filter"}
-        %span.icon.is-left
-          %font-awesome-icon{':icon':"['fas', 'search-location']"}
-    %nav.breadcrumb.is-medium.menu-breadcrumb
-      %ul
-        %li{':class':'root_breadcrumb_class'}
-          %a{'v-on:click.stop.prevent':'select_root_breadcrumb'}
-            %template{'v-if':'company_seal_id'}
-              %span.icon.is-small
-                %company-seal-icon.company-seal{':seal_id':"company_seal_id"}
-              %span {{company_seal_name}}
-            %template{'v-else-if':'true'}
-              %span.icon.is-small
-                %font-awesome-icon.tycoon-icon{':icon':"['fas', 'user-secret']"}
-              %span Visitor
-        %template{'v-if':'selected_menu_category'}
-          %li.is-active
-            %a.construction-breadcrumb-item
-              %span.icon.is-small
-                %industry-category-icon{':industry_category':'selected_menu_category', 'no_active':true}
-              %span {{text_for_category(selected_menu_category)}}
+        input.input(type="text", placeholder="Filter")
+        span.icon.is-left
+          font-awesome-icon(:icon="['fas', 'search-location']")
+    nav.breadcrumb.is-medium.menu-breadcrumb
+      ul
+        li(:class='root_breadcrumb_class')
+          a(v-on:click.stop.prevent='select_root_breadcrumb')
+            template(v-if='company_seal_id')
+              span.icon.is-small
+                company-seal-icon.company-seal(:seal_id="company_seal_id")
+              span {{company_seal_name}}
+            template(v-else-if='true')
+              span.icon.is-small
+                font-awesome-icon.tycoon-icon(:icon="['fas', 'user-secret']")
+              span {{translate('identity.visitor')}}
+        template(v-if='selected_menu_category')
+          li.is-active
+            a.construction-breadcrumb-item
+              span.icon.is-small
+                industry-category-icon(:industry_category='selected_menu_category', no_active=true)
+              span {{text_for_category(selected_menu_category)}}
 
-    #construction-image-pending{'ref':"pendingContainer"}
-      #construction-image-webgl-container{'ref':"previewContainer"}
+    #construction-image-pending(ref="pendingContainer")
+      #construction-image-webgl-container(ref="previewContainer")
 
-    %aside.sp-menu-category.sp-scrollbar{'v-show':"has_selected_menu_category"}
-      %template{'v-for':"info in sort_buildings(buildings_for_company_by_category[selected_menu_category])"}
-        %a.is-building-item{'v-on:click.stop.prevent':"toggle_building(info)", ':class':"selected_building_id == info.id ? 'active' : ''"}
-          %industry-type-icon{':industry_type':"info.industry_type", ':small':'true'}
-          %span.is-building-label {{building_name(info)}}
-          .construction-disabled{'v-show':"!can_construct_building(info)"}
+    aside.sp-menu-category.sp-scrollbar(v-show="has_selected_menu_category")
+      template(v-for="info in sort_buildings(buildings_for_company_by_category[selected_menu_category])")
+        a.is-building-item(v-on:click.stop.prevent="toggle_building(info)", :class="selected_building_id == info.id ? 'active' : ''")
+          industry-type-icon(:industry_type="info.industry_type", :small='true')
+          span.is-building-label {{building_name(info)}}
+          .construction-disabled(v-show="!can_construct_building(info)")
 
-        %a.construct-action{'v-on:click.stop.prevent':"select_building(info)", ':disabled':'!can_construct_building(info)'}
-          .tile.is-ancestor.is-item-details{'v-show':"selected_building_id == info.id"}
+        a.construct-action(v-on:click.stop.prevent="select_building(info)", :disabled='!can_construct_building(info)')
+          .tile.is-ancestor.is-item-details(v-show="selected_building_id == info.id")
             .tile.is-parent.is-vertical
               .tile.is-parent.is-item-details-top
-                %article.tile.is-child.is-7{':ref':"'previewItem.' + info.id"}
-                %article.tile.is-child
+                article.tile.is-child.is-7(:ref="'previewItem.' + info.id")
+                article.tile.is-child
                   .building-cost
-                    %money-text{':value':'info.cost()', 'no_styling':true, 'as_thousands':true}
+                    money-text(:value='info.cost()', no_styling=true, as_thousands=true)
                   .building-size {{building_size(info)}}m&sup2;
               .tile.is-parent.is-item-details-bottom
-                %article.tile.is-child
+                article.tile.is-child
                   .building-description {{building_description(info)}}
-                  .building-research{'v-show':"info.required_invention_ids.length"}
-                    %span.research-label Requires:
-                    %template{'v-for':'id,index in info.required_invention_ids'}
-                      %template{'v-if':'is_invention_completed(id)'}
-                        %span.research-completed {{invention_name(id)}}
-                      %template{'v-else-if':'true'}
-                        %a{'v-on:click.stop.prevent':'select_invention(id)'} {{invention_name(id)}}
-                      %span.research-separator{'v-if':"index < info.required_invention_ids.length - 1"} {{separator_label_for_index(index, info.required_invention_ids.length)}}
-                  %a.button.is-fullwidth.is-starpeace.construct-button{'v-on:click.stop.prevent':"select_building(info)", ':disabled':'!can_construct_building(info)'} Construct Building
+                  .building-research(v-show="info.required_invention_ids.length")
+                    span.research-label {{translate('ui.menu.construction.requires')}}:
+                    template(v-for='id,index in info.required_invention_ids')
+                      template(v-if='is_invention_completed(id)')
+                        span.research-completed {{invention_name(id)}}
+                      template(v-else-if='true')
+                        a(v-on:click.stop.prevent='select_invention(id)') {{invention_name(id)}}
+                      span.research-separator(v-if="index < info.required_invention_ids.length - 1") {{separator_label_for_index(index, info.required_invention_ids.length)}}
+                  a.button.is-fullwidth.is-starpeace.construct-button(v-on:click.stop.prevent="select_building(info)", :disabled='!can_construct_building(info)') {{translate('ui.menu.construction.construct_building')}}:
 
-    %aside.sp-menu-overall.sp-scrollbar{'v-show':"!has_selected_menu_category"}
+    aside.sp-menu-overall.sp-scrollbar(v-show="!has_selected_menu_category")
       .tile.is-ancestor.construction-items
         .tile.is-6.is-vertical.is-parent
           .tile.is-child
-            %a.construction-toggle{'v-on:click.stop.prevent':"select_category('SERVICE')", ':disabled':"!category_has_buildings('SERVICE')"}
-              %img{src:'~/assets/images/icons/services/headquarters.svg'}
-              %span.toggle-label {{text_for_category('SERVICE')}}
+            a.construction-toggle(v-on:click.stop.prevent="select_category('SERVICE')", :disabled="!category_has_buildings('SERVICE')")
+              img(src='~/assets/images/icons/services/headquarters.svg')
+              span.toggle-label {{text_for_category('SERVICE')}}
               .disabled-overlay
           .tile.is-child
-            %a.construction-toggle{'v-on:click.stop.prevent':"select_category('INDUSTRY')", ':disabled':"!category_has_buildings('INDUSTRY')"}
-              %img{src:'~/assets/images/icons/industries/factory.svg'}
-              %span.toggle-label {{text_for_category('INDUSTRY')}}
+            a.construction-toggle(v-on:click.stop.prevent="select_category('INDUSTRY')", :disabled="!category_has_buildings('INDUSTRY')")
+              img(src='~/assets/images/icons/industries/factory.svg')
+              span.toggle-label {{text_for_category('INDUSTRY')}}
               .disabled-overlay
           .tile.is-child
-            %a.construction-toggle{'v-on:click.stop.prevent':"select_category('LOGISTICS')", ':disabled':"!category_has_buildings('LOGISTICS')"}
-              %img{src:'~/assets/images/icons/logistics/warehouse.svg'}
-              %span.toggle-label {{text_for_category('LOGISTICS')}}
+            a.construction-toggle(v-on:click.stop.prevent="select_category('LOGISTICS')", :disabled="!category_has_buildings('LOGISTICS')")
+              img(src='~/assets/images/icons/logistics/warehouse.svg')
+              span.toggle-label {{text_for_category('LOGISTICS')}}
               .disabled-overlay
         .tile.is-6.is-vertical.is-parent
           .tile.is-child
-            %a.construction-toggle{'v-on:click.stop.prevent':"select_category('CIVIC')", ':disabled':"!category_has_buildings('CIVIC')"}
-              %img{src:'~/assets/images/icons/civics/fountain.svg'}
-              %span.toggle-label {{text_for_category('CIVIC')}}
+            a.construction-toggle(v-on:click.stop.prevent="select_category('CIVIC')", :disabled="!category_has_buildings('CIVIC')")
+              img(src='~/assets/images/icons/civics/fountain.svg')
+              span.toggle-label {{text_for_category('CIVIC')}}
               .disabled-overlay
           .tile.is-child
-            %a.construction-toggle{'v-on:click.stop.prevent':"select_category('COMMERCE')", ':disabled':"!category_has_buildings('COMMERCE')"}
-              %img{src:'~/assets/images/icons/commerce/shop.svg'}
-              %span.toggle-label {{text_for_category('COMMERCE')}}
+            a.construction-toggle(v-on:click.stop.prevent="select_category('COMMERCE')", :disabled="!category_has_buildings('COMMERCE')")
+              img(src='~/assets/images/icons/commerce/shop.svg')
+              span.toggle-label {{text_for_category('COMMERCE')}}
               .disabled-overlay
           .tile.is-child
-            %a.construction-toggle{'v-on:click.stop.prevent':"select_category('REAL_ESTATE')", ':disabled':"!category_has_buildings('REAL_ESTATE')"}
-              %img{src:'~/assets/images/icons/offices/office-block.svg'}
-              %span.toggle-label {{text_for_category('REAL_ESTATE')}}
+            a.construction-toggle(v-on:click.stop.prevent="select_category('REAL_ESTATE')", :disabled="!category_has_buildings('REAL_ESTATE')")
+              img(src='~/assets/images/icons/offices/office-block.svg')
+              span.toggle-label {{text_for_category('REAL_ESTATE')}}
               .disabled-overlay
 
 </template>
@@ -124,7 +123,7 @@ export default
     is_ready: -> @client_state?.workflow_status == 'ready'
     is_visible: -> @is_ready && @client_state?.menu?.is_visible('construction')
 
-    is_tycoon: -> @is_ready && @client_state?.identity?.identity?.is_tycoon()
+    is_tycoon: -> @is_ready && @client_state?.is_tycoon()
     company_id: -> if @is_tycoon then @client_state.player.company_id else null
     company_seal_id: -> if @company_id? then @client_state.seal_for_company_id(@company_id) else null
     company_seal_name: -> if @company_seal_id? then CompanySeal.SEALS[@company_seal_id].name else null
@@ -146,8 +145,11 @@ export default
 
   mounted: ->
     @client_state.corporation.subscribe_company_inventions_listener => @$forceUpdate() if @is_visible
+    @client_state?.options?.subscribe_options_listener => @$forceUpdate() if @is_visible
 
   methods:
+    translate: (text_key) -> @managers?.translation_manager?.text(text_key)
+
     sort_buildings: (buildings) ->
       _.sortBy(buildings, (info) -> "#{info.industry_type}-#{_.padStart(info.cost(), 12, '0')}")
 
@@ -346,7 +348,7 @@ export default
   .construction-toggle
     border: 1px solid lighten($sp-primary-bg, 5%)
     display: inline-block
-    padding: 1rem
+    padding: 1rem .5rem
     position: relative
     text-align: center
 

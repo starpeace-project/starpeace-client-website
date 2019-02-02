@@ -1,0 +1,35 @@
+{
+  "ui.page-layout.header.documentation": {
+    "DE": "Dokumentation",
+    "EN": "Documentation",
+    "ES": "Documentación",
+    "FR": "Documentation",
+    "IT": "Documentazione",
+    "PT": "Documentação"
+  },
+  "ui.page-layout.header.community": {
+    "DE": "Gemeinschaft",
+    "EN": "Community",
+    "ES": "Comunidad",
+    "FR": "Communauté",
+    "IT": "Comunità",
+    "PT": "Comunidade"
+  },
+  "ui.page-layout.header.greeting": {
+    "DE": "Hallo",
+    "EN": "Welcome",
+    "ES": "Hola",
+    "FR": "Bonjour",
+    "IT": "Ciao",
+    "PT": "Olá"
+  },
+  "ui.page-layout.header.signin": {
+    "DE": "Einloggen",
+    "EN": "Sign In",
+    "ES": "Registrarse",
+    "FR": "Se Connecter",
+    "IT": "Registrati",
+    "PT": "Assinar Em"
+  }
+
+}

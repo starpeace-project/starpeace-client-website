@@ -1,19 +1,23 @@
-<template lang='haml'>
-#loading-container.level{'v-show':'is_visible'}
+<template lang='pug'>
+#loading-container.level(v-show='is_visible')
   .level-item
     .card.is-starpeace
       .card-content
-        %img.starpeace-logo
-        .label-loading Loading...
+        img.starpeace-logo
+        .label-loading {{translate('ui.workflow.loading')}}
 </template>
 
 <script lang='coffee'>
 export default
   props:
     client_state: Object
+    managers: Object
 
   computed:
-    is_visible: -> (@client_state?.initialized || false) && (@client_state?.loading || false)
+    is_visible: -> @client_state?.initialized && @client_state?.loading
+
+  methods:
+    translate: (key) -> if @managers? then @managers.translation_manager.text(key) else key
 </script>
 
 <style lang='sass' scoped>
@@ -31,7 +35,7 @@ export default
   max-width: 20rem
   text-align: center
   width: 100%
-  z-index: 1050
+  z-index: 2000
 
   .starpeace-logo
     animation: spin-and-blink 1.5s linear infinite

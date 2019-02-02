@@ -1,5 +1,5 @@
-<template lang='haml'>
-%span{'v-bind:class':'money_css_class'} ${{money_value}}
+<template lang='pug'>
+span(:class='money_css_class') ${{money_value}}
 </template>
 
 <script lang='coffee'>

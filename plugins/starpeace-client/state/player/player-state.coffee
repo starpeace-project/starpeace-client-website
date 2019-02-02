@@ -13,7 +13,7 @@ export default class PlayerState
     @reset_state()
 
   reset_state: () ->
-    @system_id = null
+    @planet_visa_type = null
     @planet_id = null
 
     @corporation_id = null
@@ -24,9 +24,6 @@ export default class PlayerState
 
   has_data: () -> @mail_by_id?
 
-  subscribe_system_id_listener: (listener_callback) -> @event_listener.subscribe('player.system_id', listener_callback)
-  notify_system_id_listeners: () -> @event_listener.notify_listeners('player.system_id')
-
   subscribe_planet_id_listener: (listener_callback) -> @event_listener.subscribe('player.planet_id', listener_callback)
   notify_planet_id_listeners: () -> @event_listener.notify_listeners('player.planet_id')
 
@@ -36,11 +33,6 @@ export default class PlayerState
   subscribe_mail_metadata_listener: (listener_callback) -> @event_listener.subscribe('player.mail_metadata', listener_callback)
   notify_mail_metadata_listeners: () -> @event_listener.notify_listeners('player.mail_metadata')
 
-
-  set_system_id: (system_id) ->
-    @system_id = system_id
-    Logger.debug "proceeding with planetary system <#{system_id}>"
-    @notify_system_id_listeners()
 
   set_planet_id: (planet_id) ->
     @planet_id = planet_id

@@ -1,5 +1,5 @@
-<template lang='haml'>
-  %sp-application{'v-bind:client':'client'}
+<template lang='pug'>
+  sp-application(:client='client')
 </template>
 
 <script lang='coffee'>

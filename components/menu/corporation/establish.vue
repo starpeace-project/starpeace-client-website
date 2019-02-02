@@ -1,44 +1,45 @@
-<template lang='haml'>
-#establish-corporation-container{'v-if':'is_visible'}
+<template lang='pug'>
+#establish-corporation-container(v-if='is_visible')
   .modal-background
   .card.is-starpeace.has-header
     .card-header
-      .card-header-title
-        Establish a Corporation
+      .card-header-title {{translate('ui.menu.corporation.establish.header')}}
     .card-content.sp-menu-background
       .content
-        %p.intro
-          Welcome to
-          %span.planet-name {{planet_name()}}
-          , Tycoon!
-        %p.info
-          Establish a corporation to participate in the planet economy. IFEL Regulations limit Tycoons to a single corporation per planet; one or more companies can be formed under each corporation.
-        %p.info
-          Corporation name is unique across all systems and tycoons; name may be re-used across multiple planets once claimed by Tycoon.
-    %footer.card-footer
+        p.intro
+          | {{translate('ui.menu.corporation.establish.planet.welcome')}}
+          |
+          span.planet-name {{planet_name()}}
+          | ,
+          |
+          | {{translate('identity.tycoon')}}!
+        p.info
+          | {{translate('ui.menu.corporation.establish.description')}}
+    footer.card-footer
       .card-footer-item.level.is-mobile
         .level-left
-          %a.button.is-primary.is-medium.is-outlined{'v-on:click.stop.prevent':'cancel()'} Back to Planetary Systems
+          a.button.is-primary.is-medium.is-outlined(v-on:click.stop.prevent='cancel') {{translate('ui.menu.corporation.establish.action.cancel')}}
         .level-right
-          %a.button.is-primary.is-medium{'v-on:click.stop.prevent':'establish()'} Establish Corporation
+          a.button.is-primary.is-medium(v-on:click.stop.prevent='establish') {{translate('ui.menu.corporation.establish.action.establish')}}
 
 </template>
 
 <script lang='coffee'>
 export default
   props:
-    client: Object
-    translation_manager: Object
+    managers: Object
     client_state: Object
 
   computed:
-    is_visible: -> @client_state.initialized && @client_state.workflow_status == 'ready' && @client_state.identity.identity.is_tycoon() && !@client_state.player.corporation_id?.length
+    is_visible: -> @client_state.initialized && @client_state.workflow_status == 'ready' && @client_state.is_tycoon() && !@client_state.player.corporation_id?.length
 
   methods:
+    translate: (text_key) -> @managers?.translation_manager?.text(text_key)
+
     planet_name: -> @client_state?.current_planet_metadata().name
 
     cancel: () ->
-      @client_state.change_planet_id(null)
+      @client_state.reset_to_galaxy()
       window.document.title = "STARPEACE" if window?.document?
 
     establish: () ->
@@ -53,7 +54,7 @@ export default
   grid-column-start: 1
   grid-column-end: 4
   grid-row-start: 2
-  grid-row-end: 6
+  grid-row-end: 7
   margin: 0
   position: relative
   overflow: hidden

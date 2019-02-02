@@ -1,0 +1,18 @@
+{
+  "duration.hour": {
+    "DE": "stunde",
+    "EN": "hour",
+    "ES": "hora",
+    "FR": "heure",
+    "IT": "ora",
+    "PT": "hora"
+  },
+  "duration.day": {
+    "DE": "tag",
+    "EN": "day",
+    "ES": "día",
+    "FR": "journée",
+    "IT": "giorno",
+    "PT": "dia"
+  }
+}

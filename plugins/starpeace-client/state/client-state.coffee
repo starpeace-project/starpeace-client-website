@@ -45,7 +45,6 @@ export default class ClientState
 
     @core.corporation_cache.subscribe_corporation_metadata_listener => @update_state()
     @core.planets_cache.subscribe_planets_metadata_listener => @update_state()
-    @core.systems_cache.subscribe_systems_metadata_listener => @update_state()
     @core.tycoon_cache.subscribe_tycoon_metadata_listener => @update_state()
 
     @core.building_library.subscribe_listener => @update_state()
@@ -66,7 +65,6 @@ export default class ClientState
     @identity.subscribe_visa_type_listener => @update_state()
     @identity.subscribe_identity_listener => @update_state()
     @session.subscribe_session_token_listener => @update_state()
-    @player.subscribe_system_id_listener => @update_state()
     @player.subscribe_planet_id_listener => @update_state()
     @player.subscribe_corporation_id_listener => @update_state()
     @player.subscribe_mail_metadata_listener => @update_state()
@@ -90,7 +88,6 @@ export default class ClientState
     @ajax_state.reset_state()
     @core.corporation_cache.reset_state()
     @core.planets_cache.reset_state()
-    @core.systems_cache.reset_state()
     @core.tycoon_cache.reset_state()
 
     @identity.reset_state()
@@ -131,16 +128,16 @@ export default class ClientState
 
   determine_state: () ->
     unless @initialized && @renderer_initialized && @mini_map_renderer_initialized && @construction_preview_renderer_initialized
-      return 'pending_visa_type' unless @identity.visa_type?
+      return 'pending_universe' unless @identity.galaxy_id? || @identity.galaxy_visa_type?
       return 'pending_identity' unless @identity.identity?
       return 'pending_session' unless @session.session_token?
 
       return 'pending_tycoon_metadata' if @state_needs_tycoon_metadata()
-      return 'pending_system_metadata' if @state_needs_system_metadata()
-      return 'pending_system' unless @player.system_id?
+      return 'pending_galaxy_metadata' if @state_needs_galaxy_metadata()
       return 'pending_planet' unless @player.planet_id?
 
       planet_metadata = @core.planets_cache.metadata_for_id(@player.planet_id)
+      return 'pending_galaxy_metadata' unless planet_metadata?
 
       return 'pending_assets' unless @core.has_assets(@options.language(), planet_metadata.map_id, planet_metadata.planet_type)
       return 'pending_planet_details' unless @planet.has_data()
@@ -149,10 +146,9 @@ export default class ClientState
 
     'ready'
 
-  state_needs_tycoon_metadata: () -> @identity.identity.is_tycoon() && !@core.tycoon_cache.has_tycoon_metadata_fresh(@session.tycoon_id)
-  state_needs_system_metadata: () -> !@core.systems_cache.has_systems_metadata_fresh()
-  state_needs_player_data: () ->
-    @identity.identity.is_tycoon() && @player.corporation_id? && (!@player.has_data() || !@corporation.has_data() || !@bookmarks.has_data())
+  state_needs_tycoon_metadata: () -> @is_galaxy_tycoon() && !@core.tycoon_cache.has_tycoon_metadata_fresh(@session.tycoon_id)
+  state_needs_galaxy_metadata: () -> @identity.galaxy_id? && !@core.galaxy_cache.has_galaxy_metadata(@identity.galaxy_id)
+  state_needs_player_data: () -> @is_tycoon() && @player.corporation_id? && (!@player.has_data() || !@corporation.has_data() || !@bookmarks.has_data())
 
 
   has_session: () -> @session.session_token? && @ajax_state.invalid_session_counter < MAX_FAILED_AUTH_ERRORS
@@ -168,39 +164,35 @@ export default class ClientState
       setTimeout (=> @reset_full_state()), 3000
 
 
-  reset_system: ->
-    Logger.debug "resetting planetary system back to empty, will need to re-select"
-    @player.system_id = null
-    @update_state()
+  reset_to_galaxy: () ->
+    setTimeout(=>
+      @initialized = false
+      @reset_planet_state()
+    , 250)
 
-  change_planet_id: (planet_id) ->
+  change_planet_id: (new_planet_visa_type, planet_id) ->
     @initialized = false
     setTimeout(=>
       @reset_planet_state()
-
-      planet_metadata = if planet_id?.length then @core.planets_cache.metadata_for_id(planet_id) else null
-      if planet_metadata?
-        @player.set_system_id(planet_metadata.system_id)
-        @player.set_planet_id(planet_metadata.id)
+      @player.planet_visa_type = new_planet_visa_type if new_planet_visa_type?.length
+      @player.set_planet_id(planet_id) if planet_id?.length && @core.planets_cache.metadata_for_id(planet_id)?
     , 250)
 
 
+  is_galaxy_tycoon: () -> @identity.galaxy_visa_type == 'tycoon' && @session.tycoon_id?
+  is_tycoon: () -> @is_galaxy_tycoon() && @player.planet_visa_type == 'tycoon'
+
   current_tycoon_metadata: () -> if @session.tycoon_id? then @core.tycoon_cache.metadata_for_id(@session.tycoon_id) else null
-  current_system_metadata: () -> if @player.system_id? then @core.systems_cache.metadata_for_id(@player.system_id) else null
   current_planet_metadata: () -> if @player.planet_id? then @core.planets_cache.metadata_for_id(@player.planet_id) else null
   current_corporation_metadata: () -> if @player.corporation_id? then @core.corporation_cache.metadata_for_id(@player.corporation_id) else null
   current_company_metadata: () -> if @player.company_id? then @core.company_cache.metadata_for_id(@player.company_id) else null
 
   current_planet_details: () -> if @player.planet_id? && @planet.details? then @planet.details else null
 
-  enabled_for_system_id: (system_id) ->
-    system_metadata = @core.systems_cache.metadata_for_id(system_id)
-    if system_metadata?.enabled? then system_metadata.enabled else false
   enabled_for_planet_id: (planet_id) ->
     planet_metadata = @core.planets_cache.metadata_for_id(planet_id)
     if planet_metadata?.enabled? then planet_metadata.enabled else false
 
-  name_for_system_id: (system_id) -> @core.systems_cache.metadata_for_id(system_id)?.name
   name_for_planet_id: (planet_id) -> @core.planets_cache.metadata_for_id(planet_id)?.name
   name_for_tycoon_id: (tycoon_id) -> @core.tycoon_cache.metadata_for_id(tycoon_id)?.name
   name_for_corporation_id: (corporation_id) -> @core.corporation_cache.metadata_for_id(corporation_id)?.name
@@ -211,7 +203,7 @@ export default class ClientState
   selected_building_metadata: () -> if @interface.selected_building_id?.length then @core.building_cache.building_metadata_for_id(@interface.selected_building_id) else null
 
   inventions_for_company: ->
-    if @identity?.identity?.is_tycoon()
+    if @is_tycoon()
       company_metadata = @current_company_metadata()
       if company_metadata? then @core.invention_library.metadata_for_seal_id(company_metadata.seal_id) else []
     else
@@ -219,7 +211,7 @@ export default class ClientState
 
   building_count_for_company: (building_definition_id) ->
     count = 0
-    if @identity?.identity?.is_tycoon() && @player.company_id?.length
+    if @is_tycoon() && @player.company_id?.length
       for id in @corporation.building_ids_for_company(@player.company_id)
         metadata = @core.building_cache.building_metadata_for_id(id)
         count += 1 if metadata?.key == building_definition_id

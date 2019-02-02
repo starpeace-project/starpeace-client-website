@@ -1,0 +1,26 @@
+{
+  "identity.visitor": {
+    "DE": "Besucher",
+    "EN": "Visitor",
+    "ES": "Visitante",
+    "FR": "Visiteur",
+    "IT": "Visitatore",
+    "PT": "Visitante"
+  },
+  "identity.tycoon": {
+    "DE": "Tycoon",
+    "EN": "Tycoon",
+    "ES": "Magnate",
+    "FR": "Magnat",
+    "IT": "Magnate",
+    "PT": "Magnata"
+  },
+  "identity.visa": {
+    "DE": "Visum",
+    "EN": "Visa",
+    "ES": "Visado",
+    "FR": "Visa",
+    "IT": "Visto",
+    "PT": "Visto"
+  }
+}

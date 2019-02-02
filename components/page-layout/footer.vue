@@ -1,16 +1,16 @@
-<template lang='haml'>
+<template lang='pug'>
 #footer-container
   .columns.links
     .column.is-2.is-offset-3
-      %a{href: 'https://docs.starpeace.io'} Documentation
+      a(href='https://docs.starpeace.io') Documentation
     .column.is-2
-      %a{href: 'https://www.starpeace.io/privacy'} Privacy
+      a(href='https://www.starpeace.io/privacy') Privacy
     .column.is-2
-      %a{href: 'https://github.com/starpeace-project/starpeace-website-client', target:'_blank'} GitHub
+      a(href='https://github.com/starpeace-project/starpeace-website-client', target:'_blank') GitHub
 
   .columns.copyright
     .column.is-6.is-offset-3
-      %span{'v-once':true, 'v-html':'copyright()'}
+      span(v-once=true, v-html='copyright()')
 </template>
 
 <script lang='coffee'>

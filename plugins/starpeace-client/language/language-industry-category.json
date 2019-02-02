@@ -1,0 +1,58 @@
+{
+  "industry.category.none.label": {
+    "DE": "Keine",
+    "EN": "None",
+    "ES": "Ninguna",
+    "FR": "Aucun",
+    "IT": "Nessuna",
+    "PT": "Nenhum"
+  },
+  "industry.category.civic.label": {
+    "DE": "Städtischer",
+    "EN": "Civic",
+    "ES": "Cívico",
+    "FR": "Civique",
+    "IT": "Civico",
+    "PT": "Cívico"
+  },
+  "industry.category.commerce.label": {
+    "DE": "Handel",
+    "EN": "Commerce",
+    "ES": "Comercio",
+    "FR": "Commerce",
+    "IT": "Commercio",
+    "PT": "Comércio"
+  },
+  "industry.category.industry.label": {
+    "DE": "Industriegebäude",
+    "EN": "Industry",
+    "ES": "Industria",
+    "FR": "Industrie",
+    "IT": "Industria",
+    "PT": "Indústria"
+  },
+  "industry.category.logistics.label": {
+    "DE": "Logistik",
+    "EN": "Logistics",
+    "ES": "Logística",
+    "FR": "Logistique",
+    "IT": "Logistica",
+    "PT": "Logística"
+  },
+  "industry.category.real_estate.label": {
+    "DE": "Immobilien",
+    "EN": "Real Estate",
+    "ES": "Bienes Raíces",
+    "FR": "Immobilier",
+    "IT": "Immobiliare",
+    "PT": "Imobiliária"
+  },
+  "industry.category.service.label": {
+    "DE": "Dienstleistungen",
+    "EN": "Service",
+    "ES": "Servicio",
+    "FR": "Service",
+    "IT": "Servizio",
+    "PT": "Serviço"
+  }
+}

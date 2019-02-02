@@ -13,7 +13,8 @@ export default class IdentityState
     @reset_state()
 
   reset_state: () ->
-    @visa_type = null
+    @galaxy_id = null
+    @galaxy_visa_type = null
     @identity = null
 
   subscribe_visa_type_listener: (listener_callback) -> @event_listener.subscribe('identity.visa_type', listener_callback)
@@ -23,8 +24,10 @@ export default class IdentityState
   notify_identity_listeners: () -> @event_listener.notify_listeners('identity.identity')
 
 
-  set_visa_type: (visa_type) ->
-    @visa_type = visa_type
+  set_visa_type: (galaxy_id, visa_type) ->
+    @galaxy_id = galaxy_id
+    @galaxy_visa_type = visa_type
+    @identity = null
     @notify_visa_type_listeners()
 
   set_identity: (identity) ->

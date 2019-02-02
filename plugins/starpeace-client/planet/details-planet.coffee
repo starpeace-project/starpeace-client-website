@@ -14,7 +14,6 @@ export default class DetailsPlanet
 
   @from_json: (json) ->
     metadata = new DetailsPlanet(json.id)
-    metadata.system_id = json.system_id
     metadata.name = json.name
     metadata.towns_metadata = _.map(json.towns, MetadataTown.from_json)
     metadata

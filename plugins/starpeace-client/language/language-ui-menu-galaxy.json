@@ -1,0 +1,58 @@
+{
+  "ui.menu.galaxy.header": {
+    "DE": "Galaxy",
+    "EN": "Galaxy",
+    "ES": "Galaxy",
+    "FR": "Galaxie",
+    "IT": "Galaxy",
+    "PT": "Galáxia"
+  },
+  "ui.menu.galaxy.details.population.label": {
+    "DE": "Population",
+    "EN": "Population",
+    "ES": "Población",
+    "FR": "Population",
+    "IT": "Popolazione",
+    "PT": "População"
+  },
+  "ui.menu.galaxy.details.investments.label": {
+    "DE": "Investitionen",
+    "EN": "Investments",
+    "ES": "Inversiones",
+    "FR": "Investissements",
+    "IT": "Investimenti",
+    "PT": "Investimentos"
+  },
+  "ui.menu.galaxy.details.tycoons.label": {
+    "DE": "Tycoons",
+    "EN": "Tycoons",
+    "ES": "Magnates",
+    "FR": "Magnats",
+    "IT": "Magnati",
+    "PT": "Magnatas"
+  },
+  "ui.menu.galaxy.details.online.label": {
+    "DE": "Online",
+    "EN": "Online",
+    "ES": "Conectado",
+    "FR": "Connecté",
+    "IT": "Connesso",
+    "PT": "Conectados"
+  },
+  "ui.menu.galaxy.details.planets.label": {
+    "DE": "Planeten",
+    "EN": "Planets",
+    "ES": "Planetas",
+    "FR": "Planètes",
+    "IT": "Pianeti",
+    "PT": "Planetas"
+  },
+  "ui.menu.galaxy.planet_not_available.label": {
+    "DE": "Planet nicht verfügbar",
+    "EN": "Planet not available",
+    "ES": "Planeta no disponible",
+    "FR": "Planète non disponible",
+    "IT": "Pianeta non disponibile",
+    "PT": "Planeta não disponível"
+  }
+}

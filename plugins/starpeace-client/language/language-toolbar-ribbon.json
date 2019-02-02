@@ -1,0 +1,43 @@
+{
+  "footer.ribbon.message.welcome" : {
+    "DE": "Willkommen bei STARPEACE! Wenn Sie Ihre Zeit als Besucher genießen, werden Sie Tycoon!",
+    "EN": "Welcome to STARPEACE! If you enjoy your time as a Visitor, become a Tycoon!",
+    "ES": "¡Bienvenido a STARPEACE! Si disfrutas de tu tiempo como visitante, ¡conviértete en un magnate!",
+    "FR": "Bienvenue sur STARPEACE! Si vous appréciez votre séjour en tant que visiteur, devenez un magnat!",
+    "IT": "Benvenuto in STARPEACE! Se ti diverti come visitatore, diventa un magnate!",
+    "PT": "Bem vindo ao STARPEACE! Se você gosta de seu tempo como Visitante, torne-se um Magnata!"
+  },
+  "footer.ribbon.hint.tycoon" : {
+    "DE": "TIPP: Tycoons können Unternehmen gründen und in verschiedene Branchen und Immobilien investieren.",
+    "EN": "HINT: Tycoons can start companies and invest in different industries and real estate.",
+    "ES": "SUGERENCIA: Los magnates pueden iniciar empresas e invertir en diferentes industrias y bienes raíces.",
+    "FR": "ASTUCE: Les magnats peuvent créer une entreprise et investir dans différents secteurs de l’industrie et de l’immobilier.",
+    "IT": "SUGGERIMENTO: i magnati possono avviare aziende e investire in diversi settori e immobili.",
+    "PT": "DICA: A Magnates pode iniciar empresas e investir em diferentes setores e imóveis."
+  },
+  "footer.ribbon.overlay": {
+    "DE": "Überlagerung",
+    "EN": "Overlay",
+    "ES": "Sobrepuesta",
+    "FR": "Superposition",
+    "IT": "Sovrapposizione",
+    "PT": "Sobreposição"
+  },
+  "footer.ribbon.city_zones": {
+    "DE": "Stadtzonen",
+    "EN": "City Zones",
+    "ES": "Zonas de la Ciudad",
+    "FR": "Zones de la Ville",
+    "IT": "Zone Urbane",
+    "PT": "Zonas da Cidade"
+  },
+  "footer.ribbon.inspect": {
+    "DE": "Inspizieren",
+    "EN": "Inspect",
+    "ES": "Inspeccionar",
+    "FR": "Inspecter",
+    "IT": "Ispezionare",
+    "PT": "Inspecionar"
+  }
+
+}

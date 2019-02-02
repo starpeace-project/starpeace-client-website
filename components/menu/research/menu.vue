@@ -1,88 +1,67 @@
-<template lang='haml'>
+<template lang='pug'>
 #research-menu-container.card.is-starpeace.has-header
   .card-header
-    .card-header-title
-      Research & Development
+    .card-header-title {{translate('ui.menu.research.header')}}
   .card-content.sp-menu-background.overall-container
     .field.filter-input-container
       .control.has-icons-left.is-expanded
-        %input.input{type:"text", placeholder:"Filter"}
-        %span.icon.is-left
-          %font-awesome-icon{':icon':"['fas', 'search-location']"}
-    %aside.sp-menu.sp-scrollbar
-      %p.sp-section{'v-for':'item in sections'}
-        %a{'v-on:click.stop.prevent':"item.expanded = !item.expanded"}
-          %span{'v-show':"item.children.length && !item.expanded"}
-            %font-awesome-icon{':icon':"['fas', 'plus-square']"}
-          %span{'v-show':"item.children.length && item.expanded"}
-            %font-awesome-icon{':icon':"['fas', 'minus-square']"}
-          %span.sp-folder-icon{'v-show':"!item.children.length"}
-            %font-awesome-icon{':icon':"['fas', 'square']"}
-          %span.sp-section-label {{item.name}}
-        %ul.sp-section-items{'v-show':"item.children.length && item.expanded"}
-          %li{'v-for':"child in item.children"}
-            %a.is-menu-item{'v-on:click.stop.prevent':"select_inventions(item.category, child.industry_type)", ':class':"section_item_class(item, child)"}
-              %industry-type-icon{':industry_type':"child.industry_type", ':class':"['sp-section-item-image', 'sp-indusry-icon']", ':default_research':'true'}
-              %span.sp-section-item-label {{child.name}}
+        input.input(type="text", :placeholder="translate('misc.filter')")
+        span.icon.is-left
+          font-awesome-icon(:icon="['fas', 'search-location']")
+
+    aside.sp-menu.sp-scrollbar
+      p.sp-section(v-for='item in sections')
+        a(v-on:click.stop.prevent="item.expanded = !item.expanded")
+          span(v-show="item.children.length && !item.expanded")
+            font-awesome-icon(:icon="['fas', 'plus-square']")
+          span(v-show="item.children.length && item.expanded")
+            font-awesome-icon(:icon="['fas', 'minus-square']")
+          span.sp-folder-icon(v-show="!item.children.length")
+            font-awesome-icon(:icon="['fas', 'square']")
+          span.sp-section-label {{item.name}}
+
+        ul.sp-section-items(v-show="item.children.length && item.expanded")
+          li(v-for="child in item.children")
+            a.is-menu-item(v-on:click.stop.prevent="select_inventions(item.category, child.industry_type)", :class="section_item_class(item, child)")
+              industry-type-icon(:industry_type="child.industry_type", :class="['sp-section-item-image', 'sp-indusry-icon']", :default_research='true')
+              span.sp-section-item-label {{child.name}}
 
 </template>
 
 <script lang='coffee'>
 import IndustryTypeIcon from '~/components/misc/industry-type-icon.vue'
+
+import IndustryCategory from '~/plugins/starpeace-client/industry/industry-category.coffee'
 import IndustryType from '~/plugins/starpeace-client/industry/industry-type.coffee'
-
-organize_sections = (inventions, selected_category) ->
-  sections_by_category = {}
-  for invention in inventions
-    unless sections_by_category[invention.category]?
-      sections_by_category[invention.category] = {
-        name: invention.category.replace('_', ' ')
-        category: invention.category
-        expanded: invention.category == selected_category
-        children_by_type: {}
-      }
-    type = invention.industry_type || 'GENERAL'
-    unless sections_by_category[invention.category].children_by_type[type]?
-      industry_type = IndustryType.TYPES[type]
-      sections_by_category[invention.category].children_by_type[type] = {
-        name: type.toLowerCase().replace('_', ' ')
-        industry_type: type
-      }
-
-  sections = []
-  for category in ['SERVICE', 'INDUSTRY', 'LOGISTICS', 'COMMERCE', 'CIVIC', 'REAL_ESTATE']
-    if sections_by_category[category]?
-      section = sections_by_category[category]
-      section.children = _.sortBy(_.values(section.children_by_type), (child) -> child.name)
-      sections.push section
-  sections
 
 export default
   components:
     'industry-type-icon': IndustryTypeIcon
 
   props:
+    managers: Object
     client_state: Object
-    options: Object
 
   data: ->
     menu_visible: @client_state?.menu?.is_visible('research')
 
     filter_input_value: ''
 
-    sections: organize_sections(@inventions_for_company(), @selected_category)
+    sections: []
 
   mounted: ->
     @client_state?.menu?.subscribe_menu_listener =>
       @menu_visible = @client_state?.menu?.is_visible('research')
 
+    @client_state?.options?.subscribe_options_listener => @refresh_sections()
+
   watch:
     is_visible: (new_value, old_value) ->
-      @sections = organize_sections(@inventions_for_company(), @selected_category) if new_value
+      @refresh_sections() if new_value
     selected_category: (new_value, old_value) ->
-      @sections = organize_sections(@inventions_for_company(), @selected_category)
+      @refresh_sections()
     company_id: (new_value, old_value) ->
-      @sections = organize_sections(@inventions_for_company(), @selected_category)
+      @refresh_sections()
 
   computed:
     is_visible: -> @client_state.workflow_status == 'ready' && @menu_visible
@@ -93,8 +72,38 @@ export default
     company_id: -> @client_state.player.company_id
 
   methods:
+    translate: (text_key) -> @managers?.translation_manager?.text(text_key)
+
     filter_class: (type) -> ""
     section_item_class: (item, child) -> { 'is-active': @selected_category == item.category && @selected_industry_type == child.industry_type }
+
+    refresh_sections: () ->
+      sections_by_category = {}
+      for invention in @inventions_for_company()
+        unless sections_by_category[invention.category]?
+          category = IndustryCategory.CATEGORIES[invention.category]
+          sections_by_category[invention.category] = {
+            name: if category? then @translate(category.text_key) else invention.category
+            category: invention.category
+            expanded: invention.category == @selected_category
+            children_by_type: {}
+          }
+        type = invention.industry_type || 'GENERAL'
+        unless sections_by_category[invention.category].children_by_type[type]?
+          industry_type = IndustryType.TYPES[type]
+          sections_by_category[invention.category].children_by_type[type] = {
+            name: if industry_type? then @translate(industry_type.text_key) else type
+            industry_type: type
+          }
+
+      sections = []
+      for category in ['SERVICE', 'INDUSTRY', 'LOGISTICS', 'COMMERCE', 'CIVIC', 'REAL_ESTATE']
+        if sections_by_category[category]?
+          section = sections_by_category[category]
+          section.children = _.sortBy(_.values(section.children_by_type), (child) -> child.name)
+          sections.push section
+
+      @sections = sections
 
     inventions_for_company: -> @client_state.inventions_for_company()
 

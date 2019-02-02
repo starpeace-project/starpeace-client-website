@@ -1,0 +1,122 @@
+{
+  "ui.workflow.visa-type.greeting": {
+    "DE": "Hallo",
+    "EN": "Welcome",
+    "ES": "Hola",
+    "FR": "Bonjour",
+    "IT": "Ciao",
+    "PT": "Olá"
+  },
+  "ui.workflow.visa-type.intro": {
+    "DE": "Bitte wählen Sie eine Visa-Option, um Ihr STARPEACE-Abenteuer zu beginnen!",
+    "EN": "Please select a visa option to begin your STARPEACE adventure!",
+    "ES": "¡Selecciona una opción de visa para comenzar tu aventura en STARPEACE!",
+    "FR": "Veuillez sélectionner une option de visa pour commencer votre aventure avec STARPEACE!",
+    "IT": "Seleziona un'opzione di visto per iniziare la tua avventura a STARPEACE!",
+    "PT": "Por favor, selecione uma opção de visto para começar sua aventura na STARPEACE!"
+  },
+  "ui.workflow.visa-type.learnmore": {
+    "DE": "Mehr erfahren",
+    "EN": "Learn more",
+    "ES": "Aprende más",
+    "FR": "Apprendre encore plus",
+    "IT": "Per saperne di più",
+    "PT": "Saber mais"
+  },
+  "ui.workflow.visa-type.visitor.bullet1": {
+    "DE": "Neue Leute kennen lernen",
+    "EN": "Meet new people",
+    "ES": "Conocer gente nueva",
+    "FR": "Rencontrer de nouvelles personnes",
+    "IT": "Incontrare nuove persone",
+    "PT": "Conheça novas pessoas"
+  },
+  "ui.workflow.visa-type.visitor.bullet2": {
+    "DE": "Sehen Sie, was passiert",
+    "EN": "See what's happening",
+    "ES": "Ver que pasa",
+    "FR": "Voir ce qui se passe",
+    "IT": "Guarda cosa sta succedendo",
+    "PT": "Veja o que está acontecendo"
+  },
+  "ui.workflow.visa-type.visitor.bullet3": {
+    "DE": "Werde später Tycoon",
+    "EN": "Become a Tycoon later",
+    "ES": "Conviértete en un magnate más tarde",
+    "FR": "Devenir Tycoon plus tard",
+    "IT": "Diventa un Tycoon più tardi",
+    "PT": "Torne-se um Tycoon mais tarde"
+  },
+  "ui.workflow.visa-type.tycoon.bullet1": {
+    "DE": "Erhalten Sie $100,000,000",
+    "EN": "Get $100,000,000",
+    "ES": "Obtén $100,000,000",
+    "FR": "Obtenez $100,000,000",
+    "IT": "Ottieni $100,000,000",
+    "PT": "Receba $100,000,000"
+  },
+  "ui.workflow.visa-type.tycoon.bullet2": {
+    "DE": "Erstellen Sie eine Firma",
+    "EN": "Create a company",
+    "ES": "Crear una empresa",
+    "FR": "Créer une entreprise",
+    "IT": "Creare una società",
+    "PT": "Crie uma empresa"
+  },
+  "ui.workflow.visa-type.tycoon.bullet3": {
+    "DE": "Errichte ein Imperium!",
+    "EN": "Build an Empire!",
+    "ES": "¡Construye un imperio!",
+    "FR": "Construis un empire!",
+    "IT": "Costruisci un impero!",
+    "PT": "Construa um império!"
+  },
+  "ui.workflow.visa-type.header.news": {
+    "DE": "Neuigkeiten und Updates",
+    "EN": "News and Updates",
+    "ES": "Noticias y Actualizaciones",
+    "FR": "Nouvelles et Mises à jour",
+    "IT": "Notizie e Aggiornamenti",
+    "PT": "Notícias e Atualizações"
+  },
+  "ui.workflow.visa-type.univerese.not_available": {
+    "DE": "Universum noch nicht verfügbar",
+    "EN": "Universe not yet available",
+    "ES": "Universo aún no disponible",
+    "FR": "Univers pas encore disponible",
+    "IT": "Universo non ancora disponibile",
+    "PT": "Universo ainda não está disponível"
+  },
+  "ui.workflow.universe.universe.label": {
+    "DE": "Universum",
+    "EN": "Universe",
+    "ES": "Universo",
+    "FR": "Univers",
+    "IT": "Universo",
+    "PT": "Universo"
+  },
+  "ui.workflow.universe.multiverse.label": {
+    "DE": "Multiversum",
+    "EN": "Multiverse",
+    "ES": "Multiverso",
+    "FR": "Multivers",
+    "IT": "Multiverse",
+    "PT": "Multiverso"
+  },
+  "ui.workflow.universe.galaxy.add.label": {
+    "DE": "Galaxy Hinzufügen",
+    "EN": "Add Galaxy",
+    "ES": "Añadir Galaxy",
+    "FR": "Ajouter une Galaxie",
+    "IT": "Aggiungi Galaxy",
+    "PT": "Adicionar Galáxia"
+  },
+  "ui.workflow.universe.galaxy.remove.label": {
+    "DE": "Galaxy Hinzufügen",
+    "EN": "Remove Galaxy",
+    "ES": "Quitar galaxia",
+    "FR": "Retirer la Galaxie",
+    "IT": "Rimuovi Galaxy",
+    "PT": "Remova a Galáxia"
+  }
+}

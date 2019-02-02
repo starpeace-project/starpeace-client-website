@@ -6,137 +6,137 @@ export default class Overlay
     NONE:
       value: 0
       type: 'NONE'
-      label: 'None'
     ZONES:
       value: 1
       type: 'ZONES'
-      label: 'City Zones'
     TOWNS:
       value: 2
       type: 'TOWNS'
-      label: 'Towns'
+      label_key: 'overlay.towns.label'
     BEAUTY:
       value: 3
       type: 'BEAUTY'
-      label: 'Beauty'
+      label_key: 'overlay.beauty.label'
       color_gradient: tinygradient([{pos: 0, color: '#FF0000'}, {pos: .5, color: '#010101'}, {pos: 1, color: '#00FF00'}])
+
     HC_RESIDENTIAL:
       value: 4
       type: 'HC_RESIDENTIAL'
-      label: 'High-class Population'
+      label_key: 'overlay.hc_population.label'
       color_gradient: tinygradient([{pos: 0, color: '#010101'}, {pos: 1, color: '#008080'}])
     MC_RESIDENTIAL:
       value: 5
       type: 'MC_RESIDENTIAL'
-      label: 'Middle-class Population'
+      label_key: 'overlay.mc_population.label'
       color_gradient: tinygradient([{pos: 0, color: '#010101'}, {pos: 1, color: '#008080'}])
     LC_RESIDENTIAL:
       value: 6
       type: 'LC_RESIDENTIAL'
-      label: 'Low-class Population'
+      label_key: 'overlay.lc_population.label'
       color_gradient: tinygradient([{pos: 0, color: '#010101'}, {pos: 1, color: '#008080'}])
 
     QOL:
       value: 7
       type: 'QOL'
-      label: 'QOL'
+      label_key: 'overlay.qol.label'
       color_gradient: tinygradient([{pos: 0, color: '#010101'}, {pos: 1, color: '#0000FF'}])
     CRIME:
       value: 8
       type: 'CRIME'
-      label: 'Crime'
+      label_key: 'overlay.crime.label'
       color_gradient: tinygradient([{pos: 0, color: '#0000FF'}, {pos: .5, color: '#010101'}, {pos: 1, color: '#FF0000'}])
     POLLUTION:
       value: 9
       type: 'POLLUTION'
-      label: 'Pollution'
+      label_key: 'overlay.pollution.label'
       color_gradient: tinygradient([{pos: 0, color: '#00FF00'}, {pos: .5, color: '#010101'}, {pos: 1, color: '#FF0000'}])
     BAP:
       value: 10
       type: 'BAP'
-      label: 'BAP'
+      label_key: 'overlay.bap.label'
       color_gradient: tinygradient([{pos: 0, color: '#010101'}, {pos: 1, color: '#800080'}])
 
-    FRESH_FOOD:
-      value: 11
-      type: 'FRESH_FOOD'
-      label: 'Fresh Food'
-      color_gradient: tinygradient([{pos: 0, color: '#010101'}, {pos: 1, color: '#FFFF00'}])
-    PROCESSED_FOOD:
-      value: 12
-      type: 'PROCESSED_FOOD'
-      label: 'Processed Food'
-      color_gradient: tinygradient([{pos: 0, color: '#010101'}, {pos: 1, color: '#FFFF00'}])
-    CLOTHES:
-      value: 13
-      type: 'CLOTHES'
-      label: 'Clothes'
-      color_gradient: tinygradient([{pos: 0, color: '#010101'}, {pos: 1, color: '#FFFF00'}])
     APPLIANCES:
       value: 14
       type: 'APPLIANCES'
-      label: 'Appliances'
+      label_key: 'overlay.appliance.label'
       color_gradient: tinygradient([{pos: 0, color: '#010101'}, {pos: 1, color: '#FFFF00'}])
-    CARS:
+    AUTOMOBILE:
       value: 15
-      type: 'CARS'
-      label: 'Cars'
-      color_gradient: tinygradient([{pos: 0, color: '#010101'}, {pos: 1, color: '#FFFF00'}])
-    RESTAURANTS:
-      value: 16
-      type: 'RESTAURANTS'
-      label: 'Restaurants'
+      type: 'AUTOMOBILE'
+      label_key: 'overlay.automobile.label'
       color_gradient: tinygradient([{pos: 0, color: '#010101'}, {pos: 1, color: '#FFFF00'}])
     BARS:
       value: 17
       type: 'BARS'
-      label: 'Bars'
-      color_gradient: tinygradient([{pos: 0, color: '#010101'}, {pos: 1, color: '#FFFF00'}])
-    TOYS:
-      value: 18
-      type: 'TOYS'
-      label: 'Toys'
-      color_gradient: tinygradient([{pos: 0, color: '#010101'}, {pos: 1, color: '#FFFF00'}])
-    DRUGS:
-      value: 19
-      type: 'DRUGS'
-      label: 'Drugs'
-      color_gradient: tinygradient([{pos: 0, color: '#010101'}, {pos: 1, color: '#FFFF00'}])
-    MOVIES:
-      value: 20
-      type: 'MOVIES'
-      label: 'Movies'
-      color_gradient: tinygradient([{pos: 0, color: '#010101'}, {pos: 1, color: '#FFFF00'}])
-    GASOLINE:
-      value: 21
-      type: 'GASOLINE'
-      label: 'Gasoline'
-      color_gradient: tinygradient([{pos: 0, color: '#010101'}, {pos: 1, color: '#FFFF00'}])
-    COMPUTERS:
-      value: 22
-      type: 'COMPUTERS'
-      label: 'Computers'
-      color_gradient: tinygradient([{pos: 0, color: '#010101'}, {pos: 1, color: '#FFFF00'}])
-    FURNITURE:
-      value: 23
-      type: 'FURNITURE'
-      label: 'Furniture'
+      label_key: 'overlay.bar.label'
       color_gradient: tinygradient([{pos: 0, color: '#010101'}, {pos: 1, color: '#FFFF00'}])
     BOOKS:
       value: 24
       type: 'BOOKS'
-      label: 'Books'
+      label_key: 'overlay.book.label'
+      color_gradient: tinygradient([{pos: 0, color: '#010101'}, {pos: 1, color: '#FFFF00'}])
+    CLOTHES:
+      value: 13
+      type: 'CLOTHES'
+      label_key: 'overlay.clothes.label'
       color_gradient: tinygradient([{pos: 0, color: '#010101'}, {pos: 1, color: '#FFFF00'}])
     COMPACT_DISCS:
       value: 25
       type: 'COMPACT_DISCS'
-      label: 'CDs'
+      label_key: 'overlay.compact_disc.label'
       color_gradient: tinygradient([{pos: 0, color: '#010101'}, {pos: 1, color: '#FFFF00'}])
-    FUNERAL_PARLORS:
+    COMPUTERS:
+      value: 22
+      type: 'COMPUTERS'
+      label_key: 'overlay.computer.label'
+      color_gradient: tinygradient([{pos: 0, color: '#010101'}, {pos: 1, color: '#FFFF00'}])
+    FRESH_FOOD:
+      value: 11
+      type: 'FRESH_FOOD'
+      label_key: 'overlay.fresh_food.label'
+      color_gradient: tinygradient([{pos: 0, color: '#010101'}, {pos: 1, color: '#FFFF00'}])
+    FUNERAL_SERVICES:
       value: 26
-      type: 'FUNERAL_PARLORS'
-      label: 'Funeral Parlors'
+      type: 'FUNERAL_SERVICES'
+      label_key: 'overlay.funeral_services.label'
       color_gradient: tinygradient([{pos: 0, color: '#010101'}, {pos: 1, color: '#FFFF00'}])
+    FURNITURE:
+      value: 23
+      type: 'FURNITURE'
+      label_key: 'overlay.furniture.label'
+      color_gradient: tinygradient([{pos: 0, color: '#010101'}, {pos: 1, color: '#FFFF00'}])
+    GASOLINE:
+      value: 21
+      type: 'GASOLINE'
+      label_key: 'overlay.gasoline.label'
+      color_gradient: tinygradient([{pos: 0, color: '#010101'}, {pos: 1, color: '#FFFF00'}])
+    MOVIES:
+      value: 20
+      type: 'MOVIES'
+      label_key: 'overlay.movie.label'
+      color_gradient: tinygradient([{pos: 0, color: '#010101'}, {pos: 1, color: '#FFFF00'}])
+    PHARMACEUTICAL:
+      value: 19
+      type: 'PHARMACEUTICAL'
+      label_key: 'overlay.pharmaceutical.label'
+      color_gradient: tinygradient([{pos: 0, color: '#010101'}, {pos: 1, color: '#FFFF00'}])
+    PROCESSED_FOOD:
+      value: 12
+      type: 'PROCESSED_FOOD'
+      label_key: 'overlay.processed_food.label'
+      color_gradient: tinygradient([{pos: 0, color: '#010101'}, {pos: 1, color: '#FFFF00'}])
+    RESTAURANTS:
+      value: 16
+      type: 'RESTAURANTS'
+      label_key: 'overlay.restaurant.label'
+      color_gradient: tinygradient([{pos: 0, color: '#010101'}, {pos: 1, color: '#FFFF00'}])
+    TOYS:
+      value: 18
+      type: 'TOYS'
+      label_key: 'overlay.toy.label'
+      color_gradient: tinygradient([{pos: 0, color: '#010101'}, {pos: 1, color: '#FFFF00'}])
+
 
   @deserialize_chunk: (type, width, height, data) ->
     overlay = Overlay.TYPES[type]

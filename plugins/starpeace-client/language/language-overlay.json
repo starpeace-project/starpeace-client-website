@@ -1,0 +1,210 @@
+{
+  "overlay.signal_losing.label": {
+    "DE": "Gebäude mit Verlust",
+    "EN": "Facilities Operating at Loss",
+    "ES": "Instalaciones que Operan a Pérdida",
+    "FR": "Installations Fonctionnant à Perte",
+    "IT": "Strutture Operanti in Perdita",
+    "PT": "instalações Operando com Prejuízo"
+  },
+  "overlay.towns.label": {
+    "DE": "Städte",
+    "EN": "Towns",
+    "ES": "Pueblos",
+    "FR": "Les Villes",
+    "IT": "Città",
+    "PT": "Cidades"
+  },
+  "overlay.beauty.label": {
+    "DE": "Schönheit",
+    "EN": "Beauty",
+    "ES": "Belleza",
+    "FR": "Beauté",
+    "IT": "Bellezza",
+    "PT": "Beleza"
+  },
+  "overlay.hc_population.label": {
+    "DE": "Hochklassige Bevölkerung",
+    "EN": "High-class Population",
+    "ES": "Población de Clase Alta",
+    "FR": "Population de Grande Classe",
+    "IT": "Popolazione di Alta Classe",
+    "PT": "População de Alta Classe"
+  },
+  "overlay.mc_population.label": {
+    "DE": "Bevölkerung der Mittelklasse",
+    "EN": "Middle-class Population",
+    "ES": "Población de Clase Media",
+    "FR": "Population de Classe Moyenne",
+    "IT": "Popolazione della Classe Media",
+    "PT": "População de Classe Média"
+  },
+  "overlay.lc_population.label": {
+    "DE": "Niedrige Klassenbevölkerung",
+    "EN": "Low-class Population",
+    "ES": "Población de Clase Baja",
+    "FR": "Population de Classe Inférieure",
+    "IT": "Popolazione di Basso Livello",
+    "PT": "População de Baixa Classe"
+  },
+  "overlay.qol.label": {
+    "DE": "Lebensqualität",
+    "EN": "Quality of Life",
+    "ES": "Calidad de Vida",
+    "FR": "Qualité de Vie",
+    "IT": "Qualità della Vita",
+    "PT": "Qualidade de Vida"
+  },
+  "overlay.crime.label": {
+    "DE": "Kriminalität",
+    "EN": "Crime",
+    "ES": "Crimen",
+    "FR": "Criminalité",
+    "IT": "Crimine",
+    "PT": "Crime"
+  },
+  "overlay.pollution.label": {
+    "DE": "Verschmutzung",
+    "EN": "Pollution",
+    "ES": "Contaminación",
+    "FR": "Pollution",
+    "IT": "Inquinamento",
+    "PT": "Poluição"
+  },
+  "overlay.bap.label": {
+    "DE": "Geschäftsbereich Qualität",
+    "EN": "Business Area Quality",
+    "ES": "Área de Calidad Empresarial",
+    "FR": "Qualité du Secteur D'Activité",
+    "IT": "Qualità dell'Area Aziendale",
+    "PT": "Qualidade da Área de Negócios"
+  },
+  "overlay.appliance.label": {
+    "DE": "Haushaltsgeräte",
+    "EN": "Appliances",
+    "ES": "Accesorios",
+    "FR": "Appareils Électroménagers",
+    "IT": "Elettrodomestici",
+    "PT": "Eletrodomésticos"
+  },
+  "overlay.automobile.label": {
+    "DE": "Automobile",
+    "EN": "Automobiles",
+    "ES": "Automóviles",
+    "FR": "Automobiles",
+    "IT": "Automobili",
+    "PT": "Automóveis"
+  },
+  "overlay.bar.label": {
+    "DE": "Lokal",
+    "EN": "Bars",
+    "ES": "Barras",
+    "FR": "Les Bars",
+    "IT": "Barre",
+    "PT": "Barras"
+  },
+  "overlay.book.label": {
+    "DE": "Bücher",
+    "EN": "Books",
+    "ES": "Libros",
+    "FR": "Livres",
+    "IT": "Libri",
+    "PT": "Livros"
+  },
+  "overlay.clothes.label": {
+    "DE": "Kleidung",
+    "EN": "Clothing",
+    "ES": "Ropa",
+    "FR": "Vêtements",
+    "IT": "Capi di Abbigliamento",
+    "PT": "Roupas"
+  },
+  "overlay.compact_disc.label": {
+    "DE": "CDs",
+    "EN": "Compact Discs",
+    "ES": "Discos Compactos",
+    "FR": "Disques Compactes",
+    "IT": "Compact Disc",
+    "PT": "Discos Compactos"
+  },
+  "overlay.computer.label": {
+    "DE": "Computers",
+    "EN": "Computers",
+    "ES": "Ordenadores",
+    "FR": "Ordinateurs",
+    "IT": "Computer",
+    "PT": "Computadores"
+  },
+  "overlay.fresh_food.label": {
+    "DE": "Frisches Essen",
+    "EN": "Fresh Food",
+    "ES": "Comida Fresca",
+    "FR": "Nourriture Fraîche",
+    "IT": "Cibo Fresco",
+    "PT": "Comida Fresca"
+  },
+  "overlay.funeral_services.label": {
+    "DE": "Bestattungsinstitut",
+    "EN": "Funeral Services",
+    "ES": "Servicios Fúnebres",
+    "FR": "Services Funéraires",
+    "IT": "Servizi Funebri",
+    "PT": "Serviços Funerários"
+  },
+  "overlay.furniture.label": {
+    "DE": "Möbel",
+    "EN": "Furniture",
+    "ES": "Mueble",
+    "FR": "Meubles",
+    "IT": "Mobilia",
+    "PT": "Mobília"
+  },
+  "overlay.gasoline.label": {
+    "DE": "Benzin",
+    "EN": "Gasoline",
+    "ES": "Gasolina",
+    "FR": "De L'Essence",
+    "IT": "Gasolio",
+    "PT": "Gasolina"
+  },
+  "overlay.movie.label": {
+    "DE": "Filme",
+    "EN": "Movies",
+    "ES": "Películas",
+    "FR": "Films",
+    "IT": "Film",
+    "PT": "Filmes"
+  },
+  "overlay.pharmaceutical.label": {
+    "DE": "Pharmazeutika",
+    "EN": "Pharmaceuticals",
+    "ES": "Productos Farmacéuticos",
+    "FR": "Médicaments",
+    "IT": "Prodotti Farmaceutici",
+    "PT": "Fármacos"
+  },
+  "overlay.processed_food.label": {
+    "DE": "Verarbeitete Lebensmittel",
+    "EN": "Processed Food",
+    "ES": "Alimentos Procesados",
+    "FR": "Aliments Transformés",
+    "IT": "Cibo Trattato",
+    "PT": "Comida Processada"
+  },
+  "overlay.restaurant.label": {
+    "DE": "Restaurants",
+    "EN": "Restaurants",
+    "ES": "Restaurantes",
+    "FR": "Restaurants",
+    "IT": "Ristoranti",
+    "PT": "Restaurantes"
+  },
+  "overlay.toy.label": {
+    "DE": "Spielzeuge",
+    "EN": "Toys",
+    "ES": "Juguetes",
+    "FR": "Jouets",
+    "IT": "Giocattoli",
+    "PT": "Brinquedos"
+  }
+}

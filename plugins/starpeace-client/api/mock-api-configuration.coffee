@@ -7,8 +7,8 @@ import TimeUtils from '~/plugins/starpeace-client/utils/time-utils.coffee'
 import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
 
 import BOOKMARKS_METADATA from '~/plugins/starpeace-client/api/mock-bookmarks-metadata.json'
+import GALAXY_METADATA from '~/plugins/starpeace-client/api/mock-galaxy-metadata.json'
 import PLANETS_DETAILS from '~/plugins/starpeace-client/api/mock-planet-details.json'
-import SYSTEMS_METADATA from '~/plugins/starpeace-client/api/mock-systems-metadata.json'
 import TYCOON_METADATA from '~/plugins/starpeace-client/api/mock-tycoon-metadata.json'
 
 import PLANET_1_MAP_BUILDINGS from '~/plugins/starpeace-client/api/mock-planet-1-map-buildings.json'
@@ -40,12 +40,9 @@ MONTH_SEASONS = {
 }
 
 PLANET_ID_DATES = {}
-for system in SYSTEMS_METADATA
-  if system.enabled
-    for planet in system.planets_metadata
-      if planet.enabled
-        PLANET_ID_DATES[planet.id] = moment('2235-01-01')
-
+for planet in GALAXY_METADATA.planets_metadata
+  if planet.enabled
+    PLANET_ID_DATES[planet.id] = moment('2235-01-01')
 
 CORPORATION_ID_EVENTS = {}
 COMPANY_ID_INFO = {}
@@ -53,9 +50,8 @@ COMPANY_ID_INVENTIONS = {}
 
 for tycoon_id,tycoon of TYCOON_METADATA
   for corporation in tycoon.corporations
-    system = _.find(SYSTEMS_METADATA, (system) -> system.id == corporation.system_id)
-    planet = _.find(system?.planets_metadata || [], (planet) -> planet.id == corporation.planet_id)
-    if system?.enabled && planet?.enabled
+    planet = _.find(GALAXY_METADATA.planets_metadata || [], (planet) -> planet.id == corporation.planet_id)
+    if planet?.enabled
       CORPORATION_ID_EVENTS[corporation.id] = {
         cash: corporation.cash
         companies_by_id: {}
@@ -174,7 +170,7 @@ setInterval(=>
 
 export default [
   {
-    pattern: 'https://api.starpeace.io(.*)'
+    pattern: 'http://sandbox-galaxy.starpeace.io:19160(.*)'
 
     fixtures: (match, params, headers, context) ->
       throw new Error(404) if match[1] == '/404'
@@ -183,6 +179,10 @@ export default [
       query_parameters = Utils.parse_query(query_string)
 
       context.delay = API_DELAY
+
+      if root_path == '/galaxy/metadata'
+        throw new Error(404) unless context.method == 'get'
+        return _.cloneDeep GALAXY_METADATA
 
       if root_path == '/session/register'
         throw new Error(404) unless context.method == 'post'
@@ -197,13 +197,6 @@ export default [
           }
         else
           throw new Error(400)
-
-      if root_path == '/systems/metadata'
-        throw new Error(404) unless context.method == 'get'
-        throw new Error(401) unless valid_session(query_parameters.session_token)
-        return _.cloneDeep {
-          systems: SYSTEMS_METADATA
-        }
 
       if root_path == '/planet/details'
         throw new Error(404) unless context.method == 'get'

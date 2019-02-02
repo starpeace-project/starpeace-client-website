@@ -5,7 +5,7 @@ global PIXI
 
 export default class AssetManager
   @CDN_URL: 'https://cdn.starpeace.io'
-  @CDN_VERSION: '38c0e51d59e769d373a4afc7aa442474'
+  @CDN_VERSION: '78c6237075264f80cbd9d61eea52f04b'
 
   constructor: (@ajax_state) ->
     PIXI.loader.baseUrl = "#{AssetManager.CDN_URL}/#{AssetManager.CDN_VERSION}"

@@ -1,11 +1,10 @@
-<template lang='haml'>
+<template lang='pug'>
 #chat-container
   .card.is-starpeace.has-header
     .card-header
-      .card-header-title
-        Chat
-      .card-header-icon.card-close{'v-on:click.stop.prevent':"client_state.menu.toggle_menu('chat')"}
-        %font-awesome-icon{':icon':"['fas', 'times']"}
+      .card-header-title {{translate('ui.menu.chat.header')}}
+      .card-header-icon.card-close(v-on:click.stop.prevent="client_state.menu.toggle_menu('chat')")
+        font-awesome-icon(:icon="['fas', 'times']")
 
     .card-content.sp-menu-background
 
@@ -14,7 +13,11 @@
 <script lang='coffee'>
 export default
   props:
+    managers: Object
     client_state: Object
+
+  methods:
+    translate: (text_key) -> @managers?.translation_manager?.text(text_key)
 </script>
 
 <style lang='sass' scoped>

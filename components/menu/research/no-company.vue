@@ -1,10 +1,9 @@
-<template lang='haml'>
-#research-no-company-container{'v-if':'is_visible'}
+<template lang='pug'>
+#research-no-company-container(v-if='is_visible')
   .modal-background
   .card
     .card-content
-      .content
-        Research is available after forming a company.
+      .content Research is available after forming a company.
 </template>
 
 <script lang='coffee'>
@@ -15,7 +14,7 @@ export default
   computed:
     is_visible: ->
       return false unless @client_state?.workflow_status == 'ready'
-      @client_state.identity.identity.is_tycoon() && !@client_state.player.company_id?
+      @client_state.is_tycoon() && !@client_state.player.company_id?
 
 </script>
 

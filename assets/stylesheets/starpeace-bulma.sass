@@ -31,6 +31,9 @@
       border: 1px solid lighten($sp-primary-bg, 10%)
       color: lighten($sp-primary, 15%)
 
+      &.is-outlined
+        background-color: transparent
+
       &:not([disabled])
         &:hover
           background-color: lighten($sp-primary-bg, 15%)
@@ -43,6 +46,8 @@
           border: 1px solid lighten($sp-primary-bg, 25%)
           color: lighten($sp-primary, 30%)
 
+    &.is-square
+      border-radius: 0
 
   &.is-starpeace-light
     &:active,
@@ -182,3 +187,17 @@
     &.is-active
       background-color: $sp-button-light-bg
       color: #000
+
+
+.navbar-dropdown
+  &.is-starpeace
+    background-color: $sp-dark-bg
+
+    .navbar-item
+      &:hover,
+      &.is-hover
+        background-color: lighten($sp-dark-bg, 10%)
+
+      &:active,
+      &.is-active
+        background-color: lighten($sp-dark-bg, 15%)

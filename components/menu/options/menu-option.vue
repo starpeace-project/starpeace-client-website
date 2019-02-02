@@ -1,16 +1,16 @@
-<template lang='haml'>
+<template lang='pug'>
 .field.is-horizontal
   .column.is-paddingless.is-9
     .field-label
-      %label.label {{label}}:
+      label.label {{label}}:
   .column.is-paddingless.field-body
     .field.is-narrow
       .control
         .toggle-icons
-          %a{href:'#', 'v-show':"value", 'v-on:click.stop.prevent':"$emit('toggle')"}
-            %font-awesome-icon{':icon':"['fas', 'toggle-on']"}
-          %a{href:'#', 'v-show':"!value", 'v-on:click.stop.prevent':"$emit('toggle')"}
-            %font-awesome-icon{':icon':"['fas', 'toggle-off']"}
+          a(v-show="value", v-on:click.stop.prevent="$emit('toggle')")
+            font-awesome-icon(:icon="['fas', 'toggle-on']")
+          a(v-show="!value", v-on:click.stop.prevent="$emit('toggle')")
+            font-awesome-icon(:icon="['fas', 'toggle-off']")
 </template>
 
 <script lang='coffee'>

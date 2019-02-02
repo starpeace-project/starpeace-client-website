@@ -1,24 +1,34 @@
-<template lang='haml'>
-%no-ssr
-  #application-container{'v-cloak':true}
-    %sp-header
+<template lang='pug'>
+no-ssr
+  #application-container(v-cloak=true)
+    sp-header(:translation_manager='translation_manager', :options='options')
+
     #application-body
       .columns
         .column.is-8.is-offset-2
           .card.is-starpeace.notes-container
             .card-header
               .card-header-title Release Notes - Latest
-            .card-content.release-notes{'v-html':'release_notes_latest_html'}
+            .card-content.release-notes(v-html='release_notes_latest_html')
           .card.is-starpeace.notes-container
             .card-header
               .card-header-title Release Notes - Archive
-            .card-content.release-notes{'v-html':'release_notes_archive_html'}
-    %sp-footer
+            .card-content.release-notes(v-html='release_notes_archive_html')
+    sp-footer
 </template>
 
 <script lang='coffee'>
 import Header from '~/components/page-layout/header.vue'
 import Footer from '~/components/page-layout/footer.vue'
+
+import Options from '~/plugins/starpeace-client/state/options.coffee'
+import TranslationsLibrary from '~/plugins/starpeace-client/state/core/library/translations-library.coffee'
+import TranslationManager from '~/plugins/starpeace-client/language/translation-manager.coffee'
+
+if process.client
+  options = new Options()
+  translations_library = new TranslationsLibrary()
+  translation_manager = new TranslationManager(null, null, translations_library, options)
 
 export default
   components:
@@ -26,6 +36,9 @@ export default
     'sp-footer': Footer
 
   data: ->
+    translation_manager: translation_manager
+    options: options
+
     release_notes_latest_html: process.env.RELEASE_NOTES_HTML
     release_notes_archive_html: process.env.RELEASE_NOTES_ARCHIVE_HTML
 </script>

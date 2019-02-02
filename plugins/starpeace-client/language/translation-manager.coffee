@@ -1,132 +1,92 @@
 
-EN_STRINGS = {
-  'building.description.industry.label': 'Produces up to <%= output %>.'
-  'building.description.industry.output.label': '<%= amount %> <%= unit %>/<%= duration %> of <%= resource %>'
-  'building.description.industry.input.label': 'Requires <%= input %>.'
-  'building.description.warehouse.label': 'Stores up to <%= storage %>.'
-  'building.description.warehouse.output.label': '<%= amount %> <%= unit %> of <%= resource %>'
+import _ from 'lodash'
 
+import DURATION from '~/plugins/starpeace-client/language/language-duration.json'
+import IDENTITY from '~/plugins/starpeace-client/language/language-identity.json'
+import INDUSTRY_CATEGORY from '~/plugins/starpeace-client/language/language-industry-category.json'
+import INDUSTRY_TYPE from '~/plugins/starpeace-client/language/language-industry-type.json'
+import LEVEL from '~/plugins/starpeace-client/language/language-level.json'
+import MISC from '~/plugins/starpeace-client/language/language-misc.json'
+import OVERLAY from '~/plugins/starpeace-client/language/language-overlay.json'
+import RESOURCE_TYPE from '~/plugins/starpeace-client/language/language-resource-type.json'
+import RESOURCE_UNIT from '~/plugins/starpeace-client/language/language-resource-unit.json'
 
-  'industry.category.none.label': 'None'
-  'industry.category.civic.label': 'Civic'
-  'industry.category.commerce.label': 'Commerce'
-  'industry.category.industry.label': 'Industry'
-  'industry.category.logistics.label': 'Logistics'
-  'industry.category.real_estate.label': 'Real Estate'
-  'industry.category.service.label': 'Service'
+import TOOLBAR_RIBBON from '~/plugins/starpeace-client/language/language-toolbar-ribbon.json'
 
-  'industry.type.appliance.label': 'Appliances'
-  'industry.type.automobile.label': 'Automobile'
-  'industry.type.banking.label': 'Banking'
-  'industry.type.bar.label': 'Bars'
-  'industry.type.book.label': 'Book'
-  'industry.type.chemical.label': 'Chemical'
-  'industry.type.clothes.label': 'Clothing'
-  'industry.type.coal.label': 'Coal'
-  'industry.type.college.label': 'College'
-  'industry.type.compact_disc.label': 'Compact Disc'
-  'industry.type.computer.label': 'Computer'
-  'industry.type.computer_services.label': 'Computer Services'
-  'industry.type.construction.label': 'Construction'
-  'industry.type.crude_oil.label': 'Crude Oil'
-  'industry.type.electronic_component.label': 'Electronic Component'
-  'industry.type.fabric.label': 'Fabric'
-  'industry.type.fast_food.label': 'Fast Food'
-  'industry.type.farming.label': 'Farming'
-  'industry.type.fire.label': 'Fire Safety'
-  'industry.type.funeral_services.label': 'Funeral Services'
-  'industry.type.furniture.label': 'Furniture'
-  'industry.type.garbage.label': 'Garbage'
-  'industry.type.gasoline.label': 'Gasoline'
-  'industry.type.hospital.label': 'Hospital'
-  'industry.type.headquarters.label': 'Headquarters'
-  'industry.type.hc_residential.label': 'High-class Residential'
-  'industry.type.lc_residential.label': 'Low-class Residential'
-  'industry.type.legal_services.label': 'Legal Services'
-  'industry.type.liquor.label': 'Liquor'
-  'industry.type.machinery.label': 'Machinery'
-  'industry.type.market.label': 'Market'
-  'industry.type.mausoleum.label': 'Mausoleum'
-  'industry.type.mc_residential.label': 'Middle-class Residential'
-  'industry.type.metal.label': 'Metallurgy'
-  'industry.type.movie.label': 'Movie'
-  'industry.type.museum.label': 'Museum'
-  'industry.type.office.label': 'Office'
-  'industry.type.ore.label': 'Ore'
-  'industry.type.paper.label': 'Paper'
-  'industry.type.park.label': 'Park'
-  'industry.type.pharmaceutical.label': 'Pharmaceutical'
-  'industry.type.plastic.label': 'Plastic'
-  'industry.type.police.label': 'Police'
-  'industry.type.prison.label': 'Prison'
-  'industry.type.processed_food.label': 'Processed Food'
-  'industry.type.raw_chemical.label': 'Raw Chemical'
-  'industry.type.restaurant.label': 'Restaurant'
-  'industry.type.school.label': 'School'
-  'industry.type.silicon.label': 'Silicon'
-  'industry.type.stone.label': 'Stone'
-  'industry.type.television.label': 'Television'
-  'industry.type.timber.label': 'Timber'
-  'industry.type.toy.label': 'Toy'
-  'industry.type.warehouse.label': 'Warehouse'
+import UI_MENU_BOOKMARKS from '~/plugins/starpeace-client/language/language-ui-menu-bookmarks.json'
+import UI_MENU_CHAT from '~/plugins/starpeace-client/language/language-ui-menu-chat.json'
+import UI_MENU_CONSTUCTION from '~/plugins/starpeace-client/language/language-ui-menu-construction.json'
+import UI_MENU_CORPORATION from '~/plugins/starpeace-client/language/language-ui-menu-corporation.json'
+import UI_MENU_GALAXY from '~/plugins/starpeace-client/language/language-ui-menu-galaxy.json'
+import UI_MENU_HELP from '~/plugins/starpeace-client/language/language-ui-menu-help.json'
+import UI_MENU_MAIL from '~/plugins/starpeace-client/language/language-ui-menu-mail.json'
+import UI_MENU_OPTIONS from '~/plugins/starpeace-client/language/language-ui-menu-options.json'
+import UI_MENU_POLITICS from '~/plugins/starpeace-client/language/language-ui-menu-politics.json'
+import UI_MENU_RANKINGS from '~/plugins/starpeace-client/language/language-ui-menu-rankings.json'
+import UI_MENU_RELEASE_NOTES from '~/plugins/starpeace-client/language/language-ui-menu-release-notes.json'
+import UI_MENU_RESEARCH from '~/plugins/starpeace-client/language/language-ui-menu-research.json'
+import UI_MENU_TOWN_SEARCH from '~/plugins/starpeace-client/language/language-ui-menu-town-search.json'
+import UI_MENU_TYCOON_DETAILS from '~/plugins/starpeace-client/language/language-ui-menu-tycoon-details.json'
+import UI_MENU_TYCOON_SEARCH from '~/plugins/starpeace-client/language/language-ui-menu-tycoon-search.json'
 
-  'resource.type.appliance.label': 'appliances'
-  'resource.type.automobile.label': 'automobiles'
-  'resource.type.book.label': 'books'
-  'resource.type.chemical.label': 'chemicals'
-  'resource.type.clothes.label': 'clothing'
-  'resource.type.coal.label': 'coal'
-  'resource.type.compact_disc.label': 'compact discs'
-  'resource.type.computer.label': 'computers'
-  'resource.type.computer_services.label': 'computer services'
-  'resource.type.construction.label': 'construction force'
-  'resource.type.crude_oil.label': 'crude oil'
-  'resource.type.electronic_component.label': 'electronic components'
-  'resource.type.fabric.label': 'fabric'
-  'resource.type.fresh_food.label': 'fresh food'
-  'resource.type.furniture.label': 'furniture'
-  'resource.type.gasoline.label': 'gasoline'
-  'resource.type.legal_services.label': 'legal services'
-  'resource.type.liquor.label': 'liquor'
-  'resource.type.machinery.label': 'machinery'
-  'resource.type.metal.label': 'metals'
-  'resource.type.movie.label': 'movies'
-  'resource.type.ore.label': 'ore'
-  'resource.type.organic_material.label': 'organic material'
-  'resource.type.paper.label': 'paper'
-  'resource.type.printed_material.label': 'printed material'
-  'resource.type.pharmaceutical.label': 'pharmaceuticals'
-  'resource.type.plastic.label': 'plastic'
-  'resource.type.processed_food.label': 'processed food'
-  'resource.type.raw_chemical.label': 'raw chemicals'
-  'resource.type.silicon.label': 'silicon'
-  'resource.type.stone.label': 'stone'
-  'resource.type.timber.label': 'timber'
-  'resource.type.toy.label': 'toys'
+import UI_PAGE_LAYOUT from '~/plugins/starpeace-client/language/language-ui-page-layout.json'
 
-  'resource.unit.cars.label': 'cars'
-  'resource.unit.hours.label': 'hours'
-  'resource.unit.items.label': 'items'
-  'resource.unit.kilogram.label': 'kg'
-  'resource.unit.liter.label': 'liters'
-  'resource.unit.machines.label': 'machines'
-  'resource.unit.meters.label': 'meters'
-  'resource.unit.tons.label': 'tons'
-}
+import UI_WORKFLOW_LOADING from '~/plugins/starpeace-client/language/language-ui-workflow-loading.json'
+import UI_WORKFLOW_PLANET from '~/plugins/starpeace-client/language/language-ui-workflow-planet.json'
+import UI_WORKFLOW_UNIVERSE from '~/plugins/starpeace-client/language/language-ui-workflow-universe.json'
+
+LANGUAGE_STRINGS = [
+  DURATION,
+  IDENTITY,
+  INDUSTRY_CATEGORY,
+  INDUSTRY_TYPE,
+  LEVEL,
+  MISC,
+  OVERLAY,
+  RESOURCE_TYPE,
+  RESOURCE_UNIT,
+  TOOLBAR_RIBBON,
+  UI_MENU_BOOKMARKS,
+  UI_MENU_CHAT,
+  UI_MENU_CONSTUCTION,
+  UI_MENU_CORPORATION,
+  UI_MENU_GALAXY,
+  UI_MENU_HELP,
+  UI_MENU_MAIL,
+  UI_MENU_OPTIONS,
+  UI_MENU_POLITICS,
+  UI_MENU_RANKINGS,
+  UI_MENU_RELEASE_NOTES,
+  UI_MENU_RESEARCH,
+  UI_MENU_TOWN_SEARCH,
+  UI_MENU_TYCOON_DETAILS,
+  UI_MENU_TYCOON_SEARCH,
+  UI_PAGE_LAYOUT,
+  UI_WORKFLOW_LOADING,
+  UI_WORKFLOW_PLANET,
+  UI_WORKFLOW_UNIVERSE
+]
+
 
 export default class TranslationManager
-  constructor: (@asset_manager, @ajax_state, @client_state, @options) ->
-    @client_state.core.translations_library.load_translations_partial('EN', _.map(EN_STRINGS, (value, key) -> { id:key, value:value }))
+  constructor: (@asset_manager, @ajax_state, @translations_library, @options) ->
+    for language_values in LANGUAGE_STRINGS
+      for text_key,languages of language_values
+        for language_code,value of languages
+          @translations_library.load_translations_partial(language_code, [{ id:text_key, value:value }])
 
-  queue_asset_load: () ->
+  queue_asset_load: (completion_callback=null) ->
     current_language = @options.language()
-    return if @client_state.core.translations_library.has_metadata(current_language) || @ajax_state.is_locked('assets.translations', current_language)
+    return if @translations_library.has_metadata(current_language) || @ajax_state.is_locked('assets.translations', current_language)
 
     @ajax_state.lock('assets.translations', current_language)
     @asset_manager.queue("translations.#{current_language.toLowerCase()}", "./translations.#{current_language.toLowerCase()}.json", (resource) =>
-      @client_state.core.translations_library.load_translations(current_language, resource.data.translations)
+      @translations_library.load_translations(current_language, resource.data.translations)
       @ajax_state.unlock('assets.translations', current_language)
+      completion_callback() if completion_callback? && _.isFunction(completion_callback)
     )
 
   text: (key) ->
-    @client_state.core.translations_library.translations_by_language_code[@options.language()]?[key]
+    value = @translations_library.translations_by_language_code[@options.language()]?[key]
+    value = @translations_library.translations_by_language_code['EN']?[key] unless value? || @options.language() == 'EN'
+    value || key

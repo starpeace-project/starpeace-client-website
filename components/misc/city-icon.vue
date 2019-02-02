@@ -1,6 +1,6 @@
-<template lang='haml'>
-%span.sp-city-icon
-  %img{src:'~/assets/images/icons/general/cityscape.svg'}
+<template lang='pug'>
+span.sp-city-icon
+  img(src='~/assets/images/icons/general/cityscape.svg')
 </template>
 
 <script lang='coffee'>
@@ -12,6 +12,7 @@ export default
 @import '~assets/stylesheets/starpeace-variables'
 
 .sp-city-icon
+  display: inline-block
   min-width: 1.25rem
   text-align: center
 

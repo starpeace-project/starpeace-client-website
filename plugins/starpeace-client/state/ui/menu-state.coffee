@@ -8,8 +8,10 @@ MULTI_MENUBARS = {
 }
 
 MENUBAR_LEFT = {
-  'systems': true
+  'galaxy': true
   'bookmarks': true
+  'politics': true
+  'rankings': true
   'research': true
   'tycoon': true
 }
@@ -24,7 +26,8 @@ MENUBAR_BODY = {
 MENUBAR_RIGHT = {
   'construction': true
   'research': true
-  'search': true
+  'town_search': true
+  'tycoon_search': true
 }
 
 export default class MenuState

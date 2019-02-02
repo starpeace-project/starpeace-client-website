@@ -1,0 +1,42 @@
+{
+  "ui.menu.corporation.establish.header": {
+    "DE": "Gründung einer Gesellschaft",
+    "EN": "Establish a Corporation",
+    "ES": "Establecer una Corporación",
+    "FR": "Établir des Entreprises",
+    "IT": "Stabilire una Società",
+    "PT": "Estabelecer uma Corporação"
+  },
+  "ui.menu.corporation.establish.planet.welcome": {
+    "DE": "Willkommen in der",
+    "EN": "Welcome to",
+    "ES": "¡Bienvenido a",
+    "FR": "Bienvenue à",
+    "IT": "Benvenuto in",
+    "PT": "Bem-vindo a"
+  },
+  "ui.menu.corporation.establish.description": {
+    "DE": "Gründung einer Gesellschaft zur Teilnahme an der Planetenwirtschaft. Die IFEL-Bestimmungen beschränken die Anzahl der Tycoons auf eine einzige Gesellschaft pro Planet. Unter jeder Gesellschaft können eine oder mehrere Gesellschaften gebildet werden.",
+    "EN": "Establish a corporation to participate in the planet economy. IFEL Regulations limit Tycoons to a single corporation per planet; one or more companies can be formed under each corporation.",
+    "ES": "Establecer una corporación para participar en la economía planetaria. Las regulaciones de IFEL limitan a los magnates a una sola corporación por planeta; Una o más compañías pueden formarse bajo cada corporación.",
+    "FR": "Établir une société pour participer à l'économie de la planète. La réglementation de l'IFEL limite les magnats à une seule société par planète. une ou plusieurs sociétés peuvent être formées sous chaque société.",
+    "IT": "Stabilire una società per partecipare all'economia del pianeta. I regolamenti IFEL limitano i Tycoon a una singola azienda per pianeta; una o più società possono essere costituite da ciascuna società.",
+    "PT": "Estabelecer uma corporação para participar da economia do planeta. Os Regulamentos do IFEL limitam os Tycoons a uma única corporação por planeta; uma ou mais empresas podem ser formadas sob cada corporação."
+  },
+  "ui.menu.corporation.establish.action.cancel": {
+    "DE": "Zurück zu Galaxy",
+    "EN": "Back to Galaxy",
+    "ES": "De Vuelta a la Galaxia",
+    "FR": "Retour à la Galaxie",
+    "IT": "Torna alla Galassia",
+    "PT": "De Volta à Galáxia"
+  },
+  "ui.menu.corporation.establish.action.establish": {
+    "DE": "Unternehmen Gründen",
+    "EN": "Establish Corporation",
+    "ES": "Establecer Corporación",
+    "FR": "Établir une Entreprise",
+    "IT": "Stabilire la Società",
+    "PT": "Estabelecer Corporação"
+  }
+}

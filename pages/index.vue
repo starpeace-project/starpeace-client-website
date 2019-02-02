@@ -1,6 +1,6 @@
-<template lang='haml'>
-%no-ssr
-  %sp-application{'v-bind:client':'client'}
+<template lang='pug'>
+no-ssr
+  sp-application(:client='client')
 </template>
 
 <script lang='coffee'>

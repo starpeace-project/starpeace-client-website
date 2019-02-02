@@ -1,0 +1,170 @@
+{
+  "ui.menu.options.header": {
+    "DE": "Clientoptionen",
+    "EN": "Client Options",
+    "ES": "Opciones de Cliente",
+    "FR": "Options Client",
+    "IT": "Opzioni Client",
+    "PT": "Opções do Cliente"
+  },
+  "ui.menu.options.actions.reset": {
+    "DE": "Zurücksetzen",
+    "EN": "Reset",
+    "ES": "Reiniciar",
+    "FR": "Réinitialiser",
+    "IT": "Reset",
+    "PT": "Restabelecer"
+  },
+  "ui.menu.options.actions.save": {
+    "DE": "Speichern",
+    "EN": "Save",
+    "ES": "Salvar",
+    "FR": "Sauvegarder",
+    "IT": "Salvare",
+    "PT": "Salve"
+  },
+  "ui.menu.options.header.general": {
+    "DE": "Allgemein",
+    "EN": "General",
+    "ES": "General",
+    "FR": "Général",
+    "IT": "Generale",
+    "PT": "Geral"
+  },
+  "ui.menu.options.header.graphics": {
+    "DE": "Grafik",
+    "EN": "Graphics",
+    "ES": "Gráficos",
+    "FR": "Graphique",
+    "IT": "Grafica",
+    "PT": "Gráficos"
+  },
+  "ui.menu.options.header.locations": {
+    "DE": "Kartenstandorte",
+    "EN": "Map Locations",
+    "ES": "Mapa de Ubicaciones",
+    "FR": "Emplacements de Carte",
+    "IT": "Posizioni della Mappa",
+    "PT": "Destinos do Mapa"
+  },
+  "ui.menu.options.option.general.header.label": {
+    "DE": "Kopfzeile Anzeigen",
+    "EN": "Show Header",
+    "ES": "Mostrar Encabezado",
+    "FR": "Afficher En-Tête",
+    "IT": "Mostra Intestazione",
+    "PT": "Mostrar Cabeçalho"
+  },
+  "ui.menu.options.option.general.fps.label": {
+    "DE": "FPS Anzeigen",
+    "EN": "Show FPS",
+    "ES": "Mostrar FPS",
+    "FR": "Afficher FPS",
+    "IT": "Mostra FPS",
+    "PT": "Mostrar FPS"
+  },
+  "ui.menu.options.option.general.mini_map.label": {
+    "DE": "Mini-Karte",
+    "EN": "Mini Map",
+    "ES": "Mini Mapa",
+    "FR": "Mini Carte",
+    "IT": "Mini Mappa",
+    "PT": "Mini Mapa"
+  },
+  "ui.menu.options.option.general.music.label": {
+    "DE": "Spielemusik",
+    "EN": "Game Music",
+    "ES": "Juego de Musica",
+    "FR": "Musique de Jeu",
+    "IT": "Gioco di Musica",
+    "PT": "Música do Jogo"
+  },
+  "ui.menu.options.option.general.language.label": {
+    "DE": "Sprache",
+    "EN": "Language",
+    "ES": "Idioma",
+    "FR": "Langue",
+    "IT": "Linguaggio",
+    "PT": "Língua"
+  },
+  "ui.menu.options.option.graphics.trees.label": {
+    "DE": "Bäume",
+    "EN": "Trees",
+    "ES": "Arboles",
+    "FR": "Arbres",
+    "IT": "Alberi",
+    "PT": "Árvores"
+  },
+  "ui.menu.options.option.graphics.buildings.label": {
+    "DE": "Gebäude",
+    "EN": "Buildings",
+    "ES": "Edificio",
+    "FR": "Bâtiment",
+    "IT": "Edifici",
+    "PT": "Edifício"
+  },
+  "ui.menu.options.option.graphics.building_animations.label": {
+    "DE": "Animationen Erstellen",
+    "EN": "Building Animations",
+    "ES": "Animaciones de Edificio",
+    "FR": "Animations de Bâtiment",
+    "IT": "Animazioni degli Edifici",
+    "PT": "Animações de Edifício"
+  },
+  "ui.menu.options.option.graphics.building_effects.label": {
+    "DE": "Gebäudeeffekte",
+    "EN": "Building Effects",
+    "ES": "Efectos de Edificio",
+    "FR": "Effets de Bâtiment",
+    "IT": "Effetti degli Edifici",
+    "PT": "Efeitos de Edifício"
+  },
+  "ui.menu.options.option.graphics.planes.label": {
+    "DE": "Flugzeuge",
+    "EN": "Planes",
+    "ES": "Aviones",
+    "FR": "Avions",
+    "IT": "Aerei",
+    "PT": "Aviões"
+  },
+  "ui.menu.options.option.locations.poi.label": {
+    "DE": "Sehenswürdigkeiten",
+    "EN": "Points of Interest",
+    "ES": "Puntos de Interés",
+    "FR": "Points d'interêts",
+    "IT": "Punti di Interesse",
+    "PT": "Pontos de Interesse"
+  },
+  "ui.menu.options.option.locations.poi_capital.label": {
+    "DE": "POI - Hauptstadt",
+    "EN": "POI - Capital",
+    "ES": "POI - Capital",
+    "FR": "POI - Capitale",
+    "IT": "POI - Capitale",
+    "PT": "POI - Capital"
+  },
+  "ui.menu.options.option.locations.poi_towns.label": {
+    "DE": "POI - Städte",
+    "EN": "POI - Towns",
+    "ES": "POI - Pueblos",
+    "FR": "POI - Les Villes",
+    "IT": "POI - Città",
+    "PT": "POI - Cidades"
+  },
+  "ui.menu.options.option.locations.poi_mausoleums.label": {
+    "DE": "POI - Mausoleen",
+    "EN": "POI - Mausoleums",
+    "ES": "POI - Mausoleos",
+    "FR": "POI - Mausolées",
+    "IT": "POI - mausolei",
+    "PT": "POI - Mausoléus"
+  },
+  "ui.menu.options.option.locations.corporation.label": {
+    "DE": "Unternehmen",
+    "EN": "Corporation",
+    "ES": "Corporaciones",
+    "FR": "Entreprises",
+    "IT": "Corporazione",
+    "PT": "Corporação"
+  }
+}

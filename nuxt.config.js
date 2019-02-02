@@ -27,6 +27,7 @@ var release_notes_archive_html = render_and_convert_markdown(fs.readFileSync('./
 module.exports = {
   css: [
     { src: '~/assets/stylesheets/starpeace-bulma.sass', lang: 'sass' },
+    { src: '~/assets/stylesheets/starpeace-flags.sass', lang: 'sass' },
     { src: '~/assets/stylesheets/starpeace-vue.sass', lang: 'sass' },
     { src: '~/assets/stylesheets/starpeace.sass', lang: 'sass' },
     { src: 'v-contextmenu', lang: 'css' }
@@ -35,8 +36,9 @@ module.exports = {
     title: 'STARPEACE',
     meta: [
       { charset: 'utf-8' },
+      { name: 'google', content: "notranslate" },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: 'STARPEACE client website: a real-time city-building economic simulation and cooperative multiplayer strategy game' }
+      { hid: 'description', name: 'description', content: 'STARPEACE: a real-time city-building economic simulation and cooperative multiplayer strategy game' }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
@@ -62,11 +64,6 @@ module.exports = {
       config.module.rules.push({
         test: /\.coffee$/,
         use: 'coffee-loader',
-        exclude: /(node_modules)/
-      });
-      config.module.rules.push({
-        test: /\.haml$/,
-        use: 'haml',
         exclude: /(node_modules)/
       });
       config.module.rules.push({

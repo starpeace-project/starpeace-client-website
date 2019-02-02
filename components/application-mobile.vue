@@ -1,21 +1,22 @@
-<template lang='haml'>
-#application-container{'v-bind:class':'application_css_class', 'v-cloak':true}
-  %sp-header{'v-bind:client_state':'client_state'}
-  %sp-loading-card{'v-bind:client_state':'client_state'}
-  %sp-loading-modal{'v-bind:client_state':'client_state'}
-  %sp-webgl-warning-modal{'v-bind:client_state':'client_state'}
-  %sp-workflow{'v-bind:client':'client', 'v-bind:client_state':'client_state'}
-  %sp-body{'v-bind:client_state':'client_state'}
+<template lang='pug'>
+#application-container(:class='application_css_class', v-cloak=true)
+  sp-header(:managers='managers', :client_state='client_state')
+  sp-loading-card(:client_state='client_state')
+  sp-loading-modal(:client_state='client_state')
+  sp-webgl-warning-card(:client_state='client_state')
+  sp-workflow(:client='client', :client_state='client_state')
+  sp-body(:client_state='client_state')
 </template>
 
 <script lang='coffee'>
 import Header from '~/components/page-layout/header.vue'
+import RenderContainer from '~/components/page-layout/render-container.vue'
+
 import LoadingCard from '~/components/misc/card-loading.vue'
 import LoadingModal from '~/components/misc/modal-loading.vue'
 import WebGLWarningCard from '~/components/misc/card-webgl-warning.vue'
+
 import Workflow from '~/components/workflow/workflow.vue'
-import RenderContainer from '~/components/body/render-container.vue'
-import FooterOverlayMenu from '~/components/footer/overlay-menu.vue'
 
 export default
   props:
@@ -28,7 +29,6 @@ export default
     'sp-webgl-warning-card': WebGLWarningCard
     'sp-workflow': Workflow
     'sp-body': RenderContainer
-    'sp-footer-overlay-menu': FooterOverlayMenu
 
   mounted: ->
     @client.options?.subscribe_options_listener =>
@@ -42,6 +42,8 @@ export default
 
   computed:
     application_css_class: -> if @show_header then [] else ['no-header']
+
+    managers: -> @client?.managers
 </script>
 
 <style lang='sass' scoped>

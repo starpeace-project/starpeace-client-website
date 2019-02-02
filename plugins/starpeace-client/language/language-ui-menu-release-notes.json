@@ -1,0 +1,35 @@
+{
+  "ui.menu.release_notes.header": {
+    "DE": "Versionshinweise",
+    "EN": "Release Notes",
+    "ES": "Notas de Lanzamiento",
+    "FR": "Notes de Version",
+    "IT": "Note di Rilascio",
+    "PT": "Notas de Lançamento"
+  },
+  "ui.menu.release_notes.info.prefix": {
+    "DE": "Besuchen Sie das",
+    "EN": "Visit the",
+    "ES": "Visite el",
+    "FR": "Visitez les",
+    "IT": "Visita",
+    "PT": "Visite o"
+  },
+  "ui.menu.release_notes.info.link": {
+    "DE": "Archiv der Versionshinweise,",
+    "EN": "release notes archive",
+    "ES": "archivo de notas de la versión",
+    "FR": "archives des notes de publication",
+    "IT": "l'archivio delle note di rilascio",
+    "PT": "arquivo de notas da versão"
+  },
+  "ui.menu.release_notes.info.suffix": {
+    "DE": "um weitere Notizen und das historische Änderungsprotokoll anzuzeigen.",
+    "EN": "to view additional notes and historical changelog.",
+    "ES": "para ver notas adicionales y el historial de cambios histórico.",
+    "FR": "pour afficher des notes supplémentaires et l'historique des modifications.",
+    "IT": "per visualizzare le note aggiuntive e il log delle modifiche storiche.",
+    "PT": "para visualizar notas adicionais e histórico de alterações."
+  }
+
+}

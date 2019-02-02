@@ -2,7 +2,6 @@
   "planet-1" : {
     "id": "planet-1",
     "name": "Mercury",
-    "system_id": "system-1",
     "tycoons_online": [],
     "towns": [
       {
@@ -98,7 +97,6 @@
   "planet-2" : {
     "id": "planet-2",
     "name": "Venus",
-    "system_id": "system-1",
     "tycoons_online": [],
     "towns": [
       {

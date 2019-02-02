@@ -1,6 +1,6 @@
-<template lang='haml'>
+<template lang='pug'>
 .logo-content
-  %img.starpeace-logo
+  img.starpeace-logo
   .label-loading {{message}}
 </template>
 

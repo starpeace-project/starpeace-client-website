@@ -1,0 +1,51 @@
+{
+  "id": "browser-sandbox",
+  "name": "Browser Sandbox",
+  "visitor_enabled": true,
+  "tycoon_enabled": true,
+  "tycoon_authentication": "password",
+  "planets_metadata": [
+    {
+      "id": "planet-1",
+      "name": "Mercury",
+      "system_name": "Alpha Stella",
+      "enabled": true,
+      "planet_type": "earth",
+      "planet_width": 1000,
+      "planet_height": 1000,
+      "map_id": "aries",
+      "population": 0,
+      "investment_value": 0,
+      "tycoon_count": 0,
+      "online_count": 0
+    },
+    {
+      "id": "planet-2",
+      "name": "Venus",
+      "system_name": "Alpha Stella",
+      "enabled": true,
+      "planet_type": "earth",
+      "planet_width": 1000,
+      "planet_height": 1000,
+      "map_id": "ancoeus",
+      "population": 0,
+      "investment_value": 0,
+      "tycoon_count": 0,
+      "online_count": 0
+    },
+    {
+      "id": "planet-3",
+      "name": "Neptune",
+      "system_name": "Stellae Beta",
+      "enabled": false,
+      "planet_type": "earth",
+      "planet_width": 1000,
+      "planet_height": 1000,
+      "map_id": "mondronia",
+      "population": 0,
+      "investment_value": 0,
+      "tycoon_count": 0,
+      "online_count": 0
+    }
+  ]
+}

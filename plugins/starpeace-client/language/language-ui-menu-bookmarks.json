@@ -1,0 +1,130 @@
+{
+  "ui.menu.bookmarks.header": {
+    "DE": "Kartenstandorte",
+    "EN": "Map Locations",
+    "ES": "Mapa de Ubicaciones",
+    "FR": "Emplacements de Carte",
+    "IT": "Posizioni della Mappa",
+    "PT": "Destinos do Mapa"
+  },
+  "ui.menu.bookmarks.filter.services": {
+    "DE": "Dienstleistungen",
+    "EN": "Services",
+    "ES": "Servicios",
+    "FR": "Prestations de Service",
+    "IT": "Servizi",
+    "PT": "Serviços"
+  },
+  "ui.menu.bookmarks.filter.industries": {
+    "DE": "Branchen",
+    "EN": "Industries",
+    "ES": "Industrias",
+    "FR": "Industries",
+    "IT": "Industrie",
+    "PT": "Indústrias"
+  },
+  "ui.menu.bookmarks.filter.logistics": {
+    "DE": "Logistik",
+    "EN": "Logistics",
+    "ES": "Logística",
+    "FR": "Logistique",
+    "IT": "Logistica",
+    "PT": "Logística"
+  },
+  "ui.menu.bookmarks.filter.commerce": {
+    "DE": "Handel",
+    "EN": "Commerce",
+    "ES": "Comercio",
+    "FR": "Commerce",
+    "IT": "Commercio",
+    "PT": "Comércio"
+  },
+  "ui.menu.bookmarks.filter.civics": {
+    "DE": "Staatsbürgerkunde",
+    "EN": "Civics",
+    "ES": "Cívico",
+    "FR": "Civique",
+    "IT": "Civica",
+    "PT": "Cívica"
+  },
+  "ui.menu.bookmarks.filter.residentials": {
+    "DE": "Wohngebiete",
+    "EN": "Residentials",
+    "ES": "Residenciales",
+    "FR": "Résidentiel",
+    "IT": "Privati",
+    "PT": "Residenciais"
+  },
+  "ui.menu.bookmarks.filter.offices": {
+    "DE": "Büro",
+    "EN": "Offices",
+    "ES": "Oficinas",
+    "FR": "Bureaux",
+    "IT": "Uffici",
+    "PT": "Escritórios"
+  },
+  "ui.menu.bookmarks.section.poi": {
+    "DE": "Sehenswürdigkeiten",
+    "EN": "Points of Interest",
+    "ES": "Puntos de Interés",
+    "FR": "Points d'interêts",
+    "IT": "Punti di Interesse",
+    "PT": "Pontos de Interesse"
+  },
+  "ui.menu.bookmarks.section.corporation": {
+    "DE": "Unternehmen",
+    "EN": "Corporation",
+    "ES": "Corporaciones",
+    "FR": "Entreprises",
+    "IT": "Società",
+    "PT": "Corporação"
+  },
+  "ui.menu.bookmarks.section.bookmarks": {
+    "DE": "Lesezeichen",
+    "EN": "Bookmarks",
+    "ES": "Marcadores",
+    "FR": "Signets",
+    "IT": "Segnalibri",
+    "PT": "Favoritos"
+  },
+  "ui.menu.bookmarks.section.towns": {
+    "DE": "Städte",
+    "EN": "Towns",
+    "ES": "Pueblos",
+    "FR": "Les Villes",
+    "IT": "Città",
+    "PT": "Cidades"
+  },
+  "ui.menu.bookmarks.section.mausoleums": {
+    "DE": "Mausoleen",
+    "EN": "Mausoleums",
+    "ES": "Mausoleos",
+    "FR": "Mausolées",
+    "IT": "mausolei",
+    "PT": "Mausoléus"
+  },
+  "ui.menu.bookmarks.action.organize": {
+    "DE": "Organisieren",
+    "EN": "Organize",
+    "ES": "Organizar",
+    "FR": "Organiser",
+    "IT": "Organizzare",
+    "PT": "Organizar"
+  },
+  "ui.menu.bookmarks.action.add-folder": {
+    "DE": "Ordner Hinzufügen",
+    "EN": "Add Folder",
+    "ES": "Agregar Carpeta",
+    "FR": "Ajouter le Dossier",
+    "IT": "Aggiungi Cartella",
+    "PT": "Adicionar Pasta"
+  },
+  "ui.menu.bookmarks.action.add-bookmark": {
+    "DE": "Lesezeichen Hinzufügen",
+    "EN": "Add Bookmark",
+    "ES": "Añadir Marcador",
+    "FR": "Ajouter un Marque-page",
+    "IT": "Aggiungi Segnalibro",
+    "PT": "Adicionar Marcador"
+  }
+}

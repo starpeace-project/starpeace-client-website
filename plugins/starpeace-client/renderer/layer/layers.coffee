@@ -45,6 +45,7 @@ export default class Layers
     return unless @client_state.initialized && @client_state.renderer_initialized && @client_state.plane_sprites.length
     if !@options.option('renderer.planes')
       @client_state.plane_sprites = []
+      @layer_manager.clear_cache_plane_sprites({})
       return
 
     render_state = {}

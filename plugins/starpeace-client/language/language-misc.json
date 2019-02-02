@@ -1,0 +1,99 @@
+{
+  "misc.and": {
+    "DE": "und",
+    "EN": "and",
+    "ES": "y",
+    "FR": "et",
+    "IT": "e",
+    "PT": "e"
+  },
+  "misc.filter": {
+    "DE": "Filter",
+    "EN": "Filter",
+    "ES": "Filtrar",
+    "FR": "Filtre",
+    "IT": "Filtro",
+    "PT": "Filtro"
+  },
+  "misc.action.cancel": {
+    "DE": "Stornieren",
+    "EN": "Cancel",
+    "ES": "Cancelar",
+    "FR": "Annuler",
+    "IT": "Annulla",
+    "PT": "Cancelar"
+  },
+  "misc.action.add": {
+    "DE": "Hinzufügen",
+    "EN": "Add",
+    "ES": "Añadir",
+    "FR": "Ajouter",
+    "IT": "Inserisci",
+    "PT": "Adicionar"
+  },
+  "misc.action.remove": {
+    "DE": "Löschen",
+    "EN": "Remove",
+    "ES": "Retirar",
+    "FR": "Retirer",
+    "IT": "Rimuovere",
+    "PT": "Remover"
+  },
+  "misc.hide_menus.label": {
+    "DE": "Menüs Ausblenden",
+    "EN": "Hide Menus",
+    "ES": "Ocultar Menús",
+    "FR": "Masquer les Menus",
+    "IT": "Nascondi Menu",
+    "PT": "Esconder Menus"
+  },
+  "misc.unable_to_connect.label": {
+    "DE": "Verbindung konnte nicht hergestellt werden.",
+    "EN": "Unable to connect.",
+    "ES": "No puede conectarse.",
+    "FR": "Impossible de se connecter.",
+    "IT": "Impossibile connetersi.",
+    "PT": "Incapaz de conectar."
+  },
+  "misc.try_again.label": {
+    "DE": "Versuchen Sie es nochmal",
+    "EN": "Try again",
+    "ES": "Inténtalo de nuevo",
+    "FR": "Réessayer",
+    "IT": "Riprova",
+    "PT": "Tente novamente"
+  },
+  "misc.webgl.warning.header": {
+    "DE": "WebGL-Unterstützung nicht gefunden",
+    "EN": "WebGL support not found",
+    "ES": "Soporte para WebGL no encontrado",
+    "FR": "Support WebGL introuvable",
+    "IT": "Supporto WebGL non trovato",
+    "PT": "Suporte WebGL não encontrado"
+  },
+  "misc.webgl.warning.description": {
+    "DE": "Die WebGL-Unterstützung wurde nicht gefunden, die Client-Funktionalität und -Erfahrung wird erheblich reduziert. Öffnen Sie den Client entweder in einer neuen Registerkarte, starten Sie die Browsersitzung erneut oder versuchen Sie es mit einem anderen Browser.",
+    "EN": "WebGL support was not found, client functionality and experience will be severely reduced. Please either re-open client in new tab, restart browser session, or try a different browser.",
+    "ES": "No se encontró soporte para WebGL, la funcionalidad y la experiencia del cliente se reducirán considerablemente. Vuelva a abrir el cliente en una nueva pestaña, reinicie la sesión del navegador o pruebe un navegador diferente.",
+    "FR": "La prise en charge de WebGL n’a pas été trouvée, les fonctionnalités et l’expérience du client seront considérablement réduites. Veuillez ré-ouvrir le client dans un nouvel onglet, redémarrer la session du navigateur ou essayer un autre navigateur.",
+    "IT": "Il supporto WebGL non è stato trovato, la funzionalità e l'esperienza del cliente saranno gravemente ridotte. Si prega di riaprire il client in una nuova scheda, riavviare la sessione del browser o provare un altro browser.",
+    "PT": "O suporte a WebGL não foi encontrado, a funcionalidade e a experiência do cliente serão severamente reduzidas. Por favor, abra novamente o cliente em uma nova guia, reinicie a sessão do navegador ou tente um navegador diferente."
+  },
+  "misc.expired_session.warning.header": {
+    "DE": "Sitzung ist abgelaufen",
+    "EN": "Session has expired",
+    "ES": "La sesion ha expirado",
+    "FR": "La session a expiré",
+    "IT": "La sessione è scaduta",
+    "PT": "Sessão expirou"
+  },
+  "misc.expired_session.warning.description": {
+    "DE": "Ihre spielende Sitzung ist abgelaufen. Bitte melden Sie sich erneut an.",
+    "EN": "Your playing session has expired. Please login again.",
+    "ES": "Su sesión de juego ha expirado. Por favor inicie sesión de nuevo.",
+    "FR": "Votre session de jeu a expiré. Veuillez vous reconnecter.",
+    "IT": "La tua sessione di gioco è scaduta. Per favore esegui l'accesso di nuovo.",
+    "PT": "Sua sessão de jogo expirou. Por favor faça login novamente."
+  }
+
+}

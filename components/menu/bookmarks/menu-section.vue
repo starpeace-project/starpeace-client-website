@@ -1,79 +1,40 @@
-<template lang='haml'>
+<template lang='pug'>
 .sp-section
-  %a{'v-on:click.stop.prevent':"toggle_section"}
-    %span{'v-show':"has_items && !section_expanded"}
-      %font-awesome-icon{':icon':"['fas', 'plus-square']"}
-    %span{'v-show':"has_items && section_expanded"}
-      %font-awesome-icon{':icon':"['fas', 'minus-square']"}
-    %span.sp-folder-icon{'v-show':"!has_items"}
-      %font-awesome-icon{':icon':"['fas', 'square']"}
-    %span.sp-section-label {{label_text}}
-  .sp-menu-list{'v-if':'has_items', 'v-show':"section_expanded", ':class':'menu_container_dragging_class'}
-    %template{'v-if':'draggable'}
-      %draggable{'v-model':'items_as_options', '@start':'start_move_item', '@choose':'choose_item', ':move':'move_item'}
-        %transition-group{name:'menu-section'}
-          .draggable-item.bookmark-item{'v-for':"child in items_as_options", ':key':"child.id", ':class':"'menu-level-'+child.level"}
-            %template{'v-if':"child.type == 'slot'"}
-              %div.slot-item
-            %template{'v-else-if':"child.is_folder", 'v-bind:item':'child'}
-              %a.is-folder-item{'v-on:click.stop.prevent':"toggle_item(child)", 'v-bind:class':"child.has_children ? '' : 'is-empty-folder'"}
-                %template{'v-if':"child.type == 'CORPORATION'"}
-                  %span.company-icon-wrapper
-                    %company-seal-icon{'v-bind:seal_id':"child.seal_id"}
-                %template{'v-else-if':"child.type == 'INDUSTRY'"}
-                  %industry-type-icon{'v-bind:industry_type':"child.industry_type", 'v-bind:small':'true'}
-                %template{'v-else-if':"child.type == 'TOWN'"}
-                  %city-icon
-                %template{'v-else-if':"true"}
-                  %span.sp-folder-icon{'v-show':"child.has_children && !child.expanded"}
-                    %font-awesome-icon{':icon':"['fas', 'folder']"}
-                  %span.sp-folder-icon{'v-show':"child.has_children && child.expanded"}
-                    %font-awesome-icon{':icon':"['fas', 'folder-open']"}
-                  %span.sp-folder-icon{'v-show':"!child.has_children"}
-                    %font-awesome-icon{':icon':"['far', 'folder']"}
-                %span.sp-folder-label {{child.item_name}}
-            %template{'v-else-if':'true'}
-              %a.is-menu-item{'v-on:click.stop.prevent':"select_item(child)"}
-                %span.link-image
-                  %template{'v-if':"child.type == 'TOWN'"}
-                    %city-icon
-                  %template{'v-else-if':"true"}
-                    %font-awesome-icon{':icon':"['fas', 'map-marker-alt']"}
-                %span.link-label {{child.item_name}}
-    %template{'v-else-if':'true'}
-      .bookmark-item{'v-for':"child in items_as_options", ':key':"child.id", ':class':"'menu-level-'+child.level"}
-        %template{'v-if':"child.type == 'slot'"}
-        %template{'v-else-if':"child.is_folder"}
-          %div.sp-folder{'v-show':"!child.hidden"}
-            %a.is-folder-item{'v-on:click.stop.prevent':"toggle_item(child)", 'v-bind:class':"child.has_children ? '' : 'is-empty-folder'"}
-              %template{'v-if':"child.type == 'CORPORATION'"}
-                %span.company-icon-wrapper
-                  %company-seal-icon{'v-bind:seal_id':"child.seal_id"}
-              %template{'v-else-if':"child.type == 'INDUSTRY'"}
-                %industry-type-icon{'v-bind:industry_type':"child.industry_type", 'v-bind:small':'true'}
-              %template{'v-else-if':"child.type == 'TOWN'"}
-                %city-icon
-              %template{'v-else-if':"true"}
-                %span.sp-folder-icon{'v-show':"child.has_children && !child.expanded"}
-                  %font-awesome-icon{':icon':"['fas', 'folder']"}
-                %span.sp-folder-icon{'v-show':"child.has_children && child.expanded"}
-                  %font-awesome-icon{':icon':"['fas', 'folder-open']"}
-                %span.sp-folder-icon{'v-show':"!child.has_children"}
-                  %font-awesome-icon{':icon':"['far', 'folder']"}
-              %span.sp-folder-label {{child.item_name}}
-        %template{'v-else-if':'true'}
-          %a.is-menu-item{'v-on:click.stop.prevent':"select_item(child)"}
-            %span.link-image
-              %template{'v-if':"child.type == 'TOWN'"}
-                %city-icon
-              %template{'v-else-if':"true"}
-                %font-awesome-icon{':icon':"['fas', 'map-marker-alt']"}
-            %span.link-label {{child.item_name}}
+  a(v-on:click.stop.prevent="toggle_section")
+    span(v-show="has_items && !section_expanded")
+      font-awesome-icon(:icon="['fas', 'plus-square']")
+    span(v-show="has_items && section_expanded")
+      font-awesome-icon(:icon="['fas', 'minus-square']")
+    span.sp-folder-icon(v-show="!has_items")
+      font-awesome-icon(:icon="['fas', 'square']")
+    span.sp-section-label {{label_text}}
+  .sp-menu-list(v-if='has_items', v-show="section_expanded")
+    template(v-if='is_draggable')
+      draggable(v-model='items_as_options', @start='start_move_item', @choose='choose_item', :move='move_item')
+        transition-group(name='menu-section')
+          .draggable-item.bookmark-item(v-for="child in items_as_options", :key="child.id")
+            template(v-if="child.type == 'slot'")
+              div.slot-item
+            template(v-else-if="child.is_folder")
+              section-folder(:item="child", :dragging_level="dragging_item_id == child.id ? dragging_item_level : -1", v-on:toggled='refresh_tree')
+            template(v-else-if='true')
+              section-item(:item='child', :dragging_level="dragging_item_id == child.id ? dragging_item_level : -1", v-on:selected='item_selected')
+    template(v-else-if='true')
+      .bookmark-item(v-for="child in items_as_options", :key="child.id")
+        template(v-if="child.type == 'slot'")
+        template(v-else-if="child.is_folder")
+          section-folder(:item="child", v-on:toggled='refresh_tree')
+        template(v-else-if='true')
+          section-item(:item='child', v-on:selected='item_selected')
 
 </template>
 
 <script lang='coffee'>
 import draggable from 'vuedraggable'
+
+import SectionFolder from '~/components/menu/bookmarks/section-folder.vue'
+import SectionItem from '~/components/menu/bookmarks/section-item.vue'
+
 import CityIcon from '~/components/misc/city-icon.vue'
 import CompanySealIcon from '~/components/misc/company-seal-icon.vue'
 import IndustryTypeIcon from '~/components/misc/industry-type-icon.vue'
@@ -90,7 +51,7 @@ menu_item_slot = (id, order, level) ->
     item_name: 'slot'
   }
 
-menu_item_from_bookmark = (existing_option, bookmark_item, tree_item, order, level) ->
+menu_item_from_bookmark = (managers, existing_option, bookmark_item, tree_item, order, level) ->
   {
     id: bookmark_item.id
     order: order
@@ -100,30 +61,31 @@ menu_item_from_bookmark = (existing_option, bookmark_item, tree_item, order, lev
     type: bookmark_item.type
     seal_id: if bookmark_item.type == 'CORPORATION' then bookmark_item.seal_id else null
     industry_type: if bookmark_item.type == 'INDUSTRY' then bookmark_item.industry_type else null
-    item_name: bookmark_item.name
-    hidden: false
+    item_name: if bookmark_item.name_key?.length then managers.translation_manager.text(bookmark_item.name_key) else bookmark_item.name
     expanded: if existing_option? then existing_option.expanded else false
     attributes: {}
   }
 
-tree_to_options = (existing_options_by_id, items_by_id, items_as_tree) ->
+name_for_item = (managers, item) -> if item.name_key?.length then managers.translation_manager.text(item.name_key) || item.name_key else item.name
+
+tree_to_options = (managers, is_draggable, existing_options_by_id, items_by_id, items_as_tree) ->
   children = []
   add_flattened_child = (level, tree_item) =>
     bookmark_item = items_by_id[tree_item.id]
     existing_option = existing_options_by_id[tree_item.id]
-    menu_item = menu_item_from_bookmark(existing_option, bookmark_item, tree_item, children.length, level)
+    menu_item = menu_item_from_bookmark(managers, existing_option, bookmark_item, tree_item, children.length, level)
     children.push menu_item
 
     if tree_item.child_ids?
       child_ids = Object.keys(tree_item.child_ids)
       if child_ids.length && menu_item.expanded
-        for tree_child_id in _.sortBy(child_ids, (item_id) -> items_by_id[item_id].order)
+        for tree_child_id in _.sortBy(child_ids, (item_id) -> if is_draggable then items_by_id[item_id].order else name_for_item(managers, items_by_id[item_id]))
           add_flattened_child(level + 1, tree_item.child_ids[tree_child_id])
-        children.push menu_item_slot("slot-#{tree_item.id}", children.length, level + 1)
-      else if !child_ids.length
+
+      unless !is_draggable || child_ids.length && !menu_item.expanded
         children.push menu_item_slot("slot-#{tree_item.id}", children.length, level + 1)
 
-  for item_id in _.sortBy(Object.keys(items_as_tree), (item_id) -> items_by_id[item_id].order)
+  for item_id in _.sortBy(Object.keys(items_as_tree), (item_id) -> if is_draggable then items_by_id[item_id].order else name_for_item(managers, items_by_id[item_id]))
     add_flattened_child(0, items_as_tree[item_id])
 
   children
@@ -157,47 +119,56 @@ level_for_item = (item) -> if item.attributes?.future_level? && item.attributes?
 export default
   components:
     'draggable': draggable
+
+    'section-folder': SectionFolder
+    'section-item': SectionItem
+
     'company-seal-icon': CompanySealIcon
     'city-icon': CityIcon
     'industry-type-icon': IndustryTypeIcon
 
   name: 'menu-section'
   props:
+    managers: Object
     client_state: Object
-    bookmark_manager: Object
+
     root_id: String
     label_text: String
     items_by_id: Object
-    draggable: Boolean
+
+    is_draggable: Boolean
 
   mounted: ->
     if @root_id == 'bookmarks'
       @$root.$on('add_folder_action', () => @section_expanded = true unless @section_expanded)
       @$root.$on('add_bookmark_action', () => @section_expanded = true unless @section_expanded)
 
+    @client_state?.options?.subscribe_options_listener => @refresh_tree()
+
   data: ->
     items_as_tree = @items_to_tree(@items_by_id)
     {
       section_expanded: false
       items_as_tree: items_as_tree
-      items_as_options: tree_to_options({}, @items_by_id, items_as_tree)
+      items_as_options: tree_to_options(@managers, @is_draggable, {}, @items_by_id, items_as_tree)
 
-      future_level_after_dragging: 0
+      dragging_item_id: null
+      dragging_item_level: 0
     }
 
   watch:
     items_hash: (new_value, old_value) ->
       @items_as_tree = @items_to_tree(@items_by_id)
-      @items_as_options = tree_to_options(@options_by_id, @items_by_id, @items_as_tree)
+      @refresh_tree()
 
     items_as_options: (new_value, old_value) ->
-      pending_items = []
-      for item,index in new_value
-        item.order = index
-        pending_items.push item
-      tree_pairs = options_to_tree_pairs(pending_items, @root_id, 0)
+      if @is_draggable
+        pending_items = []
+        for item,index in new_value
+          item.order = index
+          pending_items.push item
+        tree_pairs = options_to_tree_pairs(pending_items, @root_id, 0)
 
-      if @draggable
         deltas = []
         add_to_delta = (item) =>
           bookmark_item = @items_by_id[item.id]
@@ -205,16 +176,16 @@ export default
           add_to_delta(child) for child in (item.children || [])
         add_to_delta(item) for item in tree_pairs
 
-        await @bookmark_manager.merge_bookmark_deltas(deltas) if deltas.length
+        await @managers.bookmark_manager.merge_bookmark_deltas(deltas) if deltas.length
 
   computed:
+    bookmark_metadata: -> @managers.bookmark_manager
+
     has_items: -> Object.keys(@items_by_id).length
     items_hash: ->
       hash = ''
       hash = "#{hash}#{item.id}#{item.parent_id}#{item.order}" for item in _.values(@items_by_id)
       hash
-
-    menu_container_dragging_class: -> "menu-dragging-level-#{@future_level_after_dragging}"
 
     options_by_id: ->
       by_id = {}
@@ -241,21 +212,27 @@ export default
 
   methods:
     toggle_section: () -> @section_expanded = !@section_expanded
-    toggle_item: (item) ->
-      item.expanded = !item.expanded
-      @items_as_options = tree_to_options(@options_by_id, @items_by_id, @items_as_tree)
 
-    select_item: (item) ->
-      return if item.is_folder
-      return unless @items_by_id[item.id]?
+    refresh_tree: () ->
+      @items_as_options = tree_to_options(@managers, @is_draggable, @options_by_id, @items_by_id, @items_as_tree)
 
-      @client_state.interface.select_building_id(@items_by_id[item.id].building_id) if (item.type == 'TOWN' || item.type == 'BUILDING') && @items_by_id[item.id].building_id?
-      @client_state.camera.recenter_at(@items_by_id[item.id].map_x, @items_by_id[item.id].map_y) if item.type == 'TOWN' || item.type == 'LOCATION' || item.type == 'BUILDING'
+
+    item_selected: (item_id) ->
+      return unless @items_by_id[item_id]?
+      item = @items_by_id[item_id]
+      @client_state.interface.select_building_id(item.building_id) if (item.type == 'TOWN' || item.type == 'BUILDING') && item.building_id?
+      @client_state.camera.recenter_at(item.map_x, item.map_y) if item.type == 'TOWN' || item.type == 'LOCATION' || item.type == 'BUILDING'
+
 
     start_move_item: (event) ->
-      @future_level_after_dragging = @index_levels[event?.oldIndex] if @index_levels[event?.oldIndex]?
+      if @items_as_options[event?.oldIndex]? && @index_levels[event?.oldIndex]?
+        @dragging_item_id = @items_as_options[event?.oldIndex].id
+        @dragging_item_level = @index_levels[event?.oldIndex]
+
     choose_item: (event) ->
-      @future_level_after_dragging = @index_levels[event?.oldIndex] if @index_levels[event?.oldIndex]?
+      if @items_as_options[event?.oldIndex]? && @index_levels[event?.oldIndex]?
+        @dragging_item_id = @items_as_options[event?.oldIndex].id
+        @dragging_item_level = @index_levels[event?.oldIndex]
 
     move_item: (event) ->
       relatedElement = event?.relatedContext?.element
@@ -266,7 +243,7 @@ export default
 
       can_move = (!relatedElement? || !relatedElement.fixed) && !draggedElement.fixed && (!draggedElement.has_children || !draggedElement.expanded)
       if can_move
-        @future_level_after_dragging = @index_levels[future_index]
+        @dragging_item_level = @index_levels[future_index]
         draggedElement.attributes.future_level = @index_levels[future_index]
       can_move
 
@@ -300,48 +277,6 @@ export default
   transition: color 0
   transition: background-color 0
   transition: display 0
-
-.bookmark-item
-  &.menu-level-0
-    a
-      padding-left: .75rem
-
-  &.menu-level-1
-    a
-      padding-left: 1.5rem
-
-  &.menu-level-2
-    a
-      padding-left: 2.25rem
-
-  &.menu-level-3
-    a
-      padding-left: 3rem
-
-.menu-dragging-level-0
-  .sortable-chosen
-    &.draggable-item
-      a
-        padding-left: .75rem !important
-
-.menu-dragging-level-1
-  .sortable-chosen
-    &.draggable-item
-      a
-        padding-left: 1.5rem !important
-
-.menu-dragging-level-2
-  .sortable-chosen
-    &.draggable-item
-      a
-        padding-left: 2.25rem !important
-
-.menu-dragging-level-3
-  .sortable-chosen
-    &.draggable-item
-      a
-        padding-left: 3rem !important
-
 
 .menu-section-leave-active
   transition: none

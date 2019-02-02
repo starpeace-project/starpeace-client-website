@@ -17,8 +17,8 @@ import TranslationsLibrary from '~/plugins/starpeace-client/state/core/library/t
 import BuildingCache from '~/plugins/starpeace-client/state/core/cache/building-cache.coffee'
 import CompanyCache from '~/plugins/starpeace-client/state/core/cache/company-cache.coffee'
 import CorporationCache from '~/plugins/starpeace-client/state/core/cache/corporation-cache.coffee'
+import GalaxyCache from '~/plugins/starpeace-client/state/core/cache/galaxy-cache.coffee'
 import PlanetsCache from '~/plugins/starpeace-client/state/core/cache/planets-cache.coffee'
-import SystemsCache from '~/plugins/starpeace-client/state/core/cache/systems-cache.coffee'
 import TycoonCache from '~/plugins/starpeace-client/state/core/cache/tycoon-cache.coffee'
 
 import TimeUtils from '~/plugins/starpeace-client/utils/time-utils.coffee'
@@ -41,19 +41,19 @@ export default class CoreState
     @building_cache = new BuildingCache()
     @company_cache = new CompanyCache()
     @corporation_cache = new CorporationCache()
+    @galaxy_cache = new GalaxyCache()
     @planets_cache = new PlanetsCache()
-    @systems_cache = new SystemsCache()
     @tycoon_cache = new TycoonCache()
 
     @building_cache.reset_state()
     @company_cache.reset_state()
     @corporation_cache.reset_state()
+    @galaxy_cache.reset_state()
     @planets_cache.reset_state()
-    @systems_cache.reset_state()
     @tycoon_cache.reset_state()
 
   has_assets: (language_code, map_id, planet_type) ->
     @building_library.has_assets() && @concrete_library.has_assets() && @effect_library.has_assets() &&
         @invention_library.has_metadata() && @land_library.has_assets(planet_type) && @map_library.has_assets(map_id) &&
-        @news_library.has_metadata() && @overlay_library.has_assets() && @plane_library.has_assets() &&
+        @news_library.has_metadata(language_code) && @overlay_library.has_assets() && @plane_library.has_assets() &&
         @road_library.has_assets() && @translations_library.has_metadata(language_code)

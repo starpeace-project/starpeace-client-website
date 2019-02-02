@@ -1,0 +1,82 @@
+{
+  "ui.workflow.loading": {
+    "DE": "Wird geladen...",
+    "EN": "Loading...",
+    "ES": "Cargando...",
+    "FR": "Chargement...",
+    "IT": "Caricamento in corso...",
+    "PT": "Carregando..."
+  },
+  "ui.workflow.loading.initializing": {
+    "DE": "Initialisierung...",
+    "EN": "Initializing...",
+    "ES": "Inicializando...",
+    "FR": "Initialisation...",
+    "IT": "L'inizializzazione...",
+    "PT": "Inicializando..."
+  },
+  "ui.workflow.loading.pending_identity": {
+    "DE": "Simulieren der Identitätsauthentifizierung mit dem Anbieter...",
+    "EN": "Simulating identity authentication with provider...",
+    "ES": "Simulación de autenticación de identidad con proveedor...",
+    "FR": "Simulation de l'authentification d'identité avec le fournisseur...",
+    "IT": "Simulazione dell'autenticazione dell'identità con il provider...",
+    "PT": "Simulando autenticação de identidade com provedor..."
+  },
+  "ui.workflow.loading.pending_session": {
+    "DE": "Autorisierungssitzung für Identität...",
+    "EN": "Authorizing session for identity...",
+    "ES": "Sesión de autorización de identidad...",
+    "FR": "Autorisation de session pour identité...",
+    "IT": "Autorizzazione sessione per identità...",
+    "PT": "Autorizando sessão para identidade..."
+  },
+  "ui.workflow.loading.pending_tycoon_metadata": {
+    "DE": "Informationen zum Tycoon abrufen...",
+    "EN": "Retrieving tycoon information...",
+    "ES": "Recuperando información de magnate...",
+    "FR": "Récupération des informations sur les magnats...",
+    "IT": "Recupero di informazioni su tycoon...",
+    "PT": "Recuperando informações do magnata..."
+  },
+  "ui.workflow.loading.pending_galaxy_metadata": {
+    "DE": "Galaxieninformationen abrufen...",
+    "EN": "Retrieving galaxy information...",
+    "ES": "Recuperando información de la galaxia...",
+    "FR": "Récupération d'informations sur la galaxie...",
+    "IT": "Recupero delle informazioni sulla galassia...",
+    "PT": "Recuperando informações da galáxia..."
+  },
+  "ui.workflow.loading.pending_assets": {
+    "DE": "Laden von Assets und Ressourcen...",
+    "EN": "Loading assets and resources...",
+    "ES": "Cargando activos y recursos...",
+    "FR": "Chargement des actifs et des ressources...",
+    "IT": "Caricamento di risorse e risorse...",
+    "PT": "Carregando recursos e recursos..."
+  },
+  "ui.workflow.loading.pending_planet_details": {
+    "DE": "Planetendetails werden geladen...",
+    "EN": "Loading planet details...",
+    "ES": "Cargando detalles del planeta...",
+    "FR": "Chargement des détails de la planète...",
+    "IT": "Caricamento dei dettagli del pianeta...",
+    "PT": "Carregando detalhes do planeta..."
+  },
+  "ui.workflow.loading.pending_player_data": {
+    "DE": "Tycoon- und Unternehmensdaten werden geladen...",
+    "EN": "Loading tycoon and corporation data...",
+    "ES": "Cargando datos de magnates y corporaciones...",
+    "FR": "Chargement des données sur le magnat et la société...",
+    "IT": "Caricamento dei dati di magnate e società...",
+    "PT": "Carregando dados do magnata e corporação..."
+  },
+  "ui.workflow.loading.pending_initialization": {
+    "DE": "Client-Umgebung wird initialisiert...",
+    "EN": "Initializing client environment...",
+    "ES": "Inicializando el entorno del cliente...",
+    "FR": "Initialisation de l'environnement client...",
+    "IT": "Inizializzazione dell'ambiente client...",
+    "PT": "Inicializando o ambiente do cliente..."
+  }
+}

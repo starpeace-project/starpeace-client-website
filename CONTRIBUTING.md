@@ -23,7 +23,7 @@ The following is a set of guidelines for contributing to STARPEACE client websit
   * [Git Commit Messages](#git-commit-messages)
   * [JavaScript Styleguide](#javascript-styleguide)
   * [CoffeeScript Styleguide](#coffeescript-styleguide)
-  * [HAML Styleguide](#haml-styleguide)
+  * [Pug Styleguide](#pug-styleguide)
   * [SASS Styleguide](#sass-styleguide)
   * [Vue and Nuxtjs Styleguide](#vue-and-nuxtjs-styleguide)
 
@@ -246,7 +246,7 @@ Coffeescript is preferred, though if used, all JavaScript must adhere to [JavaSc
 ### SASS Styleguide
 
 
-### HAML Styleguide
+### Pug Styleguide
 
 
 ### Vue and Nuxtjs Styleguide

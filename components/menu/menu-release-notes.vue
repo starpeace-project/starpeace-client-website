@@ -1,27 +1,32 @@
-<template lang='haml'>
+<template lang='pug'>
 #notes-container
   .card.is-starpeace.has-header
     .card-header
-      .card-header-title
-        Release Notes
-      .card-header-icon.card-close{'v-on:click.stop.prevent':"client_state.menu.toggle_menu('release_notes')"}
-        %font-awesome-icon{':icon':"['fas', 'times']"}
+      .card-header-title {{translate('ui.menu.release_notes.header')}}
+      .card-header-icon.card-close(v-on:click.stop.prevent="client_state.menu.toggle_menu('release_notes')")
+        font-awesome-icon(:icon="['fas', 'times']")
     .card-content.sp-menu-background.release-notes
       .card-description
-        Visit the
-        %a{href:'/release', target:'_blank'} release notes archive
-        &nbsp;to view additional notes and historical changelog.
-      %span.notes-wrapper
-        %aside.notes-content.sp-scrollbar{'v-html':'release_notes_html'}
+        | {{translate('ui.menu.release_notes.info.prefix')}}
+        |
+        a(href='/release', target='_blank') {{translate('ui.menu.release_notes.info.link')}}
+        |
+        | {{translate('ui.menu.release_notes.info.suffix')}}
+      span.notes-wrapper
+        aside.notes-content.sp-scrollbar(v-html='release_notes_html')
 </template>
 
 <script lang='coffee'>
 export default
   props:
     client_state: Object
+    managers: Object
 
   data: ->
     release_notes_html: process.env.RELEASE_NOTES_HTML
+
+  methods:
+    translate: (text_key) -> @managers?.translation_manager?.text(text_key)
 </script>
 
 <style lang='sass' scoped>

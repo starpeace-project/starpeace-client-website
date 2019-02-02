@@ -1,0 +1,163 @@
+{
+  "ui.menu.research.header": {
+    "DE": "Forschung",
+    "EN": "Research",
+    "ES": "Investigación",
+    "FR": "Recherche",
+    "IT": "Ricerca",
+    "PT": "Indagação"
+  },
+  "ui.menu.research.status.available": {
+    "DE": "Erhältlich",
+    "EN": "Available",
+    "ES": "Disponible",
+    "FR": "Disponible",
+    "IT": "A Disposizione",
+    "PT": "Disponível"
+  },
+  "ui.menu.research.status.in_progress": {
+    "DE": "Bearbeitung",
+    "EN": "In Progress",
+    "ES": "En Progreso",
+    "FR": "En Cours",
+    "IT": "In Corso",
+    "PT": "Em Progresso"
+  },
+  "ui.menu.research.status.completed": {
+    "DE": "Abgeschlossen",
+    "EN": "Completed",
+    "ES": "Terminado",
+    "FR": "Terminé",
+    "IT": "Completato",
+    "PT": "Concluído"
+  },
+  "ui.menu.research.details.status.available": {
+    "DE": "Verfügbar für die Forschung",
+    "EN": "Available for Research",
+    "ES": "Disponible para Investigación",
+    "FR": "Disponible pour la Recherche",
+    "IT": "Disponibile per la Ricerca",
+    "PT": "Disponível para Pesquisa"
+  },
+  "ui.menu.research.details.status.dependencies_required": {
+    "DE": "Abhängigkeiten Erforderlich",
+    "EN": "Dependencies Required",
+    "ES": "Dependencias Requeridas",
+    "FR": "Dépendances Requises",
+    "IT": "Dipendenze Richieste",
+    "PT": "Dependências Necessárias"
+  },
+  "ui.menu.research.details.status.in_progress": {
+    "DE": "Bearbeitung",
+    "EN": "In Progress",
+    "ES": "En Progreso",
+    "FR": "En Cours",
+    "IT": "In Corso",
+    "PT": "Em Progresso"
+  },
+  "ui.menu.research.details.status.in_progress": {
+    "DE": "In Warteschlange",
+    "EN": "Queued",
+    "ES": "En Cola",
+    "FR": "En File D'Attente",
+    "IT": "In Coda",
+    "PT": "Na Fila"
+  },
+  "ui.menu.research.details.status.completed": {
+    "DE": "Erforscht",
+    "EN": "Researched",
+    "ES": "Investigado",
+    "FR": "Recherché",
+    "IT": "Studiato",
+    "PT": "Pesquisado"
+  },
+  "ui.menu.research.status.label": {
+    "DE": "Status",
+    "EN": "Status",
+    "ES": "Estado",
+    "FR": "Statut",
+    "IT": "Stato",
+    "PT": "Estado"
+  },
+  "ui.menu.research.none.label": {
+    "DE": "Keiner",
+    "EN": "None",
+    "ES": "Ninguna",
+    "FR": "Aucun",
+    "IT": "Nessuna",
+    "PT": "Nenhum"
+  },
+  "ui.menu.research.cost.label": {
+    "DE": "Kosten",
+    "EN": "Cost",
+    "ES": "Costo",
+    "FR": "Coût",
+    "IT": "Costo",
+    "PT": "Custo"
+  },
+  "ui.menu.research.level.label": {
+    "DE": "Rang",
+    "EN": "Level",
+    "ES": "Rango",
+    "FR": "Rang",
+    "IT": "Nivel",
+    "PT": "Classe"
+  },
+  "ui.menu.research.requires.label": {
+    "DE": "Erfordern",
+    "EN": "Requires",
+    "ES": "Necesitar",
+    "FR": "Nécessiter",
+    "IT": "Requiere",
+    "PT": "Necessitar"
+  },
+  "ui.menu.research.allows.label": {
+    "DE": "Erlaubt",
+    "EN": "Allows",
+    "ES": "Permite",
+    "FR": "Permet",
+    "IT": "Consente",
+    "PT": "Permite"
+  },
+  "ui.menu.research.other.label": {
+    "DE": "anderer",
+    "EN": "other",
+    "ES": "mas",
+    "FR": "autre",
+    "IT": "altro",
+    "PT": "outro"
+  },
+  "ui.menu.research.others.label": {
+    "DE": "andere",
+    "EN": "others",
+    "ES": "otros",
+    "FR": "autres",
+    "IT": "altri",
+    "PT": "outros"
+  },
+  "ui.menu.research.actions.start.label": {
+    "DE": "Starten Sie die Forschung",
+    "EN": "Start Research",
+    "ES": "Iniciar la Investigación",
+    "FR": "Commencer la Recherche",
+    "IT": "Inizia la Ricerca",
+    "PT": "Iniciar Pesquisa"
+  },
+  "ui.menu.research.actions.cancel.label": {
+    "DE": "Forschung Abbrechen",
+    "EN": "Cancel Research",
+    "ES": "Cancelar la Investigación",
+    "FR": "Annuler la Recherche",
+    "IT": "Annulla Ricerca",
+    "PT": "Cancelar Pesquisa"
+  },
+  "ui.menu.research.actions.sell.label": {
+    "DE": "Forschung Verkaufen",
+    "EN": "Sell Research",
+    "ES": "Vender Investigación",
+    "FR": "Vendre de la Recherche",
+    "IT": "Vendi Ricerca",
+    "PT": "Vender Pesquisa"
+  }
+
+}

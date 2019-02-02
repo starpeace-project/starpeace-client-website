@@ -9,11 +9,11 @@ export default class MetadataPlanet
 
   is_fresh: () -> TimeUtils.within_minutes(@as_of, 15)
 
-  @from_json: (system_id, json) ->
+  @from_json: (json) ->
     metadata = new MetadataPlanet(json.id)
-    metadata.system_id = system_id
+    metadata.system_name = json.system_name
     metadata.name = json.name
-    metadata.enabled = json.enabled
+    metadata.enabled = json.enabled == true || json.enabled == "true"
     metadata.planet_type = json.planet_type
     metadata.planet_width = json.planet_width
     metadata.planet_height = json.planet_height

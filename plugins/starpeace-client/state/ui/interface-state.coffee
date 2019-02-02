@@ -19,6 +19,9 @@ export default class InterfaceState
     @static_news_index = -1
     @event_ticker_message = '' # FIXME: TODO: move to better state class
 
+    @show_remove_galaxy = false
+    @show_add_galaxy = false
+
     @show_overlay = false
     @current_overlay = Overlay.TYPES.TOWNS
     @show_losing_facilities = false
@@ -32,8 +35,6 @@ export default class InterfaceState
     @last_mouse_y = -1
 
     @selected_building_id = null
-
-    @systems_menu_selected_system_id = null
 
     @inventions_selected_category = 'SERVICE'
     @inventions_selected_industry_type = 'GENERAL'

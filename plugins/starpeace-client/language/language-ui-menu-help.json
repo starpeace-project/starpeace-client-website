@@ -1,0 +1,26 @@
+{
+  "ui.menu.help.header": {
+    "DE": "Hilfe",
+    "EN": "Help",
+    "ES": "Ayuda",
+    "FR": "Aidez-moi",
+    "IT": "Aiuto",
+    "PT": "Socorro"
+  },
+  "ui.menu.help.link.info": {
+    "DE": "Die vollständige Dokumentation",
+    "EN": "Full documentation can be",
+    "ES": "La documentación completa se puede",
+    "FR": "Une documentation complète est",
+    "IT": "La documentazione completa è",
+    "PT": "Documentação completa pode ser"
+  },
+  "ui.menu.help.link.text": {
+    "DE": "finden Sie in der Bedienungsanleitung",
+    "EN": "found in the user guide",
+    "ES": "encontrar en la guía del usuario",
+    "FR": "disponible dans le guide de l'utilisateur",
+    "IT": "disponibile nella guida dell'utente",
+    "PT": "encontrada no guia do usuário"
+  }
+}

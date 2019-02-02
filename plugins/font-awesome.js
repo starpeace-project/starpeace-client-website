@@ -7,22 +7,26 @@ import {
   faEnvelope,
   faEye,
   faFolder as faFolderRegular,
-  faQuestionCircle
+  faQuestionCircle,
+  faSquare as faSquareRegular
 } from '@fortawesome/free-regular-svg-icons'
-library.add(faBuilding, faCircle, faComments, faEnvelope, faEye, faFolderRegular, faQuestionCircle)
+library.add(faBuilding, faCircle, faComments, faEnvelope, faEye, faFolderRegular, faQuestionCircle, faSquareRegular)
 
 import {
   faAngleUp,
   faCheck,
+  faCity,
   faCogs,
   faFastForward,
   faFlask,
   faFolder,
   faFolderOpen,
-  faGlobe,
+  faHammer,
+  faLandmark,
   faMagic,
   faMapMarkerAlt,
   faMapPin,
+  faMedal,
   faMinus,
   faMinusSquare,
   faParking,
@@ -30,7 +34,9 @@ import {
   faPlay,
   faPlus,
   faPlusSquare,
+  faPoll,
   faRedoAlt,
+  faSatellite,
   faSearch,
   faSearchLocation,
   faSquare,
@@ -44,9 +50,9 @@ import {
   faVolumeOff,
   faVolumeUp
 } from '@fortawesome/free-solid-svg-icons'
-library.add(faAngleUp, faCheck, faCogs, faFastForward, faFlask, faFolder, faFolderOpen, faGlobe, faMagic, faMapMarkerAlt, faMapPin,
-  faMinus, faMinusSquare, faParking, faPause, faPlay, faPlus, faPlusSquare, faRedoAlt, faSearch, faSearchLocation, faSquare, faTimes,
-  faToggleOff, faToggleOn, faTools, faUndoAlt, faUserSecret, faUserTie, faVolumeOff, faVolumeUp)
+library.add(faAngleUp, faCheck, faCity, faCogs, faFastForward, faFlask, faFolder, faFolderOpen, faHammer, faLandmark, faMagic, faMapMarkerAlt,
+  faMapPin, faMedal, faMinus, faMinusSquare, faParking, faPause, faPlay, faPlus, faPlusSquare, faPoll, faRedoAlt, faSatellite, faSearch,
+  faSearchLocation, faSquare, faTimes, faToggleOff, faToggleOn, faTools, faUndoAlt, faUserSecret, faUserTie, faVolumeOff, faVolumeUp)
 
 import { faBimobject, faDiscord, faGithub, faMegaport, faMizuni, faMonero, faTwitter } from '@fortawesome/free-brands-svg-icons'
 library.add(faBimobject, faDiscord, faGithub, faMegaport, faMizuni, faMonero, faTwitter)
