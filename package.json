@@ -10,9 +10,9 @@
   },
   "scripts": {
     "dev": "cross-env NODE_ENV=development PORT=11010 nuxt",
-    "build": "nuxt build",
+    "build": "nuxt build --no-lock",
     "start": "nuxt start",
-    "generate": "cross-env nuxt generate && del-cli ./dist/.nojekyll",
+    "generate": "cross-env nuxt generate --no-lock && del-cli ./dist/.nojekyll",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "precommit": "npm run lint"
   },
