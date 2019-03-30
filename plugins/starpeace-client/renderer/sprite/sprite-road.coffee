@@ -20,4 +20,4 @@ export default class SpriteRoad extends Sprite
     sprite.width = width
     sprite.height = height
     sprite.tint = 0xFFFFFF
-    sprite.zOrder = -1 * (canvas.y - .5 * viewport.tile_height) - (if @is_over_water || @is_bridge then viewport.tile_height else 0)
+    sprite.zIndex = (canvas.y - .5 * viewport.tile_height) - (if @is_over_water || @is_bridge then viewport.tile_height else 0)

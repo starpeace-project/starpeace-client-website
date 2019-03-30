@@ -23,4 +23,4 @@ export default class SpriteEffect extends Sprite
     sprite.width = width
     sprite.height = height
     sprite.tint = 0xFFFFFF
-    sprite.zOrder = parent_sprite.zOrder - 1
+    sprite.zIndex = parent_sprite.zIndex + 1

@@ -1,15 +1,13 @@
 
-###
-global PIXI
-###
+import * as PIXI from 'pixi.js'
 
 export default class AssetManager
   @CDN_URL: 'https://cdn.starpeace.io'
   @CDN_VERSION: '78c6237075264f80cbd9d61eea52f04b'
 
   constructor: (@ajax_state) ->
-    PIXI.loader.baseUrl = "#{AssetManager.CDN_URL}/#{AssetManager.CDN_VERSION}"
-    PIXI.loader.onProgress.add (e) =>
+    PIXI.Loader.shared.baseUrl = "#{AssetManager.CDN_URL}/#{AssetManager.CDN_VERSION}"
+    PIXI.Loader.shared.onProgress.add (e) =>
       @loading_progress = e.progress
 
     @loading = false
@@ -22,7 +20,7 @@ export default class AssetManager
       Logger.debug "attempted to load same key more than once: #{key}"
       return
 
-    PIXI.loader.add(key, asset_url)
+    PIXI.Loader.shared.add(key, asset_url)
     @key_callbacks[key] = callback
 
   load_queued: () ->
@@ -32,7 +30,7 @@ export default class AssetManager
 
     @loading = true
     @ajax_state.start_ajax()
-    PIXI.loader.load (loader, resources) =>
+    PIXI.Loader.shared.load (loader, resources) =>
       for key in pending_keys
         if resources[key]?
           @key_callbacks[key](resources[key])

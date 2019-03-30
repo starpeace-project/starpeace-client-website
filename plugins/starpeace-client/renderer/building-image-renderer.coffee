@@ -1,7 +1,6 @@
-###
-global addResizeListener
-global PIXI
-###
+
+import 'javascript-detect-element-resize'
+import * as PIXI from 'pixi.js'
 
 WEBGL_CONTAINER = 'construction-image-webgl-container'
 
@@ -40,9 +39,11 @@ export default class BuildingImageRenderer
     @renderer_width = Math.ceil(render_container.offsetWidth)
     @renderer_height = Math.ceil(render_container.offsetHeight)
 
-    # backgroundColor : 0x000000
-    @application = new PIXI.Application(@renderer_width, @renderer_height, { transparent: true })
-    @application.stage = new PIXI.display.Stage()
+    @application = new PIXI.Application({
+      width: @renderer_width
+      height: @renderer_height
+      transparent: true
+    })
 
     @container = new PIXI.Container()
     @application.stage.addChild(@container)

@@ -1,5 +1,6 @@
 
 import _ from 'lodash'
+import * as PIXI from 'pixi.js'
 
 import BuildingZone from '~/plugins/starpeace-client/overlay/building-zone.coffee'
 

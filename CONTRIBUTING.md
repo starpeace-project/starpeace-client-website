@@ -45,16 +45,16 @@ STARPEACE Project is made up [several repositories](https://github.com/starpeace
 * [starpeace-website-client-assets](https://github.com/starpeace-project/starpeace-website-client-assets) - raw media assets, gameplay resources, and procedural generation logic for client
 * [starpeace-website-documentation](https://github.com/starpeace-project/starpeace-website-documentation) - static and dynamic documentation website
 
-### Server
-* [starpeace-lumen-api-interface](https://github.com/starpeace-project/starpeace-lumen-api-interface) - primary API interface
-* [starpeace-laravel-controller](https://github.com/starpeace-project/starpeace-laravel-controller) - API container and controller
-* [starpeace-eloquent-models](https://github.com/starpeace-project/starpeace-eloquent-models) - backend data models
-* [starpeace-simulation-engine](https://github.com/starpeace-project/starpeace-simulation-engine) - simulation engine
+### Server - Universe (identity management and galaxy directory)
+* starpeace-server-universe-api - STARPEACE Universe API interface (TBD)
+
+### Server - Galaxy (game-play and simulation server)
+* [starpeace-server-galaxy-api](https://github.com/starpeace-project/starpeace-server-galaxy-api) - STARPEACE Galaxy API interface
+* [starpeace-server-galaxy-nodejs](https://github.com/starpeace-project/starpeace-server-galaxy-nodejs) - STARPEACE Galaxy implementation in NodeJS using express
 
 ### Misc
 * [starpeace-documents-public](https://github.com/starpeace-project/starpeace-documents-public) - public design, planning, and gameplay documents
-* [starpeace-project-website](https://github.com/starpeace-project/starpeace-project-website) - project static content and information
-
+* [starpeace-project-website](https://github.com/starpeace-project/starpeace-project-website) - project static content, auto-generated API documentation, and community information
 
 ### Design Decisions
 

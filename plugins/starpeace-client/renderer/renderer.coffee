@@ -1,9 +1,10 @@
 
 ###
-global addResizeListener
 global FPSMeter
-global PIXI
 ###
+
+import 'javascript-detect-element-resize'
+import * as PIXI from 'pixi.js'
 
 import ChunkMap from '~/plugins/starpeace-client/map/chunk/chunk-map.coffee'
 
@@ -48,13 +49,13 @@ export default class Renderer
     @renderer_width = Math.ceil(render_container.offsetWidth)
     @renderer_height = Math.ceil(render_container.offsetHeight)
     @client_state.camera.resize(@renderer_width, @renderer_height)
-    @application = new PIXI.Application(@renderer_width, @renderer_height, {
+    @application = new PIXI.Application({
+      width: @renderer_width
+      height: @renderer_height
       backgroundColor : 0x000000
     })
-    @application.stage = new PIXI.display.Stage()
-    @application.stage.group.enableSort = true
 
-    @client_state.webgl_warning = !(@application.renderer instanceof PIXI.WebGLRenderer)
+    @client_state.webgl_warning = !(@application.renderer instanceof PIXI.Renderer)
 
     render_container.appendChild(@application.view)
 

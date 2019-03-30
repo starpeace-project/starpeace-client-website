@@ -1,4 +1,7 @@
 
+import { Polygon } from 'pixi.js'
+
+import CompositePolygon from '~/plugins/pixi/composite-polygon'
 import Sprite from '~/plugins/starpeace-client/renderer/sprite/sprite.coffee'
 
 export default class SpriteBuilding extends Sprite
@@ -12,7 +15,7 @@ export default class SpriteBuilding extends Sprite
 
   hit_area: (viewport) ->
     return null unless @_hit_area.length
-    new PIXI.CompositePolygon(_.map(@_hit_area, (vertices) -> new PIXI.Polygon(_.flatten(_.map(vertices, (vertex) -> [ vertex.x, vertex.y ] )))))
+    new CompositePolygon(_.map(@_hit_area, (vertices) -> new Polygon(_.flatten(_.map(vertices, (vertex) -> [ vertex.x, vertex.y ] )))))
 
   render: (sprite, canvas, viewport) ->
     width = @width(viewport)
@@ -26,4 +29,4 @@ export default class SpriteBuilding extends Sprite
     sprite.height = height
     sprite.tint = 0xFFFFFF
 
-    sprite.zOrder = -1 * (sprite.y + sprite.height - Math.round(.5 * @image_metadata.h * viewport.tile_height))
+    sprite.zIndex = sprite.y + sprite.height - Math.round(.5 * @image_metadata.h * viewport.tile_height)

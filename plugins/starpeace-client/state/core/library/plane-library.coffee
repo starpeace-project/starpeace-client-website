@@ -1,4 +1,6 @@
 
+import * as PIXI from 'pixi.js'
+
 import AssetLibrary from '~/plugins/starpeace-client/state/core/library/asset-library.coffee'
 import TextureAtlasCache from '~/plugins/starpeace-client/state/core/texture-atlas-cache.coffee'
 

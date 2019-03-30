@@ -1,7 +1,5 @@
 
-###
-global PIXI
-###
+import * as PIXI from 'pixi.js'
 
 import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
 import Logger from '~/plugins/starpeace-client/logger.coffee'
@@ -41,8 +39,7 @@ export default class LayerCache
     else
       throw "maximum number sprites reached" if @max_size > 0 && @sprite_count >= @max_size
       @sprite_count += 1
-      sprite = @sprite_pool[render_state[@id]] = if @is_animated then new PIXI.extras.AnimatedSprite(textures) else new PIXI.Sprite(textures[0])
-      sprite.parentLayer = @common_zorder_layer if @common_zorder_layer?
+      sprite = @sprite_pool[render_state[@id]] = if @is_animated then new PIXI.AnimatedSprite(textures) else new PIXI.Sprite(textures[0])
       if @pointer_events
         sprite.interactive = true
         sprite.interactiveChildren = false

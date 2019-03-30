@@ -59,7 +59,6 @@ module.exports = {
   build: {
     // analyze: true,
     publicPath: '/assets/',
-    vendor: ['fpsmeter', 'howler', 'interactjs', 'javascript-detect-element-resize', 'lodash', 'pixi.js', 'tinygradient', 'v-contextmenu'],
     extend (config, { isDev, isClient, isServer }) {
       config.module.rules.push({
         test: /\.coffee$/,
@@ -71,22 +70,6 @@ module.exports = {
         use: [ 'html-loader', 'markdown-loader' ],
         exclude: /(node_modules)/
       });
-      config.module.rules.push({
-        test: /\.js/,
-        use: 'babel-loader',
-        include: [
-          path.resolve('node_modules/vue-echarts'),
-          path.resolve('node_modules/resize-detector')
-        ]
-      });
-
-      if (isServer) {
-        config.externals = [
-          node_externals({
-            whitelist: [/es6-promise|\.(?!(?:js|json)$).{1,5}$/i, /^vue-echarts/]
-          })
-        ];
-      }
 
       if (!isClient) {
         if (!fs.existsSync('.nuxt/dist/')) {
@@ -100,12 +83,12 @@ module.exports = {
     '@nuxtjs/moment', ['@nuxtjs/google-analytics', { id: 'UA-120729341-2', debug: { sendHitTask: !is_development } }]
   ],
   plugins: [
-    { src: '~/plugins/element-queries', ssr: false },
     { src: '~/plugins/flaticon', ssr: false },
     { src: '~/plugins/fpsmeter', ssr: false },
     { src: '~/plugins/font-awesome', ssr: false },
     { src: '~/plugins/google-analytics', ssr: false },
     { src: '~/plugins/pixi/pixi', ssr: false },
+    { src: '~/plugins/starpeace-client-application', ssr: false },
     { src: '~/plugins/vue2viz', ssr: false }
   ]
 }

@@ -1,8 +1,4 @@
 
-###
-global PIXI
-###
-
 import Sprite from '~/plugins/starpeace-client/renderer/sprite/sprite.coffee'
 
 import Logger from '~/plugins/starpeace-client/logger.coffee'

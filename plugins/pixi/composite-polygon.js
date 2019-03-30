@@ -1,7 +1,7 @@
 
 import * as PIXI from 'pixi.js';
 
-class CompositePolygon extends PIXI.Polygon {
+export default class CompositePolygon extends PIXI.Polygon {
   constructor(polygons) {
     super([]);
 
@@ -26,5 +26,3 @@ class CompositePolygon extends PIXI.Polygon {
     return false;
   }
 }
-
-PIXI.CompositePolygon = CompositePolygon

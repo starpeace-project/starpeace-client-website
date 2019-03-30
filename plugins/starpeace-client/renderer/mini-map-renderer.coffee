@@ -1,7 +1,6 @@
-###
-global addResizeListener
-global PIXI
-###
+
+import 'javascript-detect-element-resize'
+import * as PIXI from 'pixi.js'
 
 import MetadataLand from '~/plugins/starpeace-client/land/metadata-land.coffee'
 
@@ -83,7 +82,7 @@ export default class MiniMapRenderer
 
     buffer_context = dom_buffer.getContext('2d')
     buffer_context.putImageData(image_data, 0, 0)
-    PIXI.utils.TextureCache[MINI_MAP_TEXTURE_KEY] = PIXI.Texture.fromCanvas(dom_buffer)
+    PIXI.utils.TextureCache[MINI_MAP_TEXTURE_KEY] = PIXI.Texture.from(dom_buffer)
     @sprite.texture = PIXI.utils.TextureCache[MINI_MAP_TEXTURE_KEY] if @sprite
 
     @pending_refresh = null
@@ -104,8 +103,11 @@ export default class MiniMapRenderer
     @renderer_width = Math.ceil(render_container.offsetWidth)
     @renderer_height = Math.ceil(render_container.offsetHeight)
 
-    @application = new PIXI.Application(@renderer_width, @renderer_height, { backgroundColor : 0x000000 })
-    @application.stage = new PIXI.display.Stage()
+    @application = new PIXI.Application({
+      width: @renderer_width
+      height: @renderer_height
+      backgroundColor : 0x000000
+    })
 
     @container = new PIXI.Container()
     @container.scale = new PIXI.Point(1, .5)

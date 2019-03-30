@@ -1,9 +1,10 @@
 
-## v0.4 - in progress - updated 2019-02-01
+## v0.4 - in progress - updated 2019-03-29
 ### platform
 * [done] improve API integration with galaxies [v0.3.1]
-* [in progress] document metadata and gameplay resources
-* [in progress] document API integration (tycoon info, building data and construction, events, inventions, mail)
+* [done] document API integration (tycoon info, building data and construction, events, inventions, mail) [starpeace-server-galaxy-api]
+* [done] upgrade platform dependencies (nuxt, PixiJS) [v0.3.2]
+* [in progress] document metadata and gameplay resources [starpeace-assets]
 * [pending] manage corporation and company mock API's
 * [pending] manage mail API integration (mock)
 * [pending] search and rankings API integration (mock)
@@ -11,10 +12,13 @@
 
 ### assets
 * [done] finish initial language translation for assets [v0.3.1]
-* [in progress] initial building construction metadata (commerce, civics, headquarters, government)
-* [in progress] formal building stage metadata (timber, movies, farms)
-* [in progress] add mine industry and building metadata
+* [done] add mine industry and building metadata [v0.3.2]
+* [done] building stage metadata (timber, movies, farms) [v0.3.2]
+* [in progress] building construction metadata (all) [v0.3.2]
+* [in progress] integrate assets from starpeace-assets [v0.3.2]
+* [pending] civic building simulations and resources
 * [pending] building requirements for research per seal
+* [pending] building sign assets
 * [pending] car assets
 * [pending] street light and intersection lamp assets
 

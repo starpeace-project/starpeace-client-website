@@ -1,7 +1,5 @@
 
-###
-global PIXI
-###
+import * as PIXI from 'pixi.js'
 
 import LayerCache from '~/plugins/starpeace-client/renderer/layer/layer-cache.coffee'
 
@@ -11,33 +9,33 @@ export default class LayerManager
   @MAX_PARTICLES: 65536
 
   constructor: (@client_state) ->
-    @land_container = new PIXI.particles.ParticleContainer(LayerManager.MAX_PARTICLES, { tint: true, uvs: true, vertices: true })
+    @land_container = new PIXI.ParticleContainer(LayerManager.MAX_PARTICLES, { tint: true, uvs: true, vertices: true })
     @land_container.zIndex = 0
     @land_sprite_cache = new LayerCache(@land_container, null, LayerManager.MAX_PARTICLES, false, false)
 
-    @concrete_container = new PIXI.particles.ParticleContainer(LayerManager.MAX_PARTICLES, { uvs: true, vertices: true })
+    @concrete_container = new PIXI.ParticleContainer(LayerManager.MAX_PARTICLES, { uvs: true, vertices: true })
     @concrete_container.zIndex = 0
     @concrete_sprite_cache = new LayerCache(@concrete_container, null, LayerManager.MAX_PARTICLES, false, false)
 
-    @underlay_container = new PIXI.particles.ParticleContainer(LayerManager.MAX_PARTICLES, { tint: true, vertices: true })
+    @underlay_container = new PIXI.ParticleContainer(LayerManager.MAX_PARTICLES, { tint: true, vertices: true })
     @underlay_container.zIndex = 1
     @underlay_sprite_cache = new LayerCache(@underlay_container, null, LayerManager.MAX_PARTICLES, false, false)
 
-    @road_container = new PIXI.particles.ParticleContainer(LayerManager.MAX_PARTICLES, { uvs: true, vertices: true })
+    @road_container = new PIXI.ParticleContainer(LayerManager.MAX_PARTICLES, { uvs: true, vertices: true })
     @road_container.zIndex = 2
     @road_sprite_cache = new LayerCache(@road_container, null, LayerManager.MAX_PARTICLES, false, false)
 
-    @foundation_container = new PIXI.particles.ParticleContainer(LayerManager.MAX_PARTICLES, { tint: true, uvs: true, vertices: true })
+    @foundation_container = new PIXI.ParticleContainer(LayerManager.MAX_PARTICLES, { tint: true, uvs: true, vertices: true })
     @foundation_container.zIndex = 2
     @foundation_sprite_cache = new LayerCache(@foundation_container, null, LayerManager.MAX_PARTICLES, false, false)
 
     @with_height_container = new PIXI.Container()
     @with_height_container.zIndex = 3
-    @with_height_zorder_layer = new PIXI.display.Layer(new PIXI.display.Group(3, true))
-    @with_height_static_sprite_cache = new LayerCache(@with_height_container, @with_height_zorder_layer, 0, false, true)
-    @with_height_animated_sprite_cache = new LayerCache(@with_height_container, @with_height_zorder_layer, 0, true, true)
+    @with_height_container.sortableChildren = true
+    @with_height_static_sprite_cache = new LayerCache(@with_height_container, null, 0, false, true)
+    @with_height_animated_sprite_cache = new LayerCache(@with_height_container, null, 0, true, true)
 
-    @overlay_container = new PIXI.particles.ParticleContainer(LayerManager.MAX_PARTICLES, { tint: true, vertices: true })
+    @overlay_container = new PIXI.ParticleContainer(LayerManager.MAX_PARTICLES, { tint: true, vertices: true })
     @overlay_container.zIndex = 4
     @overlay_sprite_cache = new LayerCache(@overlay_container, null, LayerManager.MAX_PARTICLES, false, false)
 
@@ -53,11 +51,9 @@ export default class LayerManager
     container.destroy({ children: true, textures: false }) for container in @containers
 
   remove_from_stage: (stage) ->
-    stage.removeChild(@with_height_zorder_layer)
     stage.removeChild(container) for container in @containers
 
   add_to_stage: (stage) ->
-    stage.addChild(@with_height_zorder_layer)
     stage.addChild(container) for container in @containers
 
   clear_cache_sprites: (render_state) ->
@@ -80,7 +76,7 @@ export default class LayerManager
       concrete = sprite_cache.new_sprite(render_state, { texture:tile_item.sprite_info.concrete.texture })
       concrete_underlay = @with_height_static_sprite_cache.new_sprite(render_state, { texture:tile_item.sprite_info.underlay.texture }) if has_concrete_with_height && tile_item.sprite_info.underlay?
       tile_item.sprite_info.concrete.render(concrete, canvas, viewport)
-      tile_item.sprite_info.underlay.render(concrete_underlay, concrete.zOrder, false, canvas, viewport) if concrete_underlay?
+      tile_item.sprite_info.underlay.render(concrete_underlay, concrete.zIndex, false, canvas, viewport) if concrete_underlay?
 
     has_road_with_height = if tile_item.sprite_info.road? then has_concrete_with_height || tile_item.sprite_info.road.is_bridge || tile_item.sprite_info.road.is_over_water else false
     if tile_item.sprite_info.road?.within_canvas(canvas, viewport)
@@ -88,7 +84,7 @@ export default class LayerManager
       road = sprite_cache.new_sprite(render_state, { texture:tile_item.sprite_info.road.texture })
       road_underlay = @with_height_static_sprite_cache.new_sprite(render_state, { texture:tile_item.sprite_info.underlay.texture }) if has_road_with_height && tile_item.sprite_info.underlay?
       tile_item.sprite_info.road.render(road, canvas, viewport)
-      tile_item.sprite_info.underlay.render(road_underlay, road.zOrder, false, canvas, viewport) if road_underlay?
+      tile_item.sprite_info.underlay.render(road_underlay, road.zIndex, false, canvas, viewport) if road_underlay?
 
     if !(has_road_with_height || has_concrete_with_height) && !tile_item.sprite_info.tree? && tile_item.sprite_info.underlay?.within_canvas(canvas, viewport)
       underlay = @underlay_sprite_cache.new_sprite(render_state, { texture:tile_item.sprite_info.underlay.texture })
@@ -98,7 +94,7 @@ export default class LayerManager
       tree = @with_height_static_sprite_cache.new_sprite(render_state, { texture:tile_item.sprite_info.tree.texture })
       tree_underlay = @with_height_static_sprite_cache.new_sprite(render_state, { texture:tile_item.sprite_info.underlay.texture }) if tile_item.sprite_info.underlay?
       tile_item.sprite_info.tree.render(tree, canvas, viewport)
-      tile_item.sprite_info.underlay.render(tree_underlay, tree.zOrder, true, canvas, viewport) if tree_underlay?
+      tile_item.sprite_info.underlay.render(tree_underlay, tree.zIndex, true, canvas, viewport) if tree_underlay?
 
     if tile_item.sprite_info.foundation?.within_canvas(canvas, viewport)
       foundation = @foundation_sprite_cache.new_sprite(render_state, { texture:tile_item.sprite_info.foundation.texture })

@@ -123,13 +123,15 @@ export default
         properties_by_type[key] = value for key,value of @selected_invention.properties
 
         properties.push @property_points('Prestige', properties_by_type.prestige) if properties_by_type.prestige?
-        properties.push @property_percent('Beauty', properties_by_type.beauty) if properties_by_type.beauty?
-        properties.push @property_percent('Efficiency', properties_by_type.efficiency) if properties_by_type.efficiency?
-        properties.push @property_percent('Environment', properties_by_type.environment) if properties_by_type.environment?
-        properties.push @property_points('Desirability', properties_by_type.desirability) if properties_by_type.desirability?
-        properties.push @property_points('Quality', properties_by_type.quality) if properties_by_type.quality?
-        properties.push @property_percent('Maintenance', properties_by_type.maintenance) if properties_by_type.maintenance?
         properties.push @property_points('Nobility', properties_by_type.nobility) if properties_by_type.nobility?
+
+        properties.push @property_points('Quality', properties_by_type.quality) if properties_by_type.quality?
+        properties.push @property_points('Desirability', properties_by_type.desirability) if properties_by_type.desirability?
+        properties.push @property_percent('Efficiency', properties_by_type.efficiency) if properties_by_type.efficiency?
+
+        properties.push @property_percent('Beauty', properties_by_type.beauty) if properties_by_type.beauty?
+        properties.push @property_percent('Environment', properties_by_type.environment) if properties_by_type.environment?
+        properties.push @property_percent('Maintenance', properties_by_type.maintenance) if properties_by_type.maintenance?
         properties.push @property_percent('Privacy', properties_by_type.privacy) if properties_by_type.privacy?
         properties.push @property_percent('Security', properties_by_type.security) if properties_by_type.security?
 
