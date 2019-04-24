@@ -72,10 +72,13 @@ module.exports = {
       });
 
       if (!isClient) {
-        if (!fs.existsSync('.nuxt/dist/')) {
-          fs.mkdirSync('.nuxt/dist/');
+        if (!fs.existsSync('.nuxt/dist')) {
+          fs.mkdirSync('.nuxt/dist');
         }
-        fs.writeFileSync('.nuxt/dist/client-version.json', "{\"version\":\"" + client_version + "\"}");
+        if (!fs.existsSync('.nuxt/dist/client')) {
+          fs.mkdirSync('.nuxt/dist/client');
+        }
+        fs.writeFileSync('.nuxt/dist/client/client-version.json', "{\"version\":\"" + client_version + "\"}");
       }
     }
   },

@@ -6,6 +6,7 @@ Some of the tentative future features and rough planned version are outlined bel
 ### platform
 * [pending] API authentication
 * [pending] integrate player and world events with news ticker
+* [pending] minimum distance between buildings (statue and tower)
 
 ### assets
 

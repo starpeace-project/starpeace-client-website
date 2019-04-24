@@ -1,5 +1,5 @@
 
-## v0.4 - in progress - updated 2019-03-29
+## v0.4 - in progress - updated 2019-04-23
 ### platform
 * [done] improve API integration with galaxies [v0.3.1]
 * [done] document API integration (tycoon info, building data and construction, events, inventions, mail) [starpeace-server-galaxy-api]
@@ -14,9 +14,9 @@
 * [done] finish initial language translation for assets [v0.3.1]
 * [done] add mine industry and building metadata [v0.3.2]
 * [done] building stage metadata (timber, movies, farms) [v0.3.2]
-* [in progress] building construction metadata (all) [v0.3.2]
+* [done] building construction metadata (all) [v0.3.2]
+* [done] office, residential, and civic building simulations and resources [v0.3.2]
 * [in progress] integrate assets from starpeace-assets [v0.3.2]
-* [pending] civic building simulations and resources
 * [pending] building requirements for research per seal
 * [pending] building sign assets
 * [pending] car assets
