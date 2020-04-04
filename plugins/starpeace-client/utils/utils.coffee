@@ -14,7 +14,7 @@ export default class Utils
     context.getImageData(0, 0, image.width, image.height).data
 
   @format_money: (value, decimals=0) ->
-    value.toFixed(0).replace(new RegExp('\\d(?=(\\d{3})+$)', 'g'), '$&,')
+    (value || 0).toFixed(0).replace(new RegExp('\\d(?=(\\d{3})+$)', 'g'), '$&,')
 
   @join_with_oxford_comma: (parts, separator) ->
     if parts.length > 2

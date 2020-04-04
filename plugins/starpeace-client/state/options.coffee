@@ -55,24 +55,23 @@ export default class Options
   notify_options_listeners: () -> @event_listener.notify_listeners('options')
 
   load_galaxies_from_storage: () ->
-    galaxies = []
+    galaxies = [{
+      id: 'browser-sandbox'
+      api_protocol: 'http'
+      api_url: 'sandbox-galaxy.starpeace.io'
+      api_port: 19160
+    }]
+
     raw_galaxies = JSON.parse(localStorage.getItem('galaxies') || "[]")
     if Array.isArray(raw_galaxies)
       for galaxy in raw_galaxies
-        if Array.isArray(galaxy) && galaxy.length == 4
+        if Array.isArray(galaxy) && galaxy.length == 4 && galaxy[0].indexOf('sandbox') < 0 && galaxy[1]?.length && galaxy[2]?.length && galaxy[3]?.length
           galaxies.push {
-            id: galaxy[0]
+            id: galaxy[0] || Utils.uuid()
             api_protocol: galaxy[1]
             api_url: galaxy[2]
             api_port: galaxy[3]
           }
-    unless galaxies.length
-      galaxies.push {
-        id: 'temporary-browser-sandbox'
-        api_protocol: 'http'
-        api_url: 'sandbox-galaxy.starpeace.io'
-        api_port: 19160
-      }
     galaxies
   save_galaxies_to_storage: () ->
     galaxies = []

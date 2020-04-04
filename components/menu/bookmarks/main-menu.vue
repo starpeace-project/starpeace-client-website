@@ -25,10 +25,12 @@
         img(src='~/assets/images/icons/residentials/lower.svg')
       a.filter-toggle.tooltip.is-tooltip-top(:class="filter_class('offices')", v-on:click.stop.prevent="toggle_filter('offices')", :data-tooltip="translate('ui.menu.bookmarks.filter.offices')")
         img(src='~/assets/images/icons/offices/office-block.svg')
+
     aside.sp-menu.sp-scrollbar
       menu-section(v-if='show_poi && (show_towns || show_mausoleums)', :client_state='client_state', :managers='managers', root_id='bookmark-poi', :label_text="translate('ui.menu.bookmarks.section.poi')", :items_by_id='poi_items_by_id')
       menu-section(v-if='show_corporation && has_corporation', :client_state='client_state', :managers='managers', root_id='bookmark-corporation', :label_text="translate('ui.menu.bookmarks.section.corporation')", :items_by_id='corporation_items_by_id')
       menu-section(v-if='has_corporation', :client_state='client_state', :managers='managers', root_id='bookmarks', :label_text="translate('ui.menu.bookmarks.section.bookmarks')", :items_by_id='bookmark_items_by_id', is_draggable=true)
+
     .actions-container.level.is-mobile
       .level-item.action-column
         a.button.is-small.is-fullwidth.is-starpeace(disabled='disabled') {{translate('ui.menu.bookmarks.action.organize')}}
@@ -36,10 +38,10 @@
         a.button.is-small.is-fullwidth.is-starpeace(:disabled='actions_disabled', v-on:click.stop.prevent='add_folder') {{translate('ui.menu.bookmarks.action.add-folder')}}
       .level-item.action-column
         a.button.is-small.is-fullwidth.is-starpeace(:disabled='actions_disabled', v-on:click.stop.prevent='add_bookmark') {{translate('ui.menu.bookmarks.action.add-bookmark')}}
+
 </template>
 
 <script lang='coffee'>
-import IndustryType from '~/plugins/starpeace-client/industry/industry-type.coffee'
 import Bookmark from '~/plugins/starpeace-client/bookmark/bookmark.coffee'
 import BookmarkFolder from '~/plugins/starpeace-client/bookmark/bookmark-folder.coffee'
 

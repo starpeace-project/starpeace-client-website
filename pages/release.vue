@@ -1,5 +1,5 @@
 <template lang='pug'>
-no-ssr
+client-only
   #application-container(v-cloak=true)
     sp-header(:translation_manager='translation_manager', :options='options')
 
@@ -22,13 +22,11 @@ import Header from '~/components/page-layout/header.vue'
 import Footer from '~/components/page-layout/footer.vue'
 
 import Options from '~/plugins/starpeace-client/state/options.coffee'
-import TranslationsLibrary from '~/plugins/starpeace-client/state/core/library/translations-library.coffee'
 import TranslationManager from '~/plugins/starpeace-client/language/translation-manager.coffee'
 
 if process.client
   options = new Options()
-  translations_library = new TranslationsLibrary()
-  translation_manager = new TranslationManager(null, null, translations_library, options)
+  translation_manager = new TranslationManager(null, null, options)
 
 export default
   components:

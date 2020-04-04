@@ -2,16 +2,17 @@
 import _ from 'lodash'
 import Vue from 'vue'
 
-import CompanySeal from '~/plugins/starpeace-client/industry/company-seal.coffee'
-import AssetLibrary from '~/plugins/starpeace-client/state/core/library/asset-library.coffee'
+import Library from '~/plugins/starpeace-client/state/core/library/library.coffee'
 
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
 
-export default class InventionLibrary extends AssetLibrary
+export default class InventionLibrary extends Library
   constructor: () ->
     super()
+    @reset_planet()
 
+  reset_planet: () ->
     @metadata_by_id = {}
     @child_ids_by_id = {}
 
@@ -21,37 +22,39 @@ export default class InventionLibrary extends AssetLibrary
     @inventions_without_seal = []
     @inventions_by_seal = {}
 
-
   has_metadata: () -> Object.keys(@metadata_by_id).length > 0
 
-  initialize: (building_library) ->
+  initialize: (building_library, planet_library) ->
     if building_library.metadata_by_id?
       category_industry_type_seals = {}
       for key,info of building_library.metadata_by_id
-        continue unless info.category?.length && info.industry_type?.length
-        for seal_id in (info.seal_ids || [])
-          category_industry_type_seals[info.category] = {} unless category_industry_type_seals[info.category]?
-          category_industry_type_seals[info.category][info.industry_type] = {} unless category_industry_type_seals[info.category][info.industry_type]?
-          category_industry_type_seals[info.category][info.industry_type][seal_id] = true unless category_industry_type_seals[info.category][info.industry_type][seal_id]?
+        unless info.industry_category_id?.length && info.industry_type_id?.length && info.seal_id?.length
+          Logger.warn "building missing industry category <#{info.industry_category_id}>,  industry type <#{info.industry_type_id}>, or seal <#{info.seal_id}>"
+          continue
 
-          if info.industry_type == 'LC_RESIDENTIAL' || info.industry_type == 'MC_RESIDENTIAL' || info.industry_type == 'HC_RESIDENTIAL'
-            category_industry_type_seals[info.category]['RESIDENTIAL'] = {} unless category_industry_type_seals[info.category]['RESIDENTIAL']?
-            category_industry_type_seals[info.category]['RESIDENTIAL'][seal_id] = true unless category_industry_type_seals[info.category]['RESIDENTIAL'][seal_id]?
+        for seal_id in (if info.seal_id == 'GEN' then planet_library.seals_for_inventions() else [info.seal_id])
+          category_industry_type_seals[info.industry_category_id] = {} unless category_industry_type_seals[info.industry_category_id]?
+          category_industry_type_seals[info.industry_category_id][info.industry_type_id] = {} unless category_industry_type_seals[info.industry_category_id][info.industry_type_id]?
+          category_industry_type_seals[info.industry_category_id][info.industry_type_id][seal_id] = true unless category_industry_type_seals[info.industry_category_id][info.industry_type_id][seal_id]?
+
+          if info.industry_type_id == 'LC_RESIDENTIAL' || info.industry_type_id == 'MC_RESIDENTIAL' || info.industry_type_id == 'HC_RESIDENTIAL'
+            category_industry_type_seals[info.industry_category_id]['RESIDENTIAL'] = {} unless category_industry_type_seals[info.industry_category_id]['RESIDENTIAL']?
+            category_industry_type_seals[info.industry_category_id]['RESIDENTIAL'][seal_id] = true unless category_industry_type_seals[info.industry_category_id]['RESIDENTIAL'][seal_id]?
 
       @inventions_without_seal = []
       @inventions_by_seal = {}
       for id,invention of @metadata_by_id
-        unless invention.category?.length && invention.industry_type?.length
+        unless invention.industry_category_id?.length && invention.industry_type_id?.length
           @inventions_without_seal.push invention
           continue
 
-        if invention.industry_type == 'GENERAL'
-          for seal_id,seal of CompanySeal.SEALS
+        if invention.industry_type_id == 'GENERAL'
+          for seal_id in planet_library.seals_for_inventions()
             Vue.set(@inventions_by_seal, seal_id, []) unless @inventions_by_seal[seal_id]?
             @inventions_by_seal[seal_id].push invention
 
-        else if category_industry_type_seals[invention.category]?[invention.industry_type]?
-          for seal_id in Object.keys(category_industry_type_seals[invention.category]?[invention.industry_type])
+        else if category_industry_type_seals[invention.industry_category_id]?[invention.industry_type_id]?
+          for seal_id in Object.keys(category_industry_type_seals[invention.industry_category_id]?[invention.industry_type_id])
             Vue.set(@inventions_by_seal, seal_id, []) unless @inventions_by_seal[seal_id]?
             @inventions_by_seal[seal_id].push invention
 
@@ -94,5 +97,5 @@ export default class InventionLibrary extends AssetLibrary
     @downstream_ids_by_id[invention_id] || []
 
   all_metadata: () -> _.values(@metadata_by_id)
-  metadata_for_id: (invention_id) ->  @metadata_by_id[invention_id]
+  metadata_for_id: (invention_id) -> @metadata_by_id[invention_id]
   metadata_for_seal_id: (seal_id) -> if @inventions_by_seal[seal_id]? then @inventions_by_seal[seal_id] else []

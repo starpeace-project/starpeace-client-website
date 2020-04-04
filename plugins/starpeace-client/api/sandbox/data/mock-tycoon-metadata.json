@@ -1,0 +1,61 @@
+{
+  "tycoon-id-1": {
+    "id": "tycoon-id-1",
+    "name": "Tycoon Name",
+    "corporations": [
+      {
+        "id": "corp-id-1",
+        "name": "Corporation A",
+        "tycoonId": "tycoon-id-1",
+        "planetId": "planet-1",
+        "levelId": "ENTREPRENEUR",
+        "buildingCount": 0,
+        "companies": [
+          {
+            "id": "company-id-1",
+            "name": "Dissidents Company",
+            "sealId": "DIS"
+          },
+          {
+            "id": "company-id-2",
+            "name": "Magna Corp Company",
+            "sealId": "MAGNA"
+          },
+          {
+            "id": "company-id-3",
+            "name": "Mariko Enterprises Company",
+            "sealId": "MKO"
+          },
+          {
+            "id": "company-id-4",
+            "name": "The Moab Company",
+            "sealId": "MOAB"
+          },
+          {
+            "id": "company-id-5",
+            "name": "Pure Gaba Initiative Company",
+            "sealId": "PGI"
+          }
+        ]
+      },
+      {
+        "id": "corp-id-2",
+        "name": "Corporation B",
+        "tycoonId": "tycoon-id-1",
+        "planetId": "planet-3",
+        "levelId": "APPRENTICE",
+        "buildingCount": 0,
+        "companies": []
+      },
+      {
+        "id": "corp-id-3",
+        "name": "Corporation C",
+        "tycoonId": "tycoon-id-1",
+        "planetId": "planet-4",
+        "levelId": "APPRENTICE",
+        "buildingCount": 0,
+        "companies": []
+      }
+    ]
+  }
+}

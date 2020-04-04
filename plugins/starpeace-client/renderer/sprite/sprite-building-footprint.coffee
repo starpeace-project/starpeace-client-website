@@ -1,6 +1,4 @@
 
-import BuildingZone from '~/plugins/starpeace-client/overlay/building-zone.coffee'
-
 import Sprite from '~/plugins/starpeace-client/renderer/sprite/sprite.coffee'
 
 export default class SpriteBuildingFootprint extends Sprite
@@ -20,4 +18,4 @@ export default class SpriteBuildingFootprint extends Sprite
     sprite.y = canvas.y - (height - viewport.tile_height)
     sprite.width = width
     sprite.height = height
-    sprite.tint = @zone_color || BuildingZone.TYPES.RESERVED.color
+    sprite.tint = @zone_color

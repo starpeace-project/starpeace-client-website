@@ -1,5 +1,5 @@
 <template lang='pug'>
-no-ssr
+client-only
   sp-application
 </template>
 

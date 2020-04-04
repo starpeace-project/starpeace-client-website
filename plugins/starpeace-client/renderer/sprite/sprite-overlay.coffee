@@ -19,4 +19,4 @@ export default class SpriteOverlay extends Sprite
     sprite.width = width
     sprite.height = height
     sprite.tint = @color_tint
-    sprite.zIndex = (parent_zorder - viewport.tile_height) if parent_zorder?
+    sprite.zIndex = (if parent_zorder? then parent_zorder else (sprite.y + sprite.height - viewport.tile_height)) + 1

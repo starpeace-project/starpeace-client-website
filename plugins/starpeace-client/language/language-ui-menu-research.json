@@ -39,6 +39,14 @@
     "IT": "Disponibile per la Ricerca",
     "PT": "Disponível para Pesquisa"
   },
+  "ui.menu.research.details.status.level_required": {
+    "DE": "Höheres Level Erforderlich",
+    "EN": "Higher Level Required",
+    "ES": "Nivel Más Alto Requerido",
+    "FR": "Supérieur Niveau Requis",
+    "IT": "Livello Superiore Richiesto",
+    "PT": "Nível Superior Requerido"
+  },
   "ui.menu.research.details.status.dependencies_required": {
     "DE": "Abhängigkeiten Erforderlich",
     "EN": "Dependencies Required",
@@ -55,7 +63,7 @@
     "IT": "In Corso",
     "PT": "Em Progresso"
   },
-  "ui.menu.research.details.status.in_progress": {
+  "ui.menu.research.details.status.queued": {
     "DE": "In Warteschlange",
     "EN": "Queued",
     "ES": "En Cola",

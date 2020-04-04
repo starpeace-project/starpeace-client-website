@@ -53,7 +53,7 @@ export default class Logger
     console.debug("%c[STARPEACE]%c client %c#{process.env.CLIENT_VERSION}%c created", 'font-size:16px;line-height:20px;background-color:#395950;color:#fff', 'background-color:#fff;color:#000;line-height:20px;', 'font-weight:bold;text-decoration:underline', 'font-weight:normal;text-decoration:none')
 
   @warn: (message) ->
-    console.log("%c[STARPEACE]%c #{message}", 'font-size:16px;line-height:20px;background-color:#395950;color:#fff', 'background-color:#fff;color:#000;line-height:20px;')
+    console.warn("%c[STARPEACE]%c #{message}", 'font-size:16px;line-height:20px;background-color:#395950;color:#fff', 'background-color:#fff;color:#000;line-height:20px;')
 
   @info: (message) ->
     console.log("%c[STARPEACE]%c #{message}", 'font-size:16px;line-height:20px;background-color:#395950;color:#fff', 'background-color:#fff;color:#000;line-height:20px;')

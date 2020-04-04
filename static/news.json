@@ -1,6 +1,16 @@
 {
   "news":[
     {
+      "date": "2020-04-04",
+      "title": "Dependency Upgrades, Documentation, and Internal API Progress",
+      "body": "Round of dependency upgrades, documentation, and core logic updates. Lots of internal website client changes to align with multiverse server API and library types. Progress also made towards first version of the multiverse backend server.",
+      "items": [
+        "upgrade dependencies",
+        "library types and documentation for Multiverse API",
+        "sandbox and internal logic alignment with Multiverse API"
+      ]
+    },
+    {
       "date": "2019-01-13",
       "title": "New Year, New Milestone",
       "body": "Happy New Year!\n\nWe're excited to announce STARPEACE client v0.3.0 with initial building construction gameplay and menu integration! With sufficient cash, research, and other requirements, buildings can be selected for construction and placed on available land or water.\n\nThis also concludes the v0.2.x project milestone; see archives for full history. Visit the release notes to learn more about upcoming features and the focus of the next client milestone.",

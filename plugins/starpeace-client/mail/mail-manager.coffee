@@ -4,13 +4,13 @@ import Logger from '~/plugins/starpeace-client/logger.coffee'
 export default class MailManager
   constructor: (@api, @ajax_state, @client_state) ->
 
-  load_metadata: (corporation_id) ->
+  load_by_corporation: (corporation_id) ->
     new Promise (done, error) =>
       if !@client_state.has_session() || !corporation_id? || @ajax_state.is_locked('mail_metadata', corporation_id)
         done()
       else
         @ajax_state.lock('mail_metadata', corporation_id)
-        @api.mail_metadata(@client_state.session.session_token, corporation_id)
+        @api.mail_for_corporation(corporation_id)
           .then (metadata) =>
             items = []
             # FIXME: TODO: convert json to object

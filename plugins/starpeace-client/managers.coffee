@@ -28,7 +28,7 @@ export default class Managers
   constructor: (@api, @options, @ajax_state, @client_state) ->
     @asset_manager = new AssetManager(@ajax_state)
 
-    @translation_manager = new TranslationManager(@asset_manager, @ajax_state, @client_state.core.translations_library, @options)
+    @translation_manager = new TranslationManager(@asset_manager, @ajax_state, @options, @client_state)
 
     @bookmark_manager = new BookmarkManager(@api, @translation_manager, @ajax_state, @client_state)
     @building_manager = new BuildingManager(@api, @asset_manager, @bookmark_manager, @translation_manager, @ajax_state, @client_state)
@@ -47,71 +47,78 @@ export default class Managers
     @road_manager = new RoadManager(@asset_manager, @ajax_state, @client_state)
     @tycoon_manager = new TycoonManager(@api, @ajax_state, @client_state)
 
-
     @client_state.identity.subscribe_visa_type_listener =>
-      if @client_state.identity.galaxy_visa_type == 'visitor'
-        @client_state.identity.set_identity(Identity.visitor())
-      else
-        Identity.mock_tycoon()
-          .then (identity) => @client_state.identity.set_identity(identity)
-          .catch (error) -> Logger.debug "failed to retrieve identity" # FIXME: TODO: figure out error handling
+      return unless @client_state.identity.galaxy_tycoon?
 
-    @client_state.identity.subscribe_identity_listener =>
-      return unless @client_state.identity.identity?
+      for corporation in (@client_state.identity.galaxy_tycoon?.corporations || [])
+        @client_state.core.corporation_cache.load_corporation_metadata(corporation)
+        @client_state.core.company_cache.load_companies_metadata(corporation.companies)
 
-      # FIXME: TODO: create/move to session_manager
-      @api.register_session(@client_state.identity.identity)
-        .then (session) =>
-          @client_state.session.set_session_info(session)
-        .catch (err) -> Logger.debug "failed to retrieve session for identity" # FIXME: TODO: figure out error handling
+    @client_state.player.subscribe_planet_visa_type_listener =>
+      return unless @client_state.player.planet_id? && @client_state.player.planet_visa_type?
 
-    @client_state.session.subscribe_session_token_listener =>
-      @tycoon_manager.load_metadata() if @client_state.session.tycoon_id? && !@client_state.core.tycoon_cache.has_tycoon_metadata_fresh(@client_state.session.tycoon_id)
+      # FIXME: TODO: create/move to planet_manager
+      @api.register_visa(@client_state.identity.galaxy_id, @client_state.player.planet_id, @client_state.player.planet_visa_type)
+        .then (visa) =>
+          @client_state.player.set_planet_visa_id(visa.visaId)
+        .catch (err) ->
+          console.log err
+          Logger.debug "failed to retrieve visa for planet" # FIXME: TODO: figure out error handling
 
-    @client_state.player.subscribe_planet_id_listener =>
-      return unless @client_state.player.planet_id?
+    @client_state.player.subscribe_planet_visa_id_listener =>
+      return unless @client_state.player.planet_id? && @client_state.player.planet_visa_id?
 
       if @client_state.is_tycoon() && !@client_state.player.corporation_id?
-        corporation = @client_state.core.corporation_cache.corporation_metadata_for_planet_tycoon_id(@client_state.player.planet_id, @client_state.session.tycoon_id)
-        @client_state.player.set_corporation_id(corporation.id) if corporation?
+        corporation = @client_state.core.corporation_cache.corporation_metadata_for_planet_tycoon_id(@client_state.player.planet_id, @client_state.identity.galaxy_tycoon.id)
+        @client_state.player.set_planet_corporation_id(corporation.id) if corporation?
 
       @building_manager.queue_asset_load()
       @concrete_manager.queue_asset_load()
       @effect_manager.queue_asset_load()
       @event_manager.queue_asset_load()
-      @invention_manager.queue_asset_load()
       @land_manager.queue_asset_load()
       @map_manager.queue_asset_load()
       @overlay_manager.queue_asset_load()
       @plane_manager.queue_asset_load()
       @road_manager.queue_asset_load()
-      @translation_manager.queue_asset_load()
 
       @asset_manager.load_queued()
-      @planets_manager.load_details(@client_state.player.planet_id)
+
+      Promise.all([
+        @planets_manager.load_metadata_building(@client_state.player.planet_id),
+        @planets_manager.load_metadata_core(@client_state.player.planet_id),
+        @planets_manager.load_metadata_invention(@client_state.player.planet_id),
+        @planets_manager.load_events(@client_state.player.planet_id),
+        @planets_manager.load_towns(@client_state.player.planet_id),
+        @planets_manager.load_online_corporations(@client_state.player.planet_id)
+      ]).catch (err) ->
+        console.log(err)
+        throw err
 
     @client_state.player.subscribe_corporation_id_listener =>
-      return unless @client_state.player.corporation_id?
+      return unless @client_state.player.corporation_id? && @client_state.player.planet_visa_id?
 
       corporation = @client_state.core.corporation_cache.metadata_for_id(@client_state.player.corporation_id)
       return unless corporation?
 
-      @client_state.corporation.set_company_ids(_.map(corporation.companies_metadata, (company) -> company.id)) if corporation.companies_metadata?.length
-      @client_state.player.set_company_id(if corporation.companies_metadata?.length then  _.sortBy(corporation.companies_metadata, (company) -> company.name)[0].id else null)
-      @client_state.player.set_planet_id(corporation.planet_id) unless @client_state.player.planet_id == corporation.planet_id
+      @client_state.corporation.set_company_ids(_.map(corporation.companies, (company) -> company.id)) if corporation.companies?.length
+      @client_state.player.set_company_id(if corporation.companies?.length then  _.sortBy(corporation.companies, (company) -> company.name)[0].id else null)
 
       promises = []
-      for company in (corporation.companies_metadata || [])
-        promises.push @building_manager.load_metadata(company.id)
-        promises.push @invention_manager.load_metadata(company.id)
+      for company in (corporation.companies || [])
+        promises.push @building_manager.load_by_company(company.id)
+        promises.push @invention_manager.load_by_company(company.id)
 
-      promises.push @corporation_manager.load_metadata(@client_state.player.corporation_id)
-      promises.push @bookmark_manager.load_metadata(@client_state.player.corporation_id)
-      promises.push @mail_manager.load_metadata(@client_state.player.corporation_id)
+      promises.push @corporation_manager.load_by_corporation(@client_state.player.corporation_id)
+      promises.push @corporation_manager.load_cashflow(@client_state.player.corporation_id)
+      promises.push @bookmark_manager.load_by_corporation(@client_state.player.corporation_id)
+      promises.push @mail_manager.load_by_corporation(@client_state.player.corporation_id)
 
       Promise.all promises
         .then => Logger.debug 'loaded corporation metadata'
-        .catch (err) => Logger.info "failed to retrieve data for corporation" # FIXME: TODO: add error handling
+        .catch (err) =>
+          console.log err
+          Logger.info "failed to retrieve data for corporation" # FIXME: TODO: add error handling
 
 
   initialize: () ->

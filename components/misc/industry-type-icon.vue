@@ -36,8 +36,10 @@
       img(src='~/assets/images/icons/commerce/fast-food.svg')
     template(v-else-if="industry_type == 'FARMING'")
       img(src='~/assets/images/icons/industries/wheat.svg')
-    template(v-else-if="industry_type == 'FIRE_PREVENTION'")
+    template(v-else-if="industry_type == 'FIRE'")
       img(src='~/assets/images/icons/civics/hydrant.svg')
+    template(v-else-if="industry_type == 'FOOD'")
+      img(src='~/assets/images/icons/commerce/fast-food.svg')
     template(v-else-if="industry_type == 'FUNERAL_SERVICES'")
       img(src='~/assets/images/icons/services/tombstone.svg')
     template(v-else-if="industry_type == 'FURNITURE'")
@@ -106,7 +108,7 @@
       img(src='~/assets/images/icons/logistics/warehouse.svg')
     template(v-else-if="default_research")
       img(src='~/assets/images/icons/general/test-tubes.svg')
-    template(v-else-if="true")
+    template(v-else)
       font-awesome-icon(:icon="['far', 'circle']")
 </template>
 

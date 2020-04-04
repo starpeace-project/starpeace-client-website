@@ -1,5 +1,5 @@
 <template lang='pug'>
-no-ssr
+client-only
   transition(name='fade-in')
     #workflow-container(v-show='is_active')
       .card.is-starpeace(:style='workflow_card_style', :class='workflow_card_class')
@@ -13,13 +13,8 @@ no-ssr
           menu-loading(v-show="status == 'initializing'", :message="translate('ui.workflow.loading.initializing')")
 
           menu-universe(v-show="status == 'pending_universe'", :managers='managers', :ajax_state='ajax_state', :client_state='client_state')
-          menu-loading(v-show="status == 'pending_identity'", :message="translate('ui.workflow.loading.pending_identity')")
-          menu-loading(v-show="status == 'pending_session'", :message="translate('ui.workflow.loading.pending_session')")
-
-          menu-loading(v-show="status == 'pending_tycoon_metadata'", :message="translate('ui.workflow.loading.pending_tycoon_metadata')")
-          menu-loading(v-show="status == 'pending_galaxy_metadata'", :message="translate('ui.workflow.loading.pending_galaxy_metadata')")
           menu-planet(v-show="status == 'pending_planet'", :managers='managers', :client_state='client_state')
-
+          menu-loading(v-show="status == 'pending_visa'", :message="translate('ui.workflow.loading.pending_visa')")
           menu-loading(v-show="status == 'pending_assets'", :message="translate('ui.workflow.loading.pending_assets')")
           menu-loading(v-show="status == 'pending_planet_details'", :message="translate('ui.workflow.loading.pending_planet_details')")
           menu-loading(v-show="status == 'pending_player_data'", :message="translate('ui.workflow.loading.pending_player_data')")
@@ -38,10 +33,7 @@ import TimeUtils from '~/plugins/starpeace-client/utils/time-utils.coffee'
 
 STATUS_MAX_WIDTHS = {
   'pending_universe': '54rem'
-  'pending_identity': '30rem'
-  'pending_session': '20rem'
-  'pending_tycoon_metadata': '20rem'
-  'pending_galaxy_metadata': '20rem'
+  'pending_visa': '20rem'
   'pending_planet': '80rem'
   'pending_assets': '20rem'
   'pending_initialization': '20rem'
@@ -77,7 +69,6 @@ export default
 
     reset_galaxy: ->
       @client_state.identity.reset_state()
-      @client_state.session.reset_state()
       @client_state.update_state()
       window.document.title = "STARPEACE" if window?.document?
 </script>
@@ -125,6 +116,10 @@ export default
     height: 100%
     position: relative
     transition: width .5s
+
+  &.has-header
+    .card-content
+      height: calc(100% - 3rem)
 
   &.full-height
     height: calc(100% - 2rem)

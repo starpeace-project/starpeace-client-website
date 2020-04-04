@@ -1,23 +1,21 @@
+import Vue from 'vue'
 
+import Cache from '~/plugins/starpeace-client/state/core/cache/cache.coffee'
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 
-export default class BuildingCache
+export default class BuildingCache extends Cache
   constructor: () ->
-    @reset_state()
+    super()
 
-  reset_state: () ->
+  reset_planet: () ->
     @building_metadata_by_id = {}
 
-  load_metadata: (building_metadata) ->
-    if Array.isArray(building_metadata)
-      @building_metadata_by_id[metadata.id] = metadata for metadata in building_metadata
-    else
-      @building_metadata_by_id[building_metadata.id] = building_metadata
+  load_building: (building) ->
+    Vue.set(@building_metadata_by_id, building.id, building)
+  load_buildings: (buildings) ->
+    @load_building(building) for building in buildings
 
-  remove_metadata: (building_metadata) ->
-    if Array.isArray(building_metadata)
-      delete @building_metadata_by_id[metadata.id] for metadata in building_metadata
-    else
-      delete @building_metadata_by_id[building_metadata.id]
+  remove_building: (building) ->
+    Vue.delete(@building_metadata_by_id, building.id)
 
-  building_metadata_for_id: (building_id) -> @building_metadata_by_id[building_id]
+  building_for_id: (building_id) -> @building_metadata_by_id[building_id]

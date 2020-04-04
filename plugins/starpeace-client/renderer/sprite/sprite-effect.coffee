@@ -6,7 +6,7 @@ export default class SpriteEffect extends Sprite
     super()
 
   width: (viewport) -> viewport.with_scale(@textures[0].width) + 1
-  height: (viewport) -> viewport.tile_height + 1
+  height: (viewport) -> Math.ceil(@textures[0].height * (@width(viewport) / @textures[0].width)) + 1
 
   render: (sprite, parent_sprite, canvas, viewport) ->
     parent_x = Math.round(parent_sprite.width * @info.x)

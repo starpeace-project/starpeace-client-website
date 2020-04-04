@@ -3,19 +3,19 @@ import _ from 'lodash'
 import moment from 'moment'
 import Vue from 'vue'
 
-import EventListener from '~/plugins/starpeace-client/state/event-listener.coffee'
+import Cache from '~/plugins/starpeace-client/state/core/cache/cache.coffee'
 
 import TimeUtils from '~/plugins/starpeace-client/utils/time-utils.coffee'
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 
-export default class GalaxyCache
+export default class GalaxyCache extends Cache
   constructor: () ->
-    @event_listener = new EventListener()
-    @reset_state()
+    super()
 
-  reset_state: () ->
+  reset_multiverse: () ->
     @galaxy_configuration_by_id = {}
     @galaxy_metadata_by_id = {}
+    @planet_metadata_by_id = {}
 
   subscribe_configuration_listener: (listener_callback) -> @event_listener.subscribe('galaxy_cache.configuration', listener_callback)
   notify_configuration_listeners: () -> @event_listener.notify_listeners('galaxy_cache.configuration')
@@ -31,7 +31,10 @@ export default class GalaxyCache
   galaxy_metadata: (galaxy_id) -> @galaxy_metadata_by_id[galaxy_id]
   load_galaxy_metadata: (galaxy_id, galaxy_metadata) ->
     Vue.set(@galaxy_metadata_by_id, galaxy_id, galaxy_metadata)
+    Vue.set(@planet_metadata_by_id, planet.id, planet) for planet in (galaxy_metadata?.planets || [])
     @notify_metadata_listeners()
+
+  planet_metadata_for_id: (planet_id) -> @planet_metadata_by_id[planet_id]
 
   change_galaxy_id: (old_galaxy_id, new_galaxy_id) ->
     if @galaxy_configuration_by_id[old_galaxy_id]?

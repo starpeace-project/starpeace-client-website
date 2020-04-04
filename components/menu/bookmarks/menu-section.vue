@@ -61,7 +61,7 @@ menu_item_from_bookmark = (managers, existing_option, bookmark_item, tree_item, 
     type: bookmark_item.type
     seal_id: if bookmark_item.type == 'CORPORATION' then bookmark_item.seal_id else null
     industry_type: if bookmark_item.type == 'INDUSTRY' then bookmark_item.industry_type else null
-    item_name: if bookmark_item.name_key?.length then managers.translation_manager.text(bookmark_item.name_key) else bookmark_item.name
+    item_name: if bookmark_item.name_key? then managers.translation_manager.text(bookmark_item.name_key) else bookmark_item.name
     expanded: if existing_option? then existing_option.expanded else false
     attributes: {}
   }

@@ -79,16 +79,16 @@ export default
     galaxy_metadata: -> if @galaxy_id? && @client_state.core.galaxy_cache.has_galaxy_metadata(@galaxy_id) then @client_state.core.galaxy_cache.galaxy_metadata(@galaxy_id) else
 
     is_tycoon_in_galaxy: -> @client_state.identity?.galaxy_visa_type == 'tycoon' && @tycoon_id?.length
-    tycoon_id: -> @client_state.session?.tycoon_id
+    tycoon_id: -> @client_state.identity?.galaxy_tycoon?.id
 
     planets: ->
       return [] unless @galaxy_metadata? && @is_visible
-      _.sortBy(@galaxy_metadata.planets_metadata || [], (planet) -> planet.name)
+      _.sortBy(@galaxy_metadata.planets || [], (planet) -> planet.name)
     sorted_planet_chunks: -> _.chunk(@planets, 3)
 
     corporations_by_planet_id: ->
       return [] unless @tycoon_id?.length
-      _.keyBy(@client_state.core.corporation_cache.corporations_for_tycoon_id(@client_state.session.tycoon_id), 'planet_id')
+      _.keyBy(@client_state.core.corporation_cache.corporations_for_tycoon_id(@tycoon_id), 'planet_id')
 
   methods:
     translate: (text_key) -> @managers?.translation_manager?.text(text_key)

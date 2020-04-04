@@ -1,5 +1,7 @@
 <template lang='pug'>
-span(:class='money_css_class') ${{money_value}}
+span(:class='money_css_class')
+  template(v-if='money_value == null') -
+  template(v-else) ${{money_value}}
 </template>
 
 <script lang='coffee'>

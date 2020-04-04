@@ -17,7 +17,6 @@ export default class SpritePlane extends Sprite
   width: (viewport) ->
     unless @textures[0]?
       Logger.warn "plane sprite unexpectedly has no texture"
-      console.log @
       return 0
     viewport.with_scale(@textures[0].width)
   height: (viewport) -> viewport.with_scale(@textures[0].height)

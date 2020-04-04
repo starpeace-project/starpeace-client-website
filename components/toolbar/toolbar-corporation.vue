@@ -26,7 +26,7 @@
         span.count {{building_count_for_company_id(company.id)}}
       p.company-cashflow
         | (
-        money-text(:value='company.cashflow')
+        money-text(:value='company_cashflow(company.id)')
         | /h)
 </template>
 
@@ -59,11 +59,13 @@ export default
 
     corporation_metadata: -> if @is_ready && @client_state.player.corporation_id?.length then @client_state.current_corporation_metadata() else null
     corporation_name: -> if @corporation_metadata? then @corporation_metadata.name else '[PENDING]'
-    corporation_cash: -> if @is_ready && @corporation_metadata?.cash? then @corporation_metadata.cash else 0
-    corporation_cashflow: -> if @is_ready && @corporation_metadata?.cashflow? then @corporation_metadata.cashflow else 0
+    corporation_cash: -> if @is_ready && @client_state.corporation.cash? then @client_state.corporation.cash else null
+    corporation_cashflow: -> if @is_ready && @client_state.corporation?.cashflow? then @client_state.corporation.cashflow else null
 
   methods:
     translate: (text_key) -> @managers?.translation_manager?.text(text_key)
+
+    company_cashflow: (company_id) -> if @is_ready && @client_state.corporation.cashflow_by_company_id[company_id]? then @client_state.corporation.cashflow_by_company_id[company_id] else null
 
     building_count_for_company_id: (company_id) -> (@client_state.corporation.buildings_ids_by_company_id?[company_id] || []).length
 

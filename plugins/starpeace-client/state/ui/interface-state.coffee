@@ -36,17 +36,17 @@ export default class InterfaceState
 
     @selected_building_id = null
 
-    @inventions_selected_category = 'SERVICE'
-    @inventions_selected_industry_type = 'GENERAL'
+    @inventions_selected_category_id = 'SERVICE'
+    @inventions_selected_industry_type_id = 'GENERAL'
     @inventions_selected_invention_id = null
 
-    @construction_selected_category = null
+    @construction_selected_category_id = null
     @construction_selected_building_id = null
 
     @construction_building_id = null
     @construction_building_map_x = 0
     @construction_building_map_y = 0
-    @construction_building_zone = null
+    @construction_building_city_zone_id = null
     @construction_building_width = 0
     @construction_building_height = 0
 

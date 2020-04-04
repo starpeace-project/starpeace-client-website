@@ -12,7 +12,8 @@
       h1 PEACE
 
   .welcome.is-hidden-mobile.is-hidden-tablet-only
-    span {{translate('ui.page-layout.header.greeting')}}, {{translate('identity.visitor')}}!
+    span {{translate('ui.page-layout.header.greeting')}}, {{tycoon_name}}!
+    a(v-if='is_authenticated' v-on:click.stop.prevent="logout_tycoon()") ({{translate('ui.workflow.universe.signout.label')}})
 
   .development.is-hidden-mobile.is-hidden-tablet-only
     a.header-item.documentation(href='https://docs.starpeace.io') {{translate('ui.page-layout.header.documentation')}}
@@ -38,19 +39,38 @@ export default
     options: Object
     translation_manager: Object
 
+    client_state: Object
+    managers: Object
+
   mounted: ->
-    @options?.subscribe_options_listener =>
-      @show_header = @options?.option('general.show_header')
+    @client_options?.subscribe_options_listener =>
+      @show_header = @client_options?.option('general.show_header')
       @show_header = true unless @show_header?
-      @language_code = @options?.language()
+      @language_code = @client_options?.language()
 
   data: ->
-    show_header: if @options? then @options.option('general.show_header') else true
-    language_code: if @options? then @options?.language() else 'EN'
+    show_header: if @client_options? then @client_options.option('general.show_header') else true
+    language_code: if @client_options? then @client_options?.language() else 'EN'
+
+  computed:
+    client_options: -> if @client_state?.options? then @client_state?.options else @options
+    translator: -> if @managers?.translation_manager? then @managers.translation_manager else @translation_manager
+
+    is_authenticated: -> @client_state?.identity?.galaxy_tycoon?
+    tycoon_name: -> if @is_authenticated then @client_state?.identity?.galaxy_tycoon?.name else @translate('identity.visitor')
 
   methods:
-    translate: (key) -> if @translation_manager? then @translation_manager.text(key) else key
-    change_language: (code) -> @options?.set_language(code)
+    translate: (key) -> if @translator? then @translator.text(key) else key
+    change_language: (code) -> @client_options?.set_language(code)
+
+    logout_tycoon: () ->
+      return unless @client_state?.identity?.galaxy_id? && @managers?.galaxy_manager?
+      @managers.galaxy_manager.logout(@client_state?.identity?.galaxy_id)
+        .then () =>
+          @client_state.reset_full_state()
+        .catch (e) =>
+          console.log e
+          @$forceUpdate()
 </script>
 
 <style lang='sass' scoped>

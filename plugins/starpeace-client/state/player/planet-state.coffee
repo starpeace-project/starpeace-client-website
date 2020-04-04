@@ -2,8 +2,6 @@
 import moment from 'moment'
 import Vue from 'vue'
 
-import BuildingZone from '~/plugins/starpeace-client/overlay/building-zone.coffee'
-
 import EventListener from '~/plugins/starpeace-client/state/event-listener.coffee'
 
 export default class PlanetState
@@ -13,34 +11,43 @@ export default class PlanetState
 
   reset_state: () ->
     @game_map = null
-    @details = null
-    @details_as_of = null
-
     @events_as_of = null
 
     @current_date = null
     @current_season = null
 
-    @tycoons_online = []
+    @towns = null
+    @tycoons_online = null
 
-  subscribe_map_data_listener: (listener_callback) -> @event_listener.subscribe('player.map_data', listener_callback)
-  notify_map_data_listeners: (chunk_event) -> @event_listener.notify_listeners('player.map_data', chunk_event)
+  subscribe_map_data_listener: (listener_callback) -> @event_listener.subscribe('planet.map_data', listener_callback)
+  notify_map_data_listeners: (chunk_event) -> @event_listener.notify_listeners('planet.map_data', chunk_event)
 
-  subscribe_planet_details_listener: (listener_callback) -> @event_listener.subscribe('player.planet_details', listener_callback)
-  notify_planet_details_listeners: () -> @event_listener.notify_listeners('player.planet_details')
+  subscribe_state_listener: (listener_callback) -> @event_listener.subscribe('planet.state', listener_callback)
+  notify_state_listeners: () -> @event_listener.notify_listeners('planet.state')
+  subscribe_towns_listener: (listener_callback) -> @event_listener.subscribe('player.towns', listener_callback)
+  notify_towns_listeners: () -> @event_listener.notify_listeners('player.towns')
+  subscribe_tycoons_online_listener: (listener_callback) -> @event_listener.subscribe('player.tycoons_online', listener_callback)
+  notify_tycoons_online_listeners: () -> @event_listener.notify_listeners('player.tycoons_online')
 
-  has_data: () -> @details?
+  has_data: () -> @current_date? && @current_season? && @towns? && @tycoons_online?
 
   load_game_map: (game_map) ->
     @game_map = game_map
     # FIXME: TODO: may want to notify
 
-  load_planet_details: (details) ->
-    @details = details
-    @details_as_of = moment()
-    @notify_planet_details_listeners()
 
-  can_place_building: (map_x, map_y, building_zone, width, height) ->
+  load_state: (date, season) ->
+    @current_date = date
+    @current_season = season
+    @notify_state_listeners()
+  load_towns: (towns) ->
+    @towns = towns || []
+    @notify_towns_listeners()
+  load_tycoons_online: (tycoons) ->
+    @tycoons_online = tycoons || []
+    @notify_tycoons_online_listeners()
+
+  can_place_building: (map_x, map_y, building_city_zone_id, width, height) ->
     has_all_data = true
     can_place = true
     for j in [0...height]
@@ -68,7 +75,7 @@ export default class PlanetState
           @game_map.overlay_map.chunk_update_at('ZONES', tile_i, tile_j)
         else
           zone_info = @game_map.overlay_map.overlay_at('ZONES', tile_i, tile_j)
-          can_place = false if building_zone? && zone_info? && !BuildingZone.zones_match(zone_info, building_zone)
+          can_place = false if building_city_zone_id? && zone_info? && !zone_info.matches(building_city_zone_id)
 
         can_place = false if @game_map.ground_map?.is_coast_at(tile_i, tile_j) || @game_map?.ground_map?.is_water_at(tile_i, tile_j) && @game_map?.ground_map?.is_coast_around(tile_i, tile_j)
 

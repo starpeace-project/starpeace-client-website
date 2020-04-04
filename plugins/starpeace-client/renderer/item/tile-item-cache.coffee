@@ -2,8 +2,6 @@
 import _ from 'lodash'
 import * as PIXI from 'pixi.js'
 
-import BuildingZone from '~/plugins/starpeace-client/overlay/building-zone.coffee'
-
 import TileItem from '~/plugins/starpeace-client/renderer/item/tile-item.coffee'
 
 import SpriteBuilding from '~/plugins/starpeace-client/renderer/sprite/sprite-building.coffee'
@@ -79,7 +77,7 @@ export default class TileItemCache
   cache_item: (x, y) ->
     return @tile_items[y * @client_state.planet.game_map.width + x] if @tile_items[y * @client_state.planet.game_map.width + x]?
     tile_info = @client_state.planet.game_map.info_for_tile(x, y)
-    is_building_root_tile = tile_info.building_info? && tile_info.building_info.x == x && tile_info.building_info.y == y
+    is_building_root_tile = tile_info.building_info? && tile_info.building_info.map_x == x && tile_info.building_info.map_y == y
     @tile_items[y * @client_state.planet.game_map.width + x] = new TileItem(tile_info, x, y, {
         land: @land_sprite_info_for(tile_info)
         concrete: @concrete_sprite_info_for(tile_info)
@@ -146,30 +144,47 @@ export default class TileItemCache
     new SpriteOverlay(PIXI.utils.TextureCache['overlay.1'], tile_info.overlay_info.color)
 
   foundation_sprite_info_for: (tile_info) ->
-    return null unless tile_info.building_info?
-    metadata = @client_state.core.building_library.metadata_by_id[tile_info.building_info.key]
-    return null unless metadata?
+    unless tile_info.building_info?
+      Logger.warn("attempting to determine foundation sprite for unknown building #{tile_info}")
+      return null
+
+    metadata = @client_state.core.building_library.metadata_by_id[tile_info.building_info.definition_id]
+    unless metadata?
+      Logger.warn("unable to load building definition metadata for #{tile_info.building_info.definition_id}")
+      return null
+
     image_metadata = @client_state.core.building_library.images_by_id[metadata.image_id]
-    return null unless image_metadata?
+    unless image_metadata?
+      Logger.warn("unable to load building image metadata for #{metadata.image_id}")
+      return null
 
     texture = PIXI.utils.TextureCache["overlay.#{image_metadata.w}"]
-    return null unless texture?
+    unless texture?
+      Logger.warn("unable to find cached overlay texture for size #{image_metadata.w}")
+      return null
 
-    zone_color = if metadata.zone? then metadata.zone.color else BuildingZone.TYPES.NONE.color
-
+    zone_color = if metadata.zone? then metadata.zone.color else 0
     new SpriteBuildingFootprint(texture, image_metadata, zone_color)
 
   building_sprite_info_for: (tile_info) ->
-    return null unless tile_info.building_info?
-    metadata = @client_state.core.building_library.metadata_by_id[tile_info.building_info.key]
-    return null unless metadata?
-    image_metadata = @client_state.core.building_library.images_by_id[metadata.image_id]
-    if tile_info.building_info.stage?
-      image_metadata = if tile_info.building_info.stage >= 0 then image_metadata else @client_state.core.building_library.images_by_id[metadata.construction_image_id]
-    return null unless image_metadata?
+    unless tile_info.building_info?
+      Logger.warn("attempting to determine building sprite for unknown building #{tile_info}")
+      return null
+
+    metadata = @client_state.core.building_library.metadata_by_id[tile_info.building_info.definition_id]
+    unless metadata?
+      Logger.warn("unable to load building definition metadata for #{tile_info.building_info.definition_id}")
+      return null
+
+    image_metadata = if tile_info.building_info.stage >= 0 then @client_state.core.building_library.images_by_id[metadata.image_id] else @client_state.core.building_library.images_by_id[metadata.construction_image_id]
+    unless image_metadata?
+      Logger.warn("unable to load building image metadata for #{metadata.image_id} stage #{tile_info.building_info.stage}")
+      return null
 
     textures = _.map(image_metadata?.frames || [], (texture_id) -> PIXI.utils.TextureCache[texture_id])
-    return null unless textures?.length && textures[0]?
+    unless textures?.length && textures[0]?
+      Logger.warn("unable to load building textures for #{image_metadata.id}")
+      return null
 
     is_animated = textures.length > 1 && @options.option('renderer.building_animations')
 
@@ -185,7 +200,7 @@ export default class TileItemCache
     is_filtered = false
     if @client_state.interface.selected_building_id?.length
       is_selected = @client_state.interface.selected_building_id == tile_info.building_info.id
-      selected_corporation_id = @client_state.selected_building_metadata()?.corporation_id
+      selected_corporation_id = @client_state.selected_building()?.corporation_id
       is_filtered = if selected_corporation_id?.length then selected_corporation_id != tile_info.building_info.corporation_id else true
 
     new SpriteBuilding(textures, is_animated, is_selected, is_filtered, image_metadata, effects)

@@ -15,21 +15,13 @@ export default class IdentityState
   reset_state: () ->
     @galaxy_id = null
     @galaxy_visa_type = null
-    @identity = null
+    @galaxy_tycoon = null
 
   subscribe_visa_type_listener: (listener_callback) -> @event_listener.subscribe('identity.visa_type', listener_callback)
   notify_visa_type_listeners: () -> @event_listener.notify_listeners('identity.visa_type')
 
-  subscribe_identity_listener: (listener_callback) -> @event_listener.subscribe('identity.identity', listener_callback)
-  notify_identity_listeners: () -> @event_listener.notify_listeners('identity.identity')
-
-
-  set_visa_type: (galaxy_id, visa_type) ->
+  set_visa: (galaxy_id, visa_type, tycoon) ->
     @galaxy_id = galaxy_id
     @galaxy_visa_type = visa_type
-    @identity = null
+    @galaxy_tycoon = tycoon
     @notify_visa_type_listeners()
-
-  set_identity: (identity) ->
-    @identity = identity
-    @notify_identity_listeners()

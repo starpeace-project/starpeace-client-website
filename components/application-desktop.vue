@@ -1,7 +1,7 @@
 <template lang='pug'>
-no-ssr
+client-only
   #application-container(:class='application_css_class', v-cloak=true)
-    sp-header(:translation_manager='managers.translation_manager', :options='client_state.options')
+    sp-header(:managers='managers', :client_state='client_state')
 
     sp-loading-card(:managers='managers', :client_state='client_state')
     sp-loading-modal(v-show='is_loading_modal_visible')

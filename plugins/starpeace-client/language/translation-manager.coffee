@@ -1,15 +1,17 @@
 
 import _ from 'lodash'
+import Vue from 'vue'
+
+import FactoryDefinition from '~/plugins/starpeace-client/building/simulation/factory/factory-definition.coffee'
+import StorageDefinition from '~/plugins/starpeace-client/building/simulation/storage/storage-definition.coffee'
+
+import Translation from '~/plugins/starpeace-client/language/translation.coffee'
+import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
 
 import DURATION from '~/plugins/starpeace-client/language/language-duration.json'
 import IDENTITY from '~/plugins/starpeace-client/language/language-identity.json'
-import INDUSTRY_CATEGORY from '~/plugins/starpeace-client/language/language-industry-category.json'
-import INDUSTRY_TYPE from '~/plugins/starpeace-client/language/language-industry-type.json'
-import LEVEL from '~/plugins/starpeace-client/language/language-level.json'
 import MISC from '~/plugins/starpeace-client/language/language-misc.json'
 import OVERLAY from '~/plugins/starpeace-client/language/language-overlay.json'
-import RESOURCE_TYPE from '~/plugins/starpeace-client/language/language-resource-type.json'
-import RESOURCE_UNIT from '~/plugins/starpeace-client/language/language-resource-unit.json'
 
 import TOOLBAR_RIBBON from '~/plugins/starpeace-client/language/language-toolbar-ribbon.json'
 
@@ -38,13 +40,8 @@ import UI_WORKFLOW_UNIVERSE from '~/plugins/starpeace-client/language/language-u
 LANGUAGE_STRINGS = [
   DURATION,
   IDENTITY,
-  INDUSTRY_CATEGORY,
-  INDUSTRY_TYPE,
-  LEVEL,
   MISC,
   OVERLAY,
-  RESOURCE_TYPE,
-  RESOURCE_UNIT,
   TOOLBAR_RIBBON,
   UI_MENU_BOOKMARKS,
   UI_MENU_CHAT,
@@ -69,24 +66,58 @@ LANGUAGE_STRINGS = [
 
 
 export default class TranslationManager
-  constructor: (@asset_manager, @ajax_state, @translations_library, @options) ->
+  constructor: (@asset_manager, @ajax_state, @options, @client_state) ->
+
+    @translations_by_language_code = {}
+
     for language_values in LANGUAGE_STRINGS
       for text_key,languages of language_values
         for language_code,value of languages
-          @translations_library.load_translations_partial(language_code, [{ id:text_key, value:value }])
-
-  queue_asset_load: (completion_callback=null) ->
-    current_language = @options.language()
-    return if @translations_library.has_metadata(current_language) || @ajax_state.is_locked('assets.translations', current_language)
-
-    @ajax_state.lock('assets.translations', current_language)
-    @asset_manager.queue("translations.#{current_language.toLowerCase()}", "./translations.#{current_language.toLowerCase()}.json", (resource) =>
-      @translations_library.load_translations(current_language, resource.data.translations)
-      @ajax_state.unlock('assets.translations', current_language)
-      completion_callback() if completion_callback? && _.isFunction(completion_callback)
-    )
+          Vue.set(@translations_by_language_code, language_code, {}) unless @translations_by_language_code[language_code]?
+          Vue.set(@translations_by_language_code[language_code], text_key, value)
 
   text: (key) ->
-    value = @translations_library.translations_by_language_code[@options.language()]?[key]
-    value = @translations_library.translations_by_language_code['EN']?[key] unless value? || @options.language() == 'EN'
-    value || key
+    if key instanceof Translation
+      key[@options.language()] || key['EN']
+    else
+      value = @translations_by_language_code[@options.language()]?[key]
+      value = @translations_by_language_code['EN']?[key] unless value? || @options.language() == 'EN'
+      value || key
+
+
+  description_for_building: (building_definition) ->
+    text_separator = @text('misc.and')
+
+    simulation_definition = @client_state.core.building_library.simulation_definition_for_id(building_definition.id)
+    if simulation_definition instanceof FactoryDefinition
+      template_description = _.template(@text('ui.menu.construction.description.industry.label'))
+      template_output = _.template(@text('ui.menu.construction.description.industry.output.label'))
+      template_input = _.template(@text('ui.menu.construction.description.industry.input.label'))
+
+      description_parts = []
+      for stage in simulation_definition.stages
+        output_label_parts = _.map(stage.outputs, (output) =>
+          type = @client_state.core.planet_library.resource_type_for_id(output.resource_id)
+          unit = if type? then @client_state.core.planet_library.resource_unit_for_id(type.unit_id) else null
+          template_output({amount: output.max_velocity, resource: @text(type?.label_plural), unit: @text(unit?.label_plural), duration: @text('duration.day')})
+        )
+        description_parts.push template_description({output: Utils.join_with_oxford_comma(output_label_parts, text_separator)}) if output_label_parts.length
+
+        inputs = _.map(stage.inputs, (input) => @text(@client_state.core.planet_library.resource_type_for_id(input.resource_id)?.label_plural))
+        description_parts.push template_input({input: Utils.join_with_oxford_comma(inputs, text_separator)}) if inputs.length
+
+      return description_parts.join(' ')
+
+    if simulation_definition instanceof StorageDefinition
+      template_description = _.template(@text('ui.menu.construction.description.warehouse.label'))
+      template_output = _.template(@text('ui.menu.construction.description.warehouse.output.label'))
+
+      storage_parts = _.map(simulation_definition.storage, (storage) =>
+        type = @client_state.core.planet_library.resource_type_for_id(storage.resource_id)
+        unit = if type? then @client_state.core.planet_library.resource_unit_for_id(type.unit_id) else null
+        template_output({amount: storage.max, resource: @text(type?.label_plural), unit: @text(unit?.label_plural)})
+      )
+
+      return template_description({storage: Utils.join_with_oxford_comma(storage_parts, text_separator)})
+
+    ''

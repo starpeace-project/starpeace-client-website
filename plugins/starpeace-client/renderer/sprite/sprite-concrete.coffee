@@ -11,7 +11,7 @@ export default class SpriteConcrete extends Sprite
   render: (sprite, canvas, viewport) ->
     width = @width(viewport)
     height = @height(viewport)
-    offset_y = if @is_platform then Math.round(viewport.tile_size_y(.1)) else 0
+    offset_y = if @is_platform then Math.round(viewport.tile_size_y(.2)) else 0
 
     sprite.visible = true
     sprite.alpha = 1
@@ -20,4 +20,5 @@ export default class SpriteConcrete extends Sprite
     sprite.width = width
     sprite.height = height
     sprite.tint = 0xFFFFFF
-    sprite.zIndex = (canvas.y - .5 * viewport.tile_height) - (if @is_platform then (if @is_flat then .25 else .5) * viewport.tile_height else 0)
+    #sprite.zIndex = (canvas.y - .5 * viewport.tile_height) - (if @is_platform then .25 * viewport.tile_height else 0)
+    sprite.zIndex = sprite.y + sprite.height - Math.round(.5 * viewport.tile_height) - (if @is_platform then .25 * viewport.tile_height else 0)

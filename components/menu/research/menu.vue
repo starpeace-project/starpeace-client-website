@@ -22,17 +22,14 @@
 
         ul.sp-section-items(v-show="item.children.length && item.expanded")
           li(v-for="child in item.children")
-            a.is-menu-item(v-on:click.stop.prevent="select_inventions(item.category, child.industry_type)", :class="section_item_class(item, child)")
-              industry-type-icon(:industry_type="child.industry_type", :class="['sp-section-item-image', 'sp-indusry-icon']", :default_research='true')
+            a.is-menu-item(v-on:click.stop.prevent="select_inventions(item.industry_category_id, child.industry_type_id)", :class="section_item_class(item, child)")
+              industry-type-icon(:industry_type="child.industry_type_id", :class="['sp-section-item-image', 'sp-indusry-icon']", :default_research='true')
               span.sp-section-item-label {{child.name}}
 
 </template>
 
 <script lang='coffee'>
 import IndustryTypeIcon from '~/components/misc/industry-type-icon.vue'
-
-import IndustryCategory from '~/plugins/starpeace-client/industry/industry-category.coffee'
-import IndustryType from '~/plugins/starpeace-client/industry/industry-type.coffee'
 
 export default
   components:
@@ -58,7 +55,7 @@ export default
   watch:
     is_visible: (new_value, old_value) ->
       @refresh_sections() if new_value
-    selected_category: (new_value, old_value) ->
+    selected_category_id: (new_value, old_value) ->
       @refresh_sections()
     company_id: (new_value, old_value) ->
       @refresh_sections()
@@ -66,8 +63,8 @@ export default
   computed:
     is_visible: -> @client_state.workflow_status == 'ready' && @menu_visible
 
-    selected_category: -> @client_state.interface.inventions_selected_category
-    selected_industry_type: -> @client_state.interface.inventions_selected_industry_type
+    selected_category_id: -> @client_state.interface.inventions_selected_category_id
+    selected_industry_type_id: -> @client_state.interface.inventions_selected_industry_type_id
 
     company_id: -> @client_state.player.company_id
 
@@ -75,31 +72,32 @@ export default
     translate: (text_key) -> @managers?.translation_manager?.text(text_key)
 
     filter_class: (type) -> ""
-    section_item_class: (item, child) -> { 'is-active': @selected_category == item.category && @selected_industry_type == child.industry_type }
+    section_item_class: (item, child) -> { 'is-active': @selected_category_id == item.industry_category_id && @selected_industry_type_id == child.industry_type_id }
 
     refresh_sections: () ->
       sections_by_category = {}
       for invention in @inventions_for_company()
-        unless sections_by_category[invention.category]?
-          category = IndustryCategory.CATEGORIES[invention.category]
-          sections_by_category[invention.category] = {
-            name: if category? then @translate(category.text_key) else invention.category
-            category: invention.category
-            expanded: invention.category == @selected_category
+        unless sections_by_category[invention.industry_category_id]?
+
+          category = @client_state.core.planet_library.category_for_id(invention.industry_category_id)
+          sections_by_category[invention.industry_category_id] = {
+            name: if category? then @translate(category.label) else invention.industry_category_id
+            industry_category_id: invention.industry_category_id
+            expanded: invention.industry_category_id == @selected_category_id
             children_by_type: {}
           }
-        type = invention.industry_type || 'GENERAL'
-        unless sections_by_category[invention.category].children_by_type[type]?
-          industry_type = IndustryType.TYPES[type]
-          sections_by_category[invention.category].children_by_type[type] = {
-            name: if industry_type? then @translate(industry_type.text_key) else type
-            industry_type: type
+        type_id = invention.industry_type_id || 'GENERAL'
+        unless sections_by_category[invention.industry_category_id].children_by_type[type_id]?
+          industry_type = @client_state.core.planet_library.type_for_id(type_id)
+          sections_by_category[invention.industry_category_id].children_by_type[type_id] = {
+            name: if industry_type? then @translate(industry_type.label) else type_id
+            industry_type_id: invention.industry_type_id
           }
 
       sections = []
-      for category in ['SERVICE', 'INDUSTRY', 'LOGISTICS', 'COMMERCE', 'CIVIC', 'REAL_ESTATE']
-        if sections_by_category[category]?
-          section = sections_by_category[category]
+      for category_id in @client_state.core.planet_library.categories_for_inventions()
+        if sections_by_category[category_id]?
+          section = sections_by_category[category_id]
           section.children = _.sortBy(_.values(section.children_by_type), (child) -> child.name)
           sections.push section
 
@@ -107,9 +105,9 @@ export default
 
     inventions_for_company: -> @client_state.inventions_for_company()
 
-    select_inventions: (category, industry_type) ->
-      @client_state.interface.inventions_selected_category = category
-      @client_state.interface.inventions_selected_industry_type = industry_type
+    select_inventions: (industry_category_id, industry_type_id) ->
+      @client_state.interface.inventions_selected_category_id = industry_category_id
+      @client_state.interface.inventions_selected_industry_type_id = industry_type_id
 
 </script>
 

@@ -2,8 +2,6 @@
 import Bookmark from '~/plugins/starpeace-client/bookmark/bookmark.coffee'
 import BookmarkFolder from '~/plugins/starpeace-client/bookmark/bookmark-folder.coffee'
 
-import IndustryType from '~/plugins/starpeace-client/industry/industry-type.coffee'
-
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
 
@@ -14,53 +12,58 @@ export default class BookmarkManager
     @client_state.bookmarks.mausoleum_items.push BookmarkFolder.new_mausoleum_folder()
 
     @client_state.bookmarks.town_items.push BookmarkFolder.new_town_folder()
-    for town,index in _.sortBy(@client_state.current_planet_details()?.towns_metadata || [], (town) -> town.name)
-      @client_state.bookmarks.town_items.push Bookmark.new_town(index, town.id, town.name, town.map_y, town.map_x, town.building_id)
+    for town,index in _.sortBy(@client_state.planet.towns || [], (town) -> town.name)
+      @client_state.bookmarks.town_items.push Bookmark.new_town(index, town.id, town.name, town.map_x, town.map_y, town.building_id)
 
-    for company_id in @client_state.corporation.company_ids
+    for company_id in (@client_state.corporation.company_ids || [])
       @add_company_folder(company_id, false)
       @add_building_bookmark(building_id, false) for building_id in @client_state.corporation.building_ids_for_company(company_id)
     @client_state.bookmarks.sort_all_corporation_bookmarks(@translation_manager)
+
+  add_bookmark_folder: (corporation_id, parent_id, folder_name) ->
+    @api.create_corporation_bookmark(corporation_id, 'FOLDER', parent_id, folder_name)
+  add_bookmark_location_item: (corporation_id, parent_id, folder_name, map_x, map_y) ->
+    @api.create_corporation_bookmark(corporation_id, 'LOCATION', parent_id, folder_name, { mapX: map_x, mapY: map_y })
+  add_bookmark_building_item: (corporation_id, parent_id, folder_name, map_x, map_y, building_id) ->
+    @api.create_corporation_bookmark(corporation_id, 'BUILDING', parent_id, folder_name, { mapX: map_x, mapY: map_y, buildingId: building_id })
 
   add_company_folder: (company_id, do_sort=false) ->
     @client_state.bookmarks.set_company_folder(company_id, BookmarkFolder.new_corporation_folder(company_id, @client_state.name_for_company_id(company_id), @client_state.seal_for_company_id(company_id)))
     @client_state.bookmarks.sort_company_folders() if do_sort
 
   add_building_bookmark: (building_id, do_sort=false) ->
-    metadata = @client_state.core.building_cache.building_metadata_for_id(building_id)
-    definition = @client_state.core.building_library.metadata_by_id[metadata.key]
-    industry_type = IndustryType.TYPES[definition.industry_type]
-    return unless metadata? && definition? && industry_type?
+    building = @client_state.core.building_cache.building_for_id(building_id)
+    definition = @client_state.core.building_library.metadata_by_id[building?.definition_id]
+    industry_type = @client_state.core.planet_library.type_for_id(definition?.industry_type_id)
+    return unless building? && definition? && industry_type?
 
-    industry_root_id = "bookmark-corp-#{metadata.company_id}-#{industry_type.type}"
-    unless @client_state.bookmarks.has_company_industry_type_folder(metadata.company_id, industry_type.type)
-      @client_state.bookmarks.set_company_industry_type_folder(metadata.company_id, industry_type.type, BookmarkFolder.new_industry_folder("bookmark-corp-#{metadata.company_id}", industry_root_id, industry_type))
-      @client_state.bookmarks.sort_company_industry_type_folders(@translation_manager, metadata.company_id) if do_sort
+    industry_root_id = "bookmark-corp-#{building.company_id}-#{industry_type.id}"
+    unless @client_state.bookmarks.has_company_industry_type_folder(building.company_id, industry_type.id)
+      @client_state.bookmarks.set_company_industry_type_folder(building.company_id, industry_type.id, BookmarkFolder.new_industry_folder("bookmark-corp-#{building.company_id}", industry_root_id, industry_type))
+      @client_state.bookmarks.sort_company_industry_type_folders(@translation_manager, building.company_id) if do_sort
 
-    unless @client_state.bookmarks.has_company_building_item(metadata.company_id, industry_type.type, building_id)
-      @client_state.bookmarks.set_company_building_item(metadata.company_id, industry_type.type, building_id, Bookmark.new_corporate_building(industry_root_id, building_id, metadata.name, metadata.x, metadata.y))
-      @client_state.bookmarks.sort_company_building_items(metadata.company_id, industry_type.type) if do_sort
+    unless @client_state.bookmarks.has_company_building_item(building.company_id, industry_type.id, building_id)
+      @client_state.bookmarks.set_company_building_item(building.company_id, industry_type.id, building_id, Bookmark.new_corporate_building(industry_root_id, building_id, building.name, building.map_x, building.map_y))
+      @client_state.bookmarks.sort_company_building_items(building.company_id, industry_type.id) if do_sort
 
 
-  load_metadata: (corporation_id) ->
+  load_by_corporation: (corporation_id) ->
     new Promise (done, error) =>
       if !@client_state.has_session() || !corporation_id? || @ajax_state.is_locked('bookmark_metadata', corporation_id)
         done()
       else
         @ajax_state.lock('bookmark_metadata', corporation_id)
-        @api.bookmarks_metadata(@client_state.session.session_token, corporation_id)
-          .then (bookmark_metadata) =>
+        @api.bookmarks_for_corporation(corporation_id)
+          .then (bookmarks_json) =>
             items = []
-            for item in bookmark_metadata.bookmarks
+            for item in (bookmarks_json || [])
               if item.type == 'FOLDER'
-                items.push BookmarkFolder.new_folder(item.parent_id, item.id, item.name, item.order)
+                items.push BookmarkFolder.new_folder(item.parentId, item.id, item.name, item.order)
               else if item.type == 'LOCATION'
-                items.push Bookmark.new_bookmark(item.parent_id, item.id, item.name, item.order, item.map_x, item.map_y)
+                items.push Bookmark.new_bookmark(item.parentId, item.id, item.name, item.order, item.mapX, item.mapY)
               else if item.type == 'BUILDING'
-                items.push Bookmark.new_bookmark_building(item.parent_id, item.id, item.building_id, item.name, item.order, item.map_x, item.map_y)
-
+                items.push Bookmark.new_bookmark_building(item.parentId, item.id, item.buildingId, item.name, item.order, item.mapX, item.mapY)
             @client_state.bookmarks.set_bookmarks_metadata(items)
-
             @ajax_state.unlock('bookmark_metadata', corporation_id)
             done()
 
@@ -75,13 +78,24 @@ export default class BookmarkManager
       if !@client_state.has_session() || !corporation_id? || @ajax_state.is_locked('update_bookmark', corporation_id)
         done()
       else
+        safe_deltas = []
         for delta in deltas
+          safe_delta = {}
+          safe_delta.type = delta.type if delta.type?
+          safe_delta.parentId = delta.parent_id if delta.parent_id?
+          safe_delta.name = delta.name if delta.name?
+          safe_delta.order = delta.order if delta.order?
+          safe_delta.buildingId = delta.building_id if delta.building_id?
+          safe_delta.mapX = delta.map_x if delta.map_x?
+          safe_delta.mapY = delta.map_y if delta.map_y?
+          safe_deltas.push safe_delta
+
           if @client_state.bookmarks.bookmarks_by_id[delta.id]?
             @client_state.bookmarks.bookmarks_by_id[delta.id].parent_id = delta.parent_id
             @client_state.bookmarks.bookmarks_by_id[delta.id].order = delta.order
 
         @ajax_state.lock('update_bookmark', corporation_id)
-        @api.update_bookmarks_metadata(@client_state.session.session_token, corporation_id, deltas)
+        @api.update_corporation_bookmarks(corporation_id, safe_deltas)
           .then (updated_metadata) =>
             # FIXME: TODO: verify update matches deltas
 
@@ -101,10 +115,9 @@ export default class BookmarkManager
         folder_name = "New Folder #{@client_state.bookmarks.folder_count() + 1}"
 
         @ajax_state.lock('new_bookmark_folder', corporation_id)
-        @api.add_bookmark(@client_state.session.session_token, corporation_id, 'FOLDER', 'bookmarks', folder_name)
+        @add_bookmark(corporation_id, 'FOLDER', 'bookmarks', folder_name)
           .then (item) =>
-            @client_state.bookmarks.add_bookmarks_metadata BookmarkFolder.new_folder(item.parent_id, item.id, item.name, item.order)
-
+            @client_state.bookmarks.add_bookmarks_metadata BookmarkFolder.new_folder(item.parentId, item.id, item.name, item.order)
             @ajax_state.unlock('new_bookmark_folder', corporation_id)
             done()
 
@@ -116,7 +129,7 @@ export default class BookmarkManager
     new Promise (done, error) =>
       corporation_id = @client_state.player.corporation_id
       building_id = @client_state.interface.selected_building_id
-      building = if building_id?.length then @client_state.core.building_cache.building_metadata_for_id(building_id) else null
+      building = if building_id?.length then @client_state.core.building_cache.building_for_id(building_id) else null
 
       if !@client_state.has_session() || !corporation_id? || @ajax_state.is_locked('new_bookmark_item', corporation_id) || (building_id?.length && !building?)
         done()
@@ -127,12 +140,12 @@ export default class BookmarkManager
         center_iso = @client_state.camera.map_to_iso(center.x, center.y)
 
         @ajax_state.lock('new_bookmark_item', corporation_id)
-        promise = if building? then @api.add_bookmark_building_item(@client_state.session.session_token, corporation_id, 'bookmarks', item_name, building.x, building.y, building_id) else @api.add_bookmark_location_item(@client_state.session.session_token, corporation_id, 'bookmarks', item_name, center_iso.i, center_iso.j)
+        promise = if building? then @add_bookmark_building_item(corporation_id, 'bookmarks', item_name, building.x, building.y, building_id) else @add_bookmark_location_item(corporation_id, 'bookmarks', item_name, center_iso.i, center_iso.j)
         promise.then (item) =>
           if item.type == 'LOCATION'
-            @client_state.bookmarks.add_bookmarks_metadata Bookmark.new_bookmark(item.parent_id, item.id, item.name, item.order, item.map_x, item.map_y)
+            @client_state.bookmarks.add_bookmarks_metadata Bookmark.new_bookmark(item.parentId, item.id, item.name, item.order, item.mapX, item.mapY)
           else if item.type == 'BUILDING'
-            @client_state.bookmarks.add_bookmarks_metadata Bookmark.new_bookmark_building(item.parent_id, item.id, item.building_id, item.name, item.order, item.map_x, item.map_y)
+            @client_state.bookmarks.add_bookmarks_metadata Bookmark.new_bookmark_building(item.parentId, item.id, item.buildingId, item.name, item.order, item.mapX, item.mapY)
 
           @ajax_state.unlock('new_bookmark_item', corporation_id)
           done()

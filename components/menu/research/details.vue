@@ -5,21 +5,21 @@
   .card-content.sp-menu-background.overall-container
     .invention-details(v-if="selected_invention != null")
       .invention-selected-details
-        .invention-name {{translate(invention_name_key)}}
-        .invention-description {{translate(invention_description_key)}}
+        .invention-name {{translate(invention_name)}}
+        .invention-description {{translate(invention_description)}}
         .invention-cost
           span.cost-label {{translate('ui.menu.research.cost.label')}}:
           span.cost-value {{invention_cost}}
-        .invention-level(v-if="invention_level_key.length")
+        .invention-level(v-if="invention_level_label != null")
           span.level-label {{translate('ui.menu.research.level.label')}}:
-          span.level-value {{translate(invention_level_key)}}
+          span.level-value {{translate(invention_level_label)}}
 
         .invention-requires
           span.invention-label {{translate('ui.menu.research.requires.label')}}:
           span.none-value(v-if="invention_requires.length == 0") {{translate('ui.menu.research.none.label')}}
           ul.inventions
             li(v-for='option in sort_inventions(invention_requires)')
-              a(v-on:click.stop.prevent="select_invention(option.id)") {{translate(option.text_key)}}
+              a(v-on:click.stop.prevent="select_invention(option.id)") {{translate(option.name)}}
           div.is-clearfix
 
         .invention-allows
@@ -27,7 +27,7 @@
           span.none-value(v-if="invention_allows.length == 0") {{translate('ui.menu.research.none.label')}}
           ul.inventions
             li(v-for='option in sort_inventions(invention_allows).slice(0, 3)')
-              a(v-on:click.stop.prevent="select_invention(option.id)") {{translate(option.text_key)}}
+              a(v-on:click.stop.prevent="select_invention(option.id)") {{translate(option.name)}}
             li(v-if='invention_allows.length > 5') {{invention_allows.length - 3}} {{translate('ui.menu.research.others.label')}}
             li(v-else-if='invention_allows.length > 4') 1 {{translate('ui.menu.research.other.label')}}
           div.is-clearfix
@@ -43,6 +43,7 @@
         .action-row.invention-status
           span.invention-status-label {{translate('ui.menu.research.status.label')}}:
           span.invention-status-value.available(v-if="invention_status == 'AVAILABLE'") {{translate('ui.menu.research.details.status.available')}}
+          span.invention-status-value.blocked(v-else-if="invention_status == 'AVAILABLE_LEVEL'") {{translate('ui.menu.research.details.status.level_required')}}
           span.invention-status-value.blocked(v-else-if="invention_status == 'AVAILABLE_BLOCKED'") {{translate('ui.menu.research.details.status.dependencies_required')}}
           span.invention-status-value.pending(v-else-if="invention_status == 'PENDING'")
             span(v-if="company_pending_invention.order == 0") {{translate('ui.menu.research.details.status.in_progress')}}
@@ -54,7 +55,7 @@
 
         .action-row
           a.button.is-fullwidth.is-starpeace(v-if="invention_status == 'AVAILABLE'", v-on:click.stop.prevent='queue_invention', :disabled='actions_disabled') {{translate('ui.menu.research.actions.start.label')}}
-          a.button.is-fullwidth.is-starpeace(v-else-if="invention_status == 'AVAILABLE_BLOCKED'", disabled=true) {{translate('ui.menu.research.actions.start.label')}}
+          a.button.is-fullwidth.is-starpeace(v-else-if="invention_status == 'AVAILABLE_LEVEL' || invention_status == 'AVAILABLE_BLOCKED'", disabled=true) {{translate('ui.menu.research.actions.start.label')}}
           a.button.is-fullwidth.is-starpeace(v-else-if="invention_status == 'PENDING'", v-on:click.stop.prevent='sell_invention', :disabled='actions_disabled') {{translate('ui.menu.research.actions.cancel.label')}}
           a.button.is-fullwidth.is-starpeace(v-else-if="invention_status == 'COMPLETED'", v-on:click.stop.prevent='sell_invention', :disabled='actions_disabled') {{translate('ui.menu.research.actions.sell.label')}}
           a.button.is-fullwidth.is-starpeace(v-else-if="invention_status == 'COMPLETED_SUPPORT'", disabled=true) {{translate('ui.menu.research.actions.sell.label')}}
@@ -62,7 +63,6 @@
 </template>
 
 <script lang='coffee'>
-import Level from '~/plugins/starpeace-client/identity/level.coffee'
 import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
 
 export default
@@ -80,9 +80,14 @@ export default
     selected_invention_id: -> @client_state.interface.inventions_selected_invention_id
     selected_invention: -> if @selected_invention_id? then @client_state.core.invention_library.metadata_for_id(@selected_invention_id) else null
 
-    invention_name_key: -> if @selected_invention? then @selected_invention.name_key else ''
-    invention_description_key: -> if @selected_invention? then @selected_invention.description_key else ''
-    invention_level_key: -> if @selected_invention?.properties?.level? then Level.from_string(@selected_invention?.properties?.level).text_key else ''
+    corporation_level_id: -> @client_state.current_corporation_metadata()?.level_id
+    corporation_level: -> if @corporation_level_id? then @client_state.core.planet_library.level_for_id(@corporation_level_id) else null
+
+    invention_name: -> if @selected_invention? then @selected_invention.name else ''
+    invention_description: -> if @selected_invention? then @selected_invention.description else ''
+    invention_level_id: -> @selected_invention?.properties?.levelId
+    invention_level: -> if @invention_level_id? then @client_state.core.planet_library.level_for_id(@invention_level_id) else null
+    invention_level_label: -> @invention_level?.label
     invention_cost: ->
       cost = @selected_invention?.properties?.price || 0
       if cost > 0 then "$#{Utils.format_money(cost)}" else ''
@@ -101,7 +106,7 @@ export default
         if metadata? && @invention_ids_for_company.indexOf(metadata.id) >= 0
           upstream.push {
             id: metadata.id
-            text_key: metadata.name_key
+            name: metadata.name
           }
       upstream
 
@@ -112,7 +117,7 @@ export default
         if metadata? && @invention_ids_for_company.indexOf(metadata.id) >= 0
           downstream.push {
             id: metadata.id
-            text_key: metadata.name_key
+            name: metadata.name
           }
       downstream
 
@@ -149,6 +154,7 @@ export default
           return 'COMPLETED_SUPPORT' if @is_invention_in_progress(allows.id) || @is_invention_completed(allows.id)
         'COMPLETED'
       else
+        return 'AVAILABLE_LEVEL' if @invention_level? && @invention_level.level > (@corporation_level?.level || 0)
         for requires in @invention_requires
           return 'AVAILABLE_BLOCKED' unless @is_invention_completed(requires.id)
         'AVAILABLE'

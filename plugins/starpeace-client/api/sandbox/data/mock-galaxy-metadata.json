@@ -1,0 +1,49 @@
+{
+  "id": "browser-sandbox",
+  "name": "Browser Sandbox",
+  "visitorEnabled": true,
+  "tycoonEnabled": true,
+  "tycoonCreationEnabled": false,
+  "tycoonAuthentication": "password",
+  "planets": [
+    {
+      "id": "planet-1",
+      "name": "Mercury",
+      "enabled": true,
+      "planetType": "earth",
+      "planetWidth": 1000,
+      "planetHeight": 1000,
+      "mapId": "aries",
+      "population": 0,
+      "investmentValue": 0,
+      "corporationCount": 0,
+      "onlineCount": 0
+    },
+    {
+      "id": "planet-2",
+      "name": "Venus",
+      "enabled": true,
+      "planetType": "earth",
+      "planetWidth": 1000,
+      "planetHeight": 1000,
+      "mapId": "ancoeus",
+      "population": 0,
+      "investmentValue": 0,
+      "corporationCount": 0,
+      "onlineCount": 0
+    },
+    {
+      "id": "planet-3",
+      "name": "Neptune",
+      "enabled": false,
+      "planetType": "earth",
+      "planetWidth": 1000,
+      "planetHeight": 1000,
+      "mapId": "mondronia",
+      "population": 0,
+      "investmentValue": 0,
+      "corporationCount": 0,
+      "onlineCount": 0
+    }
+  ]
+}

@@ -9,7 +9,7 @@
         industry-type-icon(:industry_type="item.industry_type", :small='true')
       template(v-else-if="item.type == 'TOWN'")
         city-icon
-      template(v-else-if='true')
+      template(v-else)
         span.sp-folder-icon(v-show="item.has_children && !item.expanded")
           font-awesome-icon(:icon="['fas', 'folder']")
         span.sp-folder-icon(v-show="item.has_children && item.expanded")

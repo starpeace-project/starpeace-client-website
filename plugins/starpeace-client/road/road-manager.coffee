@@ -40,25 +40,6 @@ export default class RoadManager
   constructor: (@asset_manager, @ajax_state, @client_state) ->
     @chunk_promises = {}
 
-  load_chunk: (chunk_x, chunk_y, width, height) ->
-    key = "#{chunk_x}x#{chunk_y}"
-    return if @chunk_promises[key]?
-
-    Logger.debug("attempting to load road chunk at #{chunk_x}x#{chunk_y}")
-    @ajax_state.start_ajax()
-    @chunk_promises[key] = new Promise (done) =>
-      data = new Array(width, height).fill(false)
-
-      chunk = DUMMY_CHUNK_DATA[key]
-      data = chunk.data if chunk?
-
-      setTimeout(=>
-        delete @chunk_promises[key]
-        done(data)
-        @ajax_state.finish_ajax()
-      , 500)
-
-
   queue_asset_load: () ->
     return if @client_state.core.road_library.has_assets() || @ajax_state.is_locked('assets.road_metadata', 'ALL')
 
@@ -76,3 +57,21 @@ export default class RoadManager
       @asset_manager.queue_and_load_atlases((resource.data?.atlas || []), (atlas_path, atlas) => @client_state.core.road_library.load_atlas(atlas_path, atlas))
       @ajax_state.unlock('assets.road_metadata', 'ALL')
     )
+
+  load_chunk: (chunk_x, chunk_y, width, height) ->
+    key = "#{chunk_x}x#{chunk_y}"
+    return if @chunk_promises[key]?
+
+    Logger.debug("attempting to load road chunk at #{chunk_x}x#{chunk_y}")
+    @ajax_state.start_ajax()
+    @chunk_promises[key] = new Promise (done) =>
+      data = new Array(width, height).fill(false)
+
+      chunk = DUMMY_CHUNK_DATA[key]
+      data = chunk.data if chunk?
+
+      setTimeout(=>
+        delete @chunk_promises[key]
+        done(data)
+        @ajax_state.finish_ajax()
+      , 500)

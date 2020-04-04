@@ -1,9 +1,8 @@
 
-import Logger from '~/plugins/starpeace-client/logger.coffee'
-
-import BuildingZone from '~/plugins/starpeace-client/overlay/building-zone.coffee'
 import MetadataOverlay from '~/plugins/starpeace-client/overlay/metadata-overlay.coffee'
 import Overlay from '~/plugins/starpeace-client/overlay/overlay.coffee'
+
+import Logger from '~/plugins/starpeace-client/logger.coffee'
 
 DUMMY_ZONE_CHUNK_DATA = {}
 for type in ['ZONES', 'BEAUTY', 'HC_RESIDENTIAL', 'MC_RESIDENTIAL', 'LC_RESIDENTIAL', 'QOL',
@@ -37,27 +36,6 @@ export default class OverlayManager
   constructor: (@asset_manager, @ajax_state, @client_state) ->
     @chunk_promises = {}
 
-  load_chunk: (type, chunk_x, chunk_y, width, height) ->
-    key = "#{type}x#{chunk_x}x#{chunk_y}"
-    return if @chunk_promises[key]?
-
-    Logger.debug("attempting to load overlay chunk for #{type} at #{chunk_x}x#{chunk_y}")
-    @ajax_state.start_ajax()
-    @chunk_promises[key] = new Promise (done) =>
-      data = new Array(width, height).fill(Overlay.TYPES.NONE)
-
-      chunk = DUMMY_ZONE_CHUNK_DATA[key]
-      if type == 'ZONES'
-        data = BuildingZone.deserialize_chunk(chunk.width, chunk.height, chunk.data) if chunk?
-      else if type != 'NONE' && type != 'TOWNS'
-        data = Overlay.deserialize_chunk(type, chunk.width, chunk.height, chunk.data) if chunk?
-
-      setTimeout(=>
-        delete @chunk_promises[key]
-        done(data)
-        @ajax_state.finish_ajax()
-      , 500)
-
   queue_asset_load: () ->
     return if @client_state.core.overlay_library.has_assets() || @ajax_state.is_locked('assets.overlay_metadata', 'ALL')
 
@@ -81,3 +59,37 @@ export default class OverlayManager
       )
       @ajax_state.unlock('assets.overlay_metadata', 'ALL')
     )
+
+  load_chunk: (type, chunk_x, chunk_y, width, height) ->
+    key = "#{type}x#{chunk_x}x#{chunk_y}"
+    return if @chunk_promises[key]?
+
+    Logger.debug("attempting to load overlay chunk for #{type} at #{chunk_x}x#{chunk_y}")
+    @ajax_state.start_ajax()
+    @chunk_promises[key] = new Promise (done) =>
+      data = new Array(width, height).fill(Overlay.TYPES.NONE)
+
+      chunk = DUMMY_ZONE_CHUNK_DATA[key]
+      if type == 'ZONES'
+        data = @deserialize_zone_chunk(chunk.width, chunk.height, chunk.data) if chunk?
+      else if type != 'NONE' && type != 'TOWNS'
+        data = Overlay.deserialize_chunk(type, chunk.width, chunk.height, chunk.data) if chunk?
+
+      setTimeout(=>
+        delete @chunk_promises[key]
+        done(data)
+        @ajax_state.finish_ajax()
+      , 500)
+
+  deserialize_zone_chunk: (width, height, data) ->
+    zones = new Array(width * height)
+    for y in [0...height]
+      for x in [0...width]
+        type_value = parseInt(data[y * width + x], 16)
+        if type_value > 0
+          city_zone = @client_state.core.planet_library.zone_for_value(type_value)
+          if city_zone?
+            zones[y * width + x] = city_zone
+          else
+            Logger.warn("unable to find city zone for value #{type_value}")
+    zones

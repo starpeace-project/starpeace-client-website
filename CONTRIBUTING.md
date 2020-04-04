@@ -42,7 +42,7 @@ STARPEACE Project is made up [several repositories](https://github.com/starpeace
 ### Client
 * [starpeace-website](https://github.com/starpeace-project/starpeace-website) - static client homepage and license content
 * [starpeace-website-client](https://github.com/starpeace-project/starpeace-website-client) - client game application logic and webgl rendering website
-* [starpeace-website-client-assets](https://github.com/starpeace-project/starpeace-website-client-assets) - raw media assets, gameplay resources, and procedural generation logic for client
+* [starpeace-website-client-assets](https://github.com/starpeace-project/starpeace-website-client-assets) - procedural generation and compilation logic of assets for client
 * [starpeace-website-documentation](https://github.com/starpeace-project/starpeace-website-documentation) - static and dynamic documentation website
 
 ### Server - Universe (identity management and galaxy directory)
@@ -53,6 +53,7 @@ STARPEACE Project is made up [several repositories](https://github.com/starpeace
 * [starpeace-server-galaxy-nodejs](https://github.com/starpeace-project/starpeace-server-galaxy-nodejs) - STARPEACE Galaxy implementation in NodeJS using express
 
 ### Misc
+* [starpeace-assets](https://github.com/starpeace-project/starpeace-assets) - raw media assets, gameplay resources, and simulation configurations
 * [starpeace-documents-public](https://github.com/starpeace-project/starpeace-documents-public) - public design, planning, and gameplay documents
 * [starpeace-project-website](https://github.com/starpeace-project/starpeace-project-website) - project static content, auto-generated API documentation, and community information
 

@@ -66,8 +66,8 @@ export default class BuildingImageRenderer
       @container.addChild(@sprite)
 
     if @client_state.interface.construction_selected_building_id?.length
-      building_metadata = @client_state.core.building_library.metadata_by_id[@client_state.interface.construction_selected_building_id]
-      building_image = if building_metadata?.image_id? then @client_state.core.building_library.images_by_id[building_metadata.image_id] else null
+      definition = @client_state.core.building_library.definition_for_id(@client_state.interface.construction_selected_building_id)
+      building_image = if definition?.image_id? then @client_state.core.building_library.images_by_id[definition.image_id] else null
       texture = if building_image?.frames?.length then PIXI.utils.TextureCache[building_image.frames[0]] else PIXI.Texture.EMPTY
 
       height_if_render_width = @renderer_width * (texture.height / texture.width)

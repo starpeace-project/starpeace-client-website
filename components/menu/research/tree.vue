@@ -10,21 +10,21 @@
       ul
         template(v-if="research_available.length")
           li(v-for="research in research_available")
-            a(v-on:click.stop.prevent="select_invention_id(research.id)") {{translate(research.text_key)}}
+            a(v-on:click.stop.prevent="select_invention_id(research.id)") {{translate(research.name)}}
         template(v-else-if='true')
           li {{translate('ui.menu.research.none.label')}}
       .status-title {{translate('ui.menu.research.status.in_progress')}}
       ul
         template(v-if="research_in_progress.length")
           li(v-for="research in research_in_progress")
-            a(v-on:click.stop.prevent="select_invention_id(research.id)") {{translate(research.text_key)}}
+            a(v-on:click.stop.prevent="select_invention_id(research.id)") {{translate(research.name)}}
         template(v-else-if="true")
           li {{translate('ui.menu.research.none.label')}}
       .status-title {{translate('ui.menu.research.status.completed')}}
       ul
         template(v-if="research_completed.length")
           li(v-for="research in research_completed")
-            a(v-on:click.stop.prevent="select_invention_id(research.id)") {{translate(research.text_key)}}
+            a(v-on:click.stop.prevent="select_invention_id(research.id)") {{translate(research.name)}}
         template(v-else-if="true")
           li {{translate('ui.menu.research.none.label')}}
     .tree-container
@@ -106,7 +106,6 @@ export default
   mounted: ->
     @client_state.corporation.subscribe_company_inventions_listener => @refresh_tree()
     @client_state.options.subscribe_options_listener => @refresh_invention_data()
-    @client_state.core.translations_library.subscribe_listener => @refresh_invention_data()
 
   watch:
     is_visible: (new_value, old_value) ->
@@ -124,8 +123,8 @@ export default
       if !invention_within_selection? && new_value?
         invention_metadata = @client_state.core.invention_library.metadata_for_id(new_value)
         if invention_metadata?
-          @interface_state.inventions_selected_category = invention_metadata.category
-          @interface_state.inventions_selected_industry_type = invention_metadata.industry_type
+          @interface_state.inventions_selected_category_id = invention_metadata.industry_category_id
+          @interface_state.inventions_selected_industry_type_id = invention_metadata.industry_type_id
 
       setTimeout(=>
         @$refs.tree_network.selectNodes([@selected_invention_id]) if @selected_invention_id? && @$refs.tree_network.getNode(@selected_invention_id)?
@@ -138,16 +137,15 @@ export default
 
     interface_state: -> @client_state?.interface
 
-    selected_category: -> @interface_state?.inventions_selected_category
-    selected_industry_type: -> @interface_state?.inventions_selected_industry_type
+    selected_category_id: -> @interface_state?.inventions_selected_category_id
+    selected_industry_type_id: -> @interface_state?.inventions_selected_industry_type_id
     selected_invention_id: -> @interface_state?.inventions_selected_invention_id
 
     invention_data: ->
       inventions = {}
       to_search = []
       for invention in @inventions_for_company
-        industry_type = invention.industry_type || 'GENERAL'
-        if invention.category == @selected_category && industry_type == @selected_industry_type
+        if invention.industry_category_id == @selected_category_id && (invention.industry_type_id || 'GENERAL') == @selected_industry_type_id
           inventions[invention.id] = invention
           to_search.push invention.id
 
@@ -167,19 +165,19 @@ export default
     research_available: ->
       available = []
       for invention in @invention_data
-        available.push { id: invention.id, text_key: invention.name_key } unless @is_invention_in_progress(invention.id) || @is_invention_completed(invention.id)
+        available.push { id: invention.id, name: invention.name } unless @is_invention_in_progress(invention.id) || @is_invention_completed(invention.id)
       _.sortBy(available, (invention) -> invention.text)
     research_in_progress: ->
       in_progress = []
       if @company_inventions?
         for invention in @invention_data
-          in_progress.push { id: invention.id, text_key: invention.name_key } if @is_invention_in_progress(invention.id)
+          in_progress.push { id: invention.id, name: invention.name } if @is_invention_in_progress(invention.id)
       _.sortBy(in_progress, (invention) -> invention.text)
     research_completed: ->
       completed = []
       if @company_inventions?
         for invention in @invention_data
-          completed.push { id: invention.id, text_key: invention.name_key } if @is_invention_completed(invention.id)
+          completed.push { id: invention.id, name: invention.name } if @is_invention_completed(invention.id)
       _.sortBy(completed, (invention) -> invention.text)
 
 
@@ -199,7 +197,7 @@ export default
       for invention in @invention_data
         data.push {
           id: invention.id
-          label: @translate(invention.name_key)
+          label: @translate(invention.name)
           color: @color_for_node(invention.id)
         }
 

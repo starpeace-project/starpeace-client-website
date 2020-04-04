@@ -22,4 +22,5 @@ export default class SpriteTree extends Sprite
     sprite.width = width
     sprite.height = height
     sprite.tint = if @has_data then 0xFFFFFF else 0x555555
-    sprite.zIndex = canvas.y - .5 * viewport.tile_height
+    #sprite.zIndex = canvas.y + .5 * viewport.tile_height
+    sprite.zIndex = sprite.y + sprite.height - Math.round(.5 * viewport.tile_height)

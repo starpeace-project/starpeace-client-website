@@ -4,7 +4,7 @@ export default class BookmarkFolder
   constructor: (@parent_id, @id, @order, options={}) ->
     @children = []
 
-    if options.name_key?.length
+    if options.name_key?
       @name_key = options.name_key
     else if options.name?.length
       @name = options.name
@@ -39,7 +39,7 @@ export default class BookmarkFolder
     new BookmarkFolder('bookmark-corporation', "bookmark-corp-#{company_id}", -1, { type:'CORPORATION', name:company_name, seal_id:seal_id })
 
   @new_industry_folder: (root_id, id, industry_type) ->
-    new BookmarkFolder(root_id, id, -1, { type:'INDUSTRY', name_key:industry_type.text_key, industry_type:industry_type.type })
+    new BookmarkFolder(root_id, id, -1, { type:'INDUSTRY', name_key:industry_type.label, industry_type:industry_type.id })
 
 
   @new_folder: (root_id, id, name, order) ->

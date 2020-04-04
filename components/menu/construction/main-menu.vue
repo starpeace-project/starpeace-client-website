@@ -23,20 +23,18 @@
               span.icon.is-small
                 font-awesome-icon.tycoon-icon(:icon="['fas', 'user-secret']")
               span {{translate('identity.visitor')}}
-        template(v-if='selected_menu_category')
+        template(v-if='selected_menu_industry_category_id')
           li.is-active
             a.construction-breadcrumb-item
-              span.icon.is-small
-                industry-category-icon(:industry_category='selected_menu_category', no_active=true)
-              span {{text_for_category(selected_menu_category)}}
+              span {{text_for_category(selected_menu_industry_category_id)}}
 
     #construction-image-pending(ref="pendingContainer")
       #construction-image-webgl-container(ref="previewContainer")
 
     aside.sp-menu-category.sp-scrollbar(v-show="has_selected_menu_category")
-      template(v-for="info in sort_buildings(buildings_for_company_by_category[selected_menu_category])")
+      template(v-for="info in sort_buildings(buildings_for_company_by_category[selected_menu_industry_category_id])")
         a.is-building-item(v-on:click.stop.prevent="toggle_building(info)", :class="selected_building_id == info.id ? 'active' : ''")
-          industry-type-icon(:industry_type="info.industry_type", :small='true')
+          industry-type-icon(:industry_type="info.industry_type_id", :small='true')
           span.is-building-label {{building_name(info)}}
           .construction-disabled(v-show="!can_construct_building(info)")
 
@@ -47,7 +45,7 @@
                 article.tile.is-child.is-7(:ref="'previewItem.' + info.id")
                 article.tile.is-child
                   .building-cost
-                    money-text(:value='info.cost()', no_styling=true, as_thousands=true)
+                    money-text(:value='building_cost(info.id)', no_styling=true, as_thousands=true)
                   .building-size {{building_size(info)}}m&sup2;
               .tile.is-parent.is-item-details-bottom
                 article.tile.is-child
@@ -57,10 +55,10 @@
                     template(v-for='id,index in info.required_invention_ids')
                       template(v-if='is_invention_completed(id)')
                         span.research-completed {{invention_name(id)}}
-                      template(v-else-if='true')
-                        a(v-on:click.stop.prevent='select_invention(id)') {{invention_name(id)}}
+                      template(v-else)
+                        a.research-pending(v-on:click.stop.prevent='select_invention(id)') {{invention_name(id)}}
                       span.research-separator(v-if="index < info.required_invention_ids.length - 1") {{separator_label_for_index(index, info.required_invention_ids.length)}}
-                  a.button.is-fullwidth.is-starpeace.construct-button(v-on:click.stop.prevent="select_building(info)", :disabled='!can_construct_building(info)') {{translate('ui.menu.construction.construct_building')}}:
+                  a.button.is-fullwidth.is-starpeace.construct-button(v-on:click.stop.prevent="select_building(info)", :disabled='!can_construct_building(info)') {{translate('ui.menu.construction.construct_building')}}
 
     aside.sp-menu-overall.sp-scrollbar(v-show="!has_selected_menu_category")
       .tile.is-ancestor.construction-items
@@ -105,9 +103,6 @@ import CompanySealIcon from '~/components/misc/company-seal-icon.vue'
 import IndustryCategoryIcon from '~/components/misc/industry-category-icon.vue'
 import IndustryTypeIcon from '~/components/misc/industry-type-icon.vue'
 
-import CompanySeal from '~/plugins/starpeace-client/industry/company-seal.coffee'
-import IndustryCategory from '~/plugins/starpeace-client/industry/industry-category.coffee'
-
 export default
   props:
     client_state: Object
@@ -126,21 +121,21 @@ export default
     is_tycoon: -> @is_ready && @client_state?.is_tycoon()
     company_id: -> if @is_tycoon then @client_state.player.company_id else null
     company_seal_id: -> if @company_id? then @client_state.seal_for_company_id(@company_id) else null
-    company_seal_name: -> if @company_seal_id? then CompanySeal.SEALS[@company_seal_id].name else null
+    company_seal_name: -> if @company_seal_id? then @translate(@client_state.core.planet_library.seal_for_id(@company_seal_id)?.name_short) else null
 
-    root_breadcrumb_class: -> if @selected_menu_category? then '' else 'is-active'
+    root_breadcrumb_class: -> if @selected_menu_industry_category_id? then '' else 'is-active'
 
-    has_selected_menu_category: -> @selected_menu_category?
-    selected_menu_category: -> @client_state.interface.construction_selected_category
+    has_selected_menu_category: -> @selected_menu_industry_category_id?
+    selected_menu_industry_category_id: -> @client_state.interface.construction_selected_category_id
     selected_building_id: -> @client_state.interface.construction_selected_building_id
 
     buildings_for_company_by_category: ->
-      building_infos = if @company_seal_id? then @client_state.core.building_library.metadata_by_seal_id[@company_seal_id] else _.values(@client_state.core.building_library.metadata_by_id)
-      _.groupBy(_.filter(building_infos || [], (info) -> !info.restricted), (info) -> info.category)
+      definitions = if @company_seal_id? then @client_state.core.building_library.definitions_for_seal(@company_seal_id) else _.values(@client_state.core.building_library.metadata_by_id)
+      _.groupBy(_.filter(definitions || [], (info) -> !info.restricted), (info) -> info.industry_category_id)
 
   watch:
     company_id: (new_value, old_value) ->
-      @client_state.interface.construction_selected_category = null
+      @client_state.interface.construction_selected_category_id = null
       @client_state.interface.construction_building_id = null
 
   mounted: ->
@@ -150,19 +145,20 @@ export default
   methods:
     translate: (text_key) -> @managers?.translation_manager?.text(text_key)
 
+    building_cost: (definition_id) -> @managers?.building_manager?.cost_for_building_definition_id(definition_id) || 0
     sort_buildings: (buildings) ->
-      _.sortBy(buildings, (info) -> "#{info.industry_type}-#{_.padStart(info.cost(), 12, '0')}")
+      _.sortBy(buildings, (info) => "#{info.industry_type}-#{_.padStart(@building_cost(info.id), 12, '0')}")
 
     separator_label_for_index: (index, length) ->
       if length > 2 then (if index == length - 2 then ', and ' else ', ') else ' and '
 
-    category_has_buildings: (category) -> @buildings_for_company_by_category[category]?.length
-    text_for_category: (category) -> if category? then @managers.translation_manager.text(IndustryCategory.CATEGORIES[category].text_key) else ''
+    category_has_buildings: (category_id) -> @buildings_for_company_by_category[category_id]?.length
+    text_for_category: (category_id) -> if category_id? then @managers.translation_manager.text(@client_state.core.planet_library.category_for_id(category_id)?.label) else category_id
 
     can_construct_building: (building_info) -> @client_state.has_construction_requirements(building_info.id)
 
-    building_name: (building_info) -> @managers.translation_manager.text(building_info.name_key)
-    building_description: (building_info) -> @managers.building_manager.description_for_building(building_info)
+    building_name: (building_info) -> @managers.translation_manager.text(building_info.name)
+    building_description: (building_info) -> @managers.translation_manager.description_for_building(building_info)
 
     building_size: (building_info) ->
       building_definition = @client_state.core.building_library.metadata_by_id[building_info.id]
@@ -173,7 +169,7 @@ export default
 
     invention_name: (id) ->
       metadata = @client_state.core.invention_library.metadata_for_id(id)
-      if metadata? then @managers.translation_manager.text(metadata.name_key) else id
+      if metadata? then @managers.translation_manager.text(metadata.name) else id
 
     is_invention_completed: (id) ->
       return false unless @company_id?
@@ -181,8 +177,8 @@ export default
 
 
     select_root_breadcrumb: ->
-      return unless @selected_menu_category?
-      @client_state.interface.construction_selected_category = null
+      return unless @selected_menu_industry_category_id?
+      @client_state.interface.construction_selected_category_id = null
       if @selected_building_id?
         @client_state.interface.construction_selected_building_id = null
         @$refs.previewContainer.parentElement.removeChild(@$refs.previewContainer)
@@ -190,7 +186,7 @@ export default
 
     select_category: (category) ->
       return unless @category_has_buildings(category)
-      @client_state.interface.construction_selected_category = category
+      @client_state.interface.construction_selected_category_id = category
 
     toggle_building: (info) ->
       @$refs.previewContainer.parentElement.removeChild(@$refs.previewContainer)
@@ -321,6 +317,7 @@ export default
 
   .construct-action
     cursor: pointer
+    font-weight: normal
 
     &[disabled]
       cursor: not-allowed
@@ -341,6 +338,9 @@ export default
 
     .research-completed
       font-style: italic
+
+    .research-pending
+      font-weight: bold
 
     .construct-button
       margin-top: .5rem

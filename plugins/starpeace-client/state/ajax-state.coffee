@@ -32,3 +32,15 @@ export default class AjaxState
   unlock: (type, key) ->
     Vue.set(@request_mutex[type], key, false) if @request_mutex[type]?[key]?
     @finish_ajax()
+
+
+  with_lock: (type, key, done_callback, error_callback) ->
+    @lock(type, key)
+    {
+      done: () =>
+        @unlock(type, key)
+        done_callback()
+      error: () =>
+        @unlock(type, key)
+        error_callback()
+    }

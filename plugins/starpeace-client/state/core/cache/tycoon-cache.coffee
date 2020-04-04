@@ -2,18 +2,17 @@
 import moment from 'moment'
 import Vue from 'vue'
 
-import EventListener from '~/plugins/starpeace-client/state/event-listener.coffee'
-import MetadataTycoon from '~/plugins/starpeace-client/tycoon/metadata-tycoon.coffee'
+import Cache from '~/plugins/starpeace-client/state/core/cache/cache.coffee'
+import Tycoon from '~/plugins/starpeace-client/tycoon/tycoon.coffee'
 
 import TimeUtils from '~/plugins/starpeace-client/utils/time-utils.coffee'
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 
-export default class TycoonCache
+export default class TycoonCache extends Cache
   constructor: () ->
-    @event_listener = new EventListener()
-    @reset_state()
+    super()
 
-  reset_state: () ->
+  reset_multiverse: () ->
     @tycoon_metadata_by_id = {}
 
   subscribe_tycoon_metadata_listener: (listener_callback) -> @event_listener.subscribe('tycoon_cache.metadata', listener_callback)
@@ -22,8 +21,8 @@ export default class TycoonCache
   has_tycoon_metadata_fresh: (tycoon_id) -> if @tycoon_metadata_by_id[tycoon_id]? then @tycoon_metadata_by_id[tycoon_id]?.is_fresh() else false
 
   set_tycoon_metadata: (tycoon_metadata) ->
-    unless tycoon_metadata instanceof MetadataTycoon
-      Logger.debug "client misconfiguration, object is not expected MetadataTycoon"
+    unless tycoon_metadata instanceof Tycoon
+      Logger.debug "client misconfiguration, object is not expected Tycoon"
       return
 
     Vue.set(@tycoon_metadata_by_id, tycoon_metadata.id, tycoon_metadata)

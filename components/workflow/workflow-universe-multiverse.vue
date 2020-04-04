@@ -17,14 +17,47 @@
               span.planet-value {{online_count(galaxy)}}
 
         .column.is-5.has-text-right.galaxy-actions
-          a.button.is-medium.is-starpeace.is-inverted.is-outlined(v-on:click.stop.prevent="proceed_as_visitor(galaxy.id)", :disabled='!visitor_enabled(galaxy)') {{translate('identity.visitor')}}
-          a.button.is-medium.is-starpeace.is-inverted(v-on:click.stop.prevent="proceed_as_tycoon(galaxy.id)", :disabled='!tycoon_enabled(galaxy)') {{translate('identity.tycoon')}}
+          a.button.is-medium.is-starpeace.is-inverted.is-outlined(v-on:click.stop.prevent="proceed_as_visitor(galaxy.id)" :disabled='!visitor_enabled(galaxy)') {{translate('identity.visitor')}}
+          a.button.is-medium.is-starpeace.is-inverted(:class="{'is-outlined': tycoon_galaxy_id != galaxy.id}" v-on:click.stop.prevent="toggle_tycoon_galaxy(galaxy.id)" :disabled='!tycoon_enabled(galaxy)') {{translate('identity.tycoon')}}
 
         .galaxy-loading-modal(v-show='is_galaxy_loading(galaxy.id) || is_galaxy_error(galaxy.id)')
           img.starpeace-logo(v-show='is_galaxy_loading(galaxy.id)')
           .galaxy-error-message(v-show='is_galaxy_error(galaxy.id)')
             | {{translate('misc.unable_to_connect.label')}}
             a(v-on:click.stop.prevent='refresh_galaxy(galaxy.id)') {{translate('misc.try_again.label')}}
+
+      .columns.is-vcentered.galaxy-login-row(v-show="tycoon_galaxy_id && galaxy.id == tycoon_galaxy_id")
+        .column.is-12
+          form
+            .field.is-horizontal
+              .field-body
+                .field.is-grouped
+                  template(v-if='tycoon_authenticated(galaxy) != null')
+                    .control
+                      a.button.is-starpeace.is-inverted.is-outlined(v-on:click.stop.prevent="logout_tycoon(galaxy.id)") {{translate('ui.workflow.universe.signout.label')}}
+                    .control.is-expanded
+                      | Signed in as {{tycoon_authenticated(galaxy).name}}
+                    .control
+                      a.button.is-starpeace.is-inverted(v-on:click.stop.prevent="proceed_as_tycoon(galaxy.id)") Proceed
+
+                  template(v-else)
+                    .control
+                      a.button.is-starpeace.is-inverted.is-outlined(v-on:click.stop.prevent="toggle_create_tycoon(galaxy.id)" :disabled='!tycoon_creation_enabled(galaxy)') {{translate('ui.workflow.universe.create_tycoon.label')}}
+                    .control.has-icons-left.is-expanded
+                      input.input(type='text' autocomplete='username' :placeholder="translate('ui.workflow.universe.username.label')" v-model='username')
+                      span.icon.is-small.is-left
+                        font-awesome-icon(:icon="['fas', 'user-tie']")
+                    .control.has-icons-left
+                      input.input(type='password' autocomplete='current-password' :placeholder="translate('ui.workflow.universe.password.label')" v-model='password')
+                      span.icon.is-small.is-left
+                        font-awesome-icon(:icon="['fas', 'lock']")
+                    .control
+                      label.checkbox
+                        input(type='checkbox' v-model='remember_me')
+                        | {{translate('ui.workflow.universe.remember_tycoon.label')}}
+                    .control
+                      a.button.is-starpeace.is-inverted(v-on:click.stop.prevent="login_tycoon(galaxy.id)" :disabled='!tycoon_enabled(galaxy) || !has_tycoon_credentials') {{translate('ui.workflow.universe.signin.label')}}
+
 
   .level.galaxy-actions-level
     .level-left
@@ -52,8 +85,11 @@ export default
     galaxies: []
     galaxy_errors: {}
 
-  computed:
-    is_visible: -> @client_state.workflow_status == 'pending_universe'
+    username: ''
+    password: ''
+    remember_me: true
+
+    tycoon_galaxy_id: null
 
   mounted: ->
     @galaxies = @client_state.options.get_galaxies()
@@ -67,18 +103,25 @@ export default
 
   watch:
     is_visible: (new_value, old_value) ->
-      @galaxies = @client_state.options.get_galaxies() if @is_visible
+      if @is_visible
+        @galaxies = @client_state.options.get_galaxies()
+        @refresh_galaxies()
 
-    galaxies: (new_value, old_value) ->
-      pending_galaxies = _.reject(@galaxies, (galaxy) => @client_state.core.galaxy_cache.has_galaxy_metadata(galaxy.id) || @is_galaxy_loading(galaxy.id))
-      Promise.all(_.map(pending_galaxies, (galaxy) => new Promise (done, error) =>
-        Vue.set(@galaxy_errors, galaxy.id, false) if @galaxy_errors[galaxy.id]
-        @managers.galaxy_manager.load_metadata(galaxy.id)
-          .then => done()
-          .catch (e) =>
-            Vue.set(@galaxy_errors, galaxy.id, true)
-            done()
-      ))
+    tycoon_galaxy_id: (new_value, old_value) ->
+      if new_value == 'browser-sandbox'
+        @username = 'test'
+        @password = 'test'
+      else
+        @username = ''
+        @password = ''
+
+    galaxies: (new_value, old_value) -> @refresh_galaxies()
+
+
+  computed:
+    is_visible: -> @client_state.workflow_status == 'pending_universe'
+
+    has_tycoon_credentials: -> @username.length && @password.length
 
   methods:
     translate: (key) -> if @managers? then @managers.translation_manager.text(key) else key
@@ -99,7 +142,20 @@ export default
 
     visitor_enabled: (galaxy) -> @metadata_for_galaxy(galaxy.id)?.visitor_enabled || false
     tycoon_enabled: (galaxy) -> @metadata_for_galaxy(galaxy.id)?.tycoon_enabled || false
+    tycoon_creation_enabled: (galaxy) -> @metadata_for_galaxy(galaxy.id)?.tycoon_creation_enabled || false
 
+    tycoon_authenticated: (galaxy) -> @metadata_for_galaxy(galaxy.id)?.tycoon
+
+    refresh_galaxies: () ->
+      pending_galaxies = _.reject(@galaxies, (galaxy) => @client_state.core.galaxy_cache.has_galaxy_metadata(galaxy.id) || @is_galaxy_loading(galaxy.id))
+      Promise.all(_.map(pending_galaxies, (galaxy) => new Promise (done, error) =>
+        Vue.set(@galaxy_errors, galaxy.id, false) if @galaxy_errors[galaxy.id]
+        @managers.galaxy_manager.load_metadata(galaxy.id)
+          .then => done()
+          .catch (e) =>
+            Vue.set(@galaxy_errors, galaxy.id, true)
+            done()
+      ))
 
     refresh_galaxy: (galaxy_id) ->
       return if @is_galaxy_loading(galaxy_id)
@@ -118,15 +174,33 @@ export default
     toggle_add_galaxy: () ->
       @client_state?.interface?.show_add_galaxy = true
 
+    toggle_tycoon_galaxy: (galaxy_id) ->
+      @tycoon_galaxy_id = if @tycoon_galaxy_id == galaxy_id then null else galaxy_id
+
+    toggle_create_tycoon: (galaxy_id) ->
+
+    login_tycoon: (galaxy_id) ->
+      metadata = @metadata_for_galaxy(galaxy_id)
+      return unless metadata? && metadata?.tycoon_enabled
+      @managers.galaxy_manager.login(galaxy_id, @username, @password, @remember_me)
+        .then (tycoon) =>
+          @client_state.identity.set_visa(galaxy_id, 'tycoon', tycoon)
+        .catch (e) =>
+          console.log e
+          @$forceUpdate() if @is_visible
+    logout_tycoon: (galaxy_id) ->
+
+
     proceed_as_visitor: (galaxy_id) ->
       metadata = @metadata_for_galaxy(galaxy_id)
       return unless metadata? && metadata?.visitor_enabled
-      @client_state.identity.set_visa_type(galaxy_id, 'visitor')
+      @client_state.identity.set_visa(galaxy_id, 'visitor', null)
 
     proceed_as_tycoon: (galaxy_id) ->
       metadata = @metadata_for_galaxy(galaxy_id)
-      return unless metadata? && metadata?.tycoon_enabled
-      @client_state.identity.set_visa_type(galaxy_id, 'tycoon')
+      return unless metadata? && metadata?.tycoon_enabled && metadata?.tycoon?
+      @client_state.identity.set_visa(galaxy_id, 'tycoon', metadata.tycoon)
+
 </script>
 
 <style lang='sass' scoped>
@@ -155,8 +229,8 @@ export default
     padding: 0
     position: relative
 
-    &:not(:last-child)
-      margin-bottom: .25rem
+    &:not(:first-child)
+      margin-top: .25rem
 
     .galaxy-name-text
       overflow: hidden
@@ -205,6 +279,28 @@ export default
 
         a
           margin-left: .5rem
+
+  .galaxy-login-row
+    background-color: opacify(darken($sp-primary-bg, 5%), .3)
+    border: 1px solid rgba(110, 161, 146, .2)
+    color: #fff
+    margin: 0
+    padding: 0
+    position: relative
+
+    .control
+      display: flex
+      align-items: center
+
+      .checkbox
+        align-items: flex-end
+        display: flex
+
+        &:hover
+          color: lighten($sp-primary-bg, 40%)
+
+        input
+          margin-right: .25rem
 
   .galaxy-actions-level
     margin-top: .5rem

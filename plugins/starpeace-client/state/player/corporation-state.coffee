@@ -14,23 +14,28 @@ export default class CorporationState
   reset_state: () ->
     @events_as_of = null
 
-    @company_ids = []
-    @details_as_of = null
+    @company_ids = null
+
+    @cash = null
+    @cashflow = null
+    @cashflow_by_company_id = {}
 
     @buildings_ids_by_company_id = {}
     @inventions_metadata_by_company_id = {}
 
   has_data: () ->
-    return false unless @details_as_of?
+    return false unless @company_ids? && @cash? && @cashflow?
     for company_id in @company_ids
-      return false unless @buildings_ids_by_company_id[company_id]? && @inventions_metadata_by_company_id[company_id]?
+      return false unless @cashflow_by_company_id[company_id]? && @buildings_ids_by_company_id[company_id]? && @inventions_metadata_by_company_id[company_id]?
     true
 
-  company_ids_with_pending_inventions: () ->
-    _.filter(@company_ids, (id) => @inventions_metadata_by_company_id[id]?.pending_inventions?.length)
-
+  company_ids_with_pending_inventions: () -> _.filter(@company_ids, (id) => @inventions_metadata_by_company_id[id]?.pending_inventions?.length)
   completed_invention_ids_for_company: (company_id) -> _.uniq(@inventions_metadata_by_company_id[company_id]?.completed_ids || [])
 
+  subscribe_company_ids_listener: (listener_callback) -> @event_listener.subscribe('corporation.company_ids', listener_callback)
+  notify_company_ids_listeners: () -> @event_listener.notify_listeners('corporation.company_ids')
+  subscribe_cashflow_listener: (listener_callback) -> @event_listener.subscribe('corporation.cashflow', listener_callback)
+  notify_cashflow_listeners: () -> @event_listener.notify_listeners('corporation.cashflow')
   subscribe_company_buildings_listener: (listener_callback) -> @event_listener.subscribe('corporation.company_buildings', listener_callback)
   notify_company_buildings_listeners: () -> @event_listener.notify_listeners('corporation.company_buildings')
   subscribe_company_inventions_listener: (listener_callback) -> @event_listener.subscribe('corporation.company_inventions', listener_callback)
@@ -38,6 +43,17 @@ export default class CorporationState
 
   set_company_ids: (company_ids) ->
     @company_ids = company_ids if Array.isArray(company_ids)
+    @notify_company_ids_listeners()
+
+  update_cashflow: (cash, cashflow) ->
+    @cash = cash
+    @cashflow = cashflow
+    @notify_cashflow_listeners()
+  update_cashflow_companies: (companies) ->
+    for company in (if Array.isArray(companies) then companies else [companies])
+      Vue.set(@cashflow_by_company_id, company.id, company.cashflow || 0)
+    @notify_cashflow_listeners()
+
 
   building_ids_for_company: (company_id) -> @buildings_ids_by_company_id[company_id] || []
   set_company_building_ids: (company_id, building_ids) ->

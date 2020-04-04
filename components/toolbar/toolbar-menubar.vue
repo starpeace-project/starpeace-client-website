@@ -78,8 +78,7 @@ export default
         &.is-tooltip-active::before,
         &:focus::before,
         &:hover::before
-          -webkit-transform: translate(-25%, -0.5rem)
-          transform: translate(-25%, -0.5rem)
+          left: 75%
 
     &:not(:first-child)
       margin-left: .5rem

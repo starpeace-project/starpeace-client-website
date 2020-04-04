@@ -5,7 +5,6 @@ import * as PIXI from 'pixi.js'
 import MetadataLand from '~/plugins/starpeace-client/land/metadata-land.coffee'
 
 import ChunkMap from '~/plugins/starpeace-client/map/chunk/chunk-map.coffee'
-import BuildingZone from '~/plugins/starpeace-client/overlay/building-zone.coffee'
 
 import MiniMapInputHandler from '~/plugins/starpeace-client/renderer/input/mini-map-input-handler.coffee'
 
@@ -52,14 +51,14 @@ export default class MiniMapRenderer
 
         if building_chunk_info?.is_current() && road_chunk_info?.is_current()
           building_info = @client_state.planet.game_map.building_map.building_info_at(x, y)
-          building_metadata = if building_info? then @client_state.core.building_library.metadata_by_id[building_info.key] else null
+          building_metadata = if building_info? then @client_state.core.building_library.metadata_by_id[building_info.definition_id] else null
           if @client_state.planet.game_map.road_map.road_info_at(x, y)
             @rgba_buffer[index + 0] = 30
             @rgba_buffer[index + 1] = 30
             @rgba_buffer[index + 2] = 30
           else if building_info? && building_metadata?
-            zone = building_metadata.zone || BuildingZone.TYPES.RESERVED
-            color = if zone == BuildingZone.TYPES.CIVICS then 0x1E1E1E else zone.color
+            zone = @client_state.core.planet_library.zone_for_id(building_metadata.city_zone_id)
+            color = zone?.mini_map_color || 0x800000
             @rgba_buffer[index + 0] = (color & 0xFF0000) >> 16
             @rgba_buffer[index + 1] = (color & 0x00FF00) >> 8
             @rgba_buffer[index + 2] = (color & 0x0000FF) >> 0

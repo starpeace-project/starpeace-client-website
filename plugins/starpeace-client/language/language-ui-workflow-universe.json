@@ -103,6 +103,54 @@
     "IT": "Multiverse",
     "PT": "Multiverso"
   },
+  "ui.workflow.universe.create_tycoon.label": {
+    "DE": "Erstellen",
+    "EN": "Create",
+    "ES": "Crear",
+    "FR": "Créer",
+    "IT": "Creare",
+    "PT": "Criar"
+  },
+  "ui.workflow.universe.username.label": {
+    "DE": "Nutzername",
+    "EN": "Username",
+    "ES": "Nombre de Usuario",
+    "FR": "Nom d'utilisateur",
+    "IT": "Nome Utente",
+    "PT": "Nome de Usuário"
+  },
+  "ui.workflow.universe.password.label": {
+    "DE": "Passwort",
+    "EN": "Password",
+    "ES": "Contraseña",
+    "FR": "Mot de Passe",
+    "IT": "Parola d'ordine",
+    "PT": "Senha"
+  },
+  "ui.workflow.universe.remember_tycoon.label": {
+    "DE": "Merken",
+    "EN": "Remember",
+    "ES": "Recuerda",
+    "FR": "Rappelles toi",
+    "IT": "Ricorda",
+    "PT": "Lembrar"
+  },
+  "ui.workflow.universe.signin.label": {
+    "DE": "Einloggen",
+    "EN": "Sign In",
+    "ES": "Registrarse",
+    "FR": "Se Connecter",
+    "IT": "Registrati",
+    "PT": "Assinar Em"
+  },
+  "ui.workflow.universe.signout.label": {
+    "DE": "Ausloggen",
+    "EN": "Sign Out",
+    "ES": "Desconectar",
+    "FR": "Déconnexion",
+    "IT": "Disconnessione",
+    "PT": "Sair"
+  },
   "ui.workflow.universe.galaxy.add.label": {
     "DE": "Galaxy Hinzufügen",
     "EN": "Add Galaxy",

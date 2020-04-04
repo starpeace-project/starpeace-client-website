@@ -13,8 +13,9 @@ export default class PlayerState
     @reset_state()
 
   reset_state: () ->
-    @planet_visa_type = null
     @planet_id = null
+    @planet_visa_type = null
+    @planet_visa_id = null
 
     @corporation_id = null
     @company_id = null
@@ -24,8 +25,11 @@ export default class PlayerState
 
   has_data: () -> @mail_by_id?
 
-  subscribe_planet_id_listener: (listener_callback) -> @event_listener.subscribe('player.planet_id', listener_callback)
-  notify_planet_id_listeners: () -> @event_listener.notify_listeners('player.planet_id')
+  subscribe_planet_visa_type_listener: (listener_callback) -> @event_listener.subscribe('player.visa_type', listener_callback)
+  notify_planet_visa_type_listeners: () -> @event_listener.notify_listeners('player.visa_type')
+
+  subscribe_planet_visa_id_listener: (listener_callback) -> @event_listener.subscribe('player.planet_visa_id', listener_callback)
+  notify_planet_visa_id_listeners: () -> @event_listener.notify_listeners('player.planet_visa_id')
 
   subscribe_corporation_id_listener: (listener_callback) -> @event_listener.subscribe('player.corporation_id', listener_callback)
   notify_corporation_id_listeners: () -> @event_listener.notify_listeners('player.corporation_id')
@@ -33,16 +37,21 @@ export default class PlayerState
   subscribe_mail_metadata_listener: (listener_callback) -> @event_listener.subscribe('player.mail_metadata', listener_callback)
   notify_mail_metadata_listeners: () -> @event_listener.notify_listeners('player.mail_metadata')
 
-
-  set_planet_id: (planet_id) ->
+  set_planet_visa_type: (planet_id, visa_type) ->
     @planet_id = planet_id
-    Logger.debug "proceeding with planet <#{planet_id}>"
-    @notify_planet_id_listeners()
+    @planet_visa_type = visa_type
+    @corporation_id = null
+    Logger.debug "proceeding with planet <#{planet_id}> and visa <#{visa_type}>"
+    @notify_planet_visa_type_listeners()
 
-  set_corporation_id: (corporation_id) ->
+  set_planet_corporation_id: (corporation_id) ->
     @corporation_id = corporation_id
     Logger.debug "proceeding with corporation <#{corporation_id}>"
     @notify_corporation_id_listeners()
+
+  set_planet_visa_id: (visa_id) ->
+    @planet_visa_id = visa_id
+    @notify_planet_visa_id_listeners()
 
   set_company_id: (company_id) ->
     @company_id = company_id

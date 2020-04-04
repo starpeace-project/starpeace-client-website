@@ -1,9 +1,10 @@
-
 import * as PIXI from 'pixi.js'
+
+import Logger from '~/plugins/starpeace-client/logger.coffee'
 
 export default class AssetManager
   @CDN_URL: 'https://cdn.starpeace.io'
-  @CDN_VERSION: '78c6237075264f80cbd9d61eea52f04b'
+  @CDN_VERSION: '6c6e6b423c4143fc06e5905976a2b0dd'
 
   constructor: (@ajax_state) ->
     PIXI.Loader.shared.baseUrl = "#{AssetManager.CDN_URL}/#{AssetManager.CDN_VERSION}"

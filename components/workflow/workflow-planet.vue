@@ -56,45 +56,32 @@ export default
     galaxy_metadata: -> if @galaxy_id? && @client_state.core.galaxy_cache.has_galaxy_metadata(@galaxy_id) then @client_state.core.galaxy_cache.galaxy_metadata(@galaxy_id) else
 
     is_tycoon_in_galaxy: -> @client_state.identity?.galaxy_visa_type == 'tycoon' && @tycoon_id?.length
-    tycoon_id: -> @client_state.session?.tycoon_id
+    tycoon_id: -> @client_state.identity?.galaxy_tycoon?.id
 
     planets: ->
       return [] unless @galaxy_metadata?
-      _.sortBy(@galaxy_metadata.planets_metadata || [], (planet) -> planet.name)
+      _.sortBy(@galaxy_metadata.planets || [], (planet) -> planet.name)
     sorted_planet_chunks: -> _.chunk(@planets, 3)
 
     corporations_by_planet_id: ->
-      return [] unless @tycoon_id?.length
-      _.keyBy(@client_state.core.corporation_cache.corporations_for_tycoon_id(@client_state.session.tycoon_id), 'planet_id')
+      return {} unless @client_state.identity.galaxy_tycoon?
+      _.keyBy(@client_state.identity.galaxy_tycoon?.corporations, 'planet_id')
 
   methods:
     translate: (key) -> if @managers? then @managers.translation_manager.text(key) else key
 
     planet_animation_url: (planet) -> "https://cdn.starpeace.io/animations/planet.#{planet.id}.animation.gif"
-    planet_description: (planet) ->
-      size = if planet.width < 1000 then 'Small' else if planet.width > 1000 then 'Large' else 'Average'
-      seasons = if planet.temperature_baseline < 50 then 'only cold' else if planet.temperature_baseline > 50 then 'only hot' else 'average'
-
-      planet_modifier = ''
-      planet_modifier = 'desert ' if planet.moisture_baseline < 50
-      planet_modifier = 'tropical ' if planet.moisture_baseline > 50 && planet.temperature_baseline > 50
-
-      "#{size} sized #{planet_modifier}planet with #{seasons} seasons"
-
 
     select_visitor: (planet) ->
       return unless planet.enabled
 
-      @client_state.player.planet_visa_type = 'visitor'
-      @client_state.player.set_planet_id(planet.id)
+      @client_state.player.set_planet_visa_type(planet.id, 'visitor')
       window.document.title = "#{planet.name} - STARPEACE" if window?.document?
 
     select_tycoon: (planet) ->
       return unless planet.enabled && @is_tycoon_in_galaxy
 
-      @client_state.player.planet_visa_type = 'tycoon'
-      @client_state.player.set_corporation_id(@corporations_by_planet_id[planet.id].id) if @corporations_by_planet_id[planet.id]?
-      @client_state.player.set_planet_id(planet.id)
+      @client_state.player.set_planet_visa_type(planet.id, 'tycoon')
       window.document.title = "#{planet.name} - STARPEACE" if window?.document?
 
 </script>

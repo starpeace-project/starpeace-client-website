@@ -1,10 +1,10 @@
 
-import AssetLibrary from '~/plugins/starpeace-client/state/core/library/asset-library.coffee'
+import Library from '~/plugins/starpeace-client/state/core/library/library.coffee'
 import TextureAtlasCache from '~/plugins/starpeace-client/state/core/texture-atlas-cache.coffee'
 
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 
-export default class EffectLibrary extends AssetLibrary
+export default class EffectLibrary extends Library
   constructor: () ->
     super()
 

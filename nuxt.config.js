@@ -29,8 +29,7 @@ module.exports = {
     { src: '~/assets/stylesheets/starpeace-bulma.sass', lang: 'sass' },
     { src: '~/assets/stylesheets/starpeace-flags.sass', lang: 'sass' },
     { src: '~/assets/stylesheets/starpeace-vue.sass', lang: 'sass' },
-    { src: '~/assets/stylesheets/starpeace.sass', lang: 'sass' },
-    { src: 'v-contextmenu', lang: 'css' }
+    { src: '~/assets/stylesheets/starpeace.sass', lang: 'sass' }
   ],
   head: {
     title: 'STARPEACE',
@@ -59,6 +58,17 @@ module.exports = {
   build: {
     // analyze: true,
     publicPath: '/assets/',
+    postcss: {
+      plugins: {
+        'postcss-preset-env': {
+          browserslist: ["> 1%", "last 2 versions"],
+          features: {
+            customProperties: false
+          }
+        },
+        'postcss-import': {}
+      }
+    },
     extend (config, { isDev, isClient, isServer }) {
       config.module.rules.push({
         test: /\.coffee$/,
