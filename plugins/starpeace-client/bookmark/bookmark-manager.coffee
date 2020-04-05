@@ -115,7 +115,7 @@ export default class BookmarkManager
         folder_name = "New Folder #{@client_state.bookmarks.folder_count() + 1}"
 
         @ajax_state.lock('new_bookmark_folder', corporation_id)
-        @add_bookmark(corporation_id, 'FOLDER', 'bookmarks', folder_name)
+        @add_bookmark_folder(corporation_id, 'bookmarks', folder_name)
           .then (item) =>
             @client_state.bookmarks.add_bookmarks_metadata BookmarkFolder.new_folder(item.parentId, item.id, item.name, item.order)
             @ajax_state.unlock('new_bookmark_folder', corporation_id)
@@ -140,7 +140,7 @@ export default class BookmarkManager
         center_iso = @client_state.camera.map_to_iso(center.x, center.y)
 
         @ajax_state.lock('new_bookmark_item', corporation_id)
-        promise = if building? then @add_bookmark_building_item(corporation_id, 'bookmarks', item_name, building.x, building.y, building_id) else @add_bookmark_location_item(corporation_id, 'bookmarks', item_name, center_iso.i, center_iso.j)
+        promise = if building? then @add_bookmark_building_item(corporation_id, 'bookmarks', item_name, building.map_x, building.map_y, building_id) else @add_bookmark_location_item(corporation_id, 'bookmarks', item_name, center_iso.i, center_iso.j)
         promise.then (item) =>
           if item.type == 'LOCATION'
             @client_state.bookmarks.add_bookmarks_metadata Bookmark.new_bookmark(item.parentId, item.id, item.name, item.order, item.mapX, item.mapY)

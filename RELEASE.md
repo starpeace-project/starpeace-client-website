@@ -37,6 +37,9 @@
 * [pending] mail menu
 * [pending] chat menu
 * [pending] corporation and company formation menus
+* [pending] bookmark organization menu
+* [pending] bookmark manage context menu (rename, delete)
+* [pending] overlay menu organization (sub-menus)
 * [pending] mine building and industry banner rendering
 * [pending] car rendering
 * [pending] street light and intersection lamp rendering

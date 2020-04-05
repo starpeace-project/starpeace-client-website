@@ -106,7 +106,7 @@ export default
     bookmark_items_by_id: -> if @is_ready then @client_state?.bookmarks.bookmarks_by_id else {}
 
     actions_disabled: ->
-      return true unless @is_ready || @has_corporation
+      return true unless @is_ready && @has_corporation
 
       @ajax_state.request_mutex.bookmark_metadata?[@client_state.player.corporation_id] ||
           @ajax_state.request_mutex.update_bookmark?[@client_state.player.corporation_id] ||

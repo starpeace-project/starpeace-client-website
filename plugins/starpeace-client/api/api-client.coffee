@@ -30,7 +30,8 @@ export default class APIClient
     @handle_request(@client.post("#{@galaxy_url()}/#{path}", parameters), handle_result)
   put: (path, parameters, handle_result) ->
     @handle_request(@client.put("#{@galaxy_url()}/#{path}", parameters), handle_result)
-
+  patch: (path, parameters, handle_result) ->
+    @handle_request(@client.patch("#{@galaxy_url()}/#{path}", parameters), handle_result)
 
   galaxy_metadata: (galaxy_id) ->
     new Promise (done, error) =>
@@ -112,9 +113,9 @@ export default class APIClient
       name: name
     }, extra_params), (result) -> result)
   update_corporation_bookmarks: (corporation_id, bookmark_deltas) ->
-    @patch("corporations/#{corporation_id}/bookmarks", _.merge({
+    @patch("corporations/#{corporation_id}/bookmarks", {
       deltas: bookmark_deltas
-    }, extra_params), (result) -> result)
+    }, (result) -> result)
 
   cashflow_for_corporation: (corporation_id) ->
     @get("corporations/#{corporation_id}/cashflow", {}, (result) -> result)
