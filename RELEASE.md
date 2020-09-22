@@ -11,8 +11,8 @@
 * [done] inventions configurations API [v0.3.2]
 * [done] create tycoon account API [v0.3.2]
 * [done] manage corporation and company API's [v0.3.2]
-* [in-progress] manage mail API integration
-* [in-progress] search and rankings API integration
+* [in progress] manage mail API integration
+* [in progress] search and rankings API integration
 * [pending] system messages and basic error messages
 * [pending] improve tycoon, corporation, and company creation error handling
 
@@ -32,10 +32,10 @@
 * [done] update UI and menus for better concept of universes and galaxies [v0.3.1]
 * [done] client language translations and menu option [v0.3.1]
 * [done] corporation and company formation menus [v0.3.2]
-* [in-progress] mail menu
-* [in-progress] town search menu
-* [in-progress] tycoon search menu
-* [in-progress] rankings menu
+* [in progress] mail menu
+* [in progress] town search menu
+* [in progress] tycoon search menu
+* [in progress] rankings menu
 * [pending] tycoon details menu
 * [pending] politics menu
 * [pending] chat menu

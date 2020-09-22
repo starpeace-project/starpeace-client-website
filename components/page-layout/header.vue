@@ -23,7 +23,7 @@
       font-awesome-icon(:icon="['fab', 'discord']")
     a.header-item.twitter(href='https://twitter.com/starpeace_io', target='_blank')
       font-awesome-icon(:icon="['fab', 'twitter']")
-    a.header-item.github(href='https://github.com/starpeace-project/starpeace-website-client', target='_blank')
+    a.header-item.github(href='https://github.com/starpeace-project/starpeace-client-website', target='_blank')
       font-awesome-icon(:icon="['fab', 'github']")
 
 </template>

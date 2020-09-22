@@ -41,9 +41,9 @@ STARPEACE Project is made up [several repositories](https://github.com/starpeace
 
 ### Client
 * [starpeace-website](https://github.com/starpeace-project/starpeace-website) - static client homepage and license content
-* [starpeace-website-client](https://github.com/starpeace-project/starpeace-website-client) - client game application logic and webgl rendering website
-* [starpeace-website-client-assets](https://github.com/starpeace-project/starpeace-website-client-assets) - procedural generation and compilation logic of assets for client
-* [starpeace-website-documentation](https://github.com/starpeace-project/starpeace-website-documentation) - static and dynamic documentation website
+* [starpeace-client-website](https://github.com/starpeace-project/starpeace-client-website) - client game application logic and webgl rendering website
+* [starpeace-client-website-assets](https://github.com/starpeace-project/starpeace-client-website-assets) - procedural generation and compilation logic of assets for client
+* [starpeace-documentation-website](https://github.com/starpeace-project/starpeace-documentation-website) - static and dynamic documentation website
 
 ### Server - Universe (identity management and galaxy directory)
 * starpeace-server-universe-api - STARPEACE Universe API interface (TBD)
@@ -104,7 +104,7 @@ Before creating enhancement suggestions, please check [this list](#before-submit
 
 #### Before Submitting An Enhancement Suggestion
 
-* **Perform a [cursory search](https://github.com/starpeace-project/starpeace-website-client/issues?utf8=%E2%9C%93&q=is%3Aissue)** to see if the enhancement has already been suggested. If it has, add a comment to the existing issue instead of opening a new one.
+* **Perform a [cursory search](https://github.com/starpeace-project/starpeace-client-website/issues?utf8=%E2%9C%93&q=is%3Aissue)** to see if the enhancement has already been suggested. If it has, add a comment to the existing issue instead of opening a new one.
 
 #### How Do I Submit A (Good) Enhancement Suggestion?
 
@@ -120,7 +120,7 @@ Enhancement suggestions are tracked as [GitHub issues](https://guides.github.com
 
 ### Your First Code Contribution
 
-Unsure where to begin contributing to STARPEACE? Join [Discord chatroom](https://discord.gg/TF9Bmsj) to discuss possible work or [look through any existing issues](https://github.com/starpeace-project/starpeace-website-client/issues) or [project tasks for ideas](https://github.com/starpeace-project/starpeace-website-client/projects).
+Unsure where to begin contributing to STARPEACE? Join [Discord chatroom](https://discord.gg/TF9Bmsj) to discuss possible work or [look through any existing issues](https://github.com/starpeace-project/starpeace-client-website/issues) or [project tasks for ideas](https://github.com/starpeace-project/starpeace-client-website/projects).
 
 #### Local development
 
@@ -131,11 +131,11 @@ Local development can be accomplished in a few commands. The following build-tim
 Retrieve copy of repository and navigate to root:
 
 ```
-$ git clone https://github.com/starpeace-project/starpeace-website-client.git
-$ cd starpeace-website-client
+$ git clone https://github.com/starpeace-project/starpeace-client-website.git
+$ cd starpeace-client-website
 ```
 
-Install starpeace-website-client dependencies:
+Install starpeace-client-website dependencies:
 
 ```
 $ npm install
@@ -173,11 +173,11 @@ While the prerequisites above must be satisfied prior to having your pull reques
 
 ### Translations
 
-STARPEACE is a global game with an international player-base, making language translations an important aspect of project. starpeace-website-client aims to support the following languages:
+STARPEACE is a global game with an international player-base, making language translations an important aspect of project. starpeace-client-website aims to support the following languages:
 
 * English, French, Portuguese, German, Italian, and Spanish
 
-If you'd like to see STARPEACE translated to your native language and can provide translations, or can help improve any existing translations, please [create an issue](https://github.com/starpeace-project/starpeace-website-client/issues) or [chat with project team](https://discord.gg/TF9Bmsj).
+If you'd like to see STARPEACE translated to your native language and can provide translations, or can help improve any existing translations, please [create an issue](https://github.com/starpeace-project/starpeace-client-website/issues) or [chat with project team](https://discord.gg/TF9Bmsj).
 
 
 ## Styleguides

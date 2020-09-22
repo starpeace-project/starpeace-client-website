@@ -1,11 +1,11 @@
 
-# starpeace-website-client
+# starpeace-client-website
 
-[![GitHub release](https://img.shields.io/github/release/starpeace-project/starpeace-website-client.svg)](https://github.com/starpeace-project/starpeace-website-client/releases/)
-[![Build Status](https://travis-ci.org/starpeace-project/starpeace-website-client.svg)](https://travis-ci.org/starpeace-project/starpeace-website-client)
-[![GitHub license](https://img.shields.io/github/license/starpeace-project/starpeace-website-client.svg)](https://github.com/starpeace-project/starpeace-website-client/blob/master/LICENSE)
-[![GitHub issues](https://img.shields.io/github/issues/starpeace-project/starpeace-website-client.svg)](https://github.com/starpeace-project/starpeace-website-client/issues)
-[![GitHub stars](https://img.shields.io/github/stars/starpeace-project/starpeace-website-client.svg)](https://github.com/starpeace-project/starpeace-website-client/stargazers)
+[![GitHub release](https://img.shields.io/github/release/starpeace-project/starpeace-client-website.svg)](https://github.com/starpeace-project/starpeace-client-website/releases/)
+[![Build Status](https://travis-ci.org/starpeace-project/starpeace-client-website.svg)](https://travis-ci.org/starpeace-project/starpeace-client-website)
+[![GitHub license](https://img.shields.io/github/license/starpeace-project/starpeace-client-website.svg)](https://github.com/starpeace-project/starpeace-client-website/blob/master/LICENSE)
+[![GitHub issues](https://img.shields.io/github/issues/starpeace-project/starpeace-client-website.svg)](https://github.com/starpeace-project/starpeace-client-website/issues)
+[![GitHub stars](https://img.shields.io/github/stars/starpeace-project/starpeace-client-website.svg)](https://github.com/starpeace-project/starpeace-client-website/stargazers)
 [![Discord](https://img.shields.io/discord/449310464321650703.svg?logo=discord)](https://discord.gg/TF9Bmsj)
 ![Twitter Follow](https://img.shields.io/twitter/follow/starpeace_io.svg?style=social&label=Follow)
 
@@ -23,11 +23,11 @@ Current release notes are also [available in client](https://client.starpeace.io
 
 ## Security Vulnerabilities
 
-If you discover a security vulnerability within the STARPEACE website, please send an e-mail to security@starpeace.io or open a [GitHub issue](https://github.com/starpeace-project/starpeace-website-client/issues). All security vulnerabilities will be promptly addressed.
+If you discover a security vulnerability within the STARPEACE website, please send an e-mail to security@starpeace.io or open a [GitHub issue](https://github.com/starpeace-project/starpeace-client-website/issues). All security vulnerabilities will be promptly addressed.
 
 ## Contributing
 
-starpeace-website-client welcomes all contributions: development, game design, translations, or play-testing; please let us know if you'd like to get involved! Please [join Discord chatroom](https://discord.gg/TF9Bmsj) and [read the contributing guide](./CONTRIBUTING.md) to learn more.
+starpeace-client-website welcomes all contributions: development, game design, translations, or play-testing; please let us know if you'd like to get involved! Please [join Discord chatroom](https://discord.gg/TF9Bmsj) and [read the contributing guide](./CONTRIBUTING.md) to learn more.
 
 ## Build and Deployment
 
@@ -39,4 +39,4 @@ Repository is currently deployed to and hosted with AWS S3 and CloudFront. Chang
 
 ## License
 
-starpeace-website-client is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+starpeace-client-website is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)

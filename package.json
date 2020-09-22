@@ -1,12 +1,12 @@
 {
-  "name": "@starpeace/starpeace-website-client",
-  "version": "0.3.2",
+  "name": "@starpeace/starpeace-client-website,
+  "version": "0.3.3",
   "description": "Client website application for STARPEACE multiplayer economic simulation",
   "author": "starpeace-project",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git://github.com/starpeace-project/starpeace-website-client.git"
+    "url": "git://github.com/starpeace-project/starpeace-client-website.git"
   },
   "scripts": {
     "dev": "cross-env NODE_ENV=development PORT=11010 nuxt",
