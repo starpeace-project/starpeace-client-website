@@ -17,6 +17,7 @@ import TOOLBAR_RIBBON from '~/plugins/starpeace-client/language/language-toolbar
 
 import UI_MENU_BOOKMARKS from '~/plugins/starpeace-client/language/language-ui-menu-bookmarks.json'
 import UI_MENU_CHAT from '~/plugins/starpeace-client/language/language-ui-menu-chat.json'
+import UI_MENU_COMPANY from '~/plugins/starpeace-client/language/language-ui-menu-company.json'
 import UI_MENU_CONSTUCTION from '~/plugins/starpeace-client/language/language-ui-menu-construction.json'
 import UI_MENU_CORPORATION from '~/plugins/starpeace-client/language/language-ui-menu-corporation.json'
 import UI_MENU_GALAXY from '~/plugins/starpeace-client/language/language-ui-menu-galaxy.json'
@@ -34,7 +35,6 @@ import UI_MENU_TYCOON_SEARCH from '~/plugins/starpeace-client/language/language-
 import UI_PAGE_LAYOUT from '~/plugins/starpeace-client/language/language-ui-page-layout.json'
 
 import UI_WORKFLOW_LOADING from '~/plugins/starpeace-client/language/language-ui-workflow-loading.json'
-import UI_WORKFLOW_PLANET from '~/plugins/starpeace-client/language/language-ui-workflow-planet.json'
 import UI_WORKFLOW_UNIVERSE from '~/plugins/starpeace-client/language/language-ui-workflow-universe.json'
 
 LANGUAGE_STRINGS = [
@@ -45,6 +45,7 @@ LANGUAGE_STRINGS = [
   TOOLBAR_RIBBON,
   UI_MENU_BOOKMARKS,
   UI_MENU_CHAT,
+  UI_MENU_COMPANY,
   UI_MENU_CONSTUCTION,
   UI_MENU_CORPORATION,
   UI_MENU_GALAXY,
@@ -60,7 +61,6 @@ LANGUAGE_STRINGS = [
   UI_MENU_TYCOON_SEARCH,
   UI_PAGE_LAYOUT,
   UI_WORKFLOW_LOADING,
-  UI_WORKFLOW_PLANET,
   UI_WORKFLOW_UNIVERSE
 ]
 

@@ -3,180 +3,180 @@
     {
       "id": "town-id-1",
       "name": "Libra",
-      "seal_id": "PGI",
-      "building_id": "townhall-libra",
-      "map_x": 178,
-      "map_y": 220
+      "sealId": "PGI",
+      "buildingId": "townhall-libra",
+      "mapX": 780,
+      "mapY": 822
     },
     {
       "id": "town-id-2",
       "name": "Taurus",
-      "seal_id": "MOAB",
-      "building_id": "townhall-taurus",
-      "map_x": 510,
-      "map_y": 207
+      "sealId": "MOAB",
+      "buildingId": "townhall-taurus",
+      "mapX": 793,
+      "mapY": 490
     },
     {
       "id": "town-id-3",
       "name": "Gemini",
-      "seal_id": "MKO",
-      "building_id": "townhall-gemini",
-      "map_x": 851,
-      "map_y": 354
+      "sealId": "MKO",
+      "buildingId": "townhall-gemini",
+      "mapX": 646,
+      "mapY": 149
     },
     {
       "id": "town-id-4",
       "name": "Scorpius",
-      "seal_id": "MOAB",
-      "building_id": "townhall-scorpius",
-      "map_x": 710,
-      "map_y": 345
+      "sealId": "MOAB",
+      "buildingId": "townhall-scorpius",
+      "mapX": 655,
+      "mapY": 290
     },
     {
       "id": "town-id-5",
       "name": "Pisces",
-      "seal_id": "DIS",
-      "building_id": "townhall-pisces",
-      "map_x": 420,
-      "map_y": 385
+      "sealId": "DIS",
+      "buildingId": "townhall-pisces",
+      "mapX": 615,
+      "mapY": 580
     },
     {
       "id": "town-id-6",
       "name": "Leo",
-      "seal_id": "PGI",
-      "building_id": "townhall-leo",
-      "map_x": 110,
-      "map_y": 482
+      "sealId": "PGI",
+      "buildingId": "townhall-leo",
+      "mapX": 518,
+      "mapY": 890
     },
     {
       "id": "town-id-7",
       "name": "Cancer",
-      "seal_id": "MKO",
-      "building_id": "townhall-cancer",
-      "map_x": 547,
-      "map_y": 508
+      "sealId": "MKO",
+      "buildingId": "townhall-cancer",
+      "mapX": 492,
+      "mapY": 453
     },
     {
       "id": "town-id-8",
       "name": "Virgo",
-      "seal_id": "DIS",
-      "building_id": "townhall-virgo",
-      "map_x": 836,
-      "map_y": 792
+      "sealId": "DIS",
+      "buildingId": "townhall-virgo",
+      "mapX": 208,
+      "mapY": 164
     },
     {
       "id": "town-id-9",
       "name": "Sagittarius",
-      "seal_id": "MKO",
-      "building_id": "townhall-sagittarius",
-      "map_x": 436,
-      "map_y": 683
+      "sealId": "MKO",
+      "buildingId": "townhall-sagittarius",
+      "mapX": 317,
+      "mapY": 564
     },
     {
       "id": "town-id-10",
       "name": "Capricorn",
-      "seal_id": "PGI",
-      "building_id": "townhall-capricorn",
-      "map_x": 131,
-      "map_y": 766
+      "sealId": "PGI",
+      "buildingId": "townhall-capricorn",
+      "mapX": 234,
+      "mapY": 869
     },
     {
       "id": "town-id-11",
       "name": "Aquarius",
-      "seal_id": "DIS",
-      "building_id": "townhall-aquarius",
-      "map_x": 548,
-      "map_y": 865
+      "sealId": "DIS",
+      "buildingId": "townhall-aquarius",
+      "mapX": 135,
+      "mapY": 452
     }
   ],
   "planet-2" : [
     {
       "id": "town-id-12",
       "name": "Eppe",
-      "seal_id": "PGI",
-      "building_id": "townhall-eppe",
-      "map_x": 409,
-      "map_y": 458
+      "sealId": "PGI",
+      "buildingId": "townhall-eppe",
+      "mapX": 542,
+      "mapY": 591
     },
     {
       "id": "town-id-13",
       "name": "Croma",
-      "seal_id": "MKO",
-      "building_id": "townhall-croma",
-      "map_x": 152,
-      "map_y": 183
+      "sealId": "MKO",
+      "buildingId": "townhall-croma",
+      "mapX": 817,
+      "mapY": 848
     },
     {
       "id": "town-id-14",
       "name": "Perceo",
-      "seal_id": "PGI",
-      "building_id": "townhall-perceo",
-      "map_x": 528,
-      "map_y": 729
+      "sealId": "PGI",
+      "buildingId": "townhall-perceo",
+      "mapX": 271,
+      "mapY": 472
     },
     {
       "id": "town-id-15",
       "name": "Treloba",
-      "seal_id": "DIS",
-      "building_id": "townhall-treloba",
-      "map_x": 908,
-      "map_y": 665
+      "sealId": "DIS",
+      "buildingId": "townhall-treloba",
+      "mapX": 335,
+      "mapY": 92
     },
     {
       "id": "town-id-16",
       "name": "El Rio",
-      "seal_id": "DIS",
-      "building_id": "townhall-el-rio",
-      "map_x": 467,
-      "map_y": 153
+      "sealId": "DIS",
+      "buildingId": "townhall-el-rio",
+      "mapX": 847,
+      "mapY": 533
     },
     {
       "id": "town-id-17",
       "name": "Ilase",
-      "seal_id": "PGI",
-      "building_id": "townhall-ilase",
-      "map_x": 721,
-      "map_y": 471
+      "sealId": "PGI",
+      "buildingId": "townhall-ilase",
+      "mapX": 529,
+      "mapY": 279
     },
     {
       "id": "town-id-18",
       "name": "Loi Mei",
-      "seal_id": "MKO",
-      "building_id": "townhall-loi-mei",
-      "map_x": 290,
-      "map_y": 595
+      "sealId": "MKO",
+      "buildingId": "townhall-loi-mei",
+      "mapX": 405,
+      "mapY": 710
     },
     {
       "id": "town-id-19",
       "name": "Wo Ka",
-      "seal_id": "MKO",
-      "building_id": "townhall-wa-ka",
-      "map_x": 574,
-      "map_y": 877
+      "sealId": "MKO",
+      "buildingId": "townhall-wa-ka",
+      "mapX": 123,
+      "mapY": 426
     },
     {
       "id": "town-id-20",
       "name": "Dromeda",
-      "seal_id": "MOAB",
-      "building_id": "townhall-dromeda",
-      "map_x": 802,
-      "map_y": 902
+      "sealId": "MOAB",
+      "buildingId": "townhall-dromeda",
+      "mapX": 98,
+      "mapY": 198
     },
     {
       "id": "town-id-21",
       "name": "Zelti",
-      "seal_id": "MOAB",
-      "building_id": "townhall-zelti",
-      "map_x": 865,
-      "map_y": 215
+      "sealId": "MOAB",
+      "buildingId": "townhall-zelti",
+      "mapX": 785,
+      "mapY": 135
     },
     {
       "id": "town-id-22",
       "name": "Oloc",
-      "seal_id": "MOAB",
-      "building_id": "townhall-oloc",
-      "map_x": 106,
-      "map_y": 410
+      "sealId": "MOAB",
+      "buildingId": "townhall-oloc",
+      "mapX": 590,
+      "mapY": 894
     }
   ]
 }

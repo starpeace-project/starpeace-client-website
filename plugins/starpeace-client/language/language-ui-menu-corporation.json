@@ -3,7 +3,7 @@
     "DE": "Gründung einer Gesellschaft",
     "EN": "Establish a Corporation",
     "ES": "Establecer una Corporación",
-    "FR": "Établir des Entreprises",
+    "FR": "Établir une Entreprise",
     "IT": "Stabilire una Società",
     "PT": "Estabelecer uma Corporação"
   },
@@ -23,6 +23,14 @@
     "IT": "Stabilire una società per partecipare all'economia del pianeta. I regolamenti IFEL limitano i Tycoon a una singola azienda per pianeta; una o più società possono essere costituite da ciascuna società.",
     "PT": "Estabelecer uma corporação para participar da economia do planeta. Os Regulamentos do IFEL limitam os Tycoons a uma única corporação por planeta; uma ou mais empresas podem ser formadas sob cada corporação."
   },
+  "ui.menu.corporation.establish.field.name": {
+    "DE": "Gesellschaftname",
+    "EN": "Corporation Name",
+    "ES": "Nombre de la Corporación",
+    "FR": "Nom de la Entreprise",
+    "IT": "Nome della Società",
+    "PT": "Nome da Corporação"
+  },
   "ui.menu.corporation.establish.action.cancel": {
     "DE": "Zurück zu Galaxy",
     "EN": "Back to Galaxy",
@@ -38,5 +46,13 @@
     "FR": "Établir une Entreprise",
     "IT": "Stabilire la Società",
     "PT": "Estabelecer Corporação"
+  },
+  "ui.menu.corporation.establish.error.general": {
+    "DE": "Fehler beim Herstellen der Korporation, bitte versuchen Sie es erneut",
+    "EN": "Error establishing corporation, please try again",
+    "ES": "Error al establecer corporación, por favor, inténtelo de nuevo",
+    "FR": "Erreur établissement société, s'il vous plaît essayer à nouveau",
+    "IT": "Errore stabilire la società, si prega di riprovare",
+    "PT": "Erro ao estabelecer corporação, por favor tente novamente"
   }
 }

@@ -1,0 +1,74 @@
+{
+  "ui.menu.company.form.header": {
+    "DE": "Ein Unternehmen",
+    "EN": "Form a Company",
+    "ES": "Formar una Empresa",
+    "FR": "Créer une Société",
+    "IT": "Costituire una Società",
+    "PT": "Forme uma Empresa"
+  },
+  "ui.menu.company.form.instructions": {
+    "DE": "Wählen Sie einen Anbieter von Technologie für Mitarbeiter mit und einen Namen für Ihr Unternehmen.",
+    "EN": "Choose a technology provider to associate with and a name for your company.",
+    "ES": "Elegir un proveedor de tecnología para asociarse y un nombre para su empresa.",
+    "FR": "Choisissez un fournisseur de technologie pour associer à un nom et pour votre entreprise.",
+    "IT": "Scegliere un fornitore di tecnologia da associare e un nome per la vostra azienda.",
+    "PT": "Escolha um provedor de tecnologia para associar e um nome para sua empresa."
+  },
+  "ui.menu.company.form.info.strengths": {
+    "DE": "Stärken",
+    "EN": "Strengths",
+    "ES": "Fortalezas",
+    "FR": "Forces",
+    "IT": "Punti di Forza",
+    "PT": "Forças"
+  },
+  "ui.menu.company.form.info.weaknesses": {
+    "DE": "Schwächen",
+    "EN": "Weaknesses",
+    "ES": "Debilidades",
+    "FR": "Faiblesses",
+    "IT": "Punti di Debolezza",
+    "PT": "Fraquezas"
+  },
+  "ui.menu.company.form.info.pros": {
+    "DE": "Dafür",
+    "EN": "Pros",
+    "ES": "A Favor",
+    "FR": "Avantages",
+    "IT": "Pro",
+    "PT": "Prós"
+  },
+  "ui.menu.company.form.info.cons": {
+    "DE": "Dagegen",
+    "EN": "Cons",
+    "ES": "En Contra",
+    "FR": "Inconvénients",
+    "IT": "Contro",
+    "PT": "Contras"
+  },
+  "ui.menu.company.form.field.name": {
+    "DE": "Name der Firma",
+    "EN": "Company Name",
+    "ES": "Nombre de Empresa",
+    "FR": "Nom de la Compagnie",
+    "IT": "Nome della Ditta",
+    "PT": "Nome da Empresa"
+  },
+  "ui.menu.company.form.action.cancel": {
+    "DE": "Stornieren",
+    "EN": "Cancel",
+    "ES": "Cancelar",
+    "FR": "Annuler",
+    "IT": "Annulla",
+    "PT": "Cancelar"
+  },
+  "ui.menu.company.form.action.form": {
+    "DE": "Formular Firmen",
+    "EN": "Form Company",
+    "ES": "Fundar Empresa",
+    "FR": "Créer Société",
+    "IT": "Costituire Societaria",
+    "PT": "Forme Empresa"
+  }
+}

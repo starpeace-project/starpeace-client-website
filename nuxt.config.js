@@ -55,6 +55,7 @@ module.exports = {
     RELEASE_NOTES_HTML: release_notes_html,
     RELEASE_NOTES_ARCHIVE_HTML: release_notes_archive_html
   },
+  telemetry: false,
   build: {
     // analyze: true,
     publicPath: '/assets/',

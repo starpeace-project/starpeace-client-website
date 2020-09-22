@@ -25,7 +25,9 @@ export default class SandboxConfiguration
 
     @post 'galaxy/login', (config, params) =>
       if params.username == 'test' && params.password == 'test' && @sandbox.sandbox_data.tycoon_by_id['tycoon-id-1']?
-        return _.cloneDeep @sandbox.sandbox_data.tycoon_by_id['tycoon-id-1']
+        return _.assign(_.cloneDeep(@sandbox.sandbox_data.tycoon_by_id['tycoon-id-1']), {
+          accessToken: Utils.uuid()
+        })
       else
         throw new Error(401)
 
@@ -47,10 +49,10 @@ export default class SandboxConfiguration
     @get 'planets/(.+?)/buildings', (config, planet_id, params) =>
       throw new Error(404) unless @sandbox.sandbox_data.planet_id_chunk_id_buildings[planet_id]?
       _.cloneDeep(@sandbox.sandbox_data.planet_id_chunk_id_buildings[planet_id]["#{params.chunkX}x#{params.chunkY}"] || [])
-    @get 'planets/(.+?)/buildings/(.+)', (config, planet_id, building_id) =>
-      throw new Error(404) unless @sandbox.sandbox_data.building_id_building[building_id]?
-      _.cloneDeep(@sandbox.sandbox_data.building_id_building[building_id])
     @post 'planets/(.+?)/buildings', (config, planet_id, params) => @sandbox.sandbox_buildings.queue_construction(planet_id, params)
+
+    @post 'planets/(.+?)/corporations', (config, planet_id, params) => throw new Error(500)
+    @post 'planets/(.+?)/companies', (config, planet_id, params) => throw new Error(500)
 
     @get 'planets/(.+?)/events', (config, planet_id, params) =>
       throw new Error(404) unless @sandbox.sandbox_data?.planet_id_dates?[planet_id]?
@@ -67,6 +69,10 @@ export default class SandboxConfiguration
       throw new Error(404) unless @sandbox.sandbox_data?.planet_towns?[planet_id]?
       _.cloneDeep(@sandbox.sandbox_data.planet_towns[planet_id])
     )
+
+    @get 'buildings/(.+)', (config, building_id) =>
+      throw new Error(404) unless @sandbox.sandbox_data.building_id_building[building_id]?
+      _.cloneDeep(@sandbox.sandbox_data.building_id_building[building_id])
 
     @get 'tycoons/.+?', (config, tycoon_id) =>
       throw new Error(404) unless @sandbox.sandbox_data?.tycoon_by_id?[tycoon_id]?

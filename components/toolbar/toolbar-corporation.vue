@@ -16,7 +16,7 @@
     p.planet-date {{current_date}}
 
   .level-item.company-container
-    .company-panel(v-for='company in companies', :class="is_selected(company.id) ? 'is-selected' : ''", v-on:click.stop.prevent="select_company(company.id)")
+    .company-panel(v-for='company in companies' :class="{ 'is-selected': is_selected(company.id) }" @click.stop.prevent="select_company(company.id)")
       .company-name-row
         span.company-icon-wrapper
           company-seal-icon.company-seal(:seal_id="client_state.seal_for_company_id(company.id)")
@@ -28,6 +28,11 @@
         | (
         money-text(:value='company_cashflow(company.id)')
         | /h)
+
+    template(v-show='can_form_company')
+      .company-panel.form-company(:class="{'is-selected':is_form_company_visible, 'no-companies':!companies.length}" @click.stop.prevent='toggle_form_company_menu')
+        .form-label {{translate('ui.menu.company.form.action.form')}}
+
 </template>
 
 <script lang='coffee'>
@@ -53,7 +58,7 @@ export default
     can_form_company: -> @is_tycoon && @client_state.player.corporation_id?.length
     companies: ->
       if @is_ready && @is_tycoon && @client_state?.corporation?.company_ids?.length
-        _.map(_.sortBy(@client_state.corporation.company_ids, (id) => @client_state.name_for_company_id(id)), (id) => @client_state.core.company_cache.metadata_for_id(id))
+        _.compact(_.map(_.sortBy(@client_state.corporation.company_ids, (id) => @client_state.name_for_company_id(id)), (id) => @client_state.core.company_cache.metadata_for_id(id)))
       else
         []
 
@@ -61,6 +66,8 @@ export default
     corporation_name: -> if @corporation_metadata? then @corporation_metadata.name else '[PENDING]'
     corporation_cash: -> if @is_ready && @client_state.corporation.cash? then @client_state.corporation.cash else null
     corporation_cashflow: -> if @is_ready && @client_state.corporation?.cashflow? then @client_state.corporation.cashflow else null
+
+    is_form_company_visible: () -> @client_state.initialized && !@client_state.session_expired_warning && @client_state?.workflow_status == 'ready' && @client_state?.menu?.is_visible('company_form')
 
   methods:
     translate: (text_key) -> @managers?.translation_manager?.text(text_key)
@@ -71,6 +78,8 @@ export default
 
     is_selected: (company_id) -> @client_state.player.company_id == company_id
     select_company: (company_id) -> @client_state.player.company_id = company_id
+
+    toggle_form_company_menu: () -> @client_state.menu.toggle_menu('company_form')
 </script>
 
 <style lang='sass' scoped>
@@ -129,8 +138,36 @@ export default
     border: 1px solid $sp-primary-bg
     cursor: pointer
     margin-left: .5rem
-    min-width: 10rem
+    min-width: 8em
     padding: .5rem
+
+    &.form-company
+      align-items: center
+      border: 1px solid darken($sp-primary-bg, 5%)
+      color: darken($sp-primary, 15%)
+      display: flex
+      flex-direction: column
+      font-size: 1.1rem
+      justify-content: center
+      letter-spacing: .1rem
+      text-align: center
+      text-transform: uppercase
+      width: 8rem
+
+      &.no-companies
+        border: 1px solid lighten($sp-primary-bg, 5%)
+        color: $sp-primary
+
+      &:hover
+        background-color: darken($sp-primary, 25%)
+        border: 1px solid darken($sp-primary, 15%)
+        color: lighten($sp-primary, 5%)
+
+      &.is-selected,
+      &:active
+        background-color: darken($sp-primary, 20%)
+        border: 1px solid darken($sp-primary, 5%)
+        color: lighten($sp-primary, 10%)
 
     .company-icon-wrapper
       height: 1.2rem
@@ -141,7 +178,7 @@ export default
 
     .company-name
       color: $sp-primary
-      margin-left: .25rem
+      margin-left: .5rem
 
     .company-building-count
       color: $sp-primary
@@ -161,7 +198,12 @@ export default
       .positive
         color: $sp-primary
 
-    &.is-selected
+    &:hover
+      background-color: darken($sp-primary, 30%)
+      border: 1px solid darken($sp-primary, 15%)
+
+    &.is-selected,
+    &:active
       background-color: darken($sp-primary, 20%)
       border: 1px solid darken($sp-primary, 5%)
 

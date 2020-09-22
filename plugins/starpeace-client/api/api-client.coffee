@@ -1,4 +1,4 @@
-
+import _ from 'lodash'
 import moment from 'moment'
 import axios from 'axios'
 import SandboxConfiguration from '~/plugins/starpeace-client/api/sandbox/sandbox-configuration.coffee'
@@ -15,6 +15,15 @@ export default class APIClient
     throw "no configuration for galaxy #{galaxy_id}" unless galaxy_config?.api_protocol? && galaxy_config?.api_url? && galaxy_config?.api_port?
     "#{galaxy_config.api_protocol}://#{galaxy_config.api_url}:#{galaxy_config.api_port}"
 
+  galaxy_auth: (parameters, galaxy_id=null) ->
+    galaxy_id = @client_state.identity.galaxy_id unless galaxy_id?
+
+    headers = { }
+    headers.Authorization = "JWT #{@client_state.options.galaxy_jwt}" if @client_state.options.galaxy_id == galaxy_id && @client_state.options.galaxy_jwt?.length
+    headers.VisaId = @client_state.player.planet_visa_id if @client_state.player.planet_visa_id?.length
+
+    _.assign(parameters, { headers: headers })
+
   handle_request: (request_promise, handle_result) ->
     new Promise (done, error) =>
       request_promise
@@ -23,34 +32,43 @@ export default class APIClient
             @client_state.handle_authorization_error() if err.response?.status == 401
             error(err)
   delete: (path, parameters, handle_result) ->
-    @handle_request(@client.delete("#{@galaxy_url()}/#{path}", parameters), handle_result)
+    @handle_request(@client.delete("#{@galaxy_url()}/#{path}", @galaxy_auth(parameters)), handle_result)
   get: (path, query, handle_result) ->
-    @handle_request(@client.get("#{@galaxy_url()}/#{path}", { params: (query || {}) }), handle_result)
+    @handle_request(@client.get("#{@galaxy_url()}/#{path}", @galaxy_auth({ params: (query || {}) })), handle_result)
   post: (path, parameters, handle_result) ->
-    @handle_request(@client.post("#{@galaxy_url()}/#{path}", parameters), handle_result)
+    @handle_request(@client.post("#{@galaxy_url()}/#{path}", parameters, @galaxy_auth({})), handle_result)
   put: (path, parameters, handle_result) ->
-    @handle_request(@client.put("#{@galaxy_url()}/#{path}", parameters), handle_result)
+    @handle_request(@client.put("#{@galaxy_url()}/#{path}", parameters, @galaxy_auth({})), handle_result)
   patch: (path, parameters, handle_result) ->
-    @handle_request(@client.patch("#{@galaxy_url()}/#{path}", parameters), handle_result)
+    @handle_request(@client.patch("#{@galaxy_url()}/#{path}", parameters, @galaxy_auth({})), handle_result)
 
   galaxy_metadata: (galaxy_id) ->
     new Promise (done, error) =>
-      @client.get("#{@galaxy_url(galaxy_id)}/galaxy/metadata")
+      @client.get("#{@galaxy_url(galaxy_id)}/galaxy/metadata", @galaxy_auth({}, galaxy_id))
         .then (result) -> done(result.data)
         .catch error
 
+  galaxy_create: (galaxy_id, username, password, remember_me) ->
+    new Promise (done, error) =>
+      @client.post("#{@galaxy_url(galaxy_id)}/galaxy/create", {
+          username: username
+          password: password
+          rememberMe: remember_me
+        })
+        .then (result) -> done(result.data)
+        .catch (err) -> error(err.response)
   galaxy_login: (galaxy_id, username, password, remember_me) ->
     new Promise (done, error) =>
       @client.post("#{@galaxy_url(galaxy_id)}/galaxy/login", {
           username: username
           password: password
-          remember_me: remember_me
+          rememberMe: remember_me
         })
         .then (result) -> done(result.data)
         .catch (err) -> error(err.response)
   galaxy_logout: (galaxy_id) ->
     new Promise (done, error) =>
-      @client.post("#{@galaxy_url(galaxy_id)}/galaxy/logout", {})
+      @client.post("#{@galaxy_url(galaxy_id)}/galaxy/logout", {}, @galaxy_auth({}, galaxy_id))
         .then (result) -> done(result.data)
         .catch (err) -> error(err.response)
 
@@ -58,7 +76,7 @@ export default class APIClient
     new Promise (done, error) =>
       @client.post("#{@galaxy_url(galaxy_id)}/planets/#{planet_id}/visa", {
         identityType: visa_type
-      })
+      }, @galaxy_auth({}, galaxy_id))
       .then (result) -> done(result.data)
       .catch(error)
 
@@ -68,8 +86,8 @@ export default class APIClient
       chunkX: chunk_x
       chunkY: chunk_y
     }, (result) -> result || [])
-  building_for_id: (planet_id, building_id) ->
-    @get("planets/#{planet_id}/buildings/#{building_id}", {}, (result) -> result)
+  building_for_id: (building_id) ->
+    @get("buildings/#{building_id}", {}, (result) -> result)
   construct_building: (planet_id, company_id, definition_id, name, map_x, map_y) ->
     @post("planets/#{planet_id}/buildings", {
       companyId: company_id
@@ -100,16 +118,18 @@ export default class APIClient
   tycoon_for_id: (tycoon_id) ->
     @get("tycoons/#{tycoon_id}", {}, (result) -> result)
 
-
+  create_corporation: (planet_id, corporation_name) ->
+    @post("planets/#{planet_id}/corporations", { name: corporation_name }, (result) -> result)
   corporation_for_id: (corporation_id) ->
     @get("corporations/#{corporation_id}", {}, (result) -> result)
 
   bookmarks_for_corporation: (corporation_id) ->
     @get("corporations/#{corporation_id}/bookmarks", {}, (result) -> result || [])
-  create_corporation_bookmark: (corporation_id, type, parent_id, name, extra_params={}) ->
+  create_corporation_bookmark: (corporation_id, type, parent_id, order, name, extra_params={}) ->
     @post("corporations/#{corporation_id}/bookmarks", _.merge({
       type: type
       parentId: parent_id
+      order: order
       name: name
     }, extra_params), (result) -> result)
   update_corporation_bookmarks: (corporation_id, bookmark_deltas) ->
@@ -123,6 +143,9 @@ export default class APIClient
   mail_for_corporation: (corporation_id) ->
     @get("corporations/#{corporation_id}/mail", {}, (result) -> result || [])
 
+
+  create_company: (planet_id, company_name, seal_id) ->
+    @post("planets/#{planet_id}/companies", { name: company_name, sealId: seal_id }, (result) -> result)
 
   buildings_for_company: (company_id) ->
     @get("companies/#{company_id}/buildings", {}, (result) -> result || [])

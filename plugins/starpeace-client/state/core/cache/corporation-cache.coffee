@@ -3,7 +3,7 @@ import moment from 'moment'
 import Vue from 'vue'
 
 import Cache from '~/plugins/starpeace-client/state/core/cache/cache.coffee'
-import Corporation from '~/plugins/starpeace-client/industry/corporation.coffee'
+import Corporation from '~/plugins/starpeace-client/corporation/corporation.coffee'
 
 import TimeUtils from '~/plugins/starpeace-client/utils/time-utils.coffee'
 import Logger from '~/plugins/starpeace-client/logger.coffee'
@@ -32,3 +32,6 @@ export default class CorporationCache extends Cache
 
   corporations_for_tycoon_id: (tycoon_id) ->
     _.filter(_.values(@corporation_metadata_by_id), (corporation) -> corporation.tycoon_id == tycoon_id)
+
+  add_corporation_company: (corporationId, company) ->
+    @corporation_metadata_by_id[corporationId].companies.push(company) if @corporation_metadata_by_id[corporationId]?

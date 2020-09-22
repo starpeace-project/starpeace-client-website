@@ -5,7 +5,7 @@ client-only
       .card.is-starpeace(:style='workflow_card_style', :class='workflow_card_class')
         .card-header(v-show='has_header')
           .card-header-title.card-header-planet(v-show="status == 'pending_planet'")
-            a(v-on:click.stop.prevent='reset_galaxy') {{translate('ui.menu.galaxy.header')}}
+            a(v-on:click.stop.prevent='reset_galaxy') {{translate('ui.workflow.universe.multiverse.label')}}
             span.title-spacer /
             span.planet-name {{ current_galaxy_name }}
 
@@ -32,7 +32,7 @@ import Logger from '~/plugins/starpeace-client/logger.coffee'
 import TimeUtils from '~/plugins/starpeace-client/utils/time-utils.coffee'
 
 STATUS_MAX_WIDTHS = {
-  'pending_universe': '54rem'
+  'pending_universe': '60rem'
   'pending_visa': '20rem'
   'pending_planet': '80rem'
   'pending_assets': '20rem'
@@ -93,12 +93,11 @@ export default
 
 .card
   display: inline-block
-
-  position: relative
-  transition: max-width .5s
-  text-align: left
-  z-index: 1050
   overflow: hidden
+  position: relative
+  text-align: left
+  transition: max-width .5s
+  z-index: 1050
 
   &.sp-scrollbar
     overflow-y: auto

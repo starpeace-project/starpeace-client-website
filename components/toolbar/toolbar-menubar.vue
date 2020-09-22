@@ -82,4 +82,11 @@ export default
 
     &:not(:first-child)
       margin-left: .5rem
+
+    &.tooltip
+      &.is-tooltip-active::before,
+      &:focus::before,
+      &:hover::before
+        z-index: 1200
+
 </style>

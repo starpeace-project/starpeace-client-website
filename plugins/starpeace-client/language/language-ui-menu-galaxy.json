@@ -23,13 +23,13 @@
     "IT": "Investimenti",
     "PT": "Investimentos"
   },
-  "ui.menu.galaxy.details.tycoons.label": {
-    "DE": "Tycoons",
-    "EN": "Tycoons",
-    "ES": "Magnates",
-    "FR": "Magnats",
-    "IT": "Magnati",
-    "PT": "Magnatas"
+  "ui.menu.galaxy.details.corporations.label": {
+    "DE": "Gesellschaften",
+    "EN": "Corporations",
+    "ES": "Corporaciones",
+    "FR": "Entreprises",
+    "IT": "Corporazioni",
+    "PT": "Corporações"
   },
   "ui.menu.galaxy.details.online.label": {
     "DE": "Online",

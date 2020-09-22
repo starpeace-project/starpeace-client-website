@@ -9,38 +9,37 @@ client-only
     sp-session-expired-warning-card(:managers='managers', :client_state='client_state')
     sp-webgl-warning-card(:managers='managers', :client_state='client_state')
 
-    sp-workflow(:managers='managers', :ajax_state='ajax_state', :client_state='client_state')
+    sp-workflow(:managers='managers' :ajax_state='ajax_state' :client_state='client_state')
 
-    menu-corporation-establish(:managers='managers', :client_state='client_state')
+    menu-corporation-establish(v-if='is_corporation_establish_visible' :managers='managers', :client_state='client_state')
+    menu-company-form(v-show="is_menu_visible('company_form')" :managers='managers' :client_state='client_state')
 
-    menu-construction(v-show="is_menu_visible('construction')", :managers='managers', :client_state='client_state')
-    menu-chat(v-show="is_menu_visible('chat')", :managers='managers', :client_state='client_state')
-    menu-bookmarks(v-show="is_menu_visible('bookmarks')", :managers='managers', :ajax_state='ajax_state', :client_state='client_state')
-    menu-mail(v-show="is_menu_visible('mail')", :managers='managers', :client_state='client_state')
-    menu-options(v-show="is_menu_visible('options')", :managers='managers', :client_state='client_state')
-    menu-politics(v-show="is_menu_visible('politics')", :managers='managers', :client_state='client_state')
-    menu-help(v-show="is_menu_visible('help')", :managers='managers', :client_state='client_state')
-    menu-rankings(v-show="is_menu_visible('rankings')", :managers='managers', :client_state='client_state')
-    menu-release-notes(v-show="is_menu_visible('release_notes')", :managers='managers', :client_state='client_state')
-    menu-research-menu(v-show="is_menu_visible('research')", :managers='managers', :client_state='client_state')
-    menu-research-no-company(v-show="is_menu_visible('research')", :managers='managers', :client_state='client_state')
-    menu-research-tree(v-show="is_menu_visible('research')", :managers='managers', :client_state='client_state')
-    menu-research-details(v-show="is_menu_visible('research')", :managers='managers', :ajax_state='ajax_state', :client_state='client_state')
-    menu-galaxy(v-show="is_menu_visible('galaxy')", :managers='managers', :client_state='client_state', :ajax_state='ajax_state')
-    menu-town-search(v-show="is_menu_visible('town_search')", :managers='managers', :client_state='client_state')
-    menu-tycoon-details(v-show="is_menu_visible('tycoon')", :managers='managers', :client_state='client_state')
-    menu-tycoon-search(v-show="is_menu_visible('tycoon_search')", :managers='managers', :client_state='client_state')
+    menu-construction(v-show="is_menu_visible('construction')" :managers='managers' :client_state='client_state')
+    menu-chat(v-show="is_menu_visible('chat')" :managers='managers', :client_state='client_state')
+    menu-bookmarks(v-show="is_menu_visible('bookmarks')" :managers='managers' :ajax_state='ajax_state', :client_state='client_state')
+    menu-mail(v-show="is_menu_visible('mail')" :managers='managers' :client_state='client_state')
+    menu-options(v-show="is_menu_visible('options')" :managers='managers' :client_state='client_state')
+    menu-politics(v-show="is_menu_visible('politics')" :managers='managers' :client_state='client_state')
+    menu-help(v-show="is_menu_visible('help')" :managers='managers' :client_state='client_state')
+    menu-rankings(v-show="is_menu_visible('rankings')" :managers='managers' :client_state='client_state')
+    menu-release-notes(v-show="is_menu_visible('release_notes')" :managers='managers' :client_state='client_state')
+    menu-research(v-show="is_menu_visible('research')" :managers='managers' :ajax_state='ajax_state' :client_state='client_state')
+    menu-galaxy(v-show="is_menu_visible('galaxy')", :managers='managers' :ajax_state='ajax_state' :client_state='client_state')
+    menu-town-search(v-show="is_menu_visible('town_search')" :managers='managers' :client_state='client_state')
+    menu-tycoon-details(v-show="is_menu_visible('tycoon')" :managers='managers' :client_state='client_state')
+    menu-tycoon-search(v-show="is_menu_visible('tycoon_search')" :managers='managers' :client_state='client_state')
 
     sp-body(:client_state='client_state')
 
-    sp-toolbar-overlay-menu(:managers='managers', :client_state='client_state')
-    sp-toolbar-ribbon(:managers='managers', :mini_map_renderer='mini_map_renderer', :client_state='client_state')
-    sp-toolbar-header(:managers='managers', :ajax_state='ajax_state', :client_state='client_state')
-    sp-toolbar-details(:managers='managers', :ajax_state='ajax_state', :client_state='client_state')
+    sp-toolbar-overlay-menu(:managers='managers' :client_state='client_state')
+    sp-toolbar-ribbon(:managers='managers' :client_state='client_state')
+    sp-toolbar-header(:managers='managers' :ajax_state='ajax_state' :client_state='client_state')
+    sp-toolbar-details(:managers='managers' :ajax_state='ajax_state' :client_state='client_state')
 
     sp-loading-modal(v-show='is_sub_menu_visible')
-    sp-sub-menu-remove-galaxy(v-show='is_sub_menu_remove_galaxy_visible', :managers='managers', :client_state='client_state')
-    sp-sub-menu-add-galaxy(v-show='is_sub_menu_add_galaxy_visible', :managers='managers', :client_state='client_state')
+    sp-sub-menu-remove-galaxy(v-show='is_sub_menu_remove_galaxy_visible' :managers='managers' :client_state='client_state')
+    sp-sub-menu-add-galaxy(v-show='is_sub_menu_add_galaxy_visible' :managers='managers' :client_state='client_state')
+    sp-sub-menu-create-tycoon(v-show='is_sub_menu_create_tycoon_visible' :managers='managers' :client_state='client_state')
 </template>
 
 <script lang='coffee'>
@@ -55,8 +54,10 @@ import WebGLWarningCard from '~/components/misc/card-webgl-warning.vue'
 import Workflow from '~/components/workflow/workflow.vue'
 import SubMenuRemoveGalaxy from '~/components/workflow/sub-menu-remove-galaxy.vue'
 import SubMenuAddGalaxy from '~/components/workflow/sub-menu-add-galaxy.vue'
+import SubMenuCreateTycoon from '~/components/workflow/sub-menu-create-tycoon.vue'
 
 import MenuCorporationEstablish from '~/components/menu/corporation/establish.vue'
+import MenuCompanyForm from '~/components/menu/company/form.vue'
 
 import MenuConstruction from '~/components/menu/construction/main-menu.vue'
 import MenuChat from '~/components/menu/menu-chat.vue'
@@ -67,10 +68,7 @@ import MenuPolitics from '~/components/menu/politics/main-menu.vue'
 import MenuHelp from '~/components/menu/menu-help.vue'
 import MenuRankings from '~/components/menu/rankings/main-menu.vue'
 import MenuReleaseNotes from '~/components/menu/menu-release-notes.vue'
-import MenuResearchMenu from '~/components/menu/research/menu.vue'
-import MenuResearchNoCompany from '~/components/menu/research/no-company.vue'
-import MenuResearchTree from '~/components/menu/research/tree.vue'
-import MenuResearchDetails from '~/components/menu/research/details.vue'
+import MenuResearch from '~/components/menu/research/main-menu.vue'
 import MenuGalaxy from '~/components/menu/galaxy/menu.vue'
 import MenuTownSearch from '~/components/menu/town-search/main-menu.vue'
 import MenuTycoonDetails from '~/components/menu/tycoon-details/menu-tycoon.vue'
@@ -99,7 +97,9 @@ export default
     'sp-webgl-warning-card': WebGLWarningCard
     'sp-sub-menu-remove-galaxy': SubMenuRemoveGalaxy
     'sp-sub-menu-add-galaxy': SubMenuAddGalaxy
+    'sp-sub-menu-create-tycoon': SubMenuCreateTycoon
     'menu-corporation-establish': MenuCorporationEstablish
+    'menu-company-form': MenuCompanyForm
     'menu-construction': MenuConstruction
     'menu-chat': MenuChat
     'menu-bookmarks': MenuBookmarks
@@ -109,10 +109,7 @@ export default
     'menu-help': MenuHelp
     'menu-rankings': MenuRankings
     'menu-release-notes': MenuReleaseNotes
-    'menu-research-menu': MenuResearchMenu
-    'menu-research-no-company': MenuResearchNoCompany
-    'menu-research-tree': MenuResearchTree
-    'menu-research-details': MenuResearchDetails
+    'menu-research': MenuResearch
     'menu-galaxy': MenuGalaxy
     'menu-town-search': MenuTownSearch
     'menu-tycoon-details': MenuTycoonDetails
@@ -135,15 +132,17 @@ export default
 
   computed:
     managers: -> @client?.managers
-    mini_map_renderer: -> @client?.mini_map_renderer
 
     loading_visible: -> (@client_state?.initialized || false) && (@client_state?.loading || false)
 
     is_loading_modal_visible: -> @client_state?.initialized && @client_state?.loading
 
-    is_sub_menu_visible: -> @is_sub_menu_remove_galaxy_visible || @is_sub_menu_add_galaxy_visible
+    is_corporation_establish_visible: -> @client_state.initialized && @client_state.workflow_status == 'ready' && @client_state.is_tycoon() && !@client_state.player.corporation_id?.length
+
+    is_sub_menu_visible: -> @is_sub_menu_remove_galaxy_visible || @is_sub_menu_add_galaxy_visible || @is_sub_menu_create_tycoon_visible
     is_sub_menu_remove_galaxy_visible: -> @client_state?.interface?.show_remove_galaxy
     is_sub_menu_add_galaxy_visible: -> @client_state?.interface?.show_add_galaxy
+    is_sub_menu_create_tycoon_visible: -> @client_state?.interface?.show_create_tycoon
 
     is_toolbar_left_open: -> @client_state?.menu?.toolbar_left?.length
     is_toolbar_right_open: -> @client_state?.menu?.toolbar_right?.length
@@ -165,12 +164,12 @@ export default
 #application-container
   display: grid
   grid-template-columns: 0 auto 0
-  grid-template-rows: 4rem auto 3rem 5rem 3rem 7.5rem
+  grid-template-rows: 4rem auto 3rem 5.5rem 3rem 7.5rem
   height: 100vh
   position: relative
 
   &.no-header
-    grid-template-rows: 0 auto 3rem 5rem 3rem 7.5rem
+    grid-template-rows: 0 auto 3rem 5.5rem 3rem 7.5rem
 
   &.is-toolbar-left:not(.is-toolbar-right)
     grid-template-columns: 25rem auto 0rem

@@ -1,7 +1,7 @@
 
 import moment from 'moment'
 
-import Corporation from '~/plugins/starpeace-client/industry/corporation.coffee'
+import Corporation from '~/plugins/starpeace-client/corporation/corporation.coffee'
 
 import TimeUtils from '~/plugins/starpeace-client/utils/time-utils.coffee'
 
@@ -13,6 +13,7 @@ export default class Tycoon
 
   @from_json: (json) ->
     metadata = new Tycoon(json.id)
+    metadata.username = json.username
     metadata.name = json.name
     metadata.corporations = _.map(json.corporations, (corp_json) -> Corporation.from_json(corp_json))
     metadata

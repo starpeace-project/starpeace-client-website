@@ -23,7 +23,8 @@ export default class PlayerState
     @mail_by_id_as_of = null
     @mail_by_id = null
 
-  has_data: () -> @mail_by_id?
+  has_data: () ->
+    @mail_by_id?
 
   subscribe_planet_visa_type_listener: (listener_callback) -> @event_listener.subscribe('player.visa_type', listener_callback)
   notify_planet_visa_type_listeners: () -> @event_listener.notify_listeners('player.visa_type')

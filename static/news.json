@@ -1,9 +1,19 @@
 {
   "news":[
     {
+      "date": "2020-09-21",
+      "title": "Dependency Upgrades, Pre-Alpha Multiverse support",
+      "body": "Core logic updates and initial support for Tycoon, Corporation, and Company creation, plus a round of technology dependency upgrades. More client changes to align with Multiverse server API, with first successful connections to running backend server. Multiverse backend server still not ready for public, but progress has been made towards pre-alpha testing.",
+      "items": [
+        "upgrade dependencies",
+        "basic Tycoon, Corporation, and Company creation interfaces",
+        "initial Multiverse server API integration"
+      ]
+    },
+    {
       "date": "2020-04-04",
       "title": "Dependency Upgrades, Documentation, and Internal API Progress",
-      "body": "Round of dependency upgrades, documentation, and core logic updates. Lots of internal website client changes to align with multiverse server API and library types. Progress also made towards first version of the multiverse backend server.",
+      "body": "Round of dependency upgrades, documentation, and core logic updates. Lots of internal website client changes to align with Multiverse server API and library types. Progress also made towards first version of the Multiverse backend server.",
       "items": [
         "upgrade dependencies",
         "library types and documentation for Multiverse API",

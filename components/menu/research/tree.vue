@@ -1,34 +1,30 @@
 <template lang='pug'>
-#research-tree-container.card.is-starpeace.has-header
-  .card-header
-    .card-header-title
-    .card-header-icon.card-close(v-on:click.stop.prevent="client_state.menu.toggle_menu('research')")
-      font-awesome-icon(:icon="['fas', 'times']")
-  .card-content.sp-menu-background.overall-container
-    .tree-list-container.sp-scrollbar
-      .status-title {{translate('ui.menu.research.status.available')}}
-      ul
-        template(v-if="research_available.length")
-          li(v-for="research in research_available")
-            a(v-on:click.stop.prevent="select_invention_id(research.id)") {{translate(research.name)}}
-        template(v-else-if='true')
-          li {{translate('ui.menu.research.none.label')}}
-      .status-title {{translate('ui.menu.research.status.in_progress')}}
-      ul
-        template(v-if="research_in_progress.length")
-          li(v-for="research in research_in_progress")
-            a(v-on:click.stop.prevent="select_invention_id(research.id)") {{translate(research.name)}}
-        template(v-else-if="true")
-          li {{translate('ui.menu.research.none.label')}}
-      .status-title {{translate('ui.menu.research.status.completed')}}
-      ul
-        template(v-if="research_completed.length")
-          li(v-for="research in research_completed")
-            a(v-on:click.stop.prevent="select_invention_id(research.id)") {{translate(research.name)}}
-        template(v-else-if="true")
-          li {{translate('ui.menu.research.none.label')}}
-    .tree-container
-      v-network.inverse-card(ref='tree_network', :options='tree_options', :nodes='tree_nodes', :edges='tree_edges', v-on:select-node="select_tree_node", v-on:deselect-node='deselect_tree_node')
+.research-container
+  .tree-list-container.sp-scrollbar
+    .status-title {{translate('ui.menu.research.status.available')}}
+    ul
+      template(v-if="research_available.length")
+        li(v-for="research in research_available")
+          a(v-on:click.stop.prevent="select_invention_id(research.id)") {{translate(research.name)}}
+      template(v-else-if='true')
+        li {{translate('ui.menu.research.none.label')}}
+    .status-title {{translate('ui.menu.research.status.in_progress')}}
+    ul
+      template(v-if="research_in_progress.length")
+        li(v-for="research in research_in_progress")
+          a(v-on:click.stop.prevent="select_invention_id(research.id)") {{translate(research.name)}}
+      template(v-else-if="true")
+        li {{translate('ui.menu.research.none.label')}}
+    .status-title {{translate('ui.menu.research.status.completed')}}
+    ul
+      template(v-if="research_completed.length")
+        li(v-for="research in research_completed")
+          a(v-on:click.stop.prevent="select_invention_id(research.id)") {{translate(research.name)}}
+      template(v-else-if="true")
+        li {{translate('ui.menu.research.none.label')}}
+
+  .tree-container
+    v-network.inverse-card(ref='tree_network' :options='tree_options' :nodes='tree_nodes' :edges='tree_edges' @select-node="select_tree_node" @deselect-node='deselect_tree_node')
 
 </template>
 
@@ -256,118 +252,44 @@ export default
 <style lang='sass' scoped>
 @import '~assets/stylesheets/starpeace-variables'
 
-#research-tree-container
-  grid-column-start: 2
-  grid-column-end: 3
-  grid-row-start: 2
-  grid-row-end: 5
-  margin: 0
-  overflow: hidden
-  z-index: 1150
+.research-container
+  position: relative
+  grid-column: 2 / 3
+  grid-row: 1 / 2
 
-.card
-  overflow: hidden
+  .tree-list-container
+    height: 100%
+    left: 0
+    overflow-y: scroll
+    padding: 1rem .5rem 0
+    position: absolute
+    top: 0
+    width: 20rem
 
-  .card-header
-    min-height: 3.4rem
+    .status-title
+      border-bottom: 1px solid $sp-primary
+      color: $sp-light
+      font-size: .9rem
+      font-weight: bold
+      margin-bottom: .25rem
+      padding-bottom: .25rem
 
-  .card-header-title
-    font-size: 1.15rem
-    letter-spacing: .2rem
-    padding-top: .6rem
+      &:not(:first-child)
+        margin-top: 1.5rem
 
-  .card-content
-    height: calc(100% - 3.2rem)
+  .tree-container
+    height: 100%
     padding: 0
+    margin-left: 20rem
+    width: calc(100% - 20rem)
 
-    &.overall-container
-      position: relative
-
-    .columns
-      height: 100%
+    .inverse-card
+      background-color: #000
+      border: 0 !important
+      height: 100% !important
       margin: 0
       padding: 0
-
-    .tree-list-container
-      height: calc(100% - 2rem)
-      left: 0
-      margin: 1rem 0
-      overflow-y: scroll
-      padding: 0 .5rem
-      position: absolute
-      top: 0
-      width: 20rem
-
-      .status-title
-        border-bottom: 1px solid $sp-primary
-        color: $sp-light
-        font-size: .9rem
-        font-weight: bold
-        margin-bottom: .25rem
-        padding-bottom: .25rem
-
-        &:not(:first-child)
-          margin-top: 1.5rem
-
-    .tree-container
-      height: 100%
-      padding: 1rem
-      padding-left: 0
-      margin-left: 20rem
-      width: calc(100% - 20rem)
-
-      .inverse-card
-        background-color: #000
-        border: 0 !important
-        height: 100% !important
-        margin: 0
-        padding: 0
-        width: 100% !important
-
-.filter-items
-  height: 2.6rem
-  margin-bottom: .9rem
-  position: relative
-  text-align: center
-
-  .filter-toggle
-    border: 1px solid lighten($sp-primary-bg, 5%)
-    display: inline-block
-    padding: .4rem
-
-    &:not(:first-child)
-      margin-left: .5rem
-
-    img
-      filter: invert(75%) sepia(8%) saturate(1308%) hue-rotate(111deg) brightness(93%) contrast(83%)
-      height: 1.6rem
-      width: 1.6rem
-
-      path
-        fill: $sp-primary !important
-
-    &:hover
-      background-color: lighten($sp-primary-bg, 2.5%)
-
-    &:active
-      background-color: lighten($sp-primary-bg, 7.5%)
-
-      img
-        filter: invert(100%)
-
-.filter-input-container
-  height: 3.5rem
-  margin-bottom: .5rem
-  padding: .5rem 1rem
-
-  input
-    &:focus
-      border-color: $sp-primary !important
-
-.sp-menu
-  height: calc(100% - .5rem - 4rem - 3.5rem - 3.5rem)
-  overflow-x: hidden
-  overflow-y: scroll
+      width: 100% !important
 
 
 </style>

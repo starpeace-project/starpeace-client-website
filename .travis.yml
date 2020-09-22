@@ -1,13 +1,13 @@
 language: node_js
 node_js:
-    - "10"
+  - "12"
 
 before_install:
   - npm install -g grunt-cli
 
 install:
-    - npm install
-    - npm rebuild node-sass
+  - npm install
+  - npm rebuild node-sass
 
 cache:
   directories:

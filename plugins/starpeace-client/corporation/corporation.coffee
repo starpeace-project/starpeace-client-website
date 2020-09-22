@@ -1,7 +1,7 @@
 
 import _ from 'lodash'
 
-import Company from '~/plugins/starpeace-client/industry/company.coffee'
+import Company from '~/plugins/starpeace-client/company/company.coffee'
 
 export default class Corporation
   constructor: (@id) ->

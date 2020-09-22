@@ -5,9 +5,10 @@ import AssetManager from '~/plugins/starpeace-client/asset/asset-manager.coffee'
 import BookmarkManager from '~/plugins/starpeace-client/bookmark/bookmark-manager.coffee'
 import BuildingManager from '~/plugins/starpeace-client/building/building-manager.coffee'
 import ConcreteManager from '~/plugins/starpeace-client/building/concrete-manager.coffee'
+import CompanyManager from '~/plugins/starpeace-client/company/company-manager.coffee'
+import CorporationManager from '~/plugins/starpeace-client/corporation/corporation-manager.coffee'
 import EffectManager from '~/plugins/starpeace-client/asset/effect-manager.coffee'
 import EventManager from '~/plugins/starpeace-client/event/event-manager.coffee'
-import CorporationManager from '~/plugins/starpeace-client/industry/corporation-manager.coffee'
 import GalaxyManager from '~/plugins/starpeace-client/galaxy/galaxy-manager.coffee'
 import InventionManager from '~/plugins/starpeace-client/invention/invention-manager.coffee'
 import LandManager from '~/plugins/starpeace-client/land/land-manager.coffee'
@@ -33,6 +34,7 @@ export default class Managers
     @bookmark_manager = new BookmarkManager(@api, @translation_manager, @ajax_state, @client_state)
     @building_manager = new BuildingManager(@api, @asset_manager, @bookmark_manager, @translation_manager, @ajax_state, @client_state)
     @concrete_manager = new ConcreteManager(@asset_manager, @ajax_state, @client_state)
+    @company_manager = new CompanyManager(@api, @ajax_state, @client_state)
     @corporation_manager = new CorporationManager(@api, @ajax_state, @client_state)
     @effect_manager = new EffectManager(@asset_manager, @ajax_state, @client_state)
     @event_manager = new EventManager(@asset_manager, @ajax_state, @client_state)
@@ -101,8 +103,8 @@ export default class Managers
       corporation = @client_state.core.corporation_cache.metadata_for_id(@client_state.player.corporation_id)
       return unless corporation?
 
-      @client_state.corporation.set_company_ids(_.map(corporation.companies, (company) -> company.id)) if corporation.companies?.length
-      @client_state.player.set_company_id(if corporation.companies?.length then  _.sortBy(corporation.companies, (company) -> company.name)[0].id else null)
+      @client_state.corporation.set_company_ids(_.map(corporation.companies, (company) -> company.id))
+      @client_state.player.set_company_id(_.first(_.sortBy(corporation.companies, (company) -> company.name))?.id)
 
       promises = []
       for company in (corporation.companies || [])

@@ -1,5 +1,5 @@
 <template lang='pug'>
-#establish-corporation-container(v-if='is_visible')
+#establish-corporation-container
   .modal-background
   .card.is-starpeace.has-header
     .card-header
@@ -15,12 +15,26 @@
           | {{translate('identity.tycoon')}}!
         p.info
           | {{translate('ui.menu.corporation.establish.description')}}
+
+        form.corporation-form
+          .field.is-horizontal
+            .field-body
+              .field
+                .control.is-expanded
+                  input.input.is-large(type='text' v-model='corporation_name' :disabled='saving' :placeholder="translate('ui.menu.corporation.establish.field.name')")
+
+          .field.is-horizontal(v-show='error_message')
+            .field-body
+              .field
+                .control.is-narrow
+                  span.has-text-danger {{translate('ui.menu.corporation.establish.error.general')}}
+
     footer.card-footer
       .card-footer-item.level.is-mobile
         .level-left
-          a.button.is-primary.is-medium.is-outlined(v-on:click.stop.prevent='cancel') {{translate('ui.menu.corporation.establish.action.cancel')}}
+          a.button.is-primary.is-medium.is-outlined(@click.stop.prevent='cancel') {{translate('ui.menu.corporation.establish.action.cancel')}}
         .level-right
-          a.button.is-primary.is-medium(v-on:click.stop.prevent='establish') {{translate('ui.menu.corporation.establish.action.establish')}}
+          a.button.is-primary.is-medium(@click.stop.prevent='establish' :disabled='!can_establish') {{translate('ui.menu.corporation.establish.action.establish')}}
 
 </template>
 
@@ -30,8 +44,22 @@ export default
     managers: Object
     client_state: Object
 
+  data: ->
+    saving: false
+    error_message: null
+
+    corporation_name: ''
+
   computed:
     is_visible: -> @client_state.initialized && @client_state.workflow_status == 'ready' && @client_state.is_tycoon() && !@client_state.player.corporation_id?.length
+    can_establish: -> @is_visible && !@saving && _.trim(@corporation_name).length
+
+  watch:
+    is_visible: (new_value, old_value) ->
+      if @is_visible
+        @saving = false
+        @error_message = null
+        @corporation_name = ''
 
   methods:
     translate: (text_key) -> @managers?.translation_manager?.text(text_key)
@@ -43,27 +71,37 @@ export default
       window.document.title = "STARPEACE" if window?.document?
 
     establish: () ->
-      console.log 'establish corp'
+      return unless @can_establish
+      @saving = true
+      @managers.corporation_manager.create(_.trim(@corporation_name))
+        .then (corporation) =>
+          @client_state.player.set_planet_corporation_id(corporation.id)
+          @saving = false
+
+        .catch (e) =>
+          @saving = false
+          @error_message = true
+          @$forceUpdate() if @is_visible
+
 </script>
 
 <style lang='sass' scoped>
 @import '~assets/stylesheets/starpeace-variables'
 
 #establish-corporation-container
+  align-items: center
   display: flex
   grid-column-start: 1
   grid-column-end: 4
   grid-row-start: 2
   grid-row-end: 7
-  margin: 0
+  justify-content: center
   position: relative
   overflow: hidden
   z-index: 1500
 
   > .card
     background-color: $sp-dark-bg
-    margin: auto
-    margin-top: 25vh
     max-width: 50rem
     z-index: 1500
 
@@ -79,5 +117,9 @@ export default
 
       .planet-name
         color: #fff
+
+      .corporation-form
+        margin-bottom: 1rem
+        margin-top: 2rem
 
 </style>

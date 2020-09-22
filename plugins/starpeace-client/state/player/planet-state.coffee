@@ -29,7 +29,8 @@ export default class PlanetState
   subscribe_tycoons_online_listener: (listener_callback) -> @event_listener.subscribe('player.tycoons_online', listener_callback)
   notify_tycoons_online_listeners: () -> @event_listener.notify_listeners('player.tycoons_online')
 
-  has_data: () -> @current_date? && @current_season? && @towns? && @tycoons_online?
+  has_data: () ->
+    @current_date? && @current_season? && @towns? && @tycoons_online?
 
   load_game_map: (game_map) ->
     @game_map = game_map

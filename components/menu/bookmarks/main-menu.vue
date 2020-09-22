@@ -10,21 +10,7 @@
         input.input(type="text", :placeholder="translate('misc.filter')")
         span.icon.is-left
           font-awesome-icon(:icon="['fas', 'search-location']")
-    .filter-items
-      a.filter-toggle.tooltip.is-tooltip-top(:class="filter_class('services')", v-on:click.stop.prevent="toggle_filter('services')", :data-tooltip="translate('ui.menu.bookmarks.filter.services')")
-        img(src='~/assets/images/icons/services/headquarters.svg')
-      a.filter-toggle.tooltip.is-tooltip-top(:class="filter_class('industries')", v-on:click.stop.prevent="toggle_filter('industries')", :data-tooltip="translate('ui.menu.bookmarks.filter.industries')")
-        img(src='~/assets/images/icons/industries/factory.svg')
-      a.filter-toggle.tooltip.is-tooltip-top(:class="filter_class('logistics')", v-on:click.stop.prevent="toggle_filter('logistics')", :data-tooltip="translate('ui.menu.bookmarks.filter.logistics')")
-        img(src='~/assets/images/icons/logistics/warehouse.svg')
-      a.filter-toggle.tooltip.is-tooltip-top(:class="filter_class('commerce')", v-on:click.stop.prevent="toggle_filter('commerce')", :data-tooltip="translate('ui.menu.bookmarks.filter.commerce')")
-        img(src='~/assets/images/icons/commerce/shop.svg')
-      a.filter-toggle.tooltip.is-tooltip-top(:class="filter_class('civics')", v-on:click.stop.prevent="toggle_filter('civics')", :data-tooltip="translate('ui.menu.bookmarks.filter.civics')")
-        img(src='~/assets/images/icons/civics/fountain.svg')
-      a.filter-toggle.tooltip.is-tooltip-top(:class="filter_class('residentials')", v-on:click.stop.prevent="toggle_filter('residentials')", :data-tooltip="translate('ui.menu.bookmarks.filter.residentials')")
-        img(src='~/assets/images/icons/residentials/lower.svg')
-      a.filter-toggle.tooltip.is-tooltip-top(:class="filter_class('offices')", v-on:click.stop.prevent="toggle_filter('offices')", :data-tooltip="translate('ui.menu.bookmarks.filter.offices')")
-        img(src='~/assets/images/icons/offices/office-block.svg')
+    filter-industry-categories(:managers='managers' :client_state='client_state')
 
     aside.sp-menu.sp-scrollbar
       menu-section(v-if='show_poi && (show_towns || show_mausoleums)', :client_state='client_state', :managers='managers', root_id='bookmark-poi', :label_text="translate('ui.menu.bookmarks.section.poi')", :items_by_id='poi_items_by_id')
@@ -46,10 +32,13 @@ import Bookmark from '~/plugins/starpeace-client/bookmark/bookmark.coffee'
 import BookmarkFolder from '~/plugins/starpeace-client/bookmark/bookmark-folder.coffee'
 
 import MenuSection from '~/components/menu/bookmarks/menu-section.vue'
+import FilterIndustryCategories from '~/components/misc/filter-industry-categories.vue'
 
 export default
-  components:
-    'menu-section': MenuSection
+  components: {
+    MenuSection
+    FilterIndustryCategories
+  }
 
   props:
     managers: Object
@@ -80,30 +69,33 @@ export default
     is_ready: -> @client_state.workflow_status == 'ready'
     has_corporation: -> if @is_ready then @client_state.is_tycoon() && @client_state.player.corporation_id?.length else false
 
-    poi_items_by_id: ->
-      items_by_id = {}
-      if @is_ready
-        if @show_towns && @client_state.bookmarks.town_items?.length
-          items_by_id[item.id] = item for item in @client_state.bookmarks.town_items
 
-        if @show_mausoleums && @client_state.bookmarks.mausoleum_items?.length
-          items_by_id[item.id] = item for item in @client_state.bookmarks.mausoleum_items
+    poi_items_by_id: ->
+      return {} unless @is_ready
+      items_by_id = {}
+      if @show_towns && @client_state.bookmarks.town_items?.length
+        items_by_id[item.id] = item for item in @client_state.bookmarks.town_items
+
+      if @show_mausoleums && @client_state.bookmarks.mausoleum_items?.length
+        items_by_id[item.id] = item for item in @client_state.bookmarks.mausoleum_items
       items_by_id
 
     corporation_items_by_id: ->
+      return {} unless @is_ready
       by_id = {}
-      if @is_ready
-        for company_id,company_items of @client_state.bookmarks.company_folders_by_id
-          by_id[company_items.root.id] = company_items.root if company_items.root?
+      for company_id,company_items of @client_state.bookmarks.company_folders_by_id
+        by_id[company_items.root.id] = company_items.root if company_items.root?
 
-          for industry_type,industry_items of company_items.by_industry_type
-            by_id[industry_items.root.id] = industry_items.root if industry_items.root?
+        for industry_type,industry_items of company_items.by_industry_type
+          by_id[industry_items.root.id] = industry_items.root if industry_items.root?
 
-            for building_id,building_item of industry_items.items_by_id
-              by_id[building_item.id] = building_item
+          for building_id,building_item of industry_items.items_by_id
+            by_id[building_item.id] = building_item
       by_id
 
-    bookmark_items_by_id: -> if @is_ready then @client_state?.bookmarks.bookmarks_by_id else {}
+    bookmark_items_by_id: ->
+      return {} unless @is_ready
+      @client_state?.bookmarks.bookmarks_by_id || {}
 
     actions_disabled: ->
       return true unless @is_ready && @has_corporation
@@ -115,11 +107,6 @@ export default
 
   methods:
     translate: (text_key) -> @managers?.translation_manager?.text(text_key)
-
-    filter_class: (type) ->
-      ""
-    toggle_filter: (type) ->
-      console.log "toggle #{type}"
 
     add_folder: () ->
       @managers?.bookmark_manager?.new_bookmark_folder().then =>
@@ -157,37 +144,6 @@ export default
     &.overall-container
       padding-top: .5rem
       position: relative
-
-.filter-items
-  height: 2.6rem
-  margin-bottom: .9rem
-  position: relative
-  text-align: center
-
-  .filter-toggle
-    border: 1px solid lighten($sp-primary-bg, 5%)
-    display: inline-block
-    padding: .4rem
-
-    &:not(:first-child)
-      margin-left: .5rem
-
-    img
-      filter: invert(75%) sepia(8%) saturate(1308%) hue-rotate(111deg) brightness(93%) contrast(83%)
-      height: 1.6rem
-      width: 1.6rem
-
-      path
-        fill: $sp-primary !important
-
-    &:hover
-      background-color: lighten($sp-primary-bg, 2.5%)
-
-    &:active
-      background-color: lighten($sp-primary-bg, 7.5%)
-
-      img
-        filter: invert(100%)
 
 .filter-input-container
   height: 3.5rem

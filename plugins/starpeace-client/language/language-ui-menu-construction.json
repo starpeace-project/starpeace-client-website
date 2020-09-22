@@ -7,6 +7,22 @@
     "IT": "Costruzione",
     "PT": "Construção"
   },
+  "ui.menu.construction.company_required.label": {
+    "DE": "Die Konstruktion ist verfügbar, nachdem ein",
+    "EN": "Construction is available after",
+    "ES": "Construcción está disponible después de la",
+    "FR": "La construction est disponible après la",
+    "IT": "La costruzione è disponibile dopo la",
+    "PT": "Construção está disponível depois de"
+  },
+  "ui.menu.construction.company_required.action": {
+    "DE": "Unternehmen zu bilden",
+    "EN": "forming a company",
+    "ES": "formación de una empresa",
+    "FR": "formation d'une entreprise",
+    "IT": "formazione di una società",
+    "PT": "formar uma empresa"
+  },
   "ui.menu.construction.requires": {
     "DE": "Erfordern",
     "EN": "Requires",

@@ -13,3 +13,4 @@ Some of the tentative future features and rough planned version are outlined bel
 ### gameplay
 * [pending] camera rotation perspectives
 * [pending] auto-scroll and interaction of inspect and hint menu details
+* [pending] preview seal buildings during company creation

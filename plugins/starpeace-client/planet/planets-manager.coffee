@@ -5,7 +5,7 @@ import BuildingDefinition from '~/plugins/starpeace-client/building/building-def
 import SimulationDefinitionParser from '~/plugins/starpeace-client/building/simulation/simulation-definition-parser.coffee'
 
 import CityZone from '~/plugins/starpeace-client/industry/city-zone.coffee'
-import CompanySeal from '~/plugins/starpeace-client/industry/company-seal.coffee'
+import CompanySeal from '~/plugins/starpeace-client/company/company-seal.coffee'
 import IndustryCategory from '~/plugins/starpeace-client/industry/industry-category.coffee'
 import IndustryType from '~/plugins/starpeace-client/industry/industry-type.coffee'
 import Level from '~/plugins/starpeace-client/industry/level.coffee'
@@ -13,6 +13,7 @@ import ResourceType from '~/plugins/starpeace-client/industry/resource-type.coff
 import ResourceUnit from '~/plugins/starpeace-client/industry/resource-unit.coffee'
 import InventionDefinition from '~/plugins/starpeace-client/invention/invention-definition.coffee'
 import DetailsPlanet from '~/plugins/starpeace-client/planet/details-planet.coffee'
+import Town from '~/plugins/starpeace-client/planet/town.coffee'
 
 export default class PlanetsManager
   constructor: (@api, @ajax_state, @client_state) ->
@@ -57,7 +58,7 @@ export default class PlanetsManager
         lock = @ajax_state.with_lock('planet_towns', planet_id, done, error)
         @api.towns_for_planet(planet_id)
           .then (towns_json) =>
-            @client_state.planet.load_towns(towns_json || [])
+            @client_state.planet.load_towns(_.map(towns_json, Town.from_json))
             lock.done()
           .catch (err) => lock.error(err)
 

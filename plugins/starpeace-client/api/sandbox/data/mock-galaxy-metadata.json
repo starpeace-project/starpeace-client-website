@@ -8,7 +8,7 @@
   "planets": [
     {
       "id": "planet-1",
-      "name": "Mercury",
+      "name": "Aries",
       "enabled": true,
       "planetType": "earth",
       "planetWidth": 1000,
@@ -21,7 +21,7 @@
     },
     {
       "id": "planet-2",
-      "name": "Venus",
+      "name": "Ancoeus",
       "enabled": true,
       "planetType": "earth",
       "planetWidth": 1000,
@@ -34,7 +34,7 @@
     },
     {
       "id": "planet-3",
-      "name": "Neptune",
+      "name": "Mondronia",
       "enabled": false,
       "planetType": "earth",
       "planetWidth": 1000,

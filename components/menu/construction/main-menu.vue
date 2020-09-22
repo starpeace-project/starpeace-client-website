@@ -65,35 +65,40 @@
         .tile.is-6.is-vertical.is-parent
           .tile.is-child
             a.construction-toggle(v-on:click.stop.prevent="select_category('SERVICE')", :disabled="!category_has_buildings('SERVICE')")
-              img(src='~/assets/images/icons/services/headquarters.svg')
+              industry-category-icon(category='SERVICE')
               span.toggle-label {{text_for_category('SERVICE')}}
               .disabled-overlay
           .tile.is-child
             a.construction-toggle(v-on:click.stop.prevent="select_category('INDUSTRY')", :disabled="!category_has_buildings('INDUSTRY')")
-              img(src='~/assets/images/icons/industries/factory.svg')
+              industry-category-icon(category='INDUSTRY')
               span.toggle-label {{text_for_category('INDUSTRY')}}
               .disabled-overlay
           .tile.is-child
             a.construction-toggle(v-on:click.stop.prevent="select_category('LOGISTICS')", :disabled="!category_has_buildings('LOGISTICS')")
-              img(src='~/assets/images/icons/logistics/warehouse.svg')
+              industry-category-icon(category='LOGISTICS')
               span.toggle-label {{text_for_category('LOGISTICS')}}
               .disabled-overlay
         .tile.is-6.is-vertical.is-parent
           .tile.is-child
             a.construction-toggle(v-on:click.stop.prevent="select_category('CIVIC')", :disabled="!category_has_buildings('CIVIC')")
-              img(src='~/assets/images/icons/civics/fountain.svg')
+              industry-category-icon(category='CIVIC')
               span.toggle-label {{text_for_category('CIVIC')}}
               .disabled-overlay
           .tile.is-child
             a.construction-toggle(v-on:click.stop.prevent="select_category('COMMERCE')", :disabled="!category_has_buildings('COMMERCE')")
-              img(src='~/assets/images/icons/commerce/shop.svg')
+              industry-category-icon(category='COMMERCE')
               span.toggle-label {{text_for_category('COMMERCE')}}
               .disabled-overlay
           .tile.is-child
             a.construction-toggle(v-on:click.stop.prevent="select_category('REAL_ESTATE')", :disabled="!category_has_buildings('REAL_ESTATE')")
-              img(src='~/assets/images/icons/offices/office-block.svg')
+              industry-category-icon(category='REAL_ESTATE')
               span.toggle-label {{text_for_category('REAL_ESTATE')}}
               .disabled-overlay
+
+  #no-company-modal.modal-background(v-show='has_no_company')
+    .content
+      span {{translate('ui.menu.construction.company_required.label')}}
+      a(@click.stop.prevent='toggle_form_company_menu') {{translate('ui.menu.construction.company_required.action')}}
 
 </template>
 
@@ -123,6 +128,10 @@ export default
     company_seal_id: -> if @company_id? then @client_state.seal_for_company_id(@company_id) else null
     company_seal_name: -> if @company_seal_id? then @translate(@client_state.core.planet_library.seal_for_id(@company_seal_id)?.name_short) else null
 
+    has_no_company: ->
+      return false unless @client_state?.workflow_status == 'ready'
+      @client_state.is_tycoon() && !@client_state.player.company_id?
+
     root_breadcrumb_class: -> if @selected_menu_industry_category_id? then '' else 'is-active'
 
     has_selected_menu_category: -> @selected_menu_industry_category_id?
@@ -144,6 +153,8 @@ export default
 
   methods:
     translate: (text_key) -> @managers?.translation_manager?.text(text_key)
+
+    toggle_form_company_menu: () -> @client_state.menu.toggle_menu('company_form')
 
     building_cost: (definition_id) -> @managers?.building_manager?.cost_for_building_definition_id(definition_id) || 0
     sort_buildings: (buildings) ->
@@ -359,13 +370,14 @@ export default
       &:active
         background-color: lighten($sp-primary-bg, 7.5%)
 
-    img
+    ::v-deep img
       filter: invert(75%) sepia(8%) saturate(1308%) hue-rotate(111deg) brightness(93%) contrast(83%)
       width: 50%
 
     .toggle-label
       display: block
-      font-size: 1.25rem
+      font-size: 1.1rem
+      margin-top: .5rem
 
     .disabled-overlay
       background-color: #000
@@ -382,16 +394,33 @@ export default
       .disabled-overlay
         display: block
 
-  .construction-breadcrumb-item
-    img
-      height: 1rem
-      width: 1rem
+#no-company-modal
+  align-items: center
+  display: flex
+  justify-content: center
+  padding: 1rem
+  text-align: center
+  top: 3.4rem
+  z-index: 1000
 
-  .construction-toggle,
-  .construction-breadcrumb-item
+  .content
+    color: $sp-primary
+    font-size: 1.5rem
+    font-style: italic
+
+  a
+    font-weight: bold
+    color: $sp-primary
+    margin-left: .4rem
+
     &:not([disabled])
-      &:active
-        img
-          filter: invert(100%)
+      &:hover,
+      &.is-hover
+        color: $sp-light
+
+      &:active,
+      &.is-active
+        color: #fff
+
 
 </style>

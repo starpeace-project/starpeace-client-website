@@ -1,64 +1,61 @@
 <template lang='pug'>
-#research-details-container.card.is-starpeace.has-header
-  .card-header
-    .card-header-title
-  .card-content.sp-menu-background.overall-container
-    .invention-details(v-if="selected_invention != null")
-      .invention-selected-details
-        .invention-name {{translate(invention_name)}}
-        .invention-description {{translate(invention_description)}}
-        .invention-cost
-          span.cost-label {{translate('ui.menu.research.cost.label')}}:
-          span.cost-value {{invention_cost}}
-        .invention-level(v-if="invention_level_label != null")
-          span.level-label {{translate('ui.menu.research.level.label')}}:
-          span.level-value {{translate(invention_level_label)}}
+.research-container
+  .invention-details(v-if="selected_invention != null")
+    .invention-selected-details
+      .invention-name {{translate(invention_name)}}
+      .invention-description {{translate(invention_description)}}
+      .invention-cost
+        span.cost-label {{translate('ui.menu.research.cost.label')}}:
+        span.cost-value {{invention_cost}}
+      .invention-level(v-if="invention_level_label != null")
+        span.level-label {{translate('ui.menu.research.level.label')}}:
+        span.level-value {{translate(invention_level_label)}}
 
-        .invention-requires
-          span.invention-label {{translate('ui.menu.research.requires.label')}}:
-          span.none-value(v-if="invention_requires.length == 0") {{translate('ui.menu.research.none.label')}}
-          ul.inventions
-            li(v-for='option in sort_inventions(invention_requires)')
-              a(v-on:click.stop.prevent="select_invention(option.id)") {{translate(option.name)}}
-          div.is-clearfix
+      .invention-requires
+        span.invention-label {{translate('ui.menu.research.requires.label')}}:
+        span.none-value(v-if="invention_requires.length == 0") {{translate('ui.menu.research.none.label')}}
+        ul.inventions
+          li(v-for='option in sort_inventions(invention_requires)')
+            a(v-on:click.stop.prevent="select_invention(option.id)") {{translate(option.name)}}
+        div.is-clearfix
 
-        .invention-allows
-          span.invention-label {{translate('ui.menu.research.allows.label')}}:
-          span.none-value(v-if="invention_allows.length == 0") {{translate('ui.menu.research.none.label')}}
-          ul.inventions
-            li(v-for='option in sort_inventions(invention_allows).slice(0, 3)')
-              a(v-on:click.stop.prevent="select_invention(option.id)") {{translate(option.name)}}
-            li(v-if='invention_allows.length > 5') {{invention_allows.length - 3}} {{translate('ui.menu.research.others.label')}}
-            li(v-else-if='invention_allows.length > 4') 1 {{translate('ui.menu.research.other.label')}}
-          div.is-clearfix
+      .invention-allows
+        span.invention-label {{translate('ui.menu.research.allows.label')}}:
+        span.none-value(v-if="invention_allows.length == 0") {{translate('ui.menu.research.none.label')}}
+        ul.inventions
+          li(v-for='option in sort_inventions(invention_allows).slice(0, 3)')
+            a(v-on:click.stop.prevent="select_invention(option.id)") {{translate(option.name)}}
+          li(v-if='invention_allows.length > 5') {{invention_allows.length - 3}} {{translate('ui.menu.research.others.label')}}
+          li(v-else-if='invention_allows.length > 4') 1 {{translate('ui.menu.research.other.label')}}
+        div.is-clearfix
 
-        .invention-properties.inverse-card(v-if='invention_properties.length')
-          ul.inventions
-            li(v-for='option in invention_properties')
-              span.property-label(:class='option.class') {{option.type}}:
-              span.property-value(:class='option.class') {{option.text_parts[0]}}{{option.text_parts[1]}}{{option.text_parts[2]}}
-          div.is-clearfix
+      .invention-properties.inverse-card(v-if='invention_properties.length')
+        ul.inventions
+          li(v-for='option in invention_properties')
+            span.property-label(:class='option.class') {{option.type}}:
+            span.property-value(:class='option.class') {{option.text_parts[0]}}{{option.text_parts[1]}}{{option.text_parts[2]}}
+        div.is-clearfix
 
-      .actions-container(v-if="invention_status != 'NONE'")
-        .action-row.invention-status
-          span.invention-status-label {{translate('ui.menu.research.status.label')}}:
-          span.invention-status-value.available(v-if="invention_status == 'AVAILABLE'") {{translate('ui.menu.research.details.status.available')}}
-          span.invention-status-value.blocked(v-else-if="invention_status == 'AVAILABLE_LEVEL'") {{translate('ui.menu.research.details.status.level_required')}}
-          span.invention-status-value.blocked(v-else-if="invention_status == 'AVAILABLE_BLOCKED'") {{translate('ui.menu.research.details.status.dependencies_required')}}
-          span.invention-status-value.pending(v-else-if="invention_status == 'PENDING'")
-            span(v-if="company_pending_invention.order == 0") {{translate('ui.menu.research.details.status.in_progress')}}
-            span(v-else-if="company_pending_invention.order > 0") {{translate('ui.menu.research.details.status.queued')}}
-            span(v-if="company_pending_invention.progress > 0 && company_pending_invention.progress < 100")
-              |
-              | - {{Math.round(company_pending_invention.progress)}}%
-          span.invention-status-value.completed(v-else-if="invention_status == 'COMPLETED' || invention_status == 'COMPLETED_SUPPORT'") {{translate('ui.menu.research.details.status.completed')}}
+    .actions-container(v-if="invention_status != 'NONE'")
+      .action-row.invention-status
+        span.invention-status-label {{translate('ui.menu.research.status.label')}}:
+        span.invention-status-value.available(v-if="invention_status == 'AVAILABLE'") {{translate('ui.menu.research.details.status.available')}}
+        span.invention-status-value.blocked(v-else-if="invention_status == 'AVAILABLE_LEVEL'") {{translate('ui.menu.research.details.status.level_required')}}
+        span.invention-status-value.blocked(v-else-if="invention_status == 'AVAILABLE_BLOCKED'") {{translate('ui.menu.research.details.status.dependencies_required')}}
+        span.invention-status-value.pending(v-else-if="invention_status == 'PENDING'")
+          span(v-if="company_pending_invention.order == 0") {{translate('ui.menu.research.details.status.in_progress')}}
+          span(v-else-if="company_pending_invention.order > 0") {{translate('ui.menu.research.details.status.queued')}}
+          span(v-if="company_pending_invention.progress > 0 && company_pending_invention.progress < 100")
+            |
+            | - {{Math.round(company_pending_invention.progress)}}%
+        span.invention-status-value.completed(v-else-if="invention_status == 'COMPLETED' || invention_status == 'COMPLETED_SUPPORT'") {{translate('ui.menu.research.details.status.completed')}}
 
-        .action-row
-          a.button.is-fullwidth.is-starpeace(v-if="invention_status == 'AVAILABLE'", v-on:click.stop.prevent='queue_invention', :disabled='actions_disabled') {{translate('ui.menu.research.actions.start.label')}}
-          a.button.is-fullwidth.is-starpeace(v-else-if="invention_status == 'AVAILABLE_LEVEL' || invention_status == 'AVAILABLE_BLOCKED'", disabled=true) {{translate('ui.menu.research.actions.start.label')}}
-          a.button.is-fullwidth.is-starpeace(v-else-if="invention_status == 'PENDING'", v-on:click.stop.prevent='sell_invention', :disabled='actions_disabled') {{translate('ui.menu.research.actions.cancel.label')}}
-          a.button.is-fullwidth.is-starpeace(v-else-if="invention_status == 'COMPLETED'", v-on:click.stop.prevent='sell_invention', :disabled='actions_disabled') {{translate('ui.menu.research.actions.sell.label')}}
-          a.button.is-fullwidth.is-starpeace(v-else-if="invention_status == 'COMPLETED_SUPPORT'", disabled=true) {{translate('ui.menu.research.actions.sell.label')}}
+      .action-row
+        a.button.is-fullwidth.is-starpeace(v-if="invention_status == 'AVAILABLE'", v-on:click.stop.prevent='queue_invention', :disabled='actions_disabled') {{translate('ui.menu.research.actions.start.label')}}
+        a.button.is-fullwidth.is-starpeace(v-else-if="invention_status == 'AVAILABLE_LEVEL' || invention_status == 'AVAILABLE_BLOCKED'", disabled=true) {{translate('ui.menu.research.actions.start.label')}}
+        a.button.is-fullwidth.is-starpeace(v-else-if="invention_status == 'PENDING'", v-on:click.stop.prevent='sell_invention', :disabled='actions_disabled') {{translate('ui.menu.research.actions.cancel.label')}}
+        a.button.is-fullwidth.is-starpeace(v-else-if="invention_status == 'COMPLETED'", v-on:click.stop.prevent='sell_invention', :disabled='actions_disabled') {{translate('ui.menu.research.actions.sell.label')}}
+        a.button.is-fullwidth.is-starpeace(v-else-if="invention_status == 'COMPLETED_SUPPORT'", disabled=true) {{translate('ui.menu.research.actions.sell.label')}}
 
 </template>
 
@@ -201,24 +198,10 @@ export default
 <style lang='sass' scoped>
 @import '~assets/stylesheets/starpeace-variables'
 
-#research-details-container
-  grid-column-start: 3
-  grid-column-end: 4
-  grid-row-start: 2
-  grid-row-end: 5
-  margin: 0
-  overflow: hidden
-  z-index: 1150
-
-.card
-  overflow: hidden
-
-  .card-header
-    min-height: 3.4rem
-
-  .card-content
-    height: calc(100% - 3.4rem)
-    padding: 0
+.research-container
+  grid-column: 3 / 4
+  grid-row: 1 / 2
+  position: relative
 
 .invention-details
   color: lighten($sp-primary, 10%)

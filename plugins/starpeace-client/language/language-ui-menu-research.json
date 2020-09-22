@@ -7,6 +7,14 @@
     "IT": "Ricerca",
     "PT": "Indagação"
   },
+  "ui.menu.research.company_required": {
+    "DE": "Die Forschung ist verfügbar, nachdem eine Firma zu bilden",
+    "EN": "Research is available after forming a company",
+    "ES": "La investigación está disponible después de la formación de una empresa",
+    "FR": "La recherche est disponible après la formation d'une entreprise",
+    "IT": "La ricerca è disponibile dopo la formazione di una società",
+    "PT": "Investigação está disponível após a formação de uma empresa"
+  },
   "ui.menu.research.status.available": {
     "DE": "Erhältlich",
     "EN": "Available",

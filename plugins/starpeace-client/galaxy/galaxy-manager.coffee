@@ -29,14 +29,40 @@ export default class GalaxyManager
             @ajax_state.unlock('galaxy_metadata', galaxy_id) # FIXME: TODO add error handling
             error()
 
+  create: (galaxy_id, username, password, remember_me) ->
+    new Promise (done, error) =>
+      if @ajax_state.is_locked('create', galaxy_id)
+        done()
+      else
+        @ajax_state.lock('create', galaxy_id)
+        @api.galaxy_create(galaxy_id, username, password, remember_me)
+          .then (tycoon_json) =>
+            unless tycoon_json.accessToken?
+              @ajax_state.unlock('create', galaxy_id)
+              return error('NO_AUTH_TOKEN')
+
+            @client_state.options.set_authorization_state(galaxy_id, tycoon_json.accessToken, tycoon_json.refreshToken)
+            tycoon = Tycoon.from_json(tycoon_json)
+            @ajax_state.unlock('create', galaxy_id)
+            done(tycoon)
+
+          .catch (error_response) =>
+            @ajax_state.unlock('create', galaxy_id)
+            error(error_response?.data?.message)
+
   login: (galaxy_id, username, password, remember_me) ->
     new Promise (done, error) =>
       if @ajax_state.is_locked('login', galaxy_id)
-        done()
+        error('IN_PROGRESS')
       else
         @ajax_state.lock('login', galaxy_id)
         @api.galaxy_login(galaxy_id, username, password, remember_me)
           .then (tycoon_json) =>
+            unless tycoon_json.accessToken?
+              @ajax_state.unlock('login', galaxy_id)
+              return error('NO_AUTH_TOKEN')
+
+            @client_state.options.set_authorization_state(galaxy_id, tycoon_json.accessToken, tycoon_json.refreshToken)
             tycoon = Tycoon.from_json(tycoon_json)
             @ajax_state.unlock('login', galaxy_id)
             done(tycoon)
@@ -53,6 +79,7 @@ export default class GalaxyManager
         @ajax_state.lock('logout', galaxy_id)
         @api.galaxy_logout(galaxy_id)
           .then () =>
+            @client_state.options.clear_authorization_state()
             @ajax_state.unlock('logout', galaxy_id)
             done()
 

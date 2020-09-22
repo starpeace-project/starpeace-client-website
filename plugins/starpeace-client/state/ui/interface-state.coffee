@@ -22,6 +22,9 @@ export default class InterfaceState
     @show_remove_galaxy = false
     @show_add_galaxy = false
 
+    @show_create_tycoon = false
+    @create_tycoon_galaxy_id = null
+
     @show_overlay = false
     @current_overlay = Overlay.TYPES.TOWNS
     @show_losing_facilities = false
@@ -80,7 +83,7 @@ export default class InterfaceState
       @options.set_and_save_option('mini_map.zoom', zoom)
       @notify_mini_map_zoom_listeners()
       return true
-      false
+    false
   mini_map_zoom_in: () -> @mini_map_adjust_zoom(MINI_MAP_ZOOM_STEP)
   mini_map_zoom_out: () -> @mini_map_adjust_zoom(-MINI_MAP_ZOOM_STEP)
 

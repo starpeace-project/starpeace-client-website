@@ -2,41 +2,47 @@
 .content.is-marginless
 
   .tile.is-ancestor(v-for='planet_chunk in sorted_planet_chunks')
-    .tile.is-parent.planet(v-for="planet in planet_chunk")
-      article.tile.is-child.planet-row
-        .columns.is-vcentered
-          .column.is-narrow
-            img.planet-image.starpeace-logo.logo-loading(:src="planet_animation_url(planet)", v-on:load="$event.target.classList.remove('starpeace-logo', 'logo-loading')")
+    template(v-for='n in 3')
+      template(v-if='planet_chunk.length < n')
+        .tile.is-parent.planet.is-empty
+          article.tile.is-child.planet-row
 
-          .column.planet-item.info
-            .planet-name {{planet.name}}
-            .planet-population.planet-info-row
-              span {{translate('ui.menu.galaxy.details.population.label')}}:
-              span.planet-value {{planet.population}}
-            .planet-investments.planet-info-row
-              span {{translate('ui.menu.galaxy.details.investments.label')}}:
-              span.planet-value
-                money-text(:value='planet.investment_value')
-            .planet-tycoons.planet-info-row
-              span {{translate('ui.menu.galaxy.details.tycoons.label')}}:
-              span.planet-value {{planet.tycoon_count}}
-            .planet-online.planet-info-row
-              span {{translate('ui.menu.galaxy.details.online.label')}}:
-              span.planet-value {{planet.online_count}}
+      template(v-else)
+        .tile.is-parent.planet
+          article.tile.is-child.planet-row
+            .columns.is-vcentered
+              .column.is-narrow
+                img.planet-image.starpeace-logo.logo-loading(:src="planet_animation_url(planet_chunk[n - 1])", v-on:load="$event.target.classList.remove('starpeace-logo', 'logo-loading')")
 
-        .columns
-          .column.is-5
-            a.button.is-primary.is-fullwidth.is-outlined.workflow-action.visitor-action(v-on:click.stop.prevent='select_visitor(planet)', :disabled='!planet.enabled') {{translate('identity.visitor')}} {{translate('identity.visa')}}
-          .column.is-7
-            template(v-if='corporations_by_planet_id[planet.id]')
-              a.button.is-primary.is-fullwidth.workflow-action.corporation-action(v-on:click.stop.prevent='select_tycoon(planet)', :disabled='!planet.enabled')
-                .action-text {{corporations_by_planet_id[planet.id].name}}
-            template(v-else)
-              a.button.is-primary.is-fullwidth.is-outlined.workflow-action.corporation-action(v-on:click.stop.prevent='select_tycoon(planet)', :disabled='!planet.enabled || !is_tycoon_in_galaxy')
-                .action-text {{translate('ui.workflow.planet.form_corporation')}}
+              .column.planet-item.info
+                .planet-name {{planet_chunk[n - 1].name}}
+                .planet-population.planet-info-row
+                  span {{translate('ui.menu.galaxy.details.population.label')}}:
+                  span.planet-value {{planet_chunk[n - 1].population || 0}}
+                .planet-investments.planet-info-row
+                  span {{translate('ui.menu.galaxy.details.investments.label')}}:
+                  span.planet-value
+                    money-text(:value='planet_chunk[n - 1].investment_value')
+                .planet-tycoons.planet-info-row
+                  span {{translate('ui.menu.galaxy.details.corporations.label')}}:
+                  span.planet-value {{planet_chunk[n - 1].corporation_count || 0}}
+                .planet-online.planet-info-row
+                  span {{translate('ui.menu.galaxy.details.online.label')}}:
+                  span.planet-value {{planet_chunk[n - 1].online_count || 0}}
 
-      .disabled-overlay(v-show='!planet.enabled')
-        .disabled-text {{translate('ui.menu.galaxy.planet_not_available.label')}}
+            .columns
+              .column.is-5
+                a.button.is-primary.is-fullwidth.is-outlined.workflow-action.visitor-action(@click.stop.prevent='select_visitor(planet_chunk[n - 1])' :disabled='!planet_chunk[n - 1].enabled') {{translate('identity.visitor')}} {{translate('identity.visa')}}
+              .column.is-7
+                template(v-if='corporations_by_planet_id[planet_chunk[n - 1].id]')
+                  a.button.is-primary.is-fullwidth.workflow-action.corporation-action(@click.stop.prevent='select_tycoon(planet_chunk[n - 1])' :disabled='!planet_chunk[n - 1].enabled')
+                    .action-text {{corporations_by_planet_id[planet_chunk[n - 1].id].name}}
+                template(v-else)
+                  a.button.is-primary.is-fullwidth.is-outlined.workflow-action.corporation-action(@click.stop.prevent='select_tycoon(planet_chunk[n - 1])' :disabled='!planet_chunk[n - 1].enabled || !is_tycoon_in_galaxy')
+                    .action-text {{translate('ui.menu.corporation.establish.action.establish')}}
+
+          .disabled-overlay(v-show='!planet_chunk[n - 1].enabled')
+            .disabled-text {{translate('ui.menu.galaxy.planet_not_available.label')}}
 
 </template>
 
@@ -70,7 +76,7 @@ export default
   methods:
     translate: (key) -> if @managers? then @managers.translation_manager.text(key) else key
 
-    planet_animation_url: (planet) -> "https://cdn.starpeace.io/animations/planet.#{planet.id}.animation.gif"
+    planet_animation_url: (planet) -> @managers.asset_manager.planet_animation_url(planet)
 
     select_visitor: (planet) ->
       return unless planet.enabled
@@ -118,8 +124,12 @@ export default
   &.planet
     background-color: opacify(lighten($sp-primary-bg, 1%), .3)
     border: 1px solid rgba(110, 161, 146, .2)
+    margin: .25rem
     padding: 0
     position: relative
+
+    &.is-empty
+      opacity: 0
 
     .columns
       margin: 0

@@ -39,6 +39,14 @@
     "IT": "Rimuovere",
     "PT": "Remover"
   },
+  "misc.action.create": {
+    "DE": "Erstellen",
+    "EN": "Create",
+    "ES": "Crear",
+    "FR": "Créer",
+    "IT": "Creare",
+    "PT": "Criar"
+  },
   "misc.hide_menus.label": {
     "DE": "Menüs Ausblenden",
     "EN": "Hide Menus",

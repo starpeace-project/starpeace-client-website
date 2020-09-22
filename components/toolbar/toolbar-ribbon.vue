@@ -1,7 +1,7 @@
 <template lang='pug'>
 client-only
   transition(name='fade')
-    #toolbar-ribbon(v-show='is_ready', v-cloak='true')
+    #toolbar-ribbon(v-show='is_ready' v-cloak='true')
       table.table.row-inspect(v-cloak=true)
         tbody
           tr

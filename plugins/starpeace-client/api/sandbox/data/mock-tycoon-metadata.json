@@ -1,6 +1,7 @@
 {
   "tycoon-id-1": {
     "id": "tycoon-id-1",
+    "username": "username1",
     "name": "Tycoon Name",
     "corporations": [
       {
@@ -10,29 +11,35 @@
         "planetId": "planet-1",
         "levelId": "ENTREPRENEUR",
         "buildingCount": 0,
+        "companyIds": ["company-id-1", "company-id-2", "company-id-3", "company-id-4", "company-id-5"],
         "companies": [
           {
             "id": "company-id-1",
+            "corporationId": "corp-id-1",
             "name": "Dissidents Company",
             "sealId": "DIS"
           },
           {
             "id": "company-id-2",
+            "corporationId": "corp-id-1",
             "name": "Magna Corp Company",
             "sealId": "MAGNA"
           },
           {
             "id": "company-id-3",
+            "corporationId": "corp-id-1",
             "name": "Mariko Enterprises Company",
             "sealId": "MKO"
           },
           {
             "id": "company-id-4",
+            "corporationId": "corp-id-1",
             "name": "The Moab Company",
             "sealId": "MOAB"
           },
           {
             "id": "company-id-5",
+            "corporationId": "corp-id-1",
             "name": "Pure Gaba Initiative Company",
             "sealId": "PGI"
           }

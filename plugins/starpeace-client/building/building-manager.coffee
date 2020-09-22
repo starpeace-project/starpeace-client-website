@@ -18,10 +18,11 @@ export default class BuildingManager
 
     @ajax_state.lock('assets.building_metadata', 'ALL')
     @asset_manager.queue('metadata.building', './building.metadata.json', (resource) =>
-      # FIXME: TODO: convert json to object
-      @client_state.core.building_library.load_images(resource.data.images)
-      @client_state.core.building_library.load_required_atlases(resource.data.atlas)
-      @asset_manager.queue_and_load_atlases((resource.data?.atlas || []), (atlas_path, atlas) => @client_state.core.building_library.load_atlas(atlas_path, atlas))
+      unless resource.error?
+        # FIXME: TODO: convert json to object
+        @client_state.core.building_library.load_images(resource.data.images)
+        @client_state.core.building_library.load_required_atlases(resource.data.atlas)
+        @asset_manager.queue_and_load_atlases((resource.data?.atlas || []), (atlas_path, atlas) => @client_state.core.building_library.load_atlas(atlas_path, atlas))
       @ajax_state.unlock('assets.building_metadata', 'ALL')
     )
 
@@ -42,11 +43,12 @@ export default class BuildingManager
     @chunk_promises[key] = new Promise (done) =>
       @api.buildings_for_planet(@client_state.player.planet_id, chunk_x, chunk_y)
         .then (building_data) =>
-          @client_state.core.building_cache.load_buildings(_.map(building_data, (json) -> Building.from_json(json)))
+          buildings = _.map(building_data, (json) -> Building.from_json(json))
+          @client_state.core.building_cache.load_buildings(buildings)
           Logger.debug("loaded building chunk at #{chunk_x}x#{chunk_y}")
           delete @chunk_promises[key]
           @ajax_state.finish_ajax()
-          done(_.map(building_data, 'id'))
+          done(_.map(buildings, 'id'))
 
         .catch (err) =>
           # FIXME: TODO: add error handling
@@ -76,7 +78,7 @@ export default class BuildingManager
         done()
       else
         lock = @ajax_state.with_lock('building_metadata', building_id, done, error)
-        @api.building_for_id(@client_state.player.planet_id, building_id)
+        @api.building_for_id(building_id)
           .then (building_json) =>
             @client_state.core.building_cache.load_building(Building.from_json(building_json))
             lock.done()

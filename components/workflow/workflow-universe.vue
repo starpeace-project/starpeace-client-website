@@ -165,7 +165,7 @@ export default
 
 .news-container
   border-top: 1px solid $sp-primary
-  height: calc(100% - 28rem)
+  height: calc(100% - 33rem)
   max-height: 30rem
   padding-top: 1.5rem
 

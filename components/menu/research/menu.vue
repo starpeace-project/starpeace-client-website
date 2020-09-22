@@ -1,39 +1,41 @@
 <template lang='pug'>
-#research-menu-container.card.is-starpeace.has-header
-  .card-header
-    .card-header-title {{translate('ui.menu.research.header')}}
-  .card-content.sp-menu-background.overall-container
-    .field.filter-input-container
-      .control.has-icons-left.is-expanded
-        input.input(type="text", :placeholder="translate('misc.filter')")
-        span.icon.is-left
-          font-awesome-icon(:icon="['fas', 'search-location']")
+.research-container
+  .field.filter-input-container
+    .control.has-icons-left.is-expanded
+      input.input(type="text", :placeholder="translate('misc.filter')")
+      span.icon.is-left
+        font-awesome-icon(:icon="['fas', 'search-location']")
 
-    aside.sp-menu.sp-scrollbar
-      p.sp-section(v-for='item in sections')
-        a(v-on:click.stop.prevent="item.expanded = !item.expanded")
-          span(v-show="item.children.length && !item.expanded")
-            font-awesome-icon(:icon="['fas', 'plus-square']")
-          span(v-show="item.children.length && item.expanded")
-            font-awesome-icon(:icon="['fas', 'minus-square']")
-          span.sp-folder-icon(v-show="!item.children.length")
-            font-awesome-icon(:icon="['fas', 'square']")
-          span.sp-section-label {{item.name}}
+  filter-industry-categories(:managers='managers' :client_state='client_state')
 
-        ul.sp-section-items(v-show="item.children.length && item.expanded")
-          li(v-for="child in item.children")
-            a.is-menu-item(v-on:click.stop.prevent="select_inventions(item.industry_category_id, child.industry_type_id)", :class="section_item_class(item, child)")
-              industry-type-icon(:industry_type="child.industry_type_id", :class="['sp-section-item-image', 'sp-indusry-icon']", :default_research='true')
-              span.sp-section-item-label {{child.name}}
+  aside.sp-menu.sp-scrollbar
+    p.sp-section(v-for='item in sections')
+      a(v-on:click.stop.prevent="item.expanded = !item.expanded")
+        span(v-show="item.children.length && !item.expanded")
+          font-awesome-icon(:icon="['fas', 'plus-square']")
+        span(v-show="item.children.length && item.expanded")
+          font-awesome-icon(:icon="['fas', 'minus-square']")
+        span.sp-folder-icon(v-show="!item.children.length")
+          font-awesome-icon(:icon="['fas', 'square']")
+        span.sp-section-label {{item.name}}
+
+      ul.sp-section-items(v-show="item.children.length && item.expanded")
+        li(v-for="child in item.children")
+          a.is-menu-item(v-on:click.stop.prevent="select_inventions(item.industry_category_id, child.industry_type_id)", :class="section_item_class(item, child)")
+            industry-type-icon(:industry_type="child.industry_type_id", :class="['sp-section-item-image', 'sp-indusry-icon']", :default_research='true')
+            span.sp-section-item-label {{child.name}}
 
 </template>
 
 <script lang='coffee'>
+import FilterIndustryCategories from '~/components/misc/filter-industry-categories.vue'
 import IndustryTypeIcon from '~/components/misc/industry-type-icon.vue'
 
 export default
-  components:
-    'industry-type-icon': IndustryTypeIcon
+  components: {
+    FilterIndustryCategories
+    IndustryTypeIcon
+  }
 
   props:
     managers: Object
@@ -115,46 +117,22 @@ export default
 $sp-primary: #6ea192
 $sp-primary-bg: #395950
 
-#research-menu-container
-  grid-column-start: 1
-  grid-column-end: 2
-  grid-row-start: 2
-  grid-row-end: 5
-  margin: 0
-  overflow: hidden
-  z-index: 1150
-
-
-.card
-  overflow: hidden
-
-  .card-header
-    min-height: 3.4rem
-
-  .card-header-title
-    font-size: 1.15rem
-    letter-spacing: .2rem
-    padding-top: .65rem
-
-  .card-content
-    height: calc(100% - 3.6rem)
-    padding: 0
-
-    &.overall-container
-      padding-top: .5rem
-      position: relative
+.research-container
+  position: relative
+  grid-column: 1 / 2
+  grid-row: 1 / 2
 
 .filter-input-container
   height: 3.5rem
   margin-bottom: .5rem
-  padding: .5rem 1rem
+  padding: 1rem 1rem .5rem
 
   input
     &:focus
       border-color: $sp-primary !important
 
 .sp-menu
-  height: calc(100% - .5rem - 4rem)
+  height: calc(100% - .5rem - 4rem - 3.5rem)
   overflow-x: hidden
   overflow-y: scroll
   position: absolute

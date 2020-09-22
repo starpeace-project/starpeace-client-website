@@ -104,12 +104,12 @@
     "PT": "Multiverso"
   },
   "ui.workflow.universe.create_tycoon.label": {
-    "DE": "Erstellen",
-    "EN": "Create",
-    "ES": "Crear",
-    "FR": "Créer",
-    "IT": "Creare",
-    "PT": "Criar"
+    "DE": "Erstellen Tycoon",
+    "EN": "Create Tycoon",
+    "ES": "Crear Magnate",
+    "FR": "Créer Magnat",
+    "IT": "Creare Magnate",
+    "PT": "Criar Magnata"
   },
   "ui.workflow.universe.username.label": {
     "DE": "Nutzername",
@@ -124,16 +124,56 @@
     "EN": "Password",
     "ES": "Contraseña",
     "FR": "Mot de Passe",
-    "IT": "Parola d'ordine",
+    "IT": "Password",
     "PT": "Senha"
+  },
+  "ui.workflow.universe.confirm_password.label": {
+    "DE": "Bestätige das Passwort",
+    "EN": "Confirm Password",
+    "ES": "Confirmar Contraseña",
+    "FR": "Confirmez le Mot de Passe",
+    "IT": "Conferma Password",
+    "PT": "Confirme a Senha"
   },
   "ui.workflow.universe.remember_tycoon.label": {
     "DE": "Merken",
     "EN": "Remember",
     "ES": "Recuerda",
-    "FR": "Rappelles toi",
+    "FR": "Rappelles",
     "IT": "Ricorda",
     "PT": "Lembrar"
+  },
+  "ui.workflow.universe.error.username_conflict.label": {
+    "DE": "Benutzername ist ungültig oder bereits im Einsatz",
+    "EN": "Username is invalid or already in use",
+    "ES": "Nombre de usuario es válido o ya en uso",
+    "FR": "Nom d'utilisateur est invalide ou déjà en cours d'utilisation",
+    "IT": "Nome utente non è valido o già in uso",
+    "PT": "Nome de usuário é inválido ou já em uso"
+  },
+  "ui.workflow.universe.error.password_mismatch.label": {
+    "DE": "Passwörter stimmen nicht überein",
+    "EN": "Passwords do not match",
+    "ES": "Las contraseñas no coinciden",
+    "FR": "Les mots de passe ne correspondent pas",
+    "IT": "Le passwords non corrispondono",
+    "PT": "As senhas não coincidem"
+  },
+  "ui.workflow.universe.error.general_problem.label": {
+    "DE": "Problem zu schaffen Tycoon",
+    "EN": "Problem creating Tycoon",
+    "ES": "Problema Magnate de la creación",
+    "FR": "Problème création Magnat",
+    "IT": "Problema creazione di Magnate",
+    "PT": "Problema ao criar Magnata"
+  },
+  "ui.workflow.universe.error.signin_problem.label": {
+    "DE": "Benutzername oder Passwort falsch",
+    "EN": "Username or password is incorrect",
+    "ES": "Nombre de usuario o contraseña incorrecta",
+    "FR": "L'identifiant ou le mot de passe est incorrect",
+    "IT": "Nome utente o password non sono corretti",
+    "PT": "Nome de usuário ou senha está incorreta"
   },
   "ui.workflow.universe.signin.label": {
     "DE": "Einloggen",

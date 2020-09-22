@@ -42,8 +42,16 @@ export default class CorporationState
   notify_company_inventions_listeners: () -> @event_listener.notify_listeners('corporation.company_inventions')
 
   set_company_ids: (company_ids) ->
-    @company_ids = company_ids if Array.isArray(company_ids)
+    @company_ids = if Array.isArray(company_ids) then company_ids else []
     @notify_company_ids_listeners()
+
+  add_company_id: (company_id) ->
+    @company_ids.push(company_id)
+    Vue.set(@buildings_ids_by_company_id, company_id, [])
+    Vue.set(@inventions_metadata_by_company_id, company_id, [])
+    @notify_company_ids_listeners()
+    @notify_company_buildings_listeners()
+    @notify_company_inventions_listeners()
 
   update_cashflow: (cash, cashflow) ->
     @cash = cash

@@ -37,7 +37,8 @@ export default class InventionManager
         @ajax_state.lock('player.sell_invention', company_id)
         @api.sell_company_invention(company_id, invention_id)
           .then (json_response) =>
-            @client_state.corporation.update_company_inventions_metadata(company_id, CompanyInventions.from_json(json_response))
+            # FIXME: TODO: fix up response state updating
+            # @client_state.corporation.update_company_inventions_metadata(company_id, CompanyInventions.from_json(json_response))
             @ajax_state.unlock('player.sell_invention', company_id)
             done()
 
@@ -53,7 +54,8 @@ export default class InventionManager
         @ajax_state.lock('player.queue_invention', company_id)
         @api.queue_company_invention(company_id, invention_id)
           .then (json_response) =>
-            @client_state.corporation.update_company_inventions_metadata(company_id, CompanyInventions.from_json(json_response))
+            # FIXME: TODO: fix up response state updating
+            # @client_state.corporation.update_company_inventions_metadata(company_id, CompanyInventions.from_json(json_response))
             @ajax_state.unlock('player.queue_invention', company_id)
             done()
 

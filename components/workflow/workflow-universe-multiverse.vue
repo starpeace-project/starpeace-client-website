@@ -10,10 +10,10 @@
         .column.is-2
           .content
             .galaxy-planets
-              span {{translate('ui.menu.galaxy.details.planets.label')}}:
+              span.planet-label {{translate('ui.menu.galaxy.details.planets.label')}}:
               span.planet-value {{planet_count(galaxy)}}
             .galaxy-online
-              span {{translate('ui.menu.galaxy.details.online.label')}}:
+              span.planet-label {{translate('ui.menu.galaxy.details.online.label')}}:
               span.planet-value {{online_count(galaxy)}}
 
         .column.is-5.has-text-right.galaxy-actions
@@ -36,27 +36,29 @@
                     .control
                       a.button.is-starpeace.is-inverted.is-outlined(v-on:click.stop.prevent="logout_tycoon(galaxy.id)") {{translate('ui.workflow.universe.signout.label')}}
                     .control.is-expanded
-                      | Signed in as {{tycoon_authenticated(galaxy).name}}
+                      | Signed in as {{tycoon_authenticated(galaxy).username}}
                     .control
                       a.button.is-starpeace.is-inverted(v-on:click.stop.prevent="proceed_as_tycoon(galaxy.id)") Proceed
 
                   template(v-else)
                     .control
-                      a.button.is-starpeace.is-inverted.is-outlined(v-on:click.stop.prevent="toggle_create_tycoon(galaxy.id)" :disabled='!tycoon_creation_enabled(galaxy)') {{translate('ui.workflow.universe.create_tycoon.label')}}
+                      a.button.is-starpeace.is-inverted.is-outlined(
+                        @click.stop.prevent="toggle_create_tycoon(galaxy.id)"
+                        :disabled='!tycoon_creation_enabled(galaxy.id)'
+                      ) {{translate('misc.action.create')}}
                     .control.has-icons-left.is-expanded
                       input.input(type='text' autocomplete='username' :placeholder="translate('ui.workflow.universe.username.label')" v-model='username')
                       span.icon.is-small.is-left
                         font-awesome-icon(:icon="['fas', 'user-tie']")
-                    .control.has-icons-left
+                    .control.has-icons-left.is-expanded
                       input.input(type='password' autocomplete='current-password' :placeholder="translate('ui.workflow.universe.password.label')" v-model='password')
                       span.icon.is-small.is-left
                         font-awesome-icon(:icon="['fas', 'lock']")
                     .control
-                      label.checkbox
-                        input(type='checkbox' v-model='remember_me')
-                        | {{translate('ui.workflow.universe.remember_tycoon.label')}}
+                      toggle-option(:value='remember_me' @toggle="remember_me=!remember_me")
+                      span.toggle-label(@click.stop.prevent="remember_me=!remember_me") {{translate('ui.workflow.universe.remember_tycoon.label')}}
                     .control
-                      a.button.is-starpeace.is-inverted(v-on:click.stop.prevent="login_tycoon(galaxy.id)" :disabled='!tycoon_enabled(galaxy) || !has_tycoon_credentials') {{translate('ui.workflow.universe.signin.label')}}
+                      a.button.is-starpeace.is-inverted(@click.stop.prevent="login_tycoon(galaxy.id)" :disabled='!tycoon_enabled(galaxy) || !has_tycoon_credentials') {{translate('ui.workflow.universe.signin.label')}}
 
 
   .level.galaxy-actions-level
@@ -72,7 +74,12 @@
 <script lang='coffee'>
 import Vue from 'vue'
 
+import ToggleOption from '~/components/misc/toggle-option.vue'
+
 export default
+  components:
+    'toggle-option': ToggleOption
+
   props:
     managers: Object
     ajax_state: Object
@@ -142,7 +149,7 @@ export default
 
     visitor_enabled: (galaxy) -> @metadata_for_galaxy(galaxy.id)?.visitor_enabled || false
     tycoon_enabled: (galaxy) -> @metadata_for_galaxy(galaxy.id)?.tycoon_enabled || false
-    tycoon_creation_enabled: (galaxy) -> @metadata_for_galaxy(galaxy.id)?.tycoon_creation_enabled || false
+    tycoon_creation_enabled: (galaxy_id) -> @metadata_for_galaxy(galaxy_id)?.tycoon_creation_enabled || false
 
     tycoon_authenticated: (galaxy) -> @metadata_for_galaxy(galaxy.id)?.tycoon
 
@@ -169,15 +176,23 @@ export default
 
     toggle_remove_galaxy: () ->
       return unless @galaxies.length
+      return if @client_state?.interface?.show_add_galaxy || @client_state?.interface?.show_create_tycoon
       @client_state?.interface?.show_remove_galaxy = true
 
     toggle_add_galaxy: () ->
+      return if @client_state?.interface?.show_remove_galaxy || @client_state?.interface?.show_create_tycoon
       @client_state?.interface?.show_add_galaxy = true
 
     toggle_tycoon_galaxy: (galaxy_id) ->
+      return if @client_state?.interface?.show_remove_galaxy || @client_state?.interface?.show_add_galaxy || @client_state?.interface?.show_create_tycoon
       @tycoon_galaxy_id = if @tycoon_galaxy_id == galaxy_id then null else galaxy_id
 
     toggle_create_tycoon: (galaxy_id) ->
+      return if @client_state?.interface?.show_remove_galaxy || @client_state?.interface?.show_add_galaxy
+      return unless @tycoon_creation_enabled(galaxy_id)
+      @client_state?.interface?.show_create_tycoon = true
+      @client_state?.interface?.create_tycoon_galaxy_id = galaxy_id
+
 
     login_tycoon: (galaxy_id) ->
       metadata = @metadata_for_galaxy(galaxy_id)
@@ -185,11 +200,18 @@ export default
       @managers.galaxy_manager.login(galaxy_id, @username, @password, @remember_me)
         .then (tycoon) =>
           @client_state.identity.set_visa(galaxy_id, 'tycoon', tycoon)
+          @refresh_galaxy(galaxy_id)
         .catch (e) =>
           console.log e
           @$forceUpdate() if @is_visible
     logout_tycoon: (galaxy_id) ->
-
+      @managers.galaxy_manager.logout(galaxy_id)
+        .then () =>
+          @client_state.reset_full_state()
+          @refresh_galaxies()
+        .catch (e) =>
+          console.log e
+          @$forceUpdate() if @is_visible
 
     proceed_as_visitor: (galaxy_id) ->
       metadata = @metadata_for_galaxy(galaxy_id)
@@ -216,8 +238,7 @@ export default
     border-top: 1px solid darken($sp-primary-bg, 15%)
     border-right: 1px solid darken($sp-primary-bg, 5%)
     border-bottom: 1px solid darken($sp-primary-bg, 5%)
-    max-height: 20.25rem
-    min-height: 15rem
+    min-height: 20rem
     padding: .25rem 0
     overflow-y: scroll
 
@@ -240,8 +261,13 @@ export default
     .is-smaller
       font-size: 1.25rem
 
+    .planet-label
+      display: inline-block
+      min-width: 4rem
+      text-align: right
+
     .planet-value
-      margin-left: .5rem
+      margin-left: .75rem
 
     .galaxy-actions
       .button
@@ -283,10 +309,12 @@ export default
   .galaxy-login-row
     background-color: opacify(darken($sp-primary-bg, 5%), .3)
     border: 1px solid rgba(110, 161, 146, .2)
-    color: #fff
     margin: 0
     padding: 0
     position: relative
+
+    label
+      color: #fff
 
     .control
       display: flex
@@ -301,6 +329,10 @@ export default
 
         input
           margin-right: .25rem
+
+    .toggle-label
+      cursor: pointer
+      margin-left: .5rem
 
   .galaxy-actions-level
     margin-top: .5rem

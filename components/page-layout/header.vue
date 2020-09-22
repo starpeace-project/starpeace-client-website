@@ -83,7 +83,7 @@ export default
   grid-row-end: 1
   line-height: 3rem
   padding-top: .25rem
-  z-index: 1500
+  z-index: 2000
 
   .common-logo
     float: left

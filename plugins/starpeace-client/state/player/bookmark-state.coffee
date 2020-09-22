@@ -29,6 +29,7 @@ export default class BookmarkState
   folder_count: () -> _.filter(_.values(@bookmarks_by_id || {}), (item) -> item.is_folder()).length
   item_count: () -> _.filter(_.values(@bookmarks_by_id || {}), (item) -> !item.is_folder()).length
 
+  count_for_parent: (parent_id) -> _.filter(_.values(@bookmarks_by_id || {}), (item) -> item.parent_id == parent_id).length
 
   set_bookmarks_metadata: (bookmarks_items) ->
     @bookmarks_by_id = {}

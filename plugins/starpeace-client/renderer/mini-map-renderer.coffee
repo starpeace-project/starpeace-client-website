@@ -123,7 +123,7 @@ export default class MiniMapRenderer
   initialize_mini_map_sprite: () ->
     return unless @container?
 
-    mini_map_zoom = @options.option('mini_map.zoom')
+    mini_map_zoom = @options.get_mini_map_zoom()
     @sprite = new PIXI.Sprite(PIXI.utils.TextureCache[MINI_MAP_TEXTURE_KEY])
     @sprite.interactive = true
     @sprite.scale = new PIXI.Point(mini_map_zoom, mini_map_zoom)
@@ -153,7 +153,7 @@ export default class MiniMapRenderer
     @client_state.mini_map_renderer_initialized = true
 
   recenter_at: (mini_canvas_x, mini_canvas_y) ->
-    mini_map_zoom = @options.option('mini_map.zoom')
+    mini_map_zoom = @options.get_mini_map_zoom()
 
     mini_canvas_x = mini_canvas_x - @map_offset_x
     mini_canvas_y = mini_canvas_y - @map_offset_y * .5
@@ -181,13 +181,13 @@ export default class MiniMapRenderer
     @upate_viewport()
 
   update_mini_map_scale: () ->
-    mini_map_zoom = @options.option('mini_map.zoom')
+    mini_map_zoom = @options.get_mini_map_zoom()
     @sprite.scale = new PIXI.Point(mini_map_zoom, mini_map_zoom) if @sprite?
 
   upate_viewport: () ->
     return unless @client_state.mini_map_renderer_initialized && @sprite?
 
-    mini_map_zoom = @options.option('mini_map.zoom')
+    mini_map_zoom = @options.get_mini_map_zoom()
 
     ratio_x = mini_map_zoom * MINI_MAP_TILE_WIDTH / MetadataLand.DEFAULT_TILE_WIDTH
     ratio_y = mini_map_zoom * MINI_MAP_TILE_HEIGHT / MetadataLand.DEFAULT_TILE_HEIGHT
@@ -221,7 +221,7 @@ export default class MiniMapRenderer
     @last_view_offset_y = @client_state.camera.view_offset_y
 
   needs_update: () ->
-    @last_mini_map_zoom != @options.option('mini_map.zoom') || @last_game_scale != @client_state.camera.game_scale ||
+    @last_mini_map_zoom != @options.get_mini_map_zoom() || @last_game_scale != @client_state.camera.game_scale ||
         @last_view_offset_x != @client_state.camera.view_offset_x || @last_view_offset_y != @client_state.camera.view_offset_y
 
   tick: () ->

@@ -26,8 +26,8 @@
                 span.planet-value
                   money-text(:value='planet.investment_value')
               .planet-tycoons.planet-info-row
-                span {{translate('ui.menu.galaxy.details.tycoons.label')}}:
-                span.planet-value {{planet.tycoon_count}}
+                span {{translate('ui.menu.galaxy.details.corporations.label')}}:
+                span.planet-value {{planet.corporation_count}}
               .planet-online.planet-info-row
                 span {{translate('ui.menu.galaxy.details.online.label')}}:
                 span.planet-value {{planet.online_count}}
@@ -41,7 +41,7 @@
                   .action-text {{corporations_by_planet_id[planet.id].name}}
               template(v-else)
                 a.button.is-primary.is-fullwidth.is-outlined.workflow-action.corporation-action(v-on:click.stop.prevent='select_tycoon(planet)', :disabled='!planet.enabled || !is_tycoon_in_galaxy')
-                  .action-text {{translate('ui.workflow.planet.form_corporation')}}
+                  .action-text {{translate('ui.menu.corporation.establish.action.establish')}}
 
           .disabled-overlay(v-show='!planet.enabled')
             .disabled-text {{translate('ui.menu.galaxy.planet_not_available.label')}}
@@ -95,8 +95,7 @@ export default
 
     format_money: (value) -> value
 
-    system_animation_url: (system) -> ''
-    planet_animation_url: (planet) -> "https://cdn.starpeace.io/animations/planet.#{planet.id}.animation.gif"
+    planet_animation_url: (planet) -> @managers.asset_manager.planet_animation_url(planet)
 
 
     select_visitor: (planet) ->

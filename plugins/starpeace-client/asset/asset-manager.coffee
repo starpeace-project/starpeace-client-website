@@ -16,6 +16,8 @@ export default class AssetManager
     @key_callbacks = {}
     @loaded_keys = new Set()
 
+  planet_animation_url: (planet) -> "#{AssetManager.CDN_URL}/#{AssetManager.CDN_VERSION}/planet.#{planet.map_id}.animation.gif"
+
   queue: (key, asset_url, callback) ->
     if @loaded_keys.has(key)
       Logger.debug "attempted to load same key more than once: #{key}"

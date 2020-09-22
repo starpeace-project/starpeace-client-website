@@ -21,11 +21,11 @@ export default class BookmarkManager
     @client_state.bookmarks.sort_all_corporation_bookmarks(@translation_manager)
 
   add_bookmark_folder: (corporation_id, parent_id, folder_name) ->
-    @api.create_corporation_bookmark(corporation_id, 'FOLDER', parent_id, folder_name)
+    @api.create_corporation_bookmark(corporation_id, 'FOLDER', parent_id, @client_state.bookmarks.count_for_parent(parent_id), folder_name)
   add_bookmark_location_item: (corporation_id, parent_id, folder_name, map_x, map_y) ->
-    @api.create_corporation_bookmark(corporation_id, 'LOCATION', parent_id, folder_name, { mapX: map_x, mapY: map_y })
+    @api.create_corporation_bookmark(corporation_id, 'LOCATION', parent_id, @client_state.bookmarks.count_for_parent(parent_id), folder_name, { mapX: map_x, mapY: map_y })
   add_bookmark_building_item: (corporation_id, parent_id, folder_name, map_x, map_y, building_id) ->
-    @api.create_corporation_bookmark(corporation_id, 'BUILDING', parent_id, folder_name, { mapX: map_x, mapY: map_y, buildingId: building_id })
+    @api.create_corporation_bookmark(corporation_id, 'BUILDING', parent_id, @client_state.bookmarks.count_for_parent(parent_id), folder_name, { mapX: map_x, mapY: map_y, buildingId: building_id })
 
   add_company_folder: (company_id, do_sort=false) ->
     @client_state.bookmarks.set_company_folder(company_id, BookmarkFolder.new_corporation_folder(company_id, @client_state.name_for_company_id(company_id), @client_state.seal_for_company_id(company_id)))
@@ -68,6 +68,7 @@ export default class BookmarkManager
             done()
 
           .catch (err) =>
+            console.log err
             @ajax_state.unlock('bookmark_metadata', corporation_id) # FIXME: TODO add error handling
             error()
 
@@ -81,6 +82,7 @@ export default class BookmarkManager
         safe_deltas = []
         for delta in deltas
           safe_delta = {}
+          safe_delta.id = delta.id
           safe_delta.type = delta.type if delta.type?
           safe_delta.parentId = delta.parent_id if delta.parent_id?
           safe_delta.name = delta.name if delta.name?

@@ -1,6 +1,9 @@
+import _ from 'lodash'
+import Vue from 'vue'
 
 import EventListener from '~/plugins/starpeace-client/state/event-listener.coffee'
 import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
+import Logger from '~/plugins/starpeace-client/logger.coffee'
 
 LANGUAGES = ['DE', 'EN', 'ES', 'FR', 'IT', 'PT']
 LANGUAGE_FROM_CODE = (code) ->
@@ -10,6 +13,10 @@ LANGUAGE_FROM_CODE = (code) ->
 
 DEFAULT_LANGAUGE = 'EN'
 DEFAULT_LANGUAGE = LANGUAGE_FROM_CODE(window?.navigator?.userLanguage || window?.navigator?.language)
+
+AUTH_GALAXY_HASH = 'galaxy.hash'
+AUTH_GALAXY_JWT = 'galaxy.jwt'
+AUTH_GALAXY_TOKEN = 'galaxy.token'
 
 OPTIONS = [
   {name: 'general.show_header', _default: true},
@@ -44,8 +51,13 @@ export default class Options
     @options_saved = {}
     @options_current = {}
 
-    @galaxies = @load_galaxies_from_storage()
+    @galaxies_by_id = @load_galaxies_from_storage()
 
+    @galaxy_id = null
+    @galaxy_jwt = null
+    @galaxy_token = null
+
+    @load_authorization_state()
     @load_state()
 
 
@@ -54,36 +66,48 @@ export default class Options
   subscribe_options_listener: (listener_callback) -> @event_listener.subscribe('options', listener_callback)
   notify_options_listeners: () -> @event_listener.notify_listeners('options')
 
+  get_galaxies: () -> _.values(@galaxies_by_id)
+
   load_galaxies_from_storage: () ->
-    galaxies = [{
+    galaxies_by_id = {}
+    galaxies_by_id['browser-sandbox'] = {
       id: 'browser-sandbox'
       api_protocol: 'http'
       api_url: 'sandbox-galaxy.starpeace.io'
       api_port: 19160
-    }]
+    }
 
     raw_galaxies = JSON.parse(localStorage.getItem('galaxies') || "[]")
     if Array.isArray(raw_galaxies)
       for galaxy in raw_galaxies
-        if Array.isArray(galaxy) && galaxy.length == 4 && galaxy[0].indexOf('sandbox') < 0 && galaxy[1]?.length && galaxy[2]?.length && galaxy[3]?.length
-          galaxies.push {
-            id: galaxy[0] || Utils.uuid()
-            api_protocol: galaxy[1]
-            api_url: galaxy[2]
-            api_port: galaxy[3]
-          }
-    galaxies
+        if Array.isArray(galaxy) && galaxy.length == 4 && galaxy[1]?.length && galaxy[2]?.length && galaxy[3]?.length
+          id = galaxy[0] || Utils.uuid()
+          if galaxies_by_id[id]?
+            Logger.warn("duplicate galaxy in storage, will ignore") unless id == 'browser-sandbox'
+          else
+            galaxies_by_id[id] = {
+              id: id
+              api_protocol: galaxy[1]
+              api_url: galaxy[2]
+              api_port: galaxy[3]
+            }
+    Vue.observable(galaxies_by_id)
+
   save_galaxies_to_storage: () ->
     galaxies = []
-    for galaxy in @galaxies
-      galaxies.push [galaxy.id, galaxy.api_protocol, galaxy.api_url, galaxy.api_port]
+    galaxies.push [galaxy.id, galaxy.api_protocol, galaxy.api_url, galaxy.api_port] for galaxy_id,galaxy of @galaxies_by_id
     localStorage.setItem('galaxies', JSON.stringify(galaxies))
     @notify_galaxies_listeners()
 
   change_galaxy_id: (old_galaxy_id, new_galaxy_id) ->
-    for galaxy in @galaxies
-      galaxy.id = new_galaxy_id if galaxy.id == old_galaxy_id
+    if @galaxies_by_id[new_galaxy_id]?
+      Logger.warn("galaxy id in use, unable to update existing")
+    else
+      galaxy = @galaxies_by_id[old_galaxy_id]
+      Vue.delete(@galaxies_by_id, old_galaxy_id)
+      Vue.set(@galaxies_by_id, new_galaxy_id, galaxy)
     @save_galaxies_to_storage()
+
   add_galaxy: (api_protocol, api_url, api_port) ->
     galaxy = {
       id: Utils.uuid()
@@ -91,14 +115,59 @@ export default class Options
       api_url: api_url
       api_port: api_port
     }
-    @galaxies.push galaxy
+    Vue.set(@galaxies_by_id, galaxy.id, galaxy)
     @save_galaxies_to_storage()
     galaxy
   remove_galaxy: (id) ->
-    @galaxies = _.reject(@galaxies, (galaxy) -> galaxy.id == id)
+    Vue.delete(@galaxies_by_id, id)
     @save_galaxies_to_storage()
 
-  get_galaxies: () -> @galaxies
+
+  galaxy_to_hash: (galaxy) -> btoa("#{galaxy.id}|#{galaxy.api_protocol}|#{galaxy.api_url}|#{galaxy.api_port}")
+  galaxy_from_hash: (hash) ->
+    hash_parts = atob(hash).split('|')
+    if hash_parts.length == 4
+      return {
+        id: hash_parts[0]
+        api_protocol: hash_parts[1]
+        api_url: hash_parts[2]
+        api_port: hash_parts[3]
+      }
+    false
+
+  load_authorization_state: () ->
+    hash = localStorage.getItem(AUTH_GALAXY_HASH)
+    hash_galaxy = @galaxy_from_hash(hash)
+    if hash_galaxy && @galaxies_by_id[hash_galaxy.id]? && @galaxy_to_hash(@galaxies_by_id[hash_galaxy.id]) == hash
+      @galaxy_id = hash_galaxy.id
+      @galaxy_jwt = localStorage.getItem(AUTH_GALAXY_JWT)
+      @galaxy_token = localStorage.getItem(AUTH_GALAXY_TOKEN)
+    else
+      @clear_authorization_state()
+
+  set_authorization_state: (galaxy_id, auth_token, refresh_token) ->
+    return unless @galaxies_by_id[galaxy_id]?
+    @galaxy_id = galaxy_id
+    @galaxy_jwt = auth_token
+    @galaxy_token = refresh_token
+
+    localStorage.setItem(AUTH_GALAXY_HASH, @galaxy_to_hash(@galaxies_by_id[@galaxy_id]))
+    if @galaxy_jwt?.length
+      localStorage.setItem(AUTH_GALAXY_JWT, @galaxy_jwt)
+    else
+      localStorage.removeItem(AUTH_GALAXY_JWT)
+    if @galaxy_token?.length
+      localStorage.setItem(AUTH_GALAXY_TOKEN, @galaxy_token)
+    else
+      localStorage.removeItem(AUTH_GALAXY_TOKEN)
+
+  clear_authorization_state: () ->
+    @galaxy_id = null
+    @galaxy_jwt = null
+    @galaxy_token = null
+    localStorage.removeItem(AUTH_GALAXY_HASH)
+    localStorage.removeItem(AUTH_GALAXY_JWT)
+    localStorage.removeItem(AUTH_GALAXY_TOKEN)
 
 
   load_state: () ->
@@ -150,3 +219,7 @@ export default class Options
   toggle: (name) ->
     @options_current[name] = !@options_current[name]
     @notify_options_listeners()
+
+  get_mini_map_zoom: () ->
+    zoom = @option('mini_map.zoom')
+    if _.isNumber(zoom) then Math.min(2, Math.max(0.25, zoom)) else 0.25
