@@ -15,13 +15,13 @@
     "IT": "Punti di Interesse",
     "PT": "Pontos de Interesse"
   },
-  "ui.menu.bookmarks.section.corporation": {
-    "DE": "Unternehmen",
-    "EN": "Corporation",
-    "ES": "Corporaciones",
+  "ui.menu.bookmarks.section.companies": {
+    "DE": "Firmen",
+    "EN": "Companies",
+    "ES": "Empresas",
     "FR": "Entreprises",
-    "IT": "Società",
-    "PT": "Corporação"
+    "IT": "Aziende",
+    "PT": "Empresas"
   },
   "ui.menu.bookmarks.section.bookmarks": {
     "DE": "Lesezeichen",

@@ -18,6 +18,7 @@ export default class PlanetLibrary extends Library
     @industry_categories_by_id = {}
     @industry_types_by_id = {}
     @levels_by_id = {}
+    @ranking_types_by_id = {}
     @resource_types_by_id = {}
     @resource_units_by_id = {}
     @company_seals_by_id = {}
@@ -27,6 +28,7 @@ export default class PlanetLibrary extends Library
       Object.keys(@industry_categories_by_id || {}).length &&
       Object.keys(@industry_types_by_id || {}).length &&
       Object.keys(@levels_by_id || {}).length &&
+      Object.keys(@ranking_types_by_id || {}).length &&
       Object.keys(@resource_types_by_id || {}).length &&
       Object.keys(@resource_units_by_id || {}).length &&
       Object.keys(@company_seals_by_id || {}).length
@@ -53,6 +55,13 @@ export default class PlanetLibrary extends Library
   load_levels: (levels) ->
     for level in (levels || [])
       Vue.set(@levels_by_id, level.id, level)
+
+  ranking_type_for_id: (type_id) -> @ranking_types_by_id[type_id]
+  ranking_type_for_parent_id: (parent_id) -> _.filter(_.values(@ranking_types_by_id), (type) -> type.parent_id == parent_id)
+  ranking_type_roots: () -> _.filter(_.values(@ranking_types_by_id), (type) -> !type.parent_id?.length)
+  load_ranking_types: (types) ->
+    for type in (types || [])
+      Vue.set(@ranking_types_by_id, type.id, type)
 
   resource_type_for_id: (type_id) -> @resource_types_by_id[type_id]
   load_resource_types: (types) ->

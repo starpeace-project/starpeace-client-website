@@ -22,6 +22,7 @@ import {
   faFolder,
   faFolderOpen,
   faHammer,
+  faHome,
   faLandmark,
   faLock,
   faMagic,
@@ -51,9 +52,9 @@ import {
   faVolumeOff,
   faVolumeUp
 } from '@fortawesome/free-solid-svg-icons'
-library.add(faAngleUp, faCheck, faCity, faCogs, faFastForward, faFlask, faFolder, faFolderOpen, faHammer, faLandmark, faLock, faMagic, faMapMarkerAlt,
-  faMapPin, faMedal, faMinus, faMinusSquare, faParking, faPause, faPlay, faPlus, faPlusSquare, faPoll, faRedoAlt, faSatellite, faSearch,
-  faSearchLocation, faSquare, faTimes, faToggleOff, faToggleOn, faTools, faUndoAlt, faUserSecret, faUserTie, faVolumeOff, faVolumeUp)
+library.add(faAngleUp, faCheck, faCity, faCogs, faFastForward, faFlask, faFolder, faFolderOpen, faHammer, faHome, faLandmark, faLock,
+  faMagic, faMapMarkerAlt, faMapPin, faMedal, faMinus, faMinusSquare, faParking, faPause, faPlay, faPlus, faPlusSquare, faPoll, faRedoAlt, faSatellite,
+  faSearch, faSearchLocation, faSquare, faTimes, faToggleOff, faToggleOn, faTools, faUndoAlt, faUserSecret, faUserTie, faVolumeOff, faVolumeUp)
 
 import { faBimobject, faDiscord, faGithub, faMegaport, faMizuni, faMonero, faTwitter } from '@fortawesome/free-brands-svg-icons'
 library.add(faBimobject, faDiscord, faGithub, faMegaport, faMizuni, faMonero, faTwitter)

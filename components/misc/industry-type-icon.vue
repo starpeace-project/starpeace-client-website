@@ -125,12 +125,13 @@ export default
 @import '~assets/stylesheets/starpeace-variables'
 
 .industry-type-icon-wrapper
-  display: inline-block
-  vertical-align: middle
+  display: inline-flex
+  justify-content: center
 
   img
     filter: invert(75%) sepia(8%) saturate(1308%) hue-rotate(111deg) brightness(93%) contrast(83%)
     height: 1.2rem
+    vertical-align: middle
     width: 1.2rem
 
   &.is-small

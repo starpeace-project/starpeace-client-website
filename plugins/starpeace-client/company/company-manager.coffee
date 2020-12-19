@@ -28,6 +28,6 @@ export default class CompanyManager
             done(company)
 
           .catch (err) =>
-            console.log err
+            console.error err
             @ajax_state.unlock('company_create', planet_id) # FIXME: TODO add error handling
             error()

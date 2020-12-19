@@ -1,8 +1,8 @@
 <template lang='pug'>
 #application-container(:class='application_css_class', v-cloak=true)
   sp-header(:managers='managers', :client_state='client_state')
-  sp-loading-card(:client_state='client_state')
-  sp-loading-modal(:client_state='client_state')
+  sp-loading-card(:client_state='client_state' within-grid=true)
+  sp-loading-modal(:client_state='client_state' within-grid=true)
   sp-webgl-warning-card(:client_state='client_state')
   sp-workflow(:client='client', :client_state='client_state')
   sp-body(:client_state='client_state')

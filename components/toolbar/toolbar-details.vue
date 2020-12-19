@@ -24,29 +24,10 @@ export default
     'toolbar-menubar': ToolbarMenubar
     'money-text': MoneyText
 
-  data: ->
-    client_version: process.env.CLIENT_VERSION
-    show_game_music: @client_state.options?.option('music.show_game_music')
-
-  mounted: ->
-    @client_state.options?.subscribe_options_listener =>
-      @show_game_music = @client_state.options?.option('music.show_game_music')
-
   computed:
-    music_state: -> @client_state?.music
-
     is_ready: -> @client_state.initialized && @client_state?.workflow_status == 'ready'
     ticker_message: -> @client_state?.interface?.event_ticker_message || ''
 
-    menu_class_release_notes: -> { 'is-active': @client_state?.menu?.is_visible('release_notes') || false }
-
-    game_music_playing: -> @music_state.game_music_playing
-    game_music_class: -> if @music_state.game_music_playing then 'music-pause' else 'music-play'
-    game_music_volume_class: -> if @music_state.game_music_volume then 'music-volume' else 'music-mute'
-
-    notification_loading_css_class: -> { 'ajax-loading': (@ajax_state?.ajax_requests || 0) > 0 }
-
-    tycoon_name: -> if @is_ready && @client_state?.is_tycoon() then @client_state?.current_tycoon_metadata()?.name || '' else 'Visitor'
 </script>
 
 <style lang='sass' scoped>

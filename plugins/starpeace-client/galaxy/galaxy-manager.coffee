@@ -25,7 +25,7 @@ export default class GalaxyManager
             done()
 
           .catch (err) =>
-            console.log err
+            console.error err
             @ajax_state.unlock('galaxy_metadata', galaxy_id) # FIXME: TODO add error handling
             error()
 

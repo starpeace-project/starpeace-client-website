@@ -77,8 +77,8 @@ export default class OverlayManager
 
       setTimeout(=>
         delete @chunk_promises[key]
-        done(data)
         @ajax_state.finish_ajax()
+        done(data)
       , 500)
 
   deserialize_zone_chunk: (width, height, data) ->

@@ -22,7 +22,6 @@
     filter: $sp-filter-primary
     transform: rotate(360deg)
 
-
 a
   font-weight: bold
   text-decoration: none
@@ -96,5 +95,26 @@ h3
     border-radius: 9999em
     box-shadow: rgba(255, 255, 255, 0.25) 0 0 1px 0 inset
 
-.sp-menu-background
-  background: linear-gradient(to bottom, darken($sp-primary-bg, 2.5%), darken($sp-primary-bg, 25%)) !important
+.sp-profile
+  .profile-container
+    padding-bottom: 150%
+    position: relative
+    width: 100%
+
+  .profile-image
+    border: 1px solid $sp-primary-bg
+    position: absolute
+    width: 100%
+    height: 100%
+
+  .profile-mask
+    background: url('~assets/images/profile-mask.png') center center/cover no-repeat
+    height: 100%
+    position: absolute
+    width: 100%
+
+  .profile-none
+    background: url('~assets/images/profile-none.png') center center/cover no-repeat
+    height: 100%
+    position: absolute
+    width: 100%

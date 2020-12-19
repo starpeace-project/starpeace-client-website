@@ -14,6 +14,7 @@
 <script lang='coffee'>
 export default
   props:
+    managers: Object
     client_state: Object
 
   computed:

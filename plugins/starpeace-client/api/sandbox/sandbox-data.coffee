@@ -8,6 +8,7 @@ import METADATA_INVENTION from '~/plugins/starpeace-client/api/sandbox/data/meta
 
 import BOOKMARKS_METADATA from '~/plugins/starpeace-client/api/sandbox/data/mock-bookmarks-metadata.json'
 import GALAXY_METADATA from '~/plugins/starpeace-client/api/sandbox/data/mock-galaxy-metadata.json'
+import MAIL from '~/plugins/starpeace-client/api/sandbox/data/mock-mail.json'
 import PLANET_TOWNS from '~/plugins/starpeace-client/api/sandbox/data/mock-planet-towns.json'
 import TYCOON_METADATA from '~/plugins/starpeace-client/api/sandbox/data/mock-tycoon-metadata.json'
 
@@ -38,10 +39,37 @@ MONTH_SEASONS = {
 
 export default class SandboxData
   constructor: () ->
+    @access_tokens = {}
 
     @tycoon_by_id = TYCOON_METADATA
     @corporation_by_id = _.keyBy(_.flatten(_.map(_.values(TYCOON_METADATA), 'corporations')), 'id')
     @bookmarks_by_corporation_id = BOOKMARKS_METADATA
+    @mail_by_corporation_id = MAIL
+
+    @planet_rankings_by_type_id = {}
+    for planet_id in ['planet-1', 'planet-2', 'planet-3']
+      corporations = _.filter(_.values(@corporation_by_id), (corporation) -> corporation.planetId == planet_id)
+      @planet_rankings_by_type_id[planet_id] = {}
+      for ranking_type in METADATA_CORE.rankingTypes
+        max_value = switch ranking_type.type
+          when 'CORPORATION' then 15000
+          when 'PROFIT' then 1000000000
+          when 'PRESTIGE' then 1000
+          when 'WEALTH' then 1000000000000
+          else 0
+        continue unless max_value > 0
+
+        @planet_rankings_by_type_id[planet_id][ranking_type.id] = _.map(_.orderBy(_.map(corporations, (corporation) => {
+          rank: 0
+          value: Math.round(max_value * Math.random())
+          tycoonId: corporation.tycoonId
+          tycoonName: @tycoon_by_id[corporation.tycoonId].name
+          corporationId: corporation.id
+          corporationName: corporation.name
+        }), ['value'], ['desc']), (ranking, index) ->
+          ranking.rank = index + 1
+          ranking
+        )
 
     @metadata = {
       buildings: METADATA_BUILDING
@@ -62,7 +90,9 @@ export default class SandboxData
     @company_id_info = {}
     for tycoon_id,tycoon of TYCOON_METADATA
       for corporation in tycoon.corporations
+        mailAt = _.first(_.orderBy(@mail_by_corporation_id[corporation.id], ['desc'], ['sentAt']))?.sentAt
         @corporation_id_cashflow[corporation.id] = {
+          lastMailAt: if mailAt? then moment(mailAt) else null
           cash: corporation.cash || 0
           companies_by_id: {}
           cashflow: () -> _.reduce(_.values(@companies_by_id), ((sum, company) -> sum + company.cashflow), 0)

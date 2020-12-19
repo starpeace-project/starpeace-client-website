@@ -16,7 +16,7 @@ export default class TycoonManager
         tycoon_metadata = Tycoon.from_json(tycoon_json)
 
         @client_state.core.tycoon_cache.set_tycoon_metadata(tycoon_metadata)
-        @client_state.core.corporation_cache.load_corporation_metadata(tycoon_metadata.corporations)
+        @client_state.core.corporation_cache.load_tycoon_corporations(tycoon_metadata.id, tycoon_metadata.corporations)
         @client_state.core.company_cache.load_companies_metadata(corporation.companies) for corporation in tycoon_metadata.corporations
 
         @ajax_state.unlock('tycoon_metadata', tycoon_id)

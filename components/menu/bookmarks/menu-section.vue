@@ -1,31 +1,32 @@
 <template lang='pug'>
 .sp-section
-  a(v-on:click.stop.prevent="toggle_section")
-    span(v-show="has_items && !section_expanded")
-      font-awesome-icon(:icon="['fas', 'plus-square']")
-    span(v-show="has_items && section_expanded")
-      font-awesome-icon(:icon="['fas', 'minus-square']")
-    span.sp-folder-icon(v-show="!has_items")
+  a(@click.stop.prevent='toggle_section')
+    span(v-if='has_items')
+      font-awesome-icon(v-show='!section_expanded' :icon="['fas', 'plus-square']")
+      font-awesome-icon(v-show='section_expanded' :icon="['fas', 'minus-square']")
+    span.sp-folder-icon(v-else)
       font-awesome-icon(:icon="['fas', 'square']")
     span.sp-section-label {{label_text}}
+
   .sp-menu-list(v-if='has_items', v-show="section_expanded")
     template(v-if='is_draggable')
       draggable(v-model='items_as_options', @start='start_move_item', @choose='choose_item', :move='move_item')
         transition-group(name='menu-section')
-          .draggable-item.bookmark-item(v-for="child in items_as_options", :key="child.id")
+          .draggable-item.bookmark-item(v-for="child in items_as_options" :key="child.id")
             template(v-if="child.type == 'slot'")
               div.slot-item
             template(v-else-if="child.is_folder")
               section-folder(:item="child", :dragging_level="dragging_item_id == child.id ? dragging_item_level : -1", v-on:toggled='refresh_tree')
             template(v-else-if='true')
               section-item(:item='child', :dragging_level="dragging_item_id == child.id ? dragging_item_level : -1", v-on:selected='item_selected')
-    template(v-else-if='true')
+
+    template(v-else)
       .bookmark-item(v-for="child in items_as_options", :key="child.id")
         template(v-if="child.type == 'slot'")
         template(v-else-if="child.is_folder")
-          section-folder(:item="child", v-on:toggled='refresh_tree')
-        template(v-else-if='true')
-          section-item(:item='child', v-on:selected='item_selected')
+          section-folder(:item="child" @toggled='refresh_tree')
+        template(v-else)
+          section-item(:item='child' @selected='item_selected')
 
 </template>
 
@@ -34,10 +35,6 @@ import draggable from 'vuedraggable'
 
 import SectionFolder from '~/components/menu/bookmarks/section-folder.vue'
 import SectionItem from '~/components/menu/bookmarks/section-item.vue'
-
-import CityIcon from '~/components/misc/city-icon.vue'
-import CompanySealIcon from '~/components/misc/company-seal-icon.vue'
-import IndustryTypeIcon from '~/components/misc/industry-type-icon.vue'
 
 menu_item_slot = (id, order, level) ->
   {
@@ -122,10 +119,6 @@ export default
 
     'section-folder': SectionFolder
     'section-item': SectionItem
-
-    'company-seal-icon': CompanySealIcon
-    'city-icon': CityIcon
-    'industry-type-icon': IndustryTypeIcon
 
   name: 'menu-section'
   props:
@@ -311,9 +304,6 @@ export default
         &.active
           color: lighten($sp-primary, 20%)
 
-    &:first-child
-      border-top: 1px solid darken($sp-primary-bg, 7.5%)
-
     .sp-section-label
       margin-left: 1rem
 
@@ -321,7 +311,7 @@ export default
     background-color: darken($sp-primary-bg, 9%)
     border-bottom: 1px solid darken($sp-primary-bg, 11%)
     display: inline-block
-    padding: .75rem .75rem
+    padding: .5rem .75rem
     width: 100%
 
     &:not(.disabled)
@@ -369,7 +359,7 @@ export default
   background-color: darken($sp-primary-bg, 15%)
   border-bottom: 1px solid darken($sp-primary-bg, 17.5%)
   display: inline-block
-  padding: .75rem .75rem
+  padding: .5rem .75rem
   width: 100%
 
   &:hover

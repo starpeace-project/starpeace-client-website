@@ -53,6 +53,8 @@ export default class InterfaceState
     @construction_building_width = 0
     @construction_building_height = 0
 
+    @selected_ranking_type_id = null
+    @selected_ranking_corporation_id = null
 
   subscribe_mini_map_zoom_listener: (listener_callback) -> @event_listener.subscribe('interface.mini_map_zoom', listener_callback)
   notify_mini_map_zoom_listeners: () -> @event_listener.notify_listeners('interface.mini_map_zoom')
@@ -60,6 +62,10 @@ export default class InterfaceState
   subscribe_mini_map_size_listener: (listener_callback) -> @event_listener.subscribe('interface.mini_map_size', listener_callback)
   notify_mini_map_size_listeners: () -> @event_listener.notify_listeners('interface.mini_map_size')
 
+  subscribe_selected_ranking_type_id_listener: (listener_callback) -> @event_listener.subscribe('interface.selected_ranking_type_id', listener_callback)
+  notify_selected_ranking_type_id_listeners: () -> @event_listener.notify_listeners('interface.selected_ranking_type_id')
+  subscribe_selected_ranking_corporation_id_listener: (listener_callback) -> @event_listener.subscribe('interface.selected_ranking_corporation_id', listener_callback)
+  notify_selected_ranking_corporation_id_listeners: () -> @event_listener.notify_listeners('interface.selected_ranking_corporation_id')
 
   toggle_overlay: () ->
     if @show_overlay
@@ -95,6 +101,14 @@ export default class InterfaceState
 
   select_building_id: (building_id) ->
     @selected_building_id = building_id
+
+  select_ranking_type_id: (ranking_type_id) ->
+    @selected_ranking_type_id = ranking_type_id
+    @notify_selected_ranking_type_id_listeners()
+  select_ranking_corporation_id: (corporation_id) ->
+    @selected_ranking_corporation_id = corporation_id
+    @notify_selected_ranking_corporation_id_listeners()
+  toggle_ranking_corporation_id: (corporation_id) -> @select_ranking_corporation_id(if @selected_ranking_corporation_id == corporation_id then null else corporation_id)
 
 
   primary_mouse_down: (mouse_x, mouse_y) ->

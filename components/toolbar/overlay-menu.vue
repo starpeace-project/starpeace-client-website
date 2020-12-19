@@ -9,16 +9,16 @@
 
     #overlays.dropdown-menu(role='menu')
       .dropdown-content
-        a.dropdown-item(v-for='overlay in overlays()', :class='overlay_item_css_class(overlay)', v-on:click.stop.prevent='change_overlay(overlay)')
+        a.dropdown-item(v-for='overlay in overlays()' :class='overlay_item_css_class(overlay)' @click.stop.prevent='change_overlay(overlay)')
           span {{translate(overlay.label_key)}}
 
   #flag-losing
     span(v-on:click.stop.prevent='toggle_losing_facilities()')
       | {{translate('overlay.signal_losing.label')}}:
     .toggle-icons
-      a.toggle-on(v-show="show_losing_facilities", v-on:click.stop.prevent='toggle_losing_facilities()')
+      a.toggle-on(v-show="show_losing_facilities" @click.stop.prevent='toggle_losing_facilities()')
         font-awesome-icon(:icon="['fas', 'toggle-on']")
-      a.toggle-off(v-show="!show_losing_facilities", v-on:click.stop.prevent='toggle_losing_facilities()')
+      a.toggle-off(v-show="!show_losing_facilities" @click.stop.prevent='toggle_losing_facilities()')
         font-awesome-icon(:icon="['fas', 'toggle-off']")
 
 </template>

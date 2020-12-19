@@ -10,6 +10,7 @@ import SandboxBuildings from '~/plugins/starpeace-client/api/sandbox/sandbox-bui
 import SandboxData from '~/plugins/starpeace-client/api/sandbox/sandbox-data.coffee'
 import SandboxEvents from '~/plugins/starpeace-client/api/sandbox/sandbox-events.coffee'
 import SandboxInventions from '~/plugins/starpeace-client/api/sandbox/sandbox-inventions.coffee'
+import SandboxMail from '~/plugins/starpeace-client/api/sandbox/sandbox-mail.coffee'
 
 
 export default class Sandbox
@@ -19,6 +20,7 @@ export default class Sandbox
     @sandbox_buildings = new SandboxBuildings(@)
     @sandbox_events = new SandboxEvents(@)
     @sandbox_inventions = new SandboxInventions(@)
+    @sandbox_mail = new SandboxMail(@)
 
     @session_tokens = {}
 

@@ -14,11 +14,11 @@ export default class BuildingManager
     @client_state.core.building_library.initialize(@client_state.core.planet_library)
 
   queue_asset_load: () ->
-    return if @client_state.core.building_library.has_metadata() || @ajax_state.is_locked('assets.building_metadata', 'ALL')
+    return if @client_state.core.building_library.has_assets() || @ajax_state.is_locked('assets.building_metadata', 'ALL')
 
     @ajax_state.lock('assets.building_metadata', 'ALL')
     @asset_manager.queue('metadata.building', './building.metadata.json', (resource) =>
-      unless resource.error?
+      unless resource?.error?
         # FIXME: TODO: convert json to object
         @client_state.core.building_library.load_images(resource.data.images)
         @client_state.core.building_library.load_required_atlases(resource.data.atlas)
@@ -58,15 +58,16 @@ export default class BuildingManager
   load_by_company: (company_id) ->
     new Promise (done, error) =>
       if !@client_state.has_session() || !company_id? || @ajax_state.is_locked('building_metadata', company_id)
-        done()
+        error()
       else
         @ajax_state.lock('building_metadata', company_id)
         @api.buildings_for_company(company_id)
           .then (buildings_json) =>
-            @client_state.core.building_cache.load_buildings(_.map(buildings_json, (json) -> Building.from_json(json)))
+            buildings = _.map(buildings_json, (json) -> Building.from_json(json))
+            @client_state.core.building_cache.load_buildings(buildings)
             @client_state.corporation.set_company_building_ids(company_id, _.map(buildings_json, 'id'))
             @ajax_state.unlock('building_metadata', company_id)
-            done()
+            done(buildings)
 
           .catch (err) =>
             @ajax_state.unlock('building_metadata', company_id) # FIXME: TODO add error handling

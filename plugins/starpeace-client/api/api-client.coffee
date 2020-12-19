@@ -29,7 +29,8 @@ export default class APIClient
       request_promise
           .then (result) -> done(handle_result(result.data))
           .catch (err) =>
-            @client_state.handle_authorization_error() if err.response?.status == 401
+            @client_state.handle_connection_error() unless err.status?
+            @client_state.handle_authorization_error() if err.response?.status == 401 || err.response?.status == 403
             error(err)
   delete: (path, parameters, handle_result) ->
     @handle_request(@client.delete("#{@galaxy_url()}/#{path}", @galaxy_auth(parameters)), handle_result)
@@ -111,9 +112,18 @@ export default class APIClient
 
   online_corporations_for_planet: (planet_id) ->
     @get("planets/#{planet_id}/online", {}, (result) -> result.corporations)
+  rankings_for_planet: (planet_id, ranking_type_id) ->
+    @get("planets/#{planet_id}/rankings/#{ranking_type_id}", {}, (result) -> result || [])
+  search_corporations_for_planet: (planet_id, query, startsWithQuery) ->
+    @get("planets/#{planet_id}/search/corporations", { query, startsWithQuery }, (result) -> result || [])
+  search_tycoons_for_planet: (planet_id, query, startsWithQuery) ->
+    @get("planets/#{planet_id}/search/tycoons", { query, startsWithQuery }, (result) -> result || [])
   towns_for_planet: (planet_id) ->
     @get("planets/#{planet_id}/towns", {}, (result) -> result)
-
+  buildings_for_town: (planet_id, town_id, industryCategoryId, industryTypeId) ->
+    @get("planets/#{planet_id}/towns/#{town_id}/buildings", { industryCategoryId, industryTypeId }, (result) -> result || [])
+  companies_for_town: (planet_id, town_id) ->
+    @get("planets/#{planet_id}/towns/#{town_id}/companies", {}, (result) -> result || [])
 
   tycoon_for_id: (tycoon_id) ->
     @get("tycoons/#{tycoon_id}", {}, (result) -> result)
@@ -142,6 +152,16 @@ export default class APIClient
 
   mail_for_corporation: (corporation_id) ->
     @get("corporations/#{corporation_id}/mail", {}, (result) -> result || [])
+  send_mail: (corporation_id, to, subject, body) ->
+    @post("corporations/#{corporation_id}/mail", {
+      to: to
+      subject: subject
+      body: body
+    }, (result) -> result)
+  mark_mail_read: (corporation_id, mail_id) ->
+    @put("corporations/#{corporation_id}/mail/#{mail_id}/mark-read", {}, (result) -> result)
+  delete_mail: (corporation_id, mail_id) ->
+    @delete("corporations/#{corporation_id}/mail/#{mail_id}", {}, (result) -> result)
 
 
   create_company: (planet_id, company_name, seal_id) ->

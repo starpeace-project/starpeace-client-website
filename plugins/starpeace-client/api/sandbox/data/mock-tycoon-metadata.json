@@ -64,5 +64,22 @@
         "companies": []
       }
     ]
+  },
+  "tycoon-id-2": {
+    "id": "tycoon-id-2",
+    "username": "username2",
+    "name": "Other Tycoon",
+    "corporations": [
+      {
+        "id": "corp-id-4",
+        "name": "Corporation Other",
+        "tycoonId": "tycoon-id-2",
+        "planetId": "planet-1",
+        "levelId": "APPRENTICE",
+        "buildingCount": 0,
+        "companyIds": [],
+        "companies": []
+      }
+    ]
   }
 }

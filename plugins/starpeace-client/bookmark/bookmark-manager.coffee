@@ -68,7 +68,7 @@ export default class BookmarkManager
             done()
 
           .catch (err) =>
-            console.log err
+            console.error err
             @ajax_state.unlock('bookmark_metadata', corporation_id) # FIXME: TODO add error handling
             error()
 

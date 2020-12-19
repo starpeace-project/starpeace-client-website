@@ -102,7 +102,7 @@ export default
           @saving = false
 
         .catch (e) =>
-          console.log e
+          console.error e
           @saving = false
           @error_message = true
           @$forceUpdate() if @is_visible

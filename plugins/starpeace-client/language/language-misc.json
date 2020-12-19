@@ -102,6 +102,21 @@
     "FR": "Votre session de jeu a expiré. Veuillez vous reconnecter.",
     "IT": "La tua sessione di gioco è scaduta. Per favore esegui l'accesso di nuovo.",
     "PT": "Sua sessão de jogo expirou. Por favor faça login novamente."
+  },
+  "misc.server_connection.warning.header": {
+    "DE": "Problem Verbindung mit dem Server",
+    "EN": "Problem connecting to server",
+    "ES": "Error de conexión con el servidor",
+    "FR": "Problème de connexion au serveur",
+    "IT": "Problema di connessione al server di",
+    "PT": "Problema de conexão com servidor"
+  },
+  "misc.server_connection.warning.description": {
+    "DE": "Es gab ein Problem mit dem Server verbinden. Bitte versuchen Sie es später noch einmal.",
+    "EN": "There was a problem connecting to server. Please try again later.",
+    "ES": "Hubo un problema al conectar con el servidor. Por favor, inténtelo de nuevo más tarde.",
+    "FR": "Il y avait un problème de connexion au serveur. Veuillez réessayer plus tard.",
+    "IT": "C'è stato un problema di connessione al server. Per favore riprova più tardi.",
+    "PT": "Houve um problema na conexão com o servidor. Por favor, tente novamente mais tarde."
   }
-
 }

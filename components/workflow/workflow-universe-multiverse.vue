@@ -24,9 +24,9 @@
           img.starpeace-logo(v-show='is_galaxy_loading(galaxy.id)')
           .galaxy-error-message(v-show='is_galaxy_error(galaxy.id)')
             | {{translate('misc.unable_to_connect.label')}}
-            a(v-on:click.stop.prevent='refresh_galaxy(galaxy.id)') {{translate('misc.try_again.label')}}
+            a(@click.stop.prevent='refresh_galaxy(galaxy.id)') {{translate('misc.try_again.label')}}
 
-      .columns.is-vcentered.galaxy-login-row(v-show="tycoon_galaxy_id && galaxy.id == tycoon_galaxy_id")
+      .columns.is-vcentered.galaxy-login-row(v-show="tycoon_galaxy_id && galaxy.id == tycoon_galaxy_id && !is_galaxy_loading(galaxy.id) && !is_galaxy_error(galaxy.id)")
         .column.is-12
           form
             .field.is-horizontal
@@ -202,7 +202,7 @@ export default
           @client_state.identity.set_visa(galaxy_id, 'tycoon', tycoon)
           @refresh_galaxy(galaxy_id)
         .catch (e) =>
-          console.log e
+          console.error e
           @$forceUpdate() if @is_visible
     logout_tycoon: (galaxy_id) ->
       @managers.galaxy_manager.logout(galaxy_id)
@@ -210,7 +210,7 @@ export default
           @client_state.reset_full_state()
           @refresh_galaxies()
         .catch (e) =>
-          console.log e
+          console.error e
           @$forceUpdate() if @is_visible
 
     proceed_as_visitor: (galaxy_id) ->

@@ -1,10 +1,12 @@
 <template lang='pug'>
-#tycoon-container.card.is-starpeace.has-header
+.card.has-header.is-starpeace.sp-menu
   .card-header
     .card-header-title {{translate('ui.menu.tycoon_details.header')}}
     .card-header-icon.card-close(v-on:click.stop.prevent="client_state.menu.toggle_menu('tycoon')")
       font-awesome-icon(:icon="['fas', 'times']")
+
   .card-content.sp-menu-background.overall-container
+
 </template>
 
 <script lang='coffee'>
@@ -19,30 +21,16 @@ export default
 </script>
 
 <style lang='sass' scoped>
-@import '~assets/stylesheets/starpeace-variables'
+@import '~assets/stylesheets/starpeace-menus'
 
-#tycoon-container
+.sp-menu
   grid-column-start: 1
-  grid-column-end: 4
+  grid-column-end: 3
   grid-row-start: 2
-  grid-row-end: 4
-  margin: 0
-  overflow: hidden
-  z-index: 1100
+  grid-row-end: 5
 
-.card
-  height: 100%
-  max-width: 25rem
-  overflow: hidden
-  position: absolute
-  width: 100%
+  > .card-content
+    grid-template-columns: 25rem auto
 
-  .card-content
-    height: calc(100% - 3.2rem)
-    padding: 0
-
-    &.overall-container
-      padding-top: .5rem
-      position: relative
 
 </style>

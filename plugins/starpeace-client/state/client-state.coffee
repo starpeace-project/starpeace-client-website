@@ -21,6 +21,7 @@ import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 
 MAX_FAILED_AUTH_ERRORS = 3
+MAX_FAILED_CONNECTION_ERRORS = 3
 
 export default class ClientState
   constructor: (@options, @ajax_state) ->
@@ -67,7 +68,7 @@ export default class ClientState
     @player.subscribe_planet_visa_type_listener => @update_state()
     @player.subscribe_planet_visa_id_listener => @update_state()
     @player.subscribe_corporation_id_listener => @update_state()
-    @player.subscribe_mail_metadata_listener => @update_state()
+    @player.subscribe_mail_listener => @update_state()
 
   subscribe_workflow_status_listener: (listener_callback) -> @event_listener.subscribe('workflow_status', listener_callback)
   notify_workflow_status_listeners: () -> @event_listener.notify_listeners('workflow_status')
@@ -75,6 +76,7 @@ export default class ClientState
   reset_full_state: () ->
     @webgl_warning = false
     @session_expired_warning = false
+    @server_connection_warning = false
 
     @loading = false
     @workflow_status = 'initializing'
@@ -140,7 +142,7 @@ export default class ClientState
   state_needs_player_data: () -> @is_tycoon() && @player.corporation_id? && (!@player.has_data() || !@corporation.has_data() || !@bookmarks.has_data())
 
 
-  has_session: () -> @player.planet_visa_id? && @ajax_state.invalid_session_counter < MAX_FAILED_AUTH_ERRORS
+  has_session: () -> @player.planet_visa_id? && @ajax_state.invalid_connection_counter < MAX_FAILED_CONNECTION_ERRORS && @ajax_state.invalid_session_counter < MAX_FAILED_AUTH_ERRORS
   handle_authorization_error: () ->
     if @ajax_state.invalid_session_as_of? && TimeUtils.within_minutes(@ajax_state.invalid_session_as_of, 5)
       @ajax_state.invalid_session_counter += 1
@@ -150,7 +152,17 @@ export default class ClientState
 
     if @ajax_state.invalid_session_counter >= MAX_FAILED_AUTH_ERRORS && !@session_expired_warning
       @session_expired_warning = true
-      setTimeout (=> @reset_full_state()), 3000
+      setTimeout (=> @reset_full_state()), 5000
+  handle_connection_error: () ->
+    if @ajax_state.invalid_connection_as_of? && TimeUtils.within_minutes(@ajax_state.invalid_connection_as_of, 5)
+      @ajax_state.invalid_connection_counter += 1
+    else
+      @ajax_state.invalid_connection_counter = 1
+    @ajax_state.invalid_connection_as_of = moment()
+
+    if @ajax_state.invalid_connection_counter >= MAX_FAILED_CONNECTION_ERRORS && !@server_connection_warning
+      @server_connection_warning = true
+      setTimeout (=> @reset_full_state()), 5000
 
   reset_to_galaxy: () ->
     setTimeout(=>
@@ -184,6 +196,10 @@ export default class ClientState
   name_for_company_id: (company_id) -> @core.company_cache.metadata_for_id(company_id)?.name || ''
 
   selected_building: () -> if @interface.selected_building_id?.length then @core.building_cache.building_for_id(@interface.selected_building_id) else null
+  select_building: (building_id, map_x, map_y) ->
+    @menu.hide_menu('body')
+    @interface.select_building_id(building_id) if building_id?
+    @camera.recenter_at(map_x, map_y) if map_x? && map_y?
 
   inventions_for_company: ->
     if @is_tycoon()
@@ -206,14 +222,17 @@ export default class ClientState
   has_construction_requirements: (building_id) ->
     return false unless @player.company_id? && building_id?
 
-    metadata = @core.building_library.metadata_by_id[building_id]
+    metadata = @core.building_library.definition_for_id(building_id)
     return false unless metadata?
 
     completed_invention_ids = @corporation.completed_invention_ids_for_company(@player.company_id)
     for id in (metadata.required_invention_ids || [])
       return false unless completed_invention_ids.indexOf(id) >= 0
 
-    (@current_corporation_metadata()?.cash || 0) >= 0 # FIXME: TODO: metadata.cost()
+    corporation = if @player.corporation_id? then @core.corporation_cache.metadata_for_id(@player.corporation_id) else null
+    return false unless corporation?
+
+    (corporation.cash || 0) >= 0 # FIXME: TODO: metadata.cost()
 
   can_construct_building: () ->
     return false unless @has_construction_requirements(@interface.construction_building_id)
@@ -234,3 +253,17 @@ export default class ClientState
     @interface.construction_building_height = if image_metadata? then image_metadata.h else 1
 
     @interface.toggle_zones() unless @interface.show_zones
+
+
+  show_politics: (town_id) ->
+    @menu.toggle_menu('politics') unless @menu.is_visible('politics')
+
+  show_tycoon_profile: (tycoon_id) ->
+    @menu.toggle_menu('tycoon') unless @menu.is_visible('tycoon')
+
+  has_new_mail: () ->
+    @player.corporation_id && @corporation.last_mail_at? && (!@player.last_mail_at? || @corporation.last_mail_at > @player.last_mail_at) && !@ajax_state.is_locked('mail_metadata', @player.corporation_id)
+  send_mail: (tycoon_id, tycoon_name, corporation_id) ->
+    @menu.toggle_menu('mail') unless @menu.is_visible('mail')
+    @player.mail_compose_mode = true
+    @player.mail_compose_to = "#{@player.mail_compose_to}#{(if _.trim(@player.mail_compose_to).length then '; ' else '')}#{tycoon_name}"

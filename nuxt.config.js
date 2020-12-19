@@ -40,7 +40,9 @@ module.exports = {
       { hid: 'description', name: 'description', content: 'STARPEACE: a real-time city-building economic simulation and cooperative multiplayer strategy game' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico', media: '(prefers-color-scheme:no-preference)'},
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon-dark.ico', media: '(prefers-color-scheme:dark)' },
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon-light.ico', media: '(prefers-color-scheme:light)' },
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Open+Sans|Varela+Round' }
     ]
   },
@@ -93,10 +95,14 @@ module.exports = {
       }
     }
   },
+  buildModules: [
+    '@nuxtjs/moment'
+  ],
   modules: [
-    '@nuxtjs/moment', ['@nuxtjs/google-analytics', { id: 'UA-120729341-2', debug: { sendHitTask: !is_development } }]
+    ['@nuxtjs/google-analytics', { id: 'UA-120729341-2', debug: { sendHitTask: !is_development } }]
   ],
   plugins: [
+    { src: '~/plugins/favicon-switcher', ssr: false },
     { src: '~/plugins/flaticon', ssr: false },
     { src: '~/plugins/fpsmeter', ssr: false },
     { src: '~/plugins/font-awesome', ssr: false },
@@ -104,5 +110,8 @@ module.exports = {
     { src: '~/plugins/pixi/pixi', ssr: false },
     { src: '~/plugins/starpeace-client-application', ssr: false },
     { src: '~/plugins/vue2viz', ssr: false }
-  ]
+  ],
+  moment: {
+    timezone: true
+  }
 }

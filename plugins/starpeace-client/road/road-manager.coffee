@@ -72,6 +72,6 @@ export default class RoadManager
 
       setTimeout(=>
         delete @chunk_promises[key]
-        done(data)
         @ajax_state.finish_ajax()
+        done(data)
       , 500)

@@ -1,4 +1,3 @@
-
 import _ from 'lodash'
 
 import Company from '~/plugins/starpeace-client/company/company.coffee'

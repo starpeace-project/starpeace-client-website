@@ -69,7 +69,7 @@ export default
         .then () =>
           @client_state.reset_full_state()
         .catch (e) =>
-          console.log e
+          console.error e
           @$forceUpdate()
 </script>
 

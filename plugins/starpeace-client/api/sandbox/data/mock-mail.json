@@ -1,0 +1,66 @@
+{
+  "corp-id-1": {
+    "mail-id-1": {
+      "id": "mail-id-1",
+      "read": true,
+      "sentAt": "2020-11-01T00:00:00",
+      "planetSentAt": "2235-01-01",
+      "from": {
+        "id": "tycoon-id-1",
+        "name": "Tycoon Name"
+      },
+      "to": [
+        {
+          "id": "tycoon-id-1",
+          "name": "Tycoon Name"
+        },
+        {
+          "id": "tycoon-id-2",
+          "name": "Other Tycoon"
+        }
+      ],
+      "subject": "Test Subject 1",
+      "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+    },
+    "mail-id-2": {
+      "id": "mail-id-2",
+      "read": false,
+      "sentAt": "2020-11-01T00:10:00",
+      "planetSentAt": "2235-01-02",
+      "from": {
+        "id": "ifel",
+        "name": "IFEL"
+      },
+      "to": [
+        {
+          "id": "tycoon-id-1",
+          "name": "Tycoon Name"
+        },
+        {
+          "id": "tycoon-id-2",
+          "name": "Other Tycoon"
+        }
+      ],
+      "subject": "Test Subject 2",
+      "body": "Test Body"
+    },
+    "mail-id-3": {
+      "id": "mail-id-3",
+      "read": false,
+      "sentAt": "2020-12-12T00:00:00",
+      "planetSentAt": "2235-01-03",
+      "from": {
+        "id": "tycoon-id-2",
+        "name": "Other Tycoon"
+      },
+      "to": [
+        {
+          "id": "tycoon-id-1",
+          "name": "Tycoon Name"
+        }
+      ],
+      "subject": "Test Subject 3",
+      "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+    }
+  }
+}

@@ -1,13 +1,32 @@
+import Vue from 'vue'
 
 import EventListener from '~/plugins/starpeace-client/state/event-listener.coffee'
 
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 
+MENUBAR = {
+  'research': ['left', 'body', 'right']
 
-MENUBAR_ALL = new Set([ 'company_form', 'research' ])
-MENUBAR_LEFT = new Set([ 'bookmarks', 'galaxy', 'politics', 'rankings', 'tycoon' ])
-MENUBAR_BODY = new Set([ 'chat', 'help', 'mail', 'options', 'release_notes' ])
-MENUBAR_RIGHT = new Set([ 'construction', 'town_search', 'tycoon_search' ])
+  'mail': ['left', 'body']
+  'tycoon': ['left', 'body']
+
+  'bookmarks': ['left']
+  'galaxy': ['left']
+  'politics': ['left']
+
+  'chat': ['body']
+  'company_form': ['body']
+  'help': ['body']
+  'options': ['body']
+  'release_notes': ['body']
+
+  'construction': ['body', 'right']
+
+  'rankings': ['right']
+  'town_search': ['right']
+  'tycoon_search': ['right']
+}
+
 
 export default class MenuState
   constructor: () ->
@@ -18,22 +37,24 @@ export default class MenuState
   notify_menu_listeners: () -> @event_listener.notify_listeners('menu.state')
 
   reset_state: () ->
-    @toolbar_all = null
-    @toolbar_left = null
-    @toolbar_body = null
-    @toolbar_right = null
+    @toolbars = {
+      left: null
+      body: null
+      right: null
+    }
     @notify_menu_listeners()
 
-  is_toolbar_left_open: () -> @toolbar_left?.length
-  is_toolbar_right_open: () -> @toolbar_right?.length
+  is_toolbar_left_open: () -> @toolbars.left?.length
+  is_toolbar_body_open: () -> @toolbars.body?.length
+  is_toolbar_right_open: () -> @toolbars.right?.length
 
-  is_visible: (type) -> @toolbar_all == type || @toolbar_left == type || @toolbar_body == type || @toolbar_right == type
+  is_visible: (type) -> @toolbars.left == type || @toolbars.body == type || @toolbars.right == type
 
+  hide_menu: (type) -> @toggle_menu(@toolbars[type]) if @toolbars[type]?
   hide_all_menus: () ->
-    @toolbar_all = null
-    @toolbar_left = null
-    @toolbar_body = null
-    @toolbar_right = null
+    Vue.set(@toolbars, 'left', null)
+    Vue.set(@toolbars, 'body', null)
+    Vue.set(@toolbars, 'right', null)
     @notify_menu_listeners()
 
   toggle_menu: (type) ->
@@ -41,21 +62,13 @@ export default class MenuState
       @hide_all_menus()
       return
 
-    if MENUBAR_ALL.has(type)
-      @toolbar_all = if @toolbar_all == type then null else type
-      @toolbar_left = null
-      @toolbar_body = null
-      @toolbar_right = null
-    else if MENUBAR_LEFT.has(type)
-      @toolbar_all = null
-      @toolbar_left = if @toolbar_left == type then null else type
-    else if MENUBAR_BODY.has(type)
-      @toolbar_all = null
-      @toolbar_body = if @toolbar_body == type then null else type
-    else if MENUBAR_RIGHT.has(type)
-      @toolbar_all = null
-      @toolbar_right = if @toolbar_right == type then null else type
-    else
-      Logger.info "unknown menu type #{type}"
+    to_disable = new Set()
+    for position in (MENUBAR[type] || [])
+      to_disable.add(@toolbars[position]) if @toolbars[position]?.length
+      Vue.set(@toolbars, position, type) unless @toolbars[position] == type
+
+    for disable_type in Array.from(to_disable)
+      for position in (MENUBAR[disable_type] || [])
+        Vue.set(@toolbars, position, null) if @toolbars[position] == disable_type
 
     @notify_menu_listeners()

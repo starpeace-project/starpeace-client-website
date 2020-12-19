@@ -6,5 +6,101 @@
     "FR": "Courrier",
     "IT": "Posta",
     "PT": "Correio"
+  },
+  "ui.menu.mail.contacts.action.organize": {
+    "DE": "Organisieren",
+    "EN": "Organize",
+    "ES": "Organizar",
+    "FR": "Organiser",
+    "IT": "Organizzare",
+    "PT": "Organizar"
+  },
+  "ui.menu.mail.contacts.action.add": {
+    "DE": "Kontakt Hinzufügen",
+    "EN": "Add Contact",
+    "ES": "Agregar Contacto",
+    "FR": "Ajouter le Contact",
+    "IT": "Aggiungi Contatto",
+    "PT": "Adicionar Contato"
+  },
+  "ui.menu.mail.contacts.action.new": {
+    "DE": "Neu",
+    "EN": "New",
+    "ES": "Nuevo",
+    "FR": "Nouveau",
+    "IT": "Nuovo",
+    "PT": "Novo"
+  },
+  "ui.menu.mail.contacts.action.delete": {
+    "DE": "Löschen",
+    "EN": "Delete",
+    "ES": "Eliminar",
+    "FR": "Supprimer",
+    "IT": "Elimina",
+    "PT": "Excluir"
+  },
+  "ui.menu.mail.contacts.action.reply": {
+    "DE": "Antworten",
+    "EN": "Reply",
+    "ES": "Responder",
+    "FR": "Réponse",
+    "IT": "Rispondere",
+    "PT": "Resposta"
+  },
+  "ui.menu.mail.contacts.action.forward": {
+    "DE": "Weiterleiten",
+    "EN": "Forward",
+    "ES": "Reenviar",
+    "FR": "Expédier",
+    "IT": "Inviare",
+    "PT": "Encaminhar"
+  },
+  "ui.menu.mail.contacts.action.cancel": {
+    "DE": "Stornieren",
+    "EN": "Cancel",
+    "ES": "Cancelar",
+    "FR": "Annuler",
+    "IT": "Annulla",
+    "PT": "Cancelar"
+  },
+  "ui.menu.mail.contacts.action.send": {
+    "DE": "Senden",
+    "EN": "Send",
+    "ES": "Enviar",
+    "FR": "Envoyer",
+    "IT": "Spedire",
+    "PT": "Enviar"
+  },
+  "ui.menu.mail.contacts.compose.from": {
+    "DE": "Von",
+    "EN": "From",
+    "ES": "Desde",
+    "FR": "De",
+    "IT": "Da",
+    "PT": "De"
+  },
+  "ui.menu.mail.contacts.compose.to": {
+    "DE": "Zu",
+    "EN": "To",
+    "ES": "Para",
+    "FR": "Pour",
+    "IT": "Per",
+    "PT": "Para"
+  },
+  "ui.menu.mail.contacts.compose.sent": {
+    "DE": "Geschickt",
+    "EN": "Sent",
+    "ES": "Expedido",
+    "FR": "Envoyé",
+    "IT": "Inviato",
+    "PT": "Enviei"
+  },
+  "ui.menu.mail.contacts.compose.subject": {
+    "DE": "Gegenstand",
+    "EN": "Subject",
+    "ES": "Asunto",
+    "FR": "Matière",
+    "IT": "Soggetto",
+    "PT": "Sujeito"
   }
 }

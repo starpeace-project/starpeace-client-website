@@ -13,7 +13,7 @@ export default class PlanetState
     @game_map = null
     @events_as_of = null
 
-    @current_date = null
+    @current_time = null
     @current_season = null
 
     @towns = null
@@ -29,16 +29,15 @@ export default class PlanetState
   subscribe_tycoons_online_listener: (listener_callback) -> @event_listener.subscribe('player.tycoons_online', listener_callback)
   notify_tycoons_online_listeners: () -> @event_listener.notify_listeners('player.tycoons_online')
 
-  has_data: () ->
-    @current_date? && @current_season? && @towns? && @tycoons_online?
+  has_data: () -> @current_time? && @current_season? && @towns? && @tycoons_online?
 
   load_game_map: (game_map) ->
     @game_map = game_map
     # FIXME: TODO: may want to notify
 
 
-  load_state: (date, season) ->
-    @current_date = date
+  load_state: (time, season) ->
+    @current_time = time
     @current_season = season
     @notify_state_listeners()
   load_towns: (towns) ->

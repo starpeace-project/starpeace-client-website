@@ -20,6 +20,7 @@ import CompanyCache from '~/plugins/starpeace-client/state/core/cache/company-ca
 import CorporationCache from '~/plugins/starpeace-client/state/core/cache/corporation-cache.coffee'
 import GalaxyCache from '~/plugins/starpeace-client/state/core/cache/galaxy-cache.coffee'
 import MultiverseCache from '~/plugins/starpeace-client/state/core/cache/multiverse-cache.coffee'
+import PlanetCache from '~/plugins/starpeace-client/state/core/cache/planet-cache.coffee'
 import TycoonCache from '~/plugins/starpeace-client/state/core/cache/tycoon-cache.coffee'
 
 import TimeUtils from '~/plugins/starpeace-client/utils/time-utils.coffee'
@@ -44,10 +45,11 @@ export default class CoreState
     @corporation_cache = new CorporationCache()
     @galaxy_cache = new GalaxyCache()
     @multiverse_cache = new MultiverseCache()
+    @planet_cache = new PlanetCache()
     @tycoon_cache = new TycoonCache()
 
   libraries: () -> [@building_library, @concrete_library, @effect_library, @invention_library, @land_library, @map_library, @news_library, @overlay_library, @plane_library, @planet_library, @road_library]
-  caches: () -> [@building_cache, @company_cache, @corporation_cache, @galaxy_cache, @multiverse_cache, @tycoon_cache]
+  caches: () -> [@building_cache, @company_cache, @corporation_cache, @galaxy_cache, @multiverse_cache, @planet_cache, @tycoon_cache]
 
   reset_multiverse: () -> state.reset_multiverse() for state in _.concat(@libraries(), @caches())
   reset_planet: () -> state.reset_planet() for state in _.concat(@libraries(), @caches())
@@ -58,5 +60,4 @@ export default class CoreState
         @news_library.has_metadata(language_code) && @overlay_library.has_assets() && @plane_library.has_assets() &&
         @road_library.has_assets()
 
-  has_metadata: () ->
-    @building_library.has_metadata() && @invention_library.has_metadata() && @planet_library.has_metadata()
+  has_metadata: () -> @building_library.has_metadata() && @invention_library.has_metadata() && @planet_library.has_metadata()

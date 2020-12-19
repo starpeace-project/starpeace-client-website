@@ -6,5 +6,13 @@
     "FR": "Classements",
     "IT": "Classifica",
     "PT": "Classificações"
+  },
+  "ui.menu.rankings.label.total": {
+    "DE": "Gesamt",
+    "EN": "Total",
+    "ES": "Total",
+    "FR": "Total",
+    "IT": "Totale",
+    "PT": "Total"
   }
 }

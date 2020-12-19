@@ -4,7 +4,9 @@
     .card-header-title {{translate('ui.menu.bookmarks.header')}}
     .card-header-icon.card-close(v-on:click.stop.prevent="client_state.menu.toggle_menu('bookmarks')")
       font-awesome-icon(:icon="['fas', 'times']")
+
   .card-content.sp-menu-background.overall-container
+
     .field.filter-input-container
       .control.has-icons-left.is-expanded
         input.input(type="text", :placeholder="translate('misc.filter')")
@@ -13,17 +15,39 @@
     filter-industry-categories(:managers='managers' :client_state='client_state')
 
     aside.sp-menu.sp-scrollbar
-      menu-section(v-if='show_poi && (show_towns || show_mausoleums)', :client_state='client_state', :managers='managers', root_id='bookmark-poi', :label_text="translate('ui.menu.bookmarks.section.poi')", :items_by_id='poi_items_by_id')
-      menu-section(v-if='show_corporation && has_corporation', :client_state='client_state', :managers='managers', root_id='bookmark-corporation', :label_text="translate('ui.menu.bookmarks.section.corporation')", :items_by_id='corporation_items_by_id')
-      menu-section(v-if='has_corporation', :client_state='client_state', :managers='managers', root_id='bookmarks', :label_text="translate('ui.menu.bookmarks.section.bookmarks')", :items_by_id='bookmark_items_by_id', is_draggable=true)
+      menu-section(
+        v-if='show_poi && (show_towns || show_mausoleums)'
+        root_id='bookmark-poi'
+        :client_state='client_state'
+        :managers='managers'
+        :label_text="translate('ui.menu.bookmarks.section.poi')"
+        :items_by_id='poi_items_by_id'
+      )
+      menu-section(
+        v-if='show_corporation && has_corporation'
+        root_id='bookmark-corporation'
+        :client_state='client_state'
+        :managers='managers'
+        :label_text="translate('ui.menu.bookmarks.section.companies')"
+        :items_by_id='corporation_items_by_id'
+      )
+      menu-section(
+        v-if='has_corporation'
+        root_id='bookmarks'
+        is_draggable=true
+        :client_state='client_state'
+        :managers='managers'
+        :label_text="translate('ui.menu.bookmarks.section.bookmarks')"
+        :items_by_id='bookmark_items_by_id'
+      )
 
     .actions-container.level.is-mobile
       .level-item.action-column
         a.button.is-small.is-fullwidth.is-starpeace(disabled='disabled') {{translate('ui.menu.bookmarks.action.organize')}}
       .level-item.action-column
-        a.button.is-small.is-fullwidth.is-starpeace(:disabled='actions_disabled', v-on:click.stop.prevent='add_folder') {{translate('ui.menu.bookmarks.action.add-folder')}}
+        a.button.is-small.is-fullwidth.is-starpeace(:disabled='actions_disabled' @click.stop.prevent='add_folder') {{translate('ui.menu.bookmarks.action.add-folder')}}
       .level-item.action-column
-        a.button.is-small.is-fullwidth.is-starpeace(:disabled='actions_disabled', v-on:click.stop.prevent='add_bookmark') {{translate('ui.menu.bookmarks.action.add-bookmark')}}
+        a.button.is-small.is-fullwidth.is-starpeace(:disabled='actions_disabled' @click.stop.prevent='add_bookmark') {{translate('ui.menu.bookmarks.action.add-bookmark')}}
 
 </template>
 
@@ -130,9 +154,6 @@ export default
   margin: 0
   overflow: hidden
   z-index: 1100
-
-  .card-header-title
-    font-size: 1.15rem
 
 .card
   overflow: hidden

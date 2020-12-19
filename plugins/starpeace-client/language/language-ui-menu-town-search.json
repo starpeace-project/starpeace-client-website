@@ -6,5 +6,85 @@
     "FR": "Recherche de Ville",
     "IT": "Ricerca della Città",
     "PT": "Pesquisa da Cidade"
+  },
+  "ui.menu.town_search.panel.details.population.label": {
+    "DE": "Population",
+    "EN": "Population",
+    "ES": "Población",
+    "FR": "Population",
+    "IT": "Popolazione",
+    "PT": "População"
+  },
+  "ui.menu.town_search.panel.details.investments.label": {
+    "DE": "Investitionen",
+    "EN": "Investments",
+    "ES": "Inversiones",
+    "FR": "Investissements",
+    "IT": "Investimenti",
+    "PT": "Investimentos"
+  },
+  "ui.menu.town_search.panel.details.qol.label": {
+    "DE": "Lebensqualität",
+    "EN": "Quality of Life",
+    "ES": "Calidad de Vida",
+    "FR": "Qualité de Vie",
+    "IT": "Qualità della Vita",
+    "PT": "Qualidade de Vida"
+  },
+  "ui.menu.town_search.panel.details.unemployeement.label": {
+    "DE": "Arbeitslosigkeit",
+    "EN": "Unemployment",
+    "ES": "Desempleo",
+    "FR": "Chômage",
+    "IT": "Disoccupazione",
+    "PT": "Desemprego"
+  },
+  "ui.menu.town_search.panel.details.mayor.label": {
+    "DE": "Bürgermeister",
+    "EN": "Mayor",
+    "ES": "Alcalde",
+    "FR": "Maire",
+    "IT": "Sindaco",
+    "PT": "Prefeito"
+  },
+  "ui.menu.town_search.panel.details.mayor.none": {
+    "DE": "Keiner",
+    "EN": "None",
+    "ES": "Ninguna",
+    "FR": "Aucun",
+    "IT": "Nessuna",
+    "PT": "Nenhum"
+  },
+  "ui.menu.town_search.panel.action.show_in_map": {
+    "DE": "In Karte Anzeigen",
+    "EN": "Show in Map",
+    "ES": "Mostrar en el Mapa",
+    "FR": "Voir sur la Carte",
+    "IT": "Indicare nella Mappa",
+    "PT": "Mostrar no Mapa"
+  },
+  "ui.menu.town_search.panel.action.show_politics": {
+    "DE": "Zeige Politik",
+    "EN": "Show Politics",
+    "ES": "Mostrar Política",
+    "FR": "Afficher Politique",
+    "IT": "Visualizza Politica",
+    "PT": "Mostrar Política"
+  },
+  "ui.menu.town_search.panel.action.buildings": {
+    "DE": "Gebäude",
+    "EN": "Buildings",
+    "ES": "Edificio",
+    "FR": "Bâtiment",
+    "IT": "Edifici",
+    "PT": "Edifício"
+  },
+  "ui.menu.town_search.panel.action.companies": {
+    "DE": "Firmen",
+    "EN": "Companies",
+    "ES": "Empresas",
+    "FR": "Entreprises",
+    "IT": "Aziende",
+    "PT": "Empresas"
   }
 }

@@ -22,7 +22,7 @@ export default class BuildingLibrary extends Library
     @simulations_by_id = {}
 
   has_metadata: () -> Object.keys(@metadata_by_id).length > 0 && Object.keys(@metadata_by_id).length == Object.keys(@simulations_by_id).length
-  has_assets: () -> @has_metadata() && @texture_cache.has_assets()
+  has_assets: () -> @texture_cache.has_assets()
 
   initialize: (planet_library) ->
     for seal_id in planet_library.seals_for_buildings()

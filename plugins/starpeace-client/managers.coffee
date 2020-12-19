@@ -21,6 +21,8 @@ import RoadManager from '~/plugins/starpeace-client/road/road-manager.coffee'
 import TranslationManager from '~/plugins/starpeace-client/language/translation-manager.coffee'
 import TycoonManager from '~/plugins/starpeace-client/tycoon/tycoon-manager.coffee'
 
+import TreeMenuUtils from '~/plugins/starpeace-client/utils/tree-menu-utils.coffee'
+
 import Identity from '~/plugins/starpeace-client/identity/identity.coffee'
 
 import Logger from '~/plugins/starpeace-client/logger.coffee'
@@ -49,12 +51,16 @@ export default class Managers
     @road_manager = new RoadManager(@asset_manager, @ajax_state, @client_state)
     @tycoon_manager = new TycoonManager(@api, @ajax_state, @client_state)
 
+    @utils = {
+      tree_menu: new TreeMenuUtils(@planets_manager, @translation_manager, @ajax_state, @client_state)
+    }
+
     @client_state.identity.subscribe_visa_type_listener =>
       return unless @client_state.identity.galaxy_tycoon?
 
-      for corporation in (@client_state.identity.galaxy_tycoon?.corporations || [])
-        @client_state.core.corporation_cache.load_corporation_metadata(corporation)
-        @client_state.core.company_cache.load_companies_metadata(corporation.companies)
+      corporations = @client_state.identity.galaxy_tycoon?.corporations || []
+      @client_state.core.corporation_cache.load_tycoon_corporations(@client_state.identity.galaxy_tycoon.id, corporations)
+      @client_state.core.company_cache.load_companies_metadata(corporation.companies) for corporation in corporations
 
     @client_state.player.subscribe_planet_visa_type_listener =>
       return unless @client_state.player.planet_id? && @client_state.player.planet_visa_type?
@@ -63,16 +69,13 @@ export default class Managers
       @api.register_visa(@client_state.identity.galaxy_id, @client_state.player.planet_id, @client_state.player.planet_visa_type)
         .then (visa) =>
           @client_state.player.set_planet_visa_id(visa.visaId)
+          @client_state.player.set_planet_corporation_id(visa.corporationId) if visa.corporationId?
         .catch (err) ->
-          console.log err
+          console.error err
           Logger.debug "failed to retrieve visa for planet" # FIXME: TODO: figure out error handling
 
     @client_state.player.subscribe_planet_visa_id_listener =>
       return unless @client_state.player.planet_id? && @client_state.player.planet_visa_id?
-
-      if @client_state.is_tycoon() && !@client_state.player.corporation_id?
-        corporation = @client_state.core.corporation_cache.corporation_metadata_for_planet_tycoon_id(@client_state.player.planet_id, @client_state.identity.galaxy_tycoon.id)
-        @client_state.player.set_planet_corporation_id(corporation.id) if corporation?
 
       @building_manager.queue_asset_load()
       @concrete_manager.queue_asset_load()
@@ -94,33 +97,53 @@ export default class Managers
         @planets_manager.load_towns(@client_state.player.planet_id),
         @planets_manager.load_online_corporations(@client_state.player.planet_id)
       ]).catch (err) ->
-        console.log(err)
+        console.error err
         throw err
 
     @client_state.player.subscribe_corporation_id_listener =>
       return unless @client_state.player.corporation_id? && @client_state.player.planet_visa_id?
 
-      corporation = @client_state.core.corporation_cache.metadata_for_id(@client_state.player.corporation_id)
-      return unless corporation?
+      try
+        corporation = await @corporation_manager.load_by_corporation(@client_state.player.corporation_id)
+        return unless corporation?
 
-      @client_state.corporation.set_company_ids(_.map(corporation.companies, (company) -> company.id))
-      @client_state.player.set_company_id(_.first(_.sortBy(corporation.companies, (company) -> company.name))?.id)
+        @client_state.core.company_cache.load_companies_metadata(corporation.companies)
+        @client_state.corporation.set_company_ids(_.map(corporation.companies, (company) -> company.id))
+        @client_state.player.set_company_id(_.first(_.sortBy(corporation.companies, (company) -> company.name))?.id)
 
-      promises = []
-      for company in (corporation.companies || [])
-        promises.push @building_manager.load_by_company(company.id)
-        promises.push @invention_manager.load_by_company(company.id)
+        promises = []
+        for company in (corporation.companies || [])
+          promises.push @building_manager.load_by_company(company.id)
+          promises.push @invention_manager.load_by_company(company.id)
 
-      promises.push @corporation_manager.load_by_corporation(@client_state.player.corporation_id)
-      promises.push @corporation_manager.load_cashflow(@client_state.player.corporation_id)
-      promises.push @bookmark_manager.load_by_corporation(@client_state.player.corporation_id)
-      promises.push @mail_manager.load_by_corporation(@client_state.player.corporation_id)
+        promises.push @corporation_manager.load_cashflow(@client_state.player.corporation_id)
+        promises.push @bookmark_manager.load_by_corporation(@client_state.player.corporation_id)
+        promises.push @mail_manager.load_by_corporation(@client_state.player.corporation_id)
 
-      Promise.all promises
-        .then => Logger.debug 'loaded corporation metadata'
+        await Promise.all(promises)
+        Logger.debug 'loaded corporation metadata'
+      catch err
+        console.error err
+        Logger.info "failed to retrieve data for corporation" # FIXME: TODO: add error handling
+
+    @client_state.interface.subscribe_selected_ranking_type_id_listener =>
+      return unless @client_state.player.planet_id? && @client_state.interface.selected_ranking_type_id?
+      return if @client_state.core.planet_cache.rankings(@client_state.interface.selected_ranking_type_id)?
+      @planets_manager.load_rankings(@client_state.player.planet_id, @client_state.interface.selected_ranking_type_id)
+        .then => Logger.debug 'loaded rankings'
         .catch (err) =>
-          console.log err
+          console.error err
+          Logger.info "failed to retrieve data for rankings" # FIXME: TODO: add error handling
+
+    @client_state.interface.subscribe_selected_ranking_corporation_id_listener =>
+      return unless @client_state.player.planet_id? && @client_state.interface.selected_ranking_corporation_id?
+      return if @client_state.core.corporation_cache.metadata_for_id(@client_state.interface.selected_ranking_corporation_id)?
+      @corporation_manager.load_by_corporation(@client_state.interface.selected_ranking_corporation_id)
+        .then => Logger.debug 'loaded corporation'
+        .catch (err) =>
+          console.error err
           Logger.info "failed to retrieve data for corporation" # FIXME: TODO: add error handling
+
 
 
   initialize: () ->

@@ -20,8 +20,14 @@ export default class PlayerState
     @corporation_id = null
     @company_id = null
 
-    @mail_by_id_as_of = null
+    @last_mail_at = null
     @mail_by_id = null
+    @selected_mail_id = null
+
+    @mail_compose_mode = false
+    @mail_compose_to = ''
+    @mail_compose_subject = ''
+    @mail_compose_body = ''
 
   has_data: () ->
     @mail_by_id?
@@ -35,8 +41,8 @@ export default class PlayerState
   subscribe_corporation_id_listener: (listener_callback) -> @event_listener.subscribe('player.corporation_id', listener_callback)
   notify_corporation_id_listeners: () -> @event_listener.notify_listeners('player.corporation_id')
 
-  subscribe_mail_metadata_listener: (listener_callback) -> @event_listener.subscribe('player.mail_metadata', listener_callback)
-  notify_mail_metadata_listeners: () -> @event_listener.notify_listeners('player.mail_metadata')
+  subscribe_mail_listener: (listener_callback) -> @event_listener.subscribe('player.mail', listener_callback)
+  notify_mail_listeners: () -> @event_listener.notify_listeners('player.mail')
 
   set_planet_visa_type: (planet_id, visa_type) ->
     @planet_id = planet_id
@@ -58,8 +64,23 @@ export default class PlayerState
     @company_id = company_id
 
 
-  set_mail_metadata: (mail_metadata) ->
-    @mail_by_id = {}
-    Vue.set(@mail_by_id, item.id, item) for item in (mail_metadata || [])
-    @mail_by_id_as_of = moment()
-    @notify_mail_metadata_listeners()
+  set_mail: (mails) ->
+    @mail_by_id = {} unless @mail_by_id?
+    if Array.isArray(mails)
+      Vue.set(@mail_by_id, mail.id, mail) for mail in mails
+    else
+      Vue.set(@mail_by_id, mails.id, mails)
+    @notify_mail_listeners()
+
+  remove_mail: (mail_id) ->
+    @selected_mail_id = null if @selected_mail_id == mail_id
+    Vue.delete(@mail_by_id, mail_id) if @mail_by_id[mail_id]?
+    @notify_mail_listeners()
+
+  start_compose: (to_corporations=[]) ->
+    @mail_compose_mode = true
+  end_compose: () ->
+    @mail_compose_mode = false
+    @mail_compose_to = ''
+    @mail_compose_subject = ''
+    @mail_compose_body = ''

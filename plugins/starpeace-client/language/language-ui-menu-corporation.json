@@ -54,5 +54,85 @@
     "FR": "Erreur établissement société, s'il vous plaît essayer à nouveau",
     "IT": "Errore stabilire la società, si prega di riprovare",
     "PT": "Erro ao estabelecer corporação, por favor tente novamente"
+  },
+  "ui.menu.corporation.panel.details.tycoon": {
+    "DE": "Tycoon",
+    "EN": "Tycoon",
+    "ES": "Magnate",
+    "FR": "Magnat",
+    "IT": "Magnate",
+    "PT": "Magnata"
+  },
+  "ui.menu.corporation.panel.details.corporation": {
+    "DE": "Unternehmen",
+    "EN": "Corporation",
+    "ES": "Corporaciones",
+    "FR": "Entreprises",
+    "IT": "Società",
+    "PT": "Corporação"
+  },
+  "ui.menu.corporation.panel.details.fortune": {
+    "DE": "Vermögen",
+    "EN": "Fortune",
+    "ES": "Fortuna",
+    "FR": "Fortune",
+    "IT": "Fortuna",
+    "PT": "Fortuna"
+  },
+  "ui.menu.corporation.panel.details.fortune_ytd": {
+    "DE": "Jahresverlauf",
+    "EN": "YTD",
+    "ES": "El Último Año",
+    "FR": "Cumul à ce Jour",
+    "IT": "Anno Corrente",
+    "PT": "YTD"
+  },
+  "ui.menu.corporation.panel.details.ranking": {
+    "DE": "Rangfolge",
+    "EN": "Ranking",
+    "ES": "Clasificación",
+    "FR": "Classement",
+    "IT": "Classifica",
+    "PT": "Posição"
+  },
+  "ui.menu.corporation.panel.details.level": {
+    "DE": "Rang",
+    "EN": "Level",
+    "ES": "Rango",
+    "FR": "Rang",
+    "IT": "Nivel",
+    "PT": "Classe"
+  },
+  "ui.menu.corporation.panel.details.prestige": {
+    "DE": "Prestige",
+    "EN": "Prestige",
+    "ES": "Prestigio",
+    "FR": "Prestige",
+    "IT": "Prestigio",
+    "PT": "Prestígio"
+  },
+  "ui.menu.corporation.panel.action.show_profile": {
+    "DE": "Zeige Profil",
+    "EN": "Show Profile",
+    "ES": "Mostrar Perfil",
+    "FR": "Montre le Profile",
+    "IT": "Mostra Profilo",
+    "PT": "Mostrar Perfil"
+  },
+  "ui.menu.corporation.panel.action.send_mail": {
+    "DE": "Mail Senden",
+    "EN": "Send Mail",
+    "ES": "Enviar Correo",
+    "FR": "Envoyer un Mail",
+    "IT": "Inviare una Mail",
+    "PT": "Enviar Correio"
+  },
+  "ui.menu.corporation.panel.action.companies": {
+    "DE": "Firmen",
+    "EN": "Companies",
+    "ES": "Empresas",
+    "FR": "Entreprises",
+    "IT": "Aziende",
+    "PT": "Empresas"
   }
 }

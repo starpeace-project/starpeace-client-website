@@ -2,7 +2,7 @@
 .research-container
   .field.filter-input-container
     .control.has-icons-left.is-expanded
-      input.input(type="text", :placeholder="translate('misc.filter')")
+      input.input(type="text" :placeholder="translate('misc.filter')")
       span.icon.is-left
         font-awesome-icon(:icon="['fas', 'search-location']")
 

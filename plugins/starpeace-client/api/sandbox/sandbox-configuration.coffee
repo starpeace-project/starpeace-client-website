@@ -25,8 +25,13 @@ export default class SandboxConfiguration
 
     @post 'galaxy/login', (config, params) =>
       if params.username == 'test' && params.password == 'test' && @sandbox.sandbox_data.tycoon_by_id['tycoon-id-1']?
+        access_token = Utils.uuid()
+        @sandbox.sandbox_data.access_tokens[access_token] = {
+          tycoon_id: 'tycoon-id-1'
+          created_at: new Date().getTime()
+        }
         return _.assign(_.cloneDeep(@sandbox.sandbox_data.tycoon_by_id['tycoon-id-1']), {
-          accessToken: Utils.uuid()
+          accessToken: access_token
         })
       else
         throw new Error(401)
@@ -35,10 +40,16 @@ export default class SandboxConfiguration
 
     @post 'planets/(.+?)/visa', (config, planet_id, params) =>
       if params.identityType == 'visitor' || params.identityType == 'tycoon'
-        return _.cloneDeep {
+        response = {
           visaId: @sandbox.register_session(params.identityType)
           identityType: params.identityType
         }
+        access_token = config.headers['Authorization']?.split(' ')?[1]
+        if params.identityType == 'tycoon' && access_token?
+          tycoon_id = @sandbox.sandbox_data.access_tokens[access_token].tycoon_id
+          corporation = _.find(_.values(@sandbox.sandbox_data.corporation_by_id), (corporation) -> corporation.planetId == planet_id && corporation.tycoonId == tycoon_id)
+          response.corporationId = corporation.id if corporation?
+        return _.cloneDeep response
       else
         throw new Error(400)
 
@@ -46,25 +57,64 @@ export default class SandboxConfiguration
     @get 'planets/(.+?)/metadata/core', (config, planet_id) => _.cloneDeep(_.merge({ planetId: planet_id }, @sandbox.sandbox_data.metadata.core))
     @get 'planets/(.+?)/metadata/inventions', (config, planet_id) => _.cloneDeep(_.merge({ planetId: planet_id }, @sandbox.sandbox_data.metadata.inventions))
 
-    @get 'planets/(.+?)/buildings', (config, planet_id, params) =>
+    @get 'planets/([^/]+?)/buildings', (config, planet_id, params) =>
       throw new Error(404) unless @sandbox.sandbox_data.planet_id_chunk_id_buildings[planet_id]?
       _.cloneDeep(@sandbox.sandbox_data.planet_id_chunk_id_buildings[planet_id]["#{params.chunkX}x#{params.chunkY}"] || [])
-    @post 'planets/(.+?)/buildings', (config, planet_id, params) => @sandbox.sandbox_buildings.queue_construction(planet_id, params)
+    @post 'planets/([^/]+?)/buildings', (config, planet_id, params) => @sandbox.sandbox_buildings.queue_construction(planet_id, params)
 
-    @post 'planets/(.+?)/corporations', (config, planet_id, params) => throw new Error(500)
-    @post 'planets/(.+?)/companies', (config, planet_id, params) => throw new Error(500)
+    @post 'planets/([^/]+?)/corporations', (config, planet_id, params) => throw new Error(500)
+    @post 'planets/([^/]+?)/companies', (config, planet_id, params) => throw new Error(500)
+
+    @get('planets/(.+?)/rankings/(.+)', (config, planet_id, ranking_type_id) => _.cloneDeep(@sandbox.sandbox_data.planet_rankings_by_type_id[planet_id]?[ranking_type_id] || []))
+
+    @get('planets/(.+?)/search/corporations', (config, planet_id, params) =>
+      _.map(_.filter(_.values(@sandbox.sandbox_data.corporation_by_id), (c) ->
+        return false unless c.planetId == planet_id
+        if params.startsWithQuery
+          return c.name.toLowerCase().startsWith(params.query.toLowerCase())
+        else
+          return c.name.toLowerCase().includes(params.query.toLowerCase())
+      ), (c) => {
+        tycoonId: c.tycoonId
+        tycoonName: @sandbox.sandbox_data.tycoon_by_id[c.tycoonId].name
+        corporationId: c.id
+        corporationName: c.name
+      })
+    )
+    @get('planets/(.+?)/search/tycoons', (config, planet_id, params) =>
+      _.map(_.filter(_.values(@sandbox.sandbox_data.corporation_by_id), (c) =>
+        return false unless c.planetId == planet_id
+        tycoon = @sandbox.sandbox_data.tycoon_by_id[c.tycoonId]
+        return false unless tycoon?
+        if params.startsWithQuery then tycoon.name.startsWith(params.query) else tycoon.name.includes(params.query)
+      ), (c) => {
+        tycoonId: c.tycoonId
+        tycoonName: @sandbox.sandbox_data.tycoon_by_id[c.tycoonId].name
+        corporationId: c.id
+        corporationName: c.name
+      })
+    )
+
 
     @get 'planets/(.+?)/events', (config, planet_id, params) =>
       throw new Error(404) unless @sandbox.sandbox_data?.planet_id_dates?[planet_id]?
       _.cloneDeep({
         planetId: planet_id
-        date: @sandbox.sandbox_data.planet_id_dates[planet_id].format('YYYY-MM-DD')
+        time: @sandbox.sandbox_data.planet_id_dates[planet_id].format()
         season: @sandbox.sandbox_data.season_for_planet(planet_id)
         buildingEvents: @sandbox.sandbox_events.building_events_since(params.lastUpdate)
         tycoonEvents: []
       })
 
     @get('planets/(.+?)/online', (config, planet_id) -> [])
+    @get('planets/(.+?)/towns/(.+?)/buildings', (config, planet_id, town_id, params) =>
+      throw new Error(404) unless @sandbox.sandbox_data?.planet_towns?[planet_id]?
+      _.cloneDeep([])
+    )
+    @get('planets/(.+?)/towns/(.+?)/companies', (config, planet_id, town_id) =>
+      throw new Error(404) unless @sandbox.sandbox_data?.planet_towns?[planet_id]?
+      _.cloneDeep([])
+    )
     @get('planets/(.+?)/towns', (config, planet_id) =>
       throw new Error(404) unless @sandbox.sandbox_data?.planet_towns?[planet_id]?
       _.cloneDeep(@sandbox.sandbox_data.planet_towns[planet_id])
@@ -81,19 +131,23 @@ export default class SandboxConfiguration
     @get 'corporations/(.+?)/bookmarks', (config, corporation_id) => @sandbox.sandbox_bookmarks.get_bookmarks(corporation_id)
     @post 'corporations/(.+?)/bookmarks', (config, corporation_id, parameters) => @sandbox.sandbox_bookmarks.create_bookmark(corporation_id, parameters)
     @patch 'corporations/(.+?)/bookmarks', (config, corporation_id, parameters) => @sandbox.sandbox_bookmarks.update_bookmarks(corporation_id, parameters.deltas)
-    @get 'corporations/(.+?)/mail', (config, corporation_id) -> _.cloneDeep([])
+
+    @get 'corporations/(.+?)/mail', (config, corporation_id) => @sandbox.sandbox_mail.get(corporation_id)
+    @post 'corporations/(.+?)/mail', (config, corporation_id, parameters) => @sandbox.sandbox_mail.create(corporation_id, parameters)
+    @put 'corporations/(.+?)/mail/(.+)/mark-read', (config, corporation_id, mail_id) => @sandbox.sandbox_mail.mark_read(corporation_id, mail_id)
+    @delete 'corporations/(.+?)/mail/(.+)', (config, corporation_id, mail_id) => @sandbox.sandbox_mail.delete(corporation_id, mail_id)
+
     @get 'corporations/(.+?)/cashflow', (config, corporation_id) =>
       corp_metadata = {
         id: corporation_id
+        lastMailAt: @sandbox.sandbox_data.corporation_id_cashflow[corporation_id]?.lastMailAt?.format()
         cash: (@sandbox.sandbox_data.corporation_id_cashflow[corporation_id]?.cash || 0)
         cashflow: (@sandbox.sandbox_data.corporation_id_cashflow[corporation_id]?.cashflow() || 0)
-        companies: []
-      }
-      for company_id,company of (@sandbox.sandbox_data.corporation_id_cashflow[corporation_id]?.companies_by_id || {})
-        corp_metadata.companies.push {
+        companies: _.map(_.values(@sandbox.sandbox_data.corporation_id_cashflow[corporation_id]?.companies_by_id), (company) -> {
           id: company.id
           cashflow: company.cashflow
-        }
+        })
+      }
       return _.cloneDeep(corp_metadata)
 
     @get 'corporations/(.+)', (config, corporation_id) =>

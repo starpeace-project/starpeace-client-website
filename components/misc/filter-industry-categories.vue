@@ -1,8 +1,12 @@
 <template lang='pug'>
 .filter-items
-  template(v-for='category in bookmark_categories')
-    a.filter-toggle.tooltip.is-tooltip-top(:class="filter_class(category)" @click.stop.prevent="toggle_filter(category)" :data-tooltip="text_for_category(category)")
-      industry-category-icon(:category="category")
+  a.filter-toggle.tooltip.is-tooltip-top(
+    v-for='category in bookmark_categories'
+    :class="filter_class(category)"
+    :data-tooltip="text_for_category(category)"
+    @click.stop.prevent="toggle_filter(category)"
+  )
+    industry-category-icon(:category="category")
 
 </template>
 
@@ -37,13 +41,13 @@ export default
 
 .filter-items
   height: 2.6rem
-  margin-bottom: .9rem
+  margin-bottom: .5rem
   position: relative
   text-align: center
 
   .filter-toggle
     border: 1px solid lighten($sp-primary-bg, 5%)
-    display: inline-block
+    display: inline-flex
     padding: .4rem
 
     &:not(:first-child)

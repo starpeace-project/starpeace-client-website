@@ -3,11 +3,12 @@ client-only
   #application-container(:class='application_css_class', v-cloak=true)
     sp-header(:managers='managers', :client_state='client_state')
 
-    sp-loading-card(:managers='managers', :client_state='client_state')
-    sp-loading-modal(v-show='is_loading_modal_visible')
+    sp-loading-card(:managers='managers' :client_state='client_state' within-grid=true)
+    sp-loading-modal(v-show='is_loading_modal_visible' within-grid=true)
 
-    sp-session-expired-warning-card(:managers='managers', :client_state='client_state')
-    sp-webgl-warning-card(:managers='managers', :client_state='client_state')
+    sp-server-connection-warning-card(:managers='managers' :client_state='client_state')
+    sp-session-expired-warning-card(:managers='managers' :client_state='client_state')
+    sp-webgl-warning-card(:managers='managers' :client_state='client_state')
 
     sp-workflow(:managers='managers' :ajax_state='ajax_state' :client_state='client_state')
 
@@ -15,19 +16,19 @@ client-only
     menu-company-form(v-show="is_menu_visible('company_form')" :managers='managers' :client_state='client_state')
 
     menu-construction(v-show="is_menu_visible('construction')" :managers='managers' :client_state='client_state')
-    menu-chat(v-show="is_menu_visible('chat')" :managers='managers', :client_state='client_state')
-    menu-bookmarks(v-show="is_menu_visible('bookmarks')" :managers='managers' :ajax_state='ajax_state', :client_state='client_state')
-    menu-mail(v-show="is_menu_visible('mail')" :managers='managers' :client_state='client_state')
+    menu-chat(v-show="is_menu_visible('chat')" :managers='managers' :client_state='client_state')
+    menu-bookmarks(v-show="is_menu_visible('bookmarks')" :managers='managers' :ajax_state='ajax_state' :client_state='client_state')
+    menu-mail(v-show="is_menu_visible('mail')" :managers='managers' :ajax_state='ajax_state' :client_state='client_state')
     menu-options(v-show="is_menu_visible('options')" :managers='managers' :client_state='client_state')
     menu-politics(v-show="is_menu_visible('politics')" :managers='managers' :client_state='client_state')
     menu-help(v-show="is_menu_visible('help')" :managers='managers' :client_state='client_state')
-    menu-rankings(v-show="is_menu_visible('rankings')" :managers='managers' :client_state='client_state')
+    menu-rankings(v-show="is_menu_visible('rankings')" :managers='managers' :ajax_state='ajax_state' :client_state='client_state')
     menu-release-notes(v-show="is_menu_visible('release_notes')" :managers='managers' :client_state='client_state')
     menu-research(v-show="is_menu_visible('research')" :managers='managers' :ajax_state='ajax_state' :client_state='client_state')
-    menu-galaxy(v-show="is_menu_visible('galaxy')", :managers='managers' :ajax_state='ajax_state' :client_state='client_state')
+    menu-galaxy(v-show="is_menu_visible('galaxy')" :managers='managers' :ajax_state='ajax_state' :client_state='client_state')
     menu-town-search(v-show="is_menu_visible('town_search')" :managers='managers' :client_state='client_state')
     menu-tycoon-details(v-show="is_menu_visible('tycoon')" :managers='managers' :client_state='client_state')
-    menu-tycoon-search(v-show="is_menu_visible('tycoon_search')" :managers='managers' :client_state='client_state')
+    menu-tycoon-search(v-show="is_menu_visible('tycoon_search')" :managers='managers' :ajax_state='ajax_state' :client_state='client_state')
 
     sp-body(:client_state='client_state')
 
@@ -48,6 +49,7 @@ import RenderContainer from '~/components/page-layout/render-container.vue'
 
 import LoadingCard from '~/components/misc/card-loading.vue'
 import LoadingModal from '~/components/misc/modal-loading.vue'
+import ServerConnectionWarningCard from '~/components/misc/card-server-connection-warning.vue'
 import SessionExpiredWarningCard from '~/components/misc/card-session-expired-warning.vue'
 import WebGLWarningCard from '~/components/misc/card-webgl-warning.vue'
 
@@ -62,7 +64,7 @@ import MenuCompanyForm from '~/components/menu/company/form.vue'
 import MenuConstruction from '~/components/menu/construction/main-menu.vue'
 import MenuChat from '~/components/menu/menu-chat.vue'
 import MenuBookmarks from '~/components/menu/bookmarks/main-menu.vue'
-import MenuMail from '~/components/menu/menu-mail.vue'
+import MenuMail from '~/components/menu/mail/main-menu.vue'
 import MenuOptions from '~/components/menu/options/main-menu.vue'
 import MenuPolitics from '~/components/menu/politics/main-menu.vue'
 import MenuHelp from '~/components/menu/menu-help.vue'
@@ -93,6 +95,7 @@ export default
     'sp-toolbar-header': ToolbarHeader
     'sp-toolbar-details': ToolbarDetails
     'sp-toolbar-ribbon': ToolbarRibbon
+    'sp-server-connection-warning-card': ServerConnectionWarningCard
     'sp-session-expired-warning-card': SessionExpiredWarningCard
     'sp-webgl-warning-card': WebGLWarningCard
     'sp-sub-menu-remove-galaxy': SubMenuRemoveGalaxy
@@ -144,8 +147,8 @@ export default
     is_sub_menu_add_galaxy_visible: -> @client_state?.interface?.show_add_galaxy
     is_sub_menu_create_tycoon_visible: -> @client_state?.interface?.show_create_tycoon
 
-    is_toolbar_left_open: -> @client_state?.menu?.toolbar_left?.length
-    is_toolbar_right_open: -> @client_state?.menu?.toolbar_right?.length
+    is_toolbar_left_open: -> @client_state?.menu?.toolbars.left?.length
+    is_toolbar_right_open: -> @client_state?.menu?.toolbars.right?.length
 
     application_css_class: ->
       classes = []

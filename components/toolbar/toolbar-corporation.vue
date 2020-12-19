@@ -13,10 +13,10 @@
       | (
       money-text(:value='corporation_cashflow')
       | /h)
-    p.planet-date {{current_date}}
+    p.planet-date {{planet_date}}
 
   .level-item.company-container
-    .company-panel(v-for='company in companies' :class="{ 'is-selected': is_selected(company.id) }" @click.stop.prevent="select_company(company.id)")
+    .company-panel(v-for='company in sorted_companies' :class="{ 'is-selected': is_selected(company.id) }" @click.stop.prevent="select_company(company.id)")
       .company-name-row
         span.company-icon-wrapper
           company-seal-icon.company-seal(:seal_id="client_state.seal_for_company_id(company.id)")
@@ -29,7 +29,7 @@
         money-text(:value='company_cashflow(company.id)')
         | /h)
 
-    template(v-show='can_form_company')
+    template(v-if='can_form_company')
       .company-panel.form-company(:class="{'is-selected':is_form_company_visible, 'no-companies':!companies.length}" @click.stop.prevent='toggle_form_company_menu')
         .form-label {{translate('ui.menu.company.form.action.form')}}
 
@@ -52,15 +52,14 @@ export default
 
   computed:
     is_ready: -> @client_state?.workflow_status == 'ready'
-    current_date: -> if @client_state?.planet?.current_date? then moment(@client_state?.planet?.current_date).format('MMM D, YYYY') else ''
+    planet_date: -> if @client_state?.planet?.current_time? then moment(@client_state.planet.current_time).format('MMM D, YYYY') else ''
 
     is_tycoon: -> @is_ready && @client_state?.is_tycoon()
     can_form_company: -> @is_tycoon && @client_state.player.corporation_id?.length
     companies: ->
-      if @is_ready && @is_tycoon && @client_state?.corporation?.company_ids?.length
-        _.compact(_.map(_.sortBy(@client_state.corporation.company_ids, (id) => @client_state.name_for_company_id(id)), (id) => @client_state.core.company_cache.metadata_for_id(id)))
-      else
-        []
+      return [] unless @is_ready && @is_tycoon && @client_state?.corporation?.company_ids?.length
+      _.compact(_.map(@client_state.corporation.company_ids, (id) => @client_state.core.company_cache.metadata_for_id(id)))
+    sorted_companies: -> _.orderBy(@companies, ['desc'], ['name'])
 
     corporation_metadata: -> if @is_ready && @client_state.player.corporation_id?.length then @client_state.current_corporation_metadata() else null
     corporation_name: -> if @corporation_metadata? then @corporation_metadata.name else '[PENDING]'

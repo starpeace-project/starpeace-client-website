@@ -1,9 +1,9 @@
 <template lang='pug'>
 transition(name='fade')
-  #toolbar-header(v-show='is_ready', v-cloak=true)
+  #toolbar-header(v-show='is_ready' v-cloak=true)
     .columns.row-menu
       .column.column-menu
-        toolbar-menubar(:managers='managers', :client_state='client_state')
+        toolbar-menubar(:managers='managers' :client_state='client_state')
 
       .column.column-tycoon
         span.column-tycoon-name
@@ -11,25 +11,28 @@ transition(name='fade')
             | {{tycoon_name}}
           template(v-else-if='!is_tycoon')
             | {{translate('identity.visitor')}}
+
         span.column-tycoon-buildings
           span.count 0 / 0
           font-awesome-icon(:icon="['far', 'building']")
 
         .column-notification-icons.level
           .level-item.client-version
-            a(:class='menu_class_release_notes', v-on:click.stop.prevent="client_state.menu.toggle_menu('release_notes')") {{client_version}}
+            a(:class='menu_class_release_notes' @click.stop.prevent="client_state.menu.toggle_menu('release_notes')") {{client_version}}
 
-          .level-item.game-music(:class='game_music_class', v-show="show_game_music")
-            font-awesome-icon(:icon="['fas', 'play']", v-show='!game_music_playing', v-on:click.stop.prevent='music_state.toggle_music()')
-            font-awesome-icon(:icon="['fas', 'pause']", v-show='game_music_playing', v-on:click.stop.prevent='music_state.toggle_music()')
-          .level-item.game-music-next(:class='game_music_volume_class', v-show="show_game_music")
-            font-awesome-icon(:icon="['fas', 'fast-forward']", v-on:click.stop.prevent='music_state.next_song()')
-          .level-item.game-music-volume(:class='game_music_volume_class', v-show="show_game_music")
-            font-awesome-icon(:icon="['fas', 'volume-up']", v-show='music_state.game_music_volume', v-on:click.stop.prevent='music_state.toggle_volume()')
-            font-awesome-icon(:icon="['fas', 'volume-off']", v-show='!music_state.game_music_volume', v-on:click.stop.prevent='music_state.toggle_volume()')
+          template(v-if='show_game_music')
+            .level-item.game-music(:class='game_music_class')
+              font-awesome-icon(:icon="['fas', 'play']" v-show='!game_music_playing' @click.stop.prevent='music_state.toggle_music()')
+              font-awesome-icon(:icon="['fas', 'pause']" v-show='game_music_playing' @click.stop.prevent='music_state.toggle_music()')
+            .level-item.game-music-next(:class='game_music_volume_class')
+              font-awesome-icon(:icon="['fas', 'fast-forward']" @click.stop.prevent='music_state.next_song()')
+            .level-item.game-music-volume(:class='game_music_volume_class')
+              font-awesome-icon(:icon="['fas', 'volume-up']" v-show='music_state.game_music_volume' @click.stop.prevent='music_state.toggle_volume()')
+              font-awesome-icon(:icon="['fas', 'volume-off']" v-show='!music_state.game_music_volume' @click.stop.prevent='music_state.toggle_volume()')
 
-          .level-item.notification-mail
+          .level-item.notification-mail(:class="{'has-unread':unread_mail.length>0}" @click.stop.prevent='toggle_mail()')
             font-awesome-icon(:icon="['far', 'envelope']")
+
           .level-item.notification-loading
             img.starpeace-logo(:class='notification_loading_css_class')
 
@@ -43,23 +46,19 @@ import ToolbarMenubar from '~/components/toolbar/toolbar-menubar.vue'
 import MoneyText from '~/components/misc/money-text.vue'
 
 export default
-  props:
-    ajax_state: Object
-    client_state: Object
-    managers: Object
-
   components:
     'toolbar-corporation': ToolbarCorporation
     'toolbar-menubar': ToolbarMenubar
     'money-text': MoneyText
 
+  props:
+    ajax_state: Object
+    client_state: Object
+    managers: Object
+
   data: ->
     client_version: process.env.CLIENT_VERSION
     show_game_music: @client_state.options?.option('music.show_game_music')
-
-  mounted: ->
-    @client_state.options?.subscribe_options_listener =>
-      @show_game_music = @client_state.options?.option('music.show_game_music')
 
   computed:
     music_state: -> @client_state?.music
@@ -67,6 +66,8 @@ export default
     is_ready: -> @client_state.initialized && @client_state?.workflow_status == 'ready'
     is_tycoon: -> @is_ready && @client_state?.is_tycoon()
     ticker_message: -> @client_state?.interface?.event_ticker_message || ''
+
+    unread_mail: -> _.filter(_.values(@client_state.player.mail_by_id), (m) -> !m.read)
 
     menu_class_release_notes: -> { 'is-active': @client_state?.menu?.is_visible('release_notes') || false }
 
@@ -78,12 +79,31 @@ export default
 
     tycoon_name: -> if @is_tycoon then @client_state?.current_tycoon_metadata()?.name else ''
 
+  mounted: ->
+    @client_state.options?.subscribe_options_listener =>
+      @show_game_music = @client_state.options?.option('music.show_game_music')
+
   methods:
     translate: (key) -> if @managers? then @managers.translation_manager.text(key) else key
+
+    toggle_mail: () ->
+      return unless @unread_mail.length
+      @client_state.menu.toggle_menu('mail')
+
 </script>
 
 <style lang='sass' scoped>
 @import '~assets/stylesheets/starpeace-variables'
+
+@keyframes opacity-blink
+  0%
+    opacity: .5
+  25%
+    opacity: 1
+  75%
+    opacity: 1
+  100%
+    opacity: .5
 
 .button
   &.is-starpeace
@@ -177,6 +197,10 @@ export default
         font-size: 1.5rem
         margin-left: 1rem
         opacity: .5
+
+        &.has-unread
+          animation: opacity-blink 3s linear infinite
+          cursor: pointer
 
       .notification-loading
         margin-left: .75rem

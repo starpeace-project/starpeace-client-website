@@ -6,5 +6,45 @@
     "FR": "Recherche Magnat",
     "IT": "Ricerca Magnata",
     "PT": "Pesquisa do Magnata"
+  },
+  "ui.menu.tycoon_search.breadcrumb": {
+    "DE": "Suche",
+    "EN": "Search",
+    "ES": "Buscar",
+    "FR": "Chercher",
+    "IT": "Ricerca",
+    "PT": "Pesquisa"
+  },
+  "ui.menu.tycoon_search.toggle.corporations": {
+    "DE": "Gesellschaft",
+    "EN": "Corporations",
+    "ES": "Corporaciones",
+    "FR": "Sociétés",
+    "IT": "Corporazioni",
+    "PT": "Corporações"
+  },
+  "ui.menu.tycoon_search.toggle.tycoons": {
+    "DE": "Tycoons",
+    "EN": "Tycoons",
+    "ES": "Magnates",
+    "FR": "Magnats",
+    "IT": "Magnati",
+    "PT": "Magnatas"
+  },
+  "ui.menu.tycoon_search.results.none": {
+    "DE": "Keine ergebnisse",
+    "EN": "No results",
+    "ES": "No hay resultados",
+    "FR": "Aucun résultat",
+    "IT": "Nessun risultato",
+    "PT": "Nenhum resultado"
+  },
+  "ui.menu.tycoon_search.action.search": {
+    "DE": "Suche",
+    "EN": "Search",
+    "ES": "Buscar",
+    "FR": "Chercher",
+    "IT": "Ricerca",
+    "PT": "Pesquisa"
   }
 }

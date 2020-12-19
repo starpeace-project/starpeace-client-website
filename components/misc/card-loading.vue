@@ -1,5 +1,5 @@
 <template lang='pug'>
-#loading-container.level(v-show='is_visible')
+#loading-container.level(v-show='is_visible' :class="{'is-grid':withinGrid, 'is-absolute':withinAbsolute}")
   .level-item
     .card.is-starpeace
       .card-content
@@ -13,8 +13,12 @@ export default
     client_state: Object
     managers: Object
 
+    withinGrid: Boolean
+    withinAbsolute: Boolean
+    visible: Boolean
+
   computed:
-    is_visible: -> @client_state?.initialized && @client_state?.loading
+    is_visible: -> @client_state?.initialized && @client_state?.loading || @visible
 
   methods:
     translate: (key) -> if @managers? then @managers.translation_manager.text(key) else key
@@ -24,12 +28,19 @@ export default
 @import '~assets/stylesheets/starpeace'
 
 #loading-container
-  grid-column-start: 1
-  grid-column-end: 4
-  grid-row-start: 2
-  grid-row-end: 4
   margin: 0
   position: relative
+
+  &.is-grid
+    grid-column-start: 1
+    grid-column-end: 4
+    grid-row-start: 2
+    grid-row-end: 4
+
+  &.is-absolute
+    position: absolute
+    height: 100%
+    width: 100%
 
 .card
   max-width: 20rem

@@ -21,7 +21,7 @@ export default class AssetManager
   queue: (key, asset_url, callback) ->
     if @loaded_keys.has(key)
       Logger.debug "attempted to load same key more than once: #{key}"
-      return
+      return callback()
 
     PIXI.Loader.shared.add(key, asset_url)
     @key_callbacks[key] = callback

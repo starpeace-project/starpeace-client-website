@@ -16,6 +16,7 @@ export default class CorporationState
 
     @company_ids = null
 
+    @last_mail_at = null
     @cash = null
     @cashflow = null
     @cashflow_by_company_id = {}
@@ -53,7 +54,8 @@ export default class CorporationState
     @notify_company_buildings_listeners()
     @notify_company_inventions_listeners()
 
-  update_cashflow: (cash, cashflow) ->
+  update_cashflow: (last_mail_at, cash, cashflow) ->
+    @last_mail_at = last_mail_at
     @cash = cash
     @cashflow = cashflow
     @notify_cashflow_listeners()

@@ -2,7 +2,7 @@
 #construction-container.card.is-starpeace.has-header
   .card-header
     .card-header-title {{translate('ui.menu.construction.header')}}
-    .card-header-icon.card-close(v-on:click.stop.prevent="client_state.menu.toggle_menu('construction')")
+    .card-header-icon.card-close(@click.stop.prevent="client_state.menu.toggle_menu('construction')")
       font-awesome-icon(:icon="['fas', 'times']")
 
   .card-content.sp-menu-background.overall-container
@@ -31,14 +31,14 @@
     #construction-image-pending(ref="pendingContainer")
       #construction-image-webgl-container(ref="previewContainer")
 
-    aside.sp-menu-category.sp-scrollbar(v-show="has_selected_menu_category")
+    aside.sp-menu-category.sp-scrollbar(v-if="has_selected_menu_category")
       template(v-for="info in sort_buildings(buildings_for_company_by_category[selected_menu_industry_category_id])")
-        a.is-building-item(v-on:click.stop.prevent="toggle_building(info)", :class="selected_building_id == info.id ? 'active' : ''")
-          industry-type-icon(:industry_type="info.industry_type_id", :small='true')
+        a.is-building-item(@click.stop.prevent="toggle_building(info)" :class="{'active': selected_building_id == info.id}")
+          industry-type-icon(:industry_type="info.industry_type_id" small)
           span.is-building-label {{building_name(info)}}
           .construction-disabled(v-show="!can_construct_building(info)")
 
-        a.construct-action(v-on:click.stop.prevent="select_building(info)", :disabled='!can_construct_building(info)')
+        a.construct-action(@click.stop.prevent="select_building(info)" :disabled='!can_construct_building(info)')
           .tile.is-ancestor.is-item-details(v-show="selected_building_id == info.id")
             .tile.is-parent.is-vertical
               .tile.is-parent.is-item-details-top
@@ -60,7 +60,7 @@
                       span.research-separator(v-if="index < info.required_invention_ids.length - 1") {{separator_label_for_index(index, info.required_invention_ids.length)}}
                   a.button.is-fullwidth.is-starpeace.construct-button(v-on:click.stop.prevent="select_building(info)", :disabled='!can_construct_building(info)') {{translate('ui.menu.construction.construct_building')}}
 
-    aside.sp-menu-overall.sp-scrollbar(v-show="!has_selected_menu_category")
+    aside.sp-menu-overall.sp-scrollbar(v-else)
       .tile.is-ancestor.construction-items
         .tile.is-6.is-vertical.is-parent
           .tile.is-child
