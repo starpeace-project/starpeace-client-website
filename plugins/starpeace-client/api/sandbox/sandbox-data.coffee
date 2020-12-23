@@ -132,6 +132,40 @@ export default class SandboxData
           @company_id_buildings[building.companyId].push building
           @building_id_building[building.id] = building
 
+
+    @empty_overlay_data = Uint8Array.from("0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000" +
+        "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000" +
+        "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000" +
+        "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000").buffer
+    @overlay_chunk_data = {}
+    for type in ['ZONES', 'BEAUTY', 'HC_RESIDENTIAL', 'MC_RESIDENTIAL', 'LC_RESIDENTIAL', 'QOL',
+        'CRIME', 'POLLUTION', 'BAP', 'FRESH_FOOD', 'PROCESSED_FOOD', 'CLOTHES', 'APPLIANCES',
+        'CARS', 'RESTAURANTS', 'BARS', 'TOYS', 'DRUGS', 'MOVIES', 'GASOLINE', 'COMPUTERS',
+        'FURNITURE', 'BOOKS', 'COMPACT_DISCS', 'FUNERAL_PARLORS']
+      for chunk_y in [2...9]
+        for chunk_x in [8...14]
+          info = @overlay_chunk_data["#{type}x#{chunk_x}x#{chunk_y}"] = {
+            chunk_x: chunk_x
+            chunk_y: chunk_y
+            width: 20
+            height: 20
+          }
+
+          if type == 'ZONES'
+            info.data = Uint8Array.from("1111122222333334444411111222223333344444111112222233333444441111122222333334444411111222223333344444" +
+                "5555566666777778888855555666667777788888555556666677777888885555566666777778888855555666667777111888" +
+                "9999900000000012100099999000000000111000999990000000000000009999900000000000000099999000000000000000" +
+                "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000").buffer
+          else
+            magnitude = 0.5 + 0.5 * Math.random()
+            data = new Array(20 * 20)
+            for y in [0...20]
+              for x in [0...20]
+                distance = Math.sqrt((10 - x) * (10 - x) + (10 - y) * (10 - y))
+                data[y * 20 + x] = Math.round(255 * (1 - Math.min(1, magnitude * (distance / 10))))
+            info.data = Uint8Array.from(data).buffer
+
+
   season_for_planet: (planet_id) ->
     if @planet_id_dates[planet_id]? then MONTH_SEASONS[@planet_id_dates[planet_id].month()] else 'winter'
 

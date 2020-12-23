@@ -4,6 +4,7 @@
       "id": "town-id-1",
       "name": "Libra",
       "sealId": "PGI",
+      "color": 16777166,
       "buildingId": "townhall-libra",
       "mapX": 780,
       "mapY": 822
@@ -12,6 +13,7 @@
       "id": "town-id-2",
       "name": "Taurus",
       "sealId": "MOAB",
+      "color": 16776960,
       "buildingId": "townhall-taurus",
       "mapX": 793,
       "mapY": 490
@@ -20,6 +22,7 @@
       "id": "town-id-3",
       "name": "Gemini",
       "sealId": "MKO",
+      "color": 13565696,
       "buildingId": "townhall-gemini",
       "mapX": 646,
       "mapY": 149
@@ -28,6 +31,7 @@
       "id": "town-id-4",
       "name": "Scorpius",
       "sealId": "MOAB",
+      "color": 16764416,
       "buildingId": "townhall-scorpius",
       "mapX": 655,
       "mapY": 290
@@ -36,6 +40,7 @@
       "id": "town-id-5",
       "name": "Pisces",
       "sealId": "DIS",
+      "color": 11908533,
       "buildingId": "townhall-pisces",
       "mapX": 615,
       "mapY": 580
@@ -44,6 +49,7 @@
       "id": "town-id-6",
       "name": "Leo",
       "sealId": "PGI",
+      "color": 65535,
       "buildingId": "townhall-leo",
       "mapX": 518,
       "mapY": 890
@@ -52,6 +58,7 @@
       "id": "town-id-7",
       "name": "Cancer",
       "sealId": "MKO",
+      "color": 65486,
       "buildingId": "townhall-cancer",
       "mapX": 492,
       "mapY": 453
@@ -60,6 +67,7 @@
       "id": "town-id-8",
       "name": "Virgo",
       "sealId": "DIS",
+      "color": 16751616,
       "buildingId": "townhall-virgo",
       "mapX": 208,
       "mapY": 164
@@ -68,6 +76,7 @@
       "id": "town-id-9",
       "name": "Sagittarius",
       "sealId": "MKO",
+      "color": 65436,
       "buildingId": "townhall-sagittarius",
       "mapX": 317,
       "mapY": 564
@@ -76,6 +85,7 @@
       "id": "town-id-10",
       "name": "Capricorn",
       "sealId": "PGI",
+      "color": 65379,
       "buildingId": "townhall-capricorn",
       "mapX": 234,
       "mapY": 869
@@ -84,6 +94,7 @@
       "id": "town-id-11",
       "name": "Aquarius",
       "sealId": "DIS",
+      "color": 10263708,
       "buildingId": "townhall-aquarius",
       "mapX": 135,
       "mapY": 452
@@ -94,6 +105,7 @@
       "id": "town-id-12",
       "name": "Eppe",
       "sealId": "PGI",
+      "color": 16777166,
       "buildingId": "townhall-eppe",
       "mapX": 542,
       "mapY": 591
@@ -102,6 +114,7 @@
       "id": "town-id-13",
       "name": "Croma",
       "sealId": "MKO",
+      "color": 16776960,
       "buildingId": "townhall-croma",
       "mapX": 817,
       "mapY": 848
@@ -110,6 +123,7 @@
       "id": "town-id-14",
       "name": "Perceo",
       "sealId": "PGI",
+      "color": 13565696,
       "buildingId": "townhall-perceo",
       "mapX": 271,
       "mapY": 472
@@ -118,6 +132,7 @@
       "id": "town-id-15",
       "name": "Treloba",
       "sealId": "DIS",
+      "color": 16764416,
       "buildingId": "townhall-treloba",
       "mapX": 335,
       "mapY": 92
@@ -126,6 +141,7 @@
       "id": "town-id-16",
       "name": "El Rio",
       "sealId": "DIS",
+      "color": 11908533,
       "buildingId": "townhall-el-rio",
       "mapX": 847,
       "mapY": 533
@@ -134,6 +150,7 @@
       "id": "town-id-17",
       "name": "Ilase",
       "sealId": "PGI",
+      "color": 65535,
       "buildingId": "townhall-ilase",
       "mapX": 529,
       "mapY": 279
@@ -142,6 +159,7 @@
       "id": "town-id-18",
       "name": "Loi Mei",
       "sealId": "MKO",
+      "color": 65486,
       "buildingId": "townhall-loi-mei",
       "mapX": 405,
       "mapY": 710
@@ -150,6 +168,7 @@
       "id": "town-id-19",
       "name": "Wo Ka",
       "sealId": "MKO",
+      "color": 16751616,
       "buildingId": "townhall-wa-ka",
       "mapX": 123,
       "mapY": 426
@@ -158,6 +177,7 @@
       "id": "town-id-20",
       "name": "Dromeda",
       "sealId": "MOAB",
+      "color": 65436,
       "buildingId": "townhall-dromeda",
       "mapX": 98,
       "mapY": 198
@@ -166,6 +186,7 @@
       "id": "town-id-21",
       "name": "Zelti",
       "sealId": "MOAB",
+      "color": 65379,
       "buildingId": "townhall-zelti",
       "mapX": 785,
       "mapY": 135
@@ -174,6 +195,7 @@
       "id": "town-id-22",
       "name": "Oloc",
       "sealId": "MOAB",
+      "color": 10263708,
       "buildingId": "townhall-oloc",
       "mapX": 590,
       "mapY": 894

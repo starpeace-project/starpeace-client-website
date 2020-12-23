@@ -53,8 +53,8 @@
                 label.label.group-header &nbsp;
           menu-option(:label="translate('ui.menu.options.option.locations.poi.label')", :value="options.option('bookmarks.points_of_interest')", v-on:toggle="options.toggle('bookmarks.points_of_interest')")
           menu-option(:label="translate('ui.menu.options.option.locations.poi_capital.label')", :value="options.option('bookmarks.capital')", v-on:toggle="options.toggle('bookmarks.capital')")
-          menu-option(:label="translate('ui.menu.options.option.locations.poi_towns.label')", :value="options.option('bookmarks.towns')", v-on:toggle="options.toggle('bookmarks.towns')")
           menu-option(:label="translate('ui.menu.options.option.locations.poi_mausoleums.label')", :value="options.option('bookmarks.mausoleums')", v-on:toggle="options.toggle('bookmarks.mausoleums')")
+          menu-option(:label="translate('ui.menu.options.option.locations.poi_towns.label')", :value="options.option('bookmarks.towns')", v-on:toggle="options.toggle('bookmarks.towns')")
           menu-option(:label="translate('ui.menu.options.option.locations.corporation.label')", :value="options.option('bookmarks.corporation')", v-on:toggle="options.toggle('bookmarks.corporation')")
 
     footer.card-footer

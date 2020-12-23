@@ -37,6 +37,9 @@ export default class InterfaceState
     @last_mouse_x = -1
     @last_mouse_y = -1
 
+    @location_history = []
+    @location_index = 0
+
     @selected_building_id = null
 
     @inventions_selected_category_id = 'SERVICE'

@@ -10,16 +10,12 @@ export default class BuildingMap
     @tile_info_concrete = new Array(@width * @height)
     @tile_info_road = new Array(@width * @height)
 
-    @building_chunks = new ChunkMap(@width, @height, (chunk_x, chunk_y, chunk_width, chunk_height) =>
-      @building_manager.load_chunk(chunk_x, chunk_y, chunk_width, chunk_height)
-    , (chunk_info, building_ids) =>
+    @building_chunks = new ChunkMap(@width, @height, ((chunk_x, chunk_y) => @building_manager.load_chunk(chunk_x, chunk_y)), (chunk_info, building_ids) =>
       Logger.debug("refreshing building chunk at #{chunk_info.chunk_x}x#{chunk_info.chunk_y}")
       @add_building(building_id) for building_id in building_ids
       @client_state.planet.notify_map_data_listeners({ type: 'building', info: chunk_info })
     )
-    @road_chunks = new ChunkMap(@width, @height, (chunk_x, chunk_y, chunk_width, chunk_height) =>
-      @road_manager.load_chunk(chunk_x, chunk_y, chunk_width, chunk_height)
-    , (chunk_info, road_data) =>
+    @road_chunks = new ChunkMap(@width, @height, ((chunk_x, chunk_y) => @road_manager.load_chunk(chunk_x, chunk_y)), (chunk_info, road_data) =>
       Logger.debug("refreshing road chunk at #{chunk_info.chunk_x}x#{chunk_info.chunk_y}")
       @update_roads(chunk_info, road_data)
       @client_state.planet.notify_map_data_listeners({ type: 'road', info: chunk_info })

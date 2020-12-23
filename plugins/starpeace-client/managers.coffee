@@ -45,7 +45,7 @@ export default class Managers
     @land_manager = new LandManager(@asset_manager, @ajax_state, @client_state)
     @map_manager = new MapManager(@asset_manager, @ajax_state, @client_state)
     @mail_manager = new MailManager(@api, @ajax_state, @client_state)
-    @overlay_manager = new OverlayManager(@asset_manager, @ajax_state, @client_state)
+    @overlay_manager = new OverlayManager(@api, @asset_manager, @ajax_state, @client_state)
     @plane_manager = new PlaneManager(@asset_manager, @ajax_state, @client_state)
     @planets_manager = new PlanetsManager(@api, @ajax_state, @client_state)
     @road_manager = new RoadManager(@asset_manager, @ajax_state, @client_state)
@@ -95,7 +95,7 @@ export default class Managers
         @planets_manager.load_metadata_invention(@client_state.player.planet_id),
         @planets_manager.load_events(@client_state.player.planet_id),
         @planets_manager.load_towns(@client_state.player.planet_id),
-        @planets_manager.load_online_corporations(@client_state.player.planet_id)
+        @planets_manager.load_online_tycoons(@client_state.player.planet_id)
       ]).catch (err) ->
         console.error err
         throw err
@@ -150,7 +150,8 @@ export default class Managers
     planet_metadata = @client_state.current_planet_metadata()
     @client_state.planet.load_game_map(new GameMap(@building_manager, @road_manager, @overlay_manager,
         @client_state.core.land_library.metadata_for_planet_type(planet_metadata.planet_type),
-        @client_state.core.map_library.texture_for_id(planet_metadata.map_id), @client_state, @options))
+        @client_state.core.map_library.texture_for_id(planet_metadata.map_id), @client_state.core.map_library.towns_texture_for_id(planet_metadata.map_id),
+        @client_state, @options))
 
     @building_manager.initialize()
     @invention_manager.initialize()

@@ -213,8 +213,7 @@ export default
     item_selected: (item_id) ->
       return unless @items_by_id[item_id]?
       item = @items_by_id[item_id]
-      @client_state.interface.select_building_id(item.building_id) if (item.type == 'TOWN' || item.type == 'BUILDING') && item.building_id?
-      @client_state.camera.recenter_at(item.map_x, item.map_y) if item.type == 'TOWN' || item.type == 'LOCATION' || item.type == 'BUILDING'
+      @client_state.jump_to(item.map_x, item.map_y, item.building_id) if item.type == 'TOWN' || item.type == 'LOCATION' || item.type == 'BUILDING'
 
 
     start_move_item: (event) ->

@@ -18,16 +18,15 @@ export default class ChunkMap
     chunk_x = Math.floor(x / CHUNK_WIDTH)
     chunk_y = Math.floor(y / CHUNK_HEIGHT)
     chunk_index = chunk_y * @width + chunk_x
-    load_promise = @refresh_callback(chunk_x, chunk_y, CHUNK_WIDTH, CHUNK_HEIGHT)
 
-    if load_promise?
-      load_promise.then (data) =>
-        if @chunk_info[chunk_index]?
-          @chunk_info[chunk_index].update()
-        else
-          @chunk_info[chunk_index] = new ChunkInfo(chunk_x, chunk_y, CHUNK_WIDTH, CHUNK_HEIGHT, 5)
+    @chunk_info[chunk_index] = new ChunkInfo(chunk_x, chunk_y, CHUNK_WIDTH, CHUNK_HEIGHT, 5) unless @chunk_info[chunk_index]?
+    return if @chunk_info[chunk_index].refresh_promise?
 
-        @handle_refresh_callback(@chunk_info[chunk_index], data)
+    @chunk_info[chunk_index].refresh_promise = @refresh_callback(chunk_x, chunk_y, CHUNK_WIDTH, CHUNK_HEIGHT) # TODO: remove width & height
+    @chunk_info[chunk_index].refresh_promise.then (data) =>
+      @chunk_info[chunk_index].update()
+      @handle_refresh_callback(@chunk_info[chunk_index], data)
+      @chunk_info[chunk_index].refresh_promise = null
 
   info_at: (x, y) ->
     chunk_x = Math.floor(x / CHUNK_WIDTH)

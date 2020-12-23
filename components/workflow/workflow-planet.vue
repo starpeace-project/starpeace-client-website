@@ -11,8 +11,8 @@
         .tile.is-parent.planet
           article.tile.is-child.planet-row
             .columns.is-vcentered
-              .column.is-narrow
-                img.planet-image.starpeace-logo.logo-loading(:src="planet_animation_url(planet_chunk[n - 1])", v-on:load="$event.target.classList.remove('starpeace-logo', 'logo-loading')")
+              .column.is-narrow.planet-image
+                img.starpeace-logo.logo-loading(:src="planet_animation_url(planet_chunk[n - 1])" @load="$event.target.classList.remove('starpeace-logo', 'logo-loading')")
 
               .column.planet-item.info
                 .planet-name {{planet_chunk[n - 1].name}}
@@ -136,12 +136,16 @@ export default
 
     .planet-row
       .planet-image
-        background-size: 7.5rem
-        height: 7.5rem
-        width: 7.5rem
+        padding-right: .4rem
+
+        img
+          background-size: 7.5rem
+          height: 7.5rem
+          width: 7.5rem
 
       .planet-item
         color: #fff
+        padding-left: .4rem
 
         &.description
           padding-left: 1rem

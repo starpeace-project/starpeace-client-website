@@ -19,7 +19,7 @@ div
         span.detail-label {{translate('ui.menu.town_search.panel.details.mayor.label')}}:
         span.detail-value
           template(v-if='town.mayor') {{town.mayor.tycoonName}}
-          template(v-else) {{translate('ui.menu.town_search.panel.details.mayor.none')}}
+          template(v-else) {{translate('ui.misc.none')}}
 
   .town-actions.level.is-mobile
     .level-item.action-column
@@ -98,7 +98,7 @@ export default
         })
       }
 
-    show_in_map: -> @clientState.select_building(@town.building_id, @town.map_x, @town.map_y) if @town?.building_id? && @town?.map_x? && @town?.map_y?
+    show_in_map: -> @clientState.jump_to(@town.map_x, @town.map_y, @town.building_id) if @town?.building_id? && @town?.map_x? && @town?.map_y?
     show_politics: -> @clientState.show_politics(@town.id) if @town?.id?
 
 </script>

@@ -36,7 +36,7 @@ export default class MiniMapRenderer
     @client_state.interface.subscribe_mini_map_zoom_listener => @update_mini_map_scale()
 
   update_map_data: (source_x, target_x, source_y, target_y) ->
-    return unless @client_state.planet.game_map?.raw_map_rgba_pixels?
+    return unless @client_state.planet.game_map?.map_rgba_pixels?
 
     @rgba_buffer = new Uint8ClampedArray(@client_state.planet.game_map.width * @client_state.planet.game_map.height * 4) unless @rgba_buffer?
     for y in [source_y...target_y]
@@ -63,13 +63,13 @@ export default class MiniMapRenderer
             @rgba_buffer[index + 1] = (color & 0x00FF00) >> 8
             @rgba_buffer[index + 2] = (color & 0x0000FF) >> 0
           else
-            @rgba_buffer[index + 0] = @client_state.planet.game_map.raw_map_rgba_pixels[source_index + 0]
-            @rgba_buffer[index + 1] = @client_state.planet.game_map.raw_map_rgba_pixels[source_index + 1]
-            @rgba_buffer[index + 2] = @client_state.planet.game_map.raw_map_rgba_pixels[source_index + 2]
+            @rgba_buffer[index + 0] = @client_state.planet.game_map.map_rgba_pixels[source_index + 0]
+            @rgba_buffer[index + 1] = @client_state.planet.game_map.map_rgba_pixels[source_index + 1]
+            @rgba_buffer[index + 2] = @client_state.planet.game_map.map_rgba_pixels[source_index + 2]
         else
-          @rgba_buffer[index + 0] = @client_state.planet.game_map.raw_map_rgba_pixels[source_index + 0] - @client_state.planet.game_map.raw_map_rgba_pixels[source_index + 0] * .5
-          @rgba_buffer[index + 1] = @client_state.planet.game_map.raw_map_rgba_pixels[source_index + 1] - @client_state.planet.game_map.raw_map_rgba_pixels[source_index + 1] * .5
-          @rgba_buffer[index + 2] = @client_state.planet.game_map.raw_map_rgba_pixels[source_index + 2] - @client_state.planet.game_map.raw_map_rgba_pixels[source_index + 2] * .5
+          @rgba_buffer[index + 0] = @client_state.planet.game_map.map_rgba_pixels[source_index + 0] - @client_state.planet.game_map.map_rgba_pixels[source_index + 0] * .5
+          @rgba_buffer[index + 1] = @client_state.planet.game_map.map_rgba_pixels[source_index + 1] - @client_state.planet.game_map.map_rgba_pixels[source_index + 1] * .5
+          @rgba_buffer[index + 2] = @client_state.planet.game_map.map_rgba_pixels[source_index + 2] - @client_state.planet.game_map.map_rgba_pixels[source_index + 2] * .5
 
   refresh_map_texture: () ->
     return unless @client_state.initialized && @client_state.workflow_status == 'ready'

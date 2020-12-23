@@ -13,8 +13,8 @@
       template(v-else-if='!is_loading')
         .planet(v-for='planet in planets', :disabled='!planet.enabled', :class="planet.enabled ? '' : 'is-disabled'")
           .columns.is-vcentered
-            .column.is-narrow
-              img.planet-image.starpeace-logo.logo-loading(:src="planet_animation_url(planet)", v-on:load="$event.target.classList.remove('starpeace-logo', 'logo-loading')")
+            .column.is-narrow.planet-image
+              img.starpeace-logo.logo-loading(:src="planet_animation_url(planet)", v-on:load="$event.target.classList.remove('starpeace-logo', 'logo-loading')")
 
             .column.planet-item
               .planet-name {{planet.name}}
@@ -176,14 +176,18 @@ export default
     margin: 0
 
   .planet-image
-    background-size: 5rem
-    height: 5rem
-    width: 5rem
+    padding-right: .4rem
+
+    img
+      background-size: 5rem
+      height: 5rem
+      width: 5rem
 
   .planet-item
     color: #fff
     font-size: .9rem
     justify-content: left
+    padding-left: .4rem
     text-align: left
 
     .planet-info-row

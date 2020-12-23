@@ -53,15 +53,6 @@
         "levelId": "APPRENTICE",
         "buildingCount": 0,
         "companies": []
-      },
-      {
-        "id": "corp-id-3",
-        "name": "Corporation C",
-        "tycoonId": "tycoon-id-1",
-        "planetId": "planet-4",
-        "levelId": "APPRENTICE",
-        "buildingCount": 0,
-        "companies": []
       }
     ]
   },

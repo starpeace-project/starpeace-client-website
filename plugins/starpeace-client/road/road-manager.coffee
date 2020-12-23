@@ -1,6 +1,7 @@
 
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 
+import ChunkMap from '~/plugins/starpeace-client/map/chunk/chunk-map.coffee'
 import Road from '~/plugins/starpeace-client/road/road.coffee'
 import MetadataRoad from '~/plugins/starpeace-client/road/metadata-road.coffee'
 
@@ -58,14 +59,14 @@ export default class RoadManager
       @ajax_state.unlock('assets.road_metadata', 'ALL')
     )
 
-  load_chunk: (chunk_x, chunk_y, width, height) ->
+  load_chunk: (chunk_x, chunk_y) ->
     key = "#{chunk_x}x#{chunk_y}"
     return if @chunk_promises[key]?
 
     Logger.debug("attempting to load road chunk at #{chunk_x}x#{chunk_y}")
     @ajax_state.start_ajax()
     @chunk_promises[key] = new Promise (done) =>
-      data = new Array(width, height).fill(false)
+      data = new Array(ChunkMap.CHUNK_WIDTH, ChunkMap.CHUNK_HEIGHT).fill(false)
 
       chunk = DUMMY_CHUNK_DATA[key]
       data = chunk.data if chunk?

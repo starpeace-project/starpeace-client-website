@@ -33,27 +33,15 @@ export default class BuildingManager
     simulation_definition = @client_state.core.building_library.simulation_definition_for_id(definition_id)
     _.reduce(simulation_definition?.construction_inputs, ((sum, input) => sum + (@cost_for_resource_type(input.resource_id) * input.quantity)), 0)
 
-  load_chunk: (chunk_x, chunk_y, width, height) ->
-    key = "#{chunk_x}x#{chunk_y}"
-    return if @chunk_promises[key]?
-
-    return unless @client_state.has_session() && @client_state.player.planet_id?
-
-    @ajax_state.start_ajax()
-    @chunk_promises[key] = new Promise (done) =>
-      @api.buildings_for_planet(@client_state.player.planet_id, chunk_x, chunk_y)
-        .then (building_data) =>
-          buildings = _.map(building_data, (json) -> Building.from_json(json))
-          @client_state.core.building_cache.load_buildings(buildings)
-          Logger.debug("loaded building chunk at #{chunk_x}x#{chunk_y}")
-          delete @chunk_promises[key]
-          @ajax_state.finish_ajax()
-          done(_.map(buildings, 'id'))
-
-        .catch (err) =>
-          # FIXME: TODO: add error handling
-          Logger.debug "failed to retrieve building map chunk"
-          @ajax_state.finish_ajax()
+  load_chunk: (chunk_x, chunk_y) ->
+    planet_id = @client_state.player.planet_id
+    throw Error() if !@client_state.has_session() || !planet_id? || !chunk_x? || !chunk_y?
+    await @ajax_state.locked('building_load_chunk', "#{planet_id}x#{chunk_x}x#{chunk_y}", =>
+      buildings = _.map(await @api.buildings_for_planet(planet_id, chunk_x, chunk_y), (json) -> Building.from_json(json))
+      @client_state.core.building_cache.load_buildings(buildings)
+      Logger.debug("loaded building chunk at #{chunk_x}x#{chunk_y}")
+      _.map(buildings, 'id')
+    )
 
   load_by_company: (company_id) ->
     new Promise (done, error) =>

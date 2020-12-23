@@ -3,13 +3,12 @@ import moment from 'moment'
 
 export default class ChunkInfo
   constructor: (@chunk_x, @chunk_y, @width, @height, @max_age_mins) ->
-    @last_updated = moment()
+    @refresh_promise = null
 
   x_offset: () -> @chunk_x * @width
   y_offset: () -> @chunk_y * @height
 
-  is_current: () ->
-    @last_updated.add(@max_age_mins, 'minutes').isAfter(moment())
+  is_current: () -> @last_updated? && @last_updated.add(@max_age_mins, 'minutes').isAfter(moment())
 
   update: () ->
     @last_updated = moment()

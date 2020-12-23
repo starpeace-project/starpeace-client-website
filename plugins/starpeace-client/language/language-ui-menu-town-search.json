@@ -47,14 +47,6 @@
     "IT": "Sindaco",
     "PT": "Prefeito"
   },
-  "ui.menu.town_search.panel.details.mayor.none": {
-    "DE": "Keiner",
-    "EN": "None",
-    "ES": "Ninguna",
-    "FR": "Aucun",
-    "IT": "Nessuna",
-    "PT": "Nenhum"
-  },
   "ui.menu.town_search.panel.action.show_in_map": {
     "DE": "In Karte Anzeigen",
     "EN": "Show in Map",

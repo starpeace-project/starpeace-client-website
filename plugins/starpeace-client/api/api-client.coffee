@@ -15,14 +15,14 @@ export default class APIClient
     throw "no configuration for galaxy #{galaxy_id}" unless galaxy_config?.api_protocol? && galaxy_config?.api_url? && galaxy_config?.api_port?
     "#{galaxy_config.api_protocol}://#{galaxy_config.api_url}:#{galaxy_config.api_port}"
 
-  galaxy_auth: (parameters, galaxy_id=null) ->
+  galaxy_auth: (options, galaxy_id=null) ->
     galaxy_id = @client_state.identity.galaxy_id unless galaxy_id?
 
     headers = { }
     headers.Authorization = "JWT #{@client_state.options.galaxy_jwt}" if @client_state.options.galaxy_id == galaxy_id && @client_state.options.galaxy_jwt?.length
     headers.VisaId = @client_state.player.planet_visa_id if @client_state.player.planet_visa_id?.length
 
-    _.assign(parameters, { headers: headers })
+    _.assign(options, { headers: headers })
 
   handle_request: (request_promise, handle_result) ->
     new Promise (done, error) =>
@@ -36,6 +36,8 @@ export default class APIClient
     @handle_request(@client.delete("#{@galaxy_url()}/#{path}", @galaxy_auth(parameters)), handle_result)
   get: (path, query, handle_result) ->
     @handle_request(@client.get("#{@galaxy_url()}/#{path}", @galaxy_auth({ params: (query || {}) })), handle_result)
+  get_binary: (path, query, handle_result) ->
+    @handle_request(@client.get("#{@galaxy_url()}/#{path}", @galaxy_auth({ responseType: 'arraybuffer', params: (query || {}) })), handle_result)
   post: (path, parameters, handle_result) ->
     @handle_request(@client.post("#{@galaxy_url()}/#{path}", parameters, @galaxy_auth({})), handle_result)
   put: (path, parameters, handle_result) ->
@@ -110,8 +112,8 @@ export default class APIClient
   invention_metadata_for_planet: (planet_id) ->
     @get("planets/#{planet_id}/metadata/inventions", {}, (result) -> result || {})
 
-  online_corporations_for_planet: (planet_id) ->
-    @get("planets/#{planet_id}/online", {}, (result) -> result.corporations)
+  online_tycoons_for_planet: (planet_id) ->
+    @get("planets/#{planet_id}/online", {}, (result) -> result || [])
   rankings_for_planet: (planet_id, ranking_type_id) ->
     @get("planets/#{planet_id}/rankings/#{ranking_type_id}", {}, (result) -> result || [])
   search_corporations_for_planet: (planet_id, query, startsWithQuery) ->
@@ -124,6 +126,12 @@ export default class APIClient
     @get("planets/#{planet_id}/towns/#{town_id}/buildings", { industryCategoryId, industryTypeId }, (result) -> result || [])
   companies_for_town: (planet_id, town_id) ->
     @get("planets/#{planet_id}/towns/#{town_id}/companies", {}, (result) -> result || [])
+
+  overlay_data_for_planet: (planet_id, type, chunk_x, chunk_y) ->
+    @get_binary("planets/#{planet_id}/overlay/#{type}", {
+      chunkX: chunk_x
+      chunkY: chunk_y
+    }, (result) -> if result? then new Uint8Array(result) else null)
 
   tycoon_for_id: (tycoon_id) ->
     @get("tycoons/#{tycoon_id}", {}, (result) -> result)

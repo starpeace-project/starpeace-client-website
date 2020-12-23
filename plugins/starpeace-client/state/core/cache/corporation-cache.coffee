@@ -36,5 +36,5 @@ export default class CorporationCache extends Cache
     @notify_corporation_metadata_listeners()
 
 
-  add_corporation_company: (corporationId, company) ->
+  add_corporation_company: (corporation_id, company) ->
     @corporation_metadata_by_id.get(corporation_id).companies.push(company) if @corporation_metadata_by_id.get(corporation_id)?

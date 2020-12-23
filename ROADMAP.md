@@ -4,13 +4,16 @@ Some of the tentative future features and rough planned version are outlined bel
 
 ## v0.5
 ### platform
-* [pending] API auth remember me and error handling
-* [pending] integrate player and world events with news ticker
 * [pending] minimum distance between buildings (statue and tower)
+* [pending] manage city zones API integration
+* [pending] follow tycoon API integration
 
 ### assets
+* [pending] car assets
+* [pending] street light and intersection lamp assets
 
 ### gameplay
+* [pending] follow tycoon menu state and button
 * [pending] mail contacts menu
 * [pending] mail contacts organization menu
 * [pending] mail attachments
@@ -20,4 +23,8 @@ Some of the tentative future features and rough planned version are outlined bel
 * [pending] camera rotation perspectives
 * [pending] auto-scroll and interaction of inspect and hint menu details
 * [pending] preview seal buildings during company creation
+* [pending] preview planet supply and demand during company creation
 * [pending] corporation profile icons
+* [pending] city zones menu and zoning support
+* [pending] car rendering
+* [pending] street light and intersection lamp rendering

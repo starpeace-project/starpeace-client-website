@@ -1,39 +1,12 @@
 
 import MetadataOverlay from '~/plugins/starpeace-client/overlay/metadata-overlay.coffee'
 import Overlay from '~/plugins/starpeace-client/overlay/overlay.coffee'
+import ChunkMap from '~/plugins/starpeace-client/map/chunk/chunk-map.coffee'
 
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 
-DUMMY_ZONE_CHUNK_DATA = {}
-for type in ['ZONES', 'BEAUTY', 'HC_RESIDENTIAL', 'MC_RESIDENTIAL', 'LC_RESIDENTIAL', 'QOL',
-    'CRIME', 'POLLUTION', 'BAP', 'FRESH_FOOD', 'PROCESSED_FOOD', 'CLOTHES', 'APPLIANCES',
-    'CARS', 'RESTAURANTS', 'BARS', 'TOYS', 'DRUGS', 'MOVIES', 'GASOLINE', 'COMPUTERS',
-    'FURNITURE', 'BOOKS', 'COMPACT_DISCS', 'FUNERAL_PARLORS']
-  for chunk_y in [2...9]
-    for chunk_x in [8...14]
-      info = DUMMY_ZONE_CHUNK_DATA["#{type}x#{chunk_x}x#{chunk_y}"] = {
-        chunk_x: chunk_x
-        chunk_y: chunk_y
-        width: 20
-        height: 20
-        data: []
-      }
-
-      if type == 'ZONES'
-        info.data = "1111122222333334444411111222223333344444111112222233333444441111122222333334444411111222223333344444" +
-            "5555566666777778888855555666667777788888555556666677777888885555566666777778888855555666667777111888" +
-            "9999900000000012100099999000000000111000999990000000000000009999900000000000000099999000000000000000" +
-            "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
-      else
-        magnitude = 0.5 + 0.5 * Math.random()
-        for y in [0...20]
-          for x in [0...20]
-            distance = Math.sqrt((10 - x) * (10 - x) + (10 - y) * (10 - y))
-            info.data[y * 20 + x] = Math.round(255 * (1 - Math.min(1, magnitude * (distance / 10)))).toString(16).padStart(2, '0')
-        info.data = info.data.join('')
-
 export default class OverlayManager
-  constructor: (@asset_manager, @ajax_state, @client_state) ->
+  constructor: (@api, @asset_manager, @ajax_state, @client_state) ->
     @chunk_promises = {}
 
   queue_asset_load: () ->
@@ -60,36 +33,70 @@ export default class OverlayManager
       @ajax_state.unlock('assets.overlay_metadata', 'ALL')
     )
 
-  load_chunk: (type, chunk_x, chunk_y, width, height) ->
-    key = "#{type}x#{chunk_x}x#{chunk_y}"
-    return if @chunk_promises[key]?
+  load_chunk: (type, chunk_x, chunk_y) ->
+    planet_id = @client_state.player.planet_id
+    throw Error() if !@client_state.has_session() || !planet_id? || !type? || !chunk_x? || !chunk_y?
 
     Logger.debug("attempting to load overlay chunk for #{type} at #{chunk_x}x#{chunk_y}")
-    @ajax_state.start_ajax()
-    @chunk_promises[key] = new Promise (done) =>
-      data = new Array(width, height).fill(Overlay.TYPES.NONE)
+    return new Array(ChunkMap.CHUNK_WIDTH, ChunkMap.CHUNK_HEIGHT) if type == 'NONE'
+    if type == 'TOWNS'
+      @deserialize_towns_chunk(chunk_x, chunk_y)
+    else
+      await @ajax_state.locked('planet_overlays', "#{planet_id}:#{type}x#{chunk_x}x#{chunk_y}", =>
+        overlay_data = await @api.overlay_data_for_planet(planet_id, type, chunk_x, chunk_y)
+        return new Array(ChunkMap.CHUNK_WIDTH, ChunkMap.CHUNK_HEIGHT) unless overlay_data?
 
-      chunk = DUMMY_ZONE_CHUNK_DATA[key]
-      if type == 'ZONES'
-        data = @deserialize_zone_chunk(chunk.width, chunk.height, chunk.data) if chunk?
-      else if type != 'NONE' && type != 'TOWNS'
-        data = Overlay.deserialize_chunk(type, chunk.width, chunk.height, chunk.data) if chunk?
+        if type == 'ZONES'
+          @deserialize_zone_chunk(ChunkMap.CHUNK_WIDTH, ChunkMap.CHUNK_HEIGHT, overlay_data)
+        else
+          @deserialize_overlay_chunk(type, ChunkMap.CHUNK_WIDTH, ChunkMap.CHUNK_HEIGHT, overlay_data)
+      )
 
-      setTimeout(=>
-        delete @chunk_promises[key]
-        @ajax_state.finish_ajax()
-        done(data)
-      , 500)
+  deserialize_towns_chunk: (chunk_x, chunk_y) ->
+    data = new Array(ChunkMap.CHUNK_WIDTH, ChunkMap.CHUNK_HEIGHT)
+    pixels = @client_state.planet.game_map.towns_rgba_pixels
+    x_offset = ChunkMap.CHUNK_WIDTH * chunk_x
+    y_offset = ChunkMap.CHUNK_HEIGHT * chunk_y
+    for y in [0...ChunkMap.CHUNK_HEIGHT]
+      for x in [0...ChunkMap.CHUNK_WIDTH]
+        color = @client_state.planet.game_map.town_color_at(x + x_offset, y + y_offset)
+        data[y * ChunkMap.CHUNK_WIDTH + x] = {
+          value: color
+          color: color
+        }
+    data
 
   deserialize_zone_chunk: (width, height, data) ->
     zones = new Array(width * height)
+    unless data.length == zones.length
+      Logger.warn("unable to deserialize city zone chunk (needed #{zones.length}, had #{data.length})")
+      return zones
+
     for y in [0...height]
       for x in [0...width]
-        type_value = parseInt(data[y * width + x], 16)
-        if type_value > 0
-          city_zone = @client_state.core.planet_library.zone_for_value(type_value)
-          if city_zone?
-            zones[y * width + x] = city_zone
-          else
-            Logger.warn("unable to find city zone for value #{type_value}")
+        type_value = data[y * width + x]
+        continue unless type_value > 0
+        city_zone = @client_state.core.planet_library.zone_for_value(type_value)
+        if city_zone?
+          zones[y * width + x] = city_zone
+        else
+          Logger.warn("unable to find city zone for value #{type_value}")
     zones
+
+  deserialize_overlay_chunk: (type, width, height, data) ->
+    overlay = Overlay.TYPES[type]
+    throw "unknown overlay type #{type}" unless overlay?
+
+    overlay_data = new Array(width * height)
+    unless data.length == overlay_data.length
+      Logger.warn("unable to deserialize overlay chunk (needed #{overlay_data.length}, had #{data.length})")
+      return zones
+
+    for y in [0...height]
+      for x in [0...width]
+        overlay_value = data[y * width + x]
+        overlay_data[y * width + x] = {
+          value: overlay_value
+          color: parseInt(overlay.color_gradient.rgbAt(overlay_value / 255).toHex(), 16)
+        }
+    overlay_data

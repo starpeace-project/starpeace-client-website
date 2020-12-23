@@ -32,10 +32,11 @@ client-only
 
     sp-body(:client_state='client_state')
 
-    sp-toolbar-overlay-menu(:managers='managers' :client_state='client_state')
-    sp-toolbar-ribbon(:managers='managers' :client_state='client_state')
-    sp-toolbar-header(:managers='managers' :ajax_state='ajax_state' :client_state='client_state')
-    sp-toolbar-details(:managers='managers' :ajax_state='ajax_state' :client_state='client_state')
+    toolbar-overlay(:managers='managers' :client_state='client_state')
+    toolbar-minimap(:client_state='client_state')
+    toolbar-ribbon(:managers='managers' :client_state='client_state')
+    toolbar-header(:managers='managers' :ajax_state='ajax_state' :client_state='client_state')
+    toolbar-details(:managers='managers' :ajax_state='ajax_state' :client_state='client_state')
 
     sp-loading-modal(v-show='is_sub_menu_visible')
     sp-sub-menu-remove-galaxy(v-show='is_sub_menu_remove_galaxy_visible' :managers='managers' :client_state='client_state')
@@ -62,7 +63,7 @@ import MenuCorporationEstablish from '~/components/menu/corporation/establish.vu
 import MenuCompanyForm from '~/components/menu/company/form.vue'
 
 import MenuConstruction from '~/components/menu/construction/main-menu.vue'
-import MenuChat from '~/components/menu/menu-chat.vue'
+import MenuChat from '~/components/menu/chat/main-menu.vue'
 import MenuBookmarks from '~/components/menu/bookmarks/main-menu.vue'
 import MenuMail from '~/components/menu/mail/main-menu.vue'
 import MenuOptions from '~/components/menu/options/main-menu.vue'
@@ -78,8 +79,9 @@ import MenuTycoonSearch from '~/components/menu/tycoon-search/main-menu.vue'
 
 import ToolbarDetails from '~/components/toolbar/toolbar-details.vue'
 import ToolbarHeader from '~/components/toolbar/toolbar-header.vue'
+import ToolbarMinimap from '~/components/toolbar/toolbar-minimap.vue'
 import ToolbarRibbon from '~/components/toolbar/toolbar-ribbon.vue'
-import ToolbarOverlayMenu from '~/components/toolbar/overlay-menu.vue'
+import ToolbarOverlay from '~/components/toolbar/toolbar-overlay.vue'
 
 export default
   props:
@@ -91,10 +93,11 @@ export default
     'sp-loading-modal': LoadingModal
     'sp-workflow': Workflow
     'sp-body': RenderContainer
-    'sp-toolbar-overlay-menu': ToolbarOverlayMenu
-    'sp-toolbar-header': ToolbarHeader
-    'sp-toolbar-details': ToolbarDetails
-    'sp-toolbar-ribbon': ToolbarRibbon
+    'toolbar-overlay': ToolbarOverlay
+    'toolbar-header': ToolbarHeader
+    'toolbar-details': ToolbarDetails
+    'toolbar-minimap': ToolbarMinimap
+    'toolbar-ribbon': ToolbarRibbon
     'sp-server-connection-warning-card': ServerConnectionWarningCard
     'sp-session-expired-warning-card': SessionExpiredWarningCard
     'sp-webgl-warning-card': WebGLWarningCard
@@ -167,12 +170,12 @@ export default
 #application-container
   display: grid
   grid-template-columns: 0 auto 0
-  grid-template-rows: 4rem auto 3rem 5.5rem 3rem 7.5rem
+  grid-template-rows: [start-header] 4rem [end-header start-render] auto [end-render start-overlay] 3rem [end-overlay start-toolbar] 5.5rem [end-toolbar start-menu] 3rem [end-menu start-body] 7.5rem [end-body]
   height: 100vh
   position: relative
 
   &.no-header
-    grid-template-rows: 0 auto 3rem 5.5rem 3rem 7.5rem
+    grid-template-rows: [start-header] 0 [end-header start-render] auto [end-render start-overlay] 3rem [end-overlay start-toolbar] 5.5rem [end-toolbar start-menu] 3rem [end-menu start-body] 7.5rem [end-body]
 
   &.is-toolbar-left:not(.is-toolbar-right)
     grid-template-columns: 25rem auto 0rem

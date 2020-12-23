@@ -14,7 +14,6 @@ MENUBAR = {
   'galaxy': ['left']
   'politics': ['left']
 
-  'chat': ['body']
   'company_form': ['body']
   'help': ['body']
   'options': ['body']
@@ -22,6 +21,7 @@ MENUBAR = {
 
   'construction': ['body', 'right']
 
+  'chat': ['right']
   'rankings': ['right']
   'town_search': ['right']
   'tycoon_search': ['right']

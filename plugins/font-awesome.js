@@ -15,6 +15,9 @@ library.add(faBuilding, faCircle, faComments, faEnvelope, faEye, faFolderRegular
 import {
   faAngleUp,
   faCheck,
+  faChevronDown,
+  faChevronLeft,
+  faChevronRight,
   faCity,
   faCogs,
   faFastForward,
@@ -52,7 +55,7 @@ import {
   faVolumeOff,
   faVolumeUp
 } from '@fortawesome/free-solid-svg-icons'
-library.add(faAngleUp, faCheck, faCity, faCogs, faFastForward, faFlask, faFolder, faFolderOpen, faHammer, faHome, faLandmark, faLock,
+library.add(faAngleUp, faCheck, faChevronDown, faChevronLeft, faChevronRight, faCity, faCogs, faFastForward, faFlask, faFolder, faFolderOpen, faHammer, faHome, faLandmark, faLock,
   faMagic, faMapMarkerAlt, faMapPin, faMedal, faMinus, faMinusSquare, faParking, faPause, faPlay, faPlus, faPlusSquare, faPoll, faRedoAlt, faSatellite,
   faSearch, faSearchLocation, faSquare, faTimes, faToggleOff, faToggleOn, faTools, faUndoAlt, faUserSecret, faUserTie, faVolumeOff, faVolumeUp)
 

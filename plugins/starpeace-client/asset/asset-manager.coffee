@@ -4,7 +4,7 @@ import Logger from '~/plugins/starpeace-client/logger.coffee'
 
 export default class AssetManager
   @CDN_URL: 'https://cdn.starpeace.io'
-  @CDN_VERSION: '6c6e6b423c4143fc06e5905976a2b0dd'
+  @CDN_VERSION: 'fc5a1292332eaa281627ecc6336142ac'
 
   constructor: (@ajax_state) ->
     PIXI.Loader.shared.baseUrl = "#{AssetManager.CDN_URL}/#{AssetManager.CDN_VERSION}"
@@ -16,7 +16,7 @@ export default class AssetManager
     @key_callbacks = {}
     @loaded_keys = new Set()
 
-  planet_animation_url: (planet) -> "#{AssetManager.CDN_URL}/#{AssetManager.CDN_VERSION}/planet.#{planet.map_id}.animation.gif"
+  planet_animation_url: (planet) -> "#{AssetManager.CDN_URL}/#{AssetManager.CDN_VERSION}/map.#{planet.map_id}.animation.gif"
 
   queue: (key, asset_url, callback) ->
     if @loaded_keys.has(key)

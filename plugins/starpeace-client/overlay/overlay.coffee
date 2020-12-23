@@ -136,20 +136,3 @@ export default class Overlay
       type: 'TOYS'
       label_key: 'overlay.toy.label'
       color_gradient: tinygradient([{pos: 0, color: '#010101'}, {pos: 1, color: '#FFFF00'}])
-
-
-  @deserialize_chunk: (type, width, height, data) ->
-    overlay = Overlay.TYPES[type]
-    throw "unknown overlay type #{type}" unless overlay?
-    overlay_data = new Array(width * height)
-
-    data_chunks = data.match(/.{1,2}/g)
-    for y in [0...height]
-      for x in [0...width]
-        overlay_value = parseInt(data_chunks[y * width + x], 16)
-        overlay_data[y * width + x] = {
-          value: overlay_value
-          color: parseInt(overlay.color_gradient.rgbAt(overlay_value / 255).toHex(), 16)
-        }
-
-    overlay_data

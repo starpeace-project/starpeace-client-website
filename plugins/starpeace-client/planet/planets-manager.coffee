@@ -5,6 +5,7 @@ import BuildingDefinition from '~/plugins/starpeace-client/building/building-def
 import SimulationDefinitionParser from '~/plugins/starpeace-client/building/simulation/simulation-definition-parser.coffee'
 
 import Company from '~/plugins/starpeace-client/company/company.coffee'
+import TycoonInfo from '~/plugins/starpeace-client/tycoon/tycoon-info.coffee'
 
 import CityZone from '~/plugins/starpeace-client/industry/city-zone.coffee'
 import CompanySeal from '~/plugins/starpeace-client/company/company-seal.coffee'
@@ -40,17 +41,14 @@ export default class PlanetsManager
             lock.done()
           .catch (err) => lock.error(err)
 
-  load_online_corporations: (planet_id) ->
-    new Promise (done, error) =>
-      if !@client_state.has_session() || !planet_id? || @ajax_state.is_locked('planet_online_corporations', planet_id)
-        done()
-      else
-        lock = @ajax_state.with_lock('planet_online_corporations', planet_id, done, error)
-        @api.online_corporations_for_planet(planet_id)
-          .then (json) =>
-            @client_state.planet.load_tycoons_online(json?.corporations || [])
-            lock.done()
-          .catch (err) => lock.error(err)
+  load_online_tycoons: (planet_id) ->
+    throw Error() if !@client_state.has_session() || !planet_id?
+    await @ajax_state.locked('planet_online_tycoons', planet_id, =>
+      online_tycoons = _.map(await @api.online_tycoons_for_planet(planet_id), TycoonInfo.fromJson)
+      @client_state.planet.load_tycoons_online(online_tycoons)
+      online_tycoons
+    )
+
 
   load_rankings: (planet_id, ranking_type_id) ->
     throw Error() if !@client_state.has_session() || !planet_id? || !ranking_type_id?
@@ -61,16 +59,12 @@ export default class PlanetsManager
     )
 
   load_towns: (planet_id) ->
-    new Promise (done, error) =>
-      if !@client_state.has_session() || !planet_id? || @ajax_state.is_locked('planet_towns', planet_id)
-        done()
-      else
-        lock = @ajax_state.with_lock('planet_towns', planet_id, done, error)
-        @api.towns_for_planet(planet_id)
-          .then (towns_json) =>
-            @client_state.planet.load_towns(_.map(towns_json, Town.from_json))
-            lock.done()
-          .catch (err) => lock.error(err)
+    throw Error() if !@client_state.has_session() || !planet_id?
+    await @ajax_state.locked('planet_towns', planet_id, =>
+      towns = _.map(await @api.towns_for_planet(planet_id), Town.from_json)
+      @client_state.planet.load_towns(towns)
+      towns
+    )
 
   buildings_by_town: (planet_id, town_id, industry_category_id, industry_type_id) ->
     buildings = @client_state.core.planet_cache.town_buildings(town_id, industry_category_id, industry_type_id)

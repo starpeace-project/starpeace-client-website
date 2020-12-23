@@ -38,6 +38,29 @@
     "FR": "Inspecter",
     "IT": "Ispezionare",
     "PT": "Inspecionar"
+  },
+  "footer.ribbon.jump_back": {
+    "DE": "Zurück",
+    "EN": "Back",
+    "ES": "Regresa",
+    "FR": "Retourner",
+    "IT": "Tornare",
+    "PT": "Volte"
+  },
+  "footer.ribbon.jump_next": {
+    "DE": "Weiter",
+    "EN": "Next",
+    "ES": "Siguiente",
+    "FR": "Ensuite",
+    "IT": "Inoltrare",
+    "PT": "Próximo"
+  },
+  "footer.ribbon.jump_town": {
+    "DE": "Gehe zum Rathaus",
+    "EN": "Jump Town Hall",
+    "ES": "Ir al Ayuntamiento",
+    "FR": "Aller à la Mairie",
+    "IT": "Vai al Municipio",
+    "PT": "Ir para a Prefeitura"
   }
-
 }

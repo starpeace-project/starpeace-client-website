@@ -106,7 +106,25 @@ export default class SandboxConfiguration
         tycoonEvents: []
       })
 
-    @get('planets/(.+?)/online', (config, planet_id) -> [])
+    @get 'planets/(.+?)/online', (config, planet_id) ->
+      tycoons = []
+      tycoons.push { type: 'visitor', tycoonId: 'visitor-1' }
+      tycoons.push {
+        type: 'tycoon'
+        tycoonId: 'tycoon-id-1'
+        tycoonName: 'Tycoon Name'
+        corporationId: 'corp-id-1'
+        corporatioName: 'Corporation A'
+      } if planet_id == 'planet-1'
+      tycoons.push {
+        type: 'tycoon'
+        tycoonId: 'tycoon-id-2'
+        tycoonName: 'Other Tycoon'
+        corporationId: 'corp-id-4'
+        corporatioName: 'Corporation Other'
+      } if planet_id == 'planet-1'
+      tycoons.push { type: 'visitor', tycoonId: 'visitor-2' }
+      _.cloneDeep(tycoons)
     @get('planets/(.+?)/towns/(.+?)/buildings', (config, planet_id, town_id, params) =>
       throw new Error(404) unless @sandbox.sandbox_data?.planet_towns?[planet_id]?
       _.cloneDeep([])
@@ -118,6 +136,13 @@ export default class SandboxConfiguration
     @get('planets/(.+?)/towns', (config, planet_id) =>
       throw new Error(404) unless @sandbox.sandbox_data?.planet_towns?[planet_id]?
       _.cloneDeep(@sandbox.sandbox_data.planet_towns[planet_id])
+    )
+
+    @get('planets/(.+?)/overlay/(.+)', (config, planet_id, type_id, params) =>
+      if @sandbox.sandbox_data?.overlay_chunk_data["#{type_id}x#{params.chunkX}x#{params.chunkY}"]?
+        _.cloneDeep(@sandbox.sandbox_data.overlay_chunk_data["#{type_id}x#{params.chunkX}x#{params.chunkY}"].data)
+      else
+        _.cloneDeep(@sandbox.sandbox_data.empty_overlay_data)
     )
 
     @get 'buildings/(.+)', (config, building_id) =>

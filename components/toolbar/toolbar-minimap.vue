@@ -1,11 +1,10 @@
 <template lang='pug'>
-td.column-mini-map(rowspan=2, v-show='show_mini_map', :style='mini_map_column_css_style')
-  #mini-map-container(:style='mini_map_container_css_style')
-    #mini-map-webgl-container
-    a.zoom.zoom-out(v-on:click.stop.prevent='client_state.interface.mini_map_zoom_in()')
-      font-awesome-icon(:icon="['fas', 'plus']")
-    a.zoom.zoom-in(v-on:click.stop.prevent='client_state.interface.mini_map_zoom_out()')
-      font-awesome-icon(:icon="['fas', 'minus']")
+#mini-map-container(ref='mini_map_container' v-show='is_ready && show_mini_map' :style='mini_map_container_css_style')
+  #mini-map-webgl-container
+  a.zoom.zoom-out(@click.stop.prevent='client_state.interface.mini_map_zoom_in()')
+    font-awesome-icon(:icon="['fas', 'plus']")
+  a.zoom.zoom-in(@click.stop.prevent='client_state.interface.mini_map_zoom_out()')
+    font-awesome-icon(:icon="['fas', 'minus']")
 </template>
 
 <script lang='coffee'>
@@ -32,61 +31,65 @@ export default
       @mini_map_width = @client_state.options?.option('mini_map.width')
       @mini_map_height = @client_state.options?.option('mini_map.height')
 
-    element = @.$el.querySelector('#mini-map-container') if process.browser
-    return unless element? && !element.dataset.interactSetup?
-
-    interact(element)
-      .resizable({
-        edges: { left: true, right: false, bottom: false, top: true }
-        inertia: true
-        restrictSize: {
-          min: {
-            width: MIN_MINI_MAP_WIDTH
-            height: MIN_MINI_MAP_HEIGHT
+    if @$refs.mini_map_container? && !@$refs.mini_map_container.dataset.interactSetup?
+      interact(@$refs.mini_map_container)
+        .resizable({
+          edges: { left: true, right: false, bottom: false, top: true }
+          inertia: true
+          restrictSize: {
+            min: {
+              width: MIN_MINI_MAP_WIDTH
+              height: MIN_MINI_MAP_HEIGHT
+            }
           }
-        }
-      })
-      .on('resizemove', (event) =>
-        @client_state.interface.update_mini_map(event.rect.width, event.rect.height)
-      )
-    element.dataset.interactSetup = true
+        })
+        .on('resizemove', (event) =>
+          @client_state.interface.update_mini_map(event.rect.width, event.rect.height)
+        )
+      @$refs.mini_map_container.dataset.interactSetup = true
 
   computed:
+    is_ready: -> @client_state.initialized && @client_state?.workflow_status == 'ready'
+
     mini_map_column_css_style: -> "width:#{@mini_map_width}px"
     mini_map_container_css_style: -> "width:#{@mini_map_width}px;height:#{@mini_map_height}px"
+
 </script>
 
 <style lang='sass' scoped>
 @import '~assets/stylesheets/starpeace-variables'
 
-.column-mini-map
+#mini-map-container
+  background-color: #000
+  grid-column-start: 2
+  grid-column-end: 3
+  grid-row-start: start-overlay
+  grid-row-end: end-overlay
+  justify-self: end
+  align-self: end
+  min-height: 200px
+  min-width: 300px
+  padding: 6px
   position: relative
+  touch-action: none
+  z-index: 1050
 
-  #mini-map-container
+  #mini-map-webgl-container
+    height: 100%
+    width: 100%
+
+  .zoom
     background-color: #000
-    bottom: 0
-    min-height: 200px
-    min-width: 300px
-    padding: 6px
+    color: #FFF
+    bottom: 5px
+    padding: .25rem .75rem 0
     position: absolute
-    right: 0
-    z-index: 1050
+    touch-action: unset
 
-    #mini-map-webgl-container
-      height: 100%
-      width: 100%
+  .zoom-out
+    left: 5px
 
-    .zoom
-      background-color: #000
-      color: #FFF
-      bottom: 5px
-      padding: .25rem .75rem 0
-      position: absolute
-
-    .zoom-out
-      left: 5px
-
-    .zoom-in
-      right: 5px
+  .zoom-in
+    right: 5px
 
 </style>

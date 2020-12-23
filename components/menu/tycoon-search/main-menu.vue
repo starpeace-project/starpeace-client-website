@@ -25,15 +25,22 @@
           img.starpeace-logo
 
         template(v-else-if='results.length')
-          search-result-option(
+          toggle-list-item(
             v-for='result in results'
             :key='result.corporationId'
-            :managers='managers'
-            :client-state='client_state'
-            :ajax-state='ajax_state'
-            :mode='mode'
-            :result='result'
+            :label="mode=='TYCOONS' ? result.tycoonName : mode=='CORPORATIONS' ? result.corporationName : ''"
+            :details-id='result.corporationId'
+            :details-callback='load_corporation'
+            v-slot:default='slotProps'
           )
+            menu-panel-corporation(
+              :hide-tycoon="mode=='TYCOONS'"
+              :hide-corporation="mode=='CORPORATIONS'"
+              :managers='managers'
+              :client-state='client_state'
+              :tycoon='result'
+              :corporation='slotProps.details'
+            )
 
         template(v-else)
           span.empty-results {{translate('ui.menu.tycoon_search.results.none')}}
@@ -61,11 +68,13 @@
 </template>
 
 <script lang='coffee'>
-import SearchResultOption from '~/components/menu/tycoon-search/search-result-option.vue'
+import ToggleListItem from '~/components/menu/shared/toggle-list-menu/item.vue'
+import MenuPanelCorporation from '~/components/menu/shared/menu-panel/corporation.vue'
 
 export default
   components: {
-    SearchResultOption
+    ToggleListItem
+    MenuPanelCorporation
   }
 
   props:
@@ -128,6 +137,7 @@ export default
         console.error err
         @querying = false
 
+    load_corporation: (corporation_id) -> @managers.corporation_manager.load_by_corporation(corporation_id)
 
 </script>
 

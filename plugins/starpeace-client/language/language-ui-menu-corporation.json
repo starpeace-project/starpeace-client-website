@@ -111,6 +111,14 @@
     "IT": "Prestigio",
     "PT": "Prestígio"
   },
+  "ui.menu.corporation.panel.action.follow": {
+    "DE": "Folgen",
+    "EN": "Follow",
+    "ES": "Seguir",
+    "FR": "Suivre",
+    "IT": "Seguire",
+    "PT": "Segue"
+  },
   "ui.menu.corporation.panel.action.show_profile": {
     "DE": "Zeige Profil",
     "EN": "Show Profile",

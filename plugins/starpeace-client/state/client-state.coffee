@@ -186,6 +186,11 @@ export default class ClientState
   current_corporation_metadata: () -> if @player.corporation_id? then @core.corporation_cache.metadata_for_id(@player.corporation_id) else null
   current_company_metadata: () -> if @player.company_id? then @core.company_cache.metadata_for_id(@player.company_id) else null
 
+  current_location: () ->
+    return null unless @initialized && @workflow_status == 'ready'
+    center = @camera.center()
+    @camera.map_to_iso(center.x, center.y)
+
   current_planet_details: () -> if @player.planet_id? && @planet.details? then @planet.details else null
 
   name_for_planet_id: (planet_id) -> @core.galaxy_cache.planet_metadata_for_id(planet_id)?.name
@@ -195,11 +200,12 @@ export default class ClientState
   seal_for_company_id: (company_id) -> @core.company_cache.metadata_for_id(company_id)?.seal_id || 'NONE'
   name_for_company_id: (company_id) -> @core.company_cache.metadata_for_id(company_id)?.name || ''
 
+  town_for_location: () ->
+    location = @current_location()
+    return null unless location?
+    @planet.town_for_color(@planet.game_map.town_color_at(location.i, location.j))
+
   selected_building: () -> if @interface.selected_building_id?.length then @core.building_cache.building_for_id(@interface.selected_building_id) else null
-  select_building: (building_id, map_x, map_y) ->
-    @menu.hide_menu('body')
-    @interface.select_building_id(building_id) if building_id?
-    @camera.recenter_at(map_x, map_y) if map_x? && map_y?
 
   inventions_for_company: ->
     if @is_tycoon()
@@ -217,6 +223,41 @@ export default class ClientState
       count
     count
 
+
+  matches_jump_history: (map_x, map_y) ->
+    return false unless @interface.location_index >= 0 && @interface.location_index < @interface.location_history.length
+    @interface.location_history[@interface.location_index].map_x == map_x && @interface.location_history[@interface.location_index].map_y == map_y
+
+  add_jump_history: (map_x, map_y, building_id) ->
+    @interface.location_history.unshift { map_x, map_y, building_id }
+    @interface.location_history.pop() if @interface.location_history.length > 5
+
+  jump_back: () ->
+    location = @current_location()
+    matches_back = @matches_jump_history(location.i, location.j)
+    return unless @interface.location_index < @interface.location_history.length - 1 || !matches_back
+    @interface.location_index++ if matches_back
+    history = @interface.location_history[@interface.location_index]
+    @jump_to(history.map_x, history.map_y, history.building_id, false)
+  jump_next: () ->
+    return unless @interface.location_index > 0
+    @interface.location_index--
+    history = @interface.location_history[@interface.location_index]
+    @jump_to(history.map_x, history.map_y, history.building_id, false)
+
+  jump_to: (map_x, map_y, building_id, with_history=true) ->
+    if with_history
+      location = @current_location()
+      if @interface.location_index > 0
+        @interface.location_history.splice(0, @interface.location_index)
+        @interface.location_index = 0
+
+      @add_jump_history(location.i, location.j, @interface.selected_building_id) unless @matches_jump_history(location.i, location.j)
+      @add_jump_history(map_x, map_y, building_id) unless @matches_jump_history(map_x, map_y)
+
+    @menu.hide_menu('body')
+    @interface.select_building_id(building_id) if building_id?
+    @camera.recenter_at(map_x, map_y) if map_x? && map_y?
 
 
   has_construction_requirements: (building_id) ->

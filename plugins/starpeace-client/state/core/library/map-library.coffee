@@ -9,10 +9,16 @@ export default class MapLibrary extends Library
     super()
 
     @texture_by_map_id = {}
+    @towns_texture_by_map_id = {}
 
-  has_assets: (map_id) -> @texture_by_map_id[map_id]?
+  has_assets: (map_id) -> @texture_by_map_id[map_id]? && @towns_texture_by_map_id[map_id]
 
   texture_for_id: (map_id) -> @texture_by_map_id[map_id]
   load_map_texture: (map_id, texture) ->
     @texture_by_map_id[map_id] = texture
+    @notify_listeners()
+
+  towns_texture_for_id: (map_id) -> @towns_texture_by_map_id[map_id]
+  load_map_towns_texture: (map_id, texture) ->
+    @towns_texture_by_map_id[map_id] = texture
     @notify_listeners()

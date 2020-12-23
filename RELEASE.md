@@ -1,5 +1,5 @@
 
-## v0.4 - in progress - updated 2020-12-18
+## v0.4 - in progress - updated 2020-12-23
 ### platform
 * [done] improve API integration with galaxies [v0.3.1]
 * [done] document multiverse API integration [starpeace-server-multiverse-api]
@@ -14,10 +14,16 @@
 * [done] manage corporation and company API's [v0.3.2]
 * [done] search and rankings API integration [v0.3.3]
 * [done] manage mail API integration [v0.3.3]
-* [done] simulation events and cashflow API integration [v0.3.3]
-* [in progress] town boundaries and city detection
+* [done] cashflow API integration [v0.3.3]
+* [done] overlay API integration [v0.3.4]
+* [done] buildings (by chunk) API integration [v0.3.4]
+* [done] town boundaries and city detection [v0.3.4]
+* [in progress] roads API integration
 * [pending] system messages and basic error messages
+* [pending] improve auth and remember me token and error handling
 * [pending] improve tycoon, corporation, and company creation error handling
+* [pending] player and planet event handling
+* [pending] town details API (services, products, taxes, jobs, housing)
 
 ### assets
 * [done] finish initial language translation for assets [v0.3.1]
@@ -26,11 +32,9 @@
 * [done] building construction metadata (all) [v0.3.2]
 * [done] office, residential, and civic building simulations and resources [v0.3.2]
 * [done] integrate assets from starpeace-assets [v0.3.2]
-* [in progress] town boundaries
-* [pending] building sign assets
-* [pending] building requirements for research per seal
-* [pending] car assets
-* [pending] street light and intersection lamp assets
+* [done] town boundaries [v0.3.4]
+* [in progress] building sign assets
+* [pending] headquarters requirements for research per seal
 
 ### gameplay
 * [done] update UI and menus for better concept of universes and galaxies [v0.3.1]
@@ -40,14 +44,13 @@
 * [done] tycoon search menu [v0.3.3]
 * [done] rankings menu [v0.3.3]
 * [done] mail menu [v0.3.3]
-* [in progress] chat menu
+* [done] city overlay rendering [v0.3.4]
+* [done] chat menu [v0.3.4]
+* [done] jump to townhall and history widgets [v0.3.4]
+* [in progress] mine building and industry banner rendering
 * [pending] tycoon details menu
 * [pending] politics menu
-* [pending] jump to townhall and history widgets
-* [pending] overlay menu organization (sub-menus)
-* [pending] mine building and industry banner rendering
-* [pending] car rendering
-* [pending] street light and intersection lamp rendering
+* [pending] overlay menu hierarchy organization
 * [pending] road construction, improved orientation metadata
 * [pending] road proximity building construction rules
 * [pending] construction descriptions for civics, commerce, service, and real estate
@@ -56,8 +59,8 @@
 * [pending] onscreen building text rendering on selection
 * [pending] building selection rendering effects (container box, negative-income tinting)
 * [pending] building stage support (timber, movies, farms)
-* [pending] limit research unless constructed required buildings
+* [pending] limit research unless constructed required headquarters
 * [pending] limit seals unless required level or nobility
 * [pending] footer menu company support (scroll)
 * [pending] city-specific ribbon ticker updates
-* [pending] world events and news ticker integration
+* [pending] integrate player and planet events with news ticker

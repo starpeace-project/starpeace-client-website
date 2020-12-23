@@ -34,7 +34,7 @@ export default class TreeMenuUtils
             building_id: building.id
             map_x: building.map_x
             map_y: building.map_y
-            action: () => @client_state.select_building(building.id, building.map_x, building.map_y)
+            action: () => @client_state.jump_to(building.map_x, building.map_y, building.id)
           })
         })
     })
@@ -70,7 +70,7 @@ export default class TreeMenuUtils
             building_id: building.id
             map_x: building.map_x
             map_y: building.map_y
-            action: () => @client_state.select_building(building.id, building.map_x, building.map_y)
+            action: () => @client_state.jump_to(building.map_x, building.map_y, building.id)
           })
         })
     })

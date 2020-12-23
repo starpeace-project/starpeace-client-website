@@ -6,5 +6,21 @@
     "FR": "Bavarder",
     "IT": "Chiacchierare",
     "PT": "Conversar"
+  },
+  "ui.menu.chat.discord.prefix": {
+    "DE": "Bitte verwenden Sie",
+    "EN": "Please use",
+    "ES": "Por favor utilice la",
+    "FR": "S'il vous plaît utiliser",
+    "IT": "Si prega di utilizzare",
+    "PT": "Utilize"
+  },
+  "ui.menu.chat.discord.suffix": {
+    "DE": "oder in-Game-Mail mit anderen Online-Tycoons zu chatten.",
+    "EN": "or in-game mail to chat with other online tycoons.",
+    "ES": "o correo en el juego para chatear con otros magnates en línea.",
+    "FR": "ou par courrier en jeu discuter avec d'autres magnats en ligne.",
+    "IT": "o di posta in gioco per chattare con altri magnati online.",
+    "PT": "ou correio no jogo para conversar com outros magnatas on-line."
   }
 }

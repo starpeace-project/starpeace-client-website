@@ -13,9 +13,7 @@ export default class OverlayMap
       continue if type == 'NONE'
       do (type) =>
         @overlay_data[type] = new Array(@width * @height)
-        @chunks[type] = new ChunkMap(@width, @height, (chunk_x, chunk_y, chunk_width, chunk_height) =>
-          @overlay_manager.load_chunk(type, chunk_x, chunk_y, chunk_width, chunk_height)
-        , (chunk_info, data) =>
+        @chunks[type] = new ChunkMap(@width, @height, ((chunk_x, chunk_y) => @overlay_manager.load_chunk(type, chunk_x, chunk_y)), (chunk_info, data) =>
           Logger.debug "refreshing overlay chunk for #{type} at #{chunk_info.chunk_x}x#{chunk_info.chunk_y}"
 
           chunk_x_offset = chunk_info.x_offset()

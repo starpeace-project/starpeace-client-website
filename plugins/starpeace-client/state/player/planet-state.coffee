@@ -17,6 +17,7 @@ export default class PlanetState
     @current_season = null
 
     @towns = null
+    @towns_by_color = {}
     @tycoons_online = null
 
   subscribe_map_data_listener: (listener_callback) -> @event_listener.subscribe('planet.map_data', listener_callback)
@@ -40,9 +41,13 @@ export default class PlanetState
     @current_time = time
     @current_season = season
     @notify_state_listeners()
+
+  town_for_color: (color) -> @towns_by_color[color]
   load_towns: (towns) ->
     @towns = towns || []
+    @towns_by_color[town.color] = town for town in @towns
     @notify_towns_listeners()
+
   load_tycoons_online: (tycoons) ->
     @tycoons_online = tycoons || []
     @notify_tycoons_online_listeners()

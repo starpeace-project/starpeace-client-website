@@ -35,9 +35,11 @@ div
 
   .corporation-actions.level.is-mobile
     .level-item.action-column
+      a.button.is-fullwidth.is-small.is-starpeace(disabled) {{translate('ui.menu.corporation.panel.action.follow')}}
+    .level-item.action-column
       a.button.is-fullwidth.is-small.is-starpeace(@click.stop.prevent='show_profile') {{translate('ui.menu.corporation.panel.action.show_profile')}}
     .level-item.action-column
-      a.button.is-fullwidth.is-small.is-starpeace(@click.stop.prevent='send_mail') {{translate('ui.menu.corporation.panel.action.send_mail')}}
+      a.button.is-fullwidth.is-small.is-starpeace(:disabled='!canSend' @click.stop.prevent='send_mail') {{translate('ui.menu.corporation.panel.action.send_mail')}}
 
   tree-menu-item(
     visible=true
@@ -72,6 +74,9 @@ export default
     item: @companies_item()
 
   computed:
+    ready: -> @clientState.workflow_status == 'ready'
+    canSend: -> @ready && @clientState.is_tycoon() && @clientState.player.corporation_id?.length
+
     level: -> if @corporation?.level_id? then @clientState?.core?.planet_library?.level_for_id(@corporation?.level_id) else null
 
   watch:
@@ -98,7 +103,9 @@ export default
       }
 
     show_profile: -> @clientState.show_tycoon_profile(@tycoon.tycoonId) if @tycoon?.tycoonId?
-    send_mail: -> @clientState.send_mail(@tycoon.tycoonId, @tycoon.tycoonName, @corporation.id) if @tycoon?.tycoonId? && @corporation?.id?
+    send_mail: ->
+      return unless @canSend
+      @clientState.send_mail(@tycoon.tycoonId, @tycoon.tycoonName, @corporation.id) if @tycoon?.tycoonId? && @corporation?.id?
 
 
 </script>

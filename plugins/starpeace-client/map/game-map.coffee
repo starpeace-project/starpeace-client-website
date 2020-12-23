@@ -10,19 +10,23 @@ import Concrete from '~/plugins/starpeace-client/building/concrete.coffee'
 import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
 
 export default class GameMap
-  constructor: (building_manager, road_manager, overlay_manager, land_metadata, texture, @client_state, @options) ->
+  constructor: (building_manager, road_manager, overlay_manager, land_metadata, texture, towns_texture, @client_state, @options) ->
     @width = texture.texture.width
     @height = texture.texture.height
 
-    map_width = texture.texture.width
-    map_height = texture.texture.height
+    @map_rgba_pixels = Utils.pixels_for_image(texture.data)
+    @towns_rgba_pixels = Utils.pixels_for_image(towns_texture.data)
 
-    @raw_map_rgba_pixels = Utils.pixels_for_image(texture.data)
-    @ground_map = LandMap.from_pixel_data(land_metadata, @width, @height, @raw_map_rgba_pixels)
+    @ground_map = LandMap.from_pixel_data(land_metadata, @width, @height, @map_rgba_pixels)
     @building_map = new BuildingMap(@client_state, building_manager, road_manager, @width, @height)
     @concrete_map = new ConcreteMap(@client_state, @ground_map, @building_map, @width, @height)
     @road_map = new RoadMap(@client_state, @ground_map, @building_map, @concrete_map, @width, @height)
     @overlay_map = new OverlayMap(@client_state, overlay_manager, @width, @height)
+
+  town_color_at: (x, y) ->
+    index = ((@height - x) * @width + (@width - y)) * 4
+    ((@towns_rgba_pixels[index + 0] << 16) & 0xFF0000) | ((@towns_rgba_pixels[index + 1] << 8) & 0x00FF00) | ((@towns_rgba_pixels[index + 2] << 0) & 0x0000FF)
+
 
   info_for_tile: (x, y) ->
     building_chunk_info = @building_map.chunk_building_info_at(x, y)
@@ -37,7 +41,8 @@ export default class GameMap
     road_info = null
     concrete_info = null
 
-    if building_chunk_info? && road_chunk_info?
+    chunk_loaded = building_chunk_info?.is_current() && road_chunk_info?.is_current()
+    if chunk_loaded
       if @client_state.interface.show_zones
         zone_chunk_info = @overlay_map.chunk_info_at('ZONES', x, y)
         if zone_chunk_info?.is_current()
@@ -67,7 +72,7 @@ export default class GameMap
 
     {
       is_position_within_map
-      is_chunk_data_loaded: building_chunk_info? && road_chunk_info?
+      is_chunk_data_loaded: chunk_loaded
 
       land_info
       building_info

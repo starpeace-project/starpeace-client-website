@@ -47,6 +47,14 @@
     "IT": "Creare",
     "PT": "Criar"
   },
+  "ui.misc.none": {
+    "DE": "Keiner",
+    "EN": "None",
+    "ES": "Ninguna",
+    "FR": "Aucun",
+    "IT": "Nessuna",
+    "PT": "Nenhum"
+  },
   "misc.hide_menus.label": {
     "DE": "Menüs Ausblenden",
     "EN": "Hide Menus",
