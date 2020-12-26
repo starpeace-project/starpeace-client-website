@@ -47,6 +47,14 @@
     "IT": "Disponibile per la Ricerca",
     "PT": "Disponível para Pesquisa"
   },
+  "ui.menu.research.details.status.building_required": {
+    "DE": "Erforderlich",
+    "EN": "Required",
+    "ES": "Requerido",
+    "FR": "Requis",
+    "IT": "Richiesto",
+    "PT": "Requerido"
+  },
   "ui.menu.research.details.status.level_required": {
     "DE": "Höheres Level Erforderlich",
     "EN": "Higher Level Required",

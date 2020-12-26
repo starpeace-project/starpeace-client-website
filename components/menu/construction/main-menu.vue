@@ -157,8 +157,7 @@ export default
     toggle_form_company_menu: () -> @client_state.menu.toggle_menu('company_form')
 
     building_cost: (definition_id) -> @managers?.building_manager?.cost_for_building_definition_id(definition_id) || 0
-    sort_buildings: (buildings) ->
-      _.sortBy(buildings, (info) => "#{info.industry_type}-#{_.padStart(@building_cost(info.id), 12, '0')}")
+    sort_buildings: (buildings) -> _.sortBy(buildings, (info) => "#{info.industry_type}-#{_.padStart(@building_cost(info.id), 12, '0')}")
 
     separator_label_for_index: (index, length) ->
       if length > 2 then (if index == length - 2 then ', and ' else ', ') else ' and '

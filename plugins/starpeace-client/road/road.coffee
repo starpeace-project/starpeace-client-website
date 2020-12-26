@@ -145,15 +145,3 @@ export default class Road
     type == Road.TYPES.CROSS || type == Road.TYPES.NS || type == Road.TYPES.NS_END_S || type == Road.TYPES.T_NS_E || type == Road.TYPES.T_NS_W || type == Road.TYPES.T_EW_S || type == Road.TYPES.NE_CORNER || type == Road.TYPES.NW_CORNER
   @connects_south: (type) ->
     type == Road.TYPES.CROSS || type == Road.TYPES.NS || type == Road.TYPES.NS_END_N || type == Road.TYPES.T_NS_E || type == Road.TYPES.T_NS_W || type == Road.TYPES.T_EW_N || type == Road.TYPES.SE_CORNER || type == Road.TYPES.SW_CORNER
-
-
-  @deserialize_chunk: (width, height, data) ->
-    road_data = new Array(width * height)
-
-    data_chunks = data.match(/.{1,2}/g)
-    for y in [0...height]
-      for x in [0...width]
-        has_road = parseInt(data_chunks[y * width + x]) > 0
-        road_data[y * width + x] = true if has_road
-
-    road_data

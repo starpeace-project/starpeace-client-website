@@ -5,40 +5,8 @@ import ChunkMap from '~/plugins/starpeace-client/map/chunk/chunk-map.coffee'
 import Road from '~/plugins/starpeace-client/road/road.coffee'
 import MetadataRoad from '~/plugins/starpeace-client/road/metadata-road.coffee'
 
-X_START = 190
-X_END = 250
-Y_START = 50
-Y_END = 400
-X_WITH_ROAD = new Set([X_START, 210, 230, X_END])
-
-DUMMY_CHUNK_DATA = {}
-DUMMY_ROAD_DATA = []
-
-for y in [Y_START..Y_END] by 1
-  for x in [X_START..X_END] by 1
-    continue unless (y % 10 == 0 || X_WITH_ROAD.has(x))
-    chunk_x = Math.floor(x/20)
-    chunk_y = Math.floor(y/20)
-    chunk_key = "#{chunk_x}x#{chunk_y}"
-    DUMMY_CHUNK_DATA[chunk_key] = {
-      chunk_x: chunk_x
-      chunk_y: chunk_y
-      width: 20
-      height: 20
-      data: new Array(20 * 20).fill(false)
-    } unless DUMMY_CHUNK_DATA[chunk_key]?
-
-    index = 20 * (y - chunk_y * 20) + (x - chunk_x * 20)
-    DUMMY_CHUNK_DATA[chunk_key].data[index] = true
-    DUMMY_ROAD_DATA[1000 * y + x] = true
-
-  # y += (Math.round(15 * Math.random()) - 5)
-
-
 export default class RoadManager
-  @DUMMY_ROAD_DATA: DUMMY_ROAD_DATA
-
-  constructor: (@asset_manager, @ajax_state, @client_state) ->
+  constructor: (@api, @asset_manager, @ajax_state, @client_state) ->
     @chunk_promises = {}
 
   queue_asset_load: () ->
@@ -60,19 +28,17 @@ export default class RoadManager
     )
 
   load_chunk: (chunk_x, chunk_y) ->
-    key = "#{chunk_x}x#{chunk_y}"
-    return if @chunk_promises[key]?
+    planet_id = @client_state.player.planet_id
+    throw Error() if !@client_state.has_session() || !planet_id? || !chunk_x? || !chunk_y?
 
     Logger.debug("attempting to load road chunk at #{chunk_x}x#{chunk_y}")
-    @ajax_state.start_ajax()
-    @chunk_promises[key] = new Promise (done) =>
-      data = new Array(ChunkMap.CHUNK_WIDTH, ChunkMap.CHUNK_HEIGHT).fill(false)
+    await @ajax_state.locked('planet_roads', "#{planet_id}:#{chunk_x}x#{chunk_y}", =>
+      road_data = await @api.road_data_for_planet(planet_id, chunk_x, chunk_y)
+      return new Array(ChunkMap.CHUNK_WIDTH, ChunkMap.CHUNK_HEIGHT) unless road_data?
 
-      chunk = DUMMY_CHUNK_DATA[key]
-      data = chunk.data if chunk?
-
-      setTimeout(=>
-        delete @chunk_promises[key]
-        @ajax_state.finish_ajax()
-        done(data)
-      , 500)
+      data = new Uint8Array(road_data.length * 2)
+      for index in [0...road_data.length]
+        data[index * 2 + 0] = (road_data[index] & 0xF0) >> 4
+        data[index * 2 + 1] = (road_data[index] & 0x0F)
+      data
+    )

@@ -165,6 +165,38 @@ export default class SandboxData
                 data[y * 20 + x] = Math.round(255 * (1 - Math.min(1, magnitude * (distance / 10))))
             info.data = Uint8Array.from(data).buffer
 
+    ROAD_X_START = 190
+    ROAD_X_END = 250
+    ROAD_Y_START = 50
+    ROAD_Y_END = 400
+
+    @empty_road_buffer = new Uint8Array(20 * 20 * .5).buffer
+    road_chunk_data = {}
+    for y in [ROAD_Y_START..ROAD_Y_END] by 1
+      for x in [ROAD_X_START..ROAD_X_END] by 1
+        x_line = (x - 190) % 20 == 0
+        y_line = y % 10 == 0
+        continue unless x_line || y_line
+        chunk_x = Math.floor(x / 20)
+        chunk_y = Math.floor(y / 20)
+        chunk_key = "#{chunk_x}x#{chunk_y}"
+        road_chunk_data[chunk_key] = new Uint8Array(20 * 20) unless road_chunk_data[chunk_key]?
+
+        has_n = x_line && y > ROAD_Y_START
+        has_e = y_line && x < ROAD_X_END
+        has_s = x_line && y < ROAD_Y_END
+        has_w = y_line && x > ROAD_X_START
+
+        index = 20 * (y - chunk_y * 20) + (x - chunk_x * 20)
+        road_chunk_data[chunk_key][index] = ((has_n & 0x01) << 0) | ((has_e & 0x01) << 1) | ((has_s & 0x01) << 2) | ((has_w & 0x01) << 3)
+
+
+    @road_chunk_data = {}
+    for chunk_key in Object.keys(road_chunk_data)
+      @road_chunk_data[chunk_key] = new Uint8Array(road_chunk_data[chunk_key].length * .5)
+      for index in [0...data.length]
+        @road_chunk_data[chunk_key][index] = ((road_chunk_data[chunk_key][index * 2 + 0] & 0x0F) << 4) | ((road_chunk_data[chunk_key][index * 2 + 1] & 0x0F) << 0)
+
 
   season_for_planet: (planet_id) ->
     if @planet_id_dates[planet_id]? then MONTH_SEASONS[@planet_id_dates[planet_id].month()] else 'winter'

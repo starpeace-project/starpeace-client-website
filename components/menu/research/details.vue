@@ -40,6 +40,7 @@
       .action-row.invention-status
         span.invention-status-label {{translate('ui.menu.research.status.label')}}:
         span.invention-status-value.available(v-if="invention_status == 'AVAILABLE'") {{translate('ui.menu.research.details.status.available')}}
+        span.invention-status-value.blocked(v-else-if="invention_status == 'AVAILABLE_BUILDING'") {{translate(first_allowing_building_name)}} {{translate('ui.menu.research.details.status.building_required')}}
         span.invention-status-value.blocked(v-else-if="invention_status == 'AVAILABLE_LEVEL'") {{translate('ui.menu.research.details.status.level_required')}}
         span.invention-status-value.blocked(v-else-if="invention_status == 'AVAILABLE_BLOCKED'") {{translate('ui.menu.research.details.status.dependencies_required')}}
         span.invention-status-value.pending(v-else-if="invention_status == 'PENDING'")
@@ -52,7 +53,7 @@
 
       .action-row
         a.button.is-fullwidth.is-starpeace(v-if="invention_status == 'AVAILABLE'", v-on:click.stop.prevent='queue_invention', :disabled='actions_disabled') {{translate('ui.menu.research.actions.start.label')}}
-        a.button.is-fullwidth.is-starpeace(v-else-if="invention_status == 'AVAILABLE_LEVEL' || invention_status == 'AVAILABLE_BLOCKED'", disabled=true) {{translate('ui.menu.research.actions.start.label')}}
+        a.button.is-fullwidth.is-starpeace(v-else-if="invention_status == 'AVAILABLE_BUILDING' || invention_status == 'AVAILABLE_LEVEL' || invention_status == 'AVAILABLE_BLOCKED'", disabled=true) {{translate('ui.menu.research.actions.start.label')}}
         a.button.is-fullwidth.is-starpeace(v-else-if="invention_status == 'PENDING'", v-on:click.stop.prevent='sell_invention', :disabled='actions_disabled') {{translate('ui.menu.research.actions.cancel.label')}}
         a.button.is-fullwidth.is-starpeace(v-else-if="invention_status == 'COMPLETED'", v-on:click.stop.prevent='sell_invention', :disabled='actions_disabled') {{translate('ui.menu.research.actions.sell.label')}}
         a.button.is-fullwidth.is-starpeace(v-else-if="invention_status == 'COMPLETED_SUPPORT'", disabled=true) {{translate('ui.menu.research.actions.sell.label')}}
@@ -89,12 +90,16 @@ export default
       cost = @selected_invention?.properties?.price || 0
       if cost > 0 then "$#{Utils.format_money(cost)}" else ''
 
+    invention_allowing_building_ids: ->
+      return [] unless @company_seal? && @selected_invention_id?
+      building_ids = @client_state.core.invention_library.allowing_building_by_seal_id[@company_seal]?[@selected_invention_id]
+      if building_ids?.size then Array.from(building_ids) else []
+    first_allowing_building_id: -> if @invention_allowing_building_ids.length then @invention_allowing_building_ids[0] else null
+    first_allowing_building_name: -> if @first_allowing_building_id? then @client_state.core.building_library.metadata_by_id[@first_allowing_building_id]?.name else ''
+
     invention_ids_for_company: ->
-      if @client_state.is_tycoon() && @client_state.player.company_id?
-        company_metadata = @client_state.current_company_metadata()
-        if company_metadata? then _.map(@client_state.core.invention_library.metadata_for_seal_id(company_metadata.seal_id), (invention) -> invention.id) else []
-      else
-        _.map(@client_state.core.invention_library.all_metadata(), (invention) -> invention.id)
+      return [] unless @client_state.player.company_id? || @is_ready
+      _.map(@client_state.inventions_for_company(), 'id')
 
     invention_requires: ->
       upstream = []
@@ -108,6 +113,7 @@ export default
       upstream
 
     invention_allows: ->
+      return [] unless @selected_invention?.id?
       downstream = []
       for invention_id in (if @selected_invention? then @client_state.core.invention_library.downstream_ids_for(@selected_invention.id) else [])
         metadata = @client_state.core.invention_library.metadata_for_id(invention_id)
@@ -139,11 +145,21 @@ export default
 
       properties
 
-    company_inventions: -> if @is_ready && @client_state.player.company_id? then @client_state.corporation.inventions_metadata_by_company_id[@client_state.player.company_id] else null
+    company_id: -> if @is_ready && @client_state.player.company_id? then @client_state.player.company_id else null
+    company_seal: -> if @company_id? then @client_state.current_company_metadata().seal_id else null
+    company_inventions: -> if @company_id? then @client_state.corporation.inventions_metadata_by_company_id[@company_id] else null
     company_pending_invention: -> if @selected_invention_id? && @company_inventions? then _.find(@company_inventions.pending_inventions, (pending) => pending.id == @selected_invention_id) else null
+    company_building_ids: -> if @company_id? then (@client_state.corporation.buildings_ids_by_company_id[@company_id] || []) else []
+    company_building_definition_ids: -> new Set(_.compact(_.map(@company_building_ids, (id) => @client_state.core.building_cache.building_metadata_by_id[id]?.definition_id)))
+
+    company_has_allowing_building: ->
+      return false unless @invention_allowing_building_ids.length && @company_building_definition_ids.size
+      for id in @invention_allowing_building_ids
+        return true if @company_building_definition_ids.has(id)
+      false
 
     invention_status: ->
-      return 'NONE' unless @selected_invention? && @company_inventions?
+      return 'NONE' unless @selected_invention? && @company_inventions? && @company_seal?
       if @company_pending_invention?
         'PENDING'
       else if @is_invention_completed(@selected_invention_id)
@@ -154,6 +170,7 @@ export default
         return 'AVAILABLE_LEVEL' if @invention_level? && @invention_level.level > (@corporation_level?.level || 0)
         for requires in @invention_requires
           return 'AVAILABLE_BLOCKED' unless @is_invention_completed(requires.id)
+        return 'AVAILABLE_BUILDING' unless @company_has_allowing_building
         'AVAILABLE'
 
     actions_disabled: ->
@@ -210,7 +227,7 @@ export default
   padding: 1rem
 
   .invention-selected-details
-    height: calc(100% - 6rem)
+    height: calc(100% - 8rem)
 
   .invention-name
     color: #ddd
@@ -297,7 +314,7 @@ export default
 
     .action-row
       &.invention-status
-        min-height: 2rem
+        min-height: 4rem
         margin-bottom: 1rem
 
         .invention-status-value

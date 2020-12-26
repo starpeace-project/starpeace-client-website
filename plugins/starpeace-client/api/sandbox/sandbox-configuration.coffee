@@ -145,6 +145,15 @@ export default class SandboxConfiguration
         _.cloneDeep(@sandbox.sandbox_data.empty_overlay_data)
     )
 
+    @get('planets/(.+?)/roads', (config, planet_id, params) =>
+      if @sandbox.sandbox_data?.road_chunk_data["#{params.chunkX}x#{params.chunkY}"]?
+        _.cloneDeep(@sandbox.sandbox_data.road_chunk_data["#{params.chunkX}x#{params.chunkY}"].buffer)
+      else
+        _.cloneDeep(@sandbox.sandbox_data.empty_road_buffer)
+    )
+
+
+
     @get 'buildings/(.+)', (config, building_id) =>
       throw new Error(404) unless @sandbox.sandbox_data.building_id_building[building_id]?
       _.cloneDeep(@sandbox.sandbox_data.building_id_building[building_id])

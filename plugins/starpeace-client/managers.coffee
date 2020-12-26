@@ -18,6 +18,7 @@ import OverlayManager from '~/plugins/starpeace-client/overlay/overlay-manager.c
 import PlaneManager from '~/plugins/starpeace-client/plane/plane-manager.coffee'
 import PlanetsManager from '~/plugins/starpeace-client/planet/planets-manager.coffee'
 import RoadManager from '~/plugins/starpeace-client/road/road-manager.coffee'
+import SignManager from '~/plugins/starpeace-client/asset/sign-manager.coffee'
 import TranslationManager from '~/plugins/starpeace-client/language/translation-manager.coffee'
 import TycoonManager from '~/plugins/starpeace-client/tycoon/tycoon-manager.coffee'
 
@@ -48,7 +49,8 @@ export default class Managers
     @overlay_manager = new OverlayManager(@api, @asset_manager, @ajax_state, @client_state)
     @plane_manager = new PlaneManager(@asset_manager, @ajax_state, @client_state)
     @planets_manager = new PlanetsManager(@api, @ajax_state, @client_state)
-    @road_manager = new RoadManager(@asset_manager, @ajax_state, @client_state)
+    @road_manager = new RoadManager(@api, @asset_manager, @ajax_state, @client_state)
+    @sign_manager = new SignManager(@asset_manager, @ajax_state, @client_state)
     @tycoon_manager = new TycoonManager(@api, @ajax_state, @client_state)
 
     @utils = {
@@ -86,6 +88,7 @@ export default class Managers
       @overlay_manager.queue_asset_load()
       @plane_manager.queue_asset_load()
       @road_manager.queue_asset_load()
+      @sign_manager.queue_asset_load()
 
       @asset_manager.load_queued()
 

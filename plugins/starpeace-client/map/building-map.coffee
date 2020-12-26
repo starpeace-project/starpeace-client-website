@@ -38,14 +38,6 @@ export default class BuildingMap
         x > 0 && @has_concrete_at(x - 1, y) ||
         x < @width && @has_concrete_at(x + 1, y)
 
-  is_road_junction: (x, y) ->
-    index = y * @width + x
-    index_n = (y - 1) * @width + x
-    index_s = (y + 1) * @width + x
-    index_e = index + 1
-    index_w = index - 1
-    (@tile_info_road[index_n] || @tile_info_road[index_s]) && (@tile_info_road[index_e] || @tile_info_road[index_w])
-
   add_building: (building_id) ->
     building = @client_state.core.building_cache.building_for_id(building_id)
     metadata = @client_state.core.building_library.metadata_by_id[building.definition_id]
@@ -84,4 +76,4 @@ export default class BuildingMap
     for y in [0...ChunkMap.CHUNK_HEIGHT]
       for x in [0...ChunkMap.CHUNK_WIDTH]
         map_index = (chunk_info.chunk_y * ChunkMap.CHUNK_HEIGHT + y) * @width + (chunk_info.chunk_x * ChunkMap.CHUNK_WIDTH + x)
-        @tile_info_road[map_index] = if road_data[y * ChunkMap.CHUNK_WIDTH + x] then true else null
+        @tile_info_road[map_index] = road_data[y * ChunkMap.CHUNK_WIDTH + x]

@@ -11,5 +11,5 @@ export default class InventionDefinition
     metadata.name = Translation.from_json(json.name)
     metadata.description = Translation.from_json(json.description)
     metadata.properties = json.properties || {}
-    metadata.depends_on = json.dependsOn || []
+    metadata.depends_on = json.dependsOnIds || []
     metadata

@@ -2847,16 +2847,6 @@
       "companyId": "company-id-4"
     },
     {
-      "id": "2842b8d7-b406-390e-3725-eff6f9242b71",
-      "tycoonId": "tycoon-id-5",
-      "name": "Civic Affairs Tower 1",
-      "definitionId": "moab.correctional.tower",
-      "mapX": 195,
-      "mapY": 287,
-      "corporationId": "corp-id-7",
-      "companyId": "company-id-24"
-    },
-    {
       "id": "946e9d03-88d5-45bd-b07d-654020f958f6",
       "tycoonId": "tycoon-id-3",
       "name": "Headquarters 1",
@@ -2977,26 +2967,6 @@
       "mapY": 288,
       "corporationId": "corp-id-4",
       "companyId": "company-id-9"
-    },
-    {
-      "id": "fdfb5b23-9402-7792-67c0-8b521854ac1f",
-      "tycoonId": "tycoon-id-3",
-      "name": "Industries Tower 1",
-      "definitionId": "moab.industry.tower",
-      "mapX": 216,
-      "mapY": 288,
-      "corporationId": "corp-id-5",
-      "companyId": "company-id-14"
-    },
-    {
-      "id": "43dea64b-5d58-59b2-6c47-2dace00a2c6b",
-      "tycoonId": "tycoon-id-5",
-      "name": "Commerce Tower 1",
-      "definitionId": "moab.market.tower",
-      "mapX": 218,
-      "mapY": 288,
-      "corporationId": "corp-id-7",
-      "companyId": "company-id-24"
     },
     {
       "id": "6e10a9d3-df35-3719-4b5b-fdce34430ce0",
@@ -3151,16 +3121,6 @@
       "companyId": "company-id-24"
     },
     {
-      "id": "1e8422d0-f56a-0221-d668-15967a412244",
-      "tycoonId": "tycoon-id-2",
-      "name": "Moab Cathedral 1",
-      "definitionId": "moab.cathedral",
-      "mapX": 221,
-      "mapY": 286,
-      "corporationId": "corp-id-4",
-      "companyId": "company-id-9"
-    },
-    {
       "id": "89935540-1b1b-c147-62e6-db464543e504",
       "tycoonId": "tycoon-id-2",
       "name": "Moab Correctional 1",
@@ -3169,16 +3129,6 @@
       "mapY": 286,
       "corporationId": "corp-id-4",
       "companyId": "company-id-9"
-    },
-    {
-      "id": "010cff61-6971-2e78-1655-614e7aa39390",
-      "tycoonId": "tycoon-id-5",
-      "name": "Real Estate Tower 1",
-      "definitionId": "moab.residential.tower",
-      "mapX": 220,
-      "mapY": 288,
-      "corporationId": "corp-id-7",
-      "companyId": "company-id-24"
     },
     {
       "id": "592b7686-b1d9-2723-1c62-f53b1a8bd4f8",

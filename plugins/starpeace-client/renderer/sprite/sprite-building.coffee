@@ -5,7 +5,7 @@ import CompositePolygon from '~/plugins/pixi/composite-polygon'
 import Sprite from '~/plugins/starpeace-client/renderer/sprite/sprite.coffee'
 
 export default class SpriteBuilding extends Sprite
-  constructor: (@textures, @is_animated, @is_selected, @is_filtered, @image_metadata, @effects) ->
+  constructor: (@textures, @is_animated, @is_selected, @is_filtered, @image_metadata, @effects, @signs) ->
     super()
 
     @_hit_area = @image_metadata.hit_area || []

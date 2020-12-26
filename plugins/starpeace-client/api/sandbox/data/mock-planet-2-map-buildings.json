@@ -2357,14 +2357,6 @@
       "mapY": 285
     },
     {
-      "id": "138ebc52-46e5-e9e1-b7b3-8731a05cb3e8",
-      "tycoonId": "tycoon-id-4",
-      "name": "Civic Affairs Tower 1",
-      "definitionId": "moab.correctional.tower",
-      "mapX": 195,
-      "mapY": 287
-    },
-    {
       "id": "a034efd1-4366-bb8b-cb23-7c0febf78887",
       "tycoonId": "tycoon-id-4",
       "name": "Headquarters 1",
@@ -2460,22 +2452,6 @@
       "name": "Headquarters 1",
       "definitionId": "moab.hq",
       "mapX": 213,
-      "mapY": 288
-    },
-    {
-      "id": "232f7b3f-ba5c-3f5b-5b0b-a0afb92fa60a",
-      "tycoonId": "tycoon-id-6",
-      "name": "Industries Tower 1",
-      "definitionId": "moab.industry.tower",
-      "mapX": 216,
-      "mapY": 288
-    },
-    {
-      "id": "7b011ab8-0be0-ba25-fc0f-1bfc72024aa9",
-      "tycoonId": "tycoon-id-6",
-      "name": "Commerce Tower 1",
-      "definitionId": "moab.market.tower",
-      "mapX": 218,
       "mapY": 288
     },
     {
@@ -2601,28 +2577,12 @@
       "mapY": 285
     },
     {
-      "id": "499b55f6-9ce3-c0da-c4de-e1c0d4cf7253",
-      "tycoonId": "tycoon-id-2",
-      "name": "Moab Cathedral 1",
-      "definitionId": "moab.cathedral",
-      "mapX": 221,
-      "mapY": 286
-    },
-    {
       "id": "48d3f895-38f3-2e1c-b6b1-9bd3fe544140",
       "tycoonId": "tycoon-id-4",
       "name": "Moab Correctional 1",
       "definitionId": "moab.correctional",
       "mapX": 228,
       "mapY": 286
-    },
-    {
-      "id": "c448d7b8-0c43-c5ec-dc80-9d39cbf1092b",
-      "tycoonId": "tycoon-id-2",
-      "name": "Real Estate Tower 1",
-      "definitionId": "moab.residential.tower",
-      "mapX": 220,
-      "mapY": 288
     },
     {
       "id": "7b410b9c-3e14-022e-bf8f-8cea6e5afcdd",

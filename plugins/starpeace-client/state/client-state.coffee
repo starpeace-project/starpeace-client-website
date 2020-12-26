@@ -55,6 +55,7 @@ export default class ClientState
     @core.overlay_library.subscribe_listener => @update_state()
     @core.plane_library.subscribe_listener => @update_state()
     @core.road_library.subscribe_listener => @update_state()
+    @core.sign_library.subscribe_listener => @update_state()
 
     @bookmarks.subscribe_bookmarks_metadata_listener => @update_state()
     @corporation.subscribe_company_ids_listener => @update_state()

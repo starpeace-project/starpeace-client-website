@@ -13,6 +13,7 @@ import SpriteLand from '~/plugins/starpeace-client/renderer/sprite/sprite-land.c
 import SpriteOverlay from '~/plugins/starpeace-client/renderer/sprite/sprite-overlay.coffee'
 import SpritePlane from '~/plugins/starpeace-client/renderer/sprite/sprite-plane.coffee'
 import SpriteRoad from '~/plugins/starpeace-client/renderer/sprite/sprite-road.coffee'
+import SpriteSign from '~/plugins/starpeace-client/renderer/sprite/sprite-sign.coffee'
 import SpriteTree from '~/plugins/starpeace-client/renderer/sprite/sprite-tree.coffee'
 
 import Logger from '~/plugins/starpeace-client/logger.coffee'
@@ -196,6 +197,12 @@ export default class TileItemCache
         continue unless effect_metadata? && effect_textures.length
         effects.push(new SpriteEffect(effect_textures, effect, effect_metadata))
 
+    signs = []
+    if metadata.sign_id? && image_metadata.sign?
+      sign_metadata = @client_state.core.sign_library.metadata_by_id[metadata.sign_id]
+      sign_textures = _.map(sign_metadata?.frames || [], (texture_id) -> PIXI.utils.TextureCache[texture_id])
+      signs.push(new SpriteSign(sign_textures, image_metadata.sign, sign_metadata)) if sign_metadata? && sign_textures.length
+
     is_selected = false
     is_filtered = false
     if @client_state.interface.selected_building_id?.length
@@ -203,7 +210,7 @@ export default class TileItemCache
       selected_corporation_id = @client_state.selected_building()?.corporation_id
       is_filtered = if selected_corporation_id?.length then selected_corporation_id != tile_info.building_info.corporation_id else true
 
-    new SpriteBuilding(textures, is_animated, is_selected, is_filtered, image_metadata, effects)
+    new SpriteBuilding(textures, is_animated, is_selected, is_filtered, image_metadata, effects, signs)
 
   building_construction_sprite_info_for: (building_id, is_valid_location) ->
     metadata = @client_state.core.building_library.metadata_by_id[building_id]

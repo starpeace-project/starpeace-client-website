@@ -46,32 +46,34 @@ export default class RoadMap
     return (if is_bridge then Road.TYPES.BRIDGE_NS else Road.TYPES.NS) if is_road_n && is_road_s
     return (if is_bridge then Road.TYPES.BRIDGE_EW else Road.TYPES.EW) if is_road_e && is_road_w
 
+    return Road.TYPES.NS_END_N if is_road_n
+    return Road.TYPES.NS_END_S if is_road_s
+    return Road.TYPES.EW_END_E if is_road_e
+    return Road.TYPES.EW_END_W if is_road_w
+
     null
 
   populate_info: (source_x, target_x, source_y, target_y) ->
     for y in [source_y...target_y]
       for x in [source_x...target_x]
         index = y * @width + x
-        continue unless @road_buffer[index] == true
+        continue unless @road_buffer[index] > 0
 
         has_n = y > 0
         has_s = y < @height
         has_e = x < @width
         has_w = x > 0
 
-        index_n = (y - 1) * @width + x
-        index_s = (y + 1) * @width + x
-        index_e = index + 1
-        index_w = index - 1
-
         is_water = @ground_map.is_water_at(x, y)
-
         is_concrete_edge = @concrete_map.is_concrete_edge_at(x, y)
         is_concrete_around = @concrete_map.is_concrete_around(x, y)
         is_bridge = is_water && !is_concrete_around
 
-        road_type = @determine_road_by_neighbors(is_bridge, has_n && @road_buffer[index_n] == true, has_s && @road_buffer[index_s] == true,
-            has_e && @road_buffer[index_e] == true, has_w && @road_buffer[index_w] == true)
+        road_type = @determine_road_by_neighbors(is_bridge,
+            has_n && (@road_buffer[index] & 0x01) > 0,
+            has_s && (@road_buffer[index] & 0x04) > 0,
+            has_e && (@road_buffer[index] & 0x02) > 0,
+            has_w && (@road_buffer[index] & 0x08) > 0)
 
         if road_type?
           @road_info[index] = {

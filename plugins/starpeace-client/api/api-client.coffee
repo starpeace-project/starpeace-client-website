@@ -133,6 +133,12 @@ export default class APIClient
       chunkY: chunk_y
     }, (result) -> if result? then new Uint8Array(result) else null)
 
+  road_data_for_planet: (planet_id, chunk_x, chunk_y) ->
+    @get_binary("planets/#{planet_id}/roads", {
+      chunkX: chunk_x
+      chunkY: chunk_y
+    }, (result) -> if result? then new Uint8Array(result) else null)
+
   tycoon_for_id: (tycoon_id) ->
     @get("tycoons/#{tycoon_id}", {}, (result) -> result)
 

@@ -118,6 +118,10 @@ export default class LayerManager
         effect = @with_height_animated_sprite_cache.new_sprite(render_state, { textures:effect_info.textures, speed:.1 })
         effect_info.render(effect, building, canvas, viewport)
 
+      for sign_info in tile_item.sprite_info.building.signs
+        sign = @with_height_animated_sprite_cache.new_sprite(render_state, { textures:sign_info.textures, speed:.1 })
+        sign_info.render(sign, building, canvas, viewport)
+
     if construction_item?.within_canvas(canvas, viewport)
       sprite_cache = if construction_item.is_animated then @with_height_animated_sprite_cache else @with_height_static_sprite_cache
       building_construction = sprite_cache.new_sprite(render_state, { textures:construction_item.textures, speed:.15, hit_area:construction_item.hit_area(viewport) })

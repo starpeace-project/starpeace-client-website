@@ -7,12 +7,16 @@ Some of the tentative future features and rough planned version are outlined bel
 * [pending] minimum distance between buildings (statue and tower)
 * [pending] manage city zones API integration
 * [pending] follow tycoon API integration
+* [pending] road management API integration
 
 ### assets
 * [pending] car assets
 * [pending] street light and intersection lamp assets
+* [pending] dedicated research buildings per category and seal
 
 ### gameplay
+* [pending] road construction
+* [pending] improve concrete and platform rendering
 * [pending] follow tycoon menu state and button
 * [pending] mail contacts menu
 * [pending] mail contacts organization menu

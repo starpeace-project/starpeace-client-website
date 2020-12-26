@@ -14,6 +14,7 @@ import OverlayLibrary from '~/plugins/starpeace-client/state/core/library/overla
 import PlaneLibrary from '~/plugins/starpeace-client/state/core/library/plane-library.coffee'
 import PlanetLibrary from '~/plugins/starpeace-client/state/core/library/planet-library.coffee'
 import RoadLibrary from '~/plugins/starpeace-client/state/core/library/road-library.coffee'
+import SignLibrary from '~/plugins/starpeace-client/state/core/library/sign-library.coffee'
 
 import BuildingCache from '~/plugins/starpeace-client/state/core/cache/building-cache.coffee'
 import CompanyCache from '~/plugins/starpeace-client/state/core/cache/company-cache.coffee'
@@ -39,6 +40,7 @@ export default class CoreState
     @plane_library = new PlaneLibrary()
     @planet_library = new PlanetLibrary()
     @road_library = new RoadLibrary()
+    @sign_library = new SignLibrary()
 
     @building_cache = new BuildingCache()
     @company_cache = new CompanyCache()
@@ -48,7 +50,7 @@ export default class CoreState
     @planet_cache = new PlanetCache()
     @tycoon_cache = new TycoonCache()
 
-  libraries: () -> [@building_library, @concrete_library, @effect_library, @invention_library, @land_library, @map_library, @news_library, @overlay_library, @plane_library, @planet_library, @road_library]
+  libraries: () -> [@building_library, @concrete_library, @effect_library, @invention_library, @land_library, @map_library, @news_library, @overlay_library, @plane_library, @planet_library, @road_library, @sign_library]
   caches: () -> [@building_cache, @company_cache, @corporation_cache, @galaxy_cache, @multiverse_cache, @planet_cache, @tycoon_cache]
 
   reset_multiverse: () -> state.reset_multiverse() for state in _.concat(@libraries(), @caches())
@@ -58,6 +60,6 @@ export default class CoreState
     @building_library.has_assets() && @concrete_library.has_assets() && @effect_library.has_assets() &&
         @land_library.has_assets(planet_type) && @map_library.has_assets(map_id) &&
         @news_library.has_metadata(language_code) && @overlay_library.has_assets() && @plane_library.has_assets() &&
-        @road_library.has_assets()
+        @road_library.has_assets() && @sign_library.has_assets()
 
   has_metadata: () -> @building_library.has_metadata() && @invention_library.has_metadata() && @planet_library.has_metadata()

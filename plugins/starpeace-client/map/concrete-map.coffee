@@ -55,7 +55,7 @@ export default class ConcreteMap
     for y in [source_y...target_y]
       for x in [source_x...target_x]
         index = y * @width + x
-        is_road = @building_map.tile_info_road[index]?
+        is_road = @building_map.tile_info_road[index] > 0
         @concrete_fill_types[index] = @building_map.tile_info_concrete[index]
         @concrete_fill_types[index] = Concrete.FILL_TYPE.FILL if is_road && @building_map.is_city_around(x, y)
         @concrete_fill_types[index] = Concrete.FILL_TYPE.NO_FILL if @ground_map.is_coast_at(x, y)
@@ -84,27 +84,27 @@ export default class ConcreteMap
     for y in [source_y...target_y]
       for x in [source_x...target_x]
         index = y * @width + x
-        continue if @concrete_fill_types[index] == Concrete.FILL_TYPE.NO_FILL || @concrete_fill_types[index] == Concrete.FILL_TYPE.FILLED || !@building_map.tile_info_road[index]?
+        continue if @concrete_fill_types[index] == Concrete.FILL_TYPE.NO_FILL || @concrete_fill_types[index] == Concrete.FILL_TYPE.FILLED || !@building_map.tile_info_road[index]
 
         index_n = (y - 1) * @width + x
         index_s = (y + 1) * @width + x
         index_e = index + 1
         index_w = index - 1
 
-        is_junction = @building_map.is_road_junction(x, y)
-        neighbor_is_filled = (@concrete_fill_types[index_n] == Concrete.FILL_TYPE.FILLED && !@building_map.tile_info_road[index_n]?) ||
-              (@concrete_fill_types[index_s] == Concrete.FILL_TYPE.FILLED && !@building_map.tile_info_road[index_s]?) ||
-              (@concrete_fill_types[index_e] == Concrete.FILL_TYPE.FILLED && !@building_map.tile_info_road[index_e]?) ||
-              (@concrete_fill_types[index_w] == Concrete.FILL_TYPE.FILLED && !@building_map.tile_info_road[index_w]?)
+        is_junction = @building_map.tile_info_road[y * @width + x] & 0x0F
+        neighbor_is_filled = (@concrete_fill_types[index_n] == Concrete.FILL_TYPE.FILLED && !@building_map.tile_info_road[index_n]) ||
+              (@concrete_fill_types[index_s] == Concrete.FILL_TYPE.FILLED && !@building_map.tile_info_road[index_s]) ||
+              (@concrete_fill_types[index_e] == Concrete.FILL_TYPE.FILLED && !@building_map.tile_info_road[index_e]) ||
+              (@concrete_fill_types[index_w] == Concrete.FILL_TYPE.FILLED && !@building_map.tile_info_road[index_w])
 
         should_fill = false
         if @ground_map.is_water_at(x, y)
           should_fill = true if is_junction
         else
-          should_fill = (@concrete_fill_types[index_n] == Concrete.FILL_TYPE.FILLED && (is_junction || !@building_map.tile_info_road[index_n]?)) ||
-              (@concrete_fill_types[index_s] == Concrete.FILL_TYPE.FILLED && (is_junction || !@building_map.tile_info_road[index_s]?)) ||
-              (@concrete_fill_types[index_e] == Concrete.FILL_TYPE.FILLED && (is_junction || !@building_map.tile_info_road[index_e]?)) ||
-              (@concrete_fill_types[index_w] == Concrete.FILL_TYPE.FILLED && (is_junction || !@building_map.tile_info_road[index_w]?))
+          should_fill = (@concrete_fill_types[index_n] == Concrete.FILL_TYPE.FILLED && (is_junction || !@building_map.tile_info_road[index_n])) ||
+              (@concrete_fill_types[index_s] == Concrete.FILL_TYPE.FILLED && (is_junction || !@building_map.tile_info_road[index_s])) ||
+              (@concrete_fill_types[index_e] == Concrete.FILL_TYPE.FILLED && (is_junction || !@building_map.tile_info_road[index_e])) ||
+              (@concrete_fill_types[index_w] == Concrete.FILL_TYPE.FILLED && (is_junction || !@building_map.tile_info_road[index_w]))
 
         if should_fill
           @concrete_fill_types[index] = Concrete.FILL_TYPE.FILLED
@@ -193,7 +193,7 @@ export default class ConcreteMap
       for x in [source_x...target_x]
         index = y * @width + x
 
-        is_road = @building_map.tile_info_road[y * @width + x]?
+        is_road = @building_map.tile_info_road[y * @width + x] > 0
         is_water = @ground_map.is_water_at(x, y)
         is_coast = @ground_map.is_coast_at(x, y)
         if @concrete_fill_types[index] == Concrete.FILL_TYPE.FILLED
