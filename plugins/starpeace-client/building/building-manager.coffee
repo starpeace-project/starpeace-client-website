@@ -1,5 +1,6 @@
 
 import Building from '~/plugins/starpeace-client/building/building.coffee'
+import BuildingDetails from '~/plugins/starpeace-client/building/building-details.coffee'
 
 import ChunkMap from '~/plugins/starpeace-client/map/chunk/chunk-map.coffee'
 
@@ -62,19 +63,23 @@ export default class BuildingManager
             error()
 
   load_building_metadata: (building_id) ->
-    new Promise (done, error) =>
-      if !@client_state.has_session() || !building_id? || !@client_state.player.planet_id? || @ajax_state.is_locked('building_metadata', building_id)
-        done()
-      else
-        lock = @ajax_state.with_lock('building_metadata', building_id, done, error)
-        @api.building_for_id(building_id)
-          .then (building_json) =>
-            @client_state.core.building_cache.load_building(Building.from_json(building_json))
-            lock.done()
+    throw Error() if !@client_state.has_session() || !building_id?
+    await @ajax_state.locked('building_metadata', building_id, =>
+      building = Building.from_json(await @api.building_for_id(building_id))
+      @client_state.core.building_cache.load_building(building)
+      building
+    )
 
-          .catch (err) =>
-             # FIXME: TODO add error handling
-            lock.error()
+  load_building_details: (building_id) ->
+    details = @client_state.core.building_cache.building_details(building_id)
+    return details if details?
+    throw Error() if !@client_state.has_session() || !building_id?
+    await @ajax_state.locked('building_details', building_id, =>
+      details = BuildingDetails.from_json(await @api.building_details_for_id(building_id))
+      @client_state.core.building_cache.load_building_details(details)
+      details
+    )
+
 
   construct_building: () ->
     building_metadata = @client_state.core.building_library.metadata_by_id[@client_state.interface.construction_building_id]

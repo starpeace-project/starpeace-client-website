@@ -76,6 +76,7 @@ export default
 
 .list-item
   margin-top: 1px
+  overflow: hidden
 
   a
     display: block

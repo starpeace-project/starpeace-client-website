@@ -31,3 +31,11 @@ export default class Utils
         query_pair = pair.split('=')
         query[decodeURIComponent(query_pair[0])] = decodeURIComponent(query_pair[1] || '')
     query
+
+  @grid_style: (tag, values) ->
+    style = ''
+    for index in [0...values.length]
+      style = "[#{values[index].start}]" if index == 0
+      style = "#{style} #{values[index].size}"
+      style = "#{style} [#{[values[index].end].concat(if index < values.length - 1 then [values[index + 1].start] else []).join(' ')}]"
+    "#{tag}: #{style}"

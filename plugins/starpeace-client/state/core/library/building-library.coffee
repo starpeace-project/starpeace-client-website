@@ -33,7 +33,7 @@ export default class BuildingLibrary extends Library
           @metadata_by_seal_id[seal_id].push @metadata_by_id[building_id]
 
 
-  definition_for_id: (id) -> @metadata_by_id[id] || []
+  definition_for_id: (id) -> @metadata_by_id[id]
   definitions_for_seal: (seal_id) -> @metadata_by_seal_id[seal_id] || []
   load_definitions: (definitions) ->
     Vue.set(@metadata_by_id, definition.id, definition) for definition in definitions

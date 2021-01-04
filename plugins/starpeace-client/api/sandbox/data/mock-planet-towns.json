@@ -69,8 +69,8 @@
       "sealId": "DIS",
       "color": 16751616,
       "buildingId": "townhall-virgo",
-      "mapX": 208,
-      "mapY": 164
+      "mapX": 205,
+      "mapY": 159
     },
     {
       "id": "town-id-9",
@@ -96,8 +96,8 @@
       "sealId": "DIS",
       "color": 10263708,
       "buildingId": "townhall-aquarius",
-      "mapX": 135,
-      "mapY": 452
+      "mapX": 134,
+      "mapY": 451
     }
   ],
   "planet-2" : [

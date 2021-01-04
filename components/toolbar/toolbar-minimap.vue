@@ -1,5 +1,5 @@
 <template lang='pug'>
-#mini-map-container(ref='mini_map_container' v-show='is_ready && show_mini_map' :style='mini_map_container_css_style')
+#mini-map-container(ref='mini_map_container' v-show='is_ready && show_mini_map' :style='mini_map_container_css_style' oncontextmenu='return false')
   #mini-map-webgl-container
   a.zoom.zoom-out(@click.stop.prevent='client_state.interface.mini_map_zoom_in()')
     font-awesome-icon(:icon="['fas', 'plus']")
@@ -61,16 +61,15 @@ export default
 
 #mini-map-container
   background-color: #000
-  grid-column-start: 2
-  grid-column-end: 3
-  grid-row-start: start-overlay
-  grid-row-end: end-overlay
+  grid-column: start-render / end-render
+  grid-row: start-overlay / end-overlay
   justify-self: end
   align-self: end
   min-height: 200px
   min-width: 300px
   padding: 6px
   position: relative
+  pointer-events: auto
   touch-action: none
   z-index: 1050
 

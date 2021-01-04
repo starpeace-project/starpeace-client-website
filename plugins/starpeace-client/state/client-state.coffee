@@ -85,6 +85,7 @@ export default class ClientState
     @renderer_initialized = false
     @mini_map_renderer_initialized = false
     @construction_preview_renderer_initialized = false
+    @inspect_preview_renderer_initialized = false
 
     @ajax_state.reset_state()
 
@@ -127,7 +128,7 @@ export default class ClientState
       @notify_workflow_status_listeners()
 
   determine_state: () ->
-    unless @initialized && @renderer_initialized && @mini_map_renderer_initialized && @construction_preview_renderer_initialized
+    unless @initialized && @renderer_initialized && @mini_map_renderer_initialized && @construction_preview_renderer_initialized && @inspect_preview_renderer_initialized
       return 'pending_universe' unless @identity.galaxy_id? || @identity.galaxy_visa_type?
 
       planet_metadata = @current_planet_metadata()
@@ -299,6 +300,7 @@ export default class ClientState
 
   show_politics: (town_id) ->
     @menu.toggle_menu('politics') unless @menu.is_visible('politics')
+    @interface.select_politics_mayor(town_id)
 
   show_tycoon_profile: (tycoon_id) ->
     @menu.toggle_menu('tycoon') unless @menu.is_visible('tycoon')

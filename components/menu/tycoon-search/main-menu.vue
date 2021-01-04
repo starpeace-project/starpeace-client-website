@@ -47,7 +47,7 @@
 
     template(v-else)
       .query-fields
-        .tabs.is-centered.is-toggle.is-fullwidth.sp-tabs.query-mode-toggle
+        .tabs.is-centered.is-toggle.is-small.is-fullwidth.sp-tabs.query-mode-toggle
           ul
             li(:class="{'is-active':mode=='CORPORATIONS'}" @click.stop.prevent="swap_mode('CORPORATIONS')")
               a {{translate('ui.menu.tycoon_search.toggle.corporations')}}
@@ -145,8 +145,8 @@ export default
 @import '~assets/stylesheets/starpeace-menus'
 
 .sp-menu
-  grid-column: 3 / span 1
-  grid-row: 2 / span 3
+  grid-column: start-right / end-right
+  grid-row: start-render / end-inspect
 
   > .card-content
     grid-template-columns: auto
@@ -161,6 +161,10 @@ export default
 
   .query-mode-toggle
     margin-bottom: .5rem
+
+    a
+      letter-spacing: .1rem
+      text-transform: uppercase
 
   .query-input
     margin-bottom: 1.5rem

@@ -40,6 +40,8 @@ export default class InterfaceState
     @location_history = []
     @location_index = 0
 
+    @show_inspect = false
+
     @selected_building_id = null
 
     @inventions_selected_category_id = 'SERVICE'
@@ -55,6 +57,9 @@ export default class InterfaceState
     @construction_building_city_zone_id = null
     @construction_building_width = 0
     @construction_building_height = 0
+
+    @selected_politics_type = null
+    @selected_politics_id = null
 
     @selected_ranking_type_id = null
     @selected_ranking_corporation_id = null
@@ -84,6 +89,8 @@ export default class InterfaceState
       @show_overlay = false
       @show_zones = true
 
+  toggle_inspect: () ->
+    @show_inspect = !@show_inspect
 
   mini_map_adjust_zoom: (zoom_delta) ->
     before = @options.option('mini_map.zoom')
@@ -101,7 +108,17 @@ export default class InterfaceState
     @options.set_and_save_option('mini_map.height', height)
     @notify_mini_map_size_listeners()
 
-
+  toggle_building: (building_id) ->
+    if building_id == @selected_building_id
+      @unselect_building()
+    else
+      @selected_building_id = building_id
+  select_and_inspect_building: (building_id) ->
+    @selected_building_id = building_id
+    @show_inspect = true
+  unselect_building: () ->
+    @selected_building_id = null
+    @show_inspect = false
   select_building_id: (building_id) ->
     @selected_building_id = building_id
 
@@ -113,6 +130,14 @@ export default class InterfaceState
     @notify_selected_ranking_corporation_id_listeners()
   toggle_ranking_corporation_id: (corporation_id) -> @select_ranking_corporation_id(if @selected_ranking_corporation_id == corporation_id then null else corporation_id)
 
+  select_politics_president: (planet_id) -> @select_politics('PRESIDENT', planet_id)
+  select_politics_mayor: (town_id) -> @select_politics('MAYOR', town_id)
+  select_politics: (type, id) ->
+    @selected_politics_type = type
+    @selected_politics_id = id
+  unselect_politics: () ->
+    @selected_politics_type = null
+    @selected_politics_id = null
 
   primary_mouse_down: (mouse_x, mouse_y) ->
     @is_moving = true

@@ -26,16 +26,14 @@ div
         span.detail-label {{translate('ui.menu.corporation.panel.details.ranking')}}:
         span.detail-value 0
       .detail-row
-        span.detail-label {{translate('ui.menu.corporation.panel.details.level')}}:
+        span.detail-label {{translate('misc.corporation.level')}}:
         span.detail-value
           template(v-if='level') {{translate(level.label)}}
       .detail-row
-        span.detail-label {{translate('ui.menu.corporation.panel.details.prestige')}}:
+        span.detail-label {{translate('misc.corporation.prestige')}}:
         span.detail-value 0
 
   .corporation-actions.level.is-mobile
-    .level-item.action-column
-      a.button.is-fullwidth.is-small.is-starpeace(disabled) {{translate('ui.menu.corporation.panel.action.follow')}}
     .level-item.action-column
       a.button.is-fullwidth.is-small.is-starpeace(@click.stop.prevent='show_profile') {{translate('ui.menu.corporation.panel.action.show_profile')}}
     .level-item.action-column
@@ -140,5 +138,7 @@ export default
 .corporation-actions
   padding: 0 .5rem .5rem .5rem
   margin: 0
+  text-transform: uppercase
+  letter-spacing: .05rem
 
 </style>

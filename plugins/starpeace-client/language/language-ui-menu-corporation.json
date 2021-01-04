@@ -95,22 +95,6 @@
     "IT": "Classifica",
     "PT": "Posição"
   },
-  "ui.menu.corporation.panel.details.level": {
-    "DE": "Rang",
-    "EN": "Level",
-    "ES": "Rango",
-    "FR": "Rang",
-    "IT": "Nivel",
-    "PT": "Classe"
-  },
-  "ui.menu.corporation.panel.details.prestige": {
-    "DE": "Prestige",
-    "EN": "Prestige",
-    "ES": "Prestigio",
-    "FR": "Prestige",
-    "IT": "Prestigio",
-    "PT": "Prestígio"
-  },
   "ui.menu.corporation.panel.action.follow": {
     "DE": "Folgen",
     "EN": "Follow",

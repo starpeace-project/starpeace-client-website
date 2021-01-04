@@ -47,12 +47,13 @@
     &.is-square
       border-radius: 0
 
-  &.is-starpeace-light
-    &:active,
-    &.is-active
-      background-color: $sp-button-light-bg
-      border: 1px solid $sp-button-light-bg
-      color: #000
+    &.is-starpeace-light
+      &:not([disabled])
+        &:active,
+        &.is-active
+          background-color: $sp-button-light-bg
+          border: 1px solid $sp-button-light-bg
+          color: #000
 
 
 .label

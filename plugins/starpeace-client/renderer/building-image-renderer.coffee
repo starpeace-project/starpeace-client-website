@@ -2,28 +2,11 @@
 import 'javascript-detect-element-resize'
 import * as PIXI from 'pixi.js'
 
-WEBGL_CONTAINER = 'construction-image-webgl-container'
-
 export default class BuildingImageRenderer
-  constructor: (@managers, @client_state, @options) ->
-
-  refresh_map_texture: () ->
-    return unless @client_state.initialized && @client_state.workflow_status == 'ready'
-    image_data = new ImageData(@rgba_buffer, @client_state.planet.game_map.width, @client_state.planet.game_map.height)
-
-    dom_buffer = document.createElement('canvas')
-    dom_buffer.width = image_data.width
-    dom_buffer.height = image_data.height
-
-    buffer_context = dom_buffer.getContext('2d')
-    buffer_context.putImageData(image_data, 0, 0)
-    PIXI.utils.TextureCache[MINI_MAP_TEXTURE_KEY] = PIXI.Texture.fromCanvas(dom_buffer)
-    @sprite.texture = PIXI.utils.TextureCache[MINI_MAP_TEXTURE_KEY] if @sprite
-
-    @pending_refresh = null
+  constructor: (@managers, @client_state, @webgl_dom_id, @check_initialized_callback, @initialize_callback, @building_id_callback, @options) ->
 
   handle_resize: () ->
-    render_container = document?.getElementById(WEBGL_CONTAINER)
+    render_container = document?.getElementById(@webgl_dom_id)
     return unless render_container?
 
     @renderer_width = Math.ceil(render_container.offsetWidth)
@@ -33,7 +16,7 @@ export default class BuildingImageRenderer
     @update_building_sprite()
 
   initialize_application: () ->
-    render_container = document?.getElementById(WEBGL_CONTAINER)
+    render_container = document?.getElementById(@webgl_dom_id)
     return unless render_container?
 
     @renderer_width = Math.ceil(render_container.offsetWidth)
@@ -55,18 +38,18 @@ export default class BuildingImageRenderer
     @initialize_application() unless @application?
 
     @last_building_id = null
-
-    @client_state.construction_preview_renderer_initialized = true
+    @initialize_callback()
 
   update_building_sprite: () ->
-    return unless @client_state.mini_map_renderer_initialized
+    return unless @check_initialized_callback()
 
     unless @sprite?
       @sprite = new PIXI.Sprite(PIXI.Texture.EMPTY)
       @container.addChild(@sprite)
 
-    if @client_state.interface.construction_selected_building_id?.length
-      definition = @client_state.core.building_library.definition_for_id(@client_state.interface.construction_selected_building_id)
+    building_id = @building_id_callback()
+    if building_id?.length
+      definition = @client_state.core.building_library.definition_for_id(building_id)
       building_image = if definition?.image_id? then @client_state.core.building_library.images_by_id[definition.image_id] else null
       texture = if building_image?.frames?.length then PIXI.utils.TextureCache[building_image.frames[0]] else PIXI.Texture.EMPTY
 
@@ -80,10 +63,10 @@ export default class BuildingImageRenderer
       @sprite.y = (@renderer_height - texture_height) / 2
       @sprite.scale = new PIXI.Point(texture_width / texture.width, texture_height / texture.height)
 
-    @last_building_id = @client_state.interface.construction_selected_building_id
+    @last_building_id = building_id
 
-  needs_update: () -> @last_building_id != @client_state.interface.construction_selected_building_id
+  needs_update: () -> @last_building_id != @building_id_callback()
 
   tick: () ->
-    return unless @client_state.construction_preview_renderer_initialized && @client_state?.menu?.is_visible('construction') && @client_state.interface.construction_selected_building_id?.length
+    return unless @check_initialized_callback()
     @update_building_sprite() if @needs_update()

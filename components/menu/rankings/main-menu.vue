@@ -158,8 +158,8 @@ export default
 @import '~assets/stylesheets/starpeace-menus'
 
 .sp-menu
-  grid-column: 3 / span 1
-  grid-row: 2 / span 3
+  grid-column: start-right / end-right
+  grid-row: start-render / end-inspect
 
   > .card-content
     grid-template-columns: auto
@@ -171,7 +171,7 @@ export default
 
 
 .container-ranking-tycoons
-  background-color: darken($sp-dark-bg, 15%)
+  background-color: darken($sp-dark-bg, 10%)
   overflow-y: scroll
 
 .ranking-title-industry

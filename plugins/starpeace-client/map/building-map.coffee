@@ -29,8 +29,8 @@ export default class BuildingMap
   building_info_at: (x, y) -> @tile_info_building[y * @width + x]
   has_concrete_at: (x, y) ->
     building = @building_info_at(x, y)
-    metadata = if building? then @client_state.core.building_library.metadata_by_id[building.definition_id] else null
-    metadata?.concrete_foundation
+    metadata = if building? then @client_state.core.building_library.definition_for_id(building.definition_id) else null
+    metadata?.foundation
 
   is_city_around: (x, y) ->
     y > 0 && @has_concrete_at(x, y - 1) ||
@@ -55,7 +55,7 @@ export default class BuildingMap
       for x in [0...image_metadata.w]
         map_index = (building.map_y - y) * @width + (building.map_x - x)
         @tile_info_building[map_index] = building
-        @tile_info_concrete[map_index] = if metadata.concrete_foundation then Concrete.FILL_TYPE.FILLED else Concrete.FILL_TYPE.NO_FILL
+        @tile_info_concrete[map_index] = if metadata.foundation then Concrete.FILL_TYPE.FILLED else Concrete.FILL_TYPE.NO_FILL
 
   remove_building: (building_id) ->
     building = @client_state.core.building_cache.building_metadata_by_id[building_id]

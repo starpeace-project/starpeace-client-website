@@ -80,7 +80,7 @@
       "name": "Tradecenter",
       "definitionId": "mko.tradecenter",
       "mapX": 646,
-      "mapY": 152,
+      "mapY": 153,
       "corporationId": "IFEL",
       "companyId": "IFEL"
     },
@@ -144,7 +144,7 @@
       "name": "Tradecenter",
       "definitionId": "dis.tradecenter",
       "mapX": 615,
-      "mapY": 583,
+      "mapY": 584,
       "corporationId": "IFEL",
       "companyId": "IFEL"
     },
@@ -153,7 +153,7 @@
       "tycoonId": "IFEL",
       "name": "Portal",
       "definitionId": "generic.portal",
-      "mapX": 619,
+      "mapX": 620,
       "mapY": 580,
       "corporationId": "IFEL",
       "companyId": "IFEL"
@@ -208,7 +208,7 @@
       "name": "Tradecenter",
       "definitionId": "mko.tradecenter",
       "mapX": 492,
-      "mapY": 456,
+      "mapY": 457,
       "corporationId": "IFEL",
       "companyId": "IFEL"
     },
@@ -217,8 +217,8 @@
       "tycoonId": "IFEL",
       "name": "Portal",
       "definitionId": "generic.portal",
-      "mapX": 496,
-      "mapY": 453,
+      "mapX": 497,
+      "mapY": 454,
       "corporationId": "IFEL",
       "companyId": "IFEL"
     }
@@ -249,7 +249,7 @@
       "tycoonId": "IFEL",
       "name": "Portal",
       "definitionId": "generic.portal",
-      "mapX": 313,
+      "mapX": 310,
       "mapY": 564,
       "corporationId": "IFEL",
       "companyId": "IFEL"
@@ -293,8 +293,8 @@
       "tycoonId": "IFEL",
       "name": "Townhall",
       "definitionId": "dis.townhall",
-      "mapX": 135,
-      "mapY": 452,
+      "mapX": 134,
+      "mapY": 451,
       "corporationId": "IFEL",
       "companyId": "IFEL"
     },
@@ -303,8 +303,8 @@
       "tycoonId": "IFEL",
       "name": "Tradecenter",
       "definitionId": "dis.tradecenter",
-      "mapX": 135,
-      "mapY": 455,
+      "mapX": 134,
+      "mapY": 456,
       "corporationId": "IFEL",
       "companyId": "IFEL"
     },
@@ -1325,16 +1325,6 @@
       "mapY": 148,
       "corporationId": "corp-id-5",
       "companyId": "company-id-11"
-    },
-    {
-      "id": "e6a4528f-d330-6935-6d8d-3936640dc1c6",
-      "tycoonId": "tycoon-id-5",
-      "name": "College 1",
-      "definitionId": "generic.college",
-      "mapX": 205,
-      "mapY": 159,
-      "corporationId": "corp-id-7",
-      "companyId": "company-id-23"
     }
   ],
   "11x7": [
@@ -1387,8 +1377,8 @@
       "tycoonId": "IFEL",
       "name": "Townhall",
       "definitionId": "dis.townhall",
-      "mapX": 208,
-      "mapY": 164,
+      "mapX": 205,
+      "mapY": 159,
       "corporationId": "IFEL",
       "companyId": "IFEL"
     },
@@ -1397,8 +1387,8 @@
       "tycoonId": "IFEL",
       "name": "Tradecenter",
       "definitionId": "dis.tradecenter",
-      "mapX": 208,
-      "mapY": 167,
+      "mapX": 209,
+      "mapY": 163,
       "corporationId": "IFEL",
       "companyId": "IFEL"
     },

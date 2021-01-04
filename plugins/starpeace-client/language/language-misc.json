@@ -126,5 +126,53 @@
     "FR": "Il y avait un problème de connexion au serveur. Veuillez réessayer plus tard.",
     "IT": "C'è stato un problema di connessione al server. Per favore riprova più tardi.",
     "PT": "Houve um problema na conexão com o servidor. Por favor, tente novamente mais tarde."
+  },
+  "misc.corporation.level": {
+    "DE": "Rang",
+    "EN": "Level",
+    "ES": "Rango",
+    "FR": "Rang",
+    "IT": "Nivel",
+    "PT": "Classe"
+  },
+  "misc.corporation.prestige": {
+    "DE": "Prestige",
+    "EN": "Prestige",
+    "ES": "Prestigio",
+    "FR": "Prestige",
+    "IT": "Prestigio",
+    "PT": "Prestígio"
+  },
+  "misc.unit.month.singular": {
+    "DE": "monat",
+    "EN": "month",
+    "ES": "mes",
+    "FR": "mois",
+    "IT": "mese",
+    "PT": "mês"
+  },
+  "misc.unit.month.plural": {
+    "DE": "monate",
+    "EN": "months",
+    "ES": "meses",
+    "FR": "mois",
+    "IT": "mesi",
+    "PT": "meses"
+  },
+  "misc.unit.year.singular": {
+    "DE": "jahr",
+    "EN": "year",
+    "ES": "año",
+    "FR": "an",
+    "IT": "anno",
+    "PT": "ano"
+  },
+  "misc.unit.year.plural": {
+    "DE": "jahre",
+    "EN": "years",
+    "ES": "años",
+    "FR": "ans",
+    "IT": "anni",
+    "PT": "anos"
   }
 }

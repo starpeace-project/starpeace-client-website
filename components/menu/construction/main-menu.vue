@@ -223,10 +223,8 @@ export default
 @import '~assets/stylesheets/starpeace-variables'
 
 #construction-container
-  grid-column-start: 3
-  grid-row-start: 2
-  grid-column-end: 4
-  grid-row-end: 5
+  grid-column: start-right / end-right
+  grid-row: start-render / end-inspect
   overflow: hidden
   width: 30rem
   z-index: 1100

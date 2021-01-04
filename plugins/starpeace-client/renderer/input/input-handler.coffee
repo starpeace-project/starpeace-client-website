@@ -78,7 +78,7 @@ export default class InputHandler
             @client_state.interface.construction_building_id = null
 
           else if @client_state.interface.selected_building_id?.length
-            @client_state.interface.selected_building_id = null
+            @client_state.interface.unselect_building()
 
         else
           @client_state.interface.construction_building_id = null if @client_state.interface.construction_building_id?

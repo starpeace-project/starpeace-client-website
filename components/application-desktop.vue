@@ -1,16 +1,16 @@
 <template lang='pug'>
 client-only
-  #application-container(:class='application_css_class', v-cloak=true)
-    sp-header(:managers='managers', :client_state='client_state')
+  #application-container(v-cloak=true :style='application_css_style')
+    sp-header(:managers='managers' :client_state='client_state')
 
-    sp-loading-card(:managers='managers' :client_state='client_state' within-grid=true)
-    sp-loading-modal(v-show='is_loading_modal_visible' within-grid=true)
+    loading-card(:managers='managers' :client_state='client_state' within-grid=true)
+    loading-modal(v-show='is_loading_modal_visible' within-grid=true)
 
-    sp-server-connection-warning-card(:managers='managers' :client_state='client_state')
-    sp-session-expired-warning-card(:managers='managers' :client_state='client_state')
-    sp-webgl-warning-card(:managers='managers' :client_state='client_state')
+    server-connection-warning-card(:managers='managers' :client_state='client_state')
+    session-expired-warning-card(:managers='managers' :client_state='client_state')
+    webgl-warning-card(:managers='managers' :client_state='client_state')
 
-    sp-workflow(:managers='managers' :ajax_state='ajax_state' :client_state='client_state')
+    workflow(:managers='managers' :ajax_state='ajax_state' :client_state='client_state')
 
     menu-corporation-establish(v-if='is_corporation_establish_visible' :managers='managers', :client_state='client_state')
     menu-company-form(v-show="is_menu_visible('company_form')" :managers='managers' :client_state='client_state')
@@ -20,7 +20,7 @@ client-only
     menu-bookmarks(v-show="is_menu_visible('bookmarks')" :managers='managers' :ajax_state='ajax_state' :client_state='client_state')
     menu-mail(v-show="is_menu_visible('mail')" :managers='managers' :ajax_state='ajax_state' :client_state='client_state')
     menu-options(v-show="is_menu_visible('options')" :managers='managers' :client_state='client_state')
-    menu-politics(v-show="is_menu_visible('politics')" :managers='managers' :client_state='client_state')
+    menu-politics(:visible="is_menu_visible('politics')" :managers='managers' :client_state='client_state')
     menu-help(v-show="is_menu_visible('help')" :managers='managers' :client_state='client_state')
     menu-rankings(v-show="is_menu_visible('rankings')" :managers='managers' :ajax_state='ajax_state' :client_state='client_state')
     menu-release-notes(v-show="is_menu_visible('release_notes')" :managers='managers' :client_state='client_state')
@@ -30,18 +30,19 @@ client-only
     menu-tycoon-details(v-show="is_menu_visible('tycoon')" :managers='managers' :client_state='client_state')
     menu-tycoon-search(v-show="is_menu_visible('tycoon_search')" :managers='managers' :ajax_state='ajax_state' :client_state='client_state')
 
-    sp-body(:client_state='client_state')
+    render-container(:client_state='client_state')
 
     toolbar-overlay(:managers='managers' :client_state='client_state')
     toolbar-minimap(:client_state='client_state')
     toolbar-ribbon(:managers='managers' :client_state='client_state')
-    toolbar-header(:managers='managers' :ajax_state='ajax_state' :client_state='client_state')
+    toolbar-inspect(:managers='managers' :ajax_state='ajax_state' :client_state='client_state')
+    toolbar-menubar(:managers='managers' :ajax_state='ajax_state' :client_state='client_state')
     toolbar-details(:managers='managers' :ajax_state='ajax_state' :client_state='client_state')
 
-    sp-loading-modal(v-show='is_sub_menu_visible')
-    sp-sub-menu-remove-galaxy(v-show='is_sub_menu_remove_galaxy_visible' :managers='managers' :client_state='client_state')
-    sp-sub-menu-add-galaxy(v-show='is_sub_menu_add_galaxy_visible' :managers='managers' :client_state='client_state')
-    sp-sub-menu-create-tycoon(v-show='is_sub_menu_create_tycoon_visible' :managers='managers' :client_state='client_state')
+    loading-modal(v-show='is_sub_menu_visible')
+    sub-menu-remove-galaxy(v-show='is_sub_menu_remove_galaxy_visible' :managers='managers' :client_state='client_state')
+    sub-menu-add-galaxy(v-show='is_sub_menu_add_galaxy_visible' :managers='managers' :client_state='client_state')
+    sub-menu-create-tycoon(v-show='is_sub_menu_create_tycoon_visible' :managers='managers' :client_state='client_state')
 </template>
 
 <script lang='coffee'>
@@ -52,7 +53,7 @@ import LoadingCard from '~/components/misc/card-loading.vue'
 import LoadingModal from '~/components/misc/modal-loading.vue'
 import ServerConnectionWarningCard from '~/components/misc/card-server-connection-warning.vue'
 import SessionExpiredWarningCard from '~/components/misc/card-session-expired-warning.vue'
-import WebGLWarningCard from '~/components/misc/card-webgl-warning.vue'
+import WebglWarningCard from '~/components/misc/card-webgl-warning.vue'
 
 import Workflow from '~/components/workflow/workflow.vue'
 import SubMenuRemoveGalaxy from '~/components/workflow/sub-menu-remove-galaxy.vue'
@@ -78,48 +79,54 @@ import MenuTycoonDetails from '~/components/menu/tycoon-details/menu-tycoon.vue'
 import MenuTycoonSearch from '~/components/menu/tycoon-search/main-menu.vue'
 
 import ToolbarDetails from '~/components/toolbar/toolbar-details.vue'
-import ToolbarHeader from '~/components/toolbar/toolbar-header.vue'
+import ToolbarInspect from '~/components/toolbar/toolbar-inspect.vue'
+import ToolbarMenubar from '~/components/toolbar/toolbar-menubar.vue'
 import ToolbarMinimap from '~/components/toolbar/toolbar-minimap.vue'
-import ToolbarRibbon from '~/components/toolbar/toolbar-ribbon.vue'
 import ToolbarOverlay from '~/components/toolbar/toolbar-overlay.vue'
+import ToolbarRibbon from '~/components/toolbar/toolbar-ribbon.vue'
+
+
+import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
 
 export default
   props:
     client: Object
 
-  components:
+  components: {
     'sp-header': Header
-    'sp-loading-card': LoadingCard
-    'sp-loading-modal': LoadingModal
-    'sp-workflow': Workflow
-    'sp-body': RenderContainer
-    'toolbar-overlay': ToolbarOverlay
-    'toolbar-header': ToolbarHeader
-    'toolbar-details': ToolbarDetails
-    'toolbar-minimap': ToolbarMinimap
-    'toolbar-ribbon': ToolbarRibbon
-    'sp-server-connection-warning-card': ServerConnectionWarningCard
-    'sp-session-expired-warning-card': SessionExpiredWarningCard
-    'sp-webgl-warning-card': WebGLWarningCard
-    'sp-sub-menu-remove-galaxy': SubMenuRemoveGalaxy
-    'sp-sub-menu-add-galaxy': SubMenuAddGalaxy
-    'sp-sub-menu-create-tycoon': SubMenuCreateTycoon
-    'menu-corporation-establish': MenuCorporationEstablish
-    'menu-company-form': MenuCompanyForm
-    'menu-construction': MenuConstruction
-    'menu-chat': MenuChat
-    'menu-bookmarks': MenuBookmarks
-    'menu-mail': MenuMail
-    'menu-options': MenuOptions
-    'menu-politics': MenuPolitics
-    'menu-help': MenuHelp
-    'menu-rankings': MenuRankings
-    'menu-release-notes': MenuReleaseNotes
-    'menu-research': MenuResearch
-    'menu-galaxy': MenuGalaxy
-    'menu-town-search': MenuTownSearch
-    'menu-tycoon-details': MenuTycoonDetails
-    'menu-tycoon-search': MenuTycoonSearch
+    LoadingCard
+    LoadingModal
+    Workflow
+    RenderContainer
+    ToolbarDetails
+    ToolbarInspect
+    ToolbarMenubar
+    ToolbarMinimap
+    ToolbarOverlay
+    ToolbarRibbon
+    ServerConnectionWarningCard
+    SessionExpiredWarningCard
+    WebglWarningCard
+    SubMenuRemoveGalaxy
+    SubMenuAddGalaxy
+    SubMenuCreateTycoon
+    MenuCorporationEstablish
+    MenuCompanyForm
+    MenuConstruction
+    MenuChat
+    MenuBookmarks
+    MenuGalaxy
+    MenuHelp
+    MenuMail
+    MenuOptions
+    MenuPolitics
+    MenuRankings
+    MenuReleaseNotes
+    MenuResearch
+    MenuTownSearch
+    MenuTycoonDetails
+    MenuTycoonSearch
+  }
 
   mounted: ->
     @client.options?.subscribe_options_listener =>
@@ -139,8 +146,8 @@ export default
   computed:
     managers: -> @client?.managers
 
+    is_ready: -> @client_state.initialized && @client_state?.workflow_status == 'ready'
     loading_visible: -> (@client_state?.initialized || false) && (@client_state?.loading || false)
-
     is_loading_modal_visible: -> @client_state?.initialized && @client_state?.loading
 
     is_corporation_establish_visible: -> @client_state.initialized && @client_state.workflow_status == 'ready' && @client_state.is_tycoon() && !@client_state.player.corporation_id?.length
@@ -153,12 +160,56 @@ export default
     is_toolbar_left_open: -> @client_state?.menu?.toolbars.left?.length
     is_toolbar_right_open: -> @client_state?.menu?.toolbars.right?.length
 
-    application_css_class: ->
-      classes = []
-      classes.push 'no-header' unless @show_header
-      classes.push 'is-toolbar-left' if !@client_state.session_expired_warning && @is_toolbar_left_open
-      classes.push 'is-toolbar-right' if !@client_state.session_expired_warning && @is_toolbar_right_open
-      classes
+    show_overlay: -> @is_ready && @client_state?.interface?.show_overlay
+    show_inspect: -> @is_ready && @client_state?.interface?.show_inspect
+
+    application_grid_columns_style: ->
+      Utils.grid_style('grid-template-columns', [{
+        start: 'start-left'
+        size: if @is_toolbar_left_open then '25rem' else '0'
+        end: 'end-left'
+      }, {
+        start: 'start-render'
+        size: 'auto'
+        end: 'end-render'
+      }, {
+        start: 'start-right'
+        size: if @is_toolbar_right_open then '25rem' else '0'
+        end: 'end-right'
+      }])
+
+    application_grid_rows_style: ->
+      Utils.grid_style('grid-template-rows', [{
+        start: 'start-header'
+        size: if @show_header then '4rem' else '0'
+        end: 'end-header'
+      }, {
+        start: 'start-render'
+        size: 'auto'
+        end: 'end-render'
+      }, {
+        start: 'start-overlay'
+        size: if @show_overlay then '3rem' else '0'
+        end: 'end-overlay'
+      }, {
+        start: 'start-ribbon'
+        size: '5.5rem'
+        end: 'end-ribbon'
+      }, {
+        start: 'start-inspect'
+        size: if @show_inspect then '16rem' else '0'
+        end: 'end-inspect'
+      }, {
+        start: 'start-menu'
+        size: '3rem'
+        end: 'end-menu'
+      }, {
+        start: 'start-toolbar'
+        size: '7.5rem'
+        end: 'end-toolbar'
+      }])
+
+    application_css_style: -> "#{@application_grid_columns_style}; #{@application_grid_rows_style}"
 
   methods:
     is_menu_visible: (type) -> @client_state.initialized && !@client_state.session_expired_warning && @client_state?.workflow_status == 'ready' && @client_state?.menu?.is_visible(type)
@@ -169,21 +220,7 @@ export default
 
 #application-container
   display: grid
-  grid-template-columns: 0 auto 0
-  grid-template-rows: [start-header] 4rem [end-header start-render] auto [end-render start-overlay] 3rem [end-overlay start-toolbar] 5.5rem [end-toolbar start-menu] 3rem [end-menu start-body] 7.5rem [end-body]
   height: 100vh
   position: relative
-
-  &.no-header
-    grid-template-rows: [start-header] 0 [end-header start-render] auto [end-render start-overlay] 3rem [end-overlay start-toolbar] 5.5rem [end-toolbar start-menu] 3rem [end-menu start-body] 7.5rem [end-body]
-
-  &.is-toolbar-left:not(.is-toolbar-right)
-    grid-template-columns: 25rem auto 0rem
-
-  &.is-toolbar-right:not(.is-toolbar-left)
-    grid-template-columns: 0 auto 25rem
-
-  &.is-toolbar-right.is-toolbar-left
-    grid-template-columns: 25rem auto 25rem
 
 </style>

@@ -6,5 +6,269 @@
     "FR": "Politique",
     "IT": "Politica",
     "PT": "Política"
+  },
+  "ui.menu.politics.title.president": {
+    "DE": "Präsident von",
+    "EN": "President of",
+    "ES": "Presidente de",
+    "FR": "Président de",
+    "IT": "Presidente di",
+    "PT": "Presidente da"
+  },
+  "ui.menu.politics.title.mayor": {
+    "DE": "Bürgermeister von",
+    "EN": "Mayor of",
+    "ES": "Alcalde de",
+    "FR": "Maire de",
+    "IT": "Sindaco di",
+    "PT": "Prefeito de"
+  },
+  "ui.menu.politics.toggle.current": {
+    "DE": "Laufenden Amtszeit",
+    "EN": "Current Term",
+    "ES": "Actual Mandato",
+    "FR": "Mandat Actuel",
+    "IT": "Attuale Mandato",
+    "PT": "Mandato Atual"
+  },
+  "ui.menu.politics.toggle.next": {
+    "DE": "Nächsten Amtszeit",
+    "EN": "Next Term",
+    "ES": "Próximo Mandato",
+    "FR": "Prochain Mandat",
+    "IT": "Prossimo Mandato",
+    "PT": "Próximo Mandato"
+  },
+  "ui.menu.politics.details.mayor.label": {
+    "DE": "Bürgermeister",
+    "EN": "Mayor",
+    "ES": "Alcalde",
+    "FR": "Maire",
+    "IT": "Sindaco",
+    "PT": "Prefeito"
+  },
+  "ui.menu.politics.details.president.label": {
+    "DE": "Präsident",
+    "EN": "President",
+    "ES": "Presidente",
+    "FR": "Président",
+    "IT": "Presidente",
+    "PT": "Presidente"
+  },
+  "ui.menu.politics.details.overall_rating.label": {
+    "DE": "Gesamtwertung",
+    "EN": "Overall Rating",
+    "ES": "Calificación General",
+    "FR": "Note Globale",
+    "IT": "Valutazione Complessiva",
+    "PT": "Avaliação Geral"
+  },
+  "ui.menu.politics.details.rating.label": {
+    "DE": "Wertung",
+    "EN": "Rating",
+    "ES": "Clasificación",
+    "FR": "Évaluation",
+    "IT": "Valutazione",
+    "PT": "Avaliação"
+  },
+  "ui.menu.politics.details.terms.label": {
+    "DE": "Amtszeiten",
+    "EN": "Terms",
+    "ES": "Mandatos",
+    "FR": "Mandats",
+    "IT": "Mandati",
+    "PT": "Mandatos"
+  },
+  "ui.menu.politics.details.next_election.label": {
+    "DE": "Nächste Wahl",
+    "EN": "Next Election",
+    "ES": "Próximas Elecciones",
+    "FR": "Prochaine Élection",
+    "IT": "Prossima Elezione",
+    "PT": "Próxima Eleição"
+  },
+  "ui.menu.politics.details.term_start.label": {
+    "DE": "Beginn der Amtszeit",
+    "EN": "Term Begins",
+    "ES": "Inicio del Mandato",
+    "FR": "Début du Mandat",
+    "IT": "Inizio Mandato",
+    "PT": "Início do Mandato"
+  },
+  "ui.menu.politics.details.term_length.label": {
+    "DE": "Amtszeit",
+    "EN": "Term Length",
+    "ES": "Duración del Mandato",
+    "FR": "Durée du Mandat",
+    "IT": "Durata del Mandato",
+    "PT": "Duração do Mandato"
+  },
+  "ui.menu.politics.details.remaining.label": {
+    "DE": "Verbleibend",
+    "EN": "Remaining",
+    "ES": "Restante",
+    "FR": "Restant",
+    "IT": "Residuo",
+    "PT": "Remanescente"
+  },
+  "ui.menu.politics.details.delta.label": {
+    "DE": "Delta",
+    "EN": "Delta",
+    "ES": "Delta",
+    "FR": "Delta",
+    "IT": "Delta",
+    "PT": "Delta"
+  },
+  "ui.menu.politics.details.candidate.label": {
+    "DE": "Kandidat",
+    "EN": "Candidate",
+    "ES": "Candidato",
+    "FR": "Candidat",
+    "IT": "Candidato",
+    "PT": "Candidato"
+  },
+  "ui.menu.politics.details.votes.label": {
+    "DE": "Stimmen",
+    "EN": "Votes",
+    "ES": "Votos",
+    "FR": "Votes",
+    "IT": "Voti",
+    "PT": "Votos"
+  },
+  "ui.menu.politics.details.colleges.label": {
+    "DE": "Hochschulen",
+    "EN": "Colleges",
+    "ES": "Colegios",
+    "FR": "Collèges",
+    "IT": "Collegi",
+    "PT": "Faculdades"
+  },
+  "ui.menu.politics.details.garbage.label": {
+    "DE": "Müllentsorgung",
+    "EN": "Garbage Disposal",
+    "ES": "Basurero",
+    "FR": "Élimination des Ordures",
+    "IT": "Smaltimento dei Rifiuti",
+    "PT": "Eliminação de Lixo"
+  },
+  "ui.menu.politics.details.fire.label": {
+    "DE": "Brandschutz",
+    "EN": "Fire Coverage",
+    "ES": "Cobertura contra Incendios",
+    "FR": "Couverture Incendie",
+    "IT": "Copertura Antincendio",
+    "PT": "Cobertura de Incêndio"
+  },
+  "ui.menu.politics.details.health.label": {
+    "DE": "Krankenversicherung",
+    "EN": "Health Coverage",
+    "ES": "Cobertura de Salud",
+    "FR": "Couverture Santé",
+    "IT": "Copertura Sanitaria",
+    "PT": "Cobertura de Saúde"
+  },
+  "ui.menu.politics.details.prisons.label": {
+    "DE": "Gefängnisse",
+    "EN": "Prisons",
+    "ES": "Prisiones",
+    "FR": "Prisons",
+    "IT": "Prigioni",
+    "PT": "Prisões"
+  },
+  "ui.menu.politics.details.museums.label": {
+    "DE": "Museen",
+    "EN": "Museums",
+    "ES": "Museos",
+    "FR": "Musées",
+    "IT": "Musei",
+    "PT": "Museus"
+  },
+  "ui.menu.politics.details.police.label": {
+    "DE": "Polizeiberichterstattung",
+    "EN": "Police Coverage",
+    "ES": "Cobertura Policial",
+    "FR": "Couverture Policière",
+    "IT": "Copertura della Polizia",
+    "PT": "Cobertura Policial"
+  },
+  "ui.menu.politics.details.schools.label": {
+    "DE": "Schulabdeckung",
+    "EN": "School Coverage",
+    "ES": "Cobertura Escolar",
+    "FR": "Couverture Scolaire",
+    "IT": "Copertura Scolastica",
+    "PT": "Cobertura Escolar"
+  },
+  "ui.menu.politics.details.parks.label": {
+    "DE": "Parks",
+    "EN": "Parks",
+    "ES": "Parques",
+    "FR": "Parcs",
+    "IT": "Parchi",
+    "PT": "Parques"
+  },
+  "ui.menu.politics.details.tax_revenue.label": {
+    "DE": "Steuereinkommen",
+    "EN": "Tax Revenue",
+    "ES": "Ingresos Fiscales",
+    "FR": "Recettes Fiscales",
+    "IT": "Entrate Fiscali",
+    "PT": "Receita Fiscal"
+  },
+  "ui.menu.politics.details.employment.label": {
+    "DE": "Beschäftigung",
+    "EN": "Employment",
+    "ES": "Empleo",
+    "FR": "Emploi",
+    "IT": "Occupazione",
+    "PT": "Emprego"
+  },
+  "ui.menu.politics.details.population_growth.label": {
+    "DE": "Bevölkerungswachstum",
+    "EN": "Population Growth",
+    "ES": "Crecimiento de la Población",
+    "FR": "Croissance Démographique",
+    "IT": "Crescita Demografica",
+    "PT": "Crescimento Populacional"
+  },
+  "ui.menu.politics.details.economic_growth.label": {
+    "DE": "Wirtschaftswachstum",
+    "EN": "Economic Growth",
+    "ES": "Crecimiento Económico",
+    "FR": "Croissance Économique",
+    "IT": "Crescita Economica",
+    "PT": "Crescimento Econômico"
+  },
+  "ui.menu.politics.action.vote.label": {
+    "DE": "Abstimmung",
+    "EN": "Vote",
+    "ES": "Votar",
+    "FR": "Voter",
+    "IT": "Votazione",
+    "PT": "Voto"
+  },
+  "ui.menu.politics.action.withdraw.label": {
+    "DE": "Abheben",
+    "EN": "Withdraw",
+    "ES": "Retirar",
+    "FR": "Se Désister",
+    "IT": "Ritira",
+    "PT": "Retirar"
+  },
+  "ui.menu.politics.action.launch_campaign.label": {
+    "DE": "Kampagne Starten",
+    "EN": "Launch Campaign",
+    "ES": "Campaña de Lanzamiento",
+    "FR": "Lancer la Campagne",
+    "IT": "Lancia la Campagna",
+    "PT": "Campanha de Lançamento"
+  },
+  "ui.menu.politics.info.launch_campaign.label": {
+    "DE": "200 Prestige sind erforderlich, um eine Kampagne zu starten.",
+    "EN": "200 prestige is needed to launch a campaign.",
+    "ES": "Se necesitan 200 de prestigio para lanzar una campaña.",
+    "FR": "200 points de prestige sont nécessaires pour lancer une campagne.",
+    "IT": "Servono 200 punti prestigio per lanciare una campagna.",
+    "PT": "200 prestígio são necessários para lançar uma campanha."
   }
 }

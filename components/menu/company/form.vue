@@ -117,8 +117,8 @@ export default
   display: flex
   grid-column-start: 1
   grid-column-end: 4
-  grid-row-start: 2
-  grid-row-end: 4
+  grid-row-start: start-render
+  grid-row-end: end-render
   justify-content: center
   position: relative
   overflow: hidden

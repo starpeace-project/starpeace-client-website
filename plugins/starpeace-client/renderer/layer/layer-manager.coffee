@@ -101,12 +101,12 @@ export default class LayerManager
       tile_item.sprite_info.foundation.render(foundation, canvas, viewport)
 
     if tile_item.sprite_info.building?.within_canvas(canvas, viewport)
-      select_building_callback = () =>
+      select_building_callback = (left_click, right_click) =>
         return false if @client_state.interface.construction_building_id?.length
-        if tile_item.tile_info.building_info.id == @client_state.interface.selected_building_id
-          @client_state.interface.selected_building_id = null
-        else
-          @client_state.interface.selected_building_id = tile_item.tile_info.building_info.id
+        if left_click
+          @client_state.interface.toggle_building(tile_item.tile_info.building_info.id)
+        else if right_click
+          @client_state.interface.select_and_inspect_building(tile_item.tile_info.building_info.id)
         @client_state.interface.is_mouse_primary_down = false if @client_state.interface.is_mouse_primary_down
         true
 

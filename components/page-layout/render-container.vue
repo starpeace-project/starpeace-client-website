@@ -31,10 +31,9 @@ export default
 #render-parent-container
   grid-column-start: 1
   grid-column-end: 4
-  grid-row-start: 2
-  grid-row-end: 4
+  grid-row-start: start-render
+  grid-row-end: end-toolbar
   position: relative
-
 
 #fps-container
   left: .5rem
@@ -43,7 +42,7 @@ export default
   z-index: 1015
 
 #render-container
-  height: 100%
+  height: calc(100% - 16rem)
   left: 0
   position: absolute
   top: 0

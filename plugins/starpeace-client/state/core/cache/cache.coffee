@@ -3,6 +3,7 @@ import EventListener from '~/plugins/starpeace-client/state/event-listener.coffe
 
 export default class Cache
   @FIVE_MINUTES: 300000
+  @ONE_MINUTE: 60000
 
   constructor: () ->
     @event_listener = new EventListener()

@@ -1,11 +1,11 @@
 <template lang='pug'>
-#bookmarks-container.card.is-starpeace.has-header
+#bookmarks-container.card.has-header.is-starpeace.sp-menu
   .card-header
     .card-header-title {{translate('ui.menu.bookmarks.header')}}
     .card-header-icon.card-close(v-on:click.stop.prevent="client_state.menu.toggle_menu('bookmarks')")
       font-awesome-icon(:icon="['fas', 'times']")
 
-  .card-content.sp-menu-background.overall-container
+  .card-content.is-paddingless.sp-menu-background.overall-container
 
     .field.filter-input-container
       .control.has-icons-left.is-expanded
@@ -14,7 +14,7 @@
           font-awesome-icon(:icon="['fas', 'search-location']")
     filter-industry-categories(:managers='managers' :client_state='client_state')
 
-    aside.sp-menu.sp-scrollbar
+    aside.sp-scrollbar
       menu-section(
         v-if='show_poi && (show_towns || show_mausoleums)'
         root_id='bookmark-poi'
@@ -146,48 +146,41 @@ export default
 <style lang='sass' scoped>
 @import '~assets/stylesheets/starpeace-variables'
 
+
+@import '~assets/stylesheets/starpeace-menus'
+
+.sp-menu
+  grid-column: start-left / end-render
+  grid-row: start-render / end-inspect
+  position: relative
+
+  > .card-content
+    grid-template-columns: 25rem 30% auto
+
 #bookmarks-container
-  grid-column-start: 1
-  grid-column-end: 2
-  grid-row-start: 2
-  grid-row-end: 4
-  margin: 0
+  grid-column: start-left / end-left
+  grid-row: start-render / end-render
   overflow: hidden
   z-index: 1100
 
-.card
-  overflow: hidden
+  .overall-container
+    display: grid
+    grid-template-columns: auto
+    grid-template-rows: 4rem 3.5rem auto 3.5rem
+    position: relative
 
-  .card-content
-    height: calc(100% - 3.2rem)
-    padding: 0
-
-    &.overall-container
-      padding-top: .5rem
-      position: relative
+  aside
+    overflow-y: scroll
 
 .filter-input-container
-  height: 3.5rem
-  margin-bottom: .5rem
   padding: .5rem 1rem
 
   input
     &:focus
       border-color: $sp-primary !important
 
-.sp-menu
-  height: calc(100% - .5rem - 4rem - 3.5rem - 3.5rem)
-  overflow-x: hidden
-  overflow-y: scroll
-  width: 100%
-  position: absolute
-
 .actions-container
-  position: absolute
-  bottom: .5rem
-  height: 3rem
   padding: .5rem
-  width: 100%
 
   .level-item
     &:not(:last-child)

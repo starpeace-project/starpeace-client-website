@@ -33,8 +33,8 @@ export default
   display: flex
   grid-column-start: 1
   grid-column-end: 4
-  grid-row-start: 2
-  grid-row-end: 7
+  grid-row-start: start-render
+  grid-row-end: end-toolbar
   justify-content: center
   margin: 0
   position: relative

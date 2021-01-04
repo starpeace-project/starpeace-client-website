@@ -109,8 +109,8 @@ export default
   display: flex
   grid-column-start: 2
   grid-column-end: 3
-  grid-row-start: 2
-  grid-row-end: 4
+  grid-row-start: start-render
+  grid-row-end: end-render
   justify-content: center
   z-index: 1100
 

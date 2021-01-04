@@ -16,6 +16,9 @@ import Renderer from '~/plugins/starpeace-client/renderer/renderer.coffee'
 import Identity from '~/plugins/starpeace-client/identity/identity.coffee'
 import APIClient from '~/plugins/starpeace-client/api/api-client.coffee'
 
+WEBGL_CONTAINER_CONSTRUCTION = 'construction-image-webgl-container'
+WEBGL_CONTAINER_INSPECT = 'inspect-image-webgl-container'
+
 export default class Client
   constructor: () ->
     @options = new Options()
@@ -30,7 +33,12 @@ export default class Client
 
     @renderer = new Renderer(@managers, @client_state, @options)
     @mini_map_renderer = new MiniMapRenderer(@managers, @renderer, @client_state, @options)
-    @construction_preview_renderer = new BuildingImageRenderer(@managers, @client_state, @options)
+    @construction_preview_renderer = new BuildingImageRenderer(@managers, @client_state, WEBGL_CONTAINER_CONSTRUCTION,
+      (=> @client_state.construction_preview_renderer_initialized), (=> @client_state.construction_preview_renderer_initialized = true),
+      (=> @client_state.interface.construction_selected_building_id), @options)
+    @inspect_preview_renderer = new BuildingImageRenderer(@managers, @client_state, WEBGL_CONTAINER_INSPECT,
+      (=> @client_state.inspect_preview_renderer_initialized), (=> @client_state.inspect_preview_renderer_initialized = true),
+      (=> @client_state.selected_building()?.definition_id), @options)
 
     @refresh_events_interval = null
 
@@ -47,6 +55,7 @@ export default class Client
       @renderer.initialize()
       @mini_map_renderer.initialize()
       @construction_preview_renderer.initialize()
+      @inspect_preview_renderer.initialize()
 
       @client_state.finish_initialization()
 
@@ -78,4 +87,5 @@ export default class Client
     if @client_state.initialized && @client_state.workflow_status == 'ready'
       @renderer.tick() if @client_state.renderer_initialized
       @mini_map_renderer.tick() if @client_state.mini_map_renderer_initialized
-      @construction_preview_renderer.tick() if @client_state.construction_preview_renderer_initialized
+      @construction_preview_renderer.tick() if @client_state.construction_preview_renderer_initialized && @client_state?.menu?.is_visible('construction') && @client_state.interface.construction_selected_building_id?.length
+      @inspect_preview_renderer.tick() if @client_state.inspect_preview_renderer_initialized && @client_state?.interface?.show_inspect && @client_state?.interface?.selected_building_id?.length

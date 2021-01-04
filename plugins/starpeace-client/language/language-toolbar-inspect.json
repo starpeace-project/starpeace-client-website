@@ -1,0 +1,298 @@
+{
+  "toolbar.inspect.townhall.tabs.general": {
+    "DE": "Allgemeines",
+    "EN": "General",
+    "ES": "General",
+    "FR": "Général",
+    "IT": "Generale",
+    "PT": "Geral"
+  },
+  "toolbar.inspect.townhall.tabs.commerce": {
+    "DE": "Handel",
+    "EN": "Commerce",
+    "ES": "Comercio",
+    "FR": "Commerce",
+    "IT": "Commercio",
+    "PT": "Comércio"
+  },
+  "toolbar.inspect.townhall.tabs.taxes": {
+    "DE": "Steuern",
+    "EN": "Taxes",
+    "ES": "Impuestos",
+    "FR": "Les Impôts",
+    "IT": "Le Tasse",
+    "PT": "Impostos"
+  },
+  "toolbar.inspect.townhall.tabs.employment": {
+    "DE": "Beschäftigung",
+    "EN": "Employment",
+    "ES": "Empleo",
+    "FR": "Emploi",
+    "IT": "Occupazione",
+    "PT": "Emprego"
+  },
+  "toolbar.inspect.townhall.tabs.housing": {
+    "DE": "Gehäuse",
+    "EN": "Housing",
+    "ES": "Alojamiento",
+    "FR": "Logement",
+    "IT": "Housing",
+    "PT": "Habitação"
+  },
+  "toolbar.inspect.townhall.label.population": {
+    "DE": "Population",
+    "EN": "Population",
+    "ES": "Población",
+    "FR": "Population",
+    "IT": "Popolazione",
+    "PT": "População"
+  },
+  "toolbar.inspect.townhall.label.unemployment": {
+    "DE": "Arbeitslosigkeit",
+    "EN": "Unemployment",
+    "ES": "Desempleo",
+    "FR": "Chômage",
+    "IT": "Disoccupazione",
+    "PT": "Desemprego"
+  },
+  "toolbar.inspect.townhall.label.homelessness": {
+    "DE": "Obdachlosigkeit",
+    "EN": "Homelessness",
+    "ES": "Desamparo",
+    "FR": "Itinérance",
+    "IT": "Senzatetto",
+    "PT": "Sem-teto"
+  },
+  "toolbar.inspect.townhall.label.name": {
+    "DE": "Name",
+    "EN": "Name",
+    "ES": "Nombre",
+    "FR": "Nom",
+    "IT": "Nome",
+    "PT": "Nome"
+  },
+  "toolbar.inspect.townhall.label.demand": {
+    "DE": "Nachfrage",
+    "EN": "Demand",
+    "ES": "Demanda",
+    "FR": "Demande",
+    "IT": "Domanda",
+    "PT": "Procura"
+  },
+  "toolbar.inspect.townhall.label.supply": {
+    "DE": "Angebot",
+    "EN": "Supply",
+    "ES": "Oferta",
+    "FR": "Offre",
+    "IT": "Offerta",
+    "PT": "Oferta"
+  },
+  "toolbar.inspect.townhall.label.capacity": {
+    "DE": "Kapazität",
+    "EN": "Capacity",
+    "ES": "Capacidad",
+    "FR": "Capacité",
+    "IT": "Capacità",
+    "PT": "Capacidade"
+  },
+  "toolbar.inspect.townhall.label.ratio": {
+    "DE": "Verhältnis",
+    "EN": "Ratio",
+    "ES": "Proporción",
+    "FR": "Rapport",
+    "IT": "Rapporto",
+    "PT": "Razão"
+  },
+  "toolbar.inspect.townhall.label.ifel_price": {
+    "DE": "IFEL Preis",
+    "EN": "IFEL Price",
+    "ES": "Precio IFEL",
+    "FR": "Prix IFEL",
+    "IT": "Prezzo IFEL",
+    "PT": "Preço IFEL"
+  },
+  "toolbar.inspect.townhall.label.average_price": {
+    "DE": "Durchschnittlicher Preis",
+    "EN": "Average Price",
+    "ES": "Precio Promedio",
+    "FR": "Prix Moyen",
+    "IT": "Prezzo Medio",
+    "PT": "Preço Médio"
+  },
+  "toolbar.inspect.townhall.label.quality": {
+    "DE": "Qualität",
+    "EN": "Quality",
+    "ES": "Calidad",
+    "FR": "Qualité",
+    "IT": "Qualità",
+    "PT": "Qualidade"
+  },
+  "toolbar.inspect.townhall.label.tax_rate": {
+    "DE": "Steuersatz",
+    "EN": "Tax Rate",
+    "ES": "Tasa de Impuesto",
+    "FR": "Taux D'Imposition",
+    "IT": "Aliquota Fiscale",
+    "PT": "Taxa de Imposto"
+  },
+  "toolbar.inspect.townhall.label.last_year": {
+    "DE": "Vergangenes Jahr",
+    "EN": "Last Year",
+    "ES": "El Año Pasado",
+    "FR": "L'Année Dernière",
+    "IT": "L'Anno Scorso",
+    "PT": "Ano Passado"
+  },
+  "toolbar.inspect.townhall.label.vacancies": {
+    "DE": "Stellenangebote",
+    "EN": "Vacancies",
+    "ES": "Vacantes",
+    "FR": "Postes Vacants",
+    "IT": "Posti Vacanti",
+    "PT": "Vagas"
+  },
+  "toolbar.inspect.townhall.label.spending_power": {
+    "DE": "Macht Ausgeben",
+    "EN": "Spending Power",
+    "ES": "Poder Adquisitivo",
+    "FR": "Pouvoir D'Achat",
+    "IT": "Potere di Spesa",
+    "PT": "Poder de Gastos"
+  },
+  "toolbar.inspect.townhall.label.average_wage": {
+    "DE": "Durchschnittseinkommen",
+    "EN": "Average Wage",
+    "ES": "Salario Promedio",
+    "FR": "Salaire Moyen",
+    "IT": "Salario Medio",
+    "PT": "Salário Médio"
+  },
+  "toolbar.inspect.townhall.label.minimum_wage": {
+    "DE": "Mindestlohn",
+    "EN": "Minimum Wage",
+    "ES": "Salario Mínimo",
+    "FR": "Salaire Minimum",
+    "IT": "Salario Minimo",
+    "PT": "Salário Mínimo"
+  },
+  "toolbar.inspect.townhall.label.average_rent": {
+    "DE": "Durchschnittliche Miete",
+    "EN": "Average Rent",
+    "ES": "Renta Media",
+    "FR": "Loyer Moyen",
+    "IT": "Affitto Medio",
+    "PT": "Aluguel Médio"
+  },
+  "toolbar.inspect.townhall.label.quality_index": {
+    "DE": "Qualitätsindex",
+    "EN": "Quality Index",
+    "ES": "Índice de Calidad",
+    "FR": "Indice de Qualité",
+    "IT": "Indice di Qualità",
+    "PT": "Índice de Qualidade"
+  },
+  "toolbar.inspect.tradecenter.tabs.general": {
+    "DE": "Allgemeines",
+    "EN": "General",
+    "ES": "General",
+    "FR": "Général",
+    "IT": "Generale",
+    "PT": "Geral"
+  },
+  "toolbar.inspect.tradecenter.tabs.products": {
+    "DE": "Produkte",
+    "EN": "Products",
+    "ES": "Productos",
+    "FR": "Produits",
+    "IT": "Prodotti",
+    "PT": "Produtos"
+  },
+  "toolbar.inspect.tradecenter.label.name": {
+    "DE": "Name",
+    "EN": "Name",
+    "ES": "Nombre",
+    "FR": "Nom",
+    "IT": "Nome",
+    "PT": "Nome"
+  },
+  "toolbar.inspect.tradecenter.label.built": {
+    "DE": "Gebaut",
+    "EN": "Built",
+    "ES": "Construido",
+    "FR": "Construit",
+    "IT": "Costruito",
+    "PT": "Construído"
+  },
+  "toolbar.inspect.tradecenter.label.owner": {
+    "DE": "Inhaber",
+    "EN": "Owner",
+    "ES": "Propietario",
+    "FR": "Propriétaire",
+    "IT": "Proprietario",
+    "PT": "Proprietário"
+  },
+  "toolbar.inspect.tradecenter.action.connect": {
+    "DE": "Verbinden",
+    "EN": "Connect",
+    "ES": "Conectar",
+    "FR": "Relier",
+    "IT": "Collegare",
+    "PT": "Conectar"
+  },
+  "toolbar.inspect.products.label.price": {
+    "DE": "Preis",
+    "EN": "Price",
+    "ES": "Precio",
+    "FR": "Prix",
+    "IT": "Prezzo",
+    "PT": "Preço"
+  },
+  "toolbar.inspect.products.label.last_value": {
+    "DE": "Letzter Wert",
+    "EN": "Last Value",
+    "ES": "Último Valor",
+    "FR": "Dernière Valeur",
+    "IT": "Ultimo Valore",
+    "PT": "Último Valor"
+  },
+  "toolbar.inspect.products.label.quality": {
+    "DE": "Qualität",
+    "EN": "Quality",
+    "ES": "Calidad",
+    "FR": "Qualité",
+    "IT": "Qualità",
+    "PT": "Qualidade"
+  },
+  "toolbar.inspect.products.label.customer": {
+    "DE": "Kunde",
+    "EN": "Customer",
+    "ES": "Cliente",
+    "FR": "Client",
+    "IT": "Cliente",
+    "PT": "Cliente"
+  },
+  "toolbar.inspect.products.label.company": {
+    "DE": "Unternehmen",
+    "EN": "Company",
+    "ES": "Empresa",
+    "FR": "Entreprise",
+    "IT": "Azienda",
+    "PT": "Companhia"
+  },
+  "toolbar.inspect.products.label.sales": {
+    "DE": "Umsatz",
+    "EN": "Sales",
+    "ES": "Ventas",
+    "FR": "Ventes",
+    "IT": "I Saldi",
+    "PT": "Vendas"
+  },
+  "toolbar.inspect.products.label.transport_cost": {
+    "DE": "Transportkosten",
+    "EN": "Transport Cost",
+    "ES": "Coste de Transporte",
+    "FR": "Coût de Transport",
+    "IT": "Costo di Trasporto",
+    "PT": "Custo de Transporte"
+  }
+}

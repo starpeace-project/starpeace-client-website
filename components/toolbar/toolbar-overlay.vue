@@ -1,5 +1,5 @@
 <template lang='pug'>
-#overlay-menu(v-show='show_overlay_menu' v-cloak=true)
+#overlay-menu(v-show='show_overlay_menu' v-cloak=true oncontextmenu='return false')
   .dropdown.is-up.is-hoverable
     .dropdown-trigger
       button.button.is-starpeace(aria-haspopup='true', aria-controls='overlays')
@@ -61,12 +61,11 @@ export default
 
 #overlay-menu
   background-color: #000
-  grid-column-start: 1
-  grid-column-end: 2
-  grid-row-start: start-overlay
-  grid-row-end: end-overlay
+  grid-column: start-left / end-left
+  grid-row: start-overlay / end-overlay
   padding: .5rem .25rem
   min-width: 38rem
+  pointer-events: auto
   z-index: 1125
 
 .dropdown-trigger

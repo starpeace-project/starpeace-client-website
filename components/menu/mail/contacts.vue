@@ -67,7 +67,7 @@ export default
     padding-right: 1.75rem
 
   > aside
-    background-color: darken($sp-dark-bg, 15%) //#000D07
+    background-color: darken($sp-dark-bg, 10%) //#000D07
     height: calc(100% - 4rem - 3rem - .5rem)
     overflow-y: scroll
 

@@ -1,48 +1,46 @@
 <template lang='pug'>
-client-only
-  transition(name='fade')
-    #toolbar-ribbon(v-show='is_ready' v-cloak='true')
-      .action-camera-in
-        a.button.is-fullwidth.is-fullheight.is-small.is-starpeace(@click.stop.prevent='client_state.camera.camera_zoom_in()')
-          font-awesome-icon(:icon="['fas', 'plus']")
-      .action-camera-out
-        a.button.is-fullwidth.is-fullheight.is-small.is-starpeace(@click.stop.prevent='client_state.camera.camera_zoom_out()')
-          font-awesome-icon(:icon="['fas', 'minus']")
+#toolbar-ribbon(v-show='is_ready' v-cloak='true' oncontextmenu='return false')
+  .action-camera-in
+    a.button.is-fullwidth.is-fullheight.is-small.is-starpeace(@click.stop.prevent='client_state.camera.camera_zoom_in()')
+      font-awesome-icon(:icon="['fas', 'plus']")
+  .action-camera-out
+    a.button.is-fullwidth.is-fullheight.is-small.is-starpeace(@click.stop.prevent='client_state.camera.camera_zoom_out()')
+      font-awesome-icon(:icon="['fas', 'minus']")
 
-      .action-rotate-ccw
-        a.button.is-fullwidth.is-fullheight.is-small.is-starpeace
-          font-awesome-icon(:icon="['fas', 'redo-alt']")
-      .action-rotate-cw
-        a.button.is-fullwidth.is-fullheight.is-small.is-starpeace
-          font-awesome-icon(:icon="['fas', 'undo-alt']")
+  .action-rotate-ccw
+    a.button.is-fullwidth.is-fullheight.is-small.is-starpeace
+      font-awesome-icon(:icon="['fas', 'redo-alt']")
+  .action-rotate-cw
+    a.button.is-fullwidth.is-fullheight.is-small.is-starpeace
+      font-awesome-icon(:icon="['fas', 'undo-alt']")
 
-      .action-overlays
-        a.button.is-fullwidth.is-fullheight.is-small.is-uppercase.is-starpeace.is-starpeace-light(:class='menu_class_overlay' @click.stop.prevent='interface_state.toggle_overlay()')
-          | {{translate('footer.ribbon.overlay')}}
-      .action-zones
-        a.button.is-fullwidth.is-fullheight.is-small.is-uppercase.is-starpeace.is-starpeace-light(:class='menu_class_zones' @click.stop.prevent='interface_state.toggle_zones()')
-          | {{translate('footer.ribbon.city_zones')}}
+  .action-overlays
+    a.button.is-fullwidth.is-fullheight.is-small.is-uppercase.is-starpeace.is-starpeace-light(:class="{ 'is-active': show_overlay }" @click.stop.prevent='toggle_overlay()')
+      | {{translate('footer.ribbon.overlay')}}
+  .action-zones
+    a.button.is-fullwidth.is-fullheight.is-small.is-uppercase.is-starpeace.is-starpeace-light(:class="{ 'is-active': show_zones }" @click.stop.prevent='toggle_zones')
+      | {{translate('footer.ribbon.city_zones')}}
 
-      .action-inspect
-        a.button.is-fullwidth.is-fullheight.is-small.is-uppercase.is-starpeace.is-starpeace-light
-          | {{translate('footer.ribbon.inspect')}}
+  .action-inspect
+    a.button.is-fullwidth.is-fullheight.is-small.is-uppercase.is-starpeace.is-starpeace-light(:class="{ 'is-active': show_inspect }" :disabled='!can_inspect' @click.stop.prevent='toggle_inspect')
+      | {{translate('footer.ribbon.inspect')}}
 
-      .details-ticker.primary
-        | {{translate('footer.ribbon.message.welcome')}}
-      .details-ticker.secondary
-        | {{translate('footer.ribbon.hint.tycoon')}}
+  .details-ticker.primary
+    | {{translate('footer.ribbon.message.welcome')}}
+  .details-ticker.secondary
+    | {{translate('footer.ribbon.hint.tycoon')}}
 
-      .action-jump-back
-        a.button.is-fullwidth.is-fullheight.is-small.is-uppercase.is-starpeace(:disabled='!can_jump_back' @click.stop.prevent='jump_back')
-          font-awesome-icon(:icon="['fas', 'chevron-left']")
-          | {{translate('footer.ribbon.jump_back')}}
-      .action-jump-next
-        a.button.is-fullwidth.is-fullheight.is-small.is-uppercase.is-starpeace(:disabled='!can_jump_next' @click.stop.prevent='jump_next')
-          | {{translate('footer.ribbon.jump_next')}}
-          font-awesome-icon(:icon="['fas', 'chevron-right']")
-      .action-jump-town
-        a.button.is-fullwidth.is-fullheight.is-small.is-uppercase.is-starpeace(@click.stop.prevent='jump_town')
-          | {{translate('footer.ribbon.jump_town')}}
+  .action-jump-back
+    a.button.is-fullwidth.is-fullheight.is-small.is-uppercase.is-starpeace(:disabled='!can_jump_back' @click.stop.prevent='jump_back')
+      font-awesome-icon(:icon="['fas', 'chevron-left']")
+      | {{translate('footer.ribbon.jump_back')}}
+  .action-jump-next
+    a.button.is-fullwidth.is-fullheight.is-small.is-uppercase.is-starpeace(:disabled='!can_jump_next' @click.stop.prevent='jump_next')
+      | {{translate('footer.ribbon.jump_next')}}
+      font-awesome-icon(:icon="['fas', 'chevron-right']")
+  .action-jump-town
+    a.button.is-fullwidth.is-fullheight.is-small.is-uppercase.is-starpeace(@click.stop.prevent='jump_town')
+      | {{translate('footer.ribbon.jump_town')}}
 
 </template>
 
@@ -53,13 +51,13 @@ export default
     managers: Object
 
   computed:
-    interface_state: -> @client_state.interface
     is_ready: -> @client_state.initialized && @client_state?.workflow_status == 'ready'
 
-    menu_class_overlay: -> { 'is-active': @interface_state?.show_overlay || false }
-    menu_class_zones: -> { 'is-active': @interface_state?.show_zones || false }
+    show_overlay: -> @client_state.interface?.show_overlay || false
+    show_zones: -> @client_state.interface?.show_zones || false
+    show_inspect: -> @client_state.interface?.show_inspect || false
 
-
+    can_inspect: -> @client_state.interface?.selected_building_id?.length
     can_jump_back: ->
       return false unless @client_state.camera.view_offset_x? && @client_state.camera.view_offset_y? && @client_state.interface.location_history.length
       return true if @client_state.interface.location_index < @client_state.interface.location_history.length - 1
@@ -71,10 +69,14 @@ export default
   methods:
     translate: (key) -> if @managers? then @managers.translation_manager.text(key) else key
 
-    jump_back: ->
-      @client_state.jump_back() if @can_jump_back
-    jump_next: ->
-      @client_state.jump_next() if @can_jump_next
+    toggle_overlay: -> @client_state.interface.toggle_overlay()
+    toggle_zones: -> @client_state.interface.toggle_zones()
+    toggle_inspect: ->
+      return unless @can_inspect
+      @client_state.interface.toggle_inspect()
+
+    jump_back: -> @client_state.jump_back() if @can_jump_back
+    jump_next: -> @client_state.jump_next() if @can_jump_next
     jump_town: ->
       town = @client_state.town_for_location()
       @client_state.jump_to(town.map_x, town.map_y, town.building_id) if town?.building_id? && town?.map_x? && town?.map_y?
@@ -97,13 +99,13 @@ export default
 #toolbar-ribbon
   background-color: #000
   display: grid
-  grid-column-start: 1
-  grid-column-end: 3
-  grid-row-start: 4
-  grid-row-end: 5
-  grid-template-columns: [start-camera-1] 3rem [end-camera-1 start-camera-2] 3rem [end-camera-2 start-overlay] 10rem [end-overlay start-inspect] 13rem [end-inspect start-ticker] auto [end-ticker start-jump-1] 9rem [end-jump-1 start-jump-2] 9rem [end-jump-2]
+  grid-column: start-left / end-render
+  grid-row: start-ribbon / end-ribbon
+  grid-template-columns: [start-camera-1] 3rem [end-camera-1 start-camera-2] 3rem [end-camera-2 start-overlay] min-content [end-overlay start-inspect] min-content [end-inspect start-ticker] auto [end-ticker start-jump-1] 9rem [end-jump-1 start-jump-2] 9rem [end-jump-2]
   grid-template-rows: [start-row-1] 50% [end-row-1 start-row-2] 50% [end-row-2]
   margin: 0
+  pointer-events: auto
+  z-index: 1050
 
   .action-camera-in
     grid-area: start-row-1 / start-camera-1 / end-row-1 / end-camera-1

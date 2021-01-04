@@ -13,6 +13,7 @@ import IDENTITY from '~/plugins/starpeace-client/language/language-identity.json
 import MISC from '~/plugins/starpeace-client/language/language-misc.json'
 import OVERLAY from '~/plugins/starpeace-client/language/language-overlay.json'
 
+import TOOLBAR_INSPECT from '~/plugins/starpeace-client/language/language-toolbar-inspect.json'
 import TOOLBAR_RIBBON from '~/plugins/starpeace-client/language/language-toolbar-ribbon.json'
 
 import UI_MENU_BOOKMARKS from '~/plugins/starpeace-client/language/language-ui-menu-bookmarks.json'
@@ -42,6 +43,7 @@ LANGUAGE_STRINGS = [
   IDENTITY,
   MISC,
   OVERLAY,
+  TOOLBAR_INSPECT,
   TOOLBAR_RIBBON,
   UI_MENU_BOOKMARKS,
   UI_MENU_CHAT,

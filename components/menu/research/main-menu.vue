@@ -54,10 +54,8 @@ export default
 @import '~assets/stylesheets/starpeace-menus'
 
 .sp-menu
-  grid-column-start: 1
-  grid-column-end: 4
-  grid-row-start: 2
-  grid-row-end: 5
+  grid-column: start-left / end-right
+  grid-row: start-render / end-inspect
 
   > .card-content
     grid-template-columns: 25rem auto 25rem

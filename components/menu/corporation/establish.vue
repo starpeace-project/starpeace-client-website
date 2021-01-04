@@ -91,10 +91,8 @@ export default
 #establish-corporation-container
   align-items: center
   display: flex
-  grid-column-start: 1
-  grid-column-end: 4
-  grid-row-start: 2
-  grid-row-end: 7
+  grid-column: start-left / end-right
+  grid-row: start-render / end-toolbar
   justify-content: center
   position: relative
   overflow: hidden

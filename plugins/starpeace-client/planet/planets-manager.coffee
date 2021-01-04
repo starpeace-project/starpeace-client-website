@@ -17,6 +17,7 @@ import ResourceType from '~/plugins/starpeace-client/industry/resource-type.coff
 import ResourceUnit from '~/plugins/starpeace-client/industry/resource-unit.coffee'
 import InventionDefinition from '~/plugins/starpeace-client/invention/invention-definition.coffee'
 import Town from '~/plugins/starpeace-client/planet/town.coffee'
+import TownDetails from '~/plugins/starpeace-client/planet/town-details.coffee'
 
 export default class PlanetsManager
   constructor: (@api, @ajax_state, @client_state) ->
@@ -66,10 +67,29 @@ export default class PlanetsManager
       towns
     )
 
+  load_planet_details: (planet_id) ->
+    details = @client_state.core.planet_cache.planet_details()
+    return details if details?
+    throw Error() if !@client_state.has_session() || !planet_id?
+    await @ajax_state.locked('planet_details', planet_id, =>
+      details = TownDetails.from_json(await @api.details_for_planet(planet_id))
+      @client_state.core.planet_cache.load_planet_details(details)
+      details
+    )
+  load_town_details: (planet_id, town_id) ->
+    details = @client_state.core.planet_cache.town_details(town_id)
+    return details if details?
+    throw Error() if !@client_state.has_session() || !planet_id? || !town_id?
+    await @ajax_state.locked('planet_town_details', town_id, =>
+      details = TownDetails.from_json(await @api.details_for_town(planet_id, town_id))
+      @client_state.core.planet_cache.load_town_details(town_id, details)
+      details
+    )
+
+
   buildings_by_town: (planet_id, town_id, industry_category_id, industry_type_id) ->
     buildings = @client_state.core.planet_cache.town_buildings(town_id, industry_category_id, industry_type_id)
     return buildings if buildings?
-
     throw Error() if !@client_state.has_session() || !planet_id? || !town_id? || !industry_category_id? || !industry_type_id?
     await @ajax_state.locked('planet_town_buildings', "#{town_id}-#{industry_category_id}-#{industry_type_id}", =>
       buildings = await @api.buildings_for_town(planet_id, town_id, industry_category_id, industry_type_id)
@@ -79,7 +99,6 @@ export default class PlanetsManager
   companies_by_town: (planet_id, town_id) ->
     companies = @client_state.core.planet_cache.town_companies(town_id)
     return companies if companies?
-
     throw Error() if !@client_state.has_session() || !planet_id? || !town_id?
     await @ajax_state.locked('planet_town_companies', town_id, =>
       companies = _.map(await @api.companies_for_town(planet_id, town_id), Company.from_json)

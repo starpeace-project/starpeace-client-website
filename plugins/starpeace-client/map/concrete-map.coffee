@@ -91,20 +91,25 @@ export default class ConcreteMap
         index_e = index + 1
         index_w = index - 1
 
-        is_junction = @building_map.tile_info_road[y * @width + x] & 0x0F
-        neighbor_is_filled = (@concrete_fill_types[index_n] == Concrete.FILL_TYPE.FILLED && !@building_map.tile_info_road[index_n]) ||
-              (@concrete_fill_types[index_s] == Concrete.FILL_TYPE.FILLED && !@building_map.tile_info_road[index_s]) ||
-              (@concrete_fill_types[index_e] == Concrete.FILL_TYPE.FILLED && !@building_map.tile_info_road[index_e]) ||
-              (@concrete_fill_types[index_w] == Concrete.FILL_TYPE.FILLED && !@building_map.tile_info_road[index_w])
+        filled_n = @concrete_fill_types[index_n] == Concrete.FILL_TYPE.FILLED
+        filled_s = @concrete_fill_types[index_s] == Concrete.FILL_TYPE.FILLED
+        filled_e = @concrete_fill_types[index_e] == Concrete.FILL_TYPE.FILLED
+        filled_w = @concrete_fill_types[index_w] == Concrete.FILL_TYPE.FILLED
+
+        is_junction = (@building_map.tile_info_road[index] & 0x0F) == 0x0F
+        is_road_n = @building_map.tile_info_road[index_n] > 0
+        is_road_s = @building_map.tile_info_road[index_s] > 0
+        is_road_e = @building_map.tile_info_road[index_e] > 0
+        is_road_w = @building_map.tile_info_road[index_w] > 0
 
         should_fill = false
         if @ground_map.is_water_at(x, y)
           should_fill = true if is_junction
         else
-          should_fill = (@concrete_fill_types[index_n] == Concrete.FILL_TYPE.FILLED && (is_junction || !@building_map.tile_info_road[index_n])) ||
-              (@concrete_fill_types[index_s] == Concrete.FILL_TYPE.FILLED && (is_junction || !@building_map.tile_info_road[index_s])) ||
-              (@concrete_fill_types[index_e] == Concrete.FILL_TYPE.FILLED && (is_junction || !@building_map.tile_info_road[index_e])) ||
-              (@concrete_fill_types[index_w] == Concrete.FILL_TYPE.FILLED && (is_junction || !@building_map.tile_info_road[index_w]))
+          should_fill = (filled_n && (is_junction || !is_road_n)) ||
+              (filled_s && (is_junction || !is_road_s)) ||
+              (filled_e && (is_junction || !is_road_e)) ||
+              (filled_w && (is_junction || !is_road_w))
 
         if should_fill
           @concrete_fill_types[index] = Concrete.FILL_TYPE.FILLED

@@ -2,6 +2,8 @@
 import moment from 'moment'
 import _ from 'lodash'
 
+import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
+
 import METADATA_BUILDING from '~/plugins/starpeace-client/api/sandbox/data/metadata-building.json'
 import METADATA_CORE from '~/plugins/starpeace-client/api/sandbox/data/metadata-core.json'
 import METADATA_INVENTION from '~/plugins/starpeace-client/api/sandbox/data/metadata-invention.json'
@@ -36,6 +38,9 @@ MONTH_SEASONS = {
   10: 'fall'
   11: 'winter'
 }
+
+SERVICE_TYPES = ['COLLEGE', 'GARBAGE', 'FIRE', 'HOSPITAL', 'PRISON', 'MUSEUM', 'POLICE', 'SCHOOL', 'PARK']
+RATING_TYPES = SERVICE_TYPES.concat(['TAX_REVENUE', 'EMPLOYMENT', 'POPULATION_GROWTH', 'ECONOMIC_GROWTH'])
 
 export default class SandboxData
   constructor: () ->
@@ -108,6 +113,7 @@ export default class SandboxData
           }
 
           @company_id_info[company.id] = {
+            company_name: company.name
             tycoon_id: tycoon_id
             corporation_id: corporation.id
             planet_id: corporation.planetId
@@ -121,9 +127,12 @@ export default class SandboxData
     for company_id,buildings of PLANET_1_TYCOON_1_BUILDINGS
       @company_id_buildings[company_id] = buildings
 
+    planet_id_resource_sinks = {}
     @planet_id_chunk_id_buildings = {}
     @building_id_building = {}
+    @building_id_building_details = {}
     for planet_id,planet_buildings of PLANET_MAP_BUILDINGS
+      planet_id_resource_sinks[planet_id] = {} unless planet_id_resource_sinks[planet_id]?
       @planet_id_chunk_id_buildings[planet_id] = {} unless @planet_id_chunk_id_buildings[planet_id]?
       for chunk_id,chunk_buildings of planet_buildings
         @planet_id_chunk_id_buildings[planet_id][chunk_id] = chunk_buildings
@@ -131,6 +140,48 @@ export default class SandboxData
           @company_id_buildings[building.companyId] = [] unless @company_id_buildings[building.companyId]?
           @company_id_buildings[building.companyId].push building
           @building_id_building[building.id] = building
+
+          simulation = _.find(METADATA_BUILDING.simulationDefinitions, (d) -> d.id == building.definitionId)
+          continue unless simulation?
+          for stage in (simulation.stages || [])
+            for input in (stage.inputs || [])
+              planet_id_resource_sinks[planet_id][input.resourceId] = new Set() unless planet_id_resource_sinks[planet_id][input.resourceId]?
+              planet_id_resource_sinks[planet_id][input.resourceId].add(building.id)
+          for product in (simulation.products || [])
+            for input in (product.inputs || [])
+              planet_id_resource_sinks[planet_id][input.resourceId] = new Set() unless planet_id_resource_sinks[planet_id][input.resourceId]?
+              planet_id_resource_sinks[planet_id][input.resourceId].add(building.id)
+
+    for planet_id,planet_buildings of PLANET_MAP_BUILDINGS
+      for chunk_id,chunk_buildings of planet_buildings
+        for building in chunk_buildings
+          simulation = _.find(METADATA_BUILDING.simulationDefinitions, (d) -> d.id == building.definitionId)
+          if simulation?.type == 'TRADECENTER'
+            @building_id_building_details[building.id] = {
+              id: building.id
+              products: _.map(simulation.products, (p) =>
+                connections = _.map(Array.from(planet_id_resource_sinks[planet_id][p.resourceId] || []), (bid) =>
+                  velocity = Math.floor(Math.random() * 10000)
+                  {
+                    id: Utils.uuid()
+                    valid: true
+                    sinkCompanyId: @building_id_building[bid].companyId
+                    sinkCompanyName: @company_id_info[@building_id_building[bid].companyId]?.company_name || @building_id_building[bid].companyId
+                    sinkBuildingId: bid
+                    sinkBuildingName: @building_id_building[bid].name
+                    sinkBuildingMapX: @building_id_building[bid].mapX
+                    sinkBuildingMapY: @building_id_building[bid].mapY
+                    velocity: velocity
+                    transportCost: velocity * 0.01
+                  })
+                {
+                  resourceId: p.resourceId
+                  price: _.find(METADATA_CORE.resourceTypes, (t) -> t.id == p.resourceId).price
+                  totalVelocity: _.reduce(connections, ((sum, c) -> c.velocity + sum), 0)
+                  quality: .4
+                  connections: connections
+                })
+            }
 
 
     @empty_overlay_data = Uint8Array.from("0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000" +
@@ -197,6 +248,307 @@ export default class SandboxData
       for index in [0...data.length]
         @road_chunk_data[chunk_key][index] = ((road_chunk_data[chunk_key][index * 2 + 0] & 0x0F) << 4) | ((road_chunk_data[chunk_key][index * 2 + 1] & 0x0F) << 0)
 
+    COMMERCE_TAX_CATEGORY_IDS = new Set(['COMMERCE', 'INDUSTRY', 'LOGISTICS', 'REAL_ESTATE', 'SERVICE'])
+    COMMERCE_TAX_SKIPPED_INDUSTRY_IDS = new Set(['HEADQUARTERS', 'MAUSOLEUM'])
+    types_by_categories = {}
+    for definition in METADATA_BUILDING.definitions
+      continue unless COMMERCE_TAX_CATEGORY_IDS.has(definition.industryCategoryId)
+      continue if COMMERCE_TAX_SKIPPED_INDUSTRY_IDS.has(definition.industryTypeId)
+      types_by_categories[definition.industryCategoryId] = new Set() unless types_by_categories[definition.industryCategoryId]?
+      types_by_categories[definition.industryCategoryId].add(definition.industryTypeId)
+
+    commerce_types = Array.from(types_by_categories['COMMERCE'])
+    tax_types = []
+    for category,types of types_by_categories
+      for type in Array.from(types)
+        tax_types.push { c: category, t: type }
+
+    @planet_details = {
+      qol: Math.random()
+      services: _.map(SERVICE_TYPES, (t) -> {
+        type: t
+        value: Math.random()
+      })
+      commerce: _.map(commerce_types, (t) -> {
+        industryTypeId: t
+        demand: 0
+        supply: 0
+        capacity: 0
+        ratio: Math.random()
+        ifelPrice: 0
+        averagePrice: 0
+        quality: 0
+      })
+      taxes: _.map(tax_types, (t) -> {
+        industryCategoryId: t.c
+        industrytypeId: t.t
+        taxRate: Math.random()
+        lastYear: 0
+      })
+      population: [{
+        type: "EXECUTIVE"
+        population: 0
+        unemployed: 0
+        homeless: 0
+      }, {
+        type: "PROFESSIONAL"
+        population: 0
+        unemployed: 0
+        homeless: 0
+      }, {
+        "type": "WORKER"
+        population: 0
+        unemployed: 0
+        homeless: 0
+      }]
+      employment: [{
+        type: "EXECUTIVE"
+        vacancies: 0
+        spendingPower: .8
+        averageWage: 1
+        minimumWage: 1
+      }, {
+        type: "PROFESSIONAL"
+        vacancies: 0
+        spendingPower: .25
+        averageWage: 1
+        minimumWage: 1
+      }, {
+        type: "WORKER"
+        vacancies: 0
+        spendingPower: .05
+        averageWage: 1
+        minimumWage: 1
+      }]
+      housing: [{
+        type: "EXECUTIVE"
+        vacancies: 0
+        averageRent: 1
+        qualityIndex: Math.random()
+      }, {
+        type: "PROFESSIONAL"
+        vacancies: 0
+        averageRent: 1
+        qualityIndex: Math.random()
+      }, {
+        type: "WORKER"
+        vacancies: 0
+        averageRent: 1
+        qualityIndex: Math.random()
+      }]
+      currentTerm: {
+        start: '2230-01-01'
+        end: '2240-01-01'
+        length: 120
+        overallRating: Math.random()
+        serviceRatings: _.map(RATING_TYPES, (t) -> {
+          type: t
+          delta: Math.round((Math.random() - .5) * 100)
+          rating: Math.random()
+        })
+      }
+      nextTerm: {
+        start: '2240-01-01'
+        end: '2250-01-01'
+        length: 120
+        candidates: []
+      }
+    }
+
+    @empty_town_details = {
+      qol: Math.random()
+      services: _.map(SERVICE_TYPES, (t) -> {
+        type: t
+        value: Math.random()
+      })
+      commerce: _.map(commerce_types, (t) -> {
+        industryTypeId: t
+        demand: 0
+        supply: 0
+        capacity: 0
+        ratio: Math.random()
+        ifelPrice: 0
+        averagePrice: 0
+        quality: 0
+      })
+      taxes: _.map(tax_types, (t) -> {
+        industryCategoryId: t.c
+        industrytypeId: t.t
+        taxRate: Math.random()
+        lastYear: 0
+      })
+      population: [{
+        type: "EXECUTIVE"
+        population: 0
+        unemployed: 0
+        homeless: 0
+      }, {
+        type: "PROFESSIONAL"
+        population: 0
+        unemployed: 0
+        homeless: 0
+      }, {
+        "type": "WORKER"
+        population: 0
+        unemployed: 0
+        homeless: 0
+      }]
+      employment: [{
+        type: "EXECUTIVE"
+        vacancies: 0
+        spendingPower: .8
+        averageWage: 1
+        minimumWage: 1
+      }, {
+        type: "PROFESSIONAL"
+        vacancies: 0
+        spendingPower: .25
+        averageWage: 1
+        minimumWage: 1
+      }, {
+        type: "WORKER"
+        vacancies: 0
+        spendingPower: .05
+        averageWage: 1
+        minimumWage: 1
+      }]
+      housing: [{
+        type: "EXECUTIVE"
+        vacancies: 0
+        averageRent: 1
+        qualityIndex: Math.random()
+      }, {
+        type: "PROFESSIONAL"
+        vacancies: 0
+        averageRent: 1
+        qualityIndex: Math.random()
+      }, {
+        type: "WORKER"
+        vacancies: 0
+        averageRent: 1
+        qualityIndex: Math.random()
+      }]
+      currentTerm: {
+        start: '2230-01-01'
+        end: '2240-01-01'
+        length: 120
+        overallRating: Math.random()
+        serviceRatings: _.map(RATING_TYPES, (t) -> {
+          type: t
+          delta: Math.round((Math.random() - .5) * 100)
+          rating: Math.random()
+        })
+      }
+      nextTerm: {
+        start: '2240-01-01'
+        end: '2250-01-01'
+        length: 120
+        candidates: []
+      }
+    }
+    @town_details = {}
+    @town_details['town-id-8'] = {
+      qol: Math.random()
+      services: _.map(SERVICE_TYPES, (t) -> {
+        type: t
+        value: Math.random()
+      })
+      commerce: _.map(commerce_types, (t) -> {
+        industryTypeId: t
+        demand: 0
+        supply: 0
+        capacity: 0
+        ratio: Math.random()
+        ifelPrice: 0
+        averagePrice: 0
+        quality: 0
+      })
+      taxes: _.map(tax_types, (t) -> {
+        industryCategoryId: t.c
+        industrytypeId: t.t
+        taxRate: Math.random()
+        lastYear: 0
+      })
+      population: [{
+        type: "EXECUTIVE"
+        population: 0
+        unemployed: 0
+        homeless: 0
+      }, {
+        type: "PROFESSIONAL"
+        population: 0
+        unemployed: 0
+        homeless: 0
+      }, {
+        "type": "WORKER"
+        population: 0
+        unemployed: 0
+        homeless: 0
+      }]
+      employment: [{
+        type: "EXECUTIVE"
+        vacancies: 0
+        spendingPower: .8
+        averageWage: 1
+        minimumWage: 1
+      }, {
+        type: "PROFESSIONAL"
+        vacancies: 0
+        spendingPower: .25
+        averageWage: 1
+        minimumWage: 1
+      }, {
+        type: "WORKER"
+        vacancies: 0
+        spendingPower: .05
+        averageWage: 1
+        minimumWage: 1
+      }]
+      housing: [{
+        type: "EXECUTIVE"
+        vacancies: 0
+        averageRent: 1
+        qualityIndex: Math.random()
+      }, {
+        type: "PROFESSIONAL"
+        vacancies: 0
+        averageRent: 1
+        qualityIndex: Math.random()
+      }, {
+        type: "WORKER"
+        vacancies: 0
+        averageRent: 1
+        qualityIndex: Math.random()
+      }]
+      currentTerm: {
+        start: '2230-01-01'
+        end: '2240-01-01'
+        length: 120
+        politician: {
+          id: 'tycoon-id-1'
+          name: 'Tycoon Name'
+          prestige: 300
+          terms: 1
+        }
+        overallRating: Math.random()
+        serviceRatings: _.map(RATING_TYPES, (t) -> {
+          type: t
+          delta: Math.round((Math.random() - .5) * 100)
+          rating: Math.random()
+        })
+      }
+      nextTerm: {
+        start: '2240-01-01'
+        end: '2250-01-01'
+        length: 120
+        candidates: [{
+          id: 'tycoon-id-1'
+          name: 'Tycoon Name'
+          prestige: 300
+          votes: 2
+        }]
+      }
+    }
 
   season_for_planet: (planet_id) ->
     if @planet_id_dates[planet_id]? then MONTH_SEASONS[@planet_id_dates[planet_id].month()] else 'winter'

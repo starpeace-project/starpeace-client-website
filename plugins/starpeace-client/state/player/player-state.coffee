@@ -17,6 +17,7 @@ export default class PlayerState
     @planet_visa_type = null
     @planet_visa_id = null
 
+    @tycoon_id = null
     @corporation_id = null
     @company_id = null
 

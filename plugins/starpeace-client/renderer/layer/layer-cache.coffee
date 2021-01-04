@@ -57,7 +57,7 @@ export default class LayerCache
           delta_y = Math.round(event.data?.global?.y || 0) - (event.currentTarget.event_pointer_down_y || 0)
           return if delta_x > 0 || delta_y > 0
 
-          if event.currentTarget.click_callback()
+          if event.currentTarget.click_callback(event.data?.button == 0, event.data?.button == 2)
             event.data?.originalEvent?.preventDefault()
             event.data?.originalEvent?.stopPropagation()
             event.stopPropagation()

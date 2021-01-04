@@ -1,6 +1,6 @@
 <template lang='pug'>
 .research-container
-  .field.filter-input-container
+  .field.is-marginless.filter-input-container
     .control.has-icons-left.is-expanded
       input.input(type="text" :placeholder="translate('misc.filter')")
       span.icon.is-left
@@ -118,13 +118,14 @@ $sp-primary: #6ea192
 $sp-primary-bg: #395950
 
 .research-container
+  display: grid
   position: relative
   grid-column: 1 / 2
   grid-row: 1 / 2
+  grid-template-columns: auto
+  grid-template-rows: 4rem 3.5rem auto
 
 .filter-input-container
-  height: 3.5rem
-  margin-bottom: .5rem
   padding: 1rem 1rem .5rem
 
   input
@@ -132,11 +133,8 @@ $sp-primary-bg: #395950
       border-color: $sp-primary !important
 
 .sp-menu
-  height: calc(100% - .5rem - 4rem - 3.5rem)
   overflow-x: hidden
   overflow-y: scroll
-  position: absolute
-  width: 100%
 
   .sp-section
     border-bottom: 1px solid darken($sp-primary-bg, 7.5%)

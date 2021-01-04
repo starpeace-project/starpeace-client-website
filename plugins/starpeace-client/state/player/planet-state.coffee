@@ -17,6 +17,7 @@ export default class PlanetState
     @current_season = null
 
     @towns = null
+    @towns_by_id = {}
     @towns_by_color = {}
     @tycoons_online = null
 
@@ -43,9 +44,12 @@ export default class PlanetState
     @notify_state_listeners()
 
   town_for_color: (color) -> @towns_by_color[color]
+  town_for_id: (id) -> @towns_by_id[id]
   load_towns: (towns) ->
     @towns = towns || []
-    @towns_by_color[town.color] = town for town in @towns
+    for town in @towns
+      @towns_by_id[town.id] = town
+      @towns_by_color[town.color] = town
     @notify_towns_listeners()
 
   load_tycoons_online: (tycoons) ->

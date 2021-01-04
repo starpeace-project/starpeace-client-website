@@ -96,6 +96,12 @@ export default class SandboxConfiguration
     )
 
 
+    @get('planets/(.+?)/details', (config, planet_id, params) =>
+      _.merge(_.cloneDeep(@sandbox.sandbox_data?.planet_details), {
+        id: planet_id
+      })
+    )
+
     @get 'planets/(.+?)/events', (config, planet_id, params) =>
       throw new Error(404) unless @sandbox.sandbox_data?.planet_id_dates?[planet_id]?
       _.cloneDeep({
@@ -133,6 +139,12 @@ export default class SandboxConfiguration
       throw new Error(404) unless @sandbox.sandbox_data?.planet_towns?[planet_id]?
       _.cloneDeep([])
     )
+    @get('planets/(.+?)/towns/(.+?)/details', (config, planet_id, town_id, params) =>
+      throw new Error(404) unless @sandbox.sandbox_data?.planet_towns?[planet_id]?
+      _.merge(_.cloneDeep(@sandbox.sandbox_data?.town_details[town_id] || @sandbox.sandbox_data?.empty_town_details), {
+        id: town_id
+      })
+    )
     @get('planets/(.+?)/towns', (config, planet_id) =>
       throw new Error(404) unless @sandbox.sandbox_data?.planet_towns?[planet_id]?
       _.cloneDeep(@sandbox.sandbox_data.planet_towns[planet_id])
@@ -153,7 +165,8 @@ export default class SandboxConfiguration
     )
 
 
-
+    @get 'buildings/(.+?)/details', (config, building_id) =>
+      _.cloneDeep(@sandbox.sandbox_data.building_id_building_details[building_id] || {})
     @get 'buildings/(.+)', (config, building_id) =>
       throw new Error(404) unless @sandbox.sandbox_data.building_id_building[building_id]?
       _.cloneDeep(@sandbox.sandbox_data.building_id_building[building_id])

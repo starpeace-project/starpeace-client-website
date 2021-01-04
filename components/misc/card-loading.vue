@@ -34,8 +34,8 @@ export default
   &.is-grid
     grid-column-start: 1
     grid-column-end: 4
-    grid-row-start: 2
-    grid-row-end: 4
+    grid-row-start: start-render
+    grid-row-end: end-render
 
   &.is-absolute
     position: absolute

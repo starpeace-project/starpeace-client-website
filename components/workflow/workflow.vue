@@ -80,8 +80,8 @@ export default
   flex-direction: column
   grid-column-start: 2
   grid-column-end: 3
-  grid-row-start: 2
-  grid-row-end: 7
+  grid-row-start: start-render
+  grid-row-end: end-toolbar
   margin: 0
   max-height: 100%
   justify-content: center

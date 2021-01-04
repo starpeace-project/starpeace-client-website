@@ -114,10 +114,8 @@ export default
 @import '~assets/stylesheets/starpeace-variables'
 
 #galaxy-container
-  grid-column-start: 1
-  grid-column-end: 4
-  grid-row-start: 2
-  grid-row-end: 4
+  grid-column: 1 / 4
+  grid-row: start-render / end-render
   margin: 0
   max-width: 25rem
   overflow: hidden

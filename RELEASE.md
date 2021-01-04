@@ -1,5 +1,5 @@
 
-## v0.4 - in progress - updated 2020-12-26
+## v0.4 - in progress - updated 2021-01-03
 ### platform
 * [done] improve API integration with galaxies [v0.3.1]
 * [done] document multiverse API integration [starpeace-server-multiverse-api]
@@ -19,11 +19,11 @@
 * [done] buildings (by chunk) API integration [v0.3.4]
 * [done] town boundaries and city detection [v0.3.4]
 * [done] roads API integration [v0.3.5]
+* [done] planet and town details API (services, commerce, taxes, jobs, housing) [v0.3.6]
 * [in progress] system messages and basic error messages
-* [in progress] town details API (services, products, taxes, jobs, housing)
 * [pending] improve auth and remember me token and error handling
 * [pending] improve tycoon, corporation, and company creation error handling
-* [pending] player and planet event handling
+* [pending] player, building, and planet event handling
 
 ### assets
 * [done] finish initial language translation for assets [v0.3.1]
@@ -35,6 +35,7 @@
 * [done] town boundaries [v0.3.4]
 * [done] building sign assets [v0.3.5]
 * [done] headquarters requirements for research per seal [v0.3.5]
+* [done] fixing building foundation configurations [v0.3.6]
 
 ### gameplay
 * [done] update UI and menus for better concept of universes and galaxies [v0.3.1]
@@ -50,17 +51,18 @@
 * [done] mine building sign rendering [v0.3.5]
 * [done] limit research unless constructed required headquarters [v0.3.5]
 * [done] improved road orientation metadata [v0.3.5]
+* [done] politics menu [v0.3.6]
+* [done] townhall inspect menu [v0.3.6]
+* [done] trade center inspect menu [v0.3.6]
 * [in progress] tycoon details menu
-* [in progress] politics menu
-* [pending] overlay menu hierarchy organization
-* [pending] road proximity building construction rules
 * [pending] construction descriptions for civics, commerce, service, and real estate
-* [pending] waterquest and water building construction rules
 * [pending] building inspect menu
 * [pending] onscreen building text rendering on selection
-* [pending] building selection rendering effects (container box, negative-income tinting)
+* [pending] building selection container box rendering
 * [pending] building stage support (timber, movies, farms)
 * [pending] limit seals unless required level or nobility
+* [pending] road proximity building construction rules
+* [pending] waterquest and water building construction rules
 * [pending] footer menu company support (scroll)
 * [pending] city-specific ribbon ticker updates
 * [pending] integrate player and planet events with news ticker

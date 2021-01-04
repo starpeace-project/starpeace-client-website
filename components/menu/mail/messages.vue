@@ -112,7 +112,7 @@ export default
       text-transform: uppercase
 
   > aside
-    background-color: darken($sp-dark-bg, 15%)
+    background-color: darken($sp-dark-bg, 10%)
     height: calc(100% - 4rem - 3rem - .5rem)
     overflow-y: scroll
 

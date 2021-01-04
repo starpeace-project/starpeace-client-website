@@ -93,7 +93,7 @@ export default
       padding-right: .5rem
 
   .mail-body-input
-    background-color: darken($sp-dark-bg, 5%)
+    background-color: $sp-dark-bg
     border: 0
     color: $sp-primary
     height: calc(100% - 5.5rem - 3rem - .5rem)

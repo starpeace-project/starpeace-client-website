@@ -79,8 +79,8 @@ export default
   font-size: 1.25rem
   grid-column-start: 1
   grid-column-end: 4
-  grid-row-start: 1
-  grid-row-end: 1
+  grid-row-start: start-header
+  grid-row-end: end-header
   line-height: 3rem
   padding-top: .25rem
   z-index: 2000

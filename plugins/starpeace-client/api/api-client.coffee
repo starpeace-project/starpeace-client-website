@@ -91,6 +91,8 @@ export default class APIClient
     }, (result) -> result || [])
   building_for_id: (building_id) ->
     @get("buildings/#{building_id}", {}, (result) -> result)
+  building_details_for_id: (building_id) ->
+    @get("buildings/#{building_id}/details", {}, (result) -> result)
   construct_building: (planet_id, company_id, definition_id, name, map_x, map_y) ->
     @post("planets/#{planet_id}/buildings", {
       companyId: company_id
@@ -112,6 +114,8 @@ export default class APIClient
   invention_metadata_for_planet: (planet_id) ->
     @get("planets/#{planet_id}/metadata/inventions", {}, (result) -> result || {})
 
+  details_for_planet: (planet_id) ->
+    @get("planets/#{planet_id}/details", {}, (result) -> result || [])
   online_tycoons_for_planet: (planet_id) ->
     @get("planets/#{planet_id}/online", {}, (result) -> result || [])
   rankings_for_planet: (planet_id, ranking_type_id) ->
@@ -126,6 +130,8 @@ export default class APIClient
     @get("planets/#{planet_id}/towns/#{town_id}/buildings", { industryCategoryId, industryTypeId }, (result) -> result || [])
   companies_for_town: (planet_id, town_id) ->
     @get("planets/#{planet_id}/towns/#{town_id}/companies", {}, (result) -> result || [])
+  details_for_town: (planet_id, town_id) ->
+    @get("planets/#{planet_id}/towns/#{town_id}/details", {}, (result) -> result || [])
 
   overlay_data_for_planet: (planet_id, type, chunk_x, chunk_y) ->
     @get_binary("planets/#{planet_id}/overlay/#{type}", {
