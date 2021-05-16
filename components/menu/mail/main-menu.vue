@@ -1,5 +1,5 @@
 <template lang='pug'>
-.card.has-header.is-starpeace.sp-menu
+.card.has-header.is-starpeace.sp-menu(oncontextmenu='return false')
   .card-header
     .card-header-title {{translate('ui.menu.mail.header')}}
     .card-header-icon.card-close(v-on:click.stop.prevent="client_state.menu.toggle_menu('mail')")
@@ -90,8 +90,8 @@ export default
       @managers.mail_manager.delete(@client_state.player.corporation_id, @selected_mail.id)
         .then =>
           @loading = false
-        .catch (e) =>
-          console.error e
+        .catch (err) =>
+          @client_state.add_error_message('Failure deleting mail, please try again', err)
           @loading = false
 
     embed_mail_details: (mail) ->
@@ -140,8 +140,8 @@ export default
         .then =>
           @client_state.player.end_compose()
           @loading = false
-        .catch (e) =>
-          console.error e
+        .catch (err) =>
+          @client_state.add_error_message('Failure sending mail, please try again', err)
           @loading = false
 
 </script>

@@ -1,5 +1,5 @@
 <template lang='pug'>
-#bookmarks-container.card.has-header.is-starpeace.sp-menu
+#bookmarks-container.card.has-header.is-starpeace.sp-menu(oncontextmenu='return false')
   .card-header
     .card-header-title {{translate('ui.menu.bookmarks.header')}}
     .card-header-icon.card-close(v-on:click.stop.prevent="client_state.menu.toggle_menu('bookmarks')")

@@ -291,5 +291,4 @@ export default
       padding: 0
       width: 100% !important
 
-
 </style>

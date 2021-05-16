@@ -1,5 +1,5 @@
 <template lang='pug'>
-#construction-container.card.is-starpeace.has-header
+#construction-container.card.is-starpeace.has-header(oncontextmenu='return false')
   .card-header
     .card-header-title {{translate('ui.menu.construction.header')}}
     .card-header-icon.card-close(@click.stop.prevent="client_state.menu.toggle_menu('construction')")
@@ -351,7 +351,9 @@ export default
       font-weight: bold
 
     .construct-button
+      letter-spacing: .05rem
       margin-top: .5rem
+      text-transform: uppercase
 
   .construction-toggle
     border: 1px solid lighten($sp-primary-bg, 5%)

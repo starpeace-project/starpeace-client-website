@@ -25,7 +25,7 @@ export default class BuildingImageRenderer
     @application = new PIXI.Application({
       width: @renderer_width
       height: @renderer_height
-      transparent: true
+      backgroundAlpha: 0
     })
 
     @container = new PIXI.Container()

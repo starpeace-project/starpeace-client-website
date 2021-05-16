@@ -119,6 +119,7 @@ export default
         @managers.galaxy_manager.create(galaxy_id, @username, @password, @remember_me)
           .then (tycoon) =>
             @client_state.identity.set_visa(galaxy_id, 'tycoon', tycoon)
+            @client_state.player.tycoon_id = tycoon.id
             @managers.galaxy_manager.load_metadata(galaxy_id)
               .then =>
                 @saving = false

@@ -58,6 +58,8 @@ export default class InterfaceState
     @construction_building_width = 0
     @construction_building_height = 0
 
+    @selected_tycoon_id = null
+
     @selected_politics_type = null
     @selected_politics_id = null
 
@@ -89,8 +91,8 @@ export default class InterfaceState
       @show_overlay = false
       @show_zones = true
 
-  toggle_inspect: () ->
-    @show_inspect = !@show_inspect
+  hide_inspect: () -> @show_inspect = false
+  toggle_inspect: () -> @show_inspect = !@show_inspect
 
   mini_map_adjust_zoom: (zoom_delta) ->
     before = @options.option('mini_map.zoom')

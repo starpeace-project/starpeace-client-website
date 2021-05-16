@@ -1,5 +1,5 @@
 <template lang='pug'>
-#toolbar-header(v-show='is_ready' v-cloak=true)
+#toolbar-header(v-show='is_ready' v-cloak=true oncontextmenu='return false')
   .columns.row-menu
     .column.column-menu
       .toolbar-menu
@@ -7,7 +7,7 @@
           font-awesome-icon(:icon="['fas', 'satellite']")
         a.button.is-starpeace.is-small.tooltip(:class="{'is-active':is_menu_visible('bookmarks')}" @click.stop.prevent="toggle_menu('bookmarks')" :data-tooltip="translate('ui.menu.bookmarks.header')")
           font-awesome-icon(:icon="['fas', 'map-marker-alt']")
-        a.button.is-starpeace.is-small.tooltip(:class="{'is-active':is_menu_visible('tycoon')}" @click.stop.prevent="toggle_menu('tycoon')" :data-tooltip="translate('ui.menu.tycoon_details.header')")
+        a.button.is-starpeace.is-small.tooltip(:class="{'is-active':is_menu_visible('tycoon')}" @click.stop.prevent='toggle_tycoon_details' :data-tooltip="translate('ui.menu.tycoon_details.header')" :disabled='!is_tycoon')
           font-awesome-icon(:icon="['fas', 'user-tie']")
         a.button.is-starpeace.is-small.tooltip(:class="{'is-active':is_menu_visible('politics')}" @click.stop.prevent="toggle_menu('politics')" :data-tooltip="translate('ui.menu.politics.header')")
           font-awesome-icon(:icon="['fas', 'landmark']")
@@ -95,7 +95,7 @@ export default
 
     notification_loading_css_class: -> { 'ajax-loading': (@ajax_state?.ajax_requests || 0) > 0 }
 
-    tycoon_name: -> if @is_tycoon then @client_state?.current_tycoon_metadata()?.name else ''
+    tycoon_name: -> if @is_tycoon then @client_state?.identity?.galaxy_tycoon?.name else ''
 
   mounted: ->
     @client_state.options?.subscribe_options_listener =>
@@ -105,7 +105,16 @@ export default
     translate: (key) -> if @managers? then @managers.translation_manager.text(key) else key
 
     is_menu_visible: (option_type) -> @client_state.menu.is_visible(option_type)
-    toggle_menu: (option_type) -> @client_state.menu.toggle_menu(option_type)
+    toggle_menu: (option_type) ->
+      @client_state.interface.hide_inspect() if option_type == 'hide_all' && @client_state.interface.show_inspect
+      @client_state.menu.toggle_menu(option_type)
+
+    toggle_tycoon_details: () ->
+      return unless @client_state.is_tycoon()
+      if @client_state.menu.is_visible('tycoon')
+        @client_state.menu.toggle_menu('tycoon')
+      else
+        @client_state.show_tycoon_profile(@client_state.player.tycoon_id)
 
     toggle_mail: () ->
       return unless @unread_mail.length

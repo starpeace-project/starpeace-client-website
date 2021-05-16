@@ -1,5 +1,5 @@
 <template lang='pug'>
-#help-container
+#help-container(oncontextmenu='return false')
   .card.is-starpeace.has-header
     .card-header
       .card-header-title {{translate('ui.menu.help.header')}}

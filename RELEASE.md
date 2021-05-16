@@ -1,5 +1,5 @@
 
-## v0.4 - in progress - updated 2021-01-03
+## v0.4 - in progress - updated 2021-05-16
 ### platform
 * [done] improve API integration with galaxies [v0.3.1]
 * [done] document multiverse API integration [starpeace-server-multiverse-api]
@@ -20,7 +20,7 @@
 * [done] town boundaries and city detection [v0.3.4]
 * [done] roads API integration [v0.3.5]
 * [done] planet and town details API (services, commerce, taxes, jobs, housing) [v0.3.6]
-* [in progress] system messages and basic error messages
+* [done] system messages and basic error messages [v0.3.7]
 * [pending] improve auth and remember me token and error handling
 * [pending] improve tycoon, corporation, and company creation error handling
 * [pending] player, building, and planet event handling

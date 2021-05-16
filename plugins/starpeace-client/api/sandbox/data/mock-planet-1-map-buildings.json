@@ -13,7 +13,7 @@
     {
       "id": "tradecenter-libra",
       "tycoonId": "IFEL",
-      "name": "Tradecenter",
+      "name": "Trade Center",
       "definitionId": "pgi.tradecenter",
       "mapX": 780,
       "mapY": 825,
@@ -45,7 +45,7 @@
     {
       "id": "tradecenter-taurus",
       "tycoonId": "IFEL",
-      "name": "Tradecenter",
+      "name": "Trade Center",
       "definitionId": "moab.tradecenter",
       "mapX": 793,
       "mapY": 493,
@@ -77,7 +77,7 @@
     {
       "id": "tradecenter-gemini",
       "tycoonId": "IFEL",
-      "name": "Tradecenter",
+      "name": "Trade Center",
       "definitionId": "mko.tradecenter",
       "mapX": 646,
       "mapY": 153,
@@ -109,7 +109,7 @@
     {
       "id": "tradecenter-scorpius",
       "tycoonId": "IFEL",
-      "name": "Tradecenter",
+      "name": "Trade Center",
       "definitionId": "moab.tradecenter",
       "mapX": 655,
       "mapY": 293,
@@ -141,7 +141,7 @@
     {
       "id": "tradecenter-pisces",
       "tycoonId": "IFEL",
-      "name": "Tradecenter",
+      "name": "Trade Center",
       "definitionId": "dis.tradecenter",
       "mapX": 615,
       "mapY": 584,
@@ -173,7 +173,7 @@
     {
       "id": "tradecenter-leo",
       "tycoonId": "IFEL",
-      "name": "Tradecenter",
+      "name": "Trade Center",
       "definitionId": "pgi.tradecenter",
       "mapX": 518,
       "mapY": 893,
@@ -205,7 +205,7 @@
     {
       "id": "tradecenter-cancer",
       "tycoonId": "IFEL",
-      "name": "Tradecenter",
+      "name": "Trade Center",
       "definitionId": "mko.tradecenter",
       "mapX": 492,
       "mapY": 457,
@@ -237,7 +237,7 @@
     {
       "id": "tradecenter-sagittarius",
       "tycoonId": "IFEL",
-      "name": "Tradecenter",
+      "name": "Trade Center",
       "definitionId": "mko.tradecenter",
       "mapX": 317,
       "mapY": 569,
@@ -269,7 +269,7 @@
     {
       "id": "tradecenter-capricorn",
       "tycoonId": "IFEL",
-      "name": "Tradecenter",
+      "name": "Trade Center",
       "definitionId": "pgi.tradecenter",
       "mapX": 234,
       "mapY": 872,
@@ -301,7 +301,7 @@
     {
       "id": "tradecenter-aquarius",
       "tycoonId": "IFEL",
-      "name": "Tradecenter",
+      "name": "Trade Center",
       "definitionId": "dis.tradecenter",
       "mapX": 134,
       "mapY": 456,
@@ -1385,7 +1385,7 @@
     {
       "id": "tradecenter-virgo",
       "tycoonId": "IFEL",
-      "name": "Tradecenter",
+      "name": "Trade Center",
       "definitionId": "dis.tradecenter",
       "mapX": 209,
       "mapY": 163,

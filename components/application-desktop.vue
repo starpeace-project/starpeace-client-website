@@ -27,10 +27,12 @@ client-only
     menu-research(v-show="is_menu_visible('research')" :managers='managers' :ajax_state='ajax_state' :client_state='client_state')
     menu-galaxy(v-show="is_menu_visible('galaxy')" :managers='managers' :ajax_state='ajax_state' :client_state='client_state')
     menu-town-search(v-show="is_menu_visible('town_search')" :managers='managers' :client_state='client_state')
-    menu-tycoon-details(v-show="is_menu_visible('tycoon')" :managers='managers' :client_state='client_state')
+    menu-tycoon-details(:visible="is_menu_visible('tycoon')" :managers='managers' :client_state='client_state')
     menu-tycoon-search(v-show="is_menu_visible('tycoon_search')" :managers='managers' :ajax_state='ajax_state' :client_state='client_state')
 
     render-container(:client_state='client_state')
+
+    system-message-panel(:managers='managers' :client-state='client_state')
 
     toolbar-overlay(:managers='managers' :client_state='client_state')
     toolbar-minimap(:client_state='client_state')
@@ -48,6 +50,7 @@ client-only
 <script lang='coffee'>
 import Header from '~/components/page-layout/header.vue'
 import RenderContainer from '~/components/page-layout/render-container.vue'
+import SystemMessagePanel from '~/components/misc/system-message-panel.vue'
 
 import LoadingCard from '~/components/misc/card-loading.vue'
 import LoadingModal from '~/components/misc/modal-loading.vue'
@@ -85,7 +88,6 @@ import ToolbarMinimap from '~/components/toolbar/toolbar-minimap.vue'
 import ToolbarOverlay from '~/components/toolbar/toolbar-overlay.vue'
 import ToolbarRibbon from '~/components/toolbar/toolbar-ribbon.vue'
 
-
 import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
 
 export default
@@ -98,6 +100,7 @@ export default
     LoadingModal
     Workflow
     RenderContainer
+    SystemMessagePanel
     ToolbarDetails
     ToolbarInspect
     ToolbarMenubar

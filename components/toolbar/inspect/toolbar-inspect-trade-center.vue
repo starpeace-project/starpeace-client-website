@@ -92,79 +92,21 @@ export default
         @details = await @details_promise
         @details_promise = null
       catch err
-        console.error err
+        @client_state.add_error_message('Failure loading building details, please try again', err)
         @details_promise = null
 
 </script>
 
 <style lang='sass' scoped>
 @import '~assets/stylesheets/starpeace-variables'
+@import '~assets/stylesheets/starpeace-inspect'
 
-.loading-image
-  background-size: 8rem
-  height: 8rem
-  left: calc(50% - 4rem)
-  margin: 1rem 0
-  position: absolute
-  top: calc(40% - 4rem)
-  width: 8rem
+.column
+  &.general-actions
+    min-width: 16rem
 
-.inspect-details
-  display: grid
-  grid-column: start-details / end-details
-  grid-row: 1 / 2
-  grid-template-columns: auto
-  grid-template-rows: [start-tabs] 2rem [end-tabs start-details] auto [end-details]
-  overflow: hidden
-
-.inspect-tabs
-  grid-column: 1 / 2
-  grid-row: start-tabs / end-tabs
-
-  ul
-    border-bottom-color: $sp-primary-bg
-
-  a
-    border-bottom-color: $sp-primary-bg
-    color: $sp-primary
-    letter-spacing: .05rem
-    text-transform: uppercase
-
-    &:active,
-    &:hover
-      background-color: $sp-light-bg
-      border-bottom-color: $sp-primary-bg
-      color: #fff
-
-  li
-    &.is-active
-      a
-        background-color: $sp-primary-bg
-        border-bottom-color: $sp-dark-bg
-        color: #fff
-
-.inspect-body
-  grid-column: 1 / 2
-  grid-row: start-details / end-details
-  position: relative
-  overflow: hidden
-
-  .column
-    &.extra-padding-left
-      padding-left: 2rem
-
-    &.extra-padding-right
-      padding-right: 2rem
-
-    &.general-actions
-      min-width: 16rem
-
-    &.products
-      overflow: hidden
-      position: relative
-
-  .button
-    letter-spacing: .1rem
-    text-transform: uppercase
+  &.products
+    overflow: hidden
+    position: relative
 
 </style>

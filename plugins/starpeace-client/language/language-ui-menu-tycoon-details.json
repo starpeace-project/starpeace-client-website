@@ -6,5 +6,53 @@
     "FR": "Détails du Magnat",
     "IT": "Dettagli Magnata",
     "PT": "Detalhes do Magnata"
+  },
+  "ui.menu.tycoon_details.tab.curriculum": {
+    "DE": "Weitermachen",
+    "EN": "Résumé",
+    "ES": "Currículum",
+    "FR": "Curriculum Vitae",
+    "IT": "Curriculum Vitae",
+    "PT": "Currículo"
+  },
+  "ui.menu.tycoon_details.tab.bank_account": {
+    "DE": "Bankkonto",
+    "EN": "Bank Account",
+    "ES": "Cuenta Bancaria",
+    "FR": "Compte Bancaire",
+    "IT": "Conto Bancario",
+    "PT": "Conta Bancária"
+  },
+  "ui.menu.tycoon_details.tab.profit_loss": {
+    "DE": "Profiteinbuße",
+    "EN": "Profit & Loss",
+    "ES": "Pérdida de Beneficios",
+    "FR": "Perte de Profit",
+    "IT": "Profitti e Perdite",
+    "PT": "Perda de Lucro"
+  },
+  "ui.menu.tycoon_details.tab.initial_suppliers": {
+    "DE": "Erstlieferanten",
+    "EN": "Initial Suppliers",
+    "ES": "Proveedores Iniciales",
+    "FR": "Fournisseurs Initiaux",
+    "IT": "Fornitori Iniziali",
+    "PT": "Fornecedores Iniciais"
+  },
+  "ui.menu.tycoon_details.tab.companies": {
+    "DE": "Firmen",
+    "EN": "Companies",
+    "ES": "Empresas",
+    "FR": "Entreprises",
+    "IT": "Aziende",
+    "PT": "Empresas"
+  },
+  "ui.menu.tycoon_details.tab.strategy": {
+    "DE": "Strategie",
+    "EN": "Strategy",
+    "ES": "Estrategia",
+    "FR": "Stratégie",
+    "IT": "Strategia",
+    "PT": "Estratégia"
   }
 }

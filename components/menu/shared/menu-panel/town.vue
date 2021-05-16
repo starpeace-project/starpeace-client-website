@@ -30,12 +30,14 @@ div
   tree-menu-item(
     visible=true
     :managers='managers'
+    :client-state='clientState'
     :item='buildings_item'
     :level='1'
   )
   tree-menu-item(
     visible=true
     :managers='managers'
+    :client-state='clientState'
     :item='companies_item'
     :level='1'
   )

@@ -9,7 +9,8 @@ Some of the tentative future features and rough planned version are outlined bel
 * [pending] visa and tycoon position API integration
 * [pending] follow tycoon support
 * [pending] road management API integration
-* [pending] politics campaign and voting API integration'
+* [pending] politics campaign and voting API integration
+* [pending] error message translations
 
 ### assets
 * [pending] car assets

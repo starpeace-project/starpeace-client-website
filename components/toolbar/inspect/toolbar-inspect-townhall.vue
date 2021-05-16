@@ -207,7 +207,7 @@ export default
         @details = await @details_promise
         @details_promise = null
       catch err
-        console.error err
+        @clientState.add_error_message('Failure loading building details, please try again', err)
         @details_promise = null
 
     show_politics: -> @clientState.show_politics(@town.id) if @town?.id?
@@ -215,97 +215,7 @@ export default
 
 <style lang='sass' scoped>
 @import '~assets/stylesheets/starpeace-variables'
-
-.loading-image
-  background-size: 8rem
-  height: 8rem
-  left: calc(50% - 4rem)
-  margin: 1rem 0
-  position: absolute
-  top: calc(40% - 4rem)
-  width: 8rem
-
-.sp-slider
-  display: inline-flex
-
-  span
-    margin-left: .5rem
-
-.inspect-details
-  display: grid
-  grid-column: start-details / end-details
-  grid-row: 1 / 2
-  grid-template-columns: auto
-  grid-template-rows: [start-tabs] 2rem [end-tabs start-details] auto [end-details]
-  position: relative
-  overflow: hidden
-
-.inspect-tabs
-  grid-column: 1 / 2
-  grid-row: start-tabs / end-tabs
-
-  ul
-    border-bottom-color: $sp-primary-bg
-
-  li
-    &.is-active
-      a
-        background-color: $sp-dark-bg
-        border-bottom-color: $sp-dark-bg
-        color: #fff
-
-  a
-    border-bottom-color: $sp-primary-bg
-    color: $sp-primary
-    letter-spacing: .05rem
-    text-transform: uppercase
-
-    &:active,
-    &:hover
-      background-color: $sp-primary-bg
-      border-bottom-color: $sp-primary-bg
-      color: #fff
-
-
-.inspect-body
-  color: $sp-primary
-  grid-column: 1 / 2
-  grid-row: start-details / end-details
-  overflow: hidden
-
-  .column
-    &.extra-padding-left
-      padding-left: 2rem
-
-    &.extra-padding-right
-      padding-right: 2rem
-
-  .button
-    letter-spacing: .1rem
-    text-transform: uppercase
-
-.basic-table
-  th,
-  td
-    border-bottom: 1px solid $sp-dark-bg
-    vertical-align: middle
-
-    &:not(:first-child)
-      padding-left: 1rem
-
-  &:not(.condensed)
-    th,
-    td
-      padding-bottom: .25rem
-      padding-top: .25rem
-
-      &:not(:first-child)
-        padding-left: 2rem
-
-  &.sp-striped
-    tr:nth-child(even)
-      td
-        background-color: darken($sp-dark-bg, 10%)
+@import '~assets/stylesheets/starpeace-inspect'
 
 .column
   &.service-levels

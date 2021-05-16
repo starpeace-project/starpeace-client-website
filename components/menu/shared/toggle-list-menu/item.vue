@@ -22,6 +22,7 @@
 
 export default
   props:
+    clientState: Object
     label: String
     detailsId: String
     detailsCallback: Function
@@ -53,8 +54,8 @@ export default
         else
           @details = null
       catch err
+        @clientState.add_error_message('Failure loading details from server', err)
         @detailsPromise = null
-        console.error err
 
 </script>
 

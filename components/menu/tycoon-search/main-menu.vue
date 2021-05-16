@@ -1,5 +1,5 @@
 <template lang='pug'>
-.card.has-header.is-starpeace.sp-menu
+.card.has-header.is-starpeace.sp-menu(oncontextmenu='return false')
   .card-header
     .card-header-title {{translate('ui.menu.tycoon_search.header')}}
     .card-header-icon.card-close(@click.stop.prevent="client_state.menu.toggle_menu('tycoon_search')")
@@ -28,6 +28,7 @@
           toggle-list-item(
             v-for='result in results'
             :key='result.corporationId'
+            :client-state='client_state'
             :label="mode=='TYCOONS' ? result.tycoonName : mode=='CORPORATIONS' ? result.corporationName : ''"
             :details-id='result.corporationId'
             :details-callback='load_corporation'
@@ -134,7 +135,7 @@ export default
 
         @querying = false
       catch err
-        console.error err
+        @client_state.add_error_message('Failure loading results from server', err)
         @querying = false
 
     load_corporation: (corporation_id) -> @managers.corporation_manager.load_by_corporation(corporation_id)

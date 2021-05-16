@@ -1,5 +1,5 @@
 <template lang='pug'>
-#establish-corporation-container
+#establish-corporation-container(oncontextmenu='return false')
   .modal-background
   .card.is-starpeace.has-header
     .card-header
@@ -78,7 +78,8 @@ export default
           @client_state.player.set_planet_corporation_id(corporation.id)
           @saving = false
 
-        .catch (e) =>
+        .catch (err) =>
+          @client_state.add_error_message('Failure establishing corporation, please try again', err)
           @saving = false
           @error_message = true
           @$forceUpdate() if @is_visible

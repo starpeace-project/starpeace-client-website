@@ -135,8 +135,9 @@ export default
           text-align: right
 
           a
-            padding: .5rem
+            border-radius: 0
             color: $sp-primary
+            padding: .5rem
             letter-spacing: .05rem
             text-transform: uppercase
 

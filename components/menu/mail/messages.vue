@@ -68,8 +68,8 @@ export default
         .then =>
           @mark_read_mail_id = null
           @mark_read_callback = null
-        .catch (e) =>
-          console.error e
+        .catch (err) =>
+          @client_state.add_error_message('Failure marking mail read', err)
           @mark_read_mail_id = null
           @mark_read_callback = null
 

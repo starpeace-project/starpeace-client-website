@@ -1,5 +1,5 @@
 <template lang='pug'>
-.card.has-header.is-starpeace.sp-menu(v-show='visible')
+.card.has-header.is-starpeace.sp-menu(v-show='visible' oncontextmenu='return false')
   .card-header
     .card-header-title {{translate('ui.menu.politics.header')}}
     .card-header-icon.card-close(v-on:click.stop.prevent="client_state.menu.toggle_menu('politics')")
@@ -206,7 +206,7 @@ export default
           @details = await @details_promise
           @details_promise = null
       catch err
-        console.error err
+        @client_state.add_error_message('Failure loading politics details from server', err)
         @details_promise = null
 
 </script>

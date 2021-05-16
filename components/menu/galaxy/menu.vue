@@ -1,5 +1,5 @@
 <template lang='pug'>
-#galaxy-container.card.is-starpeace.has-header
+#galaxy-container.card.is-starpeace.has-header(oncontextmenu='return false')
   .card-header
     .card-header-title {{translate('ui.menu.galaxy.header')}}
     .card-header-icon.card-close(v-on:click.stop.prevent="client_state.menu.toggle_menu('galaxy')")

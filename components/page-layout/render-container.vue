@@ -1,8 +1,7 @@
 <template lang='pug'>
-transition(name='fade')
-  #render-parent-container(v-show='is_ready', v-cloak=true)
-    #fps-container(v-show='show_fps')
-    #render-container(:class='render_css_class')
+#render-parent-container(v-show='is_ready' v-cloak=true oncontextmenu='return false')
+  #fps-container(v-show='show_fps')
+  #render-container(:class='render_css_class')
 </template>
 
 <script lang='coffee'>
@@ -29,15 +28,13 @@ export default
 
 <style lang='sass' scoped>
 #render-parent-container
-  grid-column-start: 1
-  grid-column-end: 4
-  grid-row-start: start-render
-  grid-row-end: end-toolbar
+  grid-column: 1 / 4
+  grid-row: start-render / end-toolbar
   position: relative
 
 #fps-container
-  left: .5rem
   position: absolute
+  right: 9.25rem
   top: .5rem
   z-index: 1015
 

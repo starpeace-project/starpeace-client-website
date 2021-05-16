@@ -7,6 +7,7 @@ export default class TycoonManager
   constructor: (@api, @ajax_state, @client_state) ->
 
   load_metadata: () ->
+    console.log "TycoonManager.load_metadata"
     tycoon_id = @client_state.player.tycoon_id
     return if !@client_state.has_session() || !@client_state.is_galaxy_tycoon() || !tycoon_id? || @ajax_state.is_locked('tycoon_metadata', tycoon_id)
 

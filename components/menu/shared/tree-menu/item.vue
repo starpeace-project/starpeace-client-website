@@ -39,7 +39,13 @@
 
   .sp-menu-list(v-if='has_children' v-show='expanded')
     .menu-item(v-for='child in all_children' :key='child.id')
-      tree-menu-item(:managers='managers' :item='child' :visible='visible && expanded' :level='level + (item.primary ? 0 : 1)')
+      tree-menu-item(
+        :managers='managers'
+        :client-state='clientState'
+        :item='child'
+        :visible='visible && expanded'
+        :level='level + (item.primary ? 0 : 1)'
+      )
 
   .loading-children-container(v-else-if='might_have_children' v-show='expanded')
     img.starpeace-logo
@@ -66,6 +72,7 @@ export default
   name: 'tree-menu-item'
   props:
     managers: Object
+    clientState: Object
 
     visible: Boolean
     level: Number
@@ -105,8 +112,8 @@ export default
           .then (buildings) =>
             @children = @item.convert_children_callback(buildings)
           .catch (err) =>
+            @clientState.add_error_message('Failure loading details from server', err)
             @loading_error = true
-            console.error err
 
   methods:
     translate: (text_key) -> @managers?.translation_manager?.text(text_key)

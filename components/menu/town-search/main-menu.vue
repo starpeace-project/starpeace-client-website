@@ -1,5 +1,5 @@
 <template lang='pug'>
-.card.has-header.is-starpeace.sp-menu
+.card.has-header.is-starpeace.sp-menu(oncontextmenu='return false')
   .card-header
     .card-header-title {{translate('ui.menu.town_search.header')}}
     .card-header-icon.card-close(v-on:click.stop.prevent="client_state.menu.toggle_menu('town_search')")
@@ -10,6 +10,7 @@
       toggle-list-item(
         v-for='town in towns'
         :key='town.id'
+        :client-state='client_state'
         :label="town.name"
         :details-id='town.id'
         :details-callback='town_callback(town)'

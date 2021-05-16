@@ -42,6 +42,7 @@ div
   tree-menu-item(
     visible=true
     :managers='managers'
+    :client-state='clientState'
     :item='item'
     :level='1'
   )

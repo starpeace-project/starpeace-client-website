@@ -200,6 +200,7 @@ export default
       @managers.galaxy_manager.login(galaxy_id, @username, @password, @remember_me)
         .then (tycoon) =>
           @client_state.identity.set_visa(galaxy_id, 'tycoon', tycoon)
+          @client_state.player.tycoon_id = tycoon.id
           @refresh_galaxy(galaxy_id)
         .catch (e) =>
           console.error e
@@ -222,6 +223,7 @@ export default
       metadata = @metadata_for_galaxy(galaxy_id)
       return unless metadata? && metadata?.tycoon_enabled && metadata?.tycoon?
       @client_state.identity.set_visa(galaxy_id, 'tycoon', metadata.tycoon)
+      @client_state.player.tycoon_id = metadata.tycoon.id
 
 </script>
 

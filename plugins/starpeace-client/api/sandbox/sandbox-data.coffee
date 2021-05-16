@@ -164,7 +164,7 @@ export default class SandboxData
                   velocity = Math.floor(Math.random() * 10000)
                   {
                     id: Utils.uuid()
-                    valid: true
+                    valid: Math.floor(Math.random() * 3) > 0
                     sinkCompanyId: @building_id_building[bid].companyId
                     sinkCompanyName: @company_id_info[@building_id_building[bid].companyId]?.company_name || @building_id_building[bid].companyId
                     sinkBuildingId: bid

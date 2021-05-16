@@ -13,7 +13,7 @@
     {
       "id": "tradecenter-eppe",
       "tycoonId": "IFEL",
-      "name": "Tradecenter",
+      "name": "Trade Center",
       "definitionId": "pgi.tradecenter",
       "mapX": 542,
       "mapY": 594,
@@ -45,7 +45,7 @@
     {
       "id": "tradecenter-croma",
       "tycoonId": "IFEL",
-      "name": "Tradecenter",
+      "name": "Trade Center",
       "definitionId": "mko.tradecenter",
       "mapX": 817,
       "mapY": 851,
@@ -77,7 +77,7 @@
     {
       "id": "tradecenter-perceo",
       "tycoonId": "IFEL",
-      "name": "Tradecenter",
+      "name": "Trade Center",
       "definitionId": "pgi.tradecenter",
       "mapX": 271,
       "mapY": 475,
@@ -109,7 +109,7 @@
     {
       "id": "tradecenter-treloba",
       "tycoonId": "IFEL",
-      "name": "Tradecenter",
+      "name": "Trade Center",
       "definitionId": "dis.tradecenter",
       "mapX": 335,
       "mapY": 95,
@@ -141,7 +141,7 @@
     {
       "id": "tradecenter-el-rio",
       "tycoonId": "IFEL",
-      "name": "Tradecenter",
+      "name": "Trade Center",
       "definitionId": "dis.tradecenter",
       "mapX": 847,
       "mapY": 536,
@@ -173,7 +173,7 @@
     {
       "id": "tradecenter-ilase",
       "tycoonId": "IFEL",
-      "name": "Tradecenter",
+      "name": "Trade Center",
       "definitionId": "pgi.tradecenter",
       "mapX": 529,
       "mapY": 276,
@@ -205,7 +205,7 @@
     {
       "id": "tradecenter-loi-mei",
       "tycoonId": "IFEL",
-      "name": "Tradecenter",
+      "name": "Trade Center",
       "definitionId": "mko.tradecenter",
       "mapX": 405,
       "mapY": 713,
@@ -237,7 +237,7 @@
     {
       "id": "tradecenter-wa-ka",
       "tycoonId": "IFEL",
-      "name": "Tradecenter",
+      "name": "Trade Center",
       "definitionId": "mko.tradecenter",
       "mapX": 123,
       "mapY": 429,
@@ -269,7 +269,7 @@
     {
       "id": "tradecenter-dromeda",
       "tycoonId": "tycoon-id-6",
-      "name": "Tradecenter",
+      "name": "Trade Center",
       "definitionId": "moab.tradecenter",
       "mapX": 98,
       "mapY": 195,
@@ -301,7 +301,7 @@
     {
       "id": "tradecenter-zelti",
       "tycoonId": "tycoon-id-6",
-      "name": "Tradecenter",
+      "name": "Trade Center",
       "definitionId": "moab.tradecenter",
       "mapX": 785,
       "mapY": 138,
@@ -333,7 +333,7 @@
     {
       "id": "tradecenter-oloc",
       "tycoonId": "tycoon-id-6",
-      "name": "Tradecenter",
+      "name": "Trade Center",
       "definitionId": "moab.tradecenter",
       "mapX": 590,
       "mapY": 897,

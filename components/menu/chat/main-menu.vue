@@ -1,5 +1,5 @@
 <template lang='pug'>
-.card.is-starpeace.has-header.sp-menu
+.card.is-starpeace.has-header.sp-menu(oncontextmenu='return false')
   .card-header
     .card-header-title {{translate('ui.menu.chat.header')}}
     .card-header-icon.card-close(v-on:click.stop.prevent="client_state.menu.toggle_menu('chat')")
@@ -21,6 +21,7 @@
         toggle-list-item(
           v-for='(tycoon,index) in sortedTycoons'
           :key='tycoon.corporationId || index'
+          :client-state='client_state'
           :label='tycoon.tycoonName'
           :details-id='tycoon.corporationId'
           :details-callback="tycoon.type == 'visitor' ? null : loadCorporation()"
@@ -89,7 +90,7 @@ export default
         @onlinePromise = null
       catch err
         @onlinePromise = null
-        console.error err
+        @client_state.add_error_message('Failure loading online tycoons from server', err)
 
 </script>
 

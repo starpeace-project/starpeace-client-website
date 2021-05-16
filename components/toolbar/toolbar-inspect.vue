@@ -1,5 +1,5 @@
 <template lang='pug'>
-.inspect-container(v-show='show_inspect' oncontextmenu='return true')
+.inspect-container(v-show='show_inspect' oncontextmenu='return false')
 
   .inspect-preview.is-marginless
     #inspect-image-webgl-container(ref='previewContainer')

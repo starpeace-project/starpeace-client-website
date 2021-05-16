@@ -74,9 +74,7 @@ export default class Client
 
           Promise.all(refresh_promises)
             .then -> Logger.debug "refreshed recent events"
-            .catch (err) ->
-              Logger.warn "failure refreshing recent events"
-              console.error err
+            .catch (err) => @client_state.add_error_message('Failure refreshing recent events from server', err)
         else
           clearTimeout(@refresh_events_interval)
           @refresh_events_interval = null

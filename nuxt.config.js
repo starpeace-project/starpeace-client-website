@@ -61,17 +61,6 @@ module.exports = {
   build: {
     // analyze: true,
     publicPath: '/assets/',
-    postcss: {
-      plugins: {
-        'postcss-preset-env': {
-          browserslist: ["> 1%", "last 2 versions"],
-          features: {
-            customProperties: false
-          }
-        },
-        'postcss-import': {}
-      }
-    },
     extend (config, { isDev, isClient, isServer }) {
       config.module.rules.push({
         test: /\.coffee$/,

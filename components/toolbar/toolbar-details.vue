@@ -1,5 +1,5 @@
 <template lang='pug'>
-#toolbar-details.columns.is-marginless.is-paddingless(v-show='is_ready' v-cloak=true)
+#toolbar-details.columns.is-marginless.is-paddingless(v-show='is_ready' v-cloak=true oncontextmenu='return false')
   .column.column-news-ticker {{ ticker_message }}
   .column.column-tycoon-details
     #corporation-details.level.is-mobile

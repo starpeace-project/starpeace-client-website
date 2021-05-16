@@ -36,42 +36,6 @@ export default
 
 <style lang='sass' scoped>
 @import '~assets/stylesheets/starpeace-variables'
-
-.inspect-details
-  display: grid
-  grid-column: start-details / end-details
-  grid-row: 1 / 2
-  grid-template-columns: auto
-  grid-template-rows: [start-tabs] 2rem [end-tabs start-details] auto [end-details]
-
-.inspect-tabs
-  grid-column: 1 / 2
-  grid-row: start-tabs / end-tabs
-
-  ul
-    border-bottom-color: $sp-primary-bg
-
-  a
-    border-bottom-color: $sp-primary-bg
-    color: $sp-primary
-    letter-spacing: .05rem
-    text-transform: uppercase
-
-    &:active,
-    &:hover
-      background-color: $sp-light-bg
-      border-bottom-color: $sp-primary-bg
-      color: #fff
-
-  li
-    &.is-active
-      a
-        background-color: $sp-primary-bg
-        border-bottom-color: $sp-dark-bg
-        color: #fff
-
-.inspect-body
-  grid-column: 1 / 2
-  grid-row: start-details / end-details
+@import '~assets/stylesheets/starpeace-inspect'
 
 </style>

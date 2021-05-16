@@ -100,6 +100,10 @@ export default class ClientState
   reset_planet_state: () ->
     @initialized = false
 
+    @recent_system_messages = []
+    @older_system_messages = []
+    @system_message_callback = null
+
     @plane_sprites = []
 
     @core.reset_planet()
@@ -124,6 +128,7 @@ export default class ClientState
   update_state: () ->
     new_state = @determine_state()
     unless @workflow_status == new_state
+      @add_login_event() if new_state == 'ready'
       @workflow_status = new_state
       @notify_workflow_status_listeners()
 
@@ -180,10 +185,29 @@ export default class ClientState
     , 250)
 
 
+  add_error_message: (message, err) ->
+    Logger.warn(message)
+    console.error(err) if err?
+    @add_system_message(message)
+  add_system_message: (message) ->
+    @recent_system_messages.unshift { time: moment(), message }
+    @system_message_callback = setTimeout((=> @poll_system_messages()), 1000) unless @system_message_callback
+  poll_system_messages: () ->
+    cutoff = moment().subtract(5, 'seconds')
+    while @recent_system_messages.length && @recent_system_messages[@recent_system_messages.length - 1].time.isBefore(cutoff)
+      @older_system_messages.unshift @recent_system_messages.splice(@recent_system_messages.length - 1, 1)[0]
+    @system_message_callback = if @recent_system_messages.length then setTimeout((=> @poll_system_messages()), 1000) else null
+
+
+  add_login_event: () ->
+    name = if @is_tycoon() then @identity?.galaxy_tycoon?.name else 'Visitor'
+    corporation_name = if @is_tycoon() then @current_corporation_metadata()?.name else null
+    full_name = if corporation_name?.length then "#{name} of #{corporation_name}" else name
+    @add_system_message("#{full_name} has entered #{@current_planet_metadata()?.name}")
+
   is_galaxy_tycoon: () -> @identity.galaxy_visa_type == 'tycoon'
   is_tycoon: () -> @is_galaxy_tycoon() && @player.planet_visa_type == 'tycoon' && @identity.galaxy_tycoon?
 
-  current_tycoon_metadata: () -> if @player.tycoon_id? then @core.tycoon_cache.metadata_for_id(@player.tycoon_id) else null
   current_planet_metadata: () -> if @player.planet_id? then @core.galaxy_cache.planet_metadata_for_id(@player.planet_id) else null
   current_corporation_metadata: () -> if @player.corporation_id? then @core.corporation_cache.metadata_for_id(@player.corporation_id) else null
   current_company_metadata: () -> if @player.company_id? then @core.company_cache.metadata_for_id(@player.company_id) else null
@@ -303,6 +327,7 @@ export default class ClientState
     @interface.select_politics_mayor(town_id)
 
   show_tycoon_profile: (tycoon_id) ->
+    @interface.selected_tycoon_id = tycoon_id
     @menu.toggle_menu('tycoon') unless @menu.is_visible('tycoon')
 
   has_new_mail: () ->

@@ -1,5 +1,5 @@
 <template lang='pug'>
-#form-company-container
+#form-company-container(oncontextmenu='return false')
   .card.is-starpeace.has-header
     .card-header
       .card-header-title {{translate('ui.menu.company.form.header')}}
@@ -101,8 +101,8 @@ export default
           @client_state.menu.toggle_menu('company_form')
           @saving = false
 
-        .catch (e) =>
-          console.error e
+        .catch (err) =>
+          @client_state.add_error_message('Failure establishing company, please try again', err)
           @saving = false
           @error_message = true
           @$forceUpdate() if @is_visible
