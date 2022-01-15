@@ -43,7 +43,7 @@
     "interactjs": "^1.10.11",
     "javascript-detect-element-resize": "^0.5.3",
     "lodash": "^4.17.21",
-    "marked": "^2.0.3",
+    "marked": "^4.0.10",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.33",
     "node-sass": "^6.0.0",
