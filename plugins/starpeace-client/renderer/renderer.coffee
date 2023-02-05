@@ -1,4 +1,4 @@
-import 'javascript-detect-element-resize'
+import '~/plugins/javascript-detect-element-resize/detect-element-resize';
 import { Application, Renderer as PixiRenderer } from 'pixi.js';
 import Stats from 'stats.js';
 

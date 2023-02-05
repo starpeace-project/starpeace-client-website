@@ -1,5 +1,5 @@
 
-## v0.3.8 - in progress - updated 2023-02-05
+## v0.3.9 - in progress - updated 2023-02-05
 ### platform
 * [done] improve API integration with galaxies [v0.3.1]
 * [done] document multiverse API integration [starpeace-server-multiverse-api]
@@ -25,6 +25,7 @@
 * [done] improve tycoon, corporation, and company creation error handling [v0.3.8]
 * [done] visa and tycoon position API integration [v0.3.8]
 * [done] major version upgrade of platform dependencies (nuxt, PixiJS) [v0.3.8]
+* [done] fixing various defects with previous upgrades [v0.3.9]
 * [in progress] improve auth and remember me token and error handling
 * [pending] player, building, and planet event handling
 * [pending] fix render fps issue when loading chunks

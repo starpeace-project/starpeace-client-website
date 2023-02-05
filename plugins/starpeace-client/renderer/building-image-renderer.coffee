@@ -1,5 +1,4 @@
-
-import 'javascript-detect-element-resize'
+import '~/plugins/javascript-detect-element-resize/detect-element-resize';
 import * as PIXI from 'pixi.js'
 
 export default class BuildingImageRenderer

@@ -1,6 +1,6 @@
 {
   "name": "@starpeace/starpeace-client-website",
-  "version": "0.3.8",
+  "version": "0.3.9",
   "description": "Client website application for STARPEACE multiplayer economic simulation",
   "author": "starpeace-project",
   "license": "MIT",
@@ -40,7 +40,6 @@
     "flag-icons": "^6.6.6",
     "howler": "^2.2.3",
     "interactjs": "^1.10.17",
-    "javascript-detect-element-resize": "^0.5.3",
     "lodash": "^4.17.21",
     "luxon": "^3.2.1",
     "marked": "^4.2.12",
