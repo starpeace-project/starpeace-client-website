@@ -2,12 +2,11 @@
 .ranking-option
   a(:class='ranking_class' @click.stop.prevent="$emit('toggle', ranking.corporationId)")
     span.ranking-rank {{ranking.rank}}
-
     span.ranking-name {{ranking.corporationName}}
 
     span.ranking-value
       template(v-if="rankingType.unit == 'CURRENCY'")
-        money-text(:value='ranking.value' no_styling)
+        misc-money-text(:value='ranking.value' no_styling)
       template(v-else)
         | {{ranking.value}}
 
@@ -17,27 +16,17 @@
         img.starpeace-logo
 
     template(v-else)
-      menu-panel-corporation(
+      menu-shared-menu-panel-corporation(
         hide-corporation=true
         :managers='managers'
         :client-state='clientState'
         :tycoon='ranking'
         :corporation='corporation'
       )
-
-
 </template>
 
 <script lang='coffee'>
-import MenuPanelCorporation from '~/components/menu/shared/menu-panel/corporation.vue'
-import MoneyText from '~/components/misc/money-text.vue'
-
 export default
-  components: {
-    MenuPanelCorporation
-    MoneyText
-  }
-
   props:
     managers: Object
     clientState: Object
@@ -78,7 +67,7 @@ export default
 </script>
 
 <style lang='sass' scoped>
-@import '~assets/stylesheets/starpeace-variables'
+@import '~/assets/stylesheets/starpeace-variables'
 
 .loading-container
   justify-content: center

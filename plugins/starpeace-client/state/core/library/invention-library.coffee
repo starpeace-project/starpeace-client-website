@@ -1,6 +1,4 @@
-
 import _ from 'lodash'
-import Vue from 'vue'
 
 import Library from '~/plugins/starpeace-client/state/core/library/library.coffee'
 
@@ -34,13 +32,13 @@ export default class InventionLibrary extends Library
         for invention_id in (definition.allowed_invention_ids || [])
           invention_ids[invention_id] = new Set() unless invention_ids[invention_id]?
           invention_ids[invention_id].add(definition.id)
-      Vue.set(@allowing_building_by_seal_id, seal_id, invention_ids)
+      @allowing_building_by_seal_id[seal_id] = invention_ids
 
     @inventions_by_seal = {}
     for id,invention of @metadata_by_id
       for seal_id in planet_library.seals_for_inventions()
         if @allowing_building_by_seal_id[seal_id]?[id]?.size
-          Vue.set(@inventions_by_seal, seal_id, []) unless @inventions_by_seal[seal_id]?
+          @inventions_by_seal[seal_id] = [] unless @inventions_by_seal[seal_id]?
           @inventions_by_seal[seal_id].push invention
 
 

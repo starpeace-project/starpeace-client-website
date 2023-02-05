@@ -6,11 +6,11 @@ Some of the tentative future features and rough planned version are outlined bel
 ### platform
 * [pending] minimum distance between buildings (statue and tower)
 * [pending] manage city zones API integration
-* [pending] visa and tycoon position API integration
 * [pending] follow tycoon support
 * [pending] road management API integration
 * [pending] politics campaign and voting API integration
 * [pending] error message translations
+* [pending] further improve auth and remember me token support (retries, auto-renew) [v0.3.8]
 
 ### assets
 * [pending] car assets
@@ -18,6 +18,10 @@ Some of the tentative future features and rough planned version are outlined bel
 * [pending] dedicated research buildings per category and seal
 
 ### gameplay
+* [pending] building stage support (timber, movies, farms)
+* [pending] limit seals unless required level or nobility
+* [pending] road proximity building construction rules
+* [pending] waterquest and water building construction rules
 * [pending] overlay menu hierarchy organization
 * [pending] road construction
 * [pending] improve concrete and platform rendering

@@ -1,7 +1,4 @@
 
-import moment from 'moment'
-
-import TimeUtils from '~/plugins/starpeace-client/utils/time-utils.coffee'
 
 export default class Town
   constructor: (@id) ->

@@ -6,18 +6,12 @@
     :data-tooltip="text_for_category(category)"
     @click.stop.prevent="toggle_filter(category)"
   )
-    industry-category-icon(:category="category")
+    misc-industry-category-icon(:category="category")
 
 </template>
 
 <script lang='coffee'>
-import IndustryCategoryIcon from '~/components/misc/industry-category-icon.vue'
-
 export default
-  components: {
-    IndustryCategoryIcon
-  }
-
   props:
     managers: Object
     client_state: Object
@@ -37,7 +31,7 @@ export default
 </script>
 
 <style lang='sass' scoped>
-@import '~assets/stylesheets/starpeace-variables'
+@import '~/assets/stylesheets/starpeace-variables'
 
 .filter-items
   height: 2.6rem
@@ -53,7 +47,7 @@ export default
     &:not(:first-child)
       margin-left: .5rem
 
-    ::v-deep img
+    :deep(img)
       filter: invert(75%) sepia(8%) saturate(1308%) hue-rotate(111deg) brightness(93%) contrast(83%)
       height: 1.6rem
       width: 1.6rem
@@ -67,7 +61,7 @@ export default
     &:active
       background-color: lighten($sp-primary-bg, 7.5%)
 
-      ::v-deep img
+      :deep(img)
         filter: invert(100%)
 
 </style>

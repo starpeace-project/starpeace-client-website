@@ -1,6 +1,4 @@
-
-import moment from 'moment'
-import Vue from 'vue'
+import _ from 'lodash';
 
 import EventListener from '~/plugins/starpeace-client/state/event-listener.coffee'
 
@@ -9,11 +7,17 @@ import Logger from '~/plugins/starpeace-client/logger.coffee'
 export default class CorporationState
   constructor: () ->
     @event_listener = new EventListener()
-    @reset_state()
+    @company_ids = null
+
+    @last_mail_at = null
+    @cash = null
+    @cashflow = null
+    @cashflow_by_company_id = {}
+
+    @buildings_ids_by_company_id = {}
+    @inventions_metadata_by_company_id = {}
 
   reset_state: () ->
-    @events_as_of = null
-
     @company_ids = null
 
     @last_mail_at = null
@@ -48,8 +52,8 @@ export default class CorporationState
 
   add_company_id: (company_id) ->
     @company_ids.push(company_id)
-    Vue.set(@buildings_ids_by_company_id, company_id, [])
-    Vue.set(@inventions_metadata_by_company_id, company_id, [])
+    @buildings_ids_by_company_id[company_id] = []
+    @inventions_metadata_by_company_id[company_i] = []
     @notify_company_ids_listeners()
     @notify_company_buildings_listeners()
     @notify_company_inventions_listeners()
@@ -61,17 +65,17 @@ export default class CorporationState
     @notify_cashflow_listeners()
   update_cashflow_companies: (companies) ->
     for company in (if Array.isArray(companies) then companies else [companies])
-      Vue.set(@cashflow_by_company_id, company.id, company.cashflow || 0)
+      @cashflow_by_company_id[company.id] = company.cashflow || 0
     @notify_cashflow_listeners()
 
 
   building_ids_for_company: (company_id) -> @buildings_ids_by_company_id[company_id] || []
   set_company_building_ids: (company_id, building_ids) ->
-    Vue.set(@buildings_ids_by_company_id, company_id, building_ids)
+    @buildings_ids_by_company_id[company_id] = building_ids
     @notify_company_buildings_listeners()
 
   add_company_building_id: (company_id, building_id) ->
-    Vue.set(@buildings_ids_by_company_id, company_id, []) unless @buildings_ids_by_company_id[company_id]?
+    @buildings_ids_by_company_id[company_id] = [] unless @buildings_ids_by_company_id[company_id]?
     @buildings_ids_by_company_id[company_id].push building_id
     @notify_company_buildings_listeners()
 
@@ -86,7 +90,7 @@ export default class CorporationState
 
   update_company_inventions_metadata: (company_id, inventions_metadata) ->
     unless @inventions_metadata_by_company_id[company_id]?
-      Vue.set(@inventions_metadata_by_company_id, company_id, inventions_metadata)
+      @inventions_metadata_by_company_id[company_id] = inventions_metadata
       @notify_company_inventions_listeners()
     else
       changed_pending = @update_company_pending_inventions(company_id, inventions_metadata.pending_inventions)

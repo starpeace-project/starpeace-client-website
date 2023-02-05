@@ -114,8 +114,7 @@
 </template>
 
 <script lang='coffee'>
-import moment from 'moment'
-
+import _ from 'lodash';
 import ServiceType from '~/plugins/starpeace-client/planet/details/service-type.coffee'
 
 export default
@@ -165,7 +164,7 @@ export default
     current_overall_rating: -> @details?.current_term?.overall_rating || 0
     current_service_ratings: -> @details?.current_term?.service_ratings || []
 
-    term_start: -> @details?.next_term?.start?.format('MMM D, YYYY')
+    term_start: -> @details?.next_term?.start?.toFormat('MMM d, yyyy')
     term_length: -> @format_months(@details?.next_term?.length)
     term_candidates: -> @details?.next_term?.candidates || []
 
@@ -212,8 +211,8 @@ export default
 </script>
 
 <style lang='sass' scoped>
-@import '~assets/stylesheets/starpeace-menus'
-@import '~assets/stylesheets/starpeace-variables'
+@import '~/assets/stylesheets/starpeace-menus'
+@import '~/assets/stylesheets/starpeace-variables'
 
 .sp-menu
   grid-column: 1 / span 1

@@ -23,22 +23,30 @@
                 .control.is-expanded
                   input.input.is-large(type='text' v-model='corporation_name' :disabled='saving' :placeholder="translate('ui.menu.corporation.establish.field.name')")
 
-          .field.is-horizontal(v-show='error_message')
+          .field.is-horizontal(v-show='error_code')
             .field-body
               .field
                 .control.is-narrow
-                  span.has-text-danger {{translate('ui.menu.corporation.establish.error.general')}}
+                  span.has-text-danger {{translate(error_code_key)}}
 
     footer.card-footer
       .card-footer-item.level.is-mobile
         .level-left
-          a.button.is-primary.is-medium.is-outlined(@click.stop.prevent='cancel') {{translate('ui.menu.corporation.establish.action.cancel')}}
+          button.button.is-primary.is-medium.is-outlined(@click.stop.prevent='cancel') {{translate('ui.menu.corporation.establish.action.cancel')}}
         .level-right
-          a.button.is-primary.is-medium(@click.stop.prevent='establish' :disabled='!can_establish') {{translate('ui.menu.corporation.establish.action.establish')}}
+          button.button.is-primary.is-medium(@click.stop.prevent='establish' :disabled='!can_establish') {{translate('ui.menu.corporation.establish.action.establish')}}
 
 </template>
 
 <script lang='coffee'>
+import _ from 'lodash';
+
+ERROR_CODE_GENERAL = 'GENERAL'
+ERROR_CODE_INVALID_NAME = 'INVALID_NAME'
+ERROR_CODE_TYCOON_LIMIT = 'TYCOON_LIMIT'
+ERROR_CODE_NAME_CONFLICT = 'NAME_CONFLICT'
+ERROR_CODES = [ERROR_CODE_GENERAL, ERROR_CODE_INVALID_NAME, ERROR_CODE_TYCOON_LIMIT, ERROR_CODE_NAME_CONFLICT]
+
 export default
   props:
     managers: Object
@@ -46,19 +54,26 @@ export default
 
   data: ->
     saving: false
-    error_message: null
+    error_code: null
 
     corporation_name: ''
 
   computed:
     is_visible: -> @client_state.initialized && @client_state.workflow_status == 'ready' && @client_state.is_tycoon() && !@client_state.player.corporation_id?.length
-    can_establish: -> @is_visible && !@saving && _.trim(@corporation_name).length
+    can_establish: -> @is_visible && !@saving && _.trim(@corporation_name).length >= 3
+
+    error_code_key: ->
+      return 'ui.menu.corporation.establish.error.general' if @error_code == ERROR_CODE_GENERAL
+      return 'ui.menu.corporation.establish.error.name' if @error_code == ERROR_CODE_INVALID_NAME
+      return 'ui.menu.corporation.establish.error.limit' if @error_code == ERROR_CODE_TYCOON_LIMIT
+      return 'ui.menu.corporation.establish.error.conflict' if @error_code == ERROR_CODE_NAME_CONFLICT
+      ''
 
   watch:
     is_visible: (new_value, old_value) ->
       if @is_visible
         @saving = false
-        @error_message = null
+        @error_code = null
         @corporation_name = ''
 
   methods:
@@ -81,13 +96,13 @@ export default
         .catch (err) =>
           @client_state.add_error_message('Failure establishing corporation, please try again', err)
           @saving = false
-          @error_message = true
+          @error_code = if ERROR_CODES.indexOf(err?.response?.data?.code) >= 0 then err?.response?.data?.code else ERROR_CODE_GENERAL
           @$forceUpdate() if @is_visible
 
 </script>
 
 <style lang='sass' scoped>
-@import '~assets/stylesheets/starpeace-variables'
+@import '~/assets/stylesheets/starpeace-variables'
 
 #establish-corporation-container
   align-items: center

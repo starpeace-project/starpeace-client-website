@@ -1,6 +1,6 @@
 
 import Galaxy from '~/plugins/starpeace-client/galaxy/galaxy.coffee'
-import Tycoon from '~/plugins/starpeace-client/tycoon/tycoon.coffee'
+import Tycoon from '~/plugins/starpeace-client/tycoon/tycoon'
 
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 

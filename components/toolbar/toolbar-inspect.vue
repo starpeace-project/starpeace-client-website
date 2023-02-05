@@ -30,19 +30,7 @@
 </template>
 
 <script lang='coffee'>
-import ToolbarInspectBuilding from '~/components/toolbar/inspect/toolbar-inspect-building.vue'
-import ToolbarInspectPortal from '~/components/toolbar/inspect/toolbar-inspect-portal.vue'
-import ToolbarInspectTownhall from '~/components/toolbar/inspect/toolbar-inspect-townhall.vue'
-import ToolbarInspectTradeCenter from '~/components/toolbar/inspect/toolbar-inspect-trade-center.vue'
-
 export default
-  components: {
-    ToolbarInspectBuilding
-    ToolbarInspectPortal
-    ToolbarInspectTownhall
-    ToolbarInspectTradeCenter
-  }
-
   props:
     client_state: Object
     managers: Object
@@ -68,7 +56,7 @@ export default
 </script>
 
 <style lang='sass' scoped>
-@import '~assets/stylesheets/starpeace-variables'
+@import '~/assets/stylesheets/starpeace-variables'
 
 .inspect-container
   background-color: #000

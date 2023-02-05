@@ -57,7 +57,7 @@ export default
 </script>
 
 <style lang='sass' scoped>
-@import '~assets/stylesheets/starpeace-variables'
+@import '~/assets/stylesheets/starpeace-variables'
 
 #overlay-menu
   background-color: #000

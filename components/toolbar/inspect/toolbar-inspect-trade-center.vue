@@ -31,7 +31,7 @@
 
       template(v-else-if='tab_index == 1')
         .column.is-paddingless.products
-          tab-products(
+          toolbar-inspect-shared-tab-products(
             :client-state='clientState'
             :managers='managers'
             :products='products'
@@ -40,13 +40,7 @@
 </template>
 
 <script lang='coffee'>
-import TabProducts from '~/components/toolbar/inspect/shared/tab-products.vue'
-
 export default
-  components: {
-    TabProducts
-  }
-
   props:
     clientState: Object
     managers: Object
@@ -98,8 +92,8 @@ export default
 </script>
 
 <style lang='sass' scoped>
-@import '~assets/stylesheets/starpeace-variables'
-@import '~assets/stylesheets/starpeace-inspect'
+@import '~/assets/stylesheets/starpeace-variables'
+@import '~/assets/stylesheets/starpeace-inspect'
 
 .column
   &.general-actions

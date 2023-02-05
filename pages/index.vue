@@ -1,9 +1,8 @@
 <template lang='pug'>
 client-only
-  sp-application
+  application
 </template>
 
-<script lang='coffee'>
-export default
-  layout: 'application'
+<script>
+export default { }
 </script>

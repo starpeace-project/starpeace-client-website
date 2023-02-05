@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js'
+import { Assets } from '@pixi/assets';
 
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 
@@ -7,9 +7,9 @@ export default class AssetManager
   @CDN_VERSION: 'f53ac31bf9da5760df8621bc68ab9aee'
 
   constructor: (@ajax_state) ->
-    PIXI.Loader.shared.baseUrl = "#{AssetManager.CDN_URL}/#{AssetManager.CDN_VERSION}"
-    PIXI.Loader.shared.onProgress.add (e) =>
-      @loading_progress = e.progress
+    Assets.init({
+      basePath: "#{AssetManager.CDN_URL}/#{AssetManager.CDN_VERSION}"
+    })
 
     @loading = false
 
@@ -23,7 +23,7 @@ export default class AssetManager
       Logger.debug "attempted to load same key more than once: #{key}"
       return callback()
 
-    PIXI.Loader.shared.add(key, asset_url)
+    Assets.add(key, asset_url)
     @key_callbacks[key] = callback
 
   load_queued: () ->
@@ -33,7 +33,9 @@ export default class AssetManager
 
     @loading = true
     @ajax_state.start_ajax()
-    PIXI.Loader.shared.load (loader, resources) =>
+    try
+      resources = await Assets.load(pending_keys, (progress) -> console.debug('Asset loading progress', progress))
+
       for key in pending_keys
         if resources[key]?
           @key_callbacks[key](resources[key])
@@ -44,6 +46,11 @@ export default class AssetManager
       @ajax_state.finish_ajax()
       @loading = false
       setTimeout((=> @load_queued()), 250) if Object.keys(@key_callbacks).length
+
+    catch err
+      console.error(err)
+      @loading = false
+
 
   queue_and_load_atlases: (atlases, callback) ->
     for path in atlases

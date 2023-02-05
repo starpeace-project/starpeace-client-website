@@ -35,7 +35,7 @@ export default
 </script>
 
 <style lang='sass' scoped>
-@import '~assets/stylesheets/starpeace-variables'
-@import '~assets/stylesheets/starpeace-inspect'
+@import '~/assets/stylesheets/starpeace-variables'
+@import '~/assets/stylesheets/starpeace-inspect'
 
 </style>

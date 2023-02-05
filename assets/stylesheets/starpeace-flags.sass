@@ -1,12 +1,6 @@
 
-$flag-icon-css-path: '~flag-icon-css/flags'
+//$flag-icon-css-path: 'flag-icons/flags'
+$flag-icons-path: 'flag-icons/flags'
+$flag-icons-included-countries: [gb, fr, br, de, it, es]
 
-@import "~flag-icon-css/sass/variables"
-@import "~flag-icon-css/sass/flag-icon-base"
-
-@include flag-icon(gb)
-@include flag-icon(fr)
-@include flag-icon(br)
-@include flag-icon(de)
-@include flag-icon(it)
-@include flag-icon(es)
+@import "flag-icons/sass/flag-icons"

@@ -93,7 +93,7 @@ export default
 </script>
 
 <style lang='sass' scoped>
-@import '~assets/stylesheets/starpeace-menus'
+@import '~/assets/stylesheets/starpeace-menus'
 
 .sp-menu
   grid-column: start-left / end-render

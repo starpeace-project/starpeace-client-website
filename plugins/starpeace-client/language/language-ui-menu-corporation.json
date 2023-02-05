@@ -55,6 +55,30 @@
     "IT": "Errore stabilire la società, si prega di riprovare",
     "PT": "Erro ao estabelecer corporação, por favor tente novamente"
   },
+  "ui.menu.corporation.establish.error.name": {
+    "DE": "Name des Ungültigen Unternehmens, bitte wählen Sie einen anderen aus",
+    "EN": "Invalid corporation name, please choose another",
+    "ES": "Nombre de la corporación no válida, elija otro",
+    "FR": "Nom de la société non valide, veuillez en choisir un autre",
+    "IT": "Nome società non valido, scegli un altro",
+    "PT": "Nome da corporação inválida, escolha outro"
+  },
+  "ui.menu.corporation.establish.error.limit": {
+    "DE": "Nur eine Gesellschaft, die pro Tycoon gestattet ist",
+    "EN": "Only one corporation permitted per tycoon",
+    "ES": "Solo una corporación permitida por magnate",
+    "FR": "Une seule société autorisée par magnat",
+    "IT": "Una sola società consentita per magnate",
+    "PT": "Apenas uma corporação permitida por magnata"
+  },
+  "ui.menu.corporation.establish.error.conflict": {
+    "DE": "Der Name des Unternehmens wurde bereits registriert",
+    "EN": "Corporation name has already been registered",
+    "ES": "El nombre de la corporación ya ha sido registrado",
+    "FR": "Le nom de la société a déjà été enregistré",
+    "IT": "Il nome della società è già stato registrato",
+    "PT": "O nome da corporação já foi registrado"
+  },
   "ui.menu.corporation.panel.details.tycoon": {
     "DE": "Tycoon",
     "EN": "Tycoon",

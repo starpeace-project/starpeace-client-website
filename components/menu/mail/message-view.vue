@@ -23,8 +23,6 @@
 </template>
 
 <script lang='coffee'>
-import moment from 'moment'
-
 export default
   props:
     managers: Object
@@ -34,8 +32,8 @@ export default
   computed:
     mail: -> if @client_state.player.selected_mail_id? then @client_state.player.mail_by_id[@client_state.player.selected_mail_id] else null
 
-    sent_at: -> if @mail?.sent_at? then moment.tz(@mail.sent_at, 'UTC').format('YYYY-MM-DD HH:mm z') else ''
-    planet_sent_at: -> if @mail?.planet_sent_at? then moment.tz(@mail.planet_sent_at, 'UTC').format('MMM D, YYYY') else ''
+    sent_at: -> if @mail?.sent_at? then @mail.sent_at.toFormat('yyyy-MM-dd HH:mm z') else '' #.setZone('UTC')
+    planet_sent_at: -> if @mail?.planet_sent_at? then @mail.planet_sent_at.toFormat('MMM d, yyyy') else '' #.setZone('UTC')
 
   methods:
     translate: (text_key) -> @managers?.translation_manager?.text(text_key)
@@ -43,8 +41,8 @@ export default
 </script>
 
 <style lang='sass' scoped>
-@import '~assets/stylesheets/starpeace-variables'
-@import '~assets/stylesheets/starpeace-menus'
+@import '~/assets/stylesheets/starpeace-variables'
+@import '~/assets/stylesheets/starpeace-menus'
 
 .overall-container
   position: relative

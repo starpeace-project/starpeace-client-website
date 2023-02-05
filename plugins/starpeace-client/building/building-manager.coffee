@@ -1,3 +1,4 @@
+import _ from 'lodash';
 
 import Building from '~/plugins/starpeace-client/building/building.coffee'
 import BuildingDetails from '~/plugins/starpeace-client/building/building-details.coffee'
@@ -21,9 +22,9 @@ export default class BuildingManager
     @asset_manager.queue('metadata.building', './building.metadata.json', (resource) =>
       unless resource?.error?
         # FIXME: TODO: convert json to object
-        @client_state.core.building_library.load_images(resource.data.images)
-        @client_state.core.building_library.load_required_atlases(resource.data.atlas)
-        @asset_manager.queue_and_load_atlases((resource.data?.atlas || []), (atlas_path, atlas) => @client_state.core.building_library.load_atlas(atlas_path, atlas))
+        @client_state.core.building_library.load_images(resource.images)
+        @client_state.core.building_library.load_required_atlases(resource.atlas)
+        @asset_manager.queue_and_load_atlases((resource.atlas || []), (atlas_path, atlas) => @client_state.core.building_library.load_atlas(atlas_path, atlas))
       @ajax_state.unlock('assets.building_metadata', 'ALL')
     )
 
@@ -35,10 +36,9 @@ export default class BuildingManager
     _.reduce(simulation_definition?.construction_inputs, ((sum, input) => sum + (@cost_for_resource_type(input.resource_id) * input.quantity)), 0)
 
   load_chunk: (chunk_x, chunk_y) ->
-    planet_id = @client_state.player.planet_id
-    throw Error() if !@client_state.has_session() || !planet_id? || !chunk_x? || !chunk_y?
-    await @ajax_state.locked('building_load_chunk', "#{planet_id}x#{chunk_x}x#{chunk_y}", =>
-      buildings = _.map(await @api.buildings_for_planet(planet_id, chunk_x, chunk_y), (json) -> Building.from_json(json))
+    throw Error() if !@client_state.has_session() || !chunk_x? || !chunk_y?
+    await @ajax_state.locked('building_load_chunk', "#{chunk_x}x#{chunk_y}", =>
+      buildings = _.map(await @api.buildings_for_planet(chunk_x, chunk_y), (json) -> Building.from_json(json))
       @client_state.core.building_cache.load_buildings(buildings)
       Logger.debug("loaded building chunk at #{chunk_x}x#{chunk_y}")
       _.map(buildings, 'id')
@@ -105,7 +105,7 @@ export default class BuildingManager
         @client_state.planet.notify_map_data_listeners({ type: 'building', info: {chunk_x: temporary_building.map_x / ChunkMap.CHUNK_WIDTH, chunk_y: temporary_building.map_y / ChunkMap.CHUNK_HEIGHT} })
 
         @ajax_state.lock('building_construction', 'ALL')
-        @api.construct_building(@client_state.player.planet_id, temporary_building.company_id, temporary_building.definition_id, temporary_building.name, temporary_building.map_x, temporary_building.map_y)
+        @api.construct_building(temporary_building.company_id, temporary_building.definition_id, temporary_building.name, temporary_building.map_x, temporary_building.map_y)
           .then (building_info) =>
             constructed_building = Building.from_json(building_info)
             @client_state.core.building_cache.load_building(constructed_building)

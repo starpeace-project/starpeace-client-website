@@ -1,25 +1,25 @@
 <template lang='pug'>
 .navbar-item.has-dropdown.is-hoverable.language-select
   a.header-item.navbar-link
-    span.flag-icon(:class='current_language_flag')
+    span.fi(:class='current_language_flag')
   .navbar-dropdown.is-boxed.is-starpeace
-    a.navbar-item(v-on:click.stop.prevent="change_language('DE')", :class="language_code == 'DE' ? 'is-active' : ''")
-      span.flag-icon.flag-icon-de
+    a.navbar-item(@click.stop.prevent="change_language('DE')", :class="{'is-active': language_code == 'DE' }")
+      span.fi.fi-de
       | de
-    a.navbar-item(v-on:click.stop.prevent="change_language('EN')", :class="language_code == 'EN' ? 'is-active' : ''")
-      span.flag-icon.flag-icon-gb
+    a.navbar-item(@click.stop.prevent="change_language('EN')", :class="{'is-active': language_code == 'EN' }")
+      span.fi.fi-gb
       | en
-    a.navbar-item(v-on:click.stop.prevent="change_language('ES')", :class="language_code == 'ES' ? 'is-active' : ''")
-      span.flag-icon.flag-icon-es
+    a.navbar-item(@click.stop.prevent="change_language('ES')", :class="{'is-active': language_code == 'ES' }")
+      span.fi.fi-es
       | es
-    a.navbar-item(v-on:click.stop.prevent="change_language('FR')", :class="language_code == 'FR' ? 'is-active' : ''")
-      span.flag-icon.flag-icon-fr
+    a.navbar-item(@click.stop.prevent="change_language('FR')", :class="{'is-active': language_code == 'FR' }")
+      span.fi.fi-fr
       | fr
-    a.navbar-item(v-on:click.stop.prevent="change_language('IT')", :class="language_code == 'IT' ? 'is-active' : ''")
-      span.flag-icon.flag-icon-it
+    a.navbar-item(@click.stop.prevent="change_language('IT')", :class="{'is-active': language_code == 'IT' }")
+      span.fi.fi-it
       | it
-    a.navbar-item(v-on:click.stop.prevent="change_language('PT')", :class="language_code == 'PT' ? 'is-active' : ''")
-      span.flag-icon.flag-icon-br
+    a.navbar-item(@click.stop.prevent="change_language('PT')", :class="{'is-active': language_code == 'PT' }")
+      span.fi.fi-br
       | pt
 </template>
 
@@ -31,13 +31,13 @@ export default
 
   computed:
     current_language_flag: ->
-      return 'flag-icon-de' if @language_code == 'DE'
-      return 'flag-icon-gb' if @language_code == 'EN'
-      return 'flag-icon-es' if @language_code == 'ES'
-      return 'flag-icon-fr' if @language_code == 'FR'
-      return 'flag-icon-it' if @language_code == 'IT'
-      return 'flag-icon-br' if @language_code == 'PT'
-      'flag-icon-gb'
+      return 'fi-de' if @language_code == 'DE'
+      return 'fi-gb' if @language_code == 'EN'
+      return 'fi-es' if @language_code == 'ES'
+      return 'fi-fr' if @language_code == 'FR'
+      return 'fi-it' if @language_code == 'IT'
+      return 'fi-br' if @language_code == 'PT'
+      'fi-gb'
 
   methods:
     change_language: (code) -> @$emit('changed', code)
@@ -55,7 +55,7 @@ export default
 
     &::after
       border-color: #fff
-      right: 0.775em
+      right: 0.25em
 
     &:hover,
     &:active,
@@ -68,7 +68,7 @@ export default
     font-size: 1.25rem
     padding-right: 1rem
 
-    .flag-icon
+    .fi
       margin-right: .5rem
 
   .header-item

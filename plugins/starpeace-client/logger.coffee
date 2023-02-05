@@ -1,5 +1,5 @@
 
-CLIENT_VERSION = process.env.CLIENT_VERSION
+CLIENT_VERSION = '0.0.0' #process.env.CLIENT_VERSION
 
 export default class Logger
   constructor: () ->
@@ -11,7 +11,7 @@ export default class Logger
     BANNER_VERSION_FOREGROUND = 'background-color:#000;color:#fff;font-weight:bold'
     BANNER_NOTES_FOREGROUND = 'background-color:#000;color:#fff;font-weight:normal'
 
-    version_text = process.env.CLIENT_VERSION
+    version_text = CLIENT_VERSION
     version_text = " #{version_text} " while version_text.length < 86
     version_text = " #{version_text}" if version_text.length < 87
 
@@ -50,7 +50,7 @@ export default class Logger
         BANNER_NOTES_FOREGROUND, BANNER_HEADER_BACKGROUND
     )
 
-    console.debug("%c[STARPEACE]%c client %c#{process.env.CLIENT_VERSION}%c created", 'font-size:16px;line-height:20px;background-color:#395950;color:#fff', 'background-color:#fff;color:#000;line-height:20px;', 'font-weight:bold;text-decoration:underline', 'font-weight:normal;text-decoration:none')
+    console.debug("%c[STARPEACE]%c client %c#{CLIENT_VERSION}%c created", 'font-size:16px;line-height:20px;background-color:#395950;color:#fff', 'background-color:#fff;color:#000;line-height:20px;', 'font-weight:bold;text-decoration:underline', 'font-weight:normal;text-decoration:none')
 
   @warn: (message) ->
     console.warn("%c[STARPEACE]%c #{message}", 'font-size:16px;line-height:20px;background-color:#395950;color:#fff', 'background-color:#fff;color:#000;line-height:20px;')

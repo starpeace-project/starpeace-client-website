@@ -1,4 +1,4 @@
-
+import _ from 'lodash';
 import * as PIXI from 'pixi.js'
 
 import Utils from '~/plugins/starpeace-client/utils/utils.coffee'

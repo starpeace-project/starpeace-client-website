@@ -12,7 +12,7 @@ export default class EffectLibrary extends Library
 
     @metadata_by_id = {}
 
-  has_metadata: () -> Object.keys(@metadata_by_id).length
+  has_metadata: () -> Object.keys(@metadata_by_id).length > 0
   has_assets: () -> @has_metadata() && @texture_cache.has_assets()
 
   load_effect_metadata: (effect_metadata) ->

@@ -28,6 +28,10 @@ if process.client
   options = new Options()
   translation_manager = new TranslationManager(null, null, options)
 
+definePageMeta({
+  layout: 'release'
+})
+
 export default
   components:
     'sp-header': Header
@@ -37,12 +41,12 @@ export default
     translation_manager: translation_manager
     options: options
 
-    release_notes_latest_html: process.env.RELEASE_NOTES_HTML
-    release_notes_archive_html: process.env.RELEASE_NOTES_ARCHIVE_HTML
+    release_notes_latest_html: @$config.public.RELEASE_NOTES_HTML
+    release_notes_archive_html: @$config.public.RELEASE_NOTES_ARCHIVE_HTML
 </script>
 
 <style lang='sass' scoped>
-@import '~bulma/sass/utilities/_all'
+@import 'bulma/sass/utilities/_all'
 
 .notes-container
   margin-top: 1rem

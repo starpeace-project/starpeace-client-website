@@ -1,5 +1,5 @@
-import moment from 'moment'
-import _ from 'lodash'
+import _ from 'lodash';
+import { DateTime } from 'luxon';
 
 import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
 
@@ -42,7 +42,7 @@ export default class SandboxBuildings
     @company_id_construction[parameters.companyId] = [] unless @company_id_construction[parameters.companyId]?
     @company_id_construction[parameters.companyId].push building
 
-    @sandbox.sandbox_events.building_events.push { createdAt:moment(), type:'construct', id:building.id, definitionId:building.definitionId, x:building.mapX, y:building.mapY }
+    @sandbox.sandbox_events.building_events.push { createdAt: DateTime.now(), type: 'construct', id: building.id, definitionId: building.definitionId, x: building.mapX, y: building.mapY }
 
     _.cloneDeep(building)
 
@@ -60,7 +60,7 @@ export default class SandboxBuildings
 
           if building.progress == 100
             building.stage = 0
-            @sandbox.sandbox_events.building_events.push { createdAt: moment(), type: 'stage', id: building.id, definitionId: building.definitionId, x: building.mapX, y: building.mapY }
+            @sandbox.sandbox_events.building_events.push { createdAt: DateTime.now(), type: 'stage', id: building.id, definitionId: building.definitionId, x: building.mapX, y: building.mapY }
             to_remove.push index
         else
           to_remove.push index

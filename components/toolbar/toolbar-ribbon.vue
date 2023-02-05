@@ -1,28 +1,28 @@
 <template lang='pug'>
 #toolbar-ribbon(v-show='is_ready' v-cloak='true' oncontextmenu='return false')
   .action-camera-in
-    a.button.is-fullwidth.is-fullheight.is-small.is-starpeace(@click.stop.prevent='client_state.camera.camera_zoom_in()')
+    button.button.is-fullwidth.is-fullheight.is-small.is-starpeace(@click.stop.prevent='client_state.camera.camera_zoom_in()')
       font-awesome-icon(:icon="['fas', 'plus']")
   .action-camera-out
-    a.button.is-fullwidth.is-fullheight.is-small.is-starpeace(@click.stop.prevent='client_state.camera.camera_zoom_out()')
+    button.button.is-fullwidth.is-fullheight.is-small.is-starpeace(@click.stop.prevent='client_state.camera.camera_zoom_out()')
       font-awesome-icon(:icon="['fas', 'minus']")
 
   .action-rotate-ccw
-    a.button.is-fullwidth.is-fullheight.is-small.is-starpeace
+    button.button.is-fullwidth.is-fullheight.is-small.is-starpeace
       font-awesome-icon(:icon="['fas', 'redo-alt']")
   .action-rotate-cw
-    a.button.is-fullwidth.is-fullheight.is-small.is-starpeace
+    button.button.is-fullwidth.is-fullheight.is-small.is-starpeace
       font-awesome-icon(:icon="['fas', 'undo-alt']")
 
   .action-overlays
-    a.button.is-fullwidth.is-fullheight.is-small.is-uppercase.is-starpeace.is-starpeace-light(:class="{ 'is-active': show_overlay }" @click.stop.prevent='toggle_overlay()')
+    button.button.is-fullwidth.is-fullheight.is-small.is-uppercase.is-starpeace.is-starpeace-light(:class="{ 'is-active': show_overlay }" @click.stop.prevent='toggle_overlay()')
       | {{translate('footer.ribbon.overlay')}}
   .action-zones
-    a.button.is-fullwidth.is-fullheight.is-small.is-uppercase.is-starpeace.is-starpeace-light(:class="{ 'is-active': show_zones }" @click.stop.prevent='toggle_zones')
+    button.button.is-fullwidth.is-fullheight.is-small.is-uppercase.is-starpeace.is-starpeace-light(:class="{ 'is-active': show_zones }" @click.stop.prevent='toggle_zones')
       | {{translate('footer.ribbon.city_zones')}}
 
   .action-inspect
-    a.button.is-fullwidth.is-fullheight.is-small.is-uppercase.is-starpeace.is-starpeace-light(:class="{ 'is-active': show_inspect }" :disabled='!can_inspect' @click.stop.prevent='toggle_inspect')
+    button.button.is-fullwidth.is-fullheight.is-small.is-uppercase.is-starpeace.is-starpeace-light(:class="{ 'is-active': show_inspect }" :disabled='!can_inspect' @click.stop.prevent='toggle_inspect')
       | {{translate('footer.ribbon.inspect')}}
 
   .details-ticker.primary
@@ -31,15 +31,15 @@
     | {{translate('footer.ribbon.hint.tycoon')}}
 
   .action-jump-back
-    a.button.is-fullwidth.is-fullheight.is-small.is-uppercase.is-starpeace(:disabled='!can_jump_back' @click.stop.prevent='jump_back')
+    button.button.is-fullwidth.is-fullheight.is-small.is-uppercase.is-starpeace(:disabled='!can_jump_back' @click.stop.prevent='jump_back')
       font-awesome-icon(:icon="['fas', 'chevron-left']")
       | {{translate('footer.ribbon.jump_back')}}
   .action-jump-next
-    a.button.is-fullwidth.is-fullheight.is-small.is-uppercase.is-starpeace(:disabled='!can_jump_next' @click.stop.prevent='jump_next')
+    button.button.is-fullwidth.is-fullheight.is-small.is-uppercase.is-starpeace(:disabled='!can_jump_next' @click.stop.prevent='jump_next')
       | {{translate('footer.ribbon.jump_next')}}
       font-awesome-icon(:icon="['fas', 'chevron-right']")
   .action-jump-town
-    a.button.is-fullwidth.is-fullheight.is-small.is-uppercase.is-starpeace(@click.stop.prevent='jump_town')
+    button.button.is-fullwidth.is-fullheight.is-small.is-uppercase.is-starpeace(@click.stop.prevent='jump_town')
       | {{translate('footer.ribbon.jump_town')}}
 
 </template>
@@ -84,7 +84,7 @@ export default
 </script>
 
 <style lang='sass' scoped>
-@import '~assets/stylesheets/starpeace-variables'
+@import '~/assets/stylesheets/starpeace-variables'
 
 .button
   &.is-starpeace

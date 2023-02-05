@@ -1,3 +1,4 @@
+import _ from 'lodash';
 
 import GameMap from '~/plugins/starpeace-client/map/game-map.coffee'
 
@@ -22,10 +23,10 @@ import SignManager from '~/plugins/starpeace-client/asset/sign-manager.coffee'
 import TranslationManager from '~/plugins/starpeace-client/language/translation-manager.coffee'
 import TycoonManager from '~/plugins/starpeace-client/tycoon/tycoon-manager.coffee'
 
+import PlanetEventClient from '~/plugins/starpeace-client/api/planet-event-client.coffee'
+
 import TreeMenuUtils from '~/plugins/starpeace-client/utils/tree-menu-utils.coffee'
-
 import Identity from '~/plugins/starpeace-client/identity/identity.coffee'
-
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 
 export default class Managers
@@ -68,9 +69,9 @@ export default class Managers
       return unless @client_state.player.planet_id? && @client_state.player.planet_visa_type?
 
       # FIXME: TODO: create/move to planet_manager
-      @api.register_visa(@client_state.identity.galaxy_id, @client_state.player.planet_id, @client_state.player.planet_visa_type)
+      @api.register_visa(@client_state.identity.galaxy_id, @client_state.player.planet_visa_type)
         .then (visa) =>
-          @client_state.player.set_planet_visa_id(visa.visaId)
+          @client_state.player.set_planet_visa_id(visa.id)
           @client_state.player.set_planet_corporation_id(visa.corporationId) if visa.corporationId?
         .catch (err) ->
           console.error err
@@ -78,6 +79,8 @@ export default class Managers
 
     @client_state.player.subscribe_planet_visa_id_listener =>
       return unless @client_state.player.planet_id? && @client_state.player.planet_visa_id?
+
+      @client_state.planet_event_client = new PlanetEventClient(@api, @client_state)
 
       @building_manager.queue_asset_load()
       @concrete_manager.queue_asset_load()
@@ -93,12 +96,11 @@ export default class Managers
       @asset_manager.load_queued()
 
       Promise.all([
-        @planets_manager.load_metadata_building(@client_state.player.planet_id),
-        @planets_manager.load_metadata_core(@client_state.player.planet_id),
-        @planets_manager.load_metadata_invention(@client_state.player.planet_id),
-        @planets_manager.load_events(@client_state.player.planet_id),
-        @planets_manager.load_towns(@client_state.player.planet_id),
-        @planets_manager.load_online_tycoons(@client_state.player.planet_id)
+        @planets_manager.load_metadata_building(),
+        @planets_manager.load_metadata_core(),
+        @planets_manager.load_metadata_invention(),
+        @planets_manager.load_towns(),
+        @planets_manager.load_online_tycoons()
       ]).catch (err) ->
         console.error err
         throw err
@@ -119,7 +121,6 @@ export default class Managers
           promises.push @building_manager.load_by_company(company.id)
           promises.push @invention_manager.load_by_company(company.id)
 
-        promises.push @corporation_manager.load_cashflow(@client_state.player.corporation_id)
         promises.push @bookmark_manager.load_by_corporation(@client_state.player.corporation_id)
         promises.push @mail_manager.load_by_corporation(@client_state.player.corporation_id)
 
@@ -132,7 +133,7 @@ export default class Managers
     @client_state.interface.subscribe_selected_ranking_type_id_listener =>
       return unless @client_state.player.planet_id? && @client_state.interface.selected_ranking_type_id?
       return if @client_state.core.planet_cache.rankings(@client_state.interface.selected_ranking_type_id)?
-      @planets_manager.load_rankings(@client_state.player.planet_id, @client_state.interface.selected_ranking_type_id)
+      @planets_manager.load_rankings(@client_state.interface.selected_ranking_type_id)
         .then => Logger.debug 'loaded rankings'
         .catch (err) =>
           console.error err
@@ -149,12 +150,12 @@ export default class Managers
 
 
 
-  initialize: () ->
+  initialize: (extract) ->
     planet_metadata = @client_state.current_planet_metadata()
     @client_state.planet.load_game_map(new GameMap(@building_manager, @road_manager, @overlay_manager,
         @client_state.core.land_library.metadata_for_planet_type(planet_metadata.planet_type),
         @client_state.core.map_library.texture_for_id(planet_metadata.map_id), @client_state.core.map_library.towns_texture_for_id(planet_metadata.map_id),
-        @client_state, @options))
+        extract, @client_state, @options))
 
     @building_manager.initialize()
     @invention_manager.initialize()

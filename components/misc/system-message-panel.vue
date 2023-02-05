@@ -2,7 +2,7 @@
 #system-message-container(v-if='visible')
   template(v-if='visible')
     div(v-for='message in messages' :key='message.id')
-      | {{message.time.format('hh:mm:ss A')}}: {{message.message}}
+      | {{message.time.toFormat('hh:mm:ss a')}}: {{message.message}}
 
 </template>
 
@@ -21,7 +21,7 @@ export default
 </script>
 
 <style lang='sass' scoped>
-@import '~assets/stylesheets/starpeace'
+@import '~/assets/stylesheets/starpeace'
 
 #system-message-container
   color: #00ff00

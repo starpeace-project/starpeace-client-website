@@ -1,10 +1,6 @@
-
-###
-global FPSMeter
-###
-
 import 'javascript-detect-element-resize'
-import * as PIXI from 'pixi.js'
+import { Application, Renderer as PixiRenderer } from 'pixi.js';
+import Stats from 'stats.js';
 
 import ChunkMap from '~/plugins/starpeace-client/map/chunk/chunk-map.coffee'
 
@@ -49,20 +45,23 @@ export default class Renderer
     @renderer_width = Math.ceil(render_container.offsetWidth)
     @renderer_height = Math.ceil(render_container.offsetHeight)
     @client_state.camera.resize(@renderer_width, @renderer_height)
-    @application = new PIXI.Application({
+
+    @application = new Application({
       width: @renderer_width
       height: @renderer_height
       backgroundColor : 0x000000
     })
 
-    @client_state.webgl_warning = !(@application.renderer instanceof PIXI.Renderer)
+    @client_state.webgl_warning = !(@application.renderer instanceof PixiRenderer)
 
     render_container.appendChild(@application.view)
 
     @input_handler = new InputHandler(@managers, @, render_container, @client_state)
 
     fps_el = document?.getElementById('fps-container')
-    @fps_meter = new FPSMeter(fps_el, { theme: 'colorful' }) if fps_el?
+    if fps_el?
+      @fps_meter = new Stats()
+      fps_el.appendChild(@fps_meter.dom)
 
     addResizeListener(render_container, => @handle_resize())
 
@@ -81,11 +80,12 @@ export default class Renderer
   tick: () ->
     return unless @client_state.renderer_initialized
 
-    @fps_meter.tickStart() if @fps_meter?
+    @fps_meter.begin() if @fps_meter?
 
     @update_offset(document?.getElementById('render-container')) unless @offset?
 
+    @client_state.planet_event_client.updateViewTarget() if @layers?.has_dirty_view()
     @layers.refresh() if @layers?.should_refresh()
     @layers?.refresh_planes()
 
-    @fps_meter.tick() if @fps_meter?
+    @fps_meter.end() if @fps_meter?

@@ -29,7 +29,7 @@ export default
 </script>
 
 <style lang='sass' scoped>
-@import '~assets/stylesheets/starpeace'
+@import '~/assets/stylesheets/starpeace'
 
 #webgl-warning-container
   align-items: center

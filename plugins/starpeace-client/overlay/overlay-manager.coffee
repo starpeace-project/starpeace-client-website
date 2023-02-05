@@ -15,15 +15,15 @@ export default class OverlayManager
     @ajax_state.lock('assets.overlay_metadata', 'ALL')
     @asset_manager.queue('metadata.overlay', './overlay.metadata.json', (resource) =>
       overlay_metadata = []
-      for key,json of (resource.data?.overlays || {})
+      for key,json of (resource.overlays || {})
         # FIXME: TODO: add ID to json, change from map to array
         json.id = key
         overlay_metadata.push MetadataOverlay.from_json(json)
 
       @client_state.core.overlay_library.load_overlay_metadata(overlay_metadata)
-      @client_state.core.overlay_library.load_required_atlases(resource.data?.atlas)
+      @client_state.core.overlay_library.load_required_atlases(resource.atlas)
 
-      @asset_manager.queue_and_load_atlases((resource.data?.atlas || []), (atlas_path, atlas) =>
+      @asset_manager.queue_and_load_atlases((resource.atlas || []), (atlas_path, atlas) =>
         # mip-mapping has bigger impact without edge aliasing
         # TODO: why isn't this, or PIXI.settings.MIPMAP_TEXTURES, working?
         atlas.spritesheet.baseTexture.mipmap = false if atlas.spritesheet?.baseTexture?.mipmap?
@@ -34,16 +34,15 @@ export default class OverlayManager
     )
 
   load_chunk: (type, chunk_x, chunk_y) ->
-    planet_id = @client_state.player.planet_id
-    throw Error() if !@client_state.has_session() || !planet_id? || !type? || !chunk_x? || !chunk_y?
+    throw Error() if !@client_state.has_session() || !type? || !chunk_x? || !chunk_y?
 
     Logger.debug("attempting to load overlay chunk for #{type} at #{chunk_x}x#{chunk_y}")
     return new Array(ChunkMap.CHUNK_WIDTH, ChunkMap.CHUNK_HEIGHT) if type == 'NONE'
     if type == 'TOWNS'
       @deserialize_towns_chunk(chunk_x, chunk_y)
     else
-      await @ajax_state.locked('planet_overlays', "#{planet_id}:#{type}x#{chunk_x}x#{chunk_y}", =>
-        overlay_data = await @api.overlay_data_for_planet(planet_id, type, chunk_x, chunk_y)
+      await @ajax_state.locked('planet_overlays', "#{type}x#{chunk_x}x#{chunk_y}", =>
+        overlay_data = await @api.overlay_data_for_planet(type, chunk_x, chunk_y)
         return new Array(ChunkMap.CHUNK_WIDTH, ChunkMap.CHUNK_HEIGHT) unless overlay_data?
 
         if type == 'ZONES'

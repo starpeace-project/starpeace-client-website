@@ -1,5 +1,5 @@
 
-import ChunkInfo from '~/plugins/starpeace-client/map/chunk/chunk-info.coffee'
+import ChunkInfo from '~/plugins/starpeace-client/map/chunk/chunk-info'
 
 CHUNK_WIDTH = 20
 CHUNK_HEIGHT = 20

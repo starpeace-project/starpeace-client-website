@@ -1,18 +1,21 @@
 const fs = require('fs')
-const path = require('path')
-const moment = require('moment')
-require('moment-timezone')
 const marked = require('marked')
-const webpack = require('webpack')
-const node_externals = require('webpack-node-externals')
-const pjson = require('./package.json')
+const pjson = require('./package.json');
 
-const is_development = process.env.NODE_ENV === 'development'
+import coffee from '@bkuri/rollup-plugin-coffeescript';
 
-const client_version = 'v' + pjson.version + '-' + moment().tz('America/Los_Angeles').format('YYYY-MM-DD');
+
+const is_development = process.env.NODE_ENV === 'development';
+
+const now = new Date();
+const year = now.toLocaleString('en-US', { timeZone: 'America/Los_Angeles', year: 'numeric'});
+const month = now.toLocaleString('en-US', { timeZone: 'America/Los_Angeles', month: '2-digit'});
+const day = now.toLocaleString('en-US', { timeZone: 'America/Los_Angeles', day: '2-digit'});
+const nowDate = `${year}-${month}-${day}`;
+const client_version = 'v' + pjson.version + '-' + nowDate;
 
 var render_and_convert_markdown = function(markdown) {
-  var release_notes_html = marked(markdown);
+  var release_notes_html = marked.marked.parse(markdown);
   release_notes_html = release_notes_html.replace(new RegExp(/\<li\>/, 'g'), "<li class='columns is-mobile'>");
   release_notes_html = release_notes_html.replace(new RegExp(/\<\/li\>/, 'g'), "</span></li>");
   release_notes_html = release_notes_html.replace(new RegExp(/\[done\]/, 'g'), "<span class='column is-2'><span class='tag is-link'>done</span></span><span class='column is-10'>");
@@ -24,27 +27,40 @@ var render_and_convert_markdown = function(markdown) {
 var release_notes_html = render_and_convert_markdown(fs.readFileSync('./RELEASE.md').toString());
 var release_notes_archive_html = render_and_convert_markdown(fs.readFileSync('./RELEASE-archive.md').toString());
 
-module.exports = {
+export default defineNuxtConfig({
   css: [
-    { src: '~/assets/stylesheets/starpeace-bulma.sass', lang: 'sass' },
-    { src: '~/assets/stylesheets/starpeace-flags.sass', lang: 'sass' },
-    { src: '~/assets/stylesheets/starpeace-vue.sass', lang: 'sass' },
-    { src: '~/assets/stylesheets/starpeace.sass', lang: 'sass' }
+    'bulma',
+    '@/assets/stylesheets/starpeace-tooltip.sass',
+    '@/assets/stylesheets/starpeace-bulma.sass',
+    '@/assets/stylesheets/starpeace-flags.sass',
+    '@/assets/stylesheets/starpeace-vue.sass',
+    '@/assets/stylesheets/starpeace.sass'
   ],
-  head: {
-    title: 'STARPEACE',
-    meta: [
-      { charset: 'utf-8' },
-      { name: 'google', content: "notranslate" },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: 'STARPEACE: a real-time city-building economic simulation and cooperative multiplayer strategy game' }
-    ],
-    link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico', media: '(prefers-color-scheme:no-preference)'},
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon-dark.ico', media: '(prefers-color-scheme:dark)' },
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon-light.ico', media: '(prefers-color-scheme:light)' },
-      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Open+Sans|Varela+Round' }
-    ]
+  app: {
+    buildAssetsDir: '/resources/',
+    head: {
+      title: 'STARPEACE',
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'google', content: 'notranslate' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { hid: 'description', name: 'description', content: 'STARPEACE: a real-time city-building economic simulation and cooperative multiplayer strategy game' }
+      ],
+      link: [
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico', media: '(prefers-color-scheme:no-preference)'},
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon-dark.ico', media: '(prefers-color-scheme:dark)' },
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon-light.ico', media: '(prefers-color-scheme:light)' },
+        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Open+Sans|Varela+Round' }
+      ]
+    }
+  },
+  runtimeConfig: {
+    public: {
+      sendAnalytics: !is_development,
+      CLIENT_VERSION: client_version,
+      RELEASE_NOTES_HTML: release_notes_html,
+      RELEASE_NOTES_ARCHIVE_HTML: release_notes_archive_html
+    }
   },
   render: {
     resourceHints: false
@@ -52,55 +68,23 @@ module.exports = {
   generate: {
     fallback: false
   },
-  env: {
-    CLIENT_VERSION: client_version,
-    RELEASE_NOTES_HTML: release_notes_html,
-    RELEASE_NOTES_ARCHIVE_HTML: release_notes_archive_html
-  },
   telemetry: false,
-  build: {
-    // analyze: true,
-    publicPath: '/assets/',
-    extend (config, { isDev, isClient, isServer }) {
-      config.module.rules.push({
-        test: /\.coffee$/,
-        use: 'coffee-loader',
-        exclude: /(node_modules)/
-      });
-      config.module.rules.push({
-        test: /RELEASE.md$/,
-        use: [ 'html-loader', 'markdown-loader' ],
-        exclude: /(node_modules)/
-      });
-
-      if (!isClient) {
-        if (!fs.existsSync('.nuxt/dist')) {
-          fs.mkdirSync('.nuxt/dist');
-        }
-        if (!fs.existsSync('.nuxt/dist/client')) {
-          fs.mkdirSync('.nuxt/dist/client');
-        }
-        fs.writeFileSync('.nuxt/dist/client/client-version.json', "{\"version\":\"" + client_version + "\"}");
-      }
-    }
+  static: {
+    prefix: false
   },
-  buildModules: [
-    '@nuxtjs/moment'
+  build: {
+    standalone: true
+  },
+  buildModules: ['@nuxt/typescript-build'],
+  extensions: [
+    '.coffee'
   ],
-  modules: [
-    ['@nuxtjs/google-analytics', { id: 'UA-120729341-2', debug: { sendHitTask: !is_development } }]
-  ],
-  plugins: [
-    { src: '~/plugins/favicon-switcher', ssr: false },
-    { src: '~/plugins/flaticon', ssr: false },
-    { src: '~/plugins/fpsmeter', ssr: false },
-    { src: '~/plugins/font-awesome', ssr: false },
-    { src: '~/plugins/google-analytics', ssr: false },
-    { src: '~/plugins/pixi/pixi', ssr: false },
-    { src: '~/plugins/starpeace-client-application', ssr: false },
-    { src: '~/plugins/vue2viz', ssr: false }
-  ],
-  moment: {
-    timezone: true
+  vite: {
+    extensions: [
+      '.coffee'
+    ],
+    plugins: [
+      coffee()
+    ]
   }
-}
+});

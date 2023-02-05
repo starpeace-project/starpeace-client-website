@@ -1,5 +1,5 @@
-
-import moment from 'moment'
+import _ from 'lodash';
+import { DateTime }  from 'luxon';
 
 import TimeUtils from '~/plugins/starpeace-client/utils/time-utils.coffee'
 
@@ -24,8 +24,8 @@ export default class MutexObject
 
   update: (value) ->
     @value = value
-    @as_of = moment()
+    @as_of = DateTime.now()
 
 
   @within_minutes: (time, minutes) ->
-    time? && moment().subtract(minutes, 'minutes').isBefore(time)
+    time? && DateTime.now() < time.plus({ minutes: minutes })

@@ -9,7 +9,6 @@
 
 <script lang='coffee'>
 import interact from 'interactjs'
-import moment from 'moment'
 
 MIN_MINI_MAP_WIDTH = 300
 MIN_MINI_MAP_HEIGHT = 200
@@ -57,7 +56,7 @@ export default
 </script>
 
 <style lang='sass' scoped>
-@import '~assets/stylesheets/starpeace-variables'
+@import '~/assets/stylesheets/starpeace-variables'
 
 #mini-map-container
   background-color: #000

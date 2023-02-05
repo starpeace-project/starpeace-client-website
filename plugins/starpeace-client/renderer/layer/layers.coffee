@@ -1,3 +1,4 @@
+import { DateTime } from 'luxon'
 
 import TileItemCache from '~/plugins/starpeace-client/renderer/item/tile-item-cache.coffee'
 import LayerManager from '~/plugins/starpeace-client/renderer/layer/layer-manager.coffee'
@@ -23,7 +24,7 @@ export default class Layers
         flight_plan = @plane_manager.random_flight_plan(@client_state.camera)
         sprite = @tile_item_cache.plane_sprite_info_for(flight_plan)
         return unless sprite?
-        @client_state.plane_sprites[@client_state.plane_sprites.length] = sprite # need to be careful to avoid Vue state wrapper
+        @client_state.plane_sprites[@client_state.plane_sprites.length] = sprite
 
     , PLANE_CHECK_SPEED)
 
@@ -36,8 +37,8 @@ export default class Layers
   remove_layers: (stage) -> @layer_manager.remove_from_stage(stage)
   add_layers: (stage) -> @layer_manager.add_to_stage(stage)
 
-  should_refresh: () ->
-    @last_view_offset_x != @client_state.camera.view_offset_x || @last_view_offset_y != @client_state.camera.view_offset_y ||
+  has_dirty_view: () -> @last_view_offset_x != @client_state.camera.view_offset_x || @last_view_offset_y != @client_state.camera.view_offset_y
+  should_refresh: () -> @has_dirty_view() ||
       @last_construction_building_id != @client_state.interface.construction_building_id || @last_construction_building_x != @client_state.interface.construction_building_map_x ||
       @last_construction_building_y != @client_state.interface.construction_building_map_y || @tile_item_cache.is_dirty || @tile_item_cache.should_clear_cache()
 
@@ -88,18 +89,38 @@ export default class Layers
 
     render_state = {}
 
-    construction_x = if @client_state.interface.construction_building_id? then @client_state.interface.construction_building_map_x else -1
-    construction_y = if @client_state.interface.construction_building_id? then @client_state.interface.construction_building_map_y else -1
+    now = DateTime.now()
+    render_buildings = @options.option('renderer.buildings')
+    render_trees = @options.option('renderer.trees')
+    show_zones = @client_state.interface.show_zones
+    show_overlay = @client_state.interface.show_overlay
+    current_overlay = @client_state.interface.current_overlay
+    selected_building_id = @client_state.interface.selected_building_id
+    selected_corporation_id = if selected_building_id? then @client_state.selected_building()?.corporation_id
+
+    current_season = @client_state.planet.current_season
+    game_map = @client_state.planet.game_map
+
+    construction_building_id = @client_state.interface.construction_building_id
+    can_construct = @client_state.can_construct_building()
+
+    construction_x = if construction_building_id? then @client_state.interface.construction_building_map_x else -1
+    construction_y = if construction_building_id? then @client_state.interface.construction_building_map_y else -1
+    construction_width = @client_state.interface.construction_building_width
+    construction_height = @client_state.interface.construction_building_height
 
     x = i_start
     while x < i_max
       j = j_start - n
       while j < (j_start + m)
-        if j > 0 && j < @client_state.planet.game_map.height && x > 0 && x < @client_state.planet.game_map.width
-          tile_item = @tile_item_cache.cache_item(x, j)
-          construction_item = if @client_state.interface.construction_building_id? && construction_x == x && construction_y == j then @tile_item_cache.building_construction_sprite_info_for(@client_state.interface.construction_building_id, @client_state.can_construct_building()) else null
-          within_construction = construction_x >= 0 && x > construction_x - @client_state.interface.construction_building_width && x <= construction_x &&
-              construction_y >= 0 && j > construction_y - @client_state.interface.construction_building_height && j <= construction_y
+        if j > 0 && j < game_map.height && x > 0 && x < game_map.width
+          tile_cache_index = j * game_map.width + x
+          tile_item = @tile_item_cache.tile_items[tile_cache_index]
+          if !tile_item
+            tile_info = game_map.info_for_tile(now, x, j, render_trees, show_zones, show_overlay, current_overlay)
+            tile_item = @tile_item_cache.cache_item(tile_info, tile_cache_index, x, j, current_season, render_buildings, selected_building_id, selected_corporation_id)
+          construction_item = if construction_building_id? && construction_x == x && construction_y == j then @tile_item_cache.building_construction_sprite_info_for(construction_building_id, can_construct) else null
+          within_construction = construction_x >= 0 && x > construction_x - construction_width && x <= construction_x && construction_y >= 0 && j > construction_y - construction_height && j <= construction_y
           @layer_manager.render_tile_item(render_state, tile_item, construction_item, within_construction, viewport.iso_to_canvas(x, j, view_center), viewport) if tile_item?
 
         j += 1
@@ -124,6 +145,7 @@ export default class Layers
           m -= 1
 
       x += 1
+
 
     @layer_manager.clear_cache_sprites(render_state)
     @last_view_offset_x = @client_state.camera.view_offset_x

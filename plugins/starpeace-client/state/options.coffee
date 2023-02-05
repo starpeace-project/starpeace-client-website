@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import Vue from 'vue'
+import { reactive } from 'vue';
 
 import EventListener from '~/plugins/starpeace-client/state/event-listener.coffee'
 import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
@@ -57,9 +57,9 @@ export default class Options
     @galaxy_jwt = null
     @galaxy_token = null
 
+  initialize: () ->
     @load_authorization_state()
     @load_state()
-
 
   subscribe_galaxies_listener: (listener_callback) -> @event_listener.subscribe('options.galaxies', listener_callback)
   notify_galaxies_listeners: () -> @event_listener.notify_listeners('options.galaxies')
@@ -91,7 +91,7 @@ export default class Options
               api_url: galaxy[2]
               api_port: galaxy[3]
             }
-    Vue.observable(galaxies_by_id)
+    reactive(galaxies_by_id)
 
   save_galaxies_to_storage: () ->
     galaxies = []
@@ -104,8 +104,8 @@ export default class Options
       Logger.warn("galaxy id in use, unable to update existing")
     else
       galaxy = @galaxies_by_id[old_galaxy_id]
-      Vue.delete(@galaxies_by_id, old_galaxy_id)
-      Vue.set(@galaxies_by_id, new_galaxy_id, galaxy)
+      delete @galaxies_by_id[old_galaxy_id]
+      @galaxies_by_id[new_galaxy_id] = galaxy
     @save_galaxies_to_storage()
 
   add_galaxy: (api_protocol, api_url, api_port) ->
@@ -115,11 +115,11 @@ export default class Options
       api_url: api_url
       api_port: api_port
     }
-    Vue.set(@galaxies_by_id, galaxy.id, galaxy)
+    @galaxies_by_id[galaxy.id] = galaxy
     @save_galaxies_to_storage()
     galaxy
   remove_galaxy: (id) ->
-    Vue.delete(@galaxies_by_id, id)
+    delete @galaxies_by_id[id]
     @save_galaxies_to_storage()
 
 

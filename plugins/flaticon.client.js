@@ -1,3 +1,4 @@
+export default defineNuxtPlugin((nuxtApp) => {
 /*!
  * Flaticon Basic License - https://www.flaticon.com/
  *
@@ -14,3 +15,4 @@
  * - https://www.flaticon.com/authors/cursor-creative
  *
  */
+});

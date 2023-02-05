@@ -1,5 +1,6 @@
-
-import moment from 'moment'
+import _ from 'lodash';
+import { DateTime }  from 'luxon';
+import { ref } from 'vue';
 
 import EventListener from '~/plugins/starpeace-client/state/event-listener.coffee'
 
@@ -40,8 +41,9 @@ export default class ClientState
     @menu = new MenuState()
     @music = new MusicState()
 
-    @reset_full_state()
+    @workflow_status = null
 
+  configureListeners: () ->
     @core.corporation_cache.subscribe_corporation_metadata_listener => @update_state()
     @core.tycoon_cache.subscribe_tycoon_metadata_listener => @update_state()
 
@@ -99,6 +101,8 @@ export default class ClientState
 
   reset_planet_state: () ->
     @initialized = false
+    @planet_event_client.disconnect() if @planet_event_client?
+    @planet_event_client = null
 
     @recent_system_messages = []
     @older_system_messages = []
@@ -155,7 +159,7 @@ export default class ClientState
       @ajax_state.invalid_session_counter += 1
     else
       @ajax_state.invalid_session_counter = 1
-    @ajax_state.invalid_session_as_of = moment()
+    @ajax_state.invalid_session_as_of = DateTime.now()
 
     if @ajax_state.invalid_session_counter >= MAX_FAILED_AUTH_ERRORS && !@session_expired_warning
       @session_expired_warning = true
@@ -165,9 +169,13 @@ export default class ClientState
       @ajax_state.invalid_connection_counter += 1
     else
       @ajax_state.invalid_connection_counter = 1
-    @ajax_state.invalid_connection_as_of = moment()
+    @ajax_state.invalid_connection_as_of = DateTime.now()
 
     if @ajax_state.invalid_connection_counter >= MAX_FAILED_CONNECTION_ERRORS && !@server_connection_warning
+      @server_connection_warning = true
+      setTimeout (=> @reset_full_state()), 5000
+  handle_connection_disconnect: () ->
+    unless @server_connection_warning
       @server_connection_warning = true
       setTimeout (=> @reset_full_state()), 5000
 
@@ -190,11 +198,11 @@ export default class ClientState
     console.error(err) if err?
     @add_system_message(message)
   add_system_message: (message) ->
-    @recent_system_messages.unshift { time: moment(), message }
+    @recent_system_messages.unshift { time: DateTime.now(), message }
     @system_message_callback = setTimeout((=> @poll_system_messages()), 1000) unless @system_message_callback
   poll_system_messages: () ->
-    cutoff = moment().subtract(5, 'seconds')
-    while @recent_system_messages.length && @recent_system_messages[@recent_system_messages.length - 1].time.isBefore(cutoff)
+    cutoff = DateTime.now().plus({ seconds: -5 })
+    while @recent_system_messages.length && @recent_system_messages[@recent_system_messages.length - 1].time < cutoff
       @older_system_messages.unshift @recent_system_messages.splice(@recent_system_messages.length - 1, 1)[0]
     @system_message_callback = if @recent_system_messages.length then setTimeout((=> @poll_system_messages()), 1000) else null
 

@@ -25,7 +25,7 @@
           img.starpeace-logo
 
         template(v-else-if='results.length')
-          toggle-list-item(
+          menu-shared-toggle-list-menu-item(
             v-for='result in results'
             :key='result.corporationId'
             :client-state='client_state'
@@ -34,7 +34,7 @@
             :details-callback='load_corporation'
             v-slot:default='slotProps'
           )
-            menu-panel-corporation(
+            menu-shared-menu-panel-corporation(
               :hide-tycoon="mode=='TYCOONS'"
               :hide-corporation="mode=='CORPORATIONS'"
               :managers='managers'
@@ -61,7 +61,7 @@
             span.icon.is-left
               font-awesome-icon(:icon="['fas', 'search']")
           p.control
-            a.button.is-starpeace(@click.stop.prevent='query_search' :disabled='!can_query') {{translate('ui.menu.tycoon_search.action.search')}}
+            button.button.is-starpeace(@click.stop.prevent='query_search' :disabled='!can_query') {{translate('ui.menu.tycoon_search.action.search')}}
 
         .query-index.is-size-4
           a(v-for='n in 26' @click.stop.prevent='query_prefix(n)') {{String.fromCharCode(65 + n - 1)}}
@@ -69,15 +69,7 @@
 </template>
 
 <script lang='coffee'>
-import ToggleListItem from '~/components/menu/shared/toggle-list-menu/item.vue'
-import MenuPanelCorporation from '~/components/menu/shared/menu-panel/corporation.vue'
-
 export default
-  components: {
-    ToggleListItem
-    MenuPanelCorporation
-  }
-
   props:
     managers: Object
     ajax_state: Object
@@ -127,10 +119,10 @@ export default
         @querying = true
 
         if @mode == 'TYCOONS'
-          results = await @managers.planets_manager.search_tycoons(@client_state.player.planet_id, query, queryPrefix)
+          results = await @managers.planets_manager.search_tycoons(query, queryPrefix)
           @results = results if query == @query
         else
-          results = await @managers.planets_manager.search_corporations(@client_state.player.planet_id, query, queryPrefix)
+          results = await @managers.planets_manager.search_corporations(query, queryPrefix)
           @results = results if query == @query
 
         @querying = false
@@ -143,7 +135,7 @@ export default
 </script>
 
 <style lang='sass' scoped>
-@import '~assets/stylesheets/starpeace-menus'
+@import '~/assets/stylesheets/starpeace-menus'
 
 .sp-menu
   grid-column: start-right / end-right

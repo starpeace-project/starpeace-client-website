@@ -1,34 +1,17 @@
 <template lang='pug'>
 #application-container(:class='application_css_class', v-cloak=true)
-  sp-header(:managers='managers', :client_state='client_state')
-  sp-loading-card(:client_state='client_state' within-grid=true)
-  sp-loading-modal(:client_state='client_state' within-grid=true)
-  sp-webgl-warning-card(:client_state='client_state')
-  sp-workflow(:client='client', :client_state='client_state')
-  sp-body(:client_state='client_state')
+  page-layout-header(:managers='managers', :client_state='client_state')
+  misc-card-loading(:client_state='client_state' within-grid=true)
+  misc-modal-loading(:client_state='client_state' within-grid=true)
+  misc-card-webgl-warning(:client_state='client_state')
+  workflow(:client='client', :client_state='client_state')
+  page-layout-render-container(:client_state='client_state')
 </template>
 
 <script lang='coffee'>
-import Header from '~/components/page-layout/header.vue'
-import RenderContainer from '~/components/page-layout/render-container.vue'
-
-import LoadingCard from '~/components/misc/card-loading.vue'
-import LoadingModal from '~/components/misc/modal-loading.vue'
-import WebGLWarningCard from '~/components/misc/card-webgl-warning.vue'
-
-import Workflow from '~/components/workflow/workflow.vue'
-
 export default
   props:
     client: Object
-
-  components:
-    'sp-header': Header
-    'sp-loading-card': LoadingCard
-    'sp-loading-modal': LoadingModal
-    'sp-webgl-warning-card': WebGLWarningCard
-    'sp-workflow': Workflow
-    'sp-body': RenderContainer
 
   mounted: ->
     @client.options?.subscribe_options_listener =>
@@ -47,7 +30,7 @@ export default
 </script>
 
 <style lang='sass' scoped>
-@import '~bulma/sass/utilities/_all'
+@import 'bulma/sass/utilities/_all'
 
 #application-container
   display: grid

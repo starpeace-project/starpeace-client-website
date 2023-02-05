@@ -14,10 +14,10 @@
           .field-body
             .field
               .control
-                a.button.is-medium.is-fullwidth.is-starpeace(:class="protocol == 'http' ? 'is-active' : ''", v-on:click.stop.prevent="protocol = 'http'") HTTP
+                button.button.is-medium.is-fullwidth.is-starpeace(:class="protocol == 'http' ? 'is-active' : ''", v-on:click.stop.prevent="protocol = 'http'") HTTP
             .field
               .control
-                a.button.is-medium.is-fullwidth.is-starpeace(:class="protocol == 'https' ? 'is-active' : ''", v-on:click.stop.prevent="protocol = 'https'") HTTPS
+                button.button.is-medium.is-fullwidth.is-starpeace(:class="protocol == 'https' ? 'is-active' : ''", v-on:click.stop.prevent="protocol = 'https'") HTTPS
 
         .field.is-horizontal
           .field-label.is-normal
@@ -37,9 +37,9 @@
 
       .level.is-mobile.galaxy-actions
         .level-item
-          a.button.is-medium.is-fullwidth.is-starpeace.is-square(v-on:click.stop.prevent="close_sub_menu") {{translate('misc.action.cancel')}}
+          button.button.is-medium.is-fullwidth.is-starpeace.is-square(v-on:click.stop.prevent="close_sub_menu") {{translate('misc.action.cancel')}}
         .level-item
-          a.button.is-medium.is-fullwidth.is-starpeace.is-square(v-on:click.stop.prevent="add_galaxy", :disabled='!has_form_data') {{translate('misc.action.add')}}
+          button.button.is-medium.is-fullwidth.is-starpeace.is-square(v-on:click.stop.prevent="add_galaxy", :disabled='!has_form_data') {{translate('misc.action.add')}}
 
 
 </template>
@@ -91,8 +91,8 @@ export default
 </script>
 
 <style lang='sass' scoped>
-@import '~bulma/sass/utilities/_all'
-@import '~assets/stylesheets/starpeace-variables'
+@import 'bulma/sass/utilities/_all'
+@import '~/assets/stylesheets/starpeace-variables'
 
 .remove-galaxy-dialog
   position: fixed

@@ -6,16 +6,11 @@
   .column.is-paddingless.field-body
     .field.is-narrow
       .control.toggle-field
-        toggle-option(:value='value' @toggle="$emit('toggle')")
+        misc-toggle-option(:value='value' @toggle="$emit('toggle')")
 </template>
 
 <script lang='coffee'>
-import ToggleOption from '~/components/misc/toggle-option.vue'
-
 export default
-  components:
-    'toggle-option': ToggleOption
-
   props:
     label: String
     value: Boolean

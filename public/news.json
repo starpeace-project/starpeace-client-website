@@ -1,6 +1,17 @@
 {
   "news":[
     {
+      "date": "2023-02-05",
+      "title": "Security and Platform Upgrades, Multiverse progress",
+      "body": "Progress has resumed with a round of security and platform upgrades, and some major re-organizations to work with latest Multiverse backend server updates. Multiverse server was migrated to Typescript and initial end-to-end core platform implemented, though much work remains to adding game and simulation logic.\n\nAfter initial simulation logic is added, we're hoping to expand multiplayer and network testing in 2023; join Discord for more updates",
+      "items": [
+        "website platform nuxt upgrades",
+        "began conversion to typescript",
+        "added real-time network browser-server socket communication",
+        "progress Multiverse server platform, threading and persistence"
+      ]
+    },
+    {
       "date": "2021-01-03",
       "title": "Happy New Year!",
       "body": "Big round of updates adding several new menus, with basic API integrations and Multiverse logic. Rendering improvements to support building signs and interface changes to support inspect menus, including initial versions for townhalls and trade centers.",

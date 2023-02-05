@@ -1,5 +1,4 @@
 import _ from 'lodash'
-import moment from 'moment'
 
 import CommerceDetails from '~/plugins/starpeace-client/planet/details/commerce-details.coffee'
 import EmploymentDetails from '~/plugins/starpeace-client/planet/details/employment-details.coffee'

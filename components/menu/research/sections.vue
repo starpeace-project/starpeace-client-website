@@ -6,11 +6,11 @@
       span.icon.is-left
         font-awesome-icon(:icon="['fas', 'search-location']")
 
-  filter-industry-categories(:managers='managers' :client_state='client_state')
+  misc-filter-industry-categories(:managers='managers' :client_state='client_state')
 
   aside.sp-menu.sp-scrollbar
     p.sp-section(v-for='item in sections')
-      a(v-on:click.stop.prevent="item.expanded = !item.expanded")
+      a(@click.stop.prevent="item.expanded = !item.expanded")
         span(v-show="item.children.length && !item.expanded")
           font-awesome-icon(:icon="['fas', 'plus-square']")
         span(v-show="item.children.length && item.expanded")
@@ -21,22 +21,16 @@
 
       ul.sp-section-items(v-show="item.children.length && item.expanded")
         li(v-for="child in item.children")
-          a.is-menu-item(v-on:click.stop.prevent="select_inventions(item.industry_category_id, child.industry_type_id)", :class="section_item_class(item, child)")
-            industry-type-icon(:industry_type="child.industry_type_id", :class="['sp-section-item-image', 'sp-indusry-icon']", :default_research='true')
+          a.is-menu-item(@click.stop.prevent="select_inventions(item.industry_category_id, child.industry_type_id)", :class="section_item_class(item, child)")
+            misc-industry-type-icon(:industry_type="child.industry_type_id", :class="['sp-section-item-image', 'sp-indusry-icon']", :default_research='true')
             span.sp-section-item-label {{child.name}}
 
 </template>
 
 <script lang='coffee'>
-import FilterIndustryCategories from '~/components/misc/filter-industry-categories.vue'
-import IndustryTypeIcon from '~/components/misc/industry-type-icon.vue'
+import _ from 'lodash'
 
 export default
-  components: {
-    FilterIndustryCategories
-    IndustryTypeIcon
-  }
-
   props:
     managers: Object
     client_state: Object

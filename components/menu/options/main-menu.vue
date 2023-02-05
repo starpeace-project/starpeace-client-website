@@ -27,7 +27,7 @@
             .column.is-paddingless.field-body
               .field.is-narrow
                 .control
-                  language-select(:language_code='language_code', v-on:changed='change_language')
+                  misc-language-select(:language_code='language_code', v-on:changed='change_language')
 
         .column
           .field.is-horizontal
@@ -59,21 +59,14 @@
 
     footer.card-footer
       .card-footer-item.reset-item
-        a.button.is-primary.is-medium.is-outlined(v-on:click.stop.prevent='reset_options', :disabled='!can_reset') {{translate('ui.menu.options.actions.reset')}}
+        button.button.is-primary.is-medium.is-outlined(v-on:click.stop.prevent='reset_options', :disabled='!can_reset') {{translate('ui.menu.options.actions.reset')}}
       .card-footer-item.save-item
-        a.button.is-primary.is-medium(v-on:click.stop.prevent='save_options', :disabled='!is_dirty') {{translate('ui.menu.options.actions.save')}}
+        button.button.is-primary.is-medium(v-on:click.stop.prevent='save_options', :disabled='!is_dirty') {{translate('ui.menu.options.actions.save')}}
 
 </template>
 
 <script lang='coffee'>
-import LanguageSelect from '~/components/misc/language-select.vue'
-import MenuOption from '~/components/menu/options/menu-option.vue'
-
 export default
-  components:
-    'language-select': LanguageSelect
-    'menu-option': MenuOption
-
   props:
     managers: Object
     client_state: Object

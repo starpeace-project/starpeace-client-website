@@ -15,8 +15,8 @@
     .column.is-6
       a.button.is-medium.is-fullwidth.is-starpeace.is-square(:class="universe_mode == 'multiverse' ? 'is-active' : ''", v-on:click.stop.prevent="select_universe('multiverse')") {{translate('ui.workflow.universe.multiverse.label')}}
 
-  universe-starpeace(v-show="universe_mode == 'starpeace'", :managers='managers', :client_state='client_state')
-  universe-multiverse(v-show="universe_mode == 'multiverse'", :managers='managers', :ajax_state='ajax_state', :client_state='client_state')
+  workflow-universe-starpeace(v-show="universe_mode == 'starpeace'", :managers='managers', :client_state='client_state')
+  workflow-universe-multiverse(v-show="universe_mode == 'multiverse'", :managers='managers', :ajax_state='ajax_state', :client_state='client_state')
 
   .news-container
     .news-header
@@ -40,21 +40,14 @@
 </template>
 
 <script lang='coffee'>
-import WorkflowUniverseMultiverse from '~/components/workflow/workflow-universe-multiverse.vue'
-import WorkflowUniverseStarpeace from '~/components/workflow/workflow-universe-starpeace.vue'
-
 export default
-  components:
-    'universe-multiverse': WorkflowUniverseMultiverse
-    'universe-starpeace': WorkflowUniverseStarpeace
-
   props:
     managers: Object
     ajax_state: Object
     client_state: Object
 
   data: ->
-    client_version: process.env.CLIENT_VERSION
+    client_version: @$config.public.CLIENT_VERSION
     news: []
     universe_mode: 'multiverse'
 
@@ -74,8 +67,8 @@ export default
 </script>
 
 <style lang='sass' scoped>
-@import '~bulma/sass/utilities/_all'
-@import '~assets/stylesheets/starpeace-variables'
+@import 'bulma/sass/utilities/_all'
+@import '~/assets/stylesheets/starpeace-variables'
 
 .identity-content
   height: 100%

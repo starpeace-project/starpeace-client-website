@@ -70,5 +70,45 @@
     "FR": "Créer Société",
     "IT": "Costituire Societaria",
     "PT": "Forme Empresa"
+  },
+  "ui.menu.company.form.error.general": {
+    "DE": "Fehlerbildungsunternehmen, bitte versuchen Sie es erneut",
+    "EN": "Error forming company, please try again",
+    "ES": "Error de formación de la empresa, intente nuevamente",
+    "FR": "Erreur de formation d'entreprise, veuillez réessayer",
+    "IT": "Errore che forma la società, riprova",
+    "PT": "Erro formando a empresa, tente novamente"
+  },
+  "ui.menu.company.form.error.name": {
+    "DE": "Ungültiger Firmenname, bitte wählen Sie einen anderen aus",
+    "EN": "Invalid company name, please choose another",
+    "ES": "Nombre de la empresa no válido, elija otro",
+    "FR": "Nom de l'entreprise non valide, veuillez en choisir un autre",
+    "IT": "Nome azienda non valido, scegli un altro",
+    "PT": "Nome da empresa inválida, escolha outro"
+  },
+  "ui.menu.company.form.error.seal": {
+    "DE": "Ungültig oder nicht gestattet, sich zu versiegeln",
+    "EN": "Invalid or not permitted to company seal",
+    "ES": "Inválido o no permitido para sellar la empresa",
+    "FR": "Invalide ou non autorisé au sceau de l'entreprise",
+    "IT": "Non valido o non autorizzato a sigillare la società",
+    "PT": "Inválido ou não autorizado a selo da empresa"
+  },
+  "ui.menu.company.form.error.limit": {
+    "DE": "Bei maximaler Unternehmensgrenze pro Unternehmen",
+    "EN": "At maximum company limit per corporation",
+    "ES": "Al límite máximo de la empresa por corporación",
+    "FR": "À la limite maximale de l'entreprise par entreprise",
+    "IT": "Al limite massimo dell'azienda per società",
+    "PT": "No limite máximo da empresa por corporação"
+  },
+  "ui.menu.company.form.error.conflict": {
+    "DE": "Der Firmenname wurde bereits registriert",
+    "EN": "Company name has already been registered",
+    "ES": "El nombre de la empresa ya ha sido registrado",
+    "FR": "Le nom de l'entreprise a déjà été enregistré",
+    "IT": "Il nome dell'azienda è già stato registrato",
+    "PT": "O nome da empresa já foi registrado"
   }
 }

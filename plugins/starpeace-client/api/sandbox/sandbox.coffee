@@ -1,6 +1,6 @@
 
-import moment from 'moment'
 import _ from 'lodash'
+import { DateTime } from 'luxon';
 
 import TimeUtils from '~/plugins/starpeace-client/utils/time-utils.coffee'
 import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
@@ -23,11 +23,12 @@ export default class Sandbox
     @sandbox_mail = new SandboxMail(@)
 
     @session_tokens = {}
+    @visasById = {}
 
   valid_session: (token) -> @session_tokens[token]? && TimeUtils.within_minutes(@session_tokens[token], 60)
   register_session: (type) ->
     token = Utils.uuid()
-    @session_tokens[token] = moment()
+    @session_tokens[token] = DateTime.now()
     token
 
   cost_for_invention_id: (invention_id) ->
@@ -37,7 +38,7 @@ export default class Sandbox
       0
 
   tick_day: () ->
-    @sandbox_data.planet_id_dates[id].add(1, 'day') for id,date of @sandbox_data.planet_id_dates
+    @sandbox_data.planet_id_dates[id].plus({ day: 1 }) for id,date of @sandbox_data.planet_id_dates
 
     for corp_id,corp_cashflow of @sandbox_data.corporation_id_cashflow
       for company_id,company of corp_cashflow.companies_by_id

@@ -1,21 +1,19 @@
-import moment from 'moment'
-import TinyCache from 'tinycache'
-import Vue from 'vue'
+import TinyCache from 'tinycache';
+import { markRaw } from 'vue';
 
 import Cache from '~/plugins/starpeace-client/state/core/cache/cache.coffee'
 import Corporation from '~/plugins/starpeace-client/corporation/corporation.coffee'
 
-import TimeUtils from '~/plugins/starpeace-client/utils/time-utils.coffee'
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 
 export default class CorporationCache extends Cache
   constructor: () ->
     super()
-    @corporation_metadata_by_id = new TinyCache()
-    @corporations_by_tycoon_id = new TinyCache()
+    @corporation_metadata_by_id = markRaw(new TinyCache())
+    @corporations_by_tycoon_id = markRaw(new TinyCache())
 
-    Object.defineProperty(@, 'corporation_metadata_by_id', { configurable: false }) # disable Vue.observable
-    Object.defineProperty(@, 'corporations_by_tycoon_id', { configurable: false }) # disable Vue.observable
+    # Object.defineProperty(@, 'corporation_metadata_by_id', { configurable: false }) # disable Vue.observable
+    # Object.defineProperty(@, 'corporations_by_tycoon_id', { configurable: false }) # disable Vue.observable
 
   reset_multiverse: () ->
     @corporation_metadata_by_id.clear()

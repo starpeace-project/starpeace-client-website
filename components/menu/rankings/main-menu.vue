@@ -2,12 +2,12 @@
 .card.has-header.is-starpeace.sp-menu(oncontextmenu='return false')
   .card-header
     .card-header-title {{translate('ui.menu.rankings.header')}}
-    .card-header-icon.card-close(v-on:click.stop.prevent="client_state.menu.toggle_menu('rankings')")
+    .card-header-icon.card-close(@click.stop.prevent="client_state.menu.toggle_menu('rankings')")
       font-awesome-icon(:icon="['fas', 'times']")
 
   .card-content.sp-menu-background
     aside.sp-scrollbar.container-ranking-type(v-if='!selected_ranking_type')
-      ranking-type-node(
+      menu-rankings-ranking-type-node(
         v-for='node in ranking_nodes'
         :managers='managers'
         :node='node'
@@ -31,8 +31,8 @@
                 span {{translate(label)}}
 
         .is-size-5.ranking-title-industry(v-if='selected_ranking_type.category_total || selected_ranking_type.industry_type_id')
-          industry-type-icon(:industry_type='selected_ranking_type.industry_type_id' v-if='selected_ranking_type.industry_type_id')
-          industry-category-icon(small=true :category='selected_ranking_type.industry_category_id' v-else-if='selected_ranking_type.industry_category_id')
+          misc-industry-type-icon(:industry_type='selected_ranking_type.industry_type_id' v-if='selected_ranking_type.industry_type_id')
+          misc-industry-category-icon(small=true :category='selected_ranking_type.industry_category_id' v-else-if='selected_ranking_type.industry_category_id')
           font-awesome-icon(:icon="['fas', 'medal']" v-else)
           span.title-label {{translate(label_for_type(selected_ranking_type))}}
 
@@ -42,7 +42,7 @@
             img.starpeace-logo
 
         template(v-else)
-          ranking-option(
+          menu-rankings-ranking-option(
             v-for='ranking in sorted_rankings'
             :managers='managers'
             :client-state='client_state'
@@ -56,22 +56,10 @@
 </template>
 
 <script lang='coffee'>
-import RankingOption from '~/components/menu/rankings/ranking-option.vue'
-import RankingTypeNode from '~/components/menu/rankings/ranking-type-node.vue'
-import IndustryCategoryIcon from '~/components/misc/industry-category-icon.vue'
-import IndustryTypeIcon from '~/components/misc/industry-type-icon.vue'
-
 import _ from 'lodash'
 import Translation from '~/plugins/starpeace-client/language/translation.coffee'
 
 export default
-  components: {
-    IndustryCategoryIcon
-    IndustryTypeIcon
-    RankingOption
-    RankingTypeNode
-  }
-
   props:
     managers: Object
     ajax_state: Object
@@ -155,7 +143,7 @@ export default
 </script>
 
 <style lang='sass' scoped>
-@import '~assets/stylesheets/starpeace-menus'
+@import '~/assets/stylesheets/starpeace-menus'
 
 .sp-menu
   grid-column: start-right / end-right

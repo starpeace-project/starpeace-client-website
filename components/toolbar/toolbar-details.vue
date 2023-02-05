@@ -11,10 +11,10 @@
             span.corporation-name-temp
               | [{{translate('identity.visitor')}} {{translate('identity.visa')}}]
         p.corporation-cash
-          money-text(:value='corporation_cash')
+          misc-money-text(:value='corporation_cash')
         p.corporation-cashflow
           | (
-          money-text(:value='corporation_cashflow')
+          misc-money-text(:value='corporation_cashflow')
           | /h)
         p.planet-date {{planet_date}}
 
@@ -22,14 +22,14 @@
         .company-panel(v-for='company in sorted_companies' :class="{ 'is-selected': is_selected(company.id) }" @click.stop.prevent="select_company(company.id)")
           .company-name-row
             span.company-icon-wrapper
-              company-seal-icon.company-seal(:seal_id="client_state.seal_for_company_id(company.id)")
+              misc-company-seal-icon.company-seal(:seal_id="client_state.seal_for_company_id(company.id)")
             span.company-name {{client_state.name_for_company_id(company.id)}}
           .company-building-count
             font-awesome-icon(:icon="['far', 'building']")
             span.count {{building_count_for_company_id(company.id)}}
           p.company-cashflow
             | (
-            money-text(:value='company_cashflow(company.id)')
+            misc-money-text(:value='company_cashflow(company.id)')
             | /h)
 
         template(v-if='can_form_company')
@@ -39,10 +39,7 @@
 </template>
 
 <script lang='coffee'>
-import moment from 'moment'
-
-import CompanySealIcon from '~/components/misc/company-seal-icon.vue'
-import MoneyText from '~/components/misc/money-text.vue'
+import _ from 'lodash';
 
 export default
   props:
@@ -50,13 +47,9 @@ export default
     client_state: Object
     managers: Object
 
-  components:
-    'company-seal-icon': CompanySealIcon
-    'money-text': MoneyText
-
   computed:
     is_ready: -> @client_state.initialized && @client_state?.workflow_status == 'ready'
-    planet_date: -> if @client_state?.planet?.current_time? then moment(@client_state.planet.current_time).format('MMM D, YYYY') else ''
+    planet_date: -> if @client_state?.planet?.current_time? then @client_state.planet.current_time.toFormat('MMM d, yyyy') else ''
 
     ticker_message: -> @client_state?.interface?.event_ticker_message || ''
 
@@ -89,7 +82,7 @@ export default
 </script>
 
 <style lang='sass' scoped>
-@import '~assets/stylesheets/starpeace-variables'
+@import '~/assets/stylesheets/starpeace-variables'
 
 .button
   &.is-starpeace

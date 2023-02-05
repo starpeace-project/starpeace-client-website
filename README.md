@@ -7,7 +7,6 @@
 [![GitHub issues](https://img.shields.io/github/issues/starpeace-project/starpeace-client-website.svg)](https://github.com/starpeace-project/starpeace-client-website/issues)
 [![GitHub stars](https://img.shields.io/github/stars/starpeace-project/starpeace-client-website.svg)](https://github.com/starpeace-project/starpeace-client-website/stargazers)
 [![Discord](https://img.shields.io/discord/449310464321650703.svg?logo=discord)](https://discord.gg/TF9Bmsj)
-![Twitter Follow](https://img.shields.io/twitter/follow/starpeace_io.svg?style=social&label=Follow)
 
 Client website for [STARPEACE](https://www.starpeace.io), including webgl rendering client, client-side javascript and AJAX gameplay logic, and HTML5 user interface controls. https://client.starpeace.io
 

@@ -4,19 +4,19 @@
   .tabs.is-centered.is-toggle.is-fullwidth.sp-tabs
     ul
       li(:class="{'is-active':mode=='CONTACTS'}")
-        a(:disabled='loading' @click.stop.prevent="mode='CONTACTS'") Contacts
+        button(:disabled='loading' @click.stop.prevent="mode='CONTACTS'") Contacts
       li(:class="{'is-active':mode=='ALLIES'}")
-        a(:disabled='loading' @click.stop.prevent="mode='ALLIES'") Allies
+        button(:disabled='loading' @click.stop.prevent="mode='ALLIES'") Allies
       li(:class="{'is-active':mode=='BLOCKED'}")
-        a(:disabled='loading' @click.stop.prevent="mode='BLOCKED'") Blocked
+        button(:disabled='loading' @click.stop.prevent="mode='BLOCKED'") Blocked
 
   aside.sp-scrollbar
 
   .level.is-mobile.sp-actions-container.is-bottom
     .level-item.action-column
-      a.button.is-small.is-fullwidth.is-starpeace(disabled='disabled') {{translate('ui.menu.mail.contacts.action.organize')}}
+      button.button.is-small.is-fullwidth.is-starpeace(disabled='disabled') {{translate('ui.menu.mail.contacts.action.organize')}}
     .level-item.action-column
-      a.button.is-small.is-fullwidth.is-starpeace(@click.stop.prevent='show_add_contact' :disabled='actions_disabled') {{translate('ui.menu.mail.contacts.action.add')}}
+      button.button.is-small.is-fullwidth.is-starpeace(@click.stop.prevent='show_add_contact' :disabled='actions_disabled') {{translate('ui.menu.mail.contacts.action.add')}}
 
 </template>
 
@@ -54,8 +54,8 @@ export default
 </script>
 
 <style lang='sass' scoped>
-@import '~assets/stylesheets/starpeace-variables'
-@import '~assets/stylesheets/starpeace-menus'
+@import '~/assets/stylesheets/starpeace-variables'
+@import '~/assets/stylesheets/starpeace-menus'
 
 .overall-container
   position: relative

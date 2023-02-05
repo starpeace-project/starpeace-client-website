@@ -1,6 +1,5 @@
-
-import moment from 'moment'
 import _ from 'lodash'
+import { DateTime } from 'luxon';
 
 import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
 
@@ -10,7 +9,7 @@ export default class SandboxMail
   add_mail: (corporation, id, mail) ->
     mail.id = id
     if @sandbox.sandbox_data.corporation_id_cashflow[corporation.id]?
-      @sandbox.sandbox_data.corporation_id_cashflow[corporation.id].lastMailAt = moment(mail.sentAt)
+      @sandbox.sandbox_data.corporation_id_cashflow[corporation.id].lastMailAt = DateTime.fromISO(mail.sentAt)
     @sandbox.sandbox_data.mail_by_corporation_id[corporation.id] = {} unless @sandbox.sandbox_data.mail_by_corporation_id[corporation.id]?
     @sandbox.sandbox_data.mail_by_corporation_id[corporation.id][id] = mail
 
@@ -40,8 +39,8 @@ export default class SandboxMail
     for to_corp in to_corps
       @add_mail(to_corp, Utils.uuid(), {
         read: false
-        sentAt: moment().format()
-        planetSentAt: @sandbox.sandbox_data.planet_id_dates[sender_corp.planetId].format('YYYY-MM-DD')
+        sentAt: DateTime.now().toISO()
+        planetSentAt: @sandbox.sandbox_data.planet_id_dates[sender_corp.planetId].toISODate()
         from: {
           id: sender_corp.tycoonId,
           name: @sandbox.sandbox_data.tycoon_by_id[sender_corp.tycoonId].name
@@ -57,8 +56,8 @@ export default class SandboxMail
     if undeliverable.length
       @add_mail(sender_corp, Utils.uuid(), {
         read: false
-        sentAt: moment().format()
-        planetSentAt: @sandbox.sandbox_data.planet_id_dates[sender_corp.planetId].format('YYYY-MM-DD')
+        sentAt: DateTime.now().toISO()
+        planetSentAt: @sandbox.sandbox_data.planet_id_dates[sender_corp.planetId].toISODate()
         from: {
           id: "ifel",
           name: "IFEL"

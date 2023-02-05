@@ -119,6 +119,14 @@
     "IT": "Nome Utente",
     "PT": "Nome de Usuário"
   },
+  "ui.workflow.universe.name.label": {
+    "DE": "Tycoon-Name",
+    "EN": "Tycoon Name",
+    "ES": "Nombre del magnate",
+    "FR": "Nom du magnat",
+    "IT": "Nome magnate",
+    "PT": "Nome do magnata"
+  },
   "ui.workflow.universe.password.label": {
     "DE": "Passwort",
     "EN": "Password",
@@ -143,13 +151,21 @@
     "IT": "Ricorda",
     "PT": "Lembrar"
   },
+  "ui.workflow.universe.error.username_invalid.label": {
+    "DE": "Benutzername ist ungültig, bitte wählen Sie einen anderen aus",
+    "EN": "Username is invalid, please choose another",
+    "ES": "El nombre de usuario no es válido, elija otro",
+    "FR": "Le nom d'utilisateur n'est pas valide, veuillez en choisir un autre",
+    "IT": "Il nome utente non è valido, scegli un altro",
+    "PT": "O nome de usuário é inválido, escolha outro"
+  },
   "ui.workflow.universe.error.username_conflict.label": {
-    "DE": "Benutzername ist ungültig oder bereits im Einsatz",
-    "EN": "Username is invalid or already in use",
-    "ES": "Nombre de usuario es válido o ya en uso",
-    "FR": "Nom d'utilisateur est invalide ou déjà en cours d'utilisation",
-    "IT": "Nome utente non è valido o già in uso",
-    "PT": "Nome de usuário é inválido ou já em uso"
+    "DE": "Benutzername ist bereits in Benutzung",
+    "EN": "Username is already in use",
+    "ES": "El nombre de usuario ya está en uso",
+    "FR": "Nom d'utilisateur est déjà utilisé",
+    "IT": "Nome utente già in uso",
+    "PT": "O nome de usuário já está em uso"
   },
   "ui.workflow.universe.error.password_mismatch.label": {
     "DE": "Passwörter stimmen nicht überein",
@@ -167,13 +183,21 @@
     "IT": "Problema creazione di Magnate",
     "PT": "Problema ao criar Magnata"
   },
-  "ui.workflow.universe.error.signin_problem.label": {
+  "ui.workflow.universe.error.signin_invalid.label": {
     "DE": "Benutzername oder Passwort falsch",
     "EN": "Username or password is incorrect",
     "ES": "Nombre de usuario o contraseña incorrecta",
     "FR": "L'identifiant ou le mot de passe est incorrect",
     "IT": "Nome utente o password non sono corretti",
     "PT": "Nome de usuário ou senha está incorreta"
+  },
+  "ui.workflow.universe.error.signin_problem.label": {
+    "DE": "Problem bei der Anmeldung, bitte versuchen Sie es erneut",
+    "EN": "Problem signing in, please try again",
+    "ES": "Problemas para iniciar sesión, intente nuevamente",
+    "FR": "Problème de connexion, veuillez réessayer",
+    "IT": "Problema Accesso, riprova",
+    "PT": "Problema de login, tente novamente"
   },
   "ui.workflow.universe.signin.label": {
     "DE": "Einloggen",

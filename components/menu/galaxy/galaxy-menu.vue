@@ -24,7 +24,7 @@
               .planet-investments.planet-info-row
                 span {{translate('ui.menu.galaxy.details.investments.label')}}:
                 span.planet-value
-                  money-text(:value='planet.investment_value')
+                  misc-money-text(:value='planet.investment_value')
               .planet-tycoons.planet-info-row
                 span {{translate('ui.menu.galaxy.details.corporations.label')}}:
                 span.planet-value {{planet.corporation_count}}
@@ -34,13 +34,13 @@
 
           .columns
             .column.is-5
-              a.button.is-primary.is-fullwidth.is-outlined.workflow-action.visitor-action(v-on:click.stop.prevent='select_visitor(planet)', :disabled='!planet.enabled') {{translate('identity.visitor')}} {{translate('identity.visa')}}
+              button.button.is-primary.is-fullwidth.is-outlined.workflow-action.visitor-action(v-on:click.stop.prevent='select_visitor(planet)', :disabled='!planet.enabled') {{translate('identity.visitor')}} {{translate('identity.visa')}}
             .column.is-7
               template(v-if='corporations_by_planet_id[planet.id]')
-                a.button.is-primary.is-fullwidth.workflow-action.corporation-action(v-on:click.stop.prevent='select_tycoon(planet)', :disabled='!planet.enabled')
+                button.button.is-primary.is-fullwidth.workflow-action.corporation-action(v-on:click.stop.prevent='select_tycoon(planet)', :disabled='!planet.enabled')
                   .action-text {{corporations_by_planet_id[planet.id].name}}
               template(v-else)
-                a.button.is-primary.is-fullwidth.is-outlined.workflow-action.corporation-action(v-on:click.stop.prevent='select_tycoon(planet)', :disabled='!planet.enabled || !is_tycoon_in_galaxy')
+                button.button.is-primary.is-fullwidth.is-outlined.workflow-action.corporation-action(v-on:click.stop.prevent='select_tycoon(planet)', :disabled='!planet.enabled || !is_tycoon_in_galaxy')
                   .action-text {{translate('ui.menu.corporation.establish.action.establish')}}
 
           .disabled-overlay(v-show='!planet.enabled')
@@ -49,12 +49,9 @@
 </template>
 
 <script lang='coffee'>
-import MoneyText from '~/components/misc/money-text.vue'
+import _ from 'lodash';
 
 export default
-  components:
-    'money-text': MoneyText
-
   props:
     client_state: Object
     ajax_state: Object
@@ -111,7 +108,7 @@ export default
 </script>
 
 <style lang='sass' scoped>
-@import '~assets/stylesheets/starpeace-variables'
+@import '~/assets/stylesheets/starpeace-variables'
 
 #galaxy-container
   grid-column: 1 / 4

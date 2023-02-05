@@ -18,23 +18,16 @@
   .development.is-hidden-mobile.is-hidden-tablet-only
     a.header-item.documentation(href='https://docs.starpeace.io') {{translate('ui.page-layout.header.documentation')}}
     a.header-item.community(href='https://starpeace-project.com/', target='_blank') {{translate('ui.page-layout.header.community')}}
-    language-select(:language_code='language_code', v-on:changed='change_language')
+    misc-language-select(:language_code='language_code', @changed='change_language')
     a.header-item.discord(href='https://discord.gg/TF9Bmsj', target='_blank')
       font-awesome-icon(:icon="['fab', 'discord']")
-    a.header-item.twitter(href='https://twitter.com/starpeace_io', target='_blank')
-      font-awesome-icon(:icon="['fab', 'twitter']")
     a.header-item.github(href='https://github.com/starpeace-project/starpeace-client-website', target='_blank')
       font-awesome-icon(:icon="['fab', 'github']")
 
 </template>
 
 <script lang='coffee'>
-import LanguageSelect from '~/components/misc/language-select.vue'
-
 export default
-  components:
-    'language-select': LanguageSelect
-
   props:
     options: Object
     translation_manager: Object

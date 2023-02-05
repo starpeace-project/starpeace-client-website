@@ -10,14 +10,14 @@ export default class ConcreteManager
     @ajax_state.lock('assets.concrete_metadata', 'ALL')
     @asset_manager.queue('metadata.concrete', './concrete.metadata.json', (resource) =>
       concrete_metadata = []
-      for key,json of (resource.data?.concrete || {})
+      for key,json of (resource.concrete || {})
         # FIXME: TODO: add ID to json, change from map to array
         json.id = key
         concrete_metadata.push MetadataConcrete.from_json(json)
 
       @client_state.core.concrete_library.load_concrete_metadata(concrete_metadata)
-      @client_state.core.concrete_library.load_required_atlases(resource.data?.atlas)
+      @client_state.core.concrete_library.load_required_atlases(resource.atlas)
 
-      @asset_manager.queue_and_load_atlases((resource.data?.atlas || []), (atlas_path, atlas) => @client_state.core.concrete_library.load_atlas(atlas_path, atlas))
+      @asset_manager.queue_and_load_atlases((resource.atlas || []), (atlas_path, atlas) => @client_state.core.concrete_library.load_atlas(atlas_path, atlas))
       @ajax_state.unlock('assets.concrete_metadata', 'ALL')
     )

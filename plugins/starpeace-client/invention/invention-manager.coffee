@@ -1,6 +1,4 @@
 
-import Vue from 'vue'
-
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
 

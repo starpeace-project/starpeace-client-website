@@ -52,8 +52,8 @@ export default
 </script>
 
 <style lang='sass' scoped>
-@import '~bulma/sass/utilities/_all'
-@import '~assets/stylesheets/starpeace-variables'
+@import 'bulma/sass/utilities/_all'
+@import '~/assets/stylesheets/starpeace-variables'
 
 .identity-content
   height: 100%

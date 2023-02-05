@@ -1,5 +1,3 @@
-
-import moment from 'moment'
 import _ from 'lodash'
 
 import Utils from '~/plugins/starpeace-client/utils/utils.coffee'

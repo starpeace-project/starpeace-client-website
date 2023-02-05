@@ -1,23 +1,21 @@
-
-import moment from 'moment'
-import Vue from 'vue'
+import _ from 'lodash';
 
 import EventListener from '~/plugins/starpeace-client/state/event-listener.coffee'
 
-import TimeUtils from '~/plugins/starpeace-client/utils/time-utils.coffee'
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 
 export default class BookmarkState
   constructor: () ->
     @event_listener = new EventListener()
-    @reset_state()
+    @town_items = []
+    @mausoleum_items = []
+    @company_folders_by_id = {}
+    @bookmarks_by_id = null
 
   reset_state: () ->
     @town_items = []
     @mausoleum_items = []
-
     @company_folders_by_id = {}
-
     @bookmarks_by_id = null
 
 
@@ -33,19 +31,19 @@ export default class BookmarkState
 
   set_bookmarks_metadata: (bookmarks_items) ->
     @bookmarks_by_id = {}
-    Vue.set(@bookmarks_by_id, item.id, item) for item in (bookmarks_items || [])
+    @bookmarks_by_id[item.id] = item for item in (bookmarks_items || [])
     @notify_bookmarks_metadata_listeners()
 
   add_bookmarks_metadata: (bookmark_item) ->
-    Vue.set(@bookmarks_by_id, bookmark_item.id, bookmark_item)
+    @bookmarks_by_id[bookmark_item.id] = bookmark_item
 
   has_company_folder: (company_id) -> @company_folders_by_id[company_id]?.root?
   set_company_folder: (company_id, company_folder) ->
     unless @company_folders_by_id[company_id]?
-      Vue.set(@company_folders_by_id, company_id, {
+      @company_folders_by_id[company_id] = {
         root: company_folder
         by_industry_type: {}
-      })
+      }
     else
       @company_folders_by_id[company_id].root = company_folder
 
@@ -53,17 +51,17 @@ export default class BookmarkState
   set_company_industry_type_folder: (company_id, industry_type, industry_folder) ->
     if @company_folders_by_id[company_id]?
       unless @company_folders_by_id[company_id].by_industry_type[industry_type]?
-        Vue.set(@company_folders_by_id[company_id].by_industry_type, industry_type, {
+        @company_folders_by_id[company_id].by_industry_type[industry_type] = {
           root: industry_folder
           items_by_id: {}
-        })
+        }
       else
         @company_folders_by_id[company_id].by_industry_type[industry_type].root = industry_folder
 
   has_company_building_item: (company_id, industry_type, building_id) -> @company_folders_by_id[company_id]?.by_industry_type?[industry_type]?.items_by_id?[building_id]?
   set_company_building_item: (company_id, industry_type, building_id, building_bookmark) ->
     if @company_folders_by_id[company_id]?.by_industry_type?[industry_type]?
-      Vue.set(@company_folders_by_id[company_id].by_industry_type[industry_type].items_by_id, building_id, building_bookmark)
+      @company_folders_by_id[company_id].by_industry_type[industry_type].items_by_id[building_id] = building_bookmark
 
   sort_company_folders: () ->
     bookmark.order = index for bookmark,index in _.sortBy(_.map(@company_folders_by_id, (item) -> item.root), 'name')

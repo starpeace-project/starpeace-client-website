@@ -1,4 +1,3 @@
-
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 
 import Concrete from '~/plugins/starpeace-client/building/concrete.coffee'
@@ -6,6 +5,8 @@ import ChunkMap from '~/plugins/starpeace-client/map/chunk/chunk-map.coffee'
 
 export default class BuildingMap
   constructor: (@client_state, @building_manager, @road_manager, @width, @height) ->
+    @building_library = @client_state.core.building_library
+
     @tile_info_building = new Array(@width * @height)
     @tile_info_concrete = new Array(@width * @height)
     @tile_info_road = new Array(@width * @height)
@@ -29,7 +30,7 @@ export default class BuildingMap
   building_info_at: (x, y) -> @tile_info_building[y * @width + x]
   has_concrete_at: (x, y) ->
     building = @building_info_at(x, y)
-    metadata = if building? then @client_state.core.building_library.definition_for_id(building.definition_id) else null
+    metadata = if building? then @building_library.definition_for_id(building.definition_id) else null
     metadata?.foundation
 
   is_city_around: (x, y) ->
@@ -40,13 +41,13 @@ export default class BuildingMap
 
   add_building: (building_id) ->
     building = @client_state.core.building_cache.building_for_id(building_id)
-    metadata = @client_state.core.building_library.metadata_by_id[building.definition_id]
+    metadata = @building_library.metadata_by_id[building.definition_id]
     unless metadata?
       Logger.warn("unable to load building definition metadata for #{building.definition_id}")
       # FIXME: TODO: add dummy/empty placeholder
       return
 
-    image_metadata = @client_state.core.building_library.images_by_id[metadata.image_id]
+    image_metadata = @building_library.images_by_id[metadata.image_id]
     unless image_metadata?
       Logger.warn("unable to load building image metadata for #{building.definition_id}")
       return
@@ -59,8 +60,8 @@ export default class BuildingMap
 
   remove_building: (building_id) ->
     building = @client_state.core.building_cache.building_metadata_by_id[building_id]
-    metadata = if building? then @client_state.core.building_library.metadata_by_id[building.definition_id] else null
-    image_metadata = if metadata? then @client_state.core.building_library.images_by_id[metadata.image_id] else null
+    metadata = if building? then @building_library.metadata_by_id[building.definition_id] else null
+    image_metadata = if metadata? then @building_library.images_by_id[metadata.image_id] else null
 
     unless metadata? && image_metadata?
       Logger.debug("unable to load building metadata for #{building_id} of type #{building?.definition_id || 'UNKNOWN'}")

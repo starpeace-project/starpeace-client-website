@@ -26,7 +26,7 @@ export default
 </script>
 
 <style lang='sass' scoped>
-@import '~assets/stylesheets/starpeace'
+@import '~/assets/stylesheets/starpeace'
 
 #session-expired-warning-container
   align-items: center

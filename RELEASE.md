@@ -1,5 +1,5 @@
 
-## v0.4 - in progress - updated 2021-05-16
+## v0.3.8 - in progress - updated 2023-02-05
 ### platform
 * [done] improve API integration with galaxies [v0.3.1]
 * [done] document multiverse API integration [starpeace-server-multiverse-api]
@@ -21,9 +21,14 @@
 * [done] roads API integration [v0.3.5]
 * [done] planet and town details API (services, commerce, taxes, jobs, housing) [v0.3.6]
 * [done] system messages and basic error messages [v0.3.7]
-* [pending] improve auth and remember me token and error handling
-* [pending] improve tycoon, corporation, and company creation error handling
+* [done] socket network events and API [v0.3.8]
+* [done] improve tycoon, corporation, and company creation error handling [v0.3.8]
+* [done] visa and tycoon position API integration [v0.3.8]
+* [done] major version upgrade of platform dependencies (nuxt, PixiJS) [v0.3.8]
+* [in progress] improve auth and remember me token and error handling
 * [pending] player, building, and planet event handling
+* [pending] fix render fps issue when loading chunks
+* [pending] research and bookmarks upgrade fixes
 
 ### assets
 * [done] finish initial language translation for assets [v0.3.1]
@@ -59,10 +64,6 @@
 * [pending] building inspect menu
 * [pending] onscreen building text rendering on selection
 * [pending] building selection container box rendering
-* [pending] building stage support (timber, movies, farms)
-* [pending] limit seals unless required level or nobility
-* [pending] road proximity building construction rules
-* [pending] waterquest and water building construction rules
 * [pending] footer menu company support (scroll)
 * [pending] city-specific ribbon ticker updates
 * [pending] integrate player and planet events with news ticker

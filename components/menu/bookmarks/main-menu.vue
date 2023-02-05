@@ -12,10 +12,10 @@
         input.input(type="text", :placeholder="translate('misc.filter')")
         span.icon.is-left
           font-awesome-icon(:icon="['fas', 'search-location']")
-    filter-industry-categories(:managers='managers' :client_state='client_state')
+    misc-filter-industry-categories(:managers='managers' :client_state='client_state')
 
     aside.sp-scrollbar
-      menu-section(
+      menu-bookmarks-section(
         v-if='show_poi && (show_towns || show_mausoleums)'
         root_id='bookmark-poi'
         :client_state='client_state'
@@ -23,7 +23,7 @@
         :label_text="translate('ui.menu.bookmarks.section.poi')"
         :items_by_id='poi_items_by_id'
       )
-      menu-section(
+      menu-bookmarks-section(
         v-if='show_corporation && has_corporation'
         root_id='bookmark-corporation'
         :client_state='client_state'
@@ -31,7 +31,7 @@
         :label_text="translate('ui.menu.bookmarks.section.companies')"
         :items_by_id='corporation_items_by_id'
       )
-      menu-section(
+      menu-bookmarks-section(
         v-if='has_corporation'
         root_id='bookmarks'
         is_draggable=true
@@ -43,11 +43,11 @@
 
     .actions-container.level.is-mobile
       .level-item.action-column
-        a.button.is-small.is-fullwidth.is-starpeace(disabled='disabled') {{translate('ui.menu.bookmarks.action.organize')}}
+        button.button.is-small.is-fullwidth.is-starpeace(disabled='disabled') {{translate('ui.menu.bookmarks.action.organize')}}
       .level-item.action-column
-        a.button.is-small.is-fullwidth.is-starpeace(:disabled='actions_disabled' @click.stop.prevent='add_folder') {{translate('ui.menu.bookmarks.action.add-folder')}}
+        button.button.is-small.is-fullwidth.is-starpeace(:disabled='actions_disabled' @click.stop.prevent='add_folder') {{translate('ui.menu.bookmarks.action.add-folder')}}
       .level-item.action-column
-        a.button.is-small.is-fullwidth.is-starpeace(:disabled='actions_disabled' @click.stop.prevent='add_bookmark') {{translate('ui.menu.bookmarks.action.add-bookmark')}}
+        button.button.is-small.is-fullwidth.is-starpeace(:disabled='actions_disabled' @click.stop.prevent='add_bookmark') {{translate('ui.menu.bookmarks.action.add-bookmark')}}
 
 </template>
 
@@ -55,15 +55,7 @@
 import Bookmark from '~/plugins/starpeace-client/bookmark/bookmark.coffee'
 import BookmarkFolder from '~/plugins/starpeace-client/bookmark/bookmark-folder.coffee'
 
-import MenuSection from '~/components/menu/bookmarks/menu-section.vue'
-import FilterIndustryCategories from '~/components/misc/filter-industry-categories.vue'
-
 export default
-  components: {
-    MenuSection
-    FilterIndustryCategories
-  }
-
   props:
     managers: Object
     ajax_state: Object
@@ -133,21 +125,24 @@ export default
     translate: (text_key) -> @managers?.translation_manager?.text(text_key)
 
     add_folder: () ->
-      @managers?.bookmark_manager?.new_bookmark_folder().then =>
-        @$root.$emit('add_folder_action')
+      @managers?.bookmark_manager?.new_bookmark_folder()
+        .then =>
+          #@$root.$emit('add_folder_action')
+        .catch (err) =>
+          console.error(err)
 
     add_bookmark: () ->
-      @managers?.bookmark_manager?.new_bookmark_item().then =>
-        @$root.$emit('add_bookmark_action')
-
+      @managers?.bookmark_manager?.new_bookmark_item()
+        .then =>
+          @$root.$emit('add_bookmark_action')
+        .catch (err) =>
+          console.error(err)
 
 </script>
 
 <style lang='sass' scoped>
-@import '~assets/stylesheets/starpeace-variables'
-
-
-@import '~assets/stylesheets/starpeace-menus'
+@import '~/assets/stylesheets/starpeace-variables'
+@import '~/assets/stylesheets/starpeace-menus'
 
 .sp-menu
   grid-column: start-left / end-render

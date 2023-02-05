@@ -1,4 +1,3 @@
-
 import Library from '~/plugins/starpeace-client/state/core/library/library.coffee'
 import TextureAtlasCache from '~/plugins/starpeace-client/state/core/texture-atlas-cache.coffee'
 
@@ -11,7 +10,7 @@ export default class MapLibrary extends Library
     @texture_by_map_id = {}
     @towns_texture_by_map_id = {}
 
-  has_assets: (map_id) -> @texture_by_map_id[map_id]? && @towns_texture_by_map_id[map_id]
+  has_assets: (map_id) -> !!@texture_by_map_id[map_id] && !!@towns_texture_by_map_id[map_id]
 
   texture_for_id: (map_id) -> @texture_by_map_id[map_id]
   load_map_texture: (map_id, texture) ->

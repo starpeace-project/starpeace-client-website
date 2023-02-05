@@ -10,24 +10,20 @@ client-only
             span.planet-name {{ current_galaxy_name }}
 
         .card-content
-          menu-loading(v-show="status == 'initializing'", :message="translate('ui.workflow.loading.initializing')")
+          workflow-loading(v-show="status == 'initializing'", :message="translate('ui.workflow.loading.initializing')")
 
-          menu-universe(v-show="status == 'pending_universe'", :managers='managers', :ajax_state='ajax_state', :client_state='client_state')
-          menu-planet(v-show="status == 'pending_planet'", :managers='managers', :client_state='client_state')
-          menu-loading(v-show="status == 'pending_visa'", :message="translate('ui.workflow.loading.pending_visa')")
-          menu-loading(v-show="status == 'pending_assets'", :message="translate('ui.workflow.loading.pending_assets')")
-          menu-loading(v-show="status == 'pending_planet_details'", :message="translate('ui.workflow.loading.pending_planet_details')")
-          menu-loading(v-show="status == 'pending_player_data'", :message="translate('ui.workflow.loading.pending_player_data')")
-          menu-loading(v-show="status == 'pending_initialization'", :message="translate('ui.workflow.loading.pending_initialization')")
-          menu-loading(v-show="status == 'ready'", :message="translate('ui.workflow.loading.initializing')")
+          workflow-universe(v-show="status == 'pending_universe'", :managers='managers', :ajax_state='ajax_state', :client_state='client_state')
+          workflow-planet(v-show="status == 'pending_planet'", :managers='managers', :client_state='client_state')
+          workflow-loading(v-show="status == 'pending_visa'", :message="translate('ui.workflow.loading.pending_visa')")
+          workflow-loading(v-show="status == 'pending_assets'", :message="translate('ui.workflow.loading.pending_assets')")
+          workflow-loading(v-show="status == 'pending_planet_details'", :message="translate('ui.workflow.loading.pending_planet_details')")
+          workflow-loading(v-show="status == 'pending_player_data'", :message="translate('ui.workflow.loading.pending_player_data')")
+          workflow-loading(v-show="status == 'pending_initialization'", :message="translate('ui.workflow.loading.pending_initialization')")
+          workflow-loading(v-show="status == 'ready'", :message="translate('ui.workflow.loading.initializing')")
 
 </template>
 
 <script lang='coffee'>
-import WorkflowLoading from '~/components/workflow/workflow-loading.vue'
-import WorkflowPlanet from '~/components/workflow/workflow-planet.vue'
-import WorkflowUniverse from '~/components/workflow/workflow-universe.vue'
-
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 import TimeUtils from '~/plugins/starpeace-client/utils/time-utils.coffee'
 
@@ -40,11 +36,6 @@ STATUS_MAX_WIDTHS = {
 }
 
 export default
-  components:
-    'menu-loading': WorkflowLoading
-    'menu-planet': WorkflowPlanet
-    'menu-universe': WorkflowUniverse
-
   props:
     ajax_state: Object
     client_state: Object

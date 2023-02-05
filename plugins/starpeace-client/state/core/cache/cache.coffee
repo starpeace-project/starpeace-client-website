@@ -1,3 +1,4 @@
+import { markRaw } from 'vue';
 
 import EventListener from '~/plugins/starpeace-client/state/event-listener.coffee'
 
@@ -6,7 +7,7 @@ export default class Cache
   @ONE_MINUTE: 60000
 
   constructor: () ->
-    @event_listener = new EventListener()
+    @event_listener = markRaw(new EventListener())
 
   reset_multiverse: () -> # nothing to do, may be overriden
   reset_planet: () -> # nothing to do, may be overriden

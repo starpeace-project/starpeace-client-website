@@ -44,6 +44,8 @@
 </template>
 
 <script lang='coffee'>
+import _ from 'lodash';
+
 export default
   props:
     clientState: Object
@@ -105,7 +107,7 @@ export default
 </script>
 
 <style lang='sass' scoped>
-@import '~assets/stylesheets/starpeace-variables'
+@import '~/assets/stylesheets/starpeace-variables'
 
 .products-tab
   height: 100%

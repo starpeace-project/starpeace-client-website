@@ -3,13 +3,13 @@
 
   .level.is-mobile.sp-actions-container.is-top
     .level-item.action-column
-      a.button.is-fullwidth.is-starpeace(@click.stop.prevent="$emit('compose')" :disabled='!can_compose' :class="{'is-active': compose_mode}") {{translate('ui.menu.mail.contacts.action.new')}}
+      button.button.is-fullwidth.is-starpeace(@click.stop.prevent="$emit('compose')" :disabled='!can_compose' :class="{'is-active': compose_mode}") {{translate('ui.menu.mail.contacts.action.new')}}
     .level-item.action-column
-      a.button.is-fullwidth.is-starpeace(@click.stop.prevent="$emit('delete')" :disabled='!can_message_action') {{translate('ui.menu.mail.contacts.action.delete')}}
+      button.button.is-fullwidth.is-starpeace(@click.stop.prevent="$emit('delete')" :disabled='!can_message_action') {{translate('ui.menu.mail.contacts.action.delete')}}
     .level-item.action-column
-      a.button.is-fullwidth.is-starpeace(@click.stop.prevent="$emit('reply')" :disabled='!can_message_action') {{translate('ui.menu.mail.contacts.action.reply')}}
+      button.button.is-fullwidth.is-starpeace(@click.stop.prevent="$emit('reply')" :disabled='!can_message_action') {{translate('ui.menu.mail.contacts.action.reply')}}
     .level-item.action-column
-      a.button.is-fullwidth.is-starpeace(@click.stop.prevent="$emit('forward')" :disabled='!can_message_action') {{translate('ui.menu.mail.contacts.action.forward')}}
+      button.button.is-fullwidth.is-starpeace(@click.stop.prevent="$emit('forward')" :disabled='!can_message_action') {{translate('ui.menu.mail.contacts.action.forward')}}
 
   aside.sp-scrollbar
     .mail-item(v-for='mail in mails' :class="{'selected':mail.id==selected_mail_id, 'unread':!mail.read}")
@@ -17,13 +17,14 @@
         span.mail-info
           span {{mail.from_entity.name}}
           span.mail-subject {{mail.subject}}
-        span.mail-date {{mail.planet_sent_at.format('L')}}
+        span.mail-date {{mail.planet_sent_at.toFormat('D')}}
 
   .status-bar
 
 </template>
 
 <script lang='coffee'>
+import _ from 'lodash';
 
 export default
   props:
@@ -96,8 +97,8 @@ export default
 </script>
 
 <style lang='sass' scoped>
-@import '~assets/stylesheets/starpeace-variables'
-@import '~assets/stylesheets/starpeace-menus'
+@import '~/assets/stylesheets/starpeace-variables'
+@import '~/assets/stylesheets/starpeace-menus'
 
 .overall-container
   position: relative

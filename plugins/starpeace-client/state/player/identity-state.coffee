@@ -1,7 +1,4 @@
 
-import moment from 'moment'
-import Vue from 'vue'
-
 import EventListener from '~/plugins/starpeace-client/state/event-listener.coffee'
 import Identity from '~/plugins/starpeace-client/identity/identity.coffee'
 
@@ -10,7 +7,9 @@ import Logger from '~/plugins/starpeace-client/logger.coffee'
 export default class IdentityState
   constructor: () ->
     @event_listener = new EventListener()
-    @reset_state()
+    @galaxy_id = null
+    @galaxy_visa_type = null
+    @galaxy_tycoon = null
 
   reset_state: () ->
     @galaxy_id = null

@@ -8,7 +8,7 @@ div
       .detail-row
         span.detail-label {{translate('ui.menu.town_search.panel.details.investments.label')}}:
         span.detail-value
-          money-text(:value='1000000000' no_styling)
+          misc-money-text(:value='1000000000' no_styling)
       .detail-row
         span.detail-label {{translate('ui.menu.town_search.panel.details.qol.label')}}:
         span.detail-value 0%
@@ -27,14 +27,14 @@ div
     .level-item.action-column
       a.button.is-fullwidth.is-small.is-starpeace(@click.stop.prevent='show_politics') {{translate('ui.menu.town_search.panel.action.show_politics')}}
 
-  tree-menu-item(
+  menu-shared-tree-menu-item(
     visible=true
     :managers='managers'
     :client-state='clientState'
     :item='buildings_item'
     :level='1'
   )
-  tree-menu-item(
+  menu-shared-tree-menu-item(
     visible=true
     :managers='managers'
     :client-state='clientState'
@@ -45,15 +45,9 @@ div
 </template>
 
 <script lang='coffee'>
-import TreeMenuItem from '~/components/menu/shared/tree-menu/item.vue'
-import MoneyText from '~/components/misc/money-text.vue'
+import _ from 'lodash';
 
 export default
-  components: {
-    TreeMenuItem
-    MoneyText
-  }
-
   props:
     managers: Object
     clientState: Object
@@ -106,7 +100,7 @@ export default
 </script>
 
 <style lang='sass' scoped>
-@import '~assets/stylesheets/starpeace-variables'
+@import '~/assets/stylesheets/starpeace-variables'
 
 .information
   display: grid

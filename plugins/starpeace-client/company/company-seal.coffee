@@ -1,3 +1,4 @@
+import _ from 'lodash';
 
 import Translation from '~/plugins/starpeace-client/language/translation.coffee'
 

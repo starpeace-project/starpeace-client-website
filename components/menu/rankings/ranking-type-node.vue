@@ -5,11 +5,11 @@
 
     template(v-if='node.industry_type_id')
       span.sp-section-icon
-        industry-type-icon(:industry_type='node.industry_type_id')
+        misc-industry-type-icon(:industry_type='node.industry_type_id')
 
     template(v-else-if='node.industry_category_id')
       span.sp-section-icon
-        industry-category-icon(small=true :category='node.industry_category_id')
+        misc-industry-category-icon(small=true :category='node.industry_category_id')
 
     template(v-else-if='has_children')
       span.sp-section-icon(v-show='!node.expanded')
@@ -24,7 +24,7 @@
     span.sp-section-label {{translate(node.label)}}
 
   .sp-menu-list(v-if='has_children' v-show='node.expanded')
-    ranking-type-node(
+    menu-rankings-ranking-type-node(
       v-for="child in sorted_children"
       :managers='managers'
       :node='child'
@@ -36,19 +36,8 @@
 </template>
 
 <script lang='coffee'>
-import RankingTypeNode from '~/components/menu/rankings/ranking-type-node.vue'
-
-import IndustryCategoryIcon from '~/components/misc/industry-category-icon.vue'
-import IndustryTypeIcon from '~/components/misc/industry-type-icon.vue'
-
+import _ from 'lodash';
 export default
-  name: 'ranking-type-node'
-  components: {
-    IndustryCategoryIcon
-    IndustryTypeIcon
-    RankingTypeNode
-  }
-
   props:
     managers: Object
 
@@ -76,7 +65,7 @@ export default
 </script>
 
 <style lang='sass' scoped>
-@import '~assets/stylesheets/starpeace-variables'
+@import '~/assets/stylesheets/starpeace-variables'
 
 .sp-section
   border-left: 0

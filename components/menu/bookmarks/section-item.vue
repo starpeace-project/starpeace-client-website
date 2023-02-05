@@ -2,7 +2,7 @@
 a.is-menu-item(v-on:click.stop.prevent="select_item", :style="css_style_for_item")
   span.link-image
     template(v-if="item.type == 'TOWN'")
-      city-icon
+      misc-city-icon
     template(v-else-if="true")
       font-awesome-icon(:icon="['fas', 'map-marker-alt']")
   span.link-label {{item.item_name}}
@@ -10,13 +10,7 @@ a.is-menu-item(v-on:click.stop.prevent="select_item", :style="css_style_for_item
 </template>
 
 <script lang='coffee'>
-import CityIcon from '~/components/misc/city-icon.vue'
-
 export default
-  components:
-    'city-icon': CityIcon
-
-  name: 'section-item'
   props:
     item: Object
 
@@ -34,7 +28,7 @@ export default
 </script>
 
 <style lang='sass' scoped>
-@import '~assets/stylesheets/starpeace-variables'
+@import '~/assets/stylesheets/starpeace-variables'
 
 .is-menu-item
   background-color: darken($sp-primary-bg, 15%)

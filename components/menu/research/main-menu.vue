@@ -6,7 +6,7 @@
       font-awesome-icon(:icon="['fas', 'times']")
 
   .card-content.sp-menu-background.is-paddingless
-    menu-research-menu(:managers='managers' :client_state='client_state')
+    menu-research-sections(:managers='managers' :client_state='client_state')
     menu-research-tree(:managers='managers' :client_state='client_state')
     menu-research-details(:managers='managers' :ajax_state='ajax_state' :client_state='client_state')
 
@@ -18,19 +18,9 @@
 </template>
 
 <script lang='coffee'>
-import MenuResearchMenu from '~/components/menu/research/menu.vue'
-import MenuResearchDetails from '~/components/menu/research/details.vue'
-import MenuResearchTree from '~/components/menu/research/tree.vue'
-
 import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
 
 export default
-  components: {
-    MenuResearchDetails
-    MenuResearchMenu
-    MenuResearchTree
-  }
-
   props:
     managers: Object
     ajax_state: Object
@@ -49,8 +39,8 @@ export default
 </script>
 
 <style lang='sass' scoped>
-@import '~assets/stylesheets/starpeace-variables'
-@import '~assets/stylesheets/starpeace-menus'
+@import '~/assets/stylesheets/starpeace-variables'
+@import '~/assets/stylesheets/starpeace-menus'
 
 .sp-menu
   grid-column: start-left / end-right

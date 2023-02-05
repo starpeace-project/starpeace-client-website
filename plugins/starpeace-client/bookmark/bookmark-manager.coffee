@@ -1,3 +1,4 @@
+import _ from 'lodash';
 
 import Bookmark from '~/plugins/starpeace-client/bookmark/bookmark.coffee'
 import BookmarkFolder from '~/plugins/starpeace-client/bookmark/bookmark-folder.coffee'

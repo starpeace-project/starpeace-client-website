@@ -3,6 +3,7 @@
 .settings
 node_modules
 dist
+.output
 .editorconfig
 .project
 npm-debug.log

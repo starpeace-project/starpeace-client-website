@@ -1,7 +1,3 @@
-
-import moment from 'moment'
-import Vue from 'vue'
-
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 
 export default class AjaxState
@@ -29,12 +25,12 @@ export default class AjaxState
     @request_mutex[type]?[key] || false
 
   lock: (type, key) ->
-    Vue.set(@request_mutex, type, {}) unless @request_mutex[type]?
-    Vue.set(@request_mutex[type], key, true)
+    @request_mutex[type] = {} unless @request_mutex[type]?
+    @request_mutex[type][key] = true
     @start_ajax()
 
   unlock: (type, key) ->
-    Vue.set(@request_mutex[type], key, false) if @request_mutex[type]?[key]?
+    @request_mutex[type][key] = false if @request_mutex[type]?[key]?
     @finish_ajax()
 
   locked: (type, key, callback) ->

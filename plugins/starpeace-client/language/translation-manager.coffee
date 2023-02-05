@@ -1,6 +1,4 @@
-
 import _ from 'lodash'
-import Vue from 'vue'
 
 import FactoryDefinition from '~/plugins/starpeace-client/building/simulation/factory/factory-definition.coffee'
 import StorageDefinition from '~/plugins/starpeace-client/building/simulation/storage/storage-definition.coffee'
@@ -75,8 +73,8 @@ export default class TranslationManager
     for language_values in LANGUAGE_STRINGS
       for text_key,languages of language_values
         for language_code,value of languages
-          Vue.set(@translations_by_language_code, language_code, {}) unless @translations_by_language_code[language_code]?
-          Vue.set(@translations_by_language_code[language_code], text_key, value)
+          @translations_by_language_code[language_code] = {} unless @translations_by_language_code[language_code]?
+          @translations_by_language_code[language_code][text_key] = value
 
   text: (key) ->
     if key instanceof Translation

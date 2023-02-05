@@ -18,7 +18,7 @@
         img.starpeace-logo
 
       template(v-else-if='sortedTycoons.length')
-        toggle-list-item(
+        menu-shared-toggle-list-menu-item(
           v-for='(tycoon,index) in sortedTycoons'
           :key='tycoon.corporationId || index'
           :client-state='client_state'
@@ -27,7 +27,7 @@
           :details-callback="tycoon.type == 'visitor' ? null : loadCorporation()"
           v-slot:default='slotProps'
         )
-          menu-panel-corporation(
+          menu-shared-menu-panel-corporation(
             hide-tycoon
             :managers='managers'
             :client-state='client_state'
@@ -41,15 +41,9 @@
 </template>
 
 <script lang='coffee'>
-import ToggleListItem from '~/components/menu/shared/toggle-list-menu/item.vue'
-import MenuPanelCorporation from '~/components/menu/shared/menu-panel/corporation.vue'
+import _ from 'lodash';
 
 export default
-  components: {
-    ToggleListItem
-    MenuPanelCorporation
-  }
-
   props:
     managers: Object
     client_state: Object
@@ -60,7 +54,7 @@ export default
     onlineTycoons: null
 
   computed:
-    loading: -> @detailsPromise?
+    loading: -> false
     sortedTycoons: -> _.orderBy(_.map(@onlineTycoons, (tycoon) =>
       if tycoon.type == 'visitor'
         tycoon.tycoonName = @translate('identity.visitor')
@@ -95,8 +89,8 @@ export default
 </script>
 
 <style lang='sass' scoped>
-@import '~assets/stylesheets/starpeace-menus'
-@import '~assets/stylesheets/starpeace-variables'
+@import '~/assets/stylesheets/starpeace-menus'
+@import '~/assets/stylesheets/starpeace-variables'
 
 .sp-menu
   grid-column: start-right / end-right

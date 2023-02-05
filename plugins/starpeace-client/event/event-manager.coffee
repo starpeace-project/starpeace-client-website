@@ -1,3 +1,4 @@
+import _ from 'lodash';
 
 EVENT_CHANGE_SPEED = 30000
 
@@ -19,7 +20,7 @@ export default class EventManager
     @ajax_state.lock('assets.static_news', current_language)
     @asset_manager.queue("news.static.#{current_language.toLowerCase()}", "./news.static.#{current_language.toLowerCase()}.json", (resource) =>
       # FIXME: TODO: convert json to object
-      @client_state.core.news_library.load_static_news(current_language, resource.data)
+      @client_state.core.news_library.load_static_news(current_language, resource)
       @ajax_state.unlock('assets.static_news', current_language)
       completion_callback() if completion_callback? && _.isFunction(completion_callback)
     )

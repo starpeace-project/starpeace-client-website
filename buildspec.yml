@@ -2,6 +2,8 @@ version: 0.2
 
 phases:
   install:
+    runtime-versions:
+      nodejs: 16
     commands:
       - echo Entered the install phase...
       - npm update -g npm
@@ -21,10 +23,10 @@ phases:
   post_build:
     commands:
       - echo Entered the post_build phase...
-      - aws s3 sync --delete dist "s3://client.starpeace.io/"
-      - aws cloudfront create-invalidation --distribution-id E3DV1VZYJSOD50 --paths / /assets/client-version.json /login/ /release/
+      - aws s3 sync --delete .output/public "s3://client.starpeace.io/"
+      - aws cloudfront create-invalidation --distribution-id E3DV1VZYJSOD50 --paths / "/*"
       - echo Build completed on `date`
 
 artifacts:
   files:
-    - dist/**/*
+    - .output/public/**/*

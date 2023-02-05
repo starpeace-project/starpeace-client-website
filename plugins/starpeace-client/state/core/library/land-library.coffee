@@ -1,4 +1,3 @@
-
 import Library from '~/plugins/starpeace-client/state/core/library/library.coffee'
 import TextureAtlasCache from '~/plugins/starpeace-client/state/core/texture-atlas-cache.coffee'
 

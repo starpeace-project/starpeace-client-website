@@ -3,16 +3,16 @@
   a.is-folder-item(:class='link_class' :style='link_style' @click.stop.prevent='toggle')
     span.sp-tree-menu-item-icon
       template(v-if="item.type == 'COMPANY'")
-        company-seal-icon(:seal_id='item.seal_id' with_min_size=true)
+        misc-company-seal-icon(:seal_id='item.seal_id' with_min_size=true)
 
       template(v-else-if="item.type == 'INDUSTRY_TYPE'")
-        industry-type-icon(:industry_type='item.industry_type_id' small=true)
+        misc-industry-type-icon(:industry_type='item.industry_type_id' small=true)
 
       template(v-else-if="item.type == 'INDUSTRY_CATEGORY'")
-        industry-category-icon(:category='item.industry_category_id' small=true)
+        misc-industry-category-icon(:category='item.industry_category_id' small=true)
 
       template(v-else-if="item.type == 'TOWN'")
-        city-icon
+        misc-city-icon
 
       template(v-else-if="item.type == 'MAP_LOCATION'")
         font-awesome-icon(:icon="['fas', 'map-marker-alt']")
@@ -39,7 +39,7 @@
 
   .sp-menu-list(v-if='has_children' v-show='expanded')
     .menu-item(v-for='child in all_children' :key='child.id')
-      tree-menu-item(
+      menu-shared-tree-menu-item(
         :managers='managers'
         :client-state='clientState'
         :item='child'
@@ -53,23 +53,9 @@
 </template>
 
 <script lang='coffee'>
-import TreeMenuItem from '~/components/menu/shared/tree-menu/item.vue'
-
-import CityIcon from '~/components/misc/city-icon.vue'
-import CompanySealIcon from '~/components/misc/company-seal-icon.vue'
-import IndustryCategoryIcon from '~/components/misc/industry-category-icon.vue'
-import IndustryTypeIcon from '~/components/misc/industry-type-icon.vue'
+import _ from 'lodash';
 
 export default
-  components: {
-    CompanySealIcon
-    CityIcon
-    IndustryCategoryIcon
-    IndustryTypeIcon
-    TreeMenuItem
-  }
-
-  name: 'tree-menu-item'
   props:
     managers: Object
     clientState: Object
@@ -127,7 +113,7 @@ export default
 </script>
 
 <style lang='sass' scoped>
-@import '~assets/stylesheets/starpeace-variables'
+@import '~/assets/stylesheets/starpeace-variables'
 
 .loading-children-container
   justify-content: center

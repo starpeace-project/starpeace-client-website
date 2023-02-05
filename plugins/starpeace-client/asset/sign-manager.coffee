@@ -13,14 +13,14 @@ export default class SignManager
     @ajax_state.lock('assets.signs_metadata', 'ALL')
     @asset_manager.queue('metadata.sign', './sign.metadata.json', (resource) =>
       definitions = []
-      for key,json of (resource.data?.signs || {})
+      for key,json of (resource.signs || {})
         # FIXME: TODO: add ID to json, change from map to array
         json.id = key
         definitions.push SignDefinition.from_json(json)
 
       @client_state.core.sign_library.load_sign_metadata(definitions)
-      @client_state.core.sign_library.load_required_atlases(resource.data?.atlas)
+      @client_state.core.sign_library.load_required_atlases(resource.atlas)
 
-      @asset_manager.queue_and_load_atlases((resource.data?.atlas || []), (atlas_path, atlas) => @client_state.core.sign_library.load_atlas(atlas_path, atlas))
+      @asset_manager.queue_and_load_atlases((resource.atlas || []), (atlas_path, atlas) => @client_state.core.sign_library.load_atlas(atlas_path, atlas))
       @ajax_state.unlock('assets.signs_metadata', 'ALL')
     )

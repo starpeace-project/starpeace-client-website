@@ -34,9 +34,12 @@ export default
 
 #fps-container
   position: absolute
-  right: 9.25rem
+  right: .5rem
   top: .5rem
   z-index: 1015
+
+  :deep(div)
+    position: unset !important
 
 #render-container
   height: calc(100% - 16rem)

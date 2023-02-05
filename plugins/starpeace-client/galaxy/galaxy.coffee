@@ -1,9 +1,7 @@
-
 import _ from 'lodash'
-import moment from 'moment'
 
 import Planet from '~/plugins/starpeace-client/planet/planet.coffee'
-import Tycoon from '~/plugins/starpeace-client/tycoon/tycoon.coffee'
+import Tycoon from '~/plugins/starpeace-client/tycoon/tycoon'
 
 import TimeUtils from '~/plugins/starpeace-client/utils/time-utils.coffee'
 

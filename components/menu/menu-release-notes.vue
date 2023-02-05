@@ -23,7 +23,7 @@ export default
     managers: Object
 
   data: ->
-    release_notes_html: process.env.RELEASE_NOTES_HTML
+    release_notes_html: @$config.public.RELEASE_NOTES_HTML
 
   methods:
     translate: (text_key) -> @managers?.translation_manager?.text(text_key)

@@ -1,11 +1,6 @@
-
-import moment from 'moment'
-import Vue from 'vue'
-
 import Cache from '~/plugins/starpeace-client/state/core/cache/cache.coffee'
-import Tycoon from '~/plugins/starpeace-client/tycoon/tycoon.coffee'
+import Tycoon from '~/plugins/starpeace-client/tycoon/tycoon'
 
-import TimeUtils from '~/plugins/starpeace-client/utils/time-utils.coffee'
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 
 export default class TycoonCache extends Cache
@@ -25,7 +20,7 @@ export default class TycoonCache extends Cache
       Logger.debug "client misconfiguration, object is not expected Tycoon"
       return
 
-    Vue.set(@tycoon_metadata_by_id, tycoon_metadata.id, tycoon_metadata)
+    @tycoon_metadata_by_id[tycoon_metadata.id] = tycoon_metadata
     @notify_tycoon_metadata_listeners()
 
   metadata_for_id: (tycoon_id) -> @tycoon_metadata_by_id[tycoon_id]

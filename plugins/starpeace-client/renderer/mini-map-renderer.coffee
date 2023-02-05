@@ -1,6 +1,6 @@
-
 import 'javascript-detect-element-resize'
 import * as PIXI from 'pixi.js'
+import { DateTime } from 'luxon'
 
 import MetadataLand from '~/plugins/starpeace-client/land/metadata-land.coffee'
 
@@ -38,38 +38,43 @@ export default class MiniMapRenderer
   update_map_data: (source_x, target_x, source_y, target_y) ->
     return unless @client_state.planet.game_map?.map_rgba_pixels?
 
-    @rgba_buffer = new Uint8ClampedArray(@client_state.planet.game_map.width * @client_state.planet.game_map.height * 4) unless @rgba_buffer?
+    now = DateTime.now()
+    game_map = @client_state.planet.game_map
+    building_library = @client_state.core.building_library
+    planet_library = @client_state.core.planet_library
+
+    @rgba_buffer = new Uint8ClampedArray(game_map.width * game_map.height * 4) unless @rgba_buffer?
     for y in [source_y...target_y]
       for x in [source_x...target_x]
-        index = (y * @client_state.planet.game_map.width + x) * 4
-        source_index = ((@client_state.planet.game_map.height - x) * @client_state.planet.game_map.width + (@client_state.planet.game_map.width - y)) * 4
+        index = (y * game_map.width + x) * 4
+        source_index = ((game_map.height - x) * game_map.width + (game_map.width - y)) * 4
 
         @rgba_buffer[index + 3] = 255
 
-        building_chunk_info = @client_state.planet.game_map.building_map.chunk_building_info_at(x, y)
-        road_chunk_info = @client_state.planet.game_map.building_map.chunk_road_info_at(x, y)
+        building_chunk_info = game_map.building_map.chunk_building_info_at(x, y)
+        road_chunk_info = game_map.building_map.chunk_road_info_at(x, y)
 
-        if building_chunk_info?.is_current() && road_chunk_info?.is_current()
-          building_info = @client_state.planet.game_map.building_map.building_info_at(x, y)
-          building_metadata = if building_info? then @client_state.core.building_library.metadata_by_id[building_info.definition_id] else null
-          if @client_state.planet.game_map.road_map.road_info_at(x, y)
+        if building_chunk_info?.is_current(now) && road_chunk_info?.is_current(now)
+          building_info = game_map.building_map.building_info_at(x, y)
+          building_metadata = if building_info? then building_library.metadata_by_id[building_info.definition_id] else null
+          if game_map.road_map.road_info_at(x, y)
             @rgba_buffer[index + 0] = 30
             @rgba_buffer[index + 1] = 30
             @rgba_buffer[index + 2] = 30
           else if building_info? && building_metadata?
-            zone = @client_state.core.planet_library.zone_for_id(building_metadata.city_zone_id)
+            zone = planet_library.zone_for_id(building_metadata.city_zone_id)
             color = zone?.mini_map_color || 0x800000
             @rgba_buffer[index + 0] = (color & 0xFF0000) >> 16
             @rgba_buffer[index + 1] = (color & 0x00FF00) >> 8
             @rgba_buffer[index + 2] = (color & 0x0000FF) >> 0
           else
-            @rgba_buffer[index + 0] = @client_state.planet.game_map.map_rgba_pixels[source_index + 0]
-            @rgba_buffer[index + 1] = @client_state.planet.game_map.map_rgba_pixels[source_index + 1]
-            @rgba_buffer[index + 2] = @client_state.planet.game_map.map_rgba_pixels[source_index + 2]
+            @rgba_buffer[index + 0] = game_map.map_rgba_pixels[source_index + 0]
+            @rgba_buffer[index + 1] = game_map.map_rgba_pixels[source_index + 1]
+            @rgba_buffer[index + 2] = game_map.map_rgba_pixels[source_index + 2]
         else
-          @rgba_buffer[index + 0] = @client_state.planet.game_map.map_rgba_pixels[source_index + 0] - @client_state.planet.game_map.map_rgba_pixels[source_index + 0] * .5
-          @rgba_buffer[index + 1] = @client_state.planet.game_map.map_rgba_pixels[source_index + 1] - @client_state.planet.game_map.map_rgba_pixels[source_index + 1] * .5
-          @rgba_buffer[index + 2] = @client_state.planet.game_map.map_rgba_pixels[source_index + 2] - @client_state.planet.game_map.map_rgba_pixels[source_index + 2] * .5
+          @rgba_buffer[index + 0] = game_map.map_rgba_pixels[source_index + 0] - game_map.map_rgba_pixels[source_index + 0] * .5
+          @rgba_buffer[index + 1] = game_map.map_rgba_pixels[source_index + 1] - game_map.map_rgba_pixels[source_index + 1] * .5
+          @rgba_buffer[index + 2] = game_map.map_rgba_pixels[source_index + 2] - game_map.map_rgba_pixels[source_index + 2] * .5
 
   refresh_map_texture: () ->
     return unless @client_state.initialized && @client_state.workflow_status == 'ready'

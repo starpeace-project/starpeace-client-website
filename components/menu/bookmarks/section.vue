@@ -10,31 +10,28 @@
 
   .sp-menu-list(v-if='has_items', v-show="section_expanded")
     template(v-if='is_draggable')
-      draggable(v-model='items_as_options', @start='start_move_item', @choose='choose_item', :move='move_item')
+      draggable(v-model='items_as_options', @start='start_move_item', @choose='choose_item', :move='move_item' item-key='id')
         transition-group(name='menu-section')
           .draggable-item.bookmark-item(v-for="child in items_as_options" :key="child.id")
             template(v-if="child.type == 'slot'")
               div.slot-item
             template(v-else-if="child.is_folder")
-              section-folder(:item="child", :dragging_level="dragging_item_id == child.id ? dragging_item_level : -1", v-on:toggled='refresh_tree')
+              menu-bookmarks-section-folder(:item="child", :dragging_level="dragging_item_id == child.id ? dragging_item_level : -1", v-on:toggled='refresh_tree')
             template(v-else-if='true')
-              section-item(:item='child', :dragging_level="dragging_item_id == child.id ? dragging_item_level : -1", v-on:selected='item_selected')
+              menu-bookmarks-section-item(:item='child', :dragging_level="dragging_item_id == child.id ? dragging_item_level : -1", v-on:selected='item_selected')
 
     template(v-else)
       .bookmark-item(v-for="child in items_as_options", :key="child.id")
         template(v-if="child.type == 'slot'")
         template(v-else-if="child.is_folder")
-          section-folder(:item="child" @toggled='refresh_tree')
+          menu-bookmarks-section-folder(:item="child" @toggled='refresh_tree')
         template(v-else)
-          section-item(:item='child' @selected='item_selected')
+          menu-bookmarks-section-item(:item='child' @selected='item_selected')
 
 </template>
 
 <script lang='coffee'>
-import draggable from 'vuedraggable'
-
-import SectionFolder from '~/components/menu/bookmarks/section-folder.vue'
-import SectionItem from '~/components/menu/bookmarks/section-item.vue'
+import _ from 'lodash';
 
 menu_item_slot = (id, order, level) ->
   {
@@ -114,13 +111,6 @@ options_to_tree_pairs = (pending_items, parent_id, level) ->
 level_for_item = (item) -> if item.attributes?.future_level? && item.attributes?.future_level != item.level then item.attributes?.future_level else item.level
 
 export default
-  components:
-    'draggable': draggable
-
-    'section-folder': SectionFolder
-    'section-item': SectionItem
-
-  name: 'menu-section'
   props:
     managers: Object
     client_state: Object
@@ -132,9 +122,9 @@ export default
     is_draggable: Boolean
 
   mounted: ->
-    if @root_id == 'bookmarks'
-      @$root.$on('add_folder_action', () => @section_expanded = true unless @section_expanded)
-      @$root.$on('add_bookmark_action', () => @section_expanded = true unless @section_expanded)
+    #if @root_id == 'bookmarks'
+    #  @$root.$on('add_folder_action', () => @section_expanded = true unless @section_expanded)
+    #  @$root.$on('add_bookmark_action', () => @section_expanded = true unless @section_expanded)
 
     @client_state?.options?.subscribe_options_listener => @refresh_tree()
 
@@ -262,7 +252,7 @@ export default
 </script>
 
 <style lang='sass' scoped>
-@import '~assets/stylesheets/starpeace-variables'
+@import '~/assets/stylesheets/starpeace-variables'
 
 .draggable-item
   transition: all .25s

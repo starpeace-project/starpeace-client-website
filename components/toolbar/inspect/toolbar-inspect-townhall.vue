@@ -152,6 +152,7 @@
 </template>
 
 <script lang='coffee'>
+import _ from 'lodash';
 import ServiceType from '~/plugins/starpeace-client/planet/details/service-type.coffee'
 
 export default
@@ -172,7 +173,7 @@ export default
     mayor_overall_rating: -> @details?.current_term?.overall_rating || 0
     service_levels: -> @details?.services || []
 
-    next_election_label: -> @details?.next_term?.start?.format('MMM D, YYYY') || translate('ui.misc.none')
+    next_election_label: -> @details?.next_term?.start?.toFormat('MMM d, yyyy') || translate('ui.misc.none')
 
     commerces: -> _.orderBy(@details?.commerce, [(c) => @industry_type_label(c.industry_type_id)], ['asc'])
     taxes: ->_.orderBy(@details?.taxes, [(t) => @industry_category_label(t.industry_category_id), (t) => @industry_type_label(t.industry_type_id)], ['asc', 'asc'])
@@ -214,8 +215,8 @@ export default
 </script>
 
 <style lang='sass' scoped>
-@import '~assets/stylesheets/starpeace-variables'
-@import '~assets/stylesheets/starpeace-inspect'
+@import '~/assets/stylesheets/starpeace-variables'
+@import '~/assets/stylesheets/starpeace-inspect'
 
 .column
   &.service-levels

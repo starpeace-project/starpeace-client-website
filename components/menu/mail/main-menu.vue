@@ -6,16 +6,16 @@
       font-awesome-icon(:icon="['fas', 'times']")
 
   .card-content.is-paddingless.sp-menu-background
-    loading-card(:managers='managers' :visible='loading' within-absolute=true)
-    loading-modal(v-show='loading' within-absolute=true)
+    misc-card-loading(:managers='managers' :visible='loading' within-absolute=true)
+    misc-modal-loading(v-show='loading' within-absolute=true)
 
-    contacts(
+    menu-mail-contacts(
       :managers='managers'
       :ajax_state='ajax_state'
       :client_state='client_state'
       :loading='loading'
     )
-    messages(
+    menu-mail-messages(
       :managers='managers'
       :ajax_state='ajax_state'
       :client_state='client_state'
@@ -27,7 +27,7 @@
     )
 
     template(v-if='is_compose_mode')
-      message-compose(
+      menu-mail-message-compose(
         :managers='managers'
         :ajax_state='ajax_state'
         :client_state='client_state'
@@ -36,31 +36,15 @@
         @send='compose_send'
       )
     template(v-else-if='selected_mail')
-      message-view(:managers='managers' :ajax_state='ajax_state' :client_state='client_state')
+      menu-mail-message-view(:managers='managers' :ajax_state='ajax_state' :client_state='client_state')
 
 </template>
 
 <script lang='coffee'>
-import Contacts from '~/components/menu/mail/contacts.vue'
-import Messages from '~/components/menu/mail/messages.vue'
-import MessageCompose from '~/components/menu/mail/message-compose.vue'
-import MessageView from '~/components/menu/mail/message-view.vue'
-
-import LoadingCard from '~/components/misc/card-loading.vue'
-import LoadingModal from '~/components/misc/modal-loading.vue'
-
+import _ from 'lodash';
 import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
 
 export default
-  components: {
-    Contacts
-    Messages
-    MessageCompose
-    MessageView
-    LoadingCard
-    LoadingModal
-  }
-
   props:
     managers: Object
     ajax_state: Object
@@ -100,7 +84,7 @@ export default
       lines[lines.length] = ""
       lines[lines.length] = "----------"
       lines[lines.length] = "#{@translate('ui.menu.mail.contacts.compose.from')}: #{mail.from_entity.name}"
-      lines[lines.length] = "#{@translate('ui.menu.mail.contacts.compose.sent')}: #{mail.planet_sent_at.format('MMM D, YYYY')} (#{mail.sent_at.format('YYYY-MM-DD HH:mm [UTC]')})"
+      lines[lines.length] = "#{@translate('ui.menu.mail.contacts.compose.sent')}: #{mail.planet_sent_at.toFormat('MMM d, yyyy')} (#{mail.sent_at.toFormat('yyyy-MM-dd HH:mm [UTC]')})"
       lines[lines.length] = "#{@translate('ui.menu.mail.contacts.compose.to')}: #{_.map(mail.to_entities, 'name').join('; ')}"
       lines[lines.length] = "#{@translate('ui.menu.mail.contacts.compose.subject')}: #{mail.subject}"
       lines[lines.length] = ""
@@ -147,7 +131,7 @@ export default
 </script>
 
 <style lang='sass' scoped>
-@import '~assets/stylesheets/starpeace-menus'
+@import '~/assets/stylesheets/starpeace-menus'
 
 .sp-menu
   grid-column: start-left / end-render

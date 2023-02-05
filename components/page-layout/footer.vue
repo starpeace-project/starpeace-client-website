@@ -14,11 +14,11 @@
 </template>
 
 <script lang='coffee'>
-import moment from 'moment'
+import { DateTime } from 'luxon';
 
 export default
   methods:
-    copyright: () -> "Copyright &copy; #{moment().year()}"
+    copyright: () -> "Copyright &copy; #{DateTime.now().year}"
 </script>
 
 <style lang='sass' scoped>

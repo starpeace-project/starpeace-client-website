@@ -1,16 +1,26 @@
-
-import moment from 'moment'
-import Vue from 'vue'
-
 import EventListener from '~/plugins/starpeace-client/state/event-listener.coffee'
 
-import TimeUtils from '~/plugins/starpeace-client/utils/time-utils.coffee'
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 
 export default class PlayerState
   constructor: () ->
     @event_listener = new EventListener()
-    @reset_state()
+    @planet_id = null
+    @planet_visa_type = null
+    @planet_visa_id = null
+
+    @tycoon_id = null
+    @corporation_id = null
+    @company_id = null
+
+    @last_mail_at = null
+    @mail_by_id = null
+    @selected_mail_id = null
+
+    @mail_compose_mode = false
+    @mail_compose_to = ''
+    @mail_compose_subject = ''
+    @mail_compose_body = ''
 
   reset_state: () ->
     @planet_id = null
@@ -68,14 +78,14 @@ export default class PlayerState
   set_mail: (mails) ->
     @mail_by_id = {} unless @mail_by_id?
     if Array.isArray(mails)
-      Vue.set(@mail_by_id, mail.id, mail) for mail in mails
+      @mail_by_id[mail.id] = mail for mail in mails
     else
-      Vue.set(@mail_by_id, mails.id, mails)
+      @mail_by_id[mails.id] mails
     @notify_mail_listeners()
 
   remove_mail: (mail_id) ->
     @selected_mail_id = null if @selected_mail_id == mail_id
-    Vue.delete(@mail_by_id, mail_id) if @mail_by_id[mail_id]?
+    delete @mail_by_id[mail_id] if @mail_by_id[mail_id]?
     @notify_mail_listeners()
 
   start_compose: (to_corporations=[]) ->

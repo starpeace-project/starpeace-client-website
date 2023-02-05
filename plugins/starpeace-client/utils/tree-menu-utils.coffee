@@ -1,3 +1,4 @@
+import _ from 'lodash';
 
 export default class TreeMenuUtils
   constructor: (@planets_manager, @translation_manager, @ajax_state, @client_state) ->

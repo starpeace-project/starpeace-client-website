@@ -17,8 +17,8 @@
               span.planet-value {{online_count(galaxy)}}
 
         .column.is-5.has-text-right.galaxy-actions
-          a.button.is-medium.is-starpeace.is-inverted.is-outlined(v-on:click.stop.prevent="proceed_as_visitor(galaxy.id)" :disabled='!visitor_enabled(galaxy)') {{translate('identity.visitor')}}
-          a.button.is-medium.is-starpeace.is-inverted(:class="{'is-outlined': tycoon_galaxy_id != galaxy.id}" v-on:click.stop.prevent="toggle_tycoon_galaxy(galaxy.id)" :disabled='!tycoon_enabled(galaxy)') {{translate('identity.tycoon')}}
+          button.button.is-medium.is-starpeace.is-inverted.is-outlined(v-on:click.stop.prevent="proceed_as_visitor(galaxy.id)" :disabled='!visitor_enabled(galaxy)') {{translate('identity.visitor')}}
+          button.button.is-medium.is-starpeace.is-inverted(:class="{'is-outlined': tycoon_galaxy_id != galaxy.id}" v-on:click.stop.prevent="toggle_tycoon_galaxy(galaxy.id)" :disabled='!tycoon_enabled(galaxy)') {{translate('identity.tycoon')}}
 
         .galaxy-loading-modal(v-show='is_galaxy_loading(galaxy.id) || is_galaxy_error(galaxy.id)')
           img.starpeace-logo(v-show='is_galaxy_loading(galaxy.id)')
@@ -34,52 +34,59 @@
                 .field.is-grouped
                   template(v-if='tycoon_authenticated(galaxy) != null')
                     .control
-                      a.button.is-starpeace.is-inverted.is-outlined(v-on:click.stop.prevent="logout_tycoon(galaxy.id)") {{translate('ui.workflow.universe.signout.label')}}
+                      button.button.is-starpeace.is-inverted.is-outlined(@click.stop.prevent="logout_tycoon(galaxy.id)") {{translate('ui.workflow.universe.signout.label')}}
                     .control.is-expanded
                       | Signed in as {{tycoon_authenticated(galaxy).username}}
                     .control
-                      a.button.is-starpeace.is-inverted(v-on:click.stop.prevent="proceed_as_tycoon(galaxy.id)") Proceed
+                      button.button.is-starpeace.is-inverted(@click.stop.prevent="proceed_as_tycoon(galaxy.id)") Proceed
 
                   template(v-else)
                     .control
-                      a.button.is-starpeace.is-inverted.is-outlined(
+                      button.button.is-starpeace.is-inverted.is-outlined(
                         @click.stop.prevent="toggle_create_tycoon(galaxy.id)"
                         :disabled='!tycoon_creation_enabled(galaxy.id)'
                       ) {{translate('misc.action.create')}}
                     .control.has-icons-left.is-expanded
-                      input.input(type='text' autocomplete='username' :placeholder="translate('ui.workflow.universe.username.label')" v-model='username')
+                      input.input(type='text' autocomplete='username' :placeholder="translate('ui.workflow.universe.username.label')" v-model='username' :disabled='!!authorizing')
                       span.icon.is-small.is-left
                         font-awesome-icon(:icon="['fas', 'user-tie']")
                     .control.has-icons-left.is-expanded
-                      input.input(type='password' autocomplete='current-password' :placeholder="translate('ui.workflow.universe.password.label')" v-model='password')
+                      input.input(type='password' autocomplete='current-password' :placeholder="translate('ui.workflow.universe.password.label')" v-model='password' :disabled='!!authorizing')
                       span.icon.is-small.is-left
                         font-awesome-icon(:icon="['fas', 'lock']")
                     .control
-                      toggle-option(:value='remember_me' @toggle="remember_me=!remember_me")
+                      misc-toggle-option(:value='remember_me' @toggle="remember_me=!remember_me")
                       span.toggle-label(@click.stop.prevent="remember_me=!remember_me") {{translate('ui.workflow.universe.remember_tycoon.label')}}
                     .control
-                      a.button.is-starpeace.is-inverted(@click.stop.prevent="login_tycoon(galaxy.id)" :disabled='!tycoon_enabled(galaxy) || !has_tycoon_credentials') {{translate('ui.workflow.universe.signin.label')}}
+                      button.button.is-starpeace.is-inverted(@click.stop.prevent="login_tycoon(galaxy.id)" :disabled='!tycoon_enabled(galaxy) || !has_tycoon_credentials || authorizing') {{translate('ui.workflow.universe.signin.label')}}
 
+            .field.is-horizontal(v-if='error_code')
+              .field-body
+                .field.is-grouped
+                  .control.is-narrow
+                    span.has-text-danger {{translate(error_code_key)}}
 
   .level.galaxy-actions-level
     .level-left
       .level-item
-        a.button.is-small.is-starpeace(v-on:click.stop.prevent='toggle_remove_galaxy', :disabled='!galaxies.length') {{translate('ui.workflow.universe.galaxy.remove.label')}}
+        button.button.is-small.is-starpeace(@click.stop.prevent='toggle_remove_galaxy' :disabled='!galaxies.length') {{translate('ui.workflow.universe.galaxy.remove.label')}}
     .level-right
       .level-item
-        a.button.is-small.is-starpeace(v-on:click.stop.prevent='toggle_add_galaxy') {{translate('ui.workflow.universe.galaxy.add.label')}}
+        button.button.is-small.is-starpeace(@click.stop.prevent='toggle_add_galaxy') {{translate('ui.workflow.universe.galaxy.add.label')}}
 
 </template>
 
 <script lang='coffee'>
-import Vue from 'vue'
+import _ from 'lodash';
 
-import ToggleOption from '~/components/misc/toggle-option.vue'
+MIN_USERNAME = 1 # TODO: raise to like 3+ in future
+MIN_PASSWORD = 1 # TODO: raise to like 3+ in future
+
+ERROR_CODE_GENERAL = 'GENERAL'
+ERROR_CODE_INVALID = 'INVALID'
+ERROR_CODES = [ERROR_CODE_GENERAL, ERROR_CODE_INVALID]
 
 export default
-  components:
-    'toggle-option': ToggleOption
-
   props:
     managers: Object
     ajax_state: Object
@@ -92,9 +99,11 @@ export default
     galaxies: []
     galaxy_errors: {}
 
+    authorizing: false
     username: ''
     password: ''
     remember_me: true
+    error_code: null
 
     tycoon_galaxy_id: null
 
@@ -115,12 +124,11 @@ export default
         @refresh_galaxies()
 
     tycoon_galaxy_id: (new_value, old_value) ->
+      @clear_tycoon_credentials()
+
       if new_value == 'browser-sandbox'
         @username = 'test'
         @password = 'test'
-      else
-        @username = ''
-        @password = ''
 
     galaxies: (new_value, old_value) -> @refresh_galaxies()
 
@@ -128,7 +136,12 @@ export default
   computed:
     is_visible: -> @client_state.workflow_status == 'pending_universe'
 
-    has_tycoon_credentials: -> @username.length && @password.length
+    has_tycoon_credentials: -> _.trim(@username).length >= MIN_USERNAME && _.trim(@password).length >= MIN_PASSWORD
+
+    error_code_key: ->
+      return 'ui.workflow.universe.error.signin_problem.label' if @error_code == ERROR_CODE_GENERAL
+      return 'ui.workflow.universe.error.signin_invalid.label' if @error_code == ERROR_CODE_INVALID
+      ''
 
   methods:
     translate: (key) -> if @managers? then @managers.translation_manager.text(key) else key
@@ -156,21 +169,21 @@ export default
     refresh_galaxies: () ->
       pending_galaxies = _.reject(@galaxies, (galaxy) => @client_state.core.galaxy_cache.has_galaxy_metadata(galaxy.id) || @is_galaxy_loading(galaxy.id))
       Promise.all(_.map(pending_galaxies, (galaxy) => new Promise (done, error) =>
-        Vue.set(@galaxy_errors, galaxy.id, false) if @galaxy_errors[galaxy.id]
+        @galaxy_errors[galaxy.id] = false if @galaxy_errors[galaxy.id]
         @managers.galaxy_manager.load_metadata(galaxy.id)
           .then => done()
           .catch (e) =>
-            Vue.set(@galaxy_errors, galaxy.id, true)
+            @galaxy_errors[galaxy.id] = true
             done()
       ))
 
     refresh_galaxy: (galaxy_id) ->
       return if @is_galaxy_loading(galaxy_id)
-      Vue.set(@galaxy_errors, galaxy_id, false) if @galaxy_errors[galaxy_id]
+      @galaxy_errors[galaxy_id] = false if @galaxy_errors[galaxy_id]
       @managers.galaxy_manager.load_metadata(galaxy_id)
         .then => @$forceUpdate() if @is_visible
-        .catch =>
-          Vue.set(@galaxy_errors, galaxy_id, true)
+        .catch (err) =>
+          @galaxy_errors[galaxy_id] = true
           @$forceUpdate() if @is_visible
 
 
@@ -193,26 +206,42 @@ export default
       @client_state?.interface?.show_create_tycoon = true
       @client_state?.interface?.create_tycoon_galaxy_id = galaxy_id
 
+    clear_tycoon_credentials: () ->
+      @username = ''
+      @password = ''
+      @remember_me = true
+      @error_code = null
 
     login_tycoon: (galaxy_id) ->
+      return if @authorizing
       metadata = @metadata_for_galaxy(galaxy_id)
       return unless metadata? && metadata?.tycoon_enabled
-      @managers.galaxy_manager.login(galaxy_id, @username, @password, @remember_me)
-        .then (tycoon) =>
-          @client_state.identity.set_visa(galaxy_id, 'tycoon', tycoon)
-          @client_state.player.tycoon_id = tycoon.id
-          @refresh_galaxy(galaxy_id)
-        .catch (e) =>
-          console.error e
-          @$forceUpdate() if @is_visible
+
+      @authorizing = true
+      try
+        tycoon = await @managers.galaxy_manager.login(galaxy_id, @username, @password, @remember_me)
+        @clear_tycoon_credentials()
+        @authorizing = false
+        @client_state.identity.set_visa(galaxy_id, 'tycoon', tycoon)
+        @client_state.player.tycoon_id = tycoon.id
+        @refresh_galaxy(galaxy_id)
+
+      catch e
+        @authorizing = false
+        @error_code = if ERROR_CODES.indexOf(e?.data?.code) >= 0 then e?.data?.code else ERROR_CODE_GENERAL
+        @$forceUpdate() if @is_visible
+
     logout_tycoon: (galaxy_id) ->
-      @managers.galaxy_manager.logout(galaxy_id)
-        .then () =>
-          @client_state.reset_full_state()
-          @refresh_galaxies()
-        .catch (e) =>
-          console.error e
-          @$forceUpdate() if @is_visible
+      @clear_tycoon_credentials()
+
+      try
+        await @managers.galaxy_manager.logout(galaxy_id)
+        @client_state.reset_full_state()
+        @refresh_galaxies()
+
+      catch e
+        @error_code = if ERROR_CODES.indexOf(e?.data?.code) >= 0 then e?.data?.code else ERROR_CODE_GENERAL
+        @$forceUpdate() if @is_visible
 
     proceed_as_visitor: (galaxy_id) ->
       metadata = @metadata_for_galaxy(galaxy_id)
@@ -228,8 +257,8 @@ export default
 </script>
 
 <style lang='sass' scoped>
-@import '~bulma/sass/utilities/_all'
-@import '~assets/stylesheets/starpeace-variables'
+@import 'bulma/sass/utilities/_all'
+@import '~/assets/stylesheets/starpeace-variables'
 
 .universe-multiverse-actions
   position: relative

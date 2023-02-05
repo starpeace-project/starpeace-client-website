@@ -1,68 +1,20 @@
-import { library } from '@fortawesome/fontawesome-svg-core'
+import { library } from '@fortawesome/fontawesome-svg-core';
 
-import {
-  faBuilding,
-  faCircle,
-  faComments,
-  faEnvelope,
-  faEye,
-  faFolder as faFolderRegular,
-  faQuestionCircle,
-  faSquare as faSquareRegular
-} from '@fortawesome/free-regular-svg-icons'
-library.add(faBuilding, faCircle, faComments, faEnvelope, faEye, faFolderRegular, faQuestionCircle, faSquareRegular)
+import * as far from '@fortawesome/free-regular-svg-icons';
+import * as fas from '@fortawesome/free-solid-svg-icons';
+import * as fab from '@fortawesome/free-brands-svg-icons';
 
-import {
-  faAngleUp,
-  faCheck,
-  faChevronDown,
-  faChevronLeft,
-  faChevronRight,
-  faCity,
-  faCogs,
-  faFastForward,
-  faFlask,
-  faFolder,
-  faFolderOpen,
-  faHammer,
-  faHome,
-  faLandmark,
-  faLock,
-  faMagic,
-  faMapMarkerAlt,
-  faMapPin,
-  faMedal,
-  faMinus,
-  faMinusSquare,
-  faParking,
-  faPause,
-  faPlay,
-  faPlus,
-  faPlusSquare,
-  faPoll,
-  faRedoAlt,
-  faSatellite,
-  faSearch,
-  faSearchLocation,
-  faSquare,
-  faTimes,
-  faToggleOff,
-  faToggleOn,
-  faTools,
-  faUndoAlt,
-  faUserSecret,
-  faUserTie,
-  faVolumeOff,
-  faVolumeUp
-} from '@fortawesome/free-solid-svg-icons'
-library.add(faAngleUp, faCheck, faChevronDown, faChevronLeft, faChevronRight, faCity, faCogs, faFastForward, faFlask, faFolder, faFolderOpen, faHammer, faHome, faLandmark, faLock,
-  faMagic, faMapMarkerAlt, faMapPin, faMedal, faMinus, faMinusSquare, faParking, faPause, faPlay, faPlus, faPlusSquare, faPoll, faRedoAlt, faSatellite,
-  faSearch, faSearchLocation, faSquare, faTimes, faToggleOff, faToggleOn, faTools, faUndoAlt, faUserSecret, faUserTie, faVolumeOff, faVolumeUp)
+library.add(far.faBuilding, far.faCircle, far.faComments, far.faEnvelope, far.faEye, far.faFolder, far.faQuestionCircle, far.faSquare);
+library.add(fas.faAngleUp, fas.faCheck, fas.faChevronDown, fas.faChevronLeft, fas.faChevronRight, fas.faCity, fas.faCogs, fas.faFastForward, fas.faFlask,
+  fas.faFolder, fas.faFolderOpen, fas.faHammer, fas.faHome, fas.faLandmark, fas.faLock, fas.faMagic, fas.faMapMarkerAlt, fas.faMapPin, fas.faMedal,
+  fas.faMinus, fas.faMinusSquare, fas.faParking, fas.faPause, fas.faPlay, fas.faPlus, fas.faPlusSquare, fas.faPoll, fas.faRedoAlt, fas.faSatellite,
+  fas.faSearch, fas.faSearchLocation, fas.faSquare, fas.faTimes, fas.faToggleOff, fas.faToggleOn, fas.faTools, fas.faUndoAlt, fas.faUserSecret,
+  fas.faUserTie, fas.faVolumeOff, fas.faVolumeUp);
+library.add(fab.faBimobject, fab.faDiscord, fab.faGithub, fab.faMegaport, fab.faMizuni, fab.faMonero);
 
-import { faBimobject, faDiscord, faGithub, faMegaport, faMizuni, faMonero, faTwitter } from '@fortawesome/free-brands-svg-icons'
-library.add(faBimobject, faDiscord, faGithub, faMegaport, faMizuni, faMonero, faTwitter)
 
-import Vue from 'vue'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
-Vue.component('font-awesome-icon', FontAwesomeIcon)
+export default defineNuxtPlugin((nuxtApp) => {
+  nuxtApp.vueApp.component('font-awesome-icon', FontAwesomeIcon);
+});

@@ -4,11 +4,11 @@
     a.is-folder-item(v-on:click.stop.prevent="toggle_item", :class="css_class_for_item", :style="css_style_for_item")
       template(v-if="item.type == 'CORPORATION'")
         span.company-icon-wrapper
-          company-seal-icon(:seal_id="item.seal_id", with_min_size=true)
+          misc-company-seal-icon(:seal_id="item.seal_id", with_min_size=true)
       template(v-else-if="item.type == 'INDUSTRY'")
-        industry-type-icon(:industry_type="item.industry_type", :small='true')
+        misc-industry-type-icon(:industry_type="item.industry_type", :small='true')
       template(v-else-if="item.type == 'TOWN'")
-        city-icon
+        misc-city-icon
       template(v-else)
         span.sp-folder-icon(v-show="item.has_children && !item.expanded")
           font-awesome-icon(:icon="['fas', 'folder']")
@@ -17,21 +17,10 @@
         span.sp-folder-icon(v-show="!item.has_children")
           font-awesome-icon(:icon="['far', 'folder']")
       span.sp-folder-label {{item.item_name}}
-
 </template>
 
 <script lang='coffee'>
-import CityIcon from '~/components/misc/city-icon.vue'
-import CompanySealIcon from '~/components/misc/company-seal-icon.vue'
-import IndustryTypeIcon from '~/components/misc/industry-type-icon.vue'
-
 export default
-  components:
-    'company-seal-icon': CompanySealIcon
-    'city-icon': CityIcon
-    'industry-type-icon': IndustryTypeIcon
-
-  name: 'section-folder'
   props:
     item: Object
 
@@ -53,7 +42,7 @@ export default
 </script>
 
 <style lang='sass' scoped>
-@import '~assets/stylesheets/starpeace-variables'
+@import '~/assets/stylesheets/starpeace-variables'
 
 .is-folder-item
   background-color: darken($sp-primary-bg, 9%)

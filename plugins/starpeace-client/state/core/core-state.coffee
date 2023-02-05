@@ -1,7 +1,5 @@
-
 import _ from 'lodash'
-import moment from 'moment'
-import Vue from 'vue'
+import { markRaw } from 'vue';
 
 import BuildingLibrary from '~/plugins/starpeace-client/state/core/library/building-library.coffee'
 import ConcreteLibrary from '~/plugins/starpeace-client/state/core/library/concrete-library.coffee'
@@ -24,23 +22,22 @@ import MultiverseCache from '~/plugins/starpeace-client/state/core/cache/multive
 import PlanetCache from '~/plugins/starpeace-client/state/core/cache/planet-cache.coffee'
 import TycoonCache from '~/plugins/starpeace-client/state/core/cache/tycoon-cache.coffee'
 
-import TimeUtils from '~/plugins/starpeace-client/utils/time-utils.coffee'
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 
 export default class CoreState
   constructor: (@options) ->
-    @building_library = new BuildingLibrary()
-    @concrete_library = new ConcreteLibrary()
-    @effect_library = new EffectLibrary()
-    @invention_library = new InventionLibrary()
-    @land_library = new LandLibrary()
-    @map_library = new MapLibrary()
-    @news_library = new NewsLibrary()
-    @overlay_library = new OverlayLibrary()
-    @plane_library = new PlaneLibrary()
-    @planet_library = new PlanetLibrary()
-    @road_library = new RoadLibrary()
-    @sign_library = new SignLibrary()
+    @building_library = markRaw(new BuildingLibrary())
+    @concrete_library = markRaw(new ConcreteLibrary())
+    @effect_library = markRaw(new EffectLibrary())
+    @invention_library = markRaw(new InventionLibrary())
+    @land_library = markRaw(new LandLibrary())
+    @map_library = markRaw(new MapLibrary())
+    @news_library = markRaw(new NewsLibrary())
+    @overlay_library = markRaw(new OverlayLibrary())
+    @plane_library = markRaw(new PlaneLibrary())
+    @planet_library = markRaw(new PlanetLibrary())
+    @road_library = markRaw(new RoadLibrary())
+    @sign_library = markRaw(new SignLibrary())
 
     @building_cache = new BuildingCache()
     @company_cache = new CompanyCache()

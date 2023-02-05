@@ -52,15 +52,16 @@
         span.invention-status-value.completed(v-else-if="invention_status == 'COMPLETED' || invention_status == 'COMPLETED_SUPPORT'") {{translate('ui.menu.research.details.status.completed')}}
 
       .action-row
-        a.button.is-fullwidth.is-starpeace(v-if="invention_status == 'AVAILABLE'", v-on:click.stop.prevent='queue_invention', :disabled='actions_disabled') {{translate('ui.menu.research.actions.start.label')}}
-        a.button.is-fullwidth.is-starpeace(v-else-if="invention_status == 'AVAILABLE_BUILDING' || invention_status == 'AVAILABLE_LEVEL' || invention_status == 'AVAILABLE_BLOCKED'", disabled=true) {{translate('ui.menu.research.actions.start.label')}}
-        a.button.is-fullwidth.is-starpeace(v-else-if="invention_status == 'PENDING'", v-on:click.stop.prevent='sell_invention', :disabled='actions_disabled') {{translate('ui.menu.research.actions.cancel.label')}}
-        a.button.is-fullwidth.is-starpeace(v-else-if="invention_status == 'COMPLETED'", v-on:click.stop.prevent='sell_invention', :disabled='actions_disabled') {{translate('ui.menu.research.actions.sell.label')}}
-        a.button.is-fullwidth.is-starpeace(v-else-if="invention_status == 'COMPLETED_SUPPORT'", disabled=true) {{translate('ui.menu.research.actions.sell.label')}}
+        button.button.is-fullwidth.is-starpeace(v-if="invention_status == 'AVAILABLE'", v-on:click.stop.prevent='queue_invention', :disabled='actions_disabled') {{translate('ui.menu.research.actions.start.label')}}
+        button.button.is-fullwidth.is-starpeace(v-else-if="invention_status == 'AVAILABLE_BUILDING' || invention_status == 'AVAILABLE_LEVEL' || invention_status == 'AVAILABLE_BLOCKED'", disabled=true) {{translate('ui.menu.research.actions.start.label')}}
+        button.button.is-fullwidth.is-starpeace(v-else-if="invention_status == 'PENDING'", v-on:click.stop.prevent='sell_invention', :disabled='actions_disabled') {{translate('ui.menu.research.actions.cancel.label')}}
+        button.button.is-fullwidth.is-starpeace(v-else-if="invention_status == 'COMPLETED'", v-on:click.stop.prevent='sell_invention', :disabled='actions_disabled') {{translate('ui.menu.research.actions.sell.label')}}
+        button.button.is-fullwidth.is-starpeace(v-else-if="invention_status == 'COMPLETED_SUPPORT'", disabled=true) {{translate('ui.menu.research.actions.sell.label')}}
 
 </template>
 
 <script lang='coffee'>
+import _ from 'lodash';
 import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
 
 export default
@@ -213,7 +214,7 @@ export default
 </script>
 
 <style lang='sass' scoped>
-@import '~assets/stylesheets/starpeace-variables'
+@import '~/assets/stylesheets/starpeace-variables'
 
 .research-container
   grid-column: 3 / 4

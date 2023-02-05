@@ -17,7 +17,7 @@
           a(v-on:click.stop.prevent='select_root_breadcrumb')
             template(v-if='company_seal_id')
               span.icon.is-small
-                company-seal-icon.company-seal(:seal_id="company_seal_id")
+                misc-company-seal-icon.company-seal(:seal_id="company_seal_id")
               span {{company_seal_name}}
             template(v-else-if='true')
               span.icon.is-small
@@ -34,7 +34,7 @@
     aside.sp-menu-category.sp-scrollbar(v-if="has_selected_menu_category")
       template(v-for="info in sort_buildings(buildings_for_company_by_category[selected_menu_industry_category_id])")
         a.is-building-item(@click.stop.prevent="toggle_building(info)" :class="{'active': selected_building_id == info.id}")
-          industry-type-icon(:industry_type="info.industry_type_id" small)
+          misc-industry-type-icon(:industry_type="info.industry_type_id" small)
           span.is-building-label {{building_name(info)}}
           .construction-disabled(v-show="!can_construct_building(info)")
 
@@ -45,7 +45,7 @@
                 article.tile.is-child.is-7(:ref="'previewItem.' + info.id")
                 article.tile.is-child
                   .building-cost
-                    money-text(:value='building_cost(info.id)', no_styling=true, as_thousands=true)
+                    misc-money-text(:value='building_cost(info.id)', no_styling=true, as_thousands=true)
                   .building-size {{building_size(info)}}m&sup2;
               .tile.is-parent.is-item-details-bottom
                 article.tile.is-child
@@ -58,40 +58,40 @@
                       template(v-else)
                         a.research-pending(v-on:click.stop.prevent='select_invention(id)') {{invention_name(id)}}
                       span.research-separator(v-if="index < info.required_invention_ids.length - 1") {{separator_label_for_index(index, info.required_invention_ids.length)}}
-                  a.button.is-fullwidth.is-starpeace.construct-button(v-on:click.stop.prevent="select_building(info)", :disabled='!can_construct_building(info)') {{translate('ui.menu.construction.construct_building')}}
+                  button.button.is-fullwidth.is-starpeace.construct-button(v-on:click.stop.prevent="select_building(info)", :disabled='!can_construct_building(info)') {{translate('ui.menu.construction.construct_building')}}
 
     aside.sp-menu-overall.sp-scrollbar(v-else)
       .tile.is-ancestor.construction-items
         .tile.is-6.is-vertical.is-parent
           .tile.is-child
             a.construction-toggle(v-on:click.stop.prevent="select_category('SERVICE')", :disabled="!category_has_buildings('SERVICE')")
-              industry-category-icon(category='SERVICE')
+              misc-industry-category-icon(category='SERVICE')
               span.toggle-label {{text_for_category('SERVICE')}}
               .disabled-overlay
           .tile.is-child
             a.construction-toggle(v-on:click.stop.prevent="select_category('INDUSTRY')", :disabled="!category_has_buildings('INDUSTRY')")
-              industry-category-icon(category='INDUSTRY')
+              misc-industry-category-icon(category='INDUSTRY')
               span.toggle-label {{text_for_category('INDUSTRY')}}
               .disabled-overlay
           .tile.is-child
             a.construction-toggle(v-on:click.stop.prevent="select_category('LOGISTICS')", :disabled="!category_has_buildings('LOGISTICS')")
-              industry-category-icon(category='LOGISTICS')
+              misc-industry-category-icon(category='LOGISTICS')
               span.toggle-label {{text_for_category('LOGISTICS')}}
               .disabled-overlay
         .tile.is-6.is-vertical.is-parent
           .tile.is-child
             a.construction-toggle(v-on:click.stop.prevent="select_category('CIVIC')", :disabled="!category_has_buildings('CIVIC')")
-              industry-category-icon(category='CIVIC')
+              misc-industry-category-icon(category='CIVIC')
               span.toggle-label {{text_for_category('CIVIC')}}
               .disabled-overlay
           .tile.is-child
             a.construction-toggle(v-on:click.stop.prevent="select_category('COMMERCE')", :disabled="!category_has_buildings('COMMERCE')")
-              industry-category-icon(category='COMMERCE')
+              misc-industry-category-icon(category='COMMERCE')
               span.toggle-label {{text_for_category('COMMERCE')}}
               .disabled-overlay
           .tile.is-child
             a.construction-toggle(v-on:click.stop.prevent="select_category('REAL_ESTATE')", :disabled="!category_has_buildings('REAL_ESTATE')")
-              industry-category-icon(category='REAL_ESTATE')
+              misc-industry-category-icon(category='REAL_ESTATE')
               span.toggle-label {{text_for_category('REAL_ESTATE')}}
               .disabled-overlay
 
@@ -103,21 +103,12 @@
 </template>
 
 <script lang='coffee'>
-import MoneyText from '~/components/misc/money-text.vue'
-import CompanySealIcon from '~/components/misc/company-seal-icon.vue'
-import IndustryCategoryIcon from '~/components/misc/industry-category-icon.vue'
-import IndustryTypeIcon from '~/components/misc/industry-type-icon.vue'
+import _ from 'lodash';
 
 export default
   props:
     client_state: Object
     managers: Object
-
-  components:
-    'money-text': MoneyText
-    'company-seal-icon': CompanySealIcon
-    'industry-category-icon': IndustryCategoryIcon
-    'industry-type-icon': IndustryTypeIcon
 
   computed:
     is_ready: -> @client_state?.workflow_status == 'ready'
@@ -220,7 +211,7 @@ export default
 </script>
 
 <style lang='sass' scoped>
-@import '~assets/stylesheets/starpeace-variables'
+@import '~/assets/stylesheets/starpeace-variables'
 
 #construction-container
   grid-column: start-right / end-right
@@ -369,7 +360,7 @@ export default
       &:active
         background-color: lighten($sp-primary-bg, 7.5%)
 
-    ::v-deep img
+    :deep(img)
       filter: invert(75%) sepia(8%) saturate(1308%) hue-rotate(111deg) brightness(93%) contrast(83%)
       width: 50%
 

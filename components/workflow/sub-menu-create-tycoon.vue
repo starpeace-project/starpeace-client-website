@@ -20,6 +20,14 @@
           .field-body
             .field
               .control.has-icons-left.is-expanded
+                input.input(type='text' v-model='username' :disabled='saving' :placeholder="translate('ui.workflow.universe.name.label')" disabled='disabled')
+                span.icon.is-small.is-left
+                  font-awesome-icon(:icon="['fas', 'user-tie']")
+
+        .field.is-horizontal
+          .field-body
+            .field
+              .control.has-icons-left.is-expanded
                 input.input(type='password' v-model='password' :disabled='saving' :placeholder="translate('ui.workflow.universe.password.label')")
                 span.icon.is-small.is-left
                   font-awesome-icon(:icon="['fas', 'lock']")
@@ -36,43 +44,44 @@
           .field-body
             .field
               .control.remember-toggle
-                toggle-option(:value='remember_me' @toggle="remember_me=!remember_me" :disabled='saving')
+                misc-toggle-option(:value='remember_me' @toggle="remember_me=!remember_me" :disabled='saving')
                 span.toggle-label(@click.stop.prevent="remember_me=!remember_me") {{translate('ui.workflow.universe.remember_tycoon.label')}}
 
-        .field.is-horizontal(v-show='error_message')
+        .field.is-horizontal(v-show='error_code')
           .field-body
             .field
               .control.is-narrow
-                span.has-text-danger {{translate(error_message_key)}}
+                span.has-text-danger {{translate(error_code_key)}}
 
       .level.is-mobile.galaxy-actions
         .level-item
-          a.button.is-medium.is-fullwidth.is-starpeace.is-square(@click.stop.prevent="close_sub_menu") {{translate('misc.action.cancel')}}
+          button.button.is-medium.is-fullwidth.is-starpeace.is-square(@click.stop.prevent="close_sub_menu") {{translate('misc.action.cancel')}}
         .level-item
-          a.button.is-medium.is-fullwidth.is-starpeace.is-square(@click.stop.prevent="create_tycoon" :disabled='!can_create') {{translate('misc.action.create')}}
+          button.button.is-medium.is-fullwidth.is-starpeace.is-square(@click.stop.prevent="create_tycoon" :disabled='!can_create') {{translate('misc.action.create')}}
 
 
 </template>
 
 <script lang='coffee'>
-import ToggleOption from '~/components/misc/toggle-option.vue'
+import _ from 'lodash';
 
 ERROR_CODE_GENERAL = 'GENERAL'
+ERROR_CODE_INVALID_NAME = 'INVALID_NAME'
 ERROR_CODE_PASSWORD_MISMATCH = 'PASSWORD_MISMATCH'
 ERROR_CODE_USERNAME_CONFLICT = 'USERNAME_CONFLICT'
-ERROR_MESSAGES = [ERROR_CODE_GENERAL, ERROR_CODE_PASSWORD_MISMATCH, ERROR_CODE_USERNAME_CONFLICT]
+ERROR_CODES = [ERROR_CODE_GENERAL, ERROR_CODE_INVALID_NAME, ERROR_CODE_PASSWORD_MISMATCH, ERROR_CODE_USERNAME_CONFLICT]
+
+MIN_USERNAME = 1 # TODO: raise to like 3+ in future
+MIN_PASSWORD = 1 # TODO: raise to like 3+ in future
 
 export default
-  components:
-    'toggle-option': ToggleOption
-
   props:
     client_state: Object
     managers: Object
 
   data: ->
     saving: false
-    error_message: null
+    error_code: null
 
     username: ''
     password: ''
@@ -82,19 +91,20 @@ export default
   computed:
     is_visible: -> @client_state?.interface?.show_create_tycoon && @client_state?.interface?.create_tycoon_galaxy_id?
 
-    error_message_key: ->
-      return 'ui.workflow.universe.error.general_problem.label' if @error_message == ERROR_CODE_GENERAL
-      return 'ui.workflow.universe.error.password_mismatch.label' if @error_message == ERROR_CODE_PASSWORD_MISMATCH
-      return 'ui.workflow.universe.error.username_conflict.label' if @error_message == ERROR_CODE_USERNAME_CONFLICT
+    error_code_key: ->
+      return 'ui.workflow.universe.error.general_problem.label' if @error_code == ERROR_CODE_GENERAL
+      return 'ui.workflow.universe.error.username_invalid.label' if @error_code == ERROR_CODE_INVALID_NAME
+      return 'ui.workflow.universe.error.password_mismatch.label' if @error_code == ERROR_CODE_PASSWORD_MISMATCH
+      return 'ui.workflow.universe.error.username_conflict.label' if @error_code == ERROR_CODE_USERNAME_CONFLICT
       ''
 
-    can_create: -> !@saving && @username?.length && @password?.length && @password_confirm?.length
+    can_create: -> !@saving && _.trim(@username).length >= MIN_USERNAME && _.trim(@password).length >= MIN_PASSWORD && _.trim(@password_confirm).length >= MIN_PASSWORD
 
   watch:
     is_visible: (new_value, old_value) ->
       if @is_visible
         @saving = false
-        @error_message = null
+        @error_code = null
         @username = ''
         @password = ''
         @password_confirm = ''
@@ -110,9 +120,9 @@ export default
     create_tycoon: () ->
       return unless @can_create
 
-      @error_message = null
+      @error_code = null
       if @password != @password_confirm
-        @error_message = ERROR_CODE_PASSWORD_MISMATCH
+        @error_code = ERROR_CODE_PASSWORD_MISMATCH
       else
         @saving = true
         galaxy_id = @client_state?.interface?.create_tycoon_galaxy_id
@@ -130,15 +140,15 @@ export default
 
           .catch (e) =>
             @saving = false
-            @error_message = if ERROR_MESSAGES.indexOf(e) >= 0 then e else ERROR_CODE_GENERAL
+            @error_code = if ERROR_CODES.indexOf(e?.data?.code) >= 0 then e?.data?.code else ERROR_CODE_GENERAL
             @$forceUpdate() if @is_visible
 
 
 </script>
 
 <style lang='sass' scoped>
-@import '~bulma/sass/utilities/_all'
-@import '~assets/stylesheets/starpeace-variables'
+@import 'bulma/sass/utilities/_all'
+@import '~/assets/stylesheets/starpeace-variables'
 
 .create-tycoon-dialog
   position: fixed

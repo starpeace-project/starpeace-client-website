@@ -1,11 +1,14 @@
 import _ from 'lodash'
-import moment from 'moment'
 import axios from 'axios'
+import { io, Socket } from 'socket.io-client';
+
 import SandboxConfiguration from '~/plugins/starpeace-client/api/sandbox/sandbox-configuration.coffee'
 
+
 export default class APIClient
+
   constructor: (@client_state) ->
-    new SandboxConfiguration(axios)
+    @mockConfiguration = new SandboxConfiguration(axios)
     axios.defaults.withCredentials = true
     @client = axios.create()
 
@@ -20,6 +23,7 @@ export default class APIClient
 
     headers = { }
     headers.Authorization = "JWT #{@client_state.options.galaxy_jwt}" if @client_state.options.galaxy_id == galaxy_id && @client_state.options.galaxy_jwt?.length
+    headers.PlanetId = @client_state.player.planet_id if @client_state.player.planet_id?.length
     headers.VisaId = @client_state.player.planet_visa_id if @client_state.player.planet_visa_id?.length
 
     _.assign(options, { headers: headers })
@@ -29,7 +33,7 @@ export default class APIClient
       request_promise
           .then (result) -> done(handle_result(result.data))
           .catch (err) =>
-            @client_state.handle_connection_error() unless err.status?
+            @client_state.handle_connection_error() unless err.status? || err.response?.status >= 400 && err.response?.status < 500
             @client_state.handle_authorization_error() if err.response?.status == 401 || err.response?.status == 403
             error(err)
   delete: (path, parameters, handle_result) ->
@@ -75,17 +79,17 @@ export default class APIClient
         .then (result) -> done(result.data)
         .catch (err) -> error(err.response)
 
-  register_visa: (galaxy_id, planet_id, visa_type) ->
+  register_visa: (galaxy_id, visa_type) ->
     new Promise (done, error) =>
-      @client.post("#{@galaxy_url(galaxy_id)}/planets/#{planet_id}/visa", {
+      @client.post("#{@galaxy_url(galaxy_id)}/visa", {
         identityType: visa_type
       }, @galaxy_auth({}, galaxy_id))
       .then (result) -> done(result.data)
       .catch(error)
 
 
-  buildings_for_planet: (planet_id, chunk_x, chunk_y) ->
-    @get("planets/#{planet_id}/buildings", {
+  buildings_for_planet: (chunk_x, chunk_y) ->
+    @get("buildings", {
       chunkX: chunk_x
       chunkY: chunk_y
     }, (result) -> result || [])
@@ -93,8 +97,8 @@ export default class APIClient
     @get("buildings/#{building_id}", {}, (result) -> result)
   building_details_for_id: (building_id) ->
     @get("buildings/#{building_id}/details", {}, (result) -> result)
-  construct_building: (planet_id, company_id, definition_id, name, map_x, map_y) ->
-    @post("planets/#{planet_id}/buildings", {
+  construct_building: (company_id, definition_id, name, map_x, map_y) ->
+    @post("buildings", {
       companyId: company_id
       definitionId: definition_id
       name: name
@@ -102,45 +106,45 @@ export default class APIClient
       mapY: map_y
     }, (result) -> result)
 
-  events_for_planet: (planet_id, last_update) ->
-    @get("planets/#{planet_id}/events", {
-      lastUpdate: last_update.format()
-    }, (result) -> result || {})
+  # events_for_planet: (last_update) ->
+  #   @get("events", {
+  #     lastUpdate: last_update.toISO()
+  #   }, (result) -> result || {})
 
-  building_metadata_for_planet: (planet_id) ->
-    @get("planets/#{planet_id}/metadata/buildings", {}, (result) -> result || {})
-  core_metadata_for_planet: (planet_id) ->
-    @get("planets/#{planet_id}/metadata/core", {}, (result) -> result || {})
-  invention_metadata_for_planet: (planet_id) ->
-    @get("planets/#{planet_id}/metadata/inventions", {}, (result) -> result || {})
+  building_metadata_for_planet: () ->
+    @get("metadata/buildings", {}, (result) -> result || {})
+  core_metadata_for_planet: () ->
+    @get("metadata/core", {}, (result) -> result || {})
+  invention_metadata_for_planet: () ->
+    @get("metadata/inventions", {}, (result) -> result || {})
 
-  details_for_planet: (planet_id) ->
-    @get("planets/#{planet_id}/details", {}, (result) -> result || [])
-  online_tycoons_for_planet: (planet_id) ->
-    @get("planets/#{planet_id}/online", {}, (result) -> result || [])
-  rankings_for_planet: (planet_id, ranking_type_id) ->
-    @get("planets/#{planet_id}/rankings/#{ranking_type_id}", {}, (result) -> result || [])
-  search_corporations_for_planet: (planet_id, query, startsWithQuery) ->
-    @get("planets/#{planet_id}/search/corporations", { query, startsWithQuery }, (result) -> result || [])
-  search_tycoons_for_planet: (planet_id, query, startsWithQuery) ->
-    @get("planets/#{planet_id}/search/tycoons", { query, startsWithQuery }, (result) -> result || [])
-  towns_for_planet: (planet_id) ->
-    @get("planets/#{planet_id}/towns", {}, (result) -> result)
-  buildings_for_town: (planet_id, town_id, industryCategoryId, industryTypeId) ->
-    @get("planets/#{planet_id}/towns/#{town_id}/buildings", { industryCategoryId, industryTypeId }, (result) -> result || [])
-  companies_for_town: (planet_id, town_id) ->
-    @get("planets/#{planet_id}/towns/#{town_id}/companies", {}, (result) -> result || [])
-  details_for_town: (planet_id, town_id) ->
-    @get("planets/#{planet_id}/towns/#{town_id}/details", {}, (result) -> result || [])
+  details_for_planet: () ->
+    @get("details", {}, (result) -> result || [])
+  online_tycoons_for_planet: () ->
+    @get("online", {}, (result) -> result || [])
+  rankings_for_planet: (, ranking_type_id) ->
+    @get("rankings/#{ranking_type_id}", {}, (result) -> result || [])
+  search_corporations_for_planet: (, query, startsWithQuery) ->
+    @get("search/corporations", { query, startsWithQuery }, (result) -> result || [])
+  search_tycoons_for_planet: (, query, startsWithQuery) ->
+    @get("search/tycoons", { query, startsWithQuery }, (result) -> result || [])
+  towns_for_planet: () ->
+    @get("towns", {}, (result) -> result)
+  buildings_for_town: (, town_id, industryCategoryId, industryTypeId) ->
+    @get("towns/#{town_id}/buildings", { industryCategoryId, industryTypeId }, (result) -> result || [])
+  companies_for_town: (, town_id) ->
+    @get("towns/#{town_id}/companies", {}, (result) -> result || [])
+  details_for_town: (, town_id) ->
+    @get("towns/#{town_id}/details", {}, (result) -> result || [])
 
-  overlay_data_for_planet: (planet_id, type, chunk_x, chunk_y) ->
-    @get_binary("planets/#{planet_id}/overlay/#{type}", {
+  overlay_data_for_planet: (, type, chunk_x, chunk_y) ->
+    @get_binary("overlay/#{type}", {
       chunkX: chunk_x
       chunkY: chunk_y
     }, (result) -> if result? then new Uint8Array(result) else null)
 
-  road_data_for_planet: (planet_id, chunk_x, chunk_y) ->
-    @get_binary("planets/#{planet_id}/roads", {
+  road_data_for_planet: (, chunk_x, chunk_y) ->
+    @get_binary("roads", {
       chunkX: chunk_x
       chunkY: chunk_y
     }, (result) -> if result? then new Uint8Array(result) else null)
@@ -148,8 +152,8 @@ export default class APIClient
   tycoon_for_id: (tycoon_id) ->
     @get("tycoons/#{tycoon_id}", {}, (result) -> result)
 
-  create_corporation: (planet_id, corporation_name) ->
-    @post("planets/#{planet_id}/corporations", { name: corporation_name }, (result) -> result)
+  create_corporation: (corporation_name) ->
+    @post("corporations", { name: corporation_name }, (result) -> result)
   corporation_for_id: (corporation_id) ->
     @get("corporations/#{corporation_id}", {}, (result) -> result)
 
@@ -167,8 +171,8 @@ export default class APIClient
       deltas: bookmark_deltas
     }, (result) -> result)
 
-  cashflow_for_corporation: (corporation_id) ->
-    @get("corporations/#{corporation_id}/cashflow", {}, (result) -> result)
+  # cashflow_for_corporation: (corporation_id) ->
+  #   @get("corporations/#{corporation_id}/cashflow", {}, (result) -> result)
 
   mail_for_corporation: (corporation_id) ->
     @get("corporations/#{corporation_id}/mail", {}, (result) -> result || [])
@@ -184,12 +188,10 @@ export default class APIClient
     @delete("corporations/#{corporation_id}/mail/#{mail_id}", {}, (result) -> result)
 
 
-  create_company: (planet_id, company_name, seal_id) ->
-    @post("planets/#{planet_id}/companies", { name: company_name, sealId: seal_id }, (result) -> result)
-
+  create_company: (company_name, seal_id) ->
+    @post("companies", { name: company_name, sealId: seal_id }, (result) -> result)
   buildings_for_company: (company_id) ->
     @get("companies/#{company_id}/buildings", {}, (result) -> result || [])
-
   inventions_for_company: (company_id) ->
     @get("companies/#{company_id}/inventions", {}, (result) -> result || [])
   queue_company_invention: (company_id, invention_id) ->

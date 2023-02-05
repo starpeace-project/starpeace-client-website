@@ -18,9 +18,9 @@
 
       .level.is-mobile.galaxy-actions
         .level-item
-          a.button.is-medium.is-fullwidth.is-starpeace.is-square(v-on:click.stop.prevent="close_sub_menu") {{translate('misc.action.cancel')}}
+          button.button.is-medium.is-fullwidth.is-starpeace.is-square(v-on:click.stop.prevent="close_sub_menu") {{translate('misc.action.cancel')}}
         .level-item
-          a.button.is-medium.is-fullwidth.is-starpeace.is-square(v-on:click.stop.prevent="remove_galaxies", :disabled='selected_indices.length == 0') {{translate('misc.action.remove')}}
+          button.button.is-medium.is-fullwidth.is-starpeace.is-square(v-on:click.stop.prevent="remove_galaxies", :disabled='selected_indices.length == 0') {{translate('misc.action.remove')}}
 
 
 </template>
@@ -90,8 +90,8 @@ export default
 </script>
 
 <style lang='sass' scoped>
-@import '~bulma/sass/utilities/_all'
-@import '~assets/stylesheets/starpeace-variables'
+@import 'bulma/sass/utilities/_all'
+@import '~/assets/stylesheets/starpeace-variables'
 
 .remove-galaxy-dialog
   position: fixed

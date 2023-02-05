@@ -1,11 +1,10 @@
-
-import moment from 'moment'
+import { DateTime }  from 'luxon';
 
 import TimeUtils from '~/plugins/starpeace-client/utils/time-utils.coffee'
 
 export default class Planet
   constructor: (@id) ->
-    @as_of = moment()
+    @as_of = DateTime.now()
 
   is_fresh: () -> TimeUtils.within_minutes(@as_of, 15)
 

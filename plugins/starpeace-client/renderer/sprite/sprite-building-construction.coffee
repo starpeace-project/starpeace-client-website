@@ -1,4 +1,4 @@
-
+import _ from 'lodash';
 import { Polygon } from 'pixi.js'
 
 import CompositePolygon from '~/plugins/pixi/composite-polygon'

@@ -1,18 +1,28 @@
-
-import moment from 'moment'
-import Vue from 'vue'
+import { DateTime } from 'luxon';
+import { markRaw } from 'vue';
 
 import EventListener from '~/plugins/starpeace-client/state/event-listener.coffee'
 
 export default class PlanetState
   constructor: () ->
     @event_listener = new EventListener()
-    @reset_state()
+    @game_map = null
+
+    @connecting = false
+    @connected = false
+    @current_time = null
+    @current_season = null
+
+    @towns = null
+    @towns_by_id = {}
+    @towns_by_color = {}
+    @tycoons_online = null
 
   reset_state: () ->
     @game_map = null
-    @events_as_of = null
 
+    @connecting = false
+    @connected = false
     @current_time = null
     @current_season = null
 
@@ -31,16 +41,15 @@ export default class PlanetState
   subscribe_tycoons_online_listener: (listener_callback) -> @event_listener.subscribe('player.tycoons_online', listener_callback)
   notify_tycoons_online_listeners: () -> @event_listener.notify_listeners('player.tycoons_online')
 
-  has_data: () -> @current_time? && @current_season? && @towns? && @tycoons_online?
+  has_data: () -> @current_time? && @current_season? && @towns?.length > 0 && @tycoons_online?
 
   load_game_map: (game_map) ->
-    @game_map = game_map
+    @game_map = markRaw(game_map)
     # FIXME: TODO: may want to notify
 
-
-  load_state: (time, season) ->
-    @current_time = time
-    @current_season = season
+  load_state: (planetEvent) ->
+    @current_time = DateTime.fromISO(planetEvent.time)
+    @current_season = planetEvent.season
     @notify_state_listeners()
 
   town_for_color: (color) -> @towns_by_color[color]
@@ -59,27 +68,28 @@ export default class PlanetState
   can_place_building: (map_x, map_y, building_city_zone_id, width, height) ->
     has_all_data = true
     can_place = true
+    now = DateTime.now()
     for j in [0...height]
       for i in [0...width]
         tile_i = map_x - i
         tile_j = map_y - j
 
         building_chunk_info = @game_map.building_map.chunk_building_info_at(tile_i, tile_j)
-        unless building_chunk_info?.is_current()
+        unless building_chunk_info?.is_current(now)
           has_all_data = false
           @game_map.building_map.chunk_building_update_at(tile_i, tile_j)
         else if @game_map.building_map.building_info_at(tile_i, tile_j)?
           can_place = false
 
         road_chunk_info = @game_map.building_map.chunk_road_info_at(tile_i, tile_j)
-        unless road_chunk_info?.is_current()
+        unless road_chunk_info?.is_current(now)
           has_all_data = false
           @game_map.building_map.chunk_road_update_at(tile_i, tile_j)
         else if @game_map.road_map.road_info_at(tile_i, tile_j)?
           can_place = false
 
         zone_chunk_info = @game_map.overlay_map.chunk_info_at('ZONES', tile_i, tile_j)
-        unless zone_chunk_info?.is_current()
+        unless zone_chunk_info?.is_current(now)
           has_all_data = false
           @game_map.overlay_map.chunk_update_at('ZONES', tile_i, tile_j)
         else

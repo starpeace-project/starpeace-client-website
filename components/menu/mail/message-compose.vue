@@ -11,16 +11,17 @@
         input.input(type='text' v-model='mail_subject' :disabled='loading')
 
     .send-cancel-column
-      a.button.is-fullwidth.is-starpeace(@click.stop.prevent="$emit('cancel')" :disabled='loading') {{translate('ui.menu.mail.contacts.action.cancel')}}
+      button.button.is-fullwidth.is-starpeace(@click.stop.prevent="$emit('cancel')" :disabled='loading') {{translate('ui.menu.mail.contacts.action.cancel')}}
 
     .send-action-column
-      a.button.is-fullwidth.is-starpeace(@click.stop.prevent="$emit('send')" :disabled='!can_send') {{translate('ui.menu.mail.contacts.action.send')}}
+      button.button.is-fullwidth.is-starpeace(@click.stop.prevent="$emit('send')" :disabled='!can_send') {{translate('ui.menu.mail.contacts.action.send')}}
 
   textarea.mail-body-input.sp-scrollbar(ref='mailBody' v-model='mail_body' :disabled='loading')
 
 </template>
 
 <script lang='coffee'>
+import _ from 'lodash';
 
 export default
   props:
@@ -75,8 +76,8 @@ export default
 </script>
 
 <style lang='sass' scoped>
-@import '~assets/stylesheets/starpeace-variables'
-@import '~assets/stylesheets/starpeace-menus'
+@import '~/assets/stylesheets/starpeace-variables'
+@import '~/assets/stylesheets/starpeace-menus'
 
 .overall-container
   position: relative

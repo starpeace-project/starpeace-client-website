@@ -7,7 +7,7 @@
 
   .card-content.sp-menu-background
     aside.sp-scrollbar.container-results
-      toggle-list-item(
+      menu-shared-toggle-list-menu-item(
         v-for='town in towns'
         :key='town.id'
         :client-state='client_state'
@@ -16,7 +16,7 @@
         :details-callback='town_callback(town)'
         v-slot:default='slotProps'
       )
-        menu-panel-town(
+        menu-shared-menu-panel-town(
           :managers='managers'
           :client-state='client_state'
           :town='slotProps.details'
@@ -25,15 +25,9 @@
 </template>
 
 <script lang='coffee'>
-import ToggleListItem from '~/components/menu/shared/toggle-list-menu/item.vue'
-import MenuPanelTown from '~/components/menu/shared/menu-panel/town.vue'
+import _ from 'lodash';
 
 export default
-  components: {
-    ToggleListItem
-    MenuPanelTown
-  }
-
   props:
     client_state: Object
     managers: Object
@@ -48,7 +42,7 @@ export default
 </script>
 
 <style lang='sass' scoped>
-@import '~assets/stylesheets/starpeace-menus'
+@import '~/assets/stylesheets/starpeace-menus'
 
 .sp-menu
   grid-column: start-right / end-right

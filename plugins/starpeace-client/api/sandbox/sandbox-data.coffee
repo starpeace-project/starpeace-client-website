@@ -1,6 +1,5 @@
-
-import moment from 'moment'
-import _ from 'lodash'
+import _ from 'lodash';
+import { DateTime } from 'luxon';
 
 import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
 
@@ -86,9 +85,9 @@ export default class SandboxData
     @planet_towns = PLANET_TOWNS
 
     @planet_id_dates = {
-      'planet-1': moment('2235-01-01')
-      'planet-2': moment('2235-01-01')
-      'planet-3': moment('2235-01-01')
+      'planet-1': DateTime.fromISO('2235-01-01')
+      'planet-2': DateTime.fromISO('2235-01-01')
+      'planet-3': DateTime.fromISO('2235-01-01')
     }
 
     @corporation_id_cashflow = {}
@@ -97,7 +96,7 @@ export default class SandboxData
       for corporation in tycoon.corporations
         mailAt = _.first(_.orderBy(@mail_by_corporation_id[corporation.id], ['desc'], ['sentAt']))?.sentAt
         @corporation_id_cashflow[corporation.id] = {
-          lastMailAt: if mailAt? then moment(mailAt) else null
+          lastMailAt: if mailAt? then DateTime.fromISO(mailAt) else null
           cash: corporation.cash || 0
           companies_by_id: {}
           cashflow: () -> _.reduce(_.values(@companies_by_id), ((sum, company) -> sum + company.cashflow), 0)
@@ -551,7 +550,7 @@ export default class SandboxData
     }
 
   season_for_planet: (planet_id) ->
-    if @planet_id_dates[planet_id]? then MONTH_SEASONS[@planet_id_dates[planet_id].month()] else 'winter'
+    if @planet_id_dates[planet_id]? then MONTH_SEASONS[@planet_id_dates[planet_id].month] else 'winter'
 
   add_building: (planet_id, company_id, chunk_key, building) ->
     @planet_id_chunk_id_buildings[planet_id] = {} unless @planet_id_chunk_id_buildings[planet_id]?

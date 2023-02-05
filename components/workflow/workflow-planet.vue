@@ -22,7 +22,7 @@
                 .planet-investments.planet-info-row
                   span {{translate('ui.menu.galaxy.details.investments.label')}}:
                   span.planet-value
-                    money-text(:value='planet_chunk[n - 1].investment_value')
+                    misc-money-text(:value='planet_chunk[n - 1].investment_value')
                 .planet-tycoons.planet-info-row
                   span {{translate('ui.menu.galaxy.details.corporations.label')}}:
                   span.planet-value {{planet_chunk[n - 1].corporation_count || 0}}
@@ -32,13 +32,13 @@
 
             .columns
               .column.is-5
-                a.button.is-primary.is-fullwidth.is-outlined.workflow-action.visitor-action(@click.stop.prevent='select_visitor(planet_chunk[n - 1])' :disabled='!planet_chunk[n - 1].enabled') {{translate('identity.visitor')}} {{translate('identity.visa')}}
+                button.button.is-primary.is-fullwidth.is-outlined.workflow-action.visitor-action(@click.stop.prevent='select_visitor(planet_chunk[n - 1])' :disabled='!planet_chunk[n - 1].enabled') {{translate('identity.visitor')}} {{translate('identity.visa')}}
               .column.is-7
                 template(v-if='corporations_by_planet_id[planet_chunk[n - 1].id]')
-                  a.button.is-primary.is-fullwidth.workflow-action.corporation-action(@click.stop.prevent='select_tycoon(planet_chunk[n - 1])' :disabled='!planet_chunk[n - 1].enabled')
+                  button.button.is-primary.is-fullwidth.workflow-action.corporation-action(@click.stop.prevent='select_tycoon(planet_chunk[n - 1])' :disabled='!planet_chunk[n - 1].enabled')
                     .action-text {{corporations_by_planet_id[planet_chunk[n - 1].id].name}}
                 template(v-else)
-                  a.button.is-primary.is-fullwidth.is-outlined.workflow-action.corporation-action(@click.stop.prevent='select_tycoon(planet_chunk[n - 1])' :disabled='!planet_chunk[n - 1].enabled || !is_tycoon_in_galaxy')
+                  button.button.is-primary.is-fullwidth.is-outlined.workflow-action.corporation-action(@click.stop.prevent='select_tycoon(planet_chunk[n - 1])' :disabled='!planet_chunk[n - 1].enabled || !is_tycoon_in_galaxy')
                     .action-text {{translate('ui.menu.corporation.establish.action.establish')}}
 
           .disabled-overlay(v-show='!planet_chunk[n - 1].enabled')
@@ -47,12 +47,9 @@
 </template>
 
 <script lang='coffee'>
-import MoneyText from '~/components/misc/money-text.vue'
+import _ from 'lodash';
 
 export default
-  components:
-    'money-text': MoneyText
-
   props:
     managers: Object
     client_state: Object
@@ -93,7 +90,7 @@ export default
 </script>
 
 <style lang='sass' scoped>
-@import '~assets/stylesheets/starpeace-variables'
+@import '~/assets/stylesheets/starpeace-variables'
 
 .workflow-action
   &.button

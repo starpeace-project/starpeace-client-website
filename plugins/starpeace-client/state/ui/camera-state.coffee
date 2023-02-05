@@ -9,17 +9,31 @@ export default class CameraState
   constructor: (@client_state) ->
     @event_listener = new EventListener()
 
-    @reset_state()
-    @resize(100, 100)
-    @refresh()
+    @view_offset_x = 0
+    @view_offset_y = 0
+    @game_scale = 0.75
+
+    renderer_width = 100 # dummy value
+    renderer_height = 100 # dummy value
+    @canvas_width = Math.ceil(renderer_width || 0)
+    @canvas_height = Math.ceil(renderer_height || 0)
+    @half_canvas_width = Math.ceil(@canvas_width * 0.5)
+    @half_canvas_height = Math.ceil(@canvas_height * 0.5)
+
+    @tile_width = Math.ceil(MetadataLand.DEFAULT_TILE_WIDTH * @game_scale)
+    @tile_height = Math.ceil(MetadataLand.DEFAULT_TILE_HEIGHT * @game_scale)
+    @half_tile_width = Math.ceil(@tile_width / 2)
+    @half_tile_height = Math.ceil(@tile_height / 2)
+
+    @offset = Math.ceil(Math.sqrt(@half_canvas_width * @half_canvas_width + @half_canvas_height * @half_canvas_height))
+    @omega = Math.atan2(@canvas_width / 4, @canvas_height / 4)
 
   subscribe_viewport_listener: (listener_callback) -> @event_listener.subscribe('interface.viewport', listener_callback)
   notify_viewport_listeners: () -> @event_listener.notify_listeners('interface.viewport')
 
   reset_state: () ->
-    @view_offset_x = 3600
-    @view_offset_y = 4250
-
+    @view_offset_x = 0
+    @view_offset_y = 0
     @game_scale = 0.75
 
   resize: (renderer_width, renderer_height) ->
