@@ -14,7 +14,7 @@
     nav.breadcrumb.is-medium.menu-breadcrumb
       ul
         li(:class='root_breadcrumb_class')
-          a(v-on:click.stop.prevent='select_root_breadcrumb')
+          a(@click.stop.prevent='select_root_breadcrumb')
             template(v-if='company_seal_id')
               span.icon.is-small
                 misc-company-seal-icon.company-seal(:seal_id="company_seal_id")
@@ -56,41 +56,41 @@
                       template(v-if='is_invention_completed(id)')
                         span.research-completed {{invention_name(id)}}
                       template(v-else)
-                        a.research-pending(v-on:click.stop.prevent='select_invention(id)') {{invention_name(id)}}
+                        a.research-pending(@click.stop.prevent='select_invention(id)') {{invention_name(id)}}
                       span.research-separator(v-if="index < info.required_invention_ids.length - 1") {{separator_label_for_index(index, info.required_invention_ids.length)}}
-                  button.button.is-fullwidth.is-starpeace.construct-button(v-on:click.stop.prevent="select_building(info)", :disabled='!can_construct_building(info)') {{translate('ui.menu.construction.construct_building')}}
+                  button.button.is-fullwidth.is-starpeace.construct-button(@click.stop.prevent="select_building(info)", :disabled='!can_construct_building(info)') {{translate('ui.menu.construction.construct_building')}}
 
     aside.sp-menu-overall.sp-scrollbar(v-else)
       .tile.is-ancestor.construction-items
         .tile.is-6.is-vertical.is-parent
           .tile.is-child
-            a.construction-toggle(v-on:click.stop.prevent="select_category('SERVICE')", :disabled="!category_has_buildings('SERVICE')")
+            a.construction-toggle(@click.stop.prevent="select_category('SERVICE')" :class="{'disabled': !category_has_buildings('SERVICE')}")
               misc-industry-category-icon(category='SERVICE')
               span.toggle-label {{text_for_category('SERVICE')}}
               .disabled-overlay
           .tile.is-child
-            a.construction-toggle(v-on:click.stop.prevent="select_category('INDUSTRY')", :disabled="!category_has_buildings('INDUSTRY')")
+            a.construction-toggle(@click.stop.prevent="select_category('INDUSTRY')" :class="{'disabled': !category_has_buildings('INDUSTRY')}")
               misc-industry-category-icon(category='INDUSTRY')
               span.toggle-label {{text_for_category('INDUSTRY')}}
               .disabled-overlay
           .tile.is-child
-            a.construction-toggle(v-on:click.stop.prevent="select_category('LOGISTICS')", :disabled="!category_has_buildings('LOGISTICS')")
+            a.construction-toggle(@click.stop.prevent="select_category('LOGISTICS')" :class="{'disabled': !category_has_buildings('LOGISTICS')}")
               misc-industry-category-icon(category='LOGISTICS')
               span.toggle-label {{text_for_category('LOGISTICS')}}
               .disabled-overlay
         .tile.is-6.is-vertical.is-parent
           .tile.is-child
-            a.construction-toggle(v-on:click.stop.prevent="select_category('CIVIC')", :disabled="!category_has_buildings('CIVIC')")
+            a.construction-toggle(@click.stop.prevent="select_category('CIVIC')" :class="{'disabled': !category_has_buildings('CIVIC')}")
               misc-industry-category-icon(category='CIVIC')
               span.toggle-label {{text_for_category('CIVIC')}}
               .disabled-overlay
           .tile.is-child
-            a.construction-toggle(v-on:click.stop.prevent="select_category('COMMERCE')", :disabled="!category_has_buildings('COMMERCE')")
+            a.construction-toggle(@click.stop.prevent="select_category('COMMERCE')" :class="{'disabled': !category_has_buildings('COMMERCE')}")
               misc-industry-category-icon(category='COMMERCE')
               span.toggle-label {{text_for_category('COMMERCE')}}
               .disabled-overlay
           .tile.is-child
-            a.construction-toggle(v-on:click.stop.prevent="select_category('REAL_ESTATE')", :disabled="!category_has_buildings('REAL_ESTATE')")
+            a.construction-toggle(@click.stop.prevent="select_category('REAL_ESTATE')" :class="{'disabled': !category_has_buildings('REAL_ESTATE')}")
               misc-industry-category-icon(category='REAL_ESTATE')
               span.toggle-label {{text_for_category('REAL_ESTATE')}}
               .disabled-overlay
@@ -318,7 +318,7 @@ export default
     cursor: pointer
     font-weight: normal
 
-    &[disabled]
+    &.disabled
       cursor: not-allowed
 
     article
@@ -353,7 +353,7 @@ export default
     position: relative
     text-align: center
 
-    &:not([disabled])
+    &:not(.disabled)
       &:hover
         background-color: lighten($sp-primary-bg, 2.5%)
 
@@ -380,7 +380,7 @@ export default
       top: 0
       width: 100%
 
-    &[disabled]
+    &.disabled
       .disabled-overlay
         display: block
 
@@ -403,7 +403,7 @@ export default
     color: $sp-primary
     margin-left: .4rem
 
-    &:not([disabled])
+    &:not(.disabled)
       &:hover,
       &.is-hover
         color: $sp-light

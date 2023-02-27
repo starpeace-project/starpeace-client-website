@@ -1,6 +1,7 @@
 import _ from 'lodash';
 
 import EventListener from '~/plugins/starpeace-client/state/event-listener.coffee'
+import CompanyInventions from '~/plugins/starpeace-client/invention/company-inventions'
 
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 
@@ -34,8 +35,8 @@ export default class CorporationState
       return false unless @cashflow_by_company_id[company_id]? && @buildings_ids_by_company_id[company_id]? && @inventions_metadata_by_company_id[company_id]?
     true
 
-  company_ids_with_pending_inventions: () -> _.filter(@company_ids, (id) => @inventions_metadata_by_company_id[id]?.pending_inventions?.length)
-  completed_invention_ids_for_company: (company_id) -> _.uniq(@inventions_metadata_by_company_id[company_id]?.completed_ids || [])
+  company_ids_with_pending_inventions: () -> _.filter(@company_ids, (id) => @inventions_metadata_by_company_id[id]?.isActive())
+  completed_invention_ids_for_company: (company_id) -> Array.from(@inventions_metadata_by_company_id[company_id]?.completedIds || new Set())
 
   subscribe_company_ids_listener: (listener_callback) -> @event_listener.subscribe('corporation.company_ids', listener_callback)
   notify_company_ids_listeners: () -> @event_listener.notify_listeners('corporation.company_ids')
@@ -53,7 +54,7 @@ export default class CorporationState
   add_company_id: (company_id) ->
     @company_ids.push(company_id)
     @buildings_ids_by_company_id[company_id] = []
-    @inventions_metadata_by_company_id[company_i] = []
+    @inventions_metadata_by_company_id[company_id] = CompanyInventions.create(company_id)
     @notify_company_ids_listeners()
     @notify_company_buildings_listeners()
     @notify_company_inventions_listeners()
@@ -79,20 +80,6 @@ export default class CorporationState
     @buildings_ids_by_company_id[company_id].push building_id
     @notify_company_buildings_listeners()
 
-  update_company_pending_inventions: (company_id, new_pending_inventions) ->
-    return false if _.isEqual(@inventions_metadata_by_company_id[company_id].pending_inventions, new_pending_inventions)
-    @inventions_metadata_by_company_id[company_id].pending_inventions = new_pending_inventions
-    true
-  update_company_completed_inventions: (company_id, new_completed_ids) ->
-    return false if _.isEqual(@inventions_metadata_by_company_id[company_id].completed_ids, new_completed_ids)
-    @inventions_metadata_by_company_id[company_id].completed_ids = new_completed_ids
-    true
-
   update_company_inventions_metadata: (company_id, inventions_metadata) ->
-    unless @inventions_metadata_by_company_id[company_id]?
-      @inventions_metadata_by_company_id[company_id] = inventions_metadata
-      @notify_company_inventions_listeners()
-    else
-      changed_pending = @update_company_pending_inventions(company_id, inventions_metadata.pending_inventions)
-      changed_completed = @update_company_completed_inventions(company_id, inventions_metadata.completed_ids)
-      @notify_company_inventions_listeners() if changed_pending || changed_completed
+    @inventions_metadata_by_company_id[company_id] = inventions_metadata
+    @notify_company_inventions_listeners()

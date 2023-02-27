@@ -127,31 +127,37 @@ export default
 
   .action-overlays
     grid-area: start-row-1 / start-overlay / end-row-1 / end-overlay
-    letter-spacing: .1rem
     padding: .25rem .125rem .125rem
+
+    .button
+      letter-spacing: .1rem
+
   .action-zones
     grid-area: start-row-2 / start-overlay / end-row-2 / end-overlay
-    letter-spacing: .1rem
     padding: .125rem
+
+    .button
+      letter-spacing: .1rem
 
   .action-inspect
     grid-area: start-row-1 / start-inspect / end-row-2 / end-inspect
-    letter-spacing: .2rem
     padding: .25rem .125rem .125rem
 
     .button
       font-size: 1.25rem
-      font-weight: 1000
+      font-weight: 750
+      letter-spacing: .2rem
 
   .details-ticker
+    align-items: center
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAADCAYAAABWKLW/AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAEElEQVQI12NgYGD4z0AQAAAjBAEAIsfjuAAAAABJRU5ErkJggg==')
     background-repeat: space
+    display: flex
     font-weight: 1000
     letter-spacing: .05rem
     overflow: hidden
     padding: .35rem .5rem .25rem
     text-overflow: ellipsis
-    vertical-align: middle
     white-space: nowrap
 
     &.primary
@@ -166,24 +172,30 @@ export default
 
   .action-jump-back
     grid-area: start-row-1 / start-jump-1 / end-row-1 / end-jump-1
-    letter-spacing: .1rem
     padding: .125rem
+
+    .button
+      letter-spacing: .1rem
 
     .fa-chevron-left
       margin-right: .5rem
 
   .action-jump-next
     grid-area: start-row-1 / start-jump-2 / end-row-1 / end-jump-2
-    letter-spacing: .1rem
     padding: .125rem
+
+    .button
+      letter-spacing: .1rem
 
     .fa-chevron-right
       margin-left: .5rem
 
   .action-jump-town
     grid-area: start-row-2 / start-jump-1 / end-row-2 / end-jump-2
-    letter-spacing: .1rem
     padding: .125rem
+
+    .button
+      letter-spacing: .1rem
 
 
 </style>

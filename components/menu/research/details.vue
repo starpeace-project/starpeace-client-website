@@ -16,7 +16,7 @@
         span.none-value(v-if="invention_requires.length == 0") {{translate('ui.menu.research.none.label')}}
         ul.inventions
           li(v-for='option in sort_inventions(invention_requires)')
-            a(v-on:click.stop.prevent="select_invention(option.id)") {{translate(option.name)}}
+            a(@click.stop.prevent="select_invention(option.id)") {{translate(option.name)}}
         div.is-clearfix
 
       .invention-allows
@@ -24,7 +24,7 @@
         span.none-value(v-if="invention_allows.length == 0") {{translate('ui.menu.research.none.label')}}
         ul.inventions
           li(v-for='option in sort_inventions(invention_allows).slice(0, 3)')
-            a(v-on:click.stop.prevent="select_invention(option.id)") {{translate(option.name)}}
+            a(@click.stop.prevent="select_invention(option.id)") {{translate(option.name)}}
           li(v-if='invention_allows.length > 5') {{invention_allows.length - 3}} {{translate('ui.menu.research.others.label')}}
           li(v-else-if='invention_allows.length > 4') 1 {{translate('ui.menu.research.other.label')}}
         div.is-clearfix
@@ -44,19 +44,19 @@
         span.invention-status-value.blocked(v-else-if="invention_status == 'AVAILABLE_LEVEL'") {{translate('ui.menu.research.details.status.level_required')}}
         span.invention-status-value.blocked(v-else-if="invention_status == 'AVAILABLE_BLOCKED'") {{translate('ui.menu.research.details.status.dependencies_required')}}
         span.invention-status-value.pending(v-else-if="invention_status == 'PENDING'")
-          span(v-if="company_pending_invention.order == 0") {{translate('ui.menu.research.details.status.in_progress')}}
-          span(v-else-if="company_pending_invention.order > 0") {{translate('ui.menu.research.details.status.queued')}}
-          span(v-if="company_pending_invention.progress > 0 && company_pending_invention.progress < 100")
+          span(v-if="selected_invention_active") {{translate('ui.menu.research.details.status.in_progress')}}
+          span(v-else-if="selected_invention_pending") {{translate('ui.menu.research.details.status.queued')}}
+          span(v-if="selected_invention_progress > 0 && selected_invention_progress < 100")
             |
-            | - {{Math.round(company_pending_invention.progress)}}%
+            | - {{selected_invention_progress}}%
         span.invention-status-value.completed(v-else-if="invention_status == 'COMPLETED' || invention_status == 'COMPLETED_SUPPORT'") {{translate('ui.menu.research.details.status.completed')}}
 
       .action-row
-        button.button.is-fullwidth.is-starpeace(v-if="invention_status == 'AVAILABLE'", v-on:click.stop.prevent='queue_invention', :disabled='actions_disabled') {{translate('ui.menu.research.actions.start.label')}}
+        button.button.is-fullwidth.is-starpeace(v-if="invention_status == 'AVAILABLE'" @click.stop.prevent='queue_invention' :disabled='actions_disabled') {{translate('ui.menu.research.actions.start.label')}}
         button.button.is-fullwidth.is-starpeace(v-else-if="invention_status == 'AVAILABLE_BUILDING' || invention_status == 'AVAILABLE_LEVEL' || invention_status == 'AVAILABLE_BLOCKED'", disabled=true) {{translate('ui.menu.research.actions.start.label')}}
-        button.button.is-fullwidth.is-starpeace(v-else-if="invention_status == 'PENDING'", v-on:click.stop.prevent='sell_invention', :disabled='actions_disabled') {{translate('ui.menu.research.actions.cancel.label')}}
-        button.button.is-fullwidth.is-starpeace(v-else-if="invention_status == 'COMPLETED'", v-on:click.stop.prevent='sell_invention', :disabled='actions_disabled') {{translate('ui.menu.research.actions.sell.label')}}
-        button.button.is-fullwidth.is-starpeace(v-else-if="invention_status == 'COMPLETED_SUPPORT'", disabled=true) {{translate('ui.menu.research.actions.sell.label')}}
+        button.button.is-fullwidth.is-starpeace(v-else-if="invention_status == 'PENDING'" @click.stop.prevent='sell_invention' :disabled='actions_disabled') {{translate('ui.menu.research.actions.cancel.label')}}
+        button.button.is-fullwidth.is-starpeace(v-else-if="invention_status == 'COMPLETED'" @click.stop.prevent='sell_invention' :disabled='actions_disabled') {{translate('ui.menu.research.actions.sell.label')}}
+        button.button.is-fullwidth.is-starpeace(v-else-if="invention_status == 'COMPLETED_SUPPORT'" disabled=true) {{translate('ui.menu.research.actions.sell.label')}}
 
 </template>
 
@@ -149,8 +149,8 @@ export default
     company_id: -> if @is_ready && @client_state.player.company_id? then @client_state.player.company_id else null
     company_seal: -> if @company_id? then @client_state.current_company_metadata().seal_id else null
     company_inventions: -> if @company_id? then @client_state.corporation.inventions_metadata_by_company_id[@company_id] else null
-    company_pending_invention: -> if @selected_invention_id? && @company_inventions? then _.find(@company_inventions.pending_inventions, (pending) => pending.id == @selected_invention_id) else null
-    company_building_ids: -> if @company_id? then (@client_state.corporation.buildings_ids_by_company_id[@company_id] || []) else []
+
+    company_building_ids: -> @client_state.corporation.buildings_ids_by_company_id[@company_id] || []
     company_building_definition_ids: -> new Set(_.compact(_.map(@company_building_ids, (id) => @client_state.core.building_cache.building_metadata_by_id[id]?.definition_id)))
 
     company_has_allowing_building: ->
@@ -159,24 +159,30 @@ export default
         return true if @company_building_definition_ids.has(id)
       false
 
+    selected_invention_active: -> @company_inventions?.activeInventionId == @selected_invention_id
+    selected_invention_pending: -> @company_inventions?.pendingIds?.indexOf(@selected_invention_id) >= 0
+    selected_invention_progress: ->
+      return -1 unless @selected_invention_active && @company_inventions?
+      price = @client_state.core.invention_library.metadata_for_id(@selected_invention_id)?.properties?.price || 1
+      Math.round(100 * @company_inventions.activeInvestment / price)
+
     invention_status: ->
       return 'NONE' unless @selected_invention? && @company_inventions? && @company_seal?
-      if @company_pending_invention?
-        'PENDING'
-      else if @is_invention_completed(@selected_invention_id)
-        for allows in @invention_allows
-          return 'COMPLETED_SUPPORT' if @is_invention_in_progress(allows.id) || @is_invention_completed(allows.id)
+      if @company_inventions?.isQueued(@selected_invention_id)
+        return 'PENDING'
+      else if @company_inventions?.completedIds?.has(@selected_invention_id)
+        return 'COMPLETED_SUPPORT' if @invention_allows.find((allows) => @company_inventions?.isQueued(allows.id)|| @company_inventions?.isCompleted(allows.id))
         'COMPLETED'
       else
         return 'AVAILABLE_LEVEL' if @invention_level? && @invention_level.level > (@corporation_level?.level || 0)
-        for requires in @invention_requires
-          return 'AVAILABLE_BLOCKED' unless @is_invention_completed(requires.id)
+        return 'AVAILABLE_BLOCKED' if @invention_requires.find((requires) => !@company_inventions?.isCompleted(requires.id))?
         return 'AVAILABLE_BUILDING' unless @company_has_allowing_building
         'AVAILABLE'
 
     actions_disabled: ->
       return true unless @is_ready && @company_inventions?
-      @ajax_state.request_mutex['player.sell_invention']?[@client_state.player.company_id] || @ajax_state.request_mutex['player.queue_invention']?[@client_state.player.company_id]
+      return true if @ajax_state.request_mutex['player.sell_invention']?[@client_state.player.company_id] || @ajax_state.request_mutex['player.queue_invention']?[@client_state.player.company_id]
+      !@selected_invention_id? || @company_inventions?.canceledIds?.has(@selected_invention_id)
 
   methods:
     translate: (text_key) -> @managers?.translation_manager?.text(text_key)
@@ -196,20 +202,25 @@ export default
         class: if value > 0 then 'positive' else if value < 0 then 'negative' else ''
       }
 
-    is_invention_in_progress: (invention_id) -> @company_inventions? && _.find(@company_inventions.pending_inventions, (pending) => pending.id == invention_id)
-    is_invention_completed: (invention_id) -> @company_inventions? && @company_inventions.completed_ids.indexOf(invention_id) >= 0
+    is_invention_completed: (invention_id) -> @company_inventions?.completedIds.has(invention_id)
 
     select_invention: (invention_id) -> @client_state.interface.inventions_selected_invention_id = invention_id
 
     sell_invention: () ->
       return unless @selected_invention_id? && @company_inventions? && (@invention_status == 'PENDING' || @invention_status == 'COMPLETED')
-      @managers.invention_manager.sell_invention(@client_state.player.company_id, @selected_invention_id).then =>
+      try
+        await @managers.invention_manager.sell_invention(@client_state.player.company_id, @selected_invention_id)
         @$forceUpdate()
+      catch err
+        console.error(err)
 
     queue_invention: () ->
       return unless @selected_invention_id? && @company_inventions? && @invention_status == 'AVAILABLE'
-      @managers.invention_manager.queue_invention(@client_state.player.company_id, @selected_invention_id).then =>
+      try
+        await @managers.invention_manager.queue_invention(@client_state.player.company_id, @selected_invention_id)
         @$forceUpdate()
+      catch err
+        console.error(err)
 
 </script>
 

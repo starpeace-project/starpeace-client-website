@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { DateTime }  from 'luxon';
-import { ref } from 'vue';
+import { markRaw } from 'vue';
 
 import EventListener from '~/plugins/starpeace-client/state/event-listener.coffee'
 

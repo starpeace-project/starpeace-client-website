@@ -84,7 +84,7 @@ export default class Renderer
 
     @update_offset(document?.getElementById('render-container')) unless @offset?
 
-    @client_state.planet_event_client.updateViewTarget() if @layers?.has_dirty_view()
+    #@client_state.planet_event_client.updateViewTarget() if @layers?.has_dirty_view()
     @layers.refresh() if @layers?.should_refresh()
     @layers?.refresh_planes()
 

@@ -126,7 +126,7 @@ export default
     #  @$root.$on('add_folder_action', () => @section_expanded = true unless @section_expanded)
     #  @$root.$on('add_bookmark_action', () => @section_expanded = true unless @section_expanded)
 
-    @client_state?.options?.subscribe_options_listener => @refresh_tree()
+    #@client_state?.options?.subscribe_options_listener => @refresh_tree()
 
   data: ->
     items_as_tree = @items_to_tree(@items_by_id)

@@ -3,35 +3,45 @@
     "corporationId": "corp-id-1",
     "tycoonId": "tycoon-id-1",
     "companyId": "company-id-1",
-    "pendingInventions": [],
+    "pendingIds": [],
+    "activeId": null,
+    "activeInvestment": 0,
     "completedIds": []
   },
   "company-id-2": {
     "corporationId": "corp-id-1",
     "tycoonId": "tycoon-id-1",
     "companyId": "company-id-2",
-    "pendingInventions": [],
+    "pendingIds": [],
+    "activeId": null,
+    "activeInvestment": 0,
     "completedIds": ["DistributedDirection"]
   },
   "company-id-3": {
     "corporationId": "corp-id-1",
     "tycoonId": "tycoon-id-1",
     "companyId": "company-id-3",
-    "pendingInventions": [],
+    "pendingIds": [],
+    "activeId": null,
+    "activeInvestment": 0,
     "completedIds": []
   },
   "company-id-4": {
     "corporationId": "corp-id-1",
     "tycoonId": "tycoon-id-1",
     "companyId": "company-id-4",
-    "pendingInventions": [],
+    "pendingIds": [],
+    "activeId": null,
+    "activeInvestment": 0,
     "completedIds": []
   },
   "company-id-5": {
     "corporationId": "corp-id-1",
     "tycoonId": "tycoon-id-1",
     "companyId": "company-id-5",
-    "pendingInventions": [],
+    "pendingIds": [],
+    "activeId": null,
+    "activeInvestment": 0,
     "completedIds": []
   }
 }

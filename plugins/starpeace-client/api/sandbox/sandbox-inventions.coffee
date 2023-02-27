@@ -7,72 +7,63 @@ export default class SandboxInventions
   do_pending: (company_id) ->
     cashflow_adjustment = 0
     inventions = @sandbox.sandbox_data.company_id_inventions[company_id]
-    if inventions?.pendingInventions?.length
-      to_remove = []
-      for pending,index in inventions.pendingInventions
-        continue unless index == 0
 
-        unless pending.step_increment?
-          pending.cost = @sandbox.cost_for_invention_id(pending.id)
-          pending.step_increment = Math.max(50000, Math.round(pending.cost / 30))
-        pending.spent += pending.step_increment
-        cashflow_adjustment -= (pending.step_increment / 24)
+    if inventions?.activeId?.length
+      cost = @sandbox.cost_for_invention_id(inventions.activeId)
+      step_increment = Math.round(cost / 30)
+      inventions.activeInvestment += step_increment
+      cashflow_adjustment -= (step_increment / 24)
 
-        pending.progress = Math.min(100, Math.round(pending.spent / pending.cost * 100))
-        if pending.spent >= pending.cost
-          to_remove.push index
-          inventions.completedIds.push pending.id
+      if inventions.activeInvestment >= cost
+        inventions.completedIds.push inventions.activeId
+        inventions.activeId = null
+        inventions.activeInvestment = 0
 
-      for index in to_remove.sort((lhs, rhs) -> rhs - lhs)
-        inventions.pendingInventions.splice(index, 1)
-      inventions.pendingInventions[index].order = index for index in [0...inventions.pendingInventions.length]
+    else if inventions?.pendingIds?.length
+      inventions.activeId = inventions?.pendingIds.splice(0, 1)[0]
+      inventions.activeInvestment = 0
+
     cashflow_adjustment
 
   company_inventions: (company_id) ->
     _.cloneDeep {
       companyId: company_id
-      pendingInventions: (@sandbox.sandbox_data.company_id_inventions[company_id]?.pendingInventions || [])
+      pendingIds: (@sandbox.sandbox_data.company_id_inventions[company_id]?.pendingIds || [])
+      activeId: @sandbox.sandbox_data.company_id_inventions[company_id]?.activeId
+      activeInvestment: (@sandbox.sandbox_data.company_id_inventions[company_id]?.activeInvestment || 0)
       completedIds: (@sandbox.sandbox_data.company_id_inventions[company_id]?.completedIds || [])
     }
 
   sell_company_invention: (company_id, invention_id) ->
     throw new Error(404) unless @sandbox.sandbox_data.company_id_inventions[company_id]?
 
+    refund = 0
+
     inventions = @sandbox.sandbox_data.company_id_inventions[company_id]
     completed_index = inventions.completedIds.indexOf(invention_id)
-    pending_index = _.findIndex(inventions.pendingInventions, (pending) => pending.id == invention_id)
     if completed_index >= 0
-      @sandbox.sandbox_events.queued_events.push { type: 'SELL_RESEARCH', company_id: company_id, invention_id: invention_id }
+      refund = @sandbox.cost_for_invention_id(invention_id)
       inventions.completedIds.splice(completed_index, 1)
-    else if pending_index >= 0
-      @sandbox.sandbox_events.queued_events.push { type: 'CANCEL_RESEARCH', company_id: company_id, invention_id: invention_id, refund: inventions.pendingInventions[pending_index].spent }
-      inventions.pendingInventions[index].order -= 1 for index in [pending_index...inventions.pendingInventions.length]
-      inventions.pendingInventions.splice(pending_index, 1)
 
-    _.cloneDeep {
-      companyId: company_id
-      pendingInventions: (@sandbox.sandbox_data.company_id_inventions[company_id]?.pendingInventions || [])
-      completedIds: (@sandbox.sandbox_data.company_id_inventions[company_id]?.completedIds || [])
-    }
+    if inventions.activeId == invention_id
+      refund = inventions.activeInvestment
+      inventions.activeId = null
+      inventions.activeInvestment = 0
+
+    pending_index = inventions.pendingIds.indexOf(invention_id)
+    inventions.pendingIds.splice(pending_index, 1) if pending_index >= 0
+
+    corporation_id = @sandbox.sandbox_data.company_id_info[company_id].corporation_id
+    @sandbox.sandbox_data.corporation_id_cashflow[corporation_id].companies_by_id[company_id].adjust_cashflow(refund)
+    @company_inventions(company_id)
 
   queue_company_invention: (company_id, invention_id) ->
     throw new Error(404) unless @sandbox.sandbox_data.company_id_inventions[company_id]?
 
     inventions = @sandbox.sandbox_data.company_id_inventions[company_id]
-    completed_index = inventions.completedIds.indexOf(invention_id)
-    pending_index = _.findIndex(inventions.pendingInventions, (pending) => pending.id == invention_id)
-    if completed_index >= 0 || pending_index >= 0
-      inventions.completedIds.splice(completed_index, 1)
-    else
-      inventions.pendingInventions.push {
-        id: invention_id
-        progress: 0
-        order: inventions.pendingInventions.length
-        spent: 0
-      }
 
-    _.cloneDeep {
-      companyId: company_id
-      pendingInventions: (@sandbox.sandbox_data.company_id_inventions[company_id]?.pendingInventions || [])
-      completedIds: (@sandbox.sandbox_data.company_id_inventions[company_id]?.completedIds || [])
-    }
+    completed_index = inventions.completedIds.indexOf(invention_id)
+    pending_index = inventions.pendingIds.indexOf(invention_id)
+    inventions.pendingIds.push(invention_id) if completed_index < 0 && pending_index < 0
+
+    @company_inventions(company_id)

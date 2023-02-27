@@ -3,24 +3,26 @@
   .tree-list-container.sp-scrollbar
     .status-title {{translate('ui.menu.research.status.available')}}
     ul
-      template(v-if="research_available.length")
-        li(v-for="research in research_available")
-          a(v-on:click.stop.prevent="select_invention_id(research.id)") {{translate(research.name)}}
-      template(v-else-if='true')
+      template(v-if="company_research.available.length")
+        li(v-for="research in company_research.available")
+          a(@click.stop.prevent="select_invention_id(research.id)") {{translate(research.name)}}
+      template(v-else)
         li {{translate('ui.menu.research.none.label')}}
+
     .status-title {{translate('ui.menu.research.status.in_progress')}}
     ul
-      template(v-if="research_in_progress.length")
-        li(v-for="research in research_in_progress")
-          a(v-on:click.stop.prevent="select_invention_id(research.id)") {{translate(research.name)}}
-      template(v-else-if="true")
+      template(v-if="company_research.in_progress.length")
+        li(v-for="research in company_research.in_progress")
+          a(@click.stop.prevent="select_invention_id(research.id)") {{translate(research.name)}}
+      template(v-else)
         li {{translate('ui.menu.research.none.label')}}
+
     .status-title {{translate('ui.menu.research.status.completed')}}
     ul
-      template(v-if="research_completed.length")
-        li(v-for="research in research_completed")
-          a(v-on:click.stop.prevent="select_invention_id(research.id)") {{translate(research.name)}}
-      template(v-else-if="true")
+      template(v-if="company_research.completed.length")
+        li(v-for="research in company_research.completed")
+          a(@click.stop.prevent="select_invention_id(research.id)") {{translate(research.name)}}
+      template(v-else)
         li {{translate('ui.menu.research.none.label')}}
 
   .tree-container
@@ -107,7 +109,7 @@ export default
     is_visible: (new_value, old_value) ->
       if @is_visible
         @inventions_for_company = @client_state.inventions_for_company()
-        @$refs.tree_network.fit()
+        #@$refs.tree_network.fit()
 
     'client_state.player.company_id': (new_value, old_value) ->
       @inventions_for_company = @client_state.inventions_for_company() if @is_visible
@@ -122,9 +124,9 @@ export default
           @interface_state.inventions_selected_category_id = invention_metadata.industry_category_id
           @interface_state.inventions_selected_industry_type_id = invention_metadata.industry_type_id
 
-      setTimeout(=>
-        @$refs.tree_network.selectNodes([@selected_invention_id]) if @selected_invention_id? && @$refs.tree_network.getNode(@selected_invention_id)?
-      , 100)
+      #setTimeout(=>
+      #  @$refs.tree_network.selectNodes([@selected_invention_id]) if @selected_invention_id? && @$refs.tree_network.getNode(@selected_invention_id)?
+      #, 100)
 
 
   computed:
@@ -158,23 +160,27 @@ export default
 
     company_inventions: -> if @is_ready && @client_state.player.company_id? then @client_state.corporation.inventions_metadata_by_company_id[@client_state.player.company_id] else null
 
-    research_available: ->
-      available = []
+    company_research: ->
+      research = {
+        available: []
+        in_progress: null
+        pending: []
+        completed: []
+      }
+
       for invention in @invention_data
-        available.push { id: invention.id, name: invention.name } unless @is_invention_in_progress(invention.id) || @is_invention_completed(invention.id)
-      _.sortBy(available, (invention) -> invention.text)
-    research_in_progress: ->
-      in_progress = []
-      if @company_inventions?
-        for invention in @invention_data
-          in_progress.push { id: invention.id, name: invention.name } if @is_invention_in_progress(invention.id)
-      _.sortBy(in_progress, (invention) -> invention.text)
-    research_completed: ->
-      completed = []
-      if @company_inventions?
-        for invention in @invention_data
-          completed.push { id: invention.id, name: invention.name } if @is_invention_completed(invention.id)
-      _.sortBy(completed, (invention) -> invention.text)
+        if @company_inventions?.completedIds?.has(invention.id)
+          research.completed.push({ id: invention.id, name: invention.name })
+        else if @company_inventions?.isQueued(invention.id)
+          research.pending.push({ id: invention.id, name: invention.name })
+        else
+          research.available.push({ id: invention.id, name: invention.name })
+
+      {
+        available: _.sortBy(research.available, (invention) -> invention.text)
+        in_progress: (if research.in_progress then [research.in_progress] else []).concat(research.pending)
+        completed: _.sortBy(research.completed, (invention) -> invention.text)
+      }
 
 
   methods:
@@ -184,7 +190,7 @@ export default
       if @is_visible
         @inventions_for_company = @client_state.inventions_for_company()
         node.color = @color_for_node(node.id) for node in @tree_nodes
-        @$refs.tree_network.fit()
+        #@$refs.tree_network.fit()
 
     refresh_invention_data: () ->
       data = []
@@ -217,16 +223,16 @@ export default
       @tree_nodes = data
       @tree_edges = links
 
-      if @is_visible
-        setTimeout(=>
-          @$refs.tree_network.fit()
-          @$refs.tree_network.selectNodes([@selected_invention_id]) if @selected_invention_id? && @$refs.tree_network.getNode(@selected_invention_id)?
-        , 100)
+      #if @is_visible
+      #  setTimeout(=>
+      #    @$refs.tree_network.fit()
+      #    @$refs.tree_network.selectNodes([@selected_invention_id]) if @selected_invention_id? && @$refs.tree_network.getNode(@selected_invention_id)?
+      #  , 100)
 
     color_for_node: (invention_id) ->
       item_styling = NODE_CONFIG.available
-      item_styling = NODE_CONFIG.pending if @company_inventions? && _.find(@company_inventions.pending_inventions, (pending) => pending.id == invention_id)?
-      item_styling = NODE_CONFIG.completed if @company_inventions? && @company_inventions.completed_ids.indexOf(invention_id) >= 0
+      item_styling = NODE_CONFIG.pending if @company_inventions?.isQueued(invention_id)
+      item_styling = NODE_CONFIG.completed if @company_inventions?.completedIds?.has(invention_id)
 
       {
         background: item_styling.color
@@ -238,9 +244,6 @@ export default
           background: item_styling.selected.color
           border: item_styling.selected.borderColor
       }
-
-    is_invention_in_progress: (invention_id) -> @company_inventions? && _.find(@company_inventions.pending_inventions, (pending) => pending.id == invention_id)
-    is_invention_completed: (invention_id) -> @company_inventions? && @company_inventions.completed_ids.indexOf(invention_id) >= 0
 
     select_tree_node: (item) -> @select_invention_id(if item.nodes?.length then item.nodes[0] else null)
     deselect_tree_node: (item) -> @select_invention_id(null)

@@ -1,5 +1,6 @@
-import EventListener from '~/plugins/starpeace-client/state/event-listener.coffee'
+import { markRaw } from 'vue';
 
+import EventListener from '~/plugins/starpeace-client/state/event-listener.coffee'
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 
 MENUBAR = {
@@ -28,7 +29,7 @@ MENUBAR = {
 
 export default class MenuState
   constructor: () ->
-    @event_listener = new EventListener()
+    @event_listener = markRaw(new EventListener())
     @toolbars = {
       left: null
       body: null

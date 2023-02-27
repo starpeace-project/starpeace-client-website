@@ -3,7 +3,7 @@
   .card.is-starpeace.has-header
     .card-header
       .card-header-title {{translate('ui.menu.options.header')}}
-      .card-header-icon.card-close(v-on:click.stop.prevent="client_state.menu.toggle_menu('options')")
+      .card-header-icon.card-close(@click.stop.prevent="client_state.menu.toggle_menu('options')")
         font-awesome-icon(:icon="['fas', 'times']")
 
     .card-content.sp-menu-background
@@ -16,10 +16,10 @@
             .column.is-paddingless.second-group-header
               .field-label
                 label.label.group-header &nbsp;
-          menu-option(:label="translate('ui.menu.options.option.general.header.label')", :value="options.option('general.show_header')", v-on:toggle="options.toggle('general.show_header')")
-          menu-option(:label="translate('ui.menu.options.option.general.fps.label')", :value="options.option('general.show_fps')", v-on:toggle="options.toggle('general.show_fps')")
-          menu-option(:label="translate('ui.menu.options.option.general.mini_map.label')", :value="options.option('general.show_mini_map')", v-on:toggle="options.toggle('general.show_mini_map')")
-          menu-option(:label="translate('ui.menu.options.option.general.music.label')", :value="options.option('music.show_game_music')", v-on:toggle="options.toggle('music.show_game_music')")
+          menu-option(:label="translate('ui.menu.options.option.general.header.label')", :value="options.option('general.show_header')", @toggle="options.toggle('general.show_header')")
+          menu-option(:label="translate('ui.menu.options.option.general.fps.label')", :value="options.option('general.show_fps')", @toggle="options.toggle('general.show_fps')")
+          menu-option(:label="translate('ui.menu.options.option.general.mini_map.label')", :value="options.option('general.show_mini_map')", @toggle="options.toggle('general.show_mini_map')")
+          menu-option(:label="translate('ui.menu.options.option.general.music.label')", :value="options.option('music.show_game_music')", @toggle="options.toggle('music.show_game_music')")
           .field.is-horizontal
             .column.is-paddingless.is-9
               .field-label
@@ -27,7 +27,7 @@
             .column.is-paddingless.field-body
               .field.is-narrow
                 .control
-                  misc-language-select(:language_code='language_code', v-on:changed='change_language')
+                  misc-language-select(:language_code='language_code', @changed='change_language')
 
         .column
           .field.is-horizontal
@@ -37,11 +37,11 @@
             .column.is-paddingless.second-group-header
               .field-label
                 label.label.group-header &nbsp;
-          menu-option(:label="translate('ui.menu.options.option.graphics.trees.label')",  :value="options.option('renderer.trees')", v-on:toggle="options.toggle('renderer.trees')")
-          menu-option(:label="translate('ui.menu.options.option.graphics.buildings.label')", :value="options.option('renderer.buildings')", v-on:toggle="options.toggle('renderer.buildings')")
-          menu-option(:label="translate('ui.menu.options.option.graphics.building_animations.label')", :value="options.option('renderer.building_animations')", v-on:toggle="options.toggle('renderer.building_animations')")
-          menu-option(:label="translate('ui.menu.options.option.graphics.building_effects.label')", :value="options.option('renderer.building_effects')", v-on:toggle="options.toggle('renderer.building_effects')")
-          menu-option(:label="translate('ui.menu.options.option.graphics.planes.label')", :value="options.option('renderer.planes')", v-on:toggle="options.toggle('renderer.planes')")
+          menu-option(:label="translate('ui.menu.options.option.graphics.trees.label')",  :value="options.option('renderer.trees')", @toggle="options.toggle('renderer.trees')")
+          menu-option(:label="translate('ui.menu.options.option.graphics.buildings.label')", :value="options.option('renderer.buildings')", @toggle="options.toggle('renderer.buildings')")
+          menu-option(:label="translate('ui.menu.options.option.graphics.building_animations.label')", :value="options.option('renderer.building_animations')", @toggle="options.toggle('renderer.building_animations')")
+          menu-option(:label="translate('ui.menu.options.option.graphics.building_effects.label')", :value="options.option('renderer.building_effects')", @toggle="options.toggle('renderer.building_effects')")
+          menu-option(:label="translate('ui.menu.options.option.graphics.planes.label')", :value="options.option('renderer.planes')", @toggle="options.toggle('renderer.planes')")
 
         .column
           .field.is-horizontal
@@ -51,17 +51,17 @@
             .column.is-paddingless.second-group-header
               .field-label
                 label.label.group-header &nbsp;
-          menu-option(:label="translate('ui.menu.options.option.locations.poi.label')", :value="options.option('bookmarks.points_of_interest')", v-on:toggle="options.toggle('bookmarks.points_of_interest')")
-          menu-option(:label="translate('ui.menu.options.option.locations.poi_capital.label')", :value="options.option('bookmarks.capital')", v-on:toggle="options.toggle('bookmarks.capital')")
-          menu-option(:label="translate('ui.menu.options.option.locations.poi_mausoleums.label')", :value="options.option('bookmarks.mausoleums')", v-on:toggle="options.toggle('bookmarks.mausoleums')")
-          menu-option(:label="translate('ui.menu.options.option.locations.poi_towns.label')", :value="options.option('bookmarks.towns')", v-on:toggle="options.toggle('bookmarks.towns')")
-          menu-option(:label="translate('ui.menu.options.option.locations.corporation.label')", :value="options.option('bookmarks.corporation')", v-on:toggle="options.toggle('bookmarks.corporation')")
+          menu-option(:label="translate('ui.menu.options.option.locations.poi.label')", :value="options.option('bookmarks.points_of_interest')", @toggle="options.toggle('bookmarks.points_of_interest')")
+          menu-option(:label="translate('ui.menu.options.option.locations.poi_capital.label')", :value="options.option('bookmarks.capital')", @toggle="options.toggle('bookmarks.capital')")
+          menu-option(:label="translate('ui.menu.options.option.locations.poi_mausoleums.label')", :value="options.option('bookmarks.mausoleums')", @toggle="options.toggle('bookmarks.mausoleums')")
+          menu-option(:label="translate('ui.menu.options.option.locations.poi_towns.label')", :value="options.option('bookmarks.towns')", @toggle="options.toggle('bookmarks.towns')")
+          menu-option(:label="translate('ui.menu.options.option.locations.corporation.label')", :value="options.option('bookmarks.corporation')", @toggle="options.toggle('bookmarks.corporation')")
 
     footer.card-footer
       .card-footer-item.reset-item
-        button.button.is-primary.is-medium.is-outlined(v-on:click.stop.prevent='reset_options', :disabled='!can_reset') {{translate('ui.menu.options.actions.reset')}}
+        button.button.is-primary.is-medium.is-outlined(@click.stop.prevent='reset_options', :disabled='!can_reset') {{translate('ui.menu.options.actions.reset')}}
       .card-footer-item.save-item
-        button.button.is-primary.is-medium(v-on:click.stop.prevent='save_options', :disabled='!is_dirty') {{translate('ui.menu.options.actions.save')}}
+        button.button.is-primary.is-medium(@click.stop.prevent='save_options', :disabled='!is_dirty') {{translate('ui.menu.options.actions.save')}}
 
 </template>
 

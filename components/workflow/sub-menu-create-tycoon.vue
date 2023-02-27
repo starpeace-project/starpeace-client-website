@@ -20,7 +20,7 @@
           .field-body
             .field
               .control.has-icons-left.is-expanded
-                input.input(type='text' v-model='username' :disabled='saving' :placeholder="translate('ui.workflow.universe.name.label')" disabled='disabled')
+                input.input(type='text' v-model='username' :placeholder="translate('ui.workflow.universe.name.label')" disabled)
                 span.icon.is-small.is-left
                   font-awesome-icon(:icon="['fas', 'user-tie']")
 

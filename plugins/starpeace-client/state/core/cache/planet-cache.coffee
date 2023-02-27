@@ -16,12 +16,6 @@ export default class PlanetCache extends Cache
     @details_by_town_id = markRaw(new TinyCache())
     @rankings_by_type_id = markRaw(new TinyCache())
 
-    # Object.defineProperty(@, 'details_for_planet', { configurable: false }) # disable Vue.observable
-    # Object.defineProperty(@, 'buildings_by_town_id', { configurable: false }) # disable Vue.observable
-    # Object.defineProperty(@, 'companies_by_town_id', { configurable: false }) # disable Vue.observable
-    # Object.defineProperty(@, 'details_by_town_id', { configurable: false }) # disable Vue.observable
-    # Object.defineProperty(@, 'rankings_by_type_id', { configurable: false }) # disable Vue.observable
-
   reset_planet: () ->
     @details_for_planet.clear()
     @buildings_by_town_id.clear()

@@ -92,6 +92,8 @@ export default class Layers
     now = DateTime.now()
     render_buildings = @options.option('renderer.buildings')
     render_trees = @options.option('renderer.trees')
+    render_building_animations = @options.option('renderer.building_animations')
+    render_building_effects = @options.option('renderer.building_effects')
     show_zones = @client_state.interface.show_zones
     show_overlay = @client_state.interface.show_overlay
     current_overlay = @client_state.interface.current_overlay
@@ -109,6 +111,7 @@ export default class Layers
     construction_width = @client_state.interface.construction_building_width
     construction_height = @client_state.interface.construction_building_height
 
+
     x = i_start
     while x < i_max
       j = j_start - n
@@ -118,8 +121,8 @@ export default class Layers
           tile_item = @tile_item_cache.tile_items[tile_cache_index]
           if !tile_item
             tile_info = game_map.info_for_tile(now, x, j, render_trees, show_zones, show_overlay, current_overlay)
-            tile_item = @tile_item_cache.cache_item(tile_info, tile_cache_index, x, j, current_season, render_buildings, selected_building_id, selected_corporation_id)
-          construction_item = if construction_building_id? && construction_x == x && construction_y == j then @tile_item_cache.building_construction_sprite_info_for(construction_building_id, can_construct) else null
+            tile_item = @tile_item_cache.cache_item(tile_info, tile_cache_index, x, j, current_season, render_buildings, render_building_animations, render_building_effects, selected_building_id, selected_corporation_id)
+          construction_item = if construction_building_id? && construction_x == x && construction_y == j then @tile_item_cache.building_construction_sprite_info_for(render_building_animations, construction_building_id, can_construct) else null
           within_construction = construction_x >= 0 && x > construction_x - construction_width && x <= construction_x && construction_y >= 0 && j > construction_y - construction_height && j <= construction_y
           @layer_manager.render_tile_item(render_state, tile_item, construction_item, within_construction, viewport.iso_to_canvas(x, j, view_center), viewport) if tile_item?
 
@@ -145,7 +148,6 @@ export default class Layers
           m -= 1
 
       x += 1
-
 
     @layer_manager.clear_cache_sprites(render_state)
     @last_view_offset_x = @client_state.camera.view_offset_x

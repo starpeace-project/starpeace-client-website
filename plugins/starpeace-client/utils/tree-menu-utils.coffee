@@ -63,7 +63,7 @@ export default class TreeMenuUtils
           label: industry_type_label(type_id)
           type: 'INDUSTRY_TYPE'
           industry_type_id: type_id
-          load_children_callback: () => @planets_manager.buildings_by_town(planet_id, town_id, category_id, type_id)
+          load_children_callback: () => @planets_manager.buildings_by_town(town_id, category_id, type_id)
           convert_children_callback: (buildings) => _.map(_.orderBy(buildings, ['name'], ['asc']), (building) => {
             id: building.id
             label: building.name

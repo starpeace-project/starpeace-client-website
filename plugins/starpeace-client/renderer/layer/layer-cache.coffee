@@ -19,6 +19,7 @@ export default class LayerCache
 
     for index in [count...@sprite_count]
       break unless @sprite_pool[index]
+      @sprite_pool[index].eventMode = 'none'
       @sprite_pool[index].visible = false
       @sprite_pool[index].x = -1000
       @sprite_pool[index].y = -1000
@@ -40,36 +41,40 @@ export default class LayerCache
       throw "maximum number sprites reached" if @max_size > 0 && @sprite_count >= @max_size
       @sprite_count += 1
       sprite = @sprite_pool[render_state[@id]] = if @is_animated then new PIXI.AnimatedSprite(textures) else new PIXI.Sprite(textures[0])
-      if @pointer_events
-        sprite.interactive = true
-        sprite.interactiveChildren = false
 
-        sprite.on('pointerdown', (event) ->
-          return unless event.currentTarget.click_callback?
+      sprite.on('pointerdown', (event) ->
+        return unless event.currentTarget.click_callback?
 
-          event.currentTarget.event_pointer_down_x = Math.round(event.data?.global?.x || 0)
-          event.currentTarget.event_pointer_down_y = Math.round(event.data?.global?.y || 0)
-        )
-        sprite.on('pointerup', (event) =>
-          return unless event.currentTarget.click_callback?
+        event.currentTarget.event_pointer_down_x = Math.round(event.data?.global?.x || 0)
+        event.currentTarget.event_pointer_down_y = Math.round(event.data?.global?.y || 0)
+      ) if @pointer_events
+      sprite.on('pointerup', (event) =>
+        return unless event.currentTarget.click_callback?
 
-          delta_x = Math.round(event.data?.global?.x || 0) - (event.currentTarget.event_pointer_down_x || 0)
-          delta_y = Math.round(event.data?.global?.y || 0) - (event.currentTarget.event_pointer_down_y || 0)
-          return if delta_x > 0 || delta_y > 0
+        delta_x = Math.round(event.data?.global?.x || 0) - (event.currentTarget.event_pointer_down_x || 0)
+        delta_y = Math.round(event.data?.global?.y || 0) - (event.currentTarget.event_pointer_down_y || 0)
+        return if delta_x > 0 || delta_y > 0
 
-          if event.currentTarget.click_callback(event.data?.button == 0, event.data?.button == 2)
-            event.data?.originalEvent?.preventDefault()
-            event.data?.originalEvent?.stopPropagation()
-            event.stopPropagation()
-          false
-        )
+        if event.currentTarget.click_callback(event.data?.button == 0, event.data?.button == 2)
+          event.data?.originalEvent?.preventDefault()
+          event.data?.originalEvent?.stopPropagation()
+          event.stopPropagation()
+        false
+      ) if @pointer_events
+
       @container.addChild(sprite)
 
     render_state[@id] += 1
 
-    if @pointer_events
+    if @pointer_events && options.click_callback?
+      sprite.eventMode = 'static'
+      sprite.interactiveChildren = false
       sprite.hitArea = if options.hit_area then options.hit_area else null
-      sprite.click_callback = if options.click_callback? then options.click_callback else null
+      sprite.click_callback = options.click_callback
+    else
+      sprite.eventMode = 'none'
+      sprite.hitArea = null
+      sprite.click_callback = null
 
     if @is_animated
       sprite.animationSpeed = if options.speed? then options.speed else .2

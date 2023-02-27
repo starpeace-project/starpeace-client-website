@@ -1,5 +1,5 @@
 
-## v0.3.9 - in progress - updated 2023-02-05
+## v0.3.10 - in progress - updated 2023-02-26
 ### platform
 * [done] improve API integration with galaxies [v0.3.1]
 * [done] document multiverse API integration [starpeace-server-multiverse-api]
@@ -26,10 +26,12 @@
 * [done] visa and tycoon position API integration [v0.3.8]
 * [done] major version upgrade of platform dependencies (nuxt, PixiJS) [v0.3.8]
 * [done] fixing various defects with previous upgrades [v0.3.9]
+* [done] fixing research lifecycle and API integration [v0.3.9]
 * [in progress] improve auth and remember me token and error handling
 * [pending] player, building, and planet event handling
-* [pending] fix render fps issue when loading chunks
-* [pending] research and bookmarks upgrade fixes
+* [pending] bookmarks upgrade and performance fixes
+* [pending] research upgrade visualization fixes
+* [pending] fix interaction performance and fps issues
 
 ### assets
 * [done] finish initial language translation for assets [v0.3.1]

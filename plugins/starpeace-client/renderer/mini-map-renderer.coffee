@@ -120,7 +120,7 @@ export default class MiniMapRenderer
     @viewport = new PIXI.Graphics()
     @application.stage.addChild(@viewport)
 
-    @input_handler = new MiniMapInputHandler(@, @options)
+    @input_handler = new MiniMapInputHandler(@, render_container)
 
     render_container.appendChild(@application.view)
     addResizeListener(render_container, => @handle_resize())
@@ -130,7 +130,7 @@ export default class MiniMapRenderer
 
     mini_map_zoom = @options.get_mini_map_zoom()
     @sprite = new PIXI.Sprite(PIXI.utils.TextureCache[MINI_MAP_TEXTURE_KEY])
-    @sprite.interactive = true
+    @sprite.eventMode = 'none'
     @sprite.scale = new PIXI.Point(mini_map_zoom, mini_map_zoom)
     @sprite.x = @map_offset_x
     @sprite.y = @map_offset_y

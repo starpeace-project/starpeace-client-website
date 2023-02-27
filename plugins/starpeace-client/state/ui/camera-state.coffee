@@ -1,3 +1,4 @@
+import { markRaw } from 'vue';
 
 import MetadataLand from '~/plugins/starpeace-client/land/metadata-land.coffee'
 import EventListener from '~/plugins/starpeace-client/state/event-listener.coffee'
@@ -7,7 +8,7 @@ CAMERA_MAX_ZOOM = 1.5
 
 export default class CameraState
   constructor: (@client_state) ->
-    @event_listener = new EventListener()
+    @event_listener = markRaw(new EventListener())
 
     @view_offset_x = 0
     @view_offset_y = 0

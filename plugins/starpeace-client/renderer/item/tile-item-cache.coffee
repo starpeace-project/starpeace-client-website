@@ -80,7 +80,7 @@ export default class TileItemCache
 
     @is_dirty = true
 
-  cache_item: (tile_info, tile_cache_index, x, y, current_season, render_buildings, selected_building_id, selected_corporation_id) ->
+  cache_item: (tile_info, tile_cache_index, x, y, current_season, render_buildings, render_building_animations, render_building_effects, selected_building_id, selected_corporation_id) ->
     is_building_root_tile = tile_info.building_info? && tile_info.building_info.map_x == x && tile_info.building_info.map_y == y
     @tile_items[tile_cache_index] = new TileItem(tile_info, x, y, {
         land: @land_sprite_info_for(tile_info, current_season)
@@ -89,7 +89,7 @@ export default class TileItemCache
         tree: @tree_sprite_info_for(tile_info, current_season)
         underlay: @underlay_sprite_info_for(tile_info)
         foundation: if !render_buildings && is_building_root_tile then @foundation_sprite_info_for(tile_info) else null
-        building: if render_buildings && is_building_root_tile then @building_sprite_info_for(tile_info, selected_building_id, selected_corporation_id) else null
+        building: if render_buildings && is_building_root_tile then @building_sprite_info_for(render_building_animations, render_building_effects, tile_info, selected_building_id, selected_corporation_id) else null
         overlay: @overlay_sprite_info_for(tile_info)
       })
 
@@ -170,7 +170,7 @@ export default class TileItemCache
     zone_color = if metadata.zone? then metadata.zone.color else 0
     new SpriteBuildingFootprint(texture, image_metadata, zone_color)
 
-  building_sprite_info_for: (tile_info, selected_building_id, selected_corporation_id) ->
+  building_sprite_info_for: (render_building_animations, render_building_effects, tile_info, selected_building_id, selected_corporation_id) ->
     unless tile_info.building_info?
       Logger.warn("attempting to determine building sprite for unknown building #{tile_info}")
       return null
@@ -190,10 +190,10 @@ export default class TileItemCache
       Logger.warn("unable to load building textures for #{image_metadata.id}")
       return null
 
-    is_animated = textures.length > 1 && @options.option('renderer.building_animations')
+    is_animated = textures.length > 1 && render_building_animations
 
     effects = []
-    if image_metadata.effects? && @options.option('renderer.building_effects')
+    if image_metadata.effects? && render_building_effects
       for effect in image_metadata.effects
         effect_metadata = @effect_library.metadata_by_id[effect.type]
         effect_textures = _.map(effect_metadata?.frames || [], (texture_id) -> PIXI.utils.TextureCache[texture_id])
@@ -214,7 +214,7 @@ export default class TileItemCache
 
     new SpriteBuilding(textures, is_animated, is_selected, is_filtered, image_metadata, effects, signs)
 
-  building_construction_sprite_info_for: (building_id, is_valid_location) ->
+  building_construction_sprite_info_for: (render_building_animations, building_id, is_valid_location) ->
     metadata = @building_library.metadata_by_id[building_id]
     return null unless metadata?
     image_metadata = @building_library.images_by_id[metadata.image_id]
@@ -223,7 +223,7 @@ export default class TileItemCache
     textures = _.map(image_metadata?.frames || [], (texture_id) -> PIXI.utils.TextureCache[texture_id])
     return null unless textures?.length && textures[0]?
 
-    is_animated = textures.length > 1 && @options.option('renderer.building_animations')
+    is_animated = textures.length > 1 && render_building_animations
 
     new SpriteBuildingConstruction(textures, is_animated, is_valid_location, image_metadata)
 

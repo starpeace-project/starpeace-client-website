@@ -106,11 +106,6 @@ export default class APIClient
       mapY: map_y
     }, (result) -> result)
 
-  # events_for_planet: (last_update) ->
-  #   @get("events", {
-  #     lastUpdate: last_update.toISO()
-  #   }, (result) -> result || {})
-
   building_metadata_for_planet: () ->
     @get("metadata/buildings", {}, (result) -> result || {})
   core_metadata_for_planet: () ->
@@ -130,7 +125,7 @@ export default class APIClient
     @get("search/tycoons", { query, startsWithQuery }, (result) -> result || [])
   towns_for_planet: () ->
     @get("towns", {}, (result) -> result)
-  buildings_for_town: (, town_id, industryCategoryId, industryTypeId) ->
+  buildings_for_town: (town_id, industryCategoryId, industryTypeId) ->
     @get("towns/#{town_id}/buildings", { industryCategoryId, industryTypeId }, (result) -> result || [])
   companies_for_town: (, town_id) ->
     @get("towns/#{town_id}/companies", {}, (result) -> result || [])
@@ -170,9 +165,6 @@ export default class APIClient
     @patch("corporations/#{corporation_id}/bookmarks", {
       deltas: bookmark_deltas
     }, (result) -> result)
-
-  # cashflow_for_corporation: (corporation_id) ->
-  #   @get("corporations/#{corporation_id}/cashflow", {}, (result) -> result)
 
   mail_for_corporation: (corporation_id) ->
     @get("corporations/#{corporation_id}/mail", {}, (result) -> result || [])

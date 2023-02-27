@@ -8,7 +8,6 @@ import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
 import SandboxBookmarks from '~/plugins/starpeace-client/api/sandbox/sandbox-bookmarks.coffee'
 import SandboxBuildings from '~/plugins/starpeace-client/api/sandbox/sandbox-buildings.coffee'
 import SandboxData from '~/plugins/starpeace-client/api/sandbox/sandbox-data.coffee'
-import SandboxEvents from '~/plugins/starpeace-client/api/sandbox/sandbox-events.coffee'
 import SandboxInventions from '~/plugins/starpeace-client/api/sandbox/sandbox-inventions.coffee'
 import SandboxMail from '~/plugins/starpeace-client/api/sandbox/sandbox-mail.coffee'
 
@@ -18,7 +17,6 @@ export default class Sandbox
     @sandbox_data = new SandboxData()
     @sandbox_bookmarks = new SandboxBookmarks(@)
     @sandbox_buildings = new SandboxBuildings(@)
-    @sandbox_events = new SandboxEvents(@)
     @sandbox_inventions = new SandboxInventions(@)
     @sandbox_mail = new SandboxMail(@)
 
@@ -43,7 +41,6 @@ export default class Sandbox
     for corp_id,corp_cashflow of @sandbox_data.corporation_id_cashflow
       for company_id,company of corp_cashflow.companies_by_id
         cashflow_adjustment = 0
-        cashflow_adjustment += @sandbox_events.do_events(company_id)
         cashflow_adjustment += @sandbox_inventions.do_pending(company_id)
         cashflow_adjustment += @sandbox_buildings.do_construction(company_id)
 

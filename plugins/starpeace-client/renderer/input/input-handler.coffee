@@ -13,6 +13,8 @@ export default class InputHandler
     @auto_scroll_x = 0
     @auto_scroll_y = 0
 
+    @interface_state = @client_state.interface
+    @camera_state = @client_state.camera
 
     @renderer_dom.addEventListener('pointerdown', ((event) => @primary_mouse_down(event)), false)
     @renderer_dom.addEventListener('pointerup', ((event) => @primary_mouse_up(event)), false)
@@ -46,7 +48,7 @@ export default class InputHandler
     false
 
   secondary_mouse_up_outside_renderer: (event) ->
-    unless process?.env?.NODE_ENV == 'development'
+    unless process?.env?.NODE_ENV == 'development' # TODO: FIXME: not working anymore?
       event.preventDefault()
       event.stopPropagation()
       false
@@ -94,20 +96,20 @@ export default class InputHandler
     event_x = Math.round(event.offsetX)
     event_y = Math.round(event.offsetY)
 
-    if @client_state.interface.construction_building_id?
-      position = @client_state.camera.position_from_top_left(event_x, event_y)
-      iso_position = @client_state.camera.map_to_iso(position.x, position.y)
-      @client_state.interface.construction_building_map_x = iso_position.i
-      @client_state.interface.construction_building_map_y = iso_position.j
+    if @interface_state.construction_building_id?
+      position = @camera_state.position_from_top_left(event_x, event_y)
+      iso_position = @camera_state.map_to_iso(position.x, position.y)
+      @interface_state.construction_building_map_x = iso_position.i
+      @interface_state.construction_building_map_y = iso_position.j
 
 
-    if @client_state.interface.is_mouse_primary_down
-      delta_x = if @client_state.interface.last_mouse_x >= 0 then @client_state.interface.last_mouse_x - event_x else 0
-      delta_y = if @client_state.interface.last_mouse_y >= 0 then @client_state.interface.last_mouse_y - event_y else 0
-      @client_state.interface.last_mouse_x = event_x
-      @client_state.interface.last_mouse_y = event_y
+    if @interface_state.is_mouse_primary_down
+      delta_x = if @interface_state.last_mouse_x >= 0 then @interface_state.last_mouse_x - event_x else 0
+      delta_y = if @interface_state.last_mouse_y >= 0 then @interface_state.last_mouse_y - event_y else 0
+      @interface_state.last_mouse_x = event_x
+      @interface_state.last_mouse_y = event_y
 
-      @client_state.camera.pan_camera(delta_x, delta_y)
+      @camera_state.pan_camera(delta_x, delta_y)
 
 
   pointer_cancel: (event) ->
@@ -170,6 +172,6 @@ export default class InputHandler
     return unless @client_state.initialized && @client_state?.workflow_status == 'ready' && event?.deltaY?
 
     if event.deltaY > 0
-      @client_state.camera.camera_zoom_out()
+      @camera_state.camera_zoom_out()
     else if event.deltaY < 0
-      @client_state.camera.camera_zoom_in()
+      @camera_state.camera_zoom_in()

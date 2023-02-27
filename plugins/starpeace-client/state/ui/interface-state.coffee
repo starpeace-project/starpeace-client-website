@@ -1,6 +1,6 @@
+import { markRaw } from 'vue';
 
 import Overlay from '~/plugins/starpeace-client/overlay/overlay.coffee'
-
 import EventListener from '~/plugins/starpeace-client/state/event-listener.coffee'
 
 MINI_MAP_ZOOM_MAX = 2
@@ -12,7 +12,7 @@ MINI_MAP_ZOOM_STEP = .25
 ##
 export default class InterfaceState
   constructor: (@options) ->
-    @event_listener = new EventListener()
+    @event_listener = markRaw(new EventListener())
     @reset_state()
 
   reset_state: () ->
