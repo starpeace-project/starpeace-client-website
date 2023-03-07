@@ -182,6 +182,8 @@ export default class APIClient
 
   create_company: (company_name, seal_id) ->
     @post("companies", { name: company_name, sealId: seal_id }, (result) -> result)
+  company_for_id: (company_id) ->
+    @get("companies/#{company_id}", {}, (result) -> result)
   buildings_for_company: (company_id) ->
     @get("companies/#{company_id}/buildings", {}, (result) -> result || [])
   inventions_for_company: (company_id) ->

@@ -14,5 +14,13 @@
     "FR": "journée",
     "IT": "giorno",
     "PT": "dia"
+  },
+  "duration.week": {
+    "DE": "woche",
+    "EN": "week",
+    "ES": "semana",
+    "FR": "semaine",
+    "IT": "settimana",
+    "PT": "semana"
   }
 }

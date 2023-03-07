@@ -112,9 +112,14 @@ export default class SandboxData
           }
 
           @company_id_info[company.id] = {
-            company_name: company.name
+            id: company.id
+            name: company.name
+            sealId: company.sealId
+            tycoonId: tycoon_id
             tycoon_id: tycoon_id
+            corporationId: corporation.id
             corporation_id: corporation.id
+            planetId: corporation.planetId
             planet_id: corporation.planetId
           }
 
@@ -136,9 +141,23 @@ export default class SandboxData
       for chunk_id,chunk_buildings of planet_buildings
         @planet_id_chunk_id_buildings[planet_id][chunk_id] = chunk_buildings
         for building in chunk_buildings
-          @company_id_buildings[building.companyId] = [] unless @company_id_buildings[building.companyId]?
-          @company_id_buildings[building.companyId].push building
           @building_id_building[building.id] = building
+
+          if building.companyId?
+            @company_id_buildings[building.companyId] = [] unless @company_id_buildings[building.companyId]?
+            @company_id_buildings[building.companyId].push building
+
+            @company_id_info[building.companyId] = {
+              id: building.companyId
+              name: 'Random Company ' + Math.round(Math.random() * 100)
+              sealId: 'DIS'
+              tycoonId: building.tycoonId
+              tycoon_id: building.tycoonId
+              corporationId: building.corporationId
+              corporation_id: building.corporationId
+              planetId: planet_id
+              planet_id: planet_id
+            } if !@company_id_info[building.companyId]
 
           simulation = _.find(METADATA_BUILDING.simulationDefinitions, (d) -> d.id == building.definitionId)
           continue unless simulation?

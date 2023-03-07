@@ -68,19 +68,25 @@ export default class Client
       @refresh_events_interval = setInterval(=>
         if @client_state.workflow_status == 'ready'
           refresh_promises = []
-          # refresh_promises.push @managers.planets_manager.load_events() if @client_state.player.planet_id?
-          # refresh_promises.push @managers.corporation_manager.load_cashflow() if @client_state.player.corporation_id?.length
           refresh_promises.push @managers.mail_manager.load_by_corporation(@client_state.player.corporation_id) if @client_state.has_new_mail()
           refresh_promises.push @managers.invention_manager.load_by_company(company_id) for company_id in @client_state.corporation.company_ids_with_pending_inventions()
-          refresh_promises.push @managers.building_manager.load_building_metadata(@client_state.interface.selected_building_id) if @client_state.interface.selected_building_id?.length
 
-          Promise.all(refresh_promises)
-            .then -> Logger.debug "refreshed recent events"
-            .catch (err) => @client_state.add_error_message('Failure refreshing recent events from server', err)
+          if @client_state.interface.selected_building_id?.length
+            refresh_promises.push @managers.building_manager.load_building_metadata(@client_state.interface.selected_building_id)
+
+            selected_building = @client_state.selected_building()
+            selected_building_company = if selected_building? then @client_state.core.company_cache.metadata_for_id(selected_building.company_id) else null
+            refresh_promises.push @managers.company_manager.load_by_company(selected_building.company_id) if selected_building && !selected_building_company
+
+          if refresh_promises.length
+            Promise.all(refresh_promises)
+              .then -> Logger.debug "refreshed recent events"
+              .then => @client_state.has_dirty_metadata = true
+              .catch (err) => @client_state.add_error_message('Failure refreshing recent events from server', err)
         else
           clearTimeout(@refresh_events_interval)
           @refresh_events_interval = null
-      , 5000)
+      , 2500)
 
 
   tick: () ->

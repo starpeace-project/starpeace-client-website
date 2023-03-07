@@ -194,6 +194,11 @@ export default class SandboxConfiguration
     @put 'companies/(.+?)/inventions/(.+)', (config, company_id, invention_id) => @sandbox.sandbox_inventions.queue_company_invention(company_id, invention_id)
     @delete 'companies/(.+?)/inventions/(.+)', (config, company_id, invention_id) => @sandbox.sandbox_inventions.sell_company_invention(company_id, invention_id)
 
+    @get 'companies/(.+)', (config, company_id) =>
+      throw new Error(404) if !@sandbox.sandbox_data.company_id_info[company_id]?
+      _.cloneDeep(@sandbox.sandbox_data.company_id_info[company_id])
+
+
     @mock.onAny().passThrough()
 
   mock_request: (path, callback, mock_request) ->

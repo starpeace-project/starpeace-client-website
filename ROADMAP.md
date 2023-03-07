@@ -47,3 +47,8 @@ Some of the tentative future features and rough planned version are outlined bel
 * [pending] planet capital and president politics inspect menu
 * [pending] improve townhall population label translations in inspect menu
 * [pending] improve products select in inspect menu (control and shift clicking)
+* [pending] construction descriptions for civics
+* [pending] add prestige to construction descriptions
+* [pending] selected building text for warehouses
+* [pending] selected building text for IFEL buildings
+* [pending] cashflow and status included in selected building text

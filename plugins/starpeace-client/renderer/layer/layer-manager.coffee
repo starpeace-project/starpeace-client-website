@@ -43,6 +43,31 @@ export default class LayerManager
     @plane_container.zIndex = 5
     @plane_sprite_cache = new LayerCache(@plane_container, null, 0, true, false)
 
+    @building_graphics_background = new PIXI.Graphics()
+    @building_graphics_background.visible = false
+    @building_graphics_foreground = new PIXI.Graphics()
+    @building_graphics_foreground.visible = false
+    @with_height_container.addChild(@building_graphics_background)
+    @with_height_container.addChild(@building_graphics_foreground)
+
+    @building_text_style = new PIXI.TextStyle({
+        align: 'center',
+        fontFamily: 'Open Sans',
+        fontSize: 24,
+        fontWeight: 'bold',
+        fill: ['#ffff00'],
+        stroke: '#000000',
+        strokeThickness: 4,
+        dropShadow: true,
+        dropShadowColor: '#000000',
+        dropShadowDistance: 2
+    })
+    @building_text = new PIXI.Text('', @building_text_style)
+    @building_text.anchor.set(0.5, 1)
+    @building_text.visible = false
+    @with_height_container.addChild(@building_text)
+
+
     @containers = [@land_container, @concrete_container, @underlay_container, @road_container, @foundation_container, @with_height_container, @overlay_container, @plane_container]
     @sprite_caches = [@land_sprite_cache, @concrete_sprite_cache, @underlay_sprite_cache, @road_sprite_cache, @foundation_sprite_cache, @with_height_static_sprite_cache, @with_height_animated_sprite_cache, @overlay_sprite_cache]
     Logger.debug "configured #{@containers.length} layers and #{@sprite_caches.length} caches for sprite rendering"
@@ -65,7 +90,83 @@ export default class LayerManager
   plane_sprite_with: (render_state, textures) ->
     @plane_sprite_cache.new_sprite(render_state, { textures })
 
-  render_tile_item: (render_state, tile_item, construction_item, within_construction, canvas, viewport) ->
+
+  render_building_selection: (viewport, building_sprite, building_image_metadata, building_name, company_name) ->
+    @building_graphics_background.clear()
+    @building_graphics_foreground.clear()
+
+    @building_text.text = if building_name && company_name then "#{building_name}\n#{company_name}\n($0/h)" else 'Scanning...'
+    @building_text.scale.set(viewport.game_scale * 0.5)
+
+    offset_y = viewport.tile_height * 0.75
+
+    @building_graphics_background.x = building_sprite.x
+    @building_graphics_background.y = building_sprite.y - offset_y
+    @building_graphics_background.zIndex = building_sprite.zIndex - 1
+    @building_graphics_foreground.x = building_sprite.x
+    @building_graphics_foreground.y = building_sprite.y - offset_y
+    @building_graphics_foreground.zIndex = building_sprite.zIndex + 1
+
+    middle_x = building_sprite.width * 0.5
+
+    @building_text.x = building_sprite.x + middle_x
+    @building_text.y = building_sprite.y
+    @building_text.zIndex = building_sprite.zIndex + 2
+
+    h_a = building_image_metadata.h * viewport.tile_height * 0.5
+
+    hx = building_sprite.width * 0.15 # === 0.5 * 0.3
+    hy = hx * 0.5 # === sin(30deg)
+    vy = (building_sprite.height - 2 * h_a + offset_y) * 0.3
+
+    @building_graphics_background.lineStyle({width: 2, native: false, color: 0x00FF00})
+    @building_graphics_foreground.lineStyle({width: 2, native: false, color: 0x00FF00})
+
+    # top west
+    @building_graphics_background.moveTo(0, h_a).lineTo(hx, h_a + hy)
+    @building_graphics_foreground.moveTo(0, h_a).lineTo(hx, h_a - hy)
+    @building_graphics_foreground.moveTo(0, h_a).lineTo(0, h_a + vy)
+
+    # top north
+    @building_graphics_background.moveTo(middle_x, 0).lineTo(middle_x, vy)
+    @building_graphics_background.moveTo(middle_x, 0).lineTo(middle_x - hx, hy)
+    @building_graphics_background.moveTo(middle_x, 0).lineTo(middle_x + hx, hy)
+
+    # top south
+    # in front of building, omit to avoid obscuring
+
+    # top east
+    @building_graphics_background.moveTo(building_sprite.width, h_a).lineTo(building_sprite.width - hx, h_a + hy)
+    @building_graphics_foreground.moveTo(building_sprite.width, h_a).lineTo(building_sprite.width - hx, h_a - hy)
+    @building_graphics_foreground.moveTo(building_sprite.width, h_a).lineTo(building_sprite.width, h_a + vy)
+
+    # bottom west
+    bottom_west_y = offset_y + building_sprite.height - h_a - 1
+    @building_graphics_background.moveTo(0, bottom_west_y).lineTo(hx, bottom_west_y - hy)
+    @building_graphics_foreground.moveTo(0, bottom_west_y).lineTo(hx, bottom_west_y + hy)
+    @building_graphics_foreground.moveTo(0, bottom_west_y).lineTo(0, bottom_west_y - vy)
+
+    # bottom north
+    # usually behind building, omit for performance
+
+    # bottom south
+    bottom_south_y = building_sprite.height + offset_y - 1
+    @building_graphics_foreground.moveTo(middle_x, bottom_south_y).lineTo(middle_x, bottom_south_y - vy)
+    @building_graphics_foreground.moveTo(middle_x, bottom_south_y).lineTo(middle_x - hx, bottom_south_y - hy)
+    @building_graphics_foreground.moveTo(middle_x, bottom_south_y).lineTo(middle_x + hx, bottom_south_y - hy)
+
+    # bottom east
+    bottom_east_y = offset_y + building_sprite.height - h_a
+    @building_graphics_background.moveTo(building_sprite.width, bottom_east_y - 1).lineTo(building_sprite.width - hx, bottom_east_y - hy - 1)
+    @building_graphics_foreground.moveTo(building_sprite.width, bottom_east_y - 1).lineTo(building_sprite.width - hx, bottom_east_y + hy - 1)
+    @building_graphics_foreground.moveTo(building_sprite.width, bottom_east_y - 1).lineTo(building_sprite.width, bottom_east_y - vy - 1)
+
+    @building_graphics_background.visible = true
+    @building_graphics_foreground.visible = true
+    @building_text.visible = true
+
+
+  render_tile_item: (render_state, tile_item, selected_building, selected_company_name, construction_item, within_construction, canvas, viewport) ->
     if (within_construction || !within_construction && !tile_item.sprite_info.tree?) && tile_item.sprite_info.land?.within_canvas(canvas, viewport)
       land = @land_sprite_cache.new_sprite(render_state, { texture:tile_item.sprite_info.land.texture })
       tile_item.sprite_info.land.render(land, canvas, viewport)
@@ -121,6 +222,10 @@ export default class LayerManager
       for sign_info in tile_item.sprite_info.building.signs
         sign = @with_height_animated_sprite_cache.new_sprite(render_state, { textures:sign_info.textures, speed:.1 })
         sign_info.render(sign, building, canvas, viewport)
+
+      if tile_item.sprite_info.building.is_selected
+        @render_building_selection(viewport, building, tile_item.sprite_info.building.image_metadata, selected_building.name, selected_company_name)
+
 
     if construction_item?.within_canvas(canvas, viewport)
       sprite_cache = if construction_item.is_animated then @with_height_animated_sprite_cache else @with_height_static_sprite_cache

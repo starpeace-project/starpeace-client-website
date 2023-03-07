@@ -16,3 +16,14 @@ export default class CompanyManager
       @client_state.corporation.add_company_id(company.id)
       company
     )
+
+  load_by_company: (company_id) ->
+    company = @client_state.core.company_cache.metadata_for_id(company_id)
+    return company if company?
+
+    throw Error() if !@client_state.has_session() || !company_id?
+    await @ajax_state.locked('company_metadata', company_id, =>
+      company = Company.from_json(await @api.company_for_id(company_id))
+      @client_state.core.company_cache.load_companies_metadata(company)
+      company
+    )

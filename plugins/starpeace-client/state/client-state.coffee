@@ -104,6 +104,8 @@ export default class ClientState
     @planet_event_client.disconnect() if @planet_event_client?
     @planet_event_client = null
 
+    @has_dirty_metadata = false
+
     @recent_system_messages = []
     @older_system_messages = []
     @system_message_callback = null

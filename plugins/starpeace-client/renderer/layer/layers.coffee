@@ -38,7 +38,7 @@ export default class Layers
   add_layers: (stage) -> @layer_manager.add_to_stage(stage)
 
   has_dirty_view: () -> @last_view_offset_x != @client_state.camera.view_offset_x || @last_view_offset_y != @client_state.camera.view_offset_y
-  should_refresh: () -> @has_dirty_view() ||
+  should_refresh: () -> @has_dirty_view() || @client_state.has_dirty_metadata ||
       @last_construction_building_id != @client_state.interface.construction_building_id || @last_construction_building_x != @client_state.interface.construction_building_map_x ||
       @last_construction_building_y != @client_state.interface.construction_building_map_y || @tile_item_cache.is_dirty || @tile_item_cache.should_clear_cache()
 
@@ -98,7 +98,11 @@ export default class Layers
     show_overlay = @client_state.interface.show_overlay
     current_overlay = @client_state.interface.current_overlay
     selected_building_id = @client_state.interface.selected_building_id
-    selected_corporation_id = if selected_building_id? then @client_state.selected_building()?.corporation_id
+    selected_building = if selected_building_id then @client_state.selected_building() else null
+    selected_corporation_id = if selected_building? then selected_building?.corporation_id else null
+    selected_company = if selected_building? then @client_state.core.company_cache.metadata_for_id(selected_building.company_id) else null
+    selected_company_name = if selected_company? then selected_company.name else null
+
 
     current_season = @client_state.planet.current_season
     game_map = @client_state.planet.game_map
@@ -124,7 +128,7 @@ export default class Layers
             tile_item = @tile_item_cache.cache_item(tile_info, tile_cache_index, x, j, current_season, render_buildings, render_building_animations, render_building_effects, selected_building_id, selected_corporation_id)
           construction_item = if construction_building_id? && construction_x == x && construction_y == j then @tile_item_cache.building_construction_sprite_info_for(render_building_animations, construction_building_id, can_construct) else null
           within_construction = construction_x >= 0 && x > construction_x - construction_width && x <= construction_x && construction_y >= 0 && j > construction_y - construction_height && j <= construction_y
-          @layer_manager.render_tile_item(render_state, tile_item, construction_item, within_construction, viewport.iso_to_canvas(x, j, view_center), viewport) if tile_item?
+          @layer_manager.render_tile_item(render_state, tile_item, selected_building, selected_company_name, construction_item, within_construction, viewport.iso_to_canvas(x, j, view_center), viewport) if tile_item?
 
         j += 1
 
@@ -149,9 +153,15 @@ export default class Layers
 
       x += 1
 
+    unless selected_building_id?.length
+      @layer_manager.building_graphics_background.visible = false
+      @layer_manager.building_graphics_foreground.visible = false
+      @layer_manager.building_text.visible = false
+
     @layer_manager.clear_cache_sprites(render_state)
     @last_view_offset_x = @client_state.camera.view_offset_x
     @last_view_offset_y = @client_state.camera.view_offset_y
     @last_construction_building_id = @client_state.interface.construction_building_id
     @last_construction_building_x = @client_state.interface.construction_building_map_x
     @last_construction_building_y = @client_state.interface.construction_building_map_y
+    @client_state.has_dirty_metadata = false

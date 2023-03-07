@@ -39,6 +39,22 @@
     "IT": "Costruisci la Edificio",
     "PT": "Construir Edifício"
   },
+  "ui.menu.construction.description.bank.label": {
+    "DE": "Bereitstellung von Finanz- und Darlehensdiensten zwischen den Unternehmen erbringen",
+    "EN": "Provide inter-corporation financial and loan services",
+    "ES": "Proporcionar servicios financieros y de préstamos entre corporaciones",
+    "FR": "Fournir des services financiers et de prêts inter-société",
+    "IT": "Fornire servizi finanziari e prestiti inter-corporazioni",
+    "PT": "Fornecer serviços financeiros e de empréstimos entre corporativos"
+  },
+  "ui.menu.construction.description.headquarters.label": {
+    "DE": "Büros für Führungskräfte von Unternehmen, Kubikern für das Mittelmanagement und die Lebenden für F&E",
+    "EN": "Offices for company executives, cubicals for middle-management, and labratories for R&D",
+    "ES": "Oficinas para ejecutivos de la compañía, cúbicos para gestión media y labratories para I+D",
+    "FR": "Bureaux pour les dirigeants de l'entreprise, les cubicaux pour la gestion moyenne et les laboratifs pour la R&D",
+    "IT": "Uffici per dirigenti aziendali, cubici per la gestione di medio e labratorie per la ricerca e sviluppo",
+    "PT": "Escritórios para executivos da empresa, cúbicos para gerenciamento intermediário e labratórios para P&D"
+  },
   "ui.menu.construction.description.industry.label": {
     "DE": "Produziert bis <%= output %>.",
     "EN": "Produces up to <%= output %>.",
@@ -63,6 +79,86 @@
     "IT": "Necessitare <%= input %>.",
     "PT": "Necessitar <%= input %>."
   },
+  "ui.menu.construction.description.mausoleum.label": {
+    "DE": "Cenotaph der sich Ihrer Größe gewidmet hat",
+    "EN": "Cenotaph dedicated to your greatness",
+    "ES": "Cenotafio dedicado a su grandeza",
+    "FR": "Cénotaph dédié à votre grandeur",
+    "IT": "Cenotafio dedicato alla tua grandezza",
+    "PT": "Cenotáfio dedicado à sua grandeza"
+  },
+  "ui.menu.construction.description.media.antenna.label": {
+    "DE": "Funkwellensender mit einem Bereich von <%= range %>m",
+    "EN": "Radio wave transmitter with range of <%= range %>m",
+    "ES": "Transmisor de onda de radio con rango de <%= range %>m",
+    "FR": "Émetteur d'ondes radio avec gamme de <%= range %>m",
+    "IT": "Trasmettitore d'onda radio con gamma di <%= range %>m",
+    "PT": "Transmissor de ondas de rádio com faixa de <%= range %>m"
+  },
+  "ui.menu.construction.description.media.station.label": {
+    "DE": "Sendungen strukturierte Inhalte und produzieren Zeit für Anzeigen",
+    "EN": "Broadcasts structured content and produces time for advertisements",
+    "ES": "Transmite contenido estructurado y produce tiempo para anuncios",
+    "FR": "Diffuse du contenu structuré et produit du temps pour les publicités",
+    "IT": "Trasmette contenuti strutturati e produce tempo per gli annunci pubblicitari",
+    "PT": "Transmite conteúdo estruturado e produz tempo para anúncios"
+  },
+  "ui.menu.construction.description.offices.rent.label": {
+    "DE": "<%= amount %> büros zu mieten",
+    "EN": "<%= amount %> offices to rent",
+    "ES": "<%= amount %> oficinas para alquilar",
+    "FR": "<%= amount %> bureaux à louer",
+    "IT": "<%= amount %> uffici da affittare",
+    "PT": "<%= amount %> escritórios para alugar"
+  },
+  "ui.menu.construction.description.real_estate.efficiency.label": {
+    "DE": "Entwurfseffizienz: <%= efficiency %>%",
+    "EN": "Design efficiency: <%= efficiency %>%",
+    "ES": "Eficiencia del diseño: <%= efficiency %>%",
+    "FR": "Efficacité de conception: <%= efficiency %>%",
+    "IT": "Efficienza di progettazione: <%= efficiency %>%",
+    "PT": "Eficiência do projeto: <%= efficiency %>%"
+  },
+  "ui.menu.construction.description.residential.inhabitants.label": {
+    "DE": "<%= amount %> bewohner",
+    "EN": "<%= amount %> inhabitants",
+    "ES": "<%= amount %> habitantes",
+    "FR": "<%= amount %> habitants",
+    "IT": "<%= amount %> abitanti",
+    "PT": "<%= amount %> habitantes"
+  },
+  "ui.menu.construction.description.residential.resistences.label": {
+    "DE": "<%= crime %>% kriminalität widerstehen, <%= pollution %>% umweltverschmutzung widerstehen",
+    "EN": "<%= crime %>% resistent to crime, <%= pollution %>% resistent to pollution",
+    "ES": "<%= crime %>% resistente al crimen, <%= pollution %>% resistente a la contaminación",
+    "FR": "<%= crime %>% résistant au crime, <%= pollution %>% résistant à la pollution",
+    "IT": "<%= crime %>% resistente al crimine, <%= pollution %>% resistente all'inquinamento",
+    "PT": "<%= crime %>% resistência ao crime, <%= pollution %>% resistência à poluição"
+  },
+  "ui.menu.construction.description.store.sells.label": {
+    "DE": "Verkauft bis <%= sells %>.",
+    "EN": "Sells up to <%= sells %>.",
+    "ES": "Vende a <%= sells %>.",
+    "FR": "Se vend à <%= sells %>.",
+    "IT": "Vende fino a <%= sells %>.",
+    "PT": "Vende até <%= sells %>."
+  },
+  "ui.menu.construction.description.store.provides.label": {
+    "DE": "Kauft bis <%= buys %>, um <%= provides %> bereitzustellen.",
+    "EN": "Buys up to <%= buys %> to provide <%= provides %>.",
+    "ES": "Compra hasta <%= buys %> para proporcionar <%= provides %>.",
+    "FR": "Achète jusqu'à <%= buys %> pour fournir <%= provides %>.",
+    "IT": "Acquista fino a <%= buys %> per fornirti <%= provides %>.",
+    "PT": "Compra até <%= buys %> para fornecer <%= provides %>."
+  },
+  "ui.menu.construction.description.store.resource.label": {
+    "DE": "<%= amount %> <%= unit %>/<%= duration %> von <%= resource %>",
+    "EN": "<%= amount %> <%= unit %>/<%= duration %> of <%= resource %>",
+    "ES": "<%= amount %> <%= unit %>/<%= duration %> de <%= resource %>",
+    "FR": "<%= amount %> <%= unit %>/<%= duration %> de <%= resource %>",
+    "IT": "<%= amount %> <%= unit %>/<%= duration %> di <%= resource %>",
+    "PT": "<%= amount %> <%= unit %>/<%= duration %> do <%= resource %>"
+  },
   "ui.menu.construction.description.warehouse.label": {
     "DE": "Speichert bis zu <%= storage %>.",
     "EN": "Stores up to <%= storage %>.",
@@ -79,5 +175,4 @@
     "IT": "<%= amount %> <%= unit %> di <%= resource %>",
     "PT": "<%= amount %> <%= unit %> do <%= resource %>"
   }
-
 }
