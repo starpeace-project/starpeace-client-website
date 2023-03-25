@@ -1,5 +1,5 @@
 <template lang='pug'>
-#form-company-container(oncontextmenu='return false')
+#form-company-container(:oncontextmenu="'return ' + !$config.public.disableRightClick")
   .card.is-starpeace.has-header
     .card-header
       .card-header-title {{translate('ui.menu.company.form.header')}}

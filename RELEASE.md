@@ -1,5 +1,5 @@
 
-## v0.3.11 - in progress - updated 2023-03-06
+## v0.3.12 - in progress - updated 2023-03-25
 ### platform
 * [done] improve API integration with galaxies [v0.3.1]
 * [done] document multiverse API integration [starpeace-server-multiverse-api]
@@ -27,11 +27,11 @@
 * [done] major version upgrade of platform dependencies (nuxt, PixiJS) [v0.3.8]
 * [done] fixing various defects with previous upgrades [v0.3.9]
 * [done] fixing research lifecycle and API integration [v0.3.9]
+* [done] fix interaction performance and fps issues [v0.3.11]
+* [done] research visualization upgrade fixes [v0.3.11]
+* [done] bookmarks manage and performance fixes [v0.3.11]
 * [in progress] improve auth and remember me token and error handling
 * [pending] player, building, and planet event handling
-* [pending] bookmarks upgrade and performance fixes
-* [pending] research visualization upgrade fixes
-* [pending] fix interaction performance and fps issues
 
 ### assets
 * [done] finish initial language translation for assets [v0.3.1]
@@ -67,6 +67,5 @@
 * [done] construction descriptions for commerce, real estate, and services [v0.3.10]
 * [in progress] tycoon details menu
 * [pending] building inspect menu
-* [pending] footer menu company scroll support
 * [pending] city-specific ribbon ticker updates
 * [pending] integrate player and planet events with news ticker

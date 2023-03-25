@@ -1,5 +1,5 @@
 <template lang='pug'>
-#options-container(oncontextmenu='return false')
+#options-container(:oncontextmenu="'return ' + !$config.public.disableRightClick")
   .card.is-starpeace.has-header
     .card-header
       .card-header-title {{translate('ui.menu.options.header')}}

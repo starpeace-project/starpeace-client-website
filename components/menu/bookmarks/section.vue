@@ -8,20 +8,20 @@
       font-awesome-icon(:icon="['fas', 'square']")
     span.sp-section-label {{label_text}}
 
-  .sp-menu-list(v-if='has_items', v-show="section_expanded")
+  .sp-menu-list(v-if='has_items' v-show="section_expanded")
     template(v-if='is_draggable')
-      draggable(v-model='items_as_options', @start='start_move_item', @choose='choose_item', :move='move_item' item-key='id')
-        transition-group(name='menu-section')
-          .draggable-item.bookmark-item(v-for="child in items_as_options" :key="child.id")
-            template(v-if="child.type == 'slot'")
+      draggable(v-model='items_as_options' @start='start_move_item' @choose='choose_item' :move='move_item' item-key='id')
+        template(#item='{element}')
+          .draggable-item.bookmark-item
+            template(v-if="element.type == 'slot'")
               div.slot-item
-            template(v-else-if="child.is_folder")
-              menu-bookmarks-section-folder(:item="child", :dragging_level="dragging_item_id == child.id ? dragging_item_level : -1", v-on:toggled='refresh_tree')
-            template(v-else-if='true')
-              menu-bookmarks-section-item(:item='child', :dragging_level="dragging_item_id == child.id ? dragging_item_level : -1", v-on:selected='item_selected')
+            template(v-else-if="element.is_folder")
+              menu-bookmarks-section-folder(:item="element" :dragging_level="dragging_item_id == element.id ? dragging_item_level : -1" @toggled='refresh_tree')
+            template(v-else)
+              menu-bookmarks-section-item(:item='element' :dragging_level="dragging_item_id == element.id ? dragging_item_level : -1" @selected='item_selected')
 
     template(v-else)
-      .bookmark-item(v-for="child in items_as_options", :key="child.id")
+      .bookmark-item(v-for="child in items_as_options" :key="child.id")
         template(v-if="child.type == 'slot'")
         template(v-else-if="child.is_folder")
           menu-bookmarks-section-folder(:item="child" @toggled='refresh_tree')
@@ -126,11 +126,13 @@ export default
     #  @$root.$on('add_folder_action', () => @section_expanded = true unless @section_expanded)
     #  @$root.$on('add_bookmark_action', () => @section_expanded = true unless @section_expanded)
 
-    #@client_state?.options?.subscribe_options_listener => @refresh_tree()
+    @client_state?.options?.subscribe_options_listener => @refresh_tree()
 
   data: ->
     items_as_tree = @items_to_tree(@items_by_id)
     {
+      persist_bookmark_updates_debounced: null
+
       section_expanded: false
       items_as_tree: items_as_tree
       items_as_options: tree_to_options(@managers, @is_draggable, {}, @items_by_id, items_as_tree)
@@ -145,21 +147,7 @@ export default
       @refresh_tree()
 
     items_as_options: (new_value, old_value) ->
-      if @is_draggable
-        pending_items = []
-        for item,index in new_value
-          item.order = index
-          pending_items.push item
-        tree_pairs = options_to_tree_pairs(pending_items, @root_id, 0)
-
-        deltas = []
-        add_to_delta = (item) =>
-          bookmark_item = @items_by_id[item.id]
-          deltas.push item unless bookmark_item.parent_id == item.parent_id && bookmark_item.order == item.order
-          add_to_delta(child) for child in (item.children || [])
-        add_to_delta(item) for item in tree_pairs
-
-        await @managers.bookmark_manager.merge_bookmark_deltas(deltas) if deltas.length
+      @persist_bookmark_updates() if @is_draggable
 
   computed:
     bookmark_metadata: -> @managers.bookmark_manager
@@ -242,12 +230,33 @@ export default
           by_id[item.id] = roots[item.id] = { id: item.id }
           by_id[item.id].child_ids = {} if item.is_folder()
         else if by_id[item.parent_id]
+          by_id[item.parent_id].child_ids = {} unless by_id[item.parent_id].child_ids?
           by_id[item.id] = by_id[item.parent_id].child_ids[item.id] = { id: item.id }
           by_id[item.id].child_ids = {} if item.is_folder()
         else
           pending_items.push item
 
       roots
+
+    persist_bookmark_updates: ->
+      unless @persist_bookmark_updates_debounced
+        @persist_bookmark_updates_debounced = _.debounce(=>
+          pending_items = []
+          for item,index in this.items_as_options
+            item.order = index
+            pending_items.push item
+          tree_pairs = options_to_tree_pairs(pending_items, @root_id, 0)
+
+          deltas = []
+          add_to_delta = (item) =>
+            bookmark_item = @items_by_id[item.id]
+            deltas.push item unless bookmark_item.parent_id == item.parent_id && bookmark_item.order == item.order
+            add_to_delta(child) for child in (item.children || [])
+          add_to_delta(item) for item in tree_pairs
+
+          await @managers.bookmark_manager.merge_bookmark_deltas(deltas) if deltas.length
+        , 1000, { leading: true, trailing: true })
+      @persist_bookmark_updates_debounced()
 
 </script>
 
@@ -259,9 +268,6 @@ export default
   transition: color 0
   transition: background-color 0
   transition: display 0
-
-.menu-section-leave-active
-  transition: none
 
 .slot-item
   width: 100%

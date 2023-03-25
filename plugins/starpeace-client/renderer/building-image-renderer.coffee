@@ -25,6 +25,10 @@ export default class BuildingImageRenderer
       width: @renderer_width
       height: @renderer_height
       backgroundAlpha: 0
+      move: false
+      globalMove: false
+      click: false
+      wheel: false
     })
 
     @container = new PIXI.Container()

@@ -86,11 +86,9 @@ export default class BookmarkManager
         @client_state.bookmarks.bookmarks_by_id[delta.id].parent_id = delta.parent_id
         @client_state.bookmarks.bookmarks_by_id[delta.id].order = delta.order
 
-    await @ajax_state.locked('update_bookmark', corporation_id, =>
-      updated_metadata = await @api.update_corporation_bookmarks(corporation_id, safe_deltas)
-      # FIXME: TODO: verify update matches deltas
-      updated_metadata
-    )
+    updated_metadata = await @api.update_corporation_bookmarks(corporation_id, safe_deltas)
+    # FIXME: TODO: verify update matches deltas
+    updated_metadata
 
   new_bookmark_folder: () ->
     corporation_id = @client_state.player.corporation_id

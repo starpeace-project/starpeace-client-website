@@ -1,5 +1,5 @@
 <template lang='pug'>
-#mini-map-container(ref='mini_map_container' v-show='is_ready && show_mini_map' :style='mini_map_container_css_style' oncontextmenu='return false')
+#mini-map-container(ref='mini_map_container' v-show='is_ready && show_mini_map' :style='mini_map_container_css_style' :oncontextmenu="'return ' + !$config.public.disableRightClick")
   #mini-map-webgl-container
   a.zoom.zoom-out(@click.stop.prevent='client_state.interface.mini_map_zoom_in()')
     font-awesome-icon(:icon="['fas', 'plus']")

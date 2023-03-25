@@ -2,7 +2,6 @@
 # starpeace-client-website
 
 [![GitHub release](https://img.shields.io/github/release/starpeace-project/starpeace-client-website.svg)](https://github.com/starpeace-project/starpeace-client-website/releases/)
-[![Build Status](https://travis-ci.org/starpeace-project/starpeace-client-website.svg)](https://travis-ci.org/starpeace-project/starpeace-client-website)
 [![GitHub license](https://img.shields.io/github/license/starpeace-project/starpeace-client-website.svg)](https://github.com/starpeace-project/starpeace-client-website/blob/master/LICENSE)
 [![GitHub issues](https://img.shields.io/github/issues/starpeace-project/starpeace-client-website.svg)](https://github.com/starpeace-project/starpeace-client-website/issues)
 [![GitHub stars](https://img.shields.io/github/stars/starpeace-project/starpeace-client-website.svg)](https://github.com/starpeace-project/starpeace-client-website/stargazers)

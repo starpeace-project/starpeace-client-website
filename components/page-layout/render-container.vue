@@ -1,7 +1,7 @@
 <template lang='pug'>
 #render-parent-container(v-show='is_ready' v-cloak=true oncontextmenu='return false')
   #fps-container(v-show='show_fps')
-  #render-container(:class='render_css_class')
+  #render-container(:class='render_css_class' :data-disable-right-click='$config.public.disableRightClick')
 </template>
 
 <script lang='coffee'>

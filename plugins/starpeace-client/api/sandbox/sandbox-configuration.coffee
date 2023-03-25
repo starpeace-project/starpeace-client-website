@@ -174,7 +174,6 @@ export default class SandboxConfiguration
       throw new Error(404) unless @sandbox.sandbox_data?.tycoon_by_id?[tycoon_id]?
       _.cloneDeep(@sandbox.sandbox_data.tycoon_by_id[tycoon_id])
 
-    @post 'corporations', (config, params) => throw new Error(500)
     @get 'corporations/(.+?)/bookmarks', (config, corporation_id) => @sandbox.sandbox_bookmarks.get_bookmarks(corporation_id)
     @post 'corporations/(.+?)/bookmarks', (config, corporation_id, parameters) => @sandbox.sandbox_bookmarks.create_bookmark(corporation_id, parameters)
     @patch 'corporations/(.+?)/bookmarks', (config, corporation_id, parameters) => @sandbox.sandbox_bookmarks.update_bookmarks(corporation_id, parameters.deltas)
@@ -184,6 +183,7 @@ export default class SandboxConfiguration
     @put 'corporations/(.+?)/mail/(.+)/mark-read', (config, corporation_id, mail_id) => @sandbox.sandbox_mail.mark_read(corporation_id, mail_id)
     @delete 'corporations/(.+?)/mail/(.+)', (config, corporation_id, mail_id) => @sandbox.sandbox_mail.delete(corporation_id, mail_id)
 
+    @post 'corporations', (config, params) => throw new Error(500)
     @get 'corporations/(.+)', (config, corporation_id) =>
       throw new Error(404) unless @sandbox.sandbox_data?.corporation_by_id?[corporation_id]?
       _.cloneDeep(@sandbox.sandbox_data.corporation_by_id[corporation_id])

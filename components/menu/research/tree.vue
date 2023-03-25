@@ -26,7 +26,8 @@
         li {{translate('ui.menu.research.none.label')}}
 
   .tree-container
-    .v-network.inverse-card(ref='tree_network' :options='tree_options' :nodes='tree_nodes' :edges='tree_edges' @select-node="select_tree_node" @deselect-node='deselect_tree_node')
+    vue2viz-network.inverse-card(ref='tree_network' :options='tree_options' :nodes='tree_nodes' :edges='tree_edges' @select-node="select_tree_node" @deselect-node='deselect_tree_node')
+    //-.v-network.inverse-card(ref='tree_network' :options='tree_options' :nodes='tree_nodes' :edges='tree_edges' @select-node="select_tree_node" @deselect-node='deselect_tree_node')
 
 </template>
 
@@ -87,6 +88,7 @@ export default
     tree_edges: []
     tree_options:
       interaction:
+        dragNodes: false
         hover: true
 
       layout:
@@ -109,7 +111,7 @@ export default
     is_visible: (new_value, old_value) ->
       if @is_visible
         @inventions_for_company = @client_state.inventions_for_company()
-        #@$refs.tree_network.fit()
+        @$refs.tree_network.fit()
 
     'client_state.player.company_id': (new_value, old_value) ->
       @inventions_for_company = @client_state.inventions_for_company() if @is_visible
@@ -124,9 +126,9 @@ export default
           @interface_state.inventions_selected_category_id = invention_metadata.industry_category_id
           @interface_state.inventions_selected_industry_type_id = invention_metadata.industry_type_id
 
-      #setTimeout(=>
-      #  @$refs.tree_network.selectNodes([@selected_invention_id]) if @selected_invention_id? && @$refs.tree_network.getNode(@selected_invention_id)?
-      #, 100)
+      setTimeout(=>
+        @$refs.tree_network.selectNodes([@selected_invention_id]) if @selected_invention_id?
+      , 100)
 
 
   computed:
@@ -190,7 +192,7 @@ export default
       if @is_visible
         @inventions_for_company = @client_state.inventions_for_company()
         node.color = @color_for_node(node.id) for node in @tree_nodes
-        #@$refs.tree_network.fit()
+        @$refs.tree_network.fit()
 
     refresh_invention_data: () ->
       data = []
@@ -223,11 +225,11 @@ export default
       @tree_nodes = data
       @tree_edges = links
 
-      #if @is_visible
-      #  setTimeout(=>
-      #    @$refs.tree_network.fit()
-      #    @$refs.tree_network.selectNodes([@selected_invention_id]) if @selected_invention_id? && @$refs.tree_network.getNode(@selected_invention_id)?
-      #  , 100)
+      if @is_visible
+        setTimeout(=>
+          @$refs.tree_network.fit()
+          @$refs.tree_network.selectNodes([@selected_invention_id]) if @selected_invention_id?
+        , 100)
 
     color_for_node: (invention_id) ->
       item_styling = NODE_CONFIG.available

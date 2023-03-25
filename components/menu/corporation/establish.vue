@@ -1,5 +1,5 @@
 <template lang='pug'>
-#establish-corporation-container(oncontextmenu='return false')
+#establish-corporation-container(:oncontextmenu="'return ' + !$config.public.disableRightClick")
   .modal-background
   .card.is-starpeace.has-header
     .card-header

@@ -19,7 +19,7 @@ WEBGL_CONTAINER_CONSTRUCTION = 'construction-image-webgl-container'
 WEBGL_CONTAINER_INSPECT = 'inspect-image-webgl-container'
 
 export default class Client
-  constructor: () ->
+  constructor: (disableRightClick) ->
     @options = reactive(new Options())
     @options.initialize()
     @options.subscribe_options_listener => @notify_options_changed()
@@ -33,7 +33,7 @@ export default class Client
 
     @managers = markRaw(new Managers(@api, @options, @ajax_state, @client_state))
 
-    @renderer = markRaw(new Renderer(@managers, @client_state, @options))
+    @renderer = markRaw(new Renderer(@managers, @client_state, @options, disableRightClick))
     @mini_map_renderer = markRaw(new MiniMapRenderer(@managers, @renderer, @client_state, @options))
     @construction_preview_renderer = markRaw(new BuildingImageRenderer(@managers, @client_state, WEBGL_CONTAINER_CONSTRUCTION,
       (=> @client_state.construction_preview_renderer_initialized), (=> @client_state.construction_preview_renderer_initialized = true),

@@ -48,10 +48,11 @@ export default class InputHandler
     false
 
   secondary_mouse_up_outside_renderer: (event) ->
-    unless process?.env?.NODE_ENV == 'development' # TODO: FIXME: not working anymore?
+    if @renderer.disableRightClick
       event.preventDefault()
       event.stopPropagation()
-      false
+      return false
+    true
 
 
   primary_mouse_down: (event) ->

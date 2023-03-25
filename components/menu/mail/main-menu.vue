@@ -1,5 +1,5 @@
 <template lang='pug'>
-.card.has-header.is-starpeace.sp-menu(oncontextmenu='return false')
+.card.has-header.is-starpeace.sp-menu(:oncontextmenu="'return ' + !$config.public.disableRightClick")
   .card-header
     .card-header-title {{translate('ui.menu.mail.header')}}
     .card-header-icon.card-close(v-on:click.stop.prevent="client_state.menu.toggle_menu('mail')")

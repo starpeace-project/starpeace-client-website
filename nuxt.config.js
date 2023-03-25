@@ -57,6 +57,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       sendAnalytics: !is_development,
+      disableRightClick: !is_development,
       CLIENT_VERSION: client_version,
       RELEASE_NOTES_HTML: release_notes_html,
       RELEASE_NOTES_ARCHIVE_HTML: release_notes_archive_html

@@ -10,7 +10,8 @@ Some of the tentative future features and rough planned version are outlined bel
 * [pending] road management API integration
 * [pending] politics campaign and voting API integration
 * [pending] error message translations
-* [pending] further improve auth and remember me token support (retries, auto-renew) [v0.3.8]
+* [pending] further improve auth and remember me token support (retries, auto-renew)
+* [pending] improved bookmark interaction and performance
 
 ### assets
 * [pending] car assets
@@ -52,3 +53,4 @@ Some of the tentative future features and rough planned version are outlined bel
 * [pending] selected building text for warehouses
 * [pending] selected building text for IFEL buildings
 * [pending] cashflow and status included in selected building text
+* [pending] footer menu company scroll support

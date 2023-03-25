@@ -1,5 +1,5 @@
 <template lang='pug'>
-#notes-container(oncontextmenu='return false')
+#notes-container(:oncontextmenu="'return ' + !$config.public.disableRightClick")
   .card.is-starpeace.has-header
     .card-header
       .card-header-title {{translate('ui.menu.release_notes.header')}}

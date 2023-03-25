@@ -3,34 +3,35 @@ application-desktop(v-if='!isMobile' :client='client')
 application-mobile(v-else :client='client')
 </template>
 
-<script lang='coffee'>
-MAX_SIZE_MOBILE = 769
-MAX_SIZE_TABLET = 1024
-
+<script lang='ts'>
+import { markRaw } from 'vue';
 import Client from '~/plugins/starpeace-client/client.coffee'
 
-client = null
-screen_is_mobile = false
+const MAX_SIZE_MOBILE: number = 769;
+const MAX_SIZE_TABLET: number = 1024;
 
-if process.client
-  window.starpeace_client = client = new Client()
-  animate = () ->
-    client.tick() if client?
-    requestAnimationFrame(-> animate())
+export default {
+  data () {
+    return {
+      client: markRaw(new Client(this.$config.public.disableRightClick ?? true))
+    };
+  },
 
-  screen_width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth
-  screen_is_mobile = screen_width < MAX_SIZE_MOBILE
-  #screen_is_tablet = context.screen_width >= MAX_SIZE_MOBILE && context.screen_width < MAX_SIZE_TABLET
-  #screen_is_desktop = context.screen_width >= MAX_SIZE_TABLET
+  computed: {
+    screenWidth () { return window?.innerWidth ?? document?.documentElement?.clientWidth ?? document?.body?.clientWidth; },
+    isMobile () { return this.screenWidth < MAX_SIZE_MOBILE; },
+    isTablet () { return this.screenWidth >= MAX_SIZE_MOBILE && this.screenWidth < MAX_SIZE_TABLET; }
+  },
 
-export default
-  data: ->
-    client: client
+  mounted () {
+    this.animate();
+  },
 
-  computed:
-    isMobile: () -> screen_is_mobile
-
-  created: ->
-    animate() if animate?
-
+  methods: {
+    animate () {
+      this.client.tick();
+      requestAnimationFrame(() => this.animate());
+    }
+  }
+}
 </script>

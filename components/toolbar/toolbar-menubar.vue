@@ -1,5 +1,5 @@
 <template lang='pug'>
-#toolbar-header(v-show='is_ready' v-cloak=true oncontextmenu='return false')
+#toolbar-header(v-show='is_ready' v-cloak=true :oncontextmenu="'return ' + !$config.public.disableRightClick")
   .columns.row-menu
     .column.column-menu
       .toolbar-menu

@@ -1,5 +1,5 @@
 <template lang='pug'>
-#construction-container.card.is-starpeace.has-header(oncontextmenu='return false')
+#construction-container.card.is-starpeace.has-header(:oncontextmenu="'return ' + !$config.public.disableRightClick")
   .card-header
     .card-header-title {{translate('ui.menu.construction.header')}}
     .card-header-icon.card-close(@click.stop.prevent="client_state.menu.toggle_menu('construction')")

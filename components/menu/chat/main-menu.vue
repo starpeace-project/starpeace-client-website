@@ -1,5 +1,5 @@
 <template lang='pug'>
-.card.is-starpeace.has-header.sp-menu(oncontextmenu='return false')
+.card.is-starpeace.has-header.sp-menu(:oncontextmenu="'return ' + !$config.public.disableRightClick")
   .card-header
     .card-header-title {{translate('ui.menu.chat.header')}}
     .card-header-icon.card-close(v-on:click.stop.prevent="client_state.menu.toggle_menu('chat')")

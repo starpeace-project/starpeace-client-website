@@ -1,5 +1,5 @@
 <template lang='pug'>
-#toolbar-ribbon(v-show='is_ready' v-cloak='true' oncontextmenu='return false')
+#toolbar-ribbon(v-show='is_ready' v-cloak='true' :oncontextmenu="'return ' + !$config.public.disableRightClick")
   .action-camera-in
     button.button.is-fullwidth.is-fullheight.is-small.is-starpeace(@click.stop.prevent='client_state.camera.camera_zoom_in()')
       font-awesome-icon(:icon="['fas', 'plus']")

@@ -111,6 +111,10 @@ export default class MiniMapRenderer
       width: @renderer_width
       height: @renderer_height
       backgroundColor : 0x000000
+      move: false
+      globalMove: false
+      click: false
+      wheel: false
     })
 
     @container = new PIXI.Container()

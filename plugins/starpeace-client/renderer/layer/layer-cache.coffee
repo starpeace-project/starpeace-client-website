@@ -21,6 +21,7 @@ export default class LayerCache
       break unless @sprite_pool[index]
       @sprite_pool[index].eventMode = 'none'
       @sprite_pool[index].visible = false
+      @sprite_pool[index].hitArea = null
       @sprite_pool[index].x = -1000
       @sprite_pool[index].y = -1000
       @sprite_pool[index].click_callback = null
@@ -42,25 +43,26 @@ export default class LayerCache
       @sprite_count += 1
       sprite = @sprite_pool[render_state[@id]] = if @is_animated then new PIXI.AnimatedSprite(textures) else new PIXI.Sprite(textures[0])
 
-      sprite.on('pointerdown', (event) ->
-        return unless event.currentTarget.click_callback?
+      if @pointer_events
+        sprite.on('pointerdown', (event) ->
+          return unless event.currentTarget.click_callback?
 
-        event.currentTarget.event_pointer_down_x = Math.round(event.data?.global?.x || 0)
-        event.currentTarget.event_pointer_down_y = Math.round(event.data?.global?.y || 0)
-      ) if @pointer_events
-      sprite.on('pointerup', (event) =>
-        return unless event.currentTarget.click_callback?
+          event.currentTarget.event_pointer_down_x = Math.round(event.data?.global?.x || 0)
+          event.currentTarget.event_pointer_down_y = Math.round(event.data?.global?.y || 0)
+        )
+        sprite.addEventListener('pointerup', (event) ->
+          return unless event.currentTarget.click_callback?
 
-        delta_x = Math.round(event.data?.global?.x || 0) - (event.currentTarget.event_pointer_down_x || 0)
-        delta_y = Math.round(event.data?.global?.y || 0) - (event.currentTarget.event_pointer_down_y || 0)
-        return if delta_x > 0 || delta_y > 0
+          delta_x = Math.round(event.data?.global?.x || 0) - (event.currentTarget.event_pointer_down_x || 0)
+          delta_y = Math.round(event.data?.global?.y || 0) - (event.currentTarget.event_pointer_down_y || 0)
+          return if delta_x > 0 || delta_y > 0
 
-        if event.currentTarget.click_callback(event.data?.button == 0, event.data?.button == 2)
-          event.data?.originalEvent?.preventDefault()
-          event.data?.originalEvent?.stopPropagation()
-          event.stopPropagation()
-        false
-      ) if @pointer_events
+          if event.currentTarget.click_callback(event.data?.button == 0, event.data?.button == 2)
+            event.data?.originalEvent?.preventDefault()
+            event.data?.originalEvent?.stopPropagation()
+            event.stopPropagation()
+          false
+        )
 
       @container.addChild(sprite)
 

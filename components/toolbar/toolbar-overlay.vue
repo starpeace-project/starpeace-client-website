@@ -1,5 +1,5 @@
 <template lang='pug'>
-#overlay-menu(v-show='show_overlay_menu' v-cloak=true oncontextmenu='return false')
+#overlay-menu(v-show='show_overlay_menu' v-cloak=true :oncontextmenu="'return ' + !$config.public.disableRightClick")
   .dropdown.is-up.is-hoverable
     .dropdown-trigger
       button.button.is-starpeace(aria-haspopup='true', aria-controls='overlays')

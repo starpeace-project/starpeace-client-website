@@ -10,22 +10,27 @@ export default class LayerManager
 
   constructor: (@client_state) ->
     @land_container = new PIXI.ParticleContainer(LayerManager.MAX_PARTICLES, { tint: true, uvs: true, vertices: true })
+    @land_container.eventMode = 'none'
     @land_container.zIndex = 0
     @land_sprite_cache = new LayerCache(@land_container, null, LayerManager.MAX_PARTICLES, false, false)
 
     @concrete_container = new PIXI.ParticleContainer(LayerManager.MAX_PARTICLES, { uvs: true, vertices: true })
+    @concrete_container.eventMode = 'none'
     @concrete_container.zIndex = 0
     @concrete_sprite_cache = new LayerCache(@concrete_container, null, LayerManager.MAX_PARTICLES, false, false)
 
     @underlay_container = new PIXI.ParticleContainer(LayerManager.MAX_PARTICLES, { tint: true, vertices: true })
+    @underlay_container.eventMode = 'none'
     @underlay_container.zIndex = 1
     @underlay_sprite_cache = new LayerCache(@underlay_container, null, LayerManager.MAX_PARTICLES, false, false)
 
     @road_container = new PIXI.ParticleContainer(LayerManager.MAX_PARTICLES, { uvs: true, vertices: true })
+    @road_container.eventMode = 'none'
     @road_container.zIndex = 2
     @road_sprite_cache = new LayerCache(@road_container, null, LayerManager.MAX_PARTICLES, false, false)
 
     @foundation_container = new PIXI.ParticleContainer(LayerManager.MAX_PARTICLES, { tint: true, uvs: true, vertices: true })
+    @land_container.eventMode = 'none'
     @foundation_container.zIndex = 2
     @foundation_sprite_cache = new LayerCache(@foundation_container, null, LayerManager.MAX_PARTICLES, false, false)
 
@@ -36,10 +41,12 @@ export default class LayerManager
     @with_height_animated_sprite_cache = new LayerCache(@with_height_container, null, 0, true, true)
 
     @overlay_container = new PIXI.ParticleContainer(LayerManager.MAX_PARTICLES, { tint: true, vertices: true })
+    @overlay_container.eventMode = 'none'
     @overlay_container.zIndex = 4
     @overlay_sprite_cache = new LayerCache(@overlay_container, null, LayerManager.MAX_PARTICLES, false, false)
 
     @plane_container = new PIXI.Container()
+    @plane_container.eventMode = 'none'
     @plane_container.zIndex = 5
     @plane_sprite_cache = new LayerCache(@plane_container, null, 0, true, false)
 

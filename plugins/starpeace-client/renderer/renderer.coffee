@@ -8,7 +8,7 @@ import InputHandler from '~/plugins/starpeace-client/renderer/input/input-handle
 import Layers from '~/plugins/starpeace-client/renderer/layer/layers.coffee'
 
 export default class Renderer
-  constructor: (@managers, @client_state, @options) ->
+  constructor: (@managers, @client_state, @options, @disableRightClick) ->
     @client_state.planet.subscribe_map_data_listener (chunk_event) =>
       if @layers?.tile_item_cache?
         source_x = (chunk_event.info.chunk_x - 0) * ChunkMap.CHUNK_WIDTH - 10
@@ -50,6 +50,10 @@ export default class Renderer
       width: @renderer_width
       height: @renderer_height
       backgroundColor : 0x000000
+      move: false
+      globalMove: false
+      click: true
+      wheel: false
     })
 
     @client_state.webgl_warning = !(@application.renderer instanceof PixiRenderer)

@@ -1,5 +1,5 @@
 <template lang='pug'>
-#help-container(oncontextmenu='return false')
+#help-container(:oncontextmenu="'return ' + !$config.public.disableRightClick")
   .card.is-starpeace.has-header
     .card-header
       .card-header-title {{translate('ui.menu.help.header')}}
