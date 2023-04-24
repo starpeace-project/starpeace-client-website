@@ -16,7 +16,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "nuxt": "^3.3.2",
+    "nuxt": "^3.4.2",
     "pixi.js": "^7.2.3"
   },
   "devDependencies": {
