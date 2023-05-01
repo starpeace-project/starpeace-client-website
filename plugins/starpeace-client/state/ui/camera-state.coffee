@@ -1,7 +1,7 @@
 import { markRaw } from 'vue';
 
 import MetadataLand from '~/plugins/starpeace-client/land/metadata-land.coffee'
-import EventListener from '~/plugins/starpeace-client/state/event-listener.coffee'
+import EventListener from '~/plugins/starpeace-client/state/event-listener'
 
 CAMERA_MIN_ZOOM = .25
 CAMERA_MAX_ZOOM = 1.5

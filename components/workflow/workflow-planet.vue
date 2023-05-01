@@ -32,16 +32,19 @@
 
             .columns
               .column.is-5
-                button.button.is-primary.is-fullwidth.is-outlined.workflow-action.visitor-action(@click.stop.prevent='select_visitor(planet_chunk[n - 1])' :disabled='!planet_chunk[n - 1].enabled') {{translate('identity.visitor')}} {{translate('identity.visa')}}
+                button.button.is-primary.is-fullwidth.is-outlined.workflow-action.visitor-action(@click.stop.prevent='select_visitor(planet_chunk[n - 1])' :disabled='!planet_chunk[n - 1].enabled || is_loading_corporation_identifiers') {{translate('identity.visitor')}} {{translate('identity.visa')}}
               .column.is-7
                 template(v-if='corporations_by_planet_id[planet_chunk[n - 1].id]')
-                  button.button.is-primary.is-fullwidth.workflow-action.corporation-action(@click.stop.prevent='select_tycoon(planet_chunk[n - 1])' :disabled='!planet_chunk[n - 1].enabled')
+                  button.button.is-primary.is-fullwidth.workflow-action.corporation-action(@click.stop.prevent='select_tycoon(planet_chunk[n - 1])' :disabled='!planet_chunk[n - 1].enabled || is_loading_corporation_identifiers')
                     .action-text {{corporations_by_planet_id[planet_chunk[n - 1].id].name}}
                 template(v-else)
-                  button.button.is-primary.is-fullwidth.is-outlined.workflow-action.corporation-action(@click.stop.prevent='select_tycoon(planet_chunk[n - 1])' :disabled='!planet_chunk[n - 1].enabled || !is_tycoon_in_galaxy')
+                  button.button.is-primary.is-fullwidth.is-outlined.workflow-action.corporation-action(@click.stop.prevent='select_tycoon(planet_chunk[n - 1])' :disabled='!planet_chunk[n - 1].enabled || is_loading_corporation_identifiers || !tycoon_id?.length')
                     .action-text {{translate('ui.menu.corporation.establish.action.establish')}}
 
-          .disabled-overlay(v-show='!planet_chunk[n - 1].enabled')
+          .disabled-overlay(v-if='is_loading_corporation_identifiers')
+            .disabled-text {{translate('ui.workflow.loading')}}
+
+          .disabled-overlay(v-else-if='!planet_chunk[n - 1].enabled')
             .disabled-text {{translate('ui.menu.galaxy.planet_not_available.label')}}
 
 </template>
@@ -54,35 +57,44 @@ export default
     managers: Object
     client_state: Object
 
+  data: ->
+    corporation_identifiers: null
+
+  mounted: ->
+    @client_state.core.corporation_cache.subscribe_corporation_metadata_listener => @refresh_identities()
+
   computed:
     galaxy_id: -> @client_state.identity.galaxy_id
-    galaxy_metadata: -> if @galaxy_id? && @client_state.core.galaxy_cache.has_galaxy_metadata(@galaxy_id) then @client_state.core.galaxy_cache.galaxy_metadata(@galaxy_id) else
+    galaxy_metadata: -> if @galaxy_id? && @client_state.core.galaxy_cache.has_galaxy_metadata(@galaxy_id) then @client_state.core.galaxy_cache.galaxy_metadata(@galaxy_id) else null
 
-    is_tycoon_in_galaxy: -> @client_state.identity?.galaxy_visa_type == 'tycoon' && @tycoon_id?.length
-    tycoon_id: -> @client_state.identity?.galaxy_tycoon?.id
+    tycoon_id: -> if @client_state.identity?.galaxy_visa_type == 'tycoon' then @client_state.identity?.galaxy_tycoon_id else null
 
-    planets: ->
-      return [] unless @galaxy_metadata?
-      _.sortBy(@galaxy_metadata.planets || [], (planet) -> planet.name)
+    is_loading_corporation_identifiers: -> @tycoon_id?.length && !@corporation_identifiers
+
+    planets: -> if @galaxy_metadata? then _.sortBy(@galaxy_metadata.planets || [], (planet) -> planet.name) else []
     sorted_planet_chunks: -> _.chunk(@planets, 3)
 
-    corporations_by_planet_id: ->
-      return {} unless @client_state.identity.galaxy_tycoon?
-      _.keyBy(@client_state.identity.galaxy_tycoon?.corporations, 'planet_id')
+    corporations_by_planet_id: -> if @corporation_identifiers then _.keyBy(@corporation_identifiers, 'planetId') else {}
+
+  watch:
+    tycoon_id: -> @refresh_identities()
 
   methods:
     translate: (key) -> if @managers? then @managers.translation_manager.text(key) else key
 
     planet_animation_url: (planet) -> @managers.asset_manager.planet_animation_url(planet)
 
+    refresh_identities: () ->
+      @corporation_identifiers = if @tycoon_id?.length then @client_state.core.corporation_cache.identifiers_for_tycoon_id(@tycoon_id) else []
+
     select_visitor: (planet) ->
-      return unless planet.enabled
+      return unless planet.enabled && !@is_loading_corporation_identifiers
 
       @client_state.player.set_planet_visa_type(planet.id, 'visitor')
       window.document.title = "#{planet.name} - STARPEACE" if window?.document?
 
     select_tycoon: (planet) ->
-      return unless planet.enabled && @is_tycoon_in_galaxy
+      return unless planet.enabled && !@is_loading_corporation_identifiers && @tycoon_id?.length
 
       @client_state.player.set_planet_visa_type(planet.id, 'tycoon')
       window.document.title = "#{planet.name} - STARPEACE" if window?.document?
@@ -132,6 +144,11 @@ export default
       margin: 0
 
     .planet-row
+      .logo-loading
+        background-size: 7.5rem
+        height: 7.5rem
+        width: 7.5rem
+
       .planet-image
         padding-right: .4rem
 

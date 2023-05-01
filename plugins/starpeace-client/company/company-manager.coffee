@@ -1,5 +1,4 @@
-
-import Company from '~/plugins/starpeace-client/company/company.coffee'
+import Company from '~/plugins/starpeace-client/company/company'
 
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 

@@ -27,7 +27,7 @@ client-only
     menu-research-main-menu(v-show="is_menu_visible('research')" :managers='managers' :ajax_state='ajax_state' :client_state='client_state')
     menu-galaxy-menu(v-show="is_menu_visible('galaxy')" :managers='managers' :ajax_state='ajax_state' :client_state='client_state')
     menu-town-search-main-menu(v-show="is_menu_visible('town_search')" :managers='managers' :client_state='client_state')
-    menu-tycoon-details-main-menu(:visible="is_menu_visible('tycoon')" :managers='managers' :client_state='client_state')
+    menu-tycoon-details-main-menu(v-show="is_menu_visible('tycoon')" :managers='managers' :client_state='client_state')
     menu-tycoon-search-main-menu(v-show="is_menu_visible('tycoon_search')" :managers='managers' :ajax_state='ajax_state' :client_state='client_state')
 
     page-layout-render-container(:client_state='client_state')

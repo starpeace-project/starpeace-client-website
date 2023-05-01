@@ -111,6 +111,14 @@
     "IT": "Anno Corrente",
     "PT": "YTD"
   },
+  "ui.menu.corporation.panel.details.fortune_ytd_average": {
+    "DE": "Durchschnittlicher Gewinn (Jahresverlauf)",
+    "EN": "Average Profit (YTD)",
+    "ES": "Ganancia promedio (El Último Año)",
+    "FR": "Profit moyen (Cumul à ce Jour)",
+    "IT": "Profitto medio (Anno Corrente)",
+    "PT": "Lucro médio (YTD)"
+  },
   "ui.menu.corporation.panel.details.ranking": {
     "DE": "Rangfolge",
     "EN": "Ranking",

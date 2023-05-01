@@ -58,22 +58,26 @@ export default class PlanetEventClient
     )
 
     @socket.on('initialize', (event) =>
+      time = DateTime.fromISO(event.planet.time)
       @client_state.camera.recenter_at(event.view.x, event.view.y) if event.view?
-      @client_state.planet.load_state(event.planet)
+      @client_state.planet.load_state(time, event.planet)
 
       if event.corporation
         last_mail = if event.corporation.lastMailAt? then DateTime.fromISO(event.corporation.lastMailAt) else null
-        @client_state.corporation.update_cashflow(last_mail, event.corporation.cash, event.corporation.cashflow)
+        @client_state.corporation.update_cashflow(last_mail, event.corporation.cash, event.corporation.cashCurrentYear, event.corporation.cashflow)
         @client_state.corporation.update_cashflow_companies(event.corporation.companies)
+        @client_state.core.corporation_cache.update_cashflow(@client_state.player.corporation_id, time, event.corporation.cash, event.corporation.cashCurrentYear, event.corporation.cashflow)
     )
 
     @socket.on('simulation', (event) =>
-      @client_state.planet.load_state(event.planet)
+      time = DateTime.fromISO(event.planet.time)
+      @client_state.planet.load_state(time, event.planet)
 
       if event.corporation
         last_mail = if event.corporation.lastMailAt? then DateTime.fromISO(event.corporation.lastMailAt) else null
-        @client_state.corporation.update_cashflow(last_mail, event.corporation.cash, event.corporation.cashflow)
+        @client_state.corporation.update_cashflow(last_mail, event.corporation.cash, event.corporation.cashCurrentYear, event.corporation.cashflow)
         @client_state.corporation.update_cashflow_companies(event.corporation.companies)
+        @client_state.core.corporation_cache.update_cashflow(@client_state.player.corporation_id, time, event.corporation.cash, event.corporation.cashCurrentYear, event.corporation.cashflow)
     )
 
   # events_for_planet: (last_update) ->

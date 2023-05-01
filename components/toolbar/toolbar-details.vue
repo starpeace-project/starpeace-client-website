@@ -58,7 +58,7 @@ export default
     companies: ->
       return [] unless @is_ready && @is_tycoon && @client_state?.corporation?.company_ids?.length
       _.compact(_.map(@client_state.corporation.company_ids, (id) => @client_state.core.company_cache.metadata_for_id(id)))
-    sorted_companies: -> _.orderBy(@companies, ['desc'], ['name'])
+    sorted_companies: -> _.orderBy(@companies, ['name'], ['asc'])
 
     corporation_metadata: -> if @is_ready && @client_state.player.corporation_id?.length then @client_state.current_corporation_metadata() else null
     corporation_name: -> if @corporation_metadata? then @corporation_metadata.name else '[PENDING]'

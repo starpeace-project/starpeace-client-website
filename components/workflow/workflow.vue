@@ -10,16 +10,16 @@ client-only
             span.planet-name {{ current_galaxy_name }}
 
         .card-content
-          workflow-loading(v-show="status == 'initializing'", :message="translate('ui.workflow.loading.initializing')")
+          workflow-loading(v-if="status == 'initializing'" :message="translate('ui.workflow.loading.initializing')")
 
-          workflow-universe(v-show="status == 'pending_universe'", :managers='managers', :ajax_state='ajax_state', :client_state='client_state')
-          workflow-planet(v-show="status == 'pending_planet'", :managers='managers', :client_state='client_state')
-          workflow-loading(v-show="status == 'pending_visa'", :message="translate('ui.workflow.loading.pending_visa')")
-          workflow-loading(v-show="status == 'pending_assets'", :message="translate('ui.workflow.loading.pending_assets')")
-          workflow-loading(v-show="status == 'pending_planet_details'", :message="translate('ui.workflow.loading.pending_planet_details')")
-          workflow-loading(v-show="status == 'pending_player_data'", :message="translate('ui.workflow.loading.pending_player_data')")
-          workflow-loading(v-show="status == 'pending_initialization'", :message="translate('ui.workflow.loading.pending_initialization')")
-          workflow-loading(v-show="status == 'ready'", :message="translate('ui.workflow.loading.initializing')")
+          workflow-universe(v-else-if="status == 'pending_universe'" :managers='managers' :ajax_state='ajax_state' :client_state='client_state')
+          workflow-planet(v-else-if="status == 'pending_planet'" :managers='managers' :client_state='client_state')
+          workflow-loading(v-else-if="status == 'pending_visa'" :message="translate('ui.workflow.loading.pending_visa')")
+          workflow-loading(v-else-if="status == 'pending_assets'" :message="translate('ui.workflow.loading.pending_assets')")
+          workflow-loading(v-else-if="status == 'pending_planet_details'" :message="translate('ui.workflow.loading.pending_planet_details')")
+          workflow-loading(v-else-if="status == 'pending_player_data'" :message="translate('ui.workflow.loading.pending_player_data')")
+          workflow-loading(v-else-if="status == 'pending_initialization'" :message="translate('ui.workflow.loading.pending_initialization')")
+          workflow-loading(v-else-if="status == 'ready'" :message="translate('ui.workflow.loading.initializing')")
 
 </template>
 

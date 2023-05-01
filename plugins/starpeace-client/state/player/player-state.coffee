@@ -1,4 +1,4 @@
-import EventListener from '~/plugins/starpeace-client/state/event-listener.coffee'
+import EventListener from '~/plugins/starpeace-client/state/event-listener'
 
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 

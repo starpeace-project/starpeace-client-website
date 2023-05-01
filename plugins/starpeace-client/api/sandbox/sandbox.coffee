@@ -36,9 +36,11 @@ export default class Sandbox
       0
 
   tick_day: () ->
-    @sandbox_data.planet_id_dates[id].plus({ day: 1 }) for id,date of @sandbox_data.planet_id_dates
+    @sandbox_data.planet_id_dates[id] = @sandbox_data.planet_id_dates[id].plus({ day: 1 }) for id,date of @sandbox_data.planet_id_dates
 
     for corp_id,corp_cashflow of @sandbox_data.corporation_id_cashflow
+      corp_cashflow.cashCurrentYear = 0 if @sandbox_data.planet_id_dates[id].month == 1 && @sandbox_data.planet_id_dates[id].day == 1
+
       for company_id,company of corp_cashflow.companies_by_id
         cashflow_adjustment = 0
         cashflow_adjustment += @sandbox_inventions.do_pending(company_id)

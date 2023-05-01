@@ -1,7 +1,7 @@
 <template lang='pug'>
 .research-container
   .tree-list-container.sp-scrollbar
-    .status-title {{translate('ui.menu.research.status.available')}}
+    .status-title.sp-kv-key {{translate('ui.menu.research.status.available')}}
     ul
       template(v-if="company_research.available.length")
         li(v-for="research in company_research.available")
@@ -9,7 +9,7 @@
       template(v-else)
         li {{translate('ui.menu.research.none.label')}}
 
-    .status-title {{translate('ui.menu.research.status.in_progress')}}
+    .status-title.sp-kv-key {{translate('ui.menu.research.status.in_progress')}}
     ul
       template(v-if="company_research.in_progress.length")
         li(v-for="research in company_research.in_progress")
@@ -17,7 +17,7 @@
       template(v-else)
         li {{translate('ui.menu.research.none.label')}}
 
-    .status-title {{translate('ui.menu.research.status.completed')}}
+    .status-title.sp-kv-key {{translate('ui.menu.research.status.completed')}}
     ul
       template(v-if="company_research.completed.length")
         li(v-for="research in company_research.completed")
@@ -27,7 +27,6 @@
 
   .tree-container
     vue2viz-network.inverse-card(ref='tree_network' :options='tree_options' :nodes='tree_nodes' :edges='tree_edges' @select-node="select_tree_node" @deselect-node='deselect_tree_node')
-    //-.v-network.inverse-card(ref='tree_network' :options='tree_options' :nodes='tree_nodes' :edges='tree_edges' @select-node="select_tree_node" @deselect-node='deselect_tree_node')
 
 </template>
 
@@ -273,9 +272,6 @@ export default
 
     .status-title
       border-bottom: 1px solid $sp-primary
-      color: $sp-light
-      font-size: .9rem
-      font-weight: bold
       margin-bottom: .25rem
       padding-bottom: .25rem
 

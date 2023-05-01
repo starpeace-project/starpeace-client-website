@@ -21,12 +21,11 @@ export default class AjaxState
   start_ajax: () -> @ajax_requests += 1
   finish_ajax: () -> @ajax_requests -= 1 if @ajax_requests > 0
 
-  is_locked: (type, key) ->
-    @request_mutex[type]?[key] || false
+  is_locked: (type, key) -> !!@request_mutex[type]?[key]
 
-  lock: (type, key) ->
+  lock: (type, key, locked_promise) ->
     @request_mutex[type] = {} unless @request_mutex[type]?
-    @request_mutex[type][key] = true
+    @request_mutex[type][key] = locked_promise || true
     @start_ajax()
 
   unlock: (type, key) ->
@@ -34,23 +33,15 @@ export default class AjaxState
     @finish_ajax()
 
   locked: (type, key, callback) ->
-    throw Error() if @is_locked(type, key)
-    @lock(type, key)
+    locked_promise = @request_mutex[type]?[key]
+    return await locked_promise if locked_promise
+
+    promise = callback()
+    @lock(type, key, promise)
     try
-      result = await callback()
+      result = await promise
       @unlock(type, key)
       result
     catch err
       @unlock(type, key)
       throw err
-
-  with_lock: (type, key, done_callback, error_callback) ->
-    @lock(type, key)
-    {
-      done: () =>
-        @unlock(type, key)
-        done_callback()
-      error: (err) =>
-        @unlock(type, key)
-        error_callback(err)
-    }

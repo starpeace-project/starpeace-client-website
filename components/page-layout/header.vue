@@ -49,8 +49,8 @@ export default
     client_options: -> if @client_state?.options? then @client_state?.options else @options
     translator: -> if @managers?.translation_manager? then @managers.translation_manager else @translation_manager
 
-    is_authenticated: -> @client_state?.identity?.galaxy_tycoon?
-    tycoon_name: -> if @is_authenticated then @client_state?.identity?.galaxy_tycoon?.name else @translate('identity.visitor')
+    is_authenticated: -> @client_state?.identity?.galaxy_tycoon_id?
+    tycoon_name: -> if @is_authenticated then @client_state?.identity?.galaxy_tycoon_name else @translate('identity.visitor')
 
   methods:
     translate: (key) -> if @translator? then @translator.text(key) else key

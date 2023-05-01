@@ -51,9 +51,9 @@
         .tabs.is-centered.is-toggle.is-small.is-fullwidth.sp-tabs.query-mode-toggle
           ul
             li(:class="{'is-active':mode=='CORPORATIONS'}" @click.stop.prevent="swap_mode('CORPORATIONS')")
-              a {{translate('ui.menu.tycoon_search.toggle.corporations')}}
+              a {{translate('ui.menu.tycoon_search.toggle.corporation')}}
             li(:class="{'is-active':mode=='TYCOONS'}" @click.stop.prevent="swap_mode('TYCOONS')")
-              a {{translate('ui.menu.tycoon_search.toggle.tycoons')}}
+              a {{translate('ui.menu.tycoon_search.toggle.tycoon')}}
 
         form.field.has-addons.query-input(@submit.stop.prevent='query_search')
           p.control.has-icons-left.is-expanded

@@ -95,7 +95,7 @@ export default
 
     notification_loading_css_class: -> { 'ajax-loading': (@ajax_state?.ajax_requests || 0) > 0 }
 
-    tycoon_name: -> if @is_tycoon then @client_state?.identity?.galaxy_tycoon?.name else ''
+    tycoon_name: -> if @is_tycoon then @client_state?.identity?.galaxy_tycoon_name else ''
 
   mounted: ->
     @client_state.options?.subscribe_options_listener =>

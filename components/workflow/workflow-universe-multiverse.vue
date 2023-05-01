@@ -272,6 +272,7 @@ export default
     min-height: 20rem
     padding: .25rem 0
     overflow-y: scroll
+    overflow-x: hidden
 
   .galaxy-row
     background-color: opacify(lighten($sp-primary-bg, 1%), .3)

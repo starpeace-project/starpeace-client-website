@@ -50,7 +50,12 @@ export default class PlanetLibrary extends Library
     for type in (types || [])
       @industry_types_by_id[type.id] = type
 
-  level_for_id: (seal_id) -> @levels_by_id[seal_id]
+  level_for_id: (level_id) -> @levels_by_id[level_id]
+  next_level_for_id: (level_id) ->
+    current_level = @levels_by_id[level_id]?.level
+    ordered_levels = _.orderBy(Object.values(@levels_by_id), ['level'], ['asc'])
+    index = ordered_levels.findIndex((l) => l.level > current_level)
+    if index >= 0 then ordered_levels[index] else null
   load_levels: (levels) ->
     for level in (levels || [])
       @levels_by_id[level.id] = level
@@ -62,6 +67,7 @@ export default class PlanetLibrary extends Library
     for type in (types || [])
       @ranking_types_by_id[type.id] = type
 
+  all_resource_types: () -> Object.values(@resource_types_by_id)
   resource_type_for_id: (type_id) -> @resource_types_by_id[type_id]
   load_resource_types: (types) ->
     for type in (types || [])

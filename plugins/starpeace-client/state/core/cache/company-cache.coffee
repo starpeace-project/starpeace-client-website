@@ -1,5 +1,4 @@
-import Cache from '~/plugins/starpeace-client/state/core/cache/cache.coffee'
-import Company from '~/plugins/starpeace-client/company/company.coffee'
+import Cache from '~/plugins/starpeace-client/state/core/cache/cache'
 
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 

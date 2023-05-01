@@ -146,11 +146,26 @@ export default class APIClient
 
   tycoon_for_id: (tycoon_id) ->
     @get("tycoons/#{tycoon_id}", {}, (result) -> result)
+  corporation_identifiers_for_tycoon_id: (tycoon_id) ->
+    @get("tycoons/#{tycoon_id}/corporation-ids", {}, (result) -> result?.identifiers || [])
 
   create_corporation: (corporation_name) ->
     @post("corporations", { name: corporation_name }, (result) -> result)
   corporation_for_id: (corporation_id) ->
     @get("corporations/#{corporation_id}", {}, (result) -> result)
+
+  corporation_rankings_for_id: (corporation_id) ->
+    @get("corporations/#{corporation_id}/rankings", {}, (result) -> result || [])
+  corporation_prestige_history_for_id: (corporation_id) ->
+    @get("corporations/#{corporation_id}/prestige-history", {}, (result) -> result || [])
+  corporation_strategies_for_id: (corporation_id) ->
+    @get("corporations/#{corporation_id}/strategies", {}, (result) -> result || [])
+
+  corporation_loan_payments_for_id: (corporation_id) ->
+    @get("corporations/#{corporation_id}/loan-payments", {}, (result) -> result || [])
+  corporation_loan_offers_for_id: (corporation_id) ->
+    @get("corporations/#{corporation_id}/loan-offers", {}, (result) -> result || [])
+
 
   bookmarks_for_corporation: (corporation_id) ->
     @get("corporations/#{corporation_id}/bookmarks", {}, (result) -> result || [])

@@ -7,7 +7,7 @@ import BookmarkManager from '~/plugins/starpeace-client/bookmark/bookmark-manage
 import BuildingManager from '~/plugins/starpeace-client/building/building-manager.coffee'
 import ConcreteManager from '~/plugins/starpeace-client/building/concrete-manager.coffee'
 import CompanyManager from '~/plugins/starpeace-client/company/company-manager.coffee'
-import CorporationManager from '~/plugins/starpeace-client/corporation/corporation-manager.coffee'
+import CorporationManager from '~/plugins/starpeace-client/corporation/corporation-manager'
 import EffectManager from '~/plugins/starpeace-client/asset/effect-manager.coffee'
 import EventManager from '~/plugins/starpeace-client/event/event-manager.coffee'
 import GalaxyManager from '~/plugins/starpeace-client/galaxy/galaxy-manager.coffee'
@@ -21,7 +21,7 @@ import PlanetsManager from '~/plugins/starpeace-client/planet/planets-manager.co
 import RoadManager from '~/plugins/starpeace-client/road/road-manager.coffee'
 import SignManager from '~/plugins/starpeace-client/asset/sign-manager.coffee'
 import TranslationManager from '~/plugins/starpeace-client/language/translation-manager.coffee'
-import TycoonManager from '~/plugins/starpeace-client/tycoon/tycoon-manager.coffee'
+import TycoonManager from '~/plugins/starpeace-client/tycoon/tycoon-manager'
 
 import PlanetEventClient from '~/plugins/starpeace-client/api/planet-event-client.coffee'
 
@@ -59,11 +59,8 @@ export default class Managers
     }
 
     @client_state.identity.subscribe_visa_type_listener =>
-      return unless @client_state.identity.galaxy_tycoon?
-
-      corporations = @client_state.identity.galaxy_tycoon?.corporations || []
-      @client_state.core.corporation_cache.load_tycoon_corporations(@client_state.identity.galaxy_tycoon.id, corporations)
-      @client_state.core.company_cache.load_companies_metadata(corporation.companies) for corporation in corporations
+      return unless @client_state.identity.galaxy_tycoon_id?
+      @corporation_manager.load_identifiers_by_tycoon(@client_state.identity.galaxy_tycoon_id)
 
     @client_state.player.subscribe_planet_visa_type_listener =>
       return unless @client_state.player.planet_id? && @client_state.player.planet_visa_type?

@@ -1,7 +1,7 @@
 import { markRaw } from 'vue';
 
 import Overlay from '~/plugins/starpeace-client/overlay/overlay.coffee'
-import EventListener from '~/plugins/starpeace-client/state/event-listener.coffee'
+import EventListener from '~/plugins/starpeace-client/state/event-listener'
 
 MINI_MAP_ZOOM_MAX = 2
 MINI_MAP_ZOOM_MIN = .25

@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import { reactive } from 'vue';
 
-import EventListener from '~/plugins/starpeace-client/state/event-listener.coffee'
+import EventListener from '~/plugins/starpeace-client/state/event-listener'
 import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 

@@ -1,5 +1,5 @@
 
-import EventListener from '~/plugins/starpeace-client/state/event-listener.coffee'
+import EventListener from '~/plugins/starpeace-client/state/event-listener'
 
 export default class Library
   constructor: () ->

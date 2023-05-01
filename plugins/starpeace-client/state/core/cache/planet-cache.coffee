@@ -2,7 +2,7 @@ import _ from 'lodash'
 import TinyCache from 'tinycache'
 import { markRaw } from 'vue';
 
-import Cache from '~/plugins/starpeace-client/state/core/cache/cache.coffee'
+import Cache from '~/plugins/starpeace-client/state/core/cache/cache'
 
 import TimeUtils from '~/plugins/starpeace-client/utils/time-utils.coffee'
 import Logger from '~/plugins/starpeace-client/logger.coffee'

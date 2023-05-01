@@ -15,21 +15,21 @@
     "IT": "Ricerca",
     "PT": "Pesquisa"
   },
-  "ui.menu.tycoon_search.toggle.corporations": {
-    "DE": "Gesellschaft",
-    "EN": "Corporations",
+  "ui.menu.tycoon_search.toggle.corporation": {
+    "DE": "Unternehmen",
+    "EN": "Corporation",
     "ES": "Corporaciones",
-    "FR": "Sociétés",
-    "IT": "Corporazioni",
-    "PT": "Corporações"
+    "FR": "Entreprises",
+    "IT": "Società",
+    "PT": "Corporação"
   },
-  "ui.menu.tycoon_search.toggle.tycoons": {
-    "DE": "Tycoons",
-    "EN": "Tycoons",
-    "ES": "Magnates",
-    "FR": "Magnats",
-    "IT": "Magnati",
-    "PT": "Magnatas"
+  "ui.menu.tycoon_search.toggle.tycoon": {
+    "DE": "Tycoon",
+    "EN": "Tycoon",
+    "ES": "Magnate",
+    "FR": "Magnat",
+    "IT": "Magnate",
+    "PT": "Magnata"
   },
   "ui.menu.tycoon_search.results.none": {
     "DE": "Keine ergebnisse",

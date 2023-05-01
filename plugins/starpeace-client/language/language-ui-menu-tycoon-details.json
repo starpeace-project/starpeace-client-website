@@ -15,6 +15,150 @@
     "IT": "Curriculum Vitae",
     "PT": "Currículo"
   },
+  "ui.menu.tycoon_details.tab.curriculum.action.bankruptcy": {
+    "DE": "Bankrott Erklären",
+    "EN": "Declare Bankruptcy",
+    "ES": "Declarar Bancarrota",
+    "FR": "Déclarer la Faillite",
+    "IT": "Dichiarare Fallimento",
+    "PT": "Declarar Falência"
+  },
+  "ui.menu.tycoon_details.tab.curriculum.action.promotion": {
+    "DE": "Anfrage Promotion",
+    "EN": "Request Promotion",
+    "ES": "Promoción de Solicitud",
+    "FR": "Demander la Promotion",
+    "IT": "Richiedi Promozione",
+    "PT": "Solicitar Promoção"
+  },
+  "ui.menu.tycoon_details.tab.curriculum.levels.reward.prestige": {
+    "DE": "<%= prestige %> prestigepunkte",
+    "EN": "<%= prestige %> prestige points",
+    "ES": "<%= prestige %> puntos de prestigio",
+    "FR": "<%= prestige %> points de prestige",
+    "IT": "<%= prestige %> punti di prestigio",
+    "PT": "<%= prestige %> pontos de prestígio"
+  },
+  "ui.menu.tycoon_details.tab.curriculum.levels.facility.count": {
+    "DE": "Kann bis zu <%= count %> Einrichtungen aufbauen",
+    "EN": "Can build up to <%= count %> facilities",
+    "ES": "Puede acumularse hasta <%= count %> instalaciones",
+    "FR": "Peut construire jusqu'à <%= count %> des installations",
+    "IT": "Può costruire fino a <%= count %> strutture",
+    "PT": "Pode aumentar para <%= count %> instalações"
+  },
+  "ui.menu.tycoon_details.tab.curriculum.levels.protection.none": {
+    "DE": "Kein Schutz vor dem IFEL",
+    "EN": "No protection from the IFEL",
+    "ES": "Sin protección del IFEL",
+    "FR": "Aucune protection contre l'IFEL",
+    "IT": "Nessuna protezione dall'IFEL",
+    "PT": "Nenhuma proteção contra o IFEL"
+  },
+  "ui.menu.tycoon_details.tab.curriculum.levels.protection.ifel": {
+    "DE": "Vom IFEL geschützt",
+    "EN": "Protected by the IFEL",
+    "ES": "Protegido por el IFEL",
+    "FR": "Protégé par l'IFEL",
+    "IT": "Protetto dall'IFEL",
+    "PT": "Protegido pelo IFEL"
+  },
+  "ui.menu.tycoon_details.tab.curriculum.levels.priority.none": {
+    "DE": "keine prioriten",
+    "EN": "no priorites",
+    "ES": "sin prioritos",
+    "FR": "aucune priorité",
+    "IT": "nessuna priorità",
+    "PT": "sem priorites"
+  },
+  "ui.menu.tycoon_details.tab.curriculum.levels.priority.supplier": {
+    "DE": "hat priorität in lieferanten und kundenlisten",
+    "EN": "has priority in supplier and client lists",
+    "ES": "tiene prioridad en las listas de proveedores y clientes",
+    "FR": "a la priorité dans les listes des fournisseurs et des clients",
+    "IT": "ha priorità negli elenchi di fornitori e clienti",
+    "PT": "tem prioridade nas listas de fornecedores e clientes"
+  },
+  "ui.menu.tycoon_details.tab.curriculum.levels.trade_center.none": {
+    "DE": "Kann nicht in Handelszentren kaufen",
+    "EN": "Cannot buy from Trade Centers",
+    "ES": "No se puede comprar en Centros Comerciales",
+    "FR": "Impossible d'acheter dans les Centres de Commerce",
+    "IT": "Non posso acquistare dai Centri Commerciali",
+    "PT": "Não pode comprar de Centros Comerciais"
+  },
+  "ui.menu.tycoon_details.tab.curriculum.levels.trade_center.ifel": {
+    "DE": "Kann in Handelszentren kaufen",
+    "EN": "Can buy from Trade Centers",
+    "ES": "Puede comprar en Centros Comerciales",
+    "FR": "Peut acheter dans les Centres de Commerce",
+    "IT": "Può acquistare dai Centri Commerciali",
+    "PT": "Pode comprar em Centros Comerciais"
+  },
+  "ui.menu.tycoon_details.tab.curriculum.levels.refund.research": {
+    "DE": "<%= refund %>% der Forschungsausgaben werden zum Jahresende zurückgegeben",
+    "EN": "<%= refund %>% of research expenditures is returned at the end of the year",
+    "ES": "<%= refund %>% de los gastos de investigación se devuelven al final del año",
+    "FR": "<%= refund %>% des dépenses de recherche sont retournées à la fin de l'année",
+    "IT": "<%= refund %>% delle spese di ricerca viene restituita alla fine dell'anno",
+    "PT": "<%= refund %>% das despesas de pesquisa é retornado no final do ano"
+  },
+  "ui.menu.tycoon_details.tab.curriculum.levels.refund.demolition": {
+    "DE": "<%= refund %>% der Kosten eines Gebäudes werden zurückgegeben, wenn das Gebäude abgerissen wird",
+    "EN": "<%= refund %>% of the cost of a building is returned if the building is demolished",
+    "ES": "<%= refund %>% del costo de un edificio se devuelve si el edificio está demolido",
+    "FR": "<%= refund %>% du coût d'un bâtiment est retourné si le bâtiment est démoli",
+    "IT": "<%= refund %>% del costo di un edificio viene restituito se l'edificio viene demolito",
+    "PT": "<%= refund %>% do custo de um edifício é retornado se o edifício for demolido"
+  },
+  "ui.menu.tycoon_details.tab.curriculum.levels.requirement.fee": {
+    "DE": "Sie müssen alle Schulden und eine Gebühr von $<%= fee %> an den IFEL bezahlen",
+    "EN": "You have to pay all debts and a $<%= fee %> fee to the IFEL",
+    "ES": "Debe pagar todas las deudas y una tarifa de $<%= fee %> al IFEL",
+    "FR": "Vous devez payer toutes les dettes et des frais de $<%= fee %> à l'IFEL",
+    "IT": "Devi pagare tutti i debiti e una commissione di $<%= fee %> per l'IFEL",
+    "PT": "Você tem que pagar todas as dívidas e uma taxa de $<%= fee %> para o IFEL"
+  },
+  "ui.menu.tycoon_details.tab.curriculum.levels.requirement.profit": {
+    "DE": "Sie müssen eine durchschnittliche Gewinnquote haben, die überlegen ist $<%= profit %>/h",
+    "EN": "You must have an average profit ratio superior to $<%= profit %>/h",
+    "ES": "Debe tener una relación de ganancia promedio superior a $<%= profit %>/h",
+    "FR": "Vous devez avoir un ratio de profit moyen supérieur à $<%= profit %>/h",
+    "IT": "Devi avere un rapporto di profitto medio superiore a $<%= profit %>/h",
+    "PT": "Você deve ter uma taxa de lucro médio superior a $<%= profit %>/h"
+  },
+  "ui.menu.tycoon_details.tab.curriculum.levels.requirement.prestige": {
+    "DE": "Prestige größer als <%= prestige %>",
+    "EN": "Prestige greater than <%= prestige %>",
+    "ES": "Prestigio mayor que <%= prestige %>",
+    "FR": "Prestige supérieur à <%= prestige %>",
+    "IT": "Prestige maggiore di <%= prestige %>",
+    "PT": "Prestígio maior que <%= prestige %>"
+  },
+  "ui.menu.tycoon_details.tab.curriculum.history": {
+    "DE": "Geschichte",
+    "EN": "History",
+    "ES": "Historia",
+    "FR": "Histoire",
+    "IT": "Storia",
+    "PT": "História"
+  },
+  "ui.menu.tycoon_details.tab.curriculum.ranking": {
+    "DE": "Rangfolge",
+    "EN": "Ranking",
+    "ES": "Clasificación",
+    "FR": "Classement",
+    "IT": "Classifica",
+    "PT": "Posição"
+  },
+  "ui.menu.tycoon_details.tab.curriculum.rank": {
+    "DE": "Rang",
+    "EN": "Rank",
+    "ES": "Rango",
+    "FR": "Rang",
+    "IT": "Rango",
+    "PT": "Classificação"
+  },
   "ui.menu.tycoon_details.tab.bank_account": {
     "DE": "Bankkonto",
     "EN": "Bank Account",
@@ -23,6 +167,127 @@
     "IT": "Conto Bancario",
     "PT": "Conta Bancária"
   },
+  "ui.menu.tycoon_details.tab.bank_account.accounts.account": {
+    "DE": "Konto",
+    "EN": "Account",
+    "ES": "Cuenta",
+    "FR": "Compte",
+    "IT": "Account",
+    "PT": "Conta"
+  },
+  "ui.menu.tycoon_details.tab.bank_account.accounts.banker": {
+    "DE": "Banker",
+    "EN": "Banker",
+    "ES": "Banquero",
+    "FR": "Banquier",
+    "IT": "Banchiere",
+    "PT": "Banqueiro"
+  },
+  "ui.menu.tycoon_details.tab.bank_account.accounts.balance": {
+    "DE": "Gleichgewicht",
+    "EN": "Balance",
+    "ES": "Balance",
+    "FR": "Équilibre",
+    "IT": "Bilancia",
+    "PT": "Equilíbrio"
+  },
+  "ui.menu.tycoon_details.tab.bank_account.accounts.interest_rate": {
+    "DE": "Zinsrate",
+    "EN": "Interest Rate",
+    "ES": "Tasa de Interés",
+    "FR": "Taux d'intérêt",
+    "IT": "Tasso d'interesse",
+    "PT": "Taxa de Juro"
+  },
+  "ui.menu.tycoon_details.tab.bank_account.accounts.personal": {
+    "DE": "Corporate-Konto",
+    "EN": "Corporate Account",
+    "ES": "Cuenta Corporativa",
+    "FR": "Compte d'entreprise",
+    "IT": "Account Aziendale",
+    "PT": "Conta Corporativa"
+  },
+  "ui.menu.tycoon_details.tab.bank_account.loans.maturity": {
+    "DE": "Darlehensreife",
+    "EN": "Loan Maturity",
+    "ES": "Madurez del Préstamo",
+    "FR": "Maturité du Prêt",
+    "IT": "Maturità del Prestito",
+    "PT": "Maturidade do Empréstimo"
+  },
+  "ui.menu.tycoon_details.tab.bank_account.loans.banker": {
+    "DE": "Banker",
+    "EN": "Banker",
+    "ES": "Banquero",
+    "FR": "Banquier",
+    "IT": "Banchiere",
+    "PT": "Banqueiro"
+  },
+  "ui.menu.tycoon_details.tab.bank_account.loans.next_payment": {
+    "DE": "Nächste Zahlung",
+    "EN": "Next Payment",
+    "ES": "Siguiente Pago",
+    "FR": "Prochain Paiement",
+    "IT": "Pagamento Successivo",
+    "PT": "Próximo Pagamento"
+  },
+  "ui.menu.tycoon_details.tab.bank_account.loans.payment_amount": {
+    "DE": "Zahlungsbetrag",
+    "EN": "Payment Amount",
+    "ES": "Monto del Pago",
+    "FR": "Montant du Paiement",
+    "IT": "Importo del Pagamento",
+    "PT": "Valor do Pagamento"
+  },
+  "ui.menu.tycoon_details.tab.bank_account.loans.principle_balance": {
+    "DE": "Prinzip-Gleichgewicht",
+    "EN": "Principle Balance",
+    "ES": "Equilibrio Principal",
+    "FR": "Équilibre Principal",
+    "IT": "Equilibrio Principio",
+    "PT": "Equilíbrio de Princípios"
+  },
+  "ui.menu.tycoon_details.tab.bank_account.loans.interest_rate": {
+    "DE": "Zinsrate",
+    "EN": "Interest Rate",
+    "ES": "Tasa de Interés",
+    "FR": "Taux d'intérêt",
+    "IT": "Tasso d'interesse",
+    "PT": "Taxa de Juro"
+  },
+  "ui.menu.tycoon_details.tab.bank_account.loans.repay": {
+    "DE": "Zurückzahlen",
+    "EN": "Repay",
+    "ES": "Pagar",
+    "FR": "Rembourser",
+    "IT": "Rimborsare",
+    "PT": "Reembolsar"
+  },
+  "ui.menu.tycoon_details.tab.bank_account.loans.apply": {
+    "DE": "Anwenden",
+    "EN": "Apply",
+    "ES": "Aplicar",
+    "FR": "Appliquer",
+    "IT": "Fare Domanda",
+    "PT": "Aplicar"
+  },
+  "ui.menu.tycoon_details.tab.bank_account.loans.max_loan": {
+    "DE": "Max-Darlehen",
+    "EN": "Max Loan",
+    "ES": "Préstamo Máximo",
+    "FR": "Prêt Maximal",
+    "IT": "Prestito Massimo",
+    "PT": "Empréstimo Máximo"
+  },
+  "ui.menu.tycoon_details.tab.bank_account.loans.term": {
+    "DE": "Begriff",
+    "EN": "Term",
+    "ES": "Término",
+    "FR": "Terme",
+    "IT": "Termine",
+    "PT": "Prazo"
+  },
+
   "ui.menu.tycoon_details.tab.profit_loss": {
     "DE": "Profiteinbuße",
     "EN": "Profit & Loss",
@@ -39,6 +304,78 @@
     "IT": "Fornitori Iniziali",
     "PT": "Fornecedores Iniciais"
   },
+  "ui.menu.tycoon_details.tab.initial_suppliers.product": {
+    "DE": "Produkt",
+    "EN": "Product",
+    "ES": "Producto",
+    "FR": "Produit",
+    "IT": "Prodotto",
+    "PT": "Produtos"
+  },
+  "ui.menu.tycoon_details.tab.initial_suppliers.suppliers": {
+    "DE": "Lieferanten",
+    "EN": "Suppliers",
+    "ES": "Proveedor",
+    "FR": "Fournisseurs",
+    "IT": "Fornitori",
+    "PT": "Fornecedores"
+  },
+  "ui.menu.tycoon_details.tab.initial_suppliers.average_price": {
+    "DE": "Durchschnittlicher Preis",
+    "EN": "Average Price",
+    "ES": "Precio Promedio",
+    "FR": "Prix ​​Moyen",
+    "IT": "Prezzo Medio",
+    "PT": "Preço Médio"
+  },
+  "ui.menu.tycoon_details.tab.initial_suppliers.ifel_price": {
+    "DE": "IFEL Preis",
+    "EN": "IFEL Price",
+    "ES": "Precio IFEL",
+    "FR": "Prix ​​IFEL",
+    "IT": "Prezzo IFEL",
+    "PT": "Preço da IFEL"
+  },
+  "ui.menu.tycoon_details.tab.initial_suppliers.trade_center": {
+    "DE": "Handelszentren",
+    "EN": "Trade Centers",
+    "ES": "Centros Comerciales",
+    "FR": "Centres de Commerce",
+    "IT": "Centri Commerciali",
+    "PT": "Centros Comerciais"
+  },
+  "ui.menu.tycoon_details.tab.initial_suppliers.corporation_name": {
+    "DE": "Gesellschaftname",
+    "EN": "Corporation Name",
+    "ES": "Nombre de la Corporación",
+    "FR": "Nom de la Entreprise",
+    "IT": "Nome della Società",
+    "PT": "Nome da Corporação"
+  },
+  "ui.menu.tycoon_details.tab.initial_suppliers.building_name": {
+    "DE": "Gebäudename",
+    "EN": "Building Name",
+    "ES": "Nombre del Edificio",
+    "FR": "Nom du Bâtiment",
+    "IT": "Nome Immobile",
+    "PT": "Nome do Edifício"
+  },
+  "ui.menu.tycoon_details.tab.initial_suppliers.price": {
+    "DE": "Preis",
+    "EN": "Price",
+    "ES": "Precio",
+    "FR": "Prix",
+    "IT": "Prezzo",
+    "PT": "Preço"
+  },
+  "ui.menu.tycoon_details.tab.initial_suppliers.action.add_supplier": {
+    "DE": "Lieferant Hinzufügen",
+    "EN": "Add Supplier",
+    "ES": "Agregar Proveedor",
+    "FR": "Ajouter le Fournisseur",
+    "IT": "Aggiungi Fornitore",
+    "PT": "Adicione o Fornecedor"
+  },
   "ui.menu.tycoon_details.tab.companies": {
     "DE": "Firmen",
     "EN": "Companies",
@@ -47,6 +384,38 @@
     "IT": "Aziende",
     "PT": "Empresas"
   },
+  "ui.menu.tycoon_details.tab.companies.seal": {
+    "DE": "Siegel",
+    "EN": "Seal",
+    "ES": "Sello",
+    "FR": "Sceau",
+    "IT": "Foca",
+    "PT": "Selo"
+  },
+  "ui.menu.tycoon_details.tab.companies.building_count": {
+    "DE": "Gebäude",
+    "EN": "Buildings",
+    "ES": "Edificios",
+    "FR": "Bâtiments",
+    "IT": "Edifici",
+    "PT": "Edifícios"
+  },
+  "ui.menu.tycoon_details.tab.companies.actions.rename": {
+    "DE": "Umbenennen",
+    "EN": "Rename",
+    "ES": "Rebautizar",
+    "FR": "Renommer",
+    "IT": "Rinominare",
+    "PT": "Renomear"
+  },
+  "ui.menu.tycoon_details.tab.companies.actions.delete": {
+    "DE": "Entzünden",
+    "EN": "Disolve",
+    "ES": "Disolver",
+    "FR": "Dissoudre",
+    "IT": "Annulla",
+    "PT": "Anular"
+  },
   "ui.menu.tycoon_details.tab.strategy": {
     "DE": "Strategie",
     "EN": "Strategy",
@@ -54,5 +423,77 @@
     "FR": "Stratégie",
     "IT": "Strategia",
     "PT": "Estratégia"
+  },
+  "ui.menu.tycoon_details.tab.strategy.corporation_name": {
+    "DE": "Gesellschaftname",
+    "EN": "Corporation Name",
+    "ES": "Nombre de la Corporación",
+    "FR": "Nom de la Entreprise",
+    "IT": "Nome della Società",
+    "PT": "Nome da Corporação"
+  },
+  "ui.menu.tycoon_details.tab.strategy.tycoon_name": {
+    "DE": "Tycoon-Name",
+    "EN": "Tycoon Name",
+    "ES": "Nombre del Magnate",
+    "FR": "Nom du Magnat",
+    "IT": "Nome Magnate",
+    "PT": "Nome do Magnata"
+  },
+  "ui.menu.tycoon_details.tab.strategy.their_policy": {
+    "DE": "Ihre Politik",
+    "EN": "Their Policy",
+    "ES": "Su Política",
+    "FR": "Leur Politique",
+    "IT": "La Loro Politica",
+    "PT": "Sua Política"
+  },
+  "ui.menu.tycoon_details.tab.strategy.your_policy": {
+    "DE": "Ihre Richtlinie",
+    "EN": "Your Policy",
+    "ES": "Tu Política",
+    "FR": "Votre Politique",
+    "IT": "La Tua Politica",
+    "PT": "Sua Política"
+  },
+  "ui.menu.tycoon_details.tab.status.prioritize": {
+    "DE": "Priorisieren",
+    "EN": "Prioritize",
+    "ES": "Priorizar",
+    "FR": "Prioriser",
+    "IT": "Priorità",
+    "PT": "Prioritizar"
+  },
+  "ui.menu.tycoon_details.tab.status.embargo": {
+    "DE": "Embargo",
+    "EN": "Embargo",
+    "ES": "Embargo",
+    "FR": "Embargo",
+    "IT": "Embargo",
+    "PT": "Embargo"
+  },
+  "ui.menu.tycoon_details.tab.status.neutral": {
+    "DE": "Neutral",
+    "EN": "Neutral",
+    "ES": "Neutral",
+    "FR": "Neutre",
+    "IT": "Neutro",
+    "PT": "Neutro"
+  },
+  "ui.menu.tycoon_details.tab.action.prioritize": {
+    "DE": "Priorisieren",
+    "EN": "Prioritize",
+    "ES": "Priorizar",
+    "FR": "Prioriser",
+    "IT": "Priorità",
+    "PT": "Prioritizar"
+  },
+  "ui.menu.tycoon_details.tab.action.embargo": {
+    "DE": "Embargo",
+    "EN": "Embargo",
+    "ES": "Embargo",
+    "FR": "Embargo",
+    "IT": "Embargo",
+    "PT": "Embargo"
   }
 }

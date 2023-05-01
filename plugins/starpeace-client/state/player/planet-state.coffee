@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon';
 import { markRaw } from 'vue';
 
-import EventListener from '~/plugins/starpeace-client/state/event-listener.coffee'
+import EventListener from '~/plugins/starpeace-client/state/event-listener'
 
 export default class PlanetState
   constructor: () ->
@@ -47,8 +47,8 @@ export default class PlanetState
     @game_map = markRaw(game_map)
     # FIXME: TODO: may want to notify
 
-  load_state: (planetEvent) ->
-    @current_time = DateTime.fromISO(planetEvent.time)
+  load_state: (time, planetEvent) ->
+    @current_time = time
     @current_season = planetEvent.season
     @notify_state_listeners()
 

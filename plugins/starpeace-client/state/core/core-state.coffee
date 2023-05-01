@@ -16,7 +16,7 @@ import SignLibrary from '~/plugins/starpeace-client/state/core/library/sign-libr
 
 import BuildingCache from '~/plugins/starpeace-client/state/core/cache/building-cache.coffee'
 import CompanyCache from '~/plugins/starpeace-client/state/core/cache/company-cache.coffee'
-import CorporationCache from '~/plugins/starpeace-client/state/core/cache/corporation-cache.coffee'
+import CorporationCache from '~/plugins/starpeace-client/state/core/cache/corporation-cache'
 import GalaxyCache from '~/plugins/starpeace-client/state/core/cache/galaxy-cache.coffee'
 import MultiverseCache from '~/plugins/starpeace-client/state/core/cache/multiverse-cache.coffee'
 import PlanetCache from '~/plugins/starpeace-client/state/core/cache/planet-cache.coffee'

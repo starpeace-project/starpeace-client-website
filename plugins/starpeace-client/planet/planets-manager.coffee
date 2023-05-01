@@ -3,7 +3,7 @@ import _ from 'lodash';
 import BuildingDefinition from '~/plugins/starpeace-client/building/building-definition.coffee'
 import SimulationDefinitionParser from '~/plugins/starpeace-client/building/simulation/simulation-definition-parser.coffee'
 
-import Company from '~/plugins/starpeace-client/company/company.coffee'
+import Company from '~/plugins/starpeace-client/company/company'
 import TycoonInfo from '~/plugins/starpeace-client/tycoon/tycoon-info.coffee'
 
 import CityZone from '~/plugins/starpeace-client/industry/city-zone.coffee'
@@ -86,47 +86,31 @@ export default class PlanetsManager
     )
 
   load_metadata_building: () ->
-    new Promise (done, error) =>
-      if !@client_state.has_session() || @ajax_state.is_locked('planet_metadata_building', 'ALL')
-        done()
-      else
-        lock = @ajax_state.with_lock('planet_metadata_building', 'ALL', done, error)
-        @api.building_metadata_for_planet()
-          .then (definitions_json) =>
-            @client_state.core.building_library.load_definitions(_.map(definitions_json?.definitions, (json) -> BuildingDefinition.from_json(json)))
-            @client_state.core.building_library.load_simulation_definitions(_.map(definitions_json?.simulationDefinitions, (json) -> SimulationDefinitionParser.from_json(json)))
-            lock.done()
-          .catch (err) => lock.error(err)
+    throw Error() if !@client_state.has_session()
+    await @ajax_state.locked('planet_metadata_building', 'ALL', =>
+      definitions_json = await @api.building_metadata_for_planet()
+      @client_state.core.building_library.load_definitions(_.map(definitions_json?.definitions, (json) -> BuildingDefinition.from_json(json)))
+      @client_state.core.building_library.load_simulation_definitions(_.map(definitions_json?.simulationDefinitions, (json) -> SimulationDefinitionParser.from_json(json)))
+    )
   load_metadata_core: () ->
-    new Promise (done, error) =>
-      if !@client_state.has_session() || @ajax_state.is_locked('planet_metadata_core', 'ALL')
-        done()
-      else
-        lock = @ajax_state.with_lock('planet_metadata_core', 'ALL', done, error)
-        @api.core_metadata_for_planet()
-          .then (json) =>
-            @client_state.core.planet_library.load_city_zones(_.map(json.cityZones, (json) -> CityZone.from_json(json)))
-            @client_state.core.planet_library.load_industry_categories(_.map(json.industryCategories, (json) -> IndustryCategory.from_json(json)))
-            @client_state.core.planet_library.load_industry_types(_.map(json.industryTypes, (json) -> IndustryType.from_json(json)))
-            @client_state.core.planet_library.load_levels(_.map(json.levels, (json) -> Level.from_json(json)))
-            @client_state.core.planet_library.load_ranking_types(_.map(json.rankingTypes, (json) -> RankingType.from_json(json)))
-            @client_state.core.planet_library.load_resource_types(_.map(json.resourceTypes, (json) -> ResourceType.from_json(json)))
-            @client_state.core.planet_library.load_resource_units(_.map(json.resourceUnits, (json) -> ResourceUnit.from_json(json)))
-            @client_state.core.planet_library.load_company_seals(_.map(json.seals, (json) -> CompanySeal.from_json(json)))
-            lock.done()
-          .catch (err) => lock.error(err)
+    throw Error() if !@client_state.has_session()
+    await @ajax_state.locked('planet_metadata_core', 'ALL', =>
+      json = await @api.core_metadata_for_planet()
+      @client_state.core.planet_library.load_city_zones(_.map(json.cityZones, (json) -> CityZone.from_json(json)))
+      @client_state.core.planet_library.load_industry_categories(_.map(json.industryCategories, (json) -> IndustryCategory.from_json(json)))
+      @client_state.core.planet_library.load_industry_types(_.map(json.industryTypes, (json) -> IndustryType.from_json(json)))
+      @client_state.core.planet_library.load_levels(_.map(json.levels, (json) -> Level.from_json(json)))
+      @client_state.core.planet_library.load_ranking_types(_.map(json.rankingTypes, (json) -> RankingType.from_json(json)))
+      @client_state.core.planet_library.load_resource_types(_.map(json.resourceTypes, (json) -> ResourceType.from_json(json)))
+      @client_state.core.planet_library.load_resource_units(_.map(json.resourceUnits, (json) -> ResourceUnit.from_json(json)))
+      @client_state.core.planet_library.load_company_seals(_.map(json.seals, (json) -> CompanySeal.from_json(json)))
+    )
   load_metadata_invention: () ->
-    new Promise (done, error) =>
-      if !@client_state.has_session() || @ajax_state.is_locked('planet_metadata_invention', 'ALL')
-        done()
-      else
-        lock = @ajax_state.with_lock('planet_metadata_invention', 'ALL', done, error)
-        @api.invention_metadata_for_planet()
-          .then (json) =>
-            @client_state.core.invention_library.load_inventions(_.map(json?.inventions, (json) -> InventionDefinition.from_json(json)))
-            lock.done()
-          .catch (err) => lock.error(err)
-
+    throw Error() if !@client_state.has_session()
+    await @ajax_state.locked('planet_metadata_invention', 'ALL', =>
+      json = await @api.invention_metadata_for_planet()
+      @client_state.core.invention_library.load_inventions(_.map(json?.inventions, (json) -> InventionDefinition.from_json(json)))
+    )
 
   search_corporations: (query, starts_with_query) ->
     throw Error() if !@client_state.has_session() || !query?.length

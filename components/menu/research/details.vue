@@ -5,29 +5,29 @@
       .invention-name {{translate(invention_name)}}
       .invention-description {{translate(invention_description)}}
       .invention-cost
-        span.cost-label {{translate('ui.menu.research.cost.label')}}:
+        span.sp-kv-key {{translate('ui.menu.research.cost.label')}}:
         span.cost-value {{invention_cost}}
       .invention-level(v-if="invention_level_label != null")
-        span.level-label {{translate('ui.menu.research.level.label')}}:
+        span.sp-kv-key {{translate('ui.menu.research.level.label')}}:
         span.level-value {{translate(invention_level_label)}}
 
-      .invention-requires
-        span.invention-label {{translate('ui.menu.research.requires.label')}}:
-        span.none-value(v-if="invention_requires.length == 0") {{translate('ui.menu.research.none.label')}}
-        ul.inventions
-          li(v-for='option in sort_inventions(invention_requires)')
-            a(@click.stop.prevent="select_invention(option.id)") {{translate(option.name)}}
-        div.is-clearfix
+      .invention-requires.is-flex
+        span.sp-kv-key.mt-2 {{translate('ui.menu.research.requires.label')}}:
+        span.is-inline-flex.is-flex-direction-column.ml-3
+          span.none-value(v-if="invention_requires.length == 0") {{translate('ui.menu.research.none.label')}}
+          ul.inventions
+            li(v-for='option in sort_inventions(invention_requires)')
+              a(@click.stop.prevent="select_invention(option.id)") {{translate(option.name)}}
 
-      .invention-allows
-        span.invention-label {{translate('ui.menu.research.allows.label')}}:
-        span.none-value(v-if="invention_allows.length == 0") {{translate('ui.menu.research.none.label')}}
-        ul.inventions
-          li(v-for='option in sort_inventions(invention_allows).slice(0, 3)')
-            a(@click.stop.prevent="select_invention(option.id)") {{translate(option.name)}}
-          li(v-if='invention_allows.length > 5') {{invention_allows.length - 3}} {{translate('ui.menu.research.others.label')}}
-          li(v-else-if='invention_allows.length > 4') 1 {{translate('ui.menu.research.other.label')}}
-        div.is-clearfix
+      .invention-allows.is-flex
+        span.sp-kv-key.mt-2 {{translate('ui.menu.research.allows.label')}}:
+        span.is-inline-flex.is-flex-direction-column.ml-3
+          span.none-value(v-if="invention_allows.length == 0") {{translate('ui.menu.research.none.label')}}
+          ul.inventions
+            li(v-for='option in sort_inventions(invention_allows).slice(0, 3)')
+              a(@click.stop.prevent="select_invention(option.id)") {{translate(option.name)}}
+            li(v-if='invention_allows.length > 5') {{invention_allows.length - 3}} {{translate('ui.menu.research.others.label')}}
+            li(v-else-if='invention_allows.length > 4') 1 {{translate('ui.menu.research.other.label')}}
 
       .invention-properties.inverse-card(v-if='invention_properties.length')
         ul.inventions
@@ -38,7 +38,7 @@
 
     .actions-container(v-if="invention_status != 'NONE'")
       .action-row.invention-status
-        span.invention-status-label {{translate('ui.menu.research.status.label')}}:
+        span.sp-kv-key {{translate('ui.menu.research.status.label')}}:
         span.invention-status-value.available(v-if="invention_status == 'AVAILABLE'") {{translate('ui.menu.research.details.status.available')}}
         span.invention-status-value.blocked(v-else-if="invention_status == 'AVAILABLE_BUILDING'") {{translate(first_allowing_building_name)}} {{translate('ui.menu.research.details.status.building_required')}}
         span.invention-status-value.blocked(v-else-if="invention_status == 'AVAILABLE_LEVEL'") {{translate('ui.menu.research.details.status.level_required')}}
@@ -281,16 +281,9 @@ export default
     .none-value
       font-weight: lighter
       opacity: .7
-      margin-left: 7rem
-
-    .invention-label
-      position: absolute
 
     ul
       &.inventions
-        float: left
-        margin-left: 7rem
-
         li
           &:not(:first-child)
             margin-top: .25rem
@@ -345,5 +338,9 @@ export default
           &.completed
             font-weight: bold
             color: $color-positive
+
+      .button
+        letter-spacing: .1rem
+        text-transform: uppercase
 
 </style>

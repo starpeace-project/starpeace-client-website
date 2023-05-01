@@ -70,7 +70,7 @@
 
       template(v-else-if='tab_index == 1')
         .column.sp-scrollbar.commerce
-          table.basic-table.sp-striped
+          table.basic-table.sp-striped.sp-solid-header.sp-sticky-header
             thead
               tr
                 th.sp-kv-key {{translate('toolbar.inspect.townhall.label.name')}}
@@ -95,7 +95,7 @@
 
       template(v-else-if='tab_index == 2')
         .column.sp-scrollbar.taxes
-          table.basic-table.sp-striped
+          table.basic-table.sp-striped.sp-solid-header.sp-sticky-header
             thead
               tr
                 th.sp-kv-key {{translate('toolbar.inspect.townhall.label.name')}}
@@ -235,11 +235,7 @@ export default
       width: 100%
 
       th
-        background-color: $sp-dark-bg
-        color: $sp-light
         padding: .5rem
-        position: sticky
-        top: 0
 
       td
         padding: .25rem .5rem
@@ -253,11 +249,7 @@ export default
       width: 100%
 
       th
-        background-color: $sp-dark-bg
-        color: $sp-light
         padding: .5rem
-        position: sticky
-        top: 0
 
       td
         padding: .25rem .5rem

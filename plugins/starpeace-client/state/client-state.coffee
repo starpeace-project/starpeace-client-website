@@ -2,13 +2,13 @@ import _ from 'lodash';
 import { DateTime }  from 'luxon';
 import { markRaw } from 'vue';
 
-import EventListener from '~/plugins/starpeace-client/state/event-listener.coffee'
+import EventListener from '~/plugins/starpeace-client/state/event-listener'
 
 import CoreState from '~/plugins/starpeace-client/state/core/core-state.coffee'
 
 import BookmarkState from '~/plugins/starpeace-client/state/player/bookmark-state.coffee'
 import CorporationState from '~/plugins/starpeace-client/state/player/corporation-state.coffee'
-import IdentityState from '~/plugins/starpeace-client/state/player/identity-state.coffee'
+import IdentityState from '~/plugins/starpeace-client/state/player/identity-state'
 import PlanetState from '~/plugins/starpeace-client/state/player/planet-state.coffee'
 import PlayerState from '~/plugins/starpeace-client/state/player/player-state.coffee'
 
@@ -210,13 +210,14 @@ export default class ClientState
 
 
   add_login_event: () ->
-    name = if @is_tycoon() then @identity?.galaxy_tycoon?.name else 'Visitor'
+    name = if @is_tycoon() then @identity?.galaxy_tycoon_name else 'Visitor'
     corporation_name = if @is_tycoon() then @current_corporation_metadata()?.name else null
     full_name = if corporation_name?.length then "#{name} of #{corporation_name}" else name
     @add_system_message("#{full_name} has entered #{@current_planet_metadata()?.name}")
 
   is_galaxy_tycoon: () -> @identity.galaxy_visa_type == 'tycoon'
-  is_tycoon: () -> @is_galaxy_tycoon() && @player.planet_visa_type == 'tycoon' && @identity.galaxy_tycoon?
+  is_tycoon: () -> @is_galaxy_tycoon() && @player.planet_visa_type == 'tycoon' && @identity.galaxy_tycoon_id?
+
 
   current_planet_metadata: () -> if @player.planet_id? then @core.galaxy_cache.planet_metadata_for_id(@player.planet_id) else null
   current_corporation_metadata: () -> if @player.corporation_id? then @core.corporation_cache.metadata_for_id(@player.corporation_id) else null

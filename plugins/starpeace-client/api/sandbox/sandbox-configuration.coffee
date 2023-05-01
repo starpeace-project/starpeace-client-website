@@ -7,6 +7,7 @@ import TimeUtils from '~/plugins/starpeace-client/utils/time-utils.coffee'
 import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
 
 import Sandbox from '~/plugins/starpeace-client/api/sandbox/sandbox.coffee'
+import SandboxApiConfigure from '~/plugins/starpeace-client/api/sandbox/api/sandbox-api-configure'
 
 export BASE_HOSTNAME = 'sandbox-galaxy.starpeace.io'
 export BASE_PORT = 19160
@@ -19,47 +20,7 @@ export default class SandboxConfiguration
 
     setInterval((=> @sandbox.tick_day()), 1000)
 
-    @mock.onGet("#{BASE_URL}/galaxy/metadata").reply (config) =>
-      [200, _.cloneDeep(@sandbox.sandbox_data.galaxy_metadata)]
-
-    @post 'galaxy/login', (config, params) =>
-      if params.username == 'test' && params.password == 'test' && @sandbox.sandbox_data.tycoon_by_id['tycoon-id-1']?
-        access_token = Utils.uuid()
-        @sandbox.sandbox_data.access_tokens[access_token] = {
-          tycoon_id: 'tycoon-id-1'
-          created_at: new Date().getTime()
-        }
-        return _.assign(_.cloneDeep(@sandbox.sandbox_data.tycoon_by_id['tycoon-id-1']), {
-          accessToken: access_token
-        })
-      else
-        throw new Error(401)
-
-    @post 'galaxy/logout', (config, params) => {}
-
-    @post 'visa', (config, params) =>
-      planet_id = config.headers['PlanetId']
-      if params.identityType == 'visitor' || params.identityType == 'tycoon'
-        response = {
-          id: @sandbox.register_session(params.identityType)
-          identityType: params.identityType
-        }
-        corporationId = null
-        access_token = config.headers['Authorization']?.split(' ')?[1]
-        if params.identityType == 'tycoon' && access_token?
-          tycoon_id = @sandbox.sandbox_data.access_tokens[access_token].tycoon_id
-          corporation = _.find(_.values(@sandbox.sandbox_data.corporation_by_id), (corporation) -> corporation.planetId == planet_id && corporation.tycoonId == tycoon_id)
-          corporationId = corporation?.id
-
-        visa = {
-          id: @sandbox.register_session(params.identityType)
-          identityType: params.identityType
-          corporationId: corporationId
-        }
-        @sandbox.visasById[visa.id] = visa
-        return _.cloneDeep visa
-      else
-        throw new Error(400)
+    SandboxApiConfigure.configure(@mock, @sandbox)
 
     @get 'metadata/buildings', (config) => _.cloneDeep(_.merge({ planetId: config.headers['PlanetId'] }, @sandbox.sandbox_data.metadata.buildings))
     @get 'metadata/core', (config) => _.cloneDeep(_.merge({ planetId: config.headers['PlanetId'] }, @sandbox.sandbox_data.metadata.core))
@@ -169,24 +130,6 @@ export default class SandboxConfiguration
     @get 'buildings/(.+)', (config, building_id) =>
       throw new Error(404) unless @sandbox.sandbox_data.building_id_building[building_id]?
       _.cloneDeep(@sandbox.sandbox_data.building_id_building[building_id])
-
-    @get 'tycoons/.+?', (config, tycoon_id) =>
-      throw new Error(404) unless @sandbox.sandbox_data?.tycoon_by_id?[tycoon_id]?
-      _.cloneDeep(@sandbox.sandbox_data.tycoon_by_id[tycoon_id])
-
-    @get 'corporations/(.+?)/bookmarks', (config, corporation_id) => @sandbox.sandbox_bookmarks.get_bookmarks(corporation_id)
-    @post 'corporations/(.+?)/bookmarks', (config, corporation_id, parameters) => @sandbox.sandbox_bookmarks.create_bookmark(corporation_id, parameters)
-    @patch 'corporations/(.+?)/bookmarks', (config, corporation_id, parameters) => @sandbox.sandbox_bookmarks.update_bookmarks(corporation_id, parameters.deltas)
-
-    @get 'corporations/(.+?)/mail', (config, corporation_id) => @sandbox.sandbox_mail.get(corporation_id)
-    @post 'corporations/(.+?)/mail', (config, corporation_id, parameters) => @sandbox.sandbox_mail.create(corporation_id, parameters)
-    @put 'corporations/(.+?)/mail/(.+)/mark-read', (config, corporation_id, mail_id) => @sandbox.sandbox_mail.mark_read(corporation_id, mail_id)
-    @delete 'corporations/(.+?)/mail/(.+)', (config, corporation_id, mail_id) => @sandbox.sandbox_mail.delete(corporation_id, mail_id)
-
-    @post 'corporations', (config, params) => throw new Error(500)
-    @get 'corporations/(.+)', (config, corporation_id) =>
-      throw new Error(404) unless @sandbox.sandbox_data?.corporation_by_id?[corporation_id]?
-      _.cloneDeep(@sandbox.sandbox_data.corporation_by_id[corporation_id])
 
     @post 'companies', (config, params) => throw new Error(500)
     @get 'companies/(.+?)/buildings', (config, company_id) => _.cloneDeep(@sandbox.sandbox_data.company_id_buildings[company_id] || [])

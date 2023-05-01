@@ -1,0 +1,89 @@
+
+@import '~/assets/stylesheets/starpeace-variables'
+
+
+.starpeace-logo
+  animation: spin-and-blink 1.5s linear infinite
+  background-size: 6rem
+  filter: $sp-filter-primary
+  height: 6rem
+  opacity: .7
+  width: 6rem
+
+.sp-tabs
+  a
+    letter-spacing: .1rem
+    text-transform: uppercase
+
+.sp-tab
+  height: 100%
+
+.sp-loading
+  height: 100%
+
+.basic-table
+  width: 100%
+
+  thead,
+  tbody
+    th,
+    td
+      border-bottom: 1px solid $sp-dark-bg
+
+      &:first-child
+        border-left: 1px solid $sp-dark-bg
+
+      &:last-child
+        border-right: 1px solid $sp-dark-bg
+
+  th,
+  td
+    padding: .5rem
+    vertical-align: middle
+
+  th
+    padding-top: .75rem
+
+  td
+    color: #ddd
+
+  &.sp-striped
+    tbody
+      tr:nth-child(even)
+        td
+          background-color: darken($sp-dark-bg, 10%)
+
+  &.sp-solid-header
+    th
+      background-color: $sp-dark-bg
+      color: $sp-light
+
+  &.sp-sticky-header
+    th
+      position: sticky
+      top: 0
+
+  &.hoverable
+    tbody
+      tr
+        &.is-selected
+          td
+            background-color: $sp-primary-bg
+            color: #eee
+            font-weight: bold
+
+        &:not(.is-selected)
+          &:hover
+            td
+              background-color: $sp-dark-bg
+
+        td
+          cursor: pointer
+
+.button
+  &.is-starpeace
+    text-transform: uppercase
+    letter-spacing: .1rem
+
+    &.is-small
+      letter-spacing: .05rem

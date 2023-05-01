@@ -1,15 +1,13 @@
 import TinyCache from 'tinycache';
 import { markRaw } from 'vue';
 
-import Cache from '~/plugins/starpeace-client/state/core/cache/cache.coffee'
+import Cache from '~/plugins/starpeace-client/state/core/cache/cache'
 import Logger from '~/plugins/starpeace-client/logger.coffee'
 
 export default class BuildingCache extends Cache
   constructor: () ->
     super()
     @details_by_building_id = markRaw(new TinyCache())
-
-    # Object.defineProperty(@, 'details_by_building_id', { configurable: false }) # disable Vue.observable
 
   reset_planet: () ->
     @building_metadata_by_id = {}

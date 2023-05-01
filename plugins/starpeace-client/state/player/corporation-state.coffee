@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import EventListener from '~/plugins/starpeace-client/state/event-listener.coffee'
+import EventListener from '~/plugins/starpeace-client/state/event-listener'
 import CompanyInventions from '~/plugins/starpeace-client/invention/company-inventions'
 
 import Logger from '~/plugins/starpeace-client/logger.coffee'
@@ -59,7 +59,7 @@ export default class CorporationState
     @notify_company_buildings_listeners()
     @notify_company_inventions_listeners()
 
-  update_cashflow: (last_mail_at, cash, cashflow) ->
+  update_cashflow: (last_mail_at, cash, cashCurrentYear, cashflow) ->
     @last_mail_at = last_mail_at
     @cash = cash
     @cashflow = cashflow

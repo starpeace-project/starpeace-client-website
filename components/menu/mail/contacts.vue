@@ -4,11 +4,11 @@
   .tabs.is-centered.is-toggle.is-fullwidth.sp-tabs
     ul
       li(:class="{'is-active':mode=='CONTACTS'}")
-        button(:disabled='loading' @click.stop.prevent="mode='CONTACTS'") Contacts
+        a(:class="{'disabled': loading}" @click.stop.prevent="mode='CONTACTS'") Contacts
       li(:class="{'is-active':mode=='ALLIES'}")
-        button(:disabled='loading' @click.stop.prevent="mode='ALLIES'") Allies
+        a(:class="{'disabled': loading}" @click.stop.prevent="mode='ALLIES'") Allies
       li(:class="{'is-active':mode=='BLOCKED'}")
-        button(:disabled='loading' @click.stop.prevent="mode='BLOCKED'") Blocked
+        a(:class="{'disabled': loading}" @click.stop.prevent="mode='BLOCKED'") Blocked
 
   aside.sp-scrollbar
 

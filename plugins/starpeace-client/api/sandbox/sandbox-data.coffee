@@ -46,9 +46,58 @@ export default class SandboxData
     @access_tokens = {}
 
     @tycoon_by_id = TYCOON_METADATA
-    @corporation_by_id = _.keyBy(_.flatten(_.map(_.values(TYCOON_METADATA), 'corporations')), 'id')
+
+    @corporation_by_id = {}
+    @corporation_identifiers_by_tycoon_id = {}
+    for tycoon_id,tycoon of @tycoon_by_id
+      @corporation_identifiers_by_tycoon_id[tycoon_id] = []
+      for corporation in tycoon.corporations
+        @corporation_identifiers_by_tycoon_id[tycoon_id].push({id: corporation.id, name: corporation.name, planetId: corporation.planetId})
+        @corporation_by_id[corporation.id] = corporation
+
     @bookmarks_by_corporation_id = BOOKMARKS_METADATA
     @mail_by_corporation_id = MAIL
+
+    @strategies_by_corporation_id = {
+      'corp-id-1': [{
+        id: 's-id-1'
+        corporationId: 'corp-id-1'
+        policy: 'NONE'
+        otherTycoonId: 'tycoon-id-2'
+        otherTycoonName: 'Other Tycoon'
+        otherCorporationId: 'corp-id-4'
+        otherCorporationName: 'Corporation Other'
+        otherPolicy: 'PRIORITIZE'
+      }, {
+        id: 's-id-2'
+        corporationId: 'corp-id-1'
+        policy: 'PRIORITIZE'
+        otherTycoonId: 'tycoon-id-3'
+        otherTycoonName: 'Other Tycoon 2'
+        otherCorporationId: 'corp-id-5'
+        otherCorporationName: 'Corporation Other 2'
+        otherPolicy: 'PRIORITIZE'
+      }, {
+        id: 's-id-3'
+        corporationId: 'corp-id-1'
+        policy: 'EMBARGO'
+        otherTycoonId: 'tycoon-id-4'
+        otherTycoonName: 'Other Tycoon 3'
+        otherCorporationId: 'corp-id-6'
+        otherCorporationName: 'Corporation Other 3'
+        otherPolicy: 'NONE'
+      }, {
+        id: 's-id-4'
+        corporationId: 'corp-id-1'
+        policy: 'NONE'
+        otherTycoonId: 'tycoon-id-5'
+        otherTycoonName: 'Other Tycoon 4'
+        otherCorporationId: 'corp-id-7'
+        otherCorporationName: 'Corporation Other 4'
+        otherPolicy: 'EMBARGO'
+      }]
+    }
+
 
     @planet_rankings_by_type_id = {}
     for planet_id in ['planet-1', 'planet-2', 'planet-3']
@@ -95,12 +144,17 @@ export default class SandboxData
     for tycoon_id,tycoon of TYCOON_METADATA
       for corporation in tycoon.corporations
         mailAt = _.first(_.orderBy(@mail_by_corporation_id[corporation.id], ['desc'], ['sentAt']))?.sentAt
+        cash = corporation.cash || 0
         @corporation_id_cashflow[corporation.id] = {
           lastMailAt: if mailAt? then DateTime.fromISO(mailAt) else null
-          cash: corporation.cash || 0
+          cash: cash
+          cashCurrentYear: cash / 4
           companies_by_id: {}
           cashflow: () -> _.reduce(_.values(@companies_by_id), ((sum, company) -> sum + company.cashflow), 0)
-          increment_cash: () -> @cash = @cash + 24 * @cashflow()
+          increment_cash: () ->
+            daily_cashflow = 24 * @cashflow()
+            @cashCurrentYear = @cashCurrentYear + daily_cashflow
+            @cash = @cash + daily_cashflow
         }
 
         for company in corporation.companies

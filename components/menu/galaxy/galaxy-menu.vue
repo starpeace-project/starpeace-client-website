@@ -76,7 +76,7 @@ export default
     galaxy_metadata: -> if @galaxy_id? && @client_state.core.galaxy_cache.has_galaxy_metadata(@galaxy_id) then @client_state.core.galaxy_cache.galaxy_metadata(@galaxy_id) else
 
     is_tycoon_in_galaxy: -> @client_state.identity?.galaxy_visa_type == 'tycoon' && @tycoon_id?.length
-    tycoon_id: -> @client_state.identity?.galaxy_tycoon?.id
+    tycoon_id: -> @client_state.identity?.galaxy_tycoon_id
 
     planets: ->
       return [] unless @galaxy_metadata? && @is_visible

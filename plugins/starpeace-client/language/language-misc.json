@@ -47,6 +47,14 @@
     "IT": "Creare",
     "PT": "Criar"
   },
+  "misc.action.manage": {
+    "DE": "Verwalten",
+    "EN": "Manage",
+    "ES": "Administrar",
+    "FR": "Gérer",
+    "IT": "Maneggio",
+    "PT": "Gerenciar"
+  },
   "ui.misc.none": {
     "DE": "Keiner",
     "EN": "None",
@@ -134,6 +142,14 @@
     "FR": "Rang",
     "IT": "Nivel",
     "PT": "Classe"
+  },
+  "misc.corporation.level.next": {
+    "DE": "Nächster Rang",
+    "EN": "Next Level",
+    "ES": "Siguiente Rango",
+    "FR": "Rang Suivant",
+    "IT": "Prossimo Rango",
+    "PT": "Próxima Classe"
   },
   "misc.corporation.prestige": {
     "DE": "Prestige",

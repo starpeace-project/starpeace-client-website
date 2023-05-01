@@ -12,6 +12,13 @@ Some of the tentative future features and rough planned version are outlined bel
 * [pending] error message translations
 * [pending] further improve auth and remember me token support (retries, auto-renew)
 * [pending] improved bookmark interaction and performance
+* [pending] tycoon bankruptcy and promotion API
+* [pending] tycoon prestige history labels
+* [pending] tycoon loans API
+* [pending] tycoon corporation and company P&L API
+* [pending] tycoon company rename and disolve API
+* [pending] tycoon initial suppliers and IFEL products API
+* [pending] tycoon strategy API
 
 ### assets
 * [pending] car assets
@@ -54,3 +61,5 @@ Some of the tentative future features and rough planned version are outlined bel
 * [pending] selected building text for IFEL buildings
 * [pending] cashflow and status included in selected building text
 * [pending] footer menu company scroll support
+* [pending] tycoon details loans apply and repay
+* [pending] tycoon details corporation and company P&L

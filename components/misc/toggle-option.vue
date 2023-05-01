@@ -1,5 +1,5 @@
 <template lang='pug'>
-.toggle-icons(:disabled='disabled')
+.toggle-icons(:class="{'is-disabled': disabled}")
   a(v-show="value" @click.stop.prevent='toggle')
     font-awesome-icon(:icon="['fas', 'toggle-on']")
   a(v-show="!value" @click.stop.prevent='toggle')
@@ -22,14 +22,14 @@ export default
 <style lang='sass' scoped>
 .toggle-icons
   font-size: 1.5rem
+  line-height: 1.5rem
 
-  &[disabled]
+  &.s-disabled
     a
       cursor: not-allowed
 
   a
     cursor: pointer
-
 
   .fa-toggle-on
     color: #fff

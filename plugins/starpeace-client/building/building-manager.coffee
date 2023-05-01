@@ -45,22 +45,13 @@ export default class BuildingManager
     )
 
   load_by_company: (company_id) ->
-    new Promise (done, error) =>
-      if !@client_state.has_session() || !company_id? || @ajax_state.is_locked('building_metadata', company_id)
-        error()
-      else
-        @ajax_state.lock('building_metadata', company_id)
-        @api.buildings_for_company(company_id)
-          .then (buildings_json) =>
-            buildings = _.map(buildings_json, (json) -> Building.from_json(json))
-            @client_state.core.building_cache.load_buildings(buildings)
-            @client_state.corporation.set_company_building_ids(company_id, _.map(buildings_json, 'id'))
-            @ajax_state.unlock('building_metadata', company_id)
-            done(buildings)
-
-          .catch (err) =>
-            @ajax_state.unlock('building_metadata', company_id) # FIXME: TODO add error handling
-            error()
+    throw Error() if !@client_state.has_session() || !company_id?
+    await @ajax_state.locked('building_metadata', company_id, =>
+      buildings_json = await @api.buildings_for_company(company_id)
+      buildings = buildings_json.map(Building.from_json)
+      @client_state.core.building_cache.load_buildings(buildings)
+      @client_state.corporation.set_company_building_ids(company_id, buildings.map((b) -> b.id))
+    )
 
   load_building_metadata: (building_id) ->
     throw Error() if !@client_state.has_session() || !building_id?
@@ -84,7 +75,8 @@ export default class BuildingManager
   construct_building: () ->
     building_metadata = @client_state.core.building_library.metadata_by_id[@client_state.interface.construction_building_id]
 
-    if @client_state.has_session() && building_metadata? && !@ajax_state.is_locked('building_construction', 'ALL')
+    throw Error() if !@client_state.has_session() || !building_metadata?
+    await @ajax_state.locked('building_construction', 'ALL', =>
       temporary_building = Building.from_json({
         id: Utils.uuid()
         tycoonId: @client_state.player.tycoon_id
@@ -101,23 +93,21 @@ export default class BuildingManager
       @client_state.planet.game_map.building_map.add_building(temporary_building.id)
       @client_state.planet.notify_map_data_listeners({ type: 'building', info: {chunk_x: temporary_building.map_x / ChunkMap.CHUNK_WIDTH, chunk_y: temporary_building.map_y / ChunkMap.CHUNK_HEIGHT} })
 
-      @ajax_state.lock('building_construction', 'ALL')
-      @api.construct_building(temporary_building.company_id, temporary_building.definition_id, temporary_building.name, temporary_building.map_x, temporary_building.map_y)
-        .then (building_info) =>
-          constructed_building = Building.from_json(building_info)
-          @client_state.core.building_cache.load_building(constructed_building)
-          @client_state.planet.game_map.building_map.remove_building(temporary_building.id)
-          @client_state.planet.game_map.building_map.add_building(constructed_building.id)
-          @client_state.corporation.add_company_building_id(constructed_building.company_id, constructed_building.id)
-          @client_state.core.building_cache.remove_building(temporary_building)
-          @client_state.planet.notify_map_data_listeners({ type: 'building', info: {chunk_x: constructed_building.map_y / ChunkMap.CHUNK_HEIGHT, chunk_y: constructed_building.map_y / ChunkMap.CHUNK_HEIGHT} })
 
-          @bookmark_manager.add_building_bookmark(constructed_building.id, true)
-          @client_state.interface.selected_building_id = constructed_building.id
+      try
+        building_info = await @api.construct_building(temporary_building.company_id, temporary_building.definition_id, temporary_building.name, temporary_building.map_x, temporary_building.map_y)
+        constructed_building = Building.from_json(building_info)
+        @client_state.core.building_cache.load_building(constructed_building)
+        @client_state.planet.game_map.building_map.remove_building(temporary_building.id)
+        @client_state.planet.game_map.building_map.add_building(constructed_building.id)
+        @client_state.corporation.add_company_building_id(constructed_building.company_id, constructed_building.id)
+        @client_state.core.building_cache.remove_building(temporary_building)
+        @client_state.planet.notify_map_data_listeners({ type: 'building', info: {chunk_x: constructed_building.map_y / ChunkMap.CHUNK_HEIGHT, chunk_y: constructed_building.map_y / ChunkMap.CHUNK_HEIGHT} })
 
-          @ajax_state.unlock('building_construction', 'ALL')
+        @bookmark_manager.add_building_bookmark(constructed_building.id, true)
+        @client_state.interface.selected_building_id = constructed_building.id
 
-        .catch (err) =>
-          @client_state.planet.game_map.building_map.remove_building(temporary_building.id)
-          @client_state.add_error_message('Failure constructing building', err)
-          @ajax_state.unlock('building_construction', 'ALL')
+      catch err
+        @client_state.planet.game_map.building_map.remove_building(temporary_building.id)
+        @client_state.add_error_message('Failure constructing building', err)
+    )
