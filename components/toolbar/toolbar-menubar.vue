@@ -3,33 +3,33 @@
   .columns.row-menu
     .column.column-menu
       .toolbar-menu
-        button.button.is-starpeace.is-small.has-tooltip-arrow(:class="{'is-active':is_menu_visible('galaxy')}" @click.stop.prevent="toggle_menu('galaxy')" :data-tooltip="translate('ui.menu.galaxy.header')")
+        button.button.is-starpeace.is-small.has-tooltip-arrow(:class="{'is-active':is_menu_visible('galaxy')}" @click.stop.prevent="toggle_menu('galaxy')" :data-tooltip="$translate('ui.menu.galaxy.header')")
           font-awesome-icon(:icon="['fas', 'satellite']")
-        button.button.is-starpeace.is-small.has-tooltip-arrow(:class="{'is-active':is_menu_visible('bookmarks')}" @click.stop.prevent="toggle_menu('bookmarks')" :data-tooltip="translate('ui.menu.bookmarks.header')")
+        button.button.is-starpeace.is-small.has-tooltip-arrow(:class="{'is-active':is_menu_visible('bookmarks')}" @click.stop.prevent="toggle_menu('bookmarks')" :data-tooltip="$translate('ui.menu.bookmarks.header')")
           font-awesome-icon(:icon="['fas', 'map-marker-alt']")
-        button.button.is-starpeace.is-small.has-tooltip-arrow(:class="{'is-active':is_menu_visible('tycoon')}" @click.stop.prevent='toggle_tycoon_details' :data-tooltip="translate('ui.menu.tycoon_details.header')" :disabled='!is_tycoon')
+        button.button.is-starpeace.is-small.has-tooltip-arrow(:class="{'is-active':is_menu_visible('tycoon')}" @click.stop.prevent='toggle_tycoon_details' :data-tooltip="$translate('ui.menu.tycoon_details.header')" :disabled='!is_tycoon')
           font-awesome-icon(:icon="['fas', 'user-tie']")
-        button.button.is-starpeace.is-small.has-tooltip-arrow(:class="{'is-active':is_menu_visible('politics')}" @click.stop.prevent="toggle_menu('politics')" :data-tooltip="translate('ui.menu.politics.header')")
+        button.button.is-starpeace.is-small.has-tooltip-arrow(:class="{'is-active':is_menu_visible('politics')}" @click.stop.prevent="toggle_menu('politics')" :data-tooltip="$translate('ui.menu.politics.header')")
           font-awesome-icon(:icon="['fas', 'landmark']")
-        button.button.is-starpeace.is-small.has-tooltip-arrow(:class="{'is-active':is_menu_visible('rankings')}" @click.stop.prevent="toggle_menu('rankings')" :data-tooltip="translate('ui.menu.rankings.header')")
+        button.button.is-starpeace.is-small.has-tooltip-arrow(:class="{'is-active':is_menu_visible('rankings')}" @click.stop.prevent="toggle_menu('rankings')" :data-tooltip="$translate('ui.menu.rankings.header')")
           font-awesome-icon(:icon="['fas', 'medal']")
-        button.button.is-starpeace.is-small.has-tooltip-arrow(:class="{'is-active':is_menu_visible('hide_all')}" @click.stop.prevent="toggle_menu('hide_all')" :data-tooltip="translate('misc.hide_menus.label')")
+        button.button.is-starpeace.is-small.has-tooltip-arrow(:class="{'is-active':is_menu_visible('hide_all')}" @click.stop.prevent="toggle_menu('hide_all')" :data-tooltip="$translate('misc.hide_menus.label')")
           font-awesome-icon(:icon="['far', 'eye']")
-        button.button.is-starpeace.is-small.has-tooltip-arrow(:class="{'is-active':is_menu_visible('town_search')}" @click.stop.prevent="toggle_menu('town_search')" :data-tooltip="translate('ui.menu.town_search.header')")
+        button.button.is-starpeace.is-small.has-tooltip-arrow(:class="{'is-active':is_menu_visible('town_search')}" @click.stop.prevent="toggle_menu('town_search')" :data-tooltip="$translate('ui.menu.town_search.header')")
           font-awesome-icon(:icon="['fas', 'search-location']")
-        button.button.is-starpeace.is-small.has-tooltip-arrow(:class="{'is-active':is_menu_visible('tycoon_search')}" @click.stop.prevent="toggle_menu('tycoon_search')" :data-tooltip="translate('ui.menu.tycoon_search.header')")
+        button.button.is-starpeace.is-small.has-tooltip-arrow(:class="{'is-active':is_menu_visible('tycoon_search')}" @click.stop.prevent="toggle_menu('tycoon_search')" :data-tooltip="$translate('ui.menu.tycoon_search.header')")
           font-awesome-icon(:icon="['fas', 'search']")
-        button.button.is-starpeace.is-small.has-tooltip-arrow(:class="{'is-active':is_menu_visible('research')}" @click.stop.prevent="toggle_menu('research')" :data-tooltip="translate('ui.menu.research.header')")
+        button.button.is-starpeace.is-small.has-tooltip-arrow(:class="{'is-active':is_menu_visible('research')}" @click.stop.prevent="toggle_menu('research')" :data-tooltip="$translate('ui.menu.research.header')")
           font-awesome-icon(:icon="['fas', 'flask']")
-        button.button.is-starpeace.is-small.has-tooltip-arrow(:class="{'is-active':is_menu_visible('construction')}" @click.stop.prevent="toggle_menu('construction')" :data-tooltip="translate('ui.menu.construction.header')")
+        button.button.is-starpeace.is-small.has-tooltip-arrow(:class="{'is-active':is_menu_visible('construction')}" @click.stop.prevent="toggle_menu('construction')" :data-tooltip="$translate('ui.menu.construction.header')")
           font-awesome-icon(:icon="['fas', 'hammer']")
-        button.button.is-starpeace.is-small.has-tooltip-arrow(:class="{'is-active':is_menu_visible('mail')}" @click.stop.prevent="toggle_menu('mail')" :data-tooltip="translate('ui.menu.mail.header')")
+        button.button.is-starpeace.is-small.has-tooltip-arrow(:class="{'is-active':is_menu_visible('mail')}" @click.stop.prevent="toggle_menu('mail')" :data-tooltip="$translate('ui.menu.mail.header')")
           font-awesome-icon(:icon="['far', 'envelope']")
-        button.button.is-starpeace.is-small.has-tooltip-arrow(:class="{'is-active':is_menu_visible('chat')}" @click.stop.prevent="toggle_menu('chat')" :data-tooltip="translate('ui.menu.chat.header')")
+        button.button.is-starpeace.is-small.has-tooltip-arrow(:class="{'is-active':is_menu_visible('chat')}" @click.stop.prevent="toggle_menu('chat')" :data-tooltip="$translate('ui.menu.chat.header')")
           font-awesome-icon(:icon="['far', 'comments']")
-        button.button.is-starpeace.is-small.has-tooltip-arrow(:class="{'is-active':is_menu_visible('options')}" @click.stop.prevent="toggle_menu('options')" :data-tooltip="translate('ui.menu.options.header')")
+        button.button.is-starpeace.is-small.has-tooltip-arrow(:class="{'is-active':is_menu_visible('options')}" @click.stop.prevent="toggle_menu('options')" :data-tooltip="$translate('ui.menu.options.header')")
           font-awesome-icon(:icon="['fas', 'cogs']")
-        button.button.is-starpeace.is-small.has-tooltip-arrow(:class="{'is-active':is_menu_visible('help')}" @click.stop.prevent="toggle_menu('help')" :data-tooltip="translate('ui.menu.help.header')")
+        button.button.is-starpeace.is-small.has-tooltip-arrow(:class="{'is-active':is_menu_visible('help')}" @click.stop.prevent="toggle_menu('help')" :data-tooltip="$translate('ui.menu.help.header')")
           font-awesome-icon(:icon="['far', 'question-circle']")
 
     .column.column-tycoon
@@ -37,7 +37,7 @@
         template(v-if='is_tycoon')
           | {{tycoon_name}}
         template(v-else-if='!is_tycoon')
-          | {{translate('identity.visitor')}}
+          | {{$translate('identity.visitor')}}
 
       span.column-tycoon-buildings
         span.count 0 / 0
@@ -65,61 +65,82 @@
 
 </template>
 
-<script lang='coffee'>
+<script lang='ts'>
 import _ from 'lodash';
+import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
 
-export default
-  props:
-    ajax_state: Object
-    client_state: Object
-    managers: Object
+export default {
+  props: {
+    ajax_state: Object,
+    client_state: { type: ClientState, required: true }
+  },
 
-  data: ->
-    client_version: @$config.public.CLIENT_VERSION
-    show_game_music: @client_state.options?.option('music.show_game_music')
+  data () {
+    return {
+      client_version: this.$config.public.CLIENT_VERSION,
+      show_game_music: this.client_state.options?.option('music.show_game_music')
+    };
+  },
 
-  computed:
-    music_state: -> @client_state?.music
+  computed: {
+    music_state () { return this.client_state?.music; },
 
-    is_ready: -> @client_state.initialized && @client_state?.workflow_status == 'ready'
-    is_tycoon: -> @is_ready && @client_state?.is_tycoon()
-    ticker_message: -> @client_state?.interface?.event_ticker_message || ''
+    is_ready () { return this.client_state.initialized && this.client_state?.workflow_status === 'ready'; },
+    is_tycoon () { return this.is_ready && this.client_state?.is_tycoon(); },
+    ticker_message () { return this.client_state?.interface?.event_ticker_message ?? ''; },
 
-    unread_mail: -> _.filter(_.values(@client_state.player.mail_by_id), (m) -> !m.read)
+    unread_mail () { return _.filter(_.values(this.client_state.player.mail_by_id), (m) => !m.read); },
 
-    menu_class_release_notes: -> { 'is-active': @client_state?.menu?.is_visible('release_notes') || false }
+    menu_class_release_notes () {
+      return {
+        'is-active': this.client_state?.menu?.is_visible('release_notes') ?? false
+      };
+    },
 
-    game_music_playing: -> @music_state.game_music_playing
-    game_music_class: -> if @music_state.game_music_playing then 'music-pause' else 'music-play'
-    game_music_volume_class: -> if @music_state.game_music_volume then 'music-volume' else 'music-mute'
+    game_music_playing () { return this.music_state.game_music_playing; },
+    game_music_class () { return this.music_state.game_music_playing ? 'music-pause' : 'music-play'; },
+    game_music_volume_class () { return this.music_state.game_music_volume ? 'music-volume' : 'music-mute'; },
 
-    notification_loading_css_class: -> { 'ajax-loading': (@ajax_state?.ajax_requests || 0) > 0 }
+    notification_loading_css_class () {
+      return {
+        'ajax-loading': (this.ajax_state?.ajax_requests ?? 0) > 0
+      };
+    },
 
-    tycoon_name: -> if @is_tycoon then @client_state?.identity?.galaxy_tycoon_name else ''
+    tycoon_name () { return this.is_tycoon ? this.client_state?.identity?.galaxy_tycoon_name : ''; }
+  },
 
-  mounted: ->
-    @client_state.options?.subscribe_options_listener =>
-      @show_game_music = @client_state.options?.option('music.show_game_music')
+  mounted () {
+    this.client_state.options?.subscribe_options_listener(() => {
+      this.show_game_music = this.client_state.options?.option('music.show_game_music');
+    });
+  },
 
-  methods:
-    translate: (key) -> if @managers? then @managers.translation_manager.text(key) else key
+  methods: {
+    is_menu_visible (option_type: string) { return this.client_state.menu.is_visible(option_type); },
+    toggle_menu (option_type: string) {
+      if (option_type === 'hide_all' && this.client_state.interface.show_inspect) {
+        this.client_state.interface.hide_inspect();
+      }
+      this.client_state.menu.toggle_menu(option_type);
+    },
 
-    is_menu_visible: (option_type) -> @client_state.menu.is_visible(option_type)
-    toggle_menu: (option_type) ->
-      @client_state.interface.hide_inspect() if option_type == 'hide_all' && @client_state.interface.show_inspect
-      @client_state.menu.toggle_menu(option_type)
+    toggle_tycoon_details () {
+      if (!this.client_state.is_tycoon()) return;
+      if (this.client_state.menu.is_visible('tycoon')) {
+        this.client_state.menu.toggle_menu('tycoon');
+      }
+      else {
+        this.client_state.show_tycoon_profile(this.client_state.player.tycoon_id);
+      }
+    },
 
-    toggle_tycoon_details: () ->
-      return unless @client_state.is_tycoon()
-      if @client_state.menu.is_visible('tycoon')
-        @client_state.menu.toggle_menu('tycoon')
-      else
-        @client_state.show_tycoon_profile(@client_state.player.tycoon_id)
-
-    toggle_mail: () ->
-      return unless @unread_mail.length
-      @client_state.menu.toggle_menu('mail')
-
+    toggle_mail () {
+      if (!this.unread_mail.length) return;
+      this.client_state.menu.toggle_menu('mail');
+    }
+  }
+}
 </script>
 
 <style lang='sass' scoped>

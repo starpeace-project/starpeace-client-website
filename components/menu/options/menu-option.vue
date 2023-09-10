@@ -9,11 +9,13 @@
         misc-toggle-option(:value='value' @toggle="$emit('toggle')")
 </template>
 
-<script lang='coffee'>
-export default
-  props:
-    label: String
+<script lang='ts'>
+export default {
+  props: {
+    label: String,
     value: Boolean
+  }
+}
 </script>
 
 <style lang='sass' scoped>

@@ -8,7 +8,6 @@ export default class BuildingLibrary extends Library
     super()
 
     @texture_cache = new TextureAtlasCache()
-
     @images_by_id = {}
 
     @reset_planet()

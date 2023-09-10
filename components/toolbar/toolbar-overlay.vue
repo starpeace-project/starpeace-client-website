@@ -3,18 +3,18 @@
   .dropdown.is-up.is-hoverable
     .dropdown-trigger
       button.button.is-starpeace(aria-haspopup='true', aria-controls='overlays')
-        span {{translate(current_overlay.label_key)}}
+        span {{$translate(current_overlay.label_key)}}
         span.icon.is-small
           font-awesome-icon(:icon="['fas', 'angle-up']")
 
     #overlays.dropdown-menu(role='menu')
       .dropdown-content
         a.dropdown-item(v-for='overlay in overlays()' :class='overlay_item_css_class(overlay)' @click.stop.prevent='change_overlay(overlay)')
-          span {{translate(overlay.label_key)}}
+          span {{$translate(overlay.label_key)}}
 
   #flag-losing
     span(v-on:click.stop.prevent='toggle_losing_facilities()')
-      | {{translate('overlay.signal_losing.label')}}:
+      | {{$translate('overlay.signal_losing.label')}}:
     .toggle-icons
       a.toggle-on(v-show="show_losing_facilities" @click.stop.prevent='toggle_losing_facilities()')
         font-awesome-icon(:icon="['fas', 'toggle-on']")
@@ -23,37 +23,46 @@
 
 </template>
 
-<script lang='coffee'>
-import Overlay from '~/plugins/starpeace-client/overlay/overlay.coffee'
+<script lang='ts'>
+import Overlay from '~/plugins/starpeace-client/overlay/overlay.coffee';
+import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
 
-export default
-  props:
-    managers: Object
-    client_state: Object
+export default {
+  props: {
+    client_state: { type: ClientState, required: true }
+  },
 
-  data: ->
-    interface_state: @client_state?.interface
+  computed: {
+    show_overlay_menu () { return this.client_state.interface?.show_overlay ? this.client_state.interface.show_overlay : false; },
+    current_overlay () { return this.client_state.interface?.current_overlay ? this.client_state.interface.current_overlay : Overlay.TYPES.NONE; },
+    current_overlay_value () { return this.current_overlay.type; },
 
-  computed:
-    show_overlay_menu: -> if @interface_state?.show_overlay? then @interface_state.show_overlay else false
-    current_overlay: -> if @interface_state?.current_overlay? then @interface_state.current_overlay else Overlay.TYPES.NONE
-    current_overlay_value: -> @current_overlay.type
+    show_losing_facilities () { return this.client_state.interface?.show_losing_facilities ? this.client_state.interface?.show_losing_facilities : false; }
+  },
 
-    show_losing_facilities: -> if @interface_state?.show_losing_facilities? then @interface_state?.show_losing_facilities else false
+  methods: {
+    overlays () {
+      const overlays = [];
+      for (const [key, overlay] of Object.entries(Overlay.TYPES)) {
+        if (key !== 'NONE' && key !== 'ZONES') {
+          overlays.push(overlay);
+        }
+      }
+      return overlays;
+    },
 
-  methods:
-    translate: (text_key) -> @managers?.translation_manager?.text(text_key)
+    overlay_item_css_class (overlay: Overlay): Record<string, boolean> {
+      return { 'is-active': this.current_overlay_value == overlay.type };
+    },
+    change_overlay (overlay: Overlay): void {
+      this.client_state.interface.current_overlay = overlay;
+    },
 
-    overlays: ->
-      overlays = []
-      for key,overlay of Overlay.TYPES
-        overlays.push(overlay) unless key == 'NONE' || key == 'ZONES'
-      overlays
-
-    overlay_item_css_class: (overlay) -> { 'is-active': @current_overlay_value == overlay.type }
-    change_overlay: (overlay) -> @interface_state?.current_overlay = overlay
-
-    toggle_losing_facilities: () -> @interface_state.show_losing_facilities = !@interface_state.show_losing_facilities
+    toggle_losing_facilities () {
+      this.client_state.interface.show_losing_facilities = !this.client_state.interface.show_losing_facilities;
+    }
+  }
+}
 </script>
 
 <style lang='sass' scoped>

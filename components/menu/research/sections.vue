@@ -2,11 +2,11 @@
 .research-container
   .field.is-marginless.filter-input-container
     .control.has-icons-left.is-expanded
-      input.input(type="text" :placeholder="translate('misc.filter')")
+      input.input(type="text" :placeholder="$translate('misc.filter')")
       span.icon.is-left
         font-awesome-icon(:icon="['fas', 'search-location']")
 
-  misc-filter-industry-categories(:managers='managers' :client_state='client_state')
+  misc-filter-industry-categories(:client_state='client_state')
 
   aside.sp-menu.sp-scrollbar
     p.sp-section(v-for='item in sections')
@@ -27,84 +27,105 @@
 
 </template>
 
-<script lang='coffee'>
-import _ from 'lodash'
+<script lang='ts'>
+import _ from 'lodash';
+import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
 
-export default
-  props:
-    managers: Object
-    client_state: Object
+declare interface SectionsData {
+  filter_input_value: string;
+  sections: Array<any>;
+}
 
-  data: ->
-    menu_visible: @client_state?.menu?.is_visible('research')
+export default {
+  props: {
+    client_state: { type: ClientState, required: true },
+    isVisible: Boolean
+  },
 
-    filter_input_value: ''
+  data (): SectionsData {
+    return {
+      filter_input_value: '',
 
-    sections: []
+      sections: []
+    };
+  },
 
-  mounted: ->
-    @client_state?.menu?.subscribe_menu_listener =>
-      @menu_visible = @client_state?.menu?.is_visible('research')
+  mounted () {
+    this.client_state?.options?.subscribe_options_listener(() => this.refresh_sections());
+  },
 
-    @client_state?.options?.subscribe_options_listener => @refresh_sections()
+  watch: {
+    isVisible (new_value, old_value) {
+      this.refresh_sections();
+    },
+    selected_category_id (new_value, old_value) {
+      this.refresh_sections();
+    },
+    company_id (new_value, old_value) {
+      this.refresh_sections();
+    }
+  },
 
-  watch:
-    is_visible: (new_value, old_value) ->
-      @refresh_sections() if new_value
-    selected_category_id: (new_value, old_value) ->
-      @refresh_sections()
-    company_id: (new_value, old_value) ->
-      @refresh_sections()
+  computed: {
+    selected_category_id (): string | null { return this.client_state.interface.inventions_selected_category_id; },
+    selected_industry_type_id (): string | null { return this.client_state.interface.inventions_selected_industry_type_id; },
 
-  computed:
-    is_visible: -> @client_state.workflow_status == 'ready' && @menu_visible
+    company_id (): string | null { return this.client_state.player.company_id; }
+  },
 
-    selected_category_id: -> @client_state.interface.inventions_selected_category_id
-    selected_industry_type_id: -> @client_state.interface.inventions_selected_industry_type_id
+  methods: {
+    filter_class (type: any) {
+      return '';
+    },
+    section_item_class (item: any, child: any) {
+      return {
+        'is-active': this.selected_category_id == item.industry_category_id && this.selected_industry_type_id == child.industry_type_id
+      };
+    },
 
-    company_id: -> @client_state.player.company_id
-
-  methods:
-    translate: (text_key) -> @managers?.translation_manager?.text(text_key)
-
-    filter_class: (type) -> ""
-    section_item_class: (item, child) -> { 'is-active': @selected_category_id == item.industry_category_id && @selected_industry_type_id == child.industry_type_id }
-
-    refresh_sections: () ->
-      sections_by_category = {}
-      for invention in @inventions_for_company()
-        unless sections_by_category[invention.industry_category_id]?
-
-          category = @client_state.core.planet_library.category_for_id(invention.industry_category_id)
+    refresh_sections () {
+      if (!this.isVisible) return;
+      const sections_by_category: Record<string, any> = {}
+      for (const invention of this.inventions_for_company()) {
+        if (!sections_by_category[invention.industry_category_id]) {
+          const category = this.client_state.core.planet_library.category_for_id(invention.industry_category_id);
           sections_by_category[invention.industry_category_id] = {
-            name: if category? then @translate(category.label) else invention.industry_category_id
-            industry_category_id: invention.industry_category_id
-            expanded: invention.industry_category_id == @selected_category_id
+            name: category ? this.$translate(category.label) : invention.industry_category_id,
+            industry_category_id: invention.industry_category_id,
+            expanded: invention.industry_category_id == this.selected_category_id,
             children_by_type: {}
-          }
-        type_id = invention.industry_type_id || 'GENERAL'
-        unless sections_by_category[invention.industry_category_id].children_by_type[type_id]?
-          industry_type = @client_state.core.planet_library.type_for_id(type_id)
+          };
+        }
+
+        const type_id = invention.industry_type_id ?? 'GENERAL';
+        if (!sections_by_category[invention.industry_category_id].children_by_type[type_id]) {
+          const industry_type = this.client_state.core.planet_library.type_for_id(type_id);
           sections_by_category[invention.industry_category_id].children_by_type[type_id] = {
-            name: if industry_type? then @translate(industry_type.label) else type_id
+            name: industry_type ? this.$translate(industry_type.label) : type_id,
             industry_type_id: invention.industry_type_id
-          }
+          };
+        }
+      }
 
-      sections = []
-      for category_id in @client_state.core.planet_library.categories_for_inventions()
-        if sections_by_category[category_id]?
-          section = sections_by_category[category_id]
-          section.children = _.sortBy(_.values(section.children_by_type), (child) -> child.name)
-          sections.push section
+      const sections = [];
+      for (const category_id of this.client_state.core.planet_library.categories_for_inventions()) {
+        if (sections_by_category[category_id]) {
+          const section = sections_by_category[category_id];
+          section.children = _.sortBy(_.values(section.children_by_type), (child) => child.name);
+          sections.push(section);
+        }
+      }
+      this.sections = sections;
+    },
 
-      @sections = sections
+    inventions_for_company () { return this.client_state.inventions_for_company(); },
 
-    inventions_for_company: -> @client_state.inventions_for_company()
-
-    select_inventions: (industry_category_id, industry_type_id) ->
-      @client_state.interface.inventions_selected_category_id = industry_category_id
-      @client_state.interface.inventions_selected_industry_type_id = industry_type_id
-
+    select_inventions (industry_category_id: string, industry_type_id: string) {
+      this.client_state.interface.inventions_selected_category_id = industry_category_id;
+      this.client_state.interface.inventions_selected_industry_type_id = industry_type_id;
+    }
+  }
+}
 </script>
 
 <style lang='sass' scoped>

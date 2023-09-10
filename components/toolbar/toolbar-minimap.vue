@@ -7,52 +7,64 @@
     font-awesome-icon(:icon="['fas', 'minus']")
 </template>
 
-<script lang='coffee'>
-import interact from 'interactjs'
+<script lang='ts'>
+import interact from 'interactjs';
+import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
 
-MIN_MINI_MAP_WIDTH = 300
-MIN_MINI_MAP_HEIGHT = 200
+const MIN_MINI_MAP_WIDTH = 300;
+const MIN_MINI_MAP_HEIGHT = 200;
 
-export default
-  props:
-    client_state: Object
+export default {
+  props: {
+    client_state: { type: ClientState, required: true }
+  },
 
-  data: ->
-    show_mini_map: @client_state.options?.option('general.show_mini_map')
-    mini_map_width: @client_state.options?.option('mini_map.width')
-    mini_map_height: @client_state.options?.option('mini_map.height')
+  data () {
+    return {
+      show_mini_map: this.client_state.options?.option('general.show_mini_map'),
+      mini_map_width: this.client_state.options?.option('mini_map.width'),
+      mini_map_height: this.client_state.options?.option('mini_map.height')
+    };
+  },
 
-  mounted: ->
-    @client_state?.options?.subscribe_options_listener =>
-      @show_mini_map = @client_state.options?.option('general.show_mini_map')
+  mounted () {
+    this.client_state?.options?.subscribe_options_listener(() => {
+      this.show_mini_map = this.client_state.options?.option('general.show_mini_map');
+    });
 
-    @client_state?.interface?.subscribe_mini_map_size_listener =>
-      @mini_map_width = @client_state.options?.option('mini_map.width')
-      @mini_map_height = @client_state.options?.option('mini_map.height')
+    this.client_state?.interface?.subscribe_mini_map_size_listener(() => {
+      this.mini_map_width = this.client_state.options?.option('mini_map.width');
+      this.mini_map_height = this.client_state.options?.option('mini_map.height');
+    });
 
-    if @$refs.mini_map_container? && !@$refs.mini_map_container.dataset.interactSetup?
-      interact(@$refs.mini_map_container)
+    if (this.$refs.mini_map_container && !this.$refs.mini_map_container.dataset.interactSetup) {
+      interact(this.$refs.mini_map_container)
         .resizable({
-          edges: { left: true, right: false, bottom: false, top: true }
-          inertia: true
-          restrictSize: {
-            min: {
-              width: MIN_MINI_MAP_WIDTH
-              height: MIN_MINI_MAP_HEIGHT
-            }
-          }
+          edges: { left: true, right: false, bottom: false, top: true },
+          inertia: true,
+          modifiers: [
+            interact.modifiers.restrictSize({
+              min: {
+                width: MIN_MINI_MAP_WIDTH,
+                height: MIN_MINI_MAP_HEIGHT
+              }
+            })
+          ]
         })
-        .on('resizemove', (event) =>
-          @client_state.interface.update_mini_map(event.rect.width, event.rect.height)
-        )
-      @$refs.mini_map_container.dataset.interactSetup = true
+        .on('resizemove', (event) => {
+          this.client_state.interface.update_mini_map(event.rect.width, event.rect.height);
+        });
+      this.$refs.mini_map_container.dataset.interactSetup = true;
+    }
+  },
 
-  computed:
-    is_ready: -> @client_state.initialized && @client_state?.workflow_status == 'ready'
+  computed: {
+    is_ready () { return this.client_state.initialized && this.client_state?.workflow_status === 'ready'; },
 
-    mini_map_column_css_style: -> "width:#{@mini_map_width}px"
-    mini_map_container_css_style: -> "width:#{@mini_map_width}px;height:#{@mini_map_height}px"
-
+    mini_map_column_css_style () { return `width:${this.mini_map_width}px`; },
+    mini_map_container_css_style () { return `width:${this.mini_map_width}px;height:${this.mini_map_height}px`; }
+  }
+}
 </script>
 
 <style lang='sass' scoped>

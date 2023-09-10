@@ -1,26 +1,32 @@
 <template lang='pug'>
 .identity-content
   .welcome-message
-    span.salut {{translate('ui.workflow.visa-type.greeting')}}, {{translate('identity.visitor')}}!
+    span.salut {{$translate('ui.workflow.visa-type.greeting')}}, {{$translate('identity.visitor')}}!
     |
     |
-    | {{translate('ui.workflow.visa-type.intro')}}
+    | {{$translate('ui.workflow.visa-type.intro')}}
     |
     |
-    a(href='https://docs.starpeace.io') {{translate('ui.workflow.visa-type.learnmore')}}
+    a(href='https://docs.starpeace.io') {{$translate('ui.workflow.visa-type.learnmore')}}
 
   .columns.universe-mode
     .column.is-6
-      a.button.is-medium.is-fullwidth.is-starpeace.is-square(:class="universe_mode == 'starpeace' ? 'is-active' : ''", v-on:click.stop.prevent="select_universe('starpeace')") STARPEACE {{translate('ui.workflow.universe.universe.label')}}
+      a.button.is-medium.is-fullwidth.is-starpeace.is-square(
+        :class="{'is-active': universe_mode == 'starpeace'}"
+        @click.stop.prevent="select_universe('starpeace')"
+      ) STARPEACE {{$translate('ui.workflow.universe.universe.label')}}
     .column.is-6
-      a.button.is-medium.is-fullwidth.is-starpeace.is-square(:class="universe_mode == 'multiverse' ? 'is-active' : ''", v-on:click.stop.prevent="select_universe('multiverse')") {{translate('ui.workflow.universe.multiverse.label')}}
+      a.button.is-medium.is-fullwidth.is-starpeace.is-square(
+        :class="{'is-active': universe_mode == 'multiverse'}"
+        @click.stop.prevent="select_universe('multiverse')"
+      ) {{$translate('ui.workflow.universe.multiverse.label')}}
 
-  workflow-universe-starpeace(v-show="universe_mode == 'starpeace'", :managers='managers', :client_state='client_state')
-  workflow-universe-multiverse(v-show="universe_mode == 'multiverse'", :managers='managers', :ajax_state='ajax_state', :client_state='client_state')
+  workflow-universe-starpeace(v-show="universe_mode == 'starpeace'" :client_state='client_state')
+  workflow-universe-multiverse(v-show="universe_mode == 'multiverse'" :ajax_state='ajax_state' :client_state='client_state')
 
   .news-container
     .news-header
-      span {{translate('ui.workflow.visa-type.header.news')}}
+      span {{$translate('ui.workflow.visa-type.header.news')}}
       a.version(href='/release') {{client_version}}
 
     template(v-if='!news.length')
@@ -39,31 +45,40 @@
 
 </template>
 
-<script lang='coffee'>
-export default
-  props:
-    managers: Object
-    ajax_state: Object
-    client_state: Object
+<script lang='ts'>
+import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
 
-  data: ->
-    client_version: @$config.public.CLIENT_VERSION
-    news: []
-    universe_mode: 'multiverse'
+export default {
+  props: {
+    client_state: { type: ClientState, required: true },
+    ajax_state: { type: Object, required: true }
+  },
 
-  created: ->
-    request = new XMLHttpRequest()
+  data () {
+    return {
+      client_version: this.$config.public.CLIENT_VERSION,
+      news: [],
+      universe_mode: 'multiverse'
+    }
+  },
+
+  created () {
+    const request = new XMLHttpRequest()
     request.open('GET', '/news.json', true)
-    request.onload = () =>
-      @news = [JSON.parse(request.responseText).news[0]] if request.status >= 200 && request.status < 400
-    request.send()
+    request.onload = () => {
+      if (request.status >= 200 && request.status < 400) {
+        this.news = [JSON.parse(request.responseText).news[0]]
+      }
+    };
+    request.send();
+  },
 
-  methods:
-    translate: (key) -> if @managers? then @managers.translation_manager.text(key) else key
+  methods: {
+    select_universe (mode: string): void { this.universe_mode = mode; },
 
-    select_universe: (mode) -> @universe_mode = mode
-
-    news_item_html: (value) -> value.replace(/\n/g, '<br>')
+    news_item_html (value: string): string { return value.replace(/\n/g, '<br>'); }
+  }
+}
 </script>
 
 <style lang='sass' scoped>

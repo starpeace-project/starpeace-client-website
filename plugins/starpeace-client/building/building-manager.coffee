@@ -104,7 +104,7 @@ export default class BuildingManager
         @client_state.core.building_cache.remove_building(temporary_building)
         @client_state.planet.notify_map_data_listeners({ type: 'building', info: {chunk_x: constructed_building.map_y / ChunkMap.CHUNK_HEIGHT, chunk_y: constructed_building.map_y / ChunkMap.CHUNK_HEIGHT} })
 
-        @bookmark_manager.add_building_bookmark(constructed_building.id, true)
+        @bookmark_manager.addBuildingBookmark(constructed_building.id, true)
         @client_state.interface.selected_building_id = constructed_building.id
 
       catch err

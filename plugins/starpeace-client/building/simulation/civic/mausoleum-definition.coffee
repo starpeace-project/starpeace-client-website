@@ -1,7 +1,7 @@
 import _ from 'lodash'
 
 import SimulationDefinition from '~/plugins/starpeace-client/building/simulation/simulation-definition.coffee'
-import ResourceQuantity from '~/plugins/starpeace-client/industry/resource-quantity.coffee'
+import ResourceQuantity from '~/plugins/starpeace-client/industry/resource-quantity'
 
 export default class MausoleumDefinition extends SimulationDefinition
   @TYPE: () -> 'MAUSOLEUM'

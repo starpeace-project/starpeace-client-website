@@ -3,7 +3,6 @@ import { DateTime } from 'luxon';
 import { io, Socket } from 'socket.io-client';
 import { SocketIO as MockIO } from 'mock-socket';
 
-import SandboxSocketEvents from '~/plugins/starpeace-client/api/sandbox/sandbox-socket-events.coffee'
 import { BASE_HOSTNAME } from '~/plugins/starpeace-client/api/sandbox/sandbox-configuration.coffee'
 
 export default class PlanetEventClient
@@ -11,9 +10,12 @@ export default class PlanetEventClient
     galaxy_config = @client_state.core.galaxy_cache.galaxy_configuration(@client_state.identity.galaxy_id)
     throw "no configuration for galaxy" unless galaxy_config?.api_url? && galaxy_config?.api_port?
 
-    @client_state.planet.connecting = true;
+    @disconnecting = false
+    @planet_id = @client_state.player.planet_id
+    @client_state.planet.connecting = true
     if galaxy_config.api_url == BASE_HOSTNAME
-      new SandboxSocketEvents(@api_client.mockConfiguration.sandbox, @client_state.player.planet_id, @client_state.player.planet_visa_id)
+      @api_client.mockConfiguration.socketEvents.planet_id = @client_state.player.planet_id
+      @api_client.mockConfiguration.socketEvents.visa_id = @client_state.player.planet_visa_id
       @socket = MockIO.connect("ws://#{galaxy_config.api_url}:#{galaxy_config.api_port}")
       @configure()
     else
@@ -37,6 +39,7 @@ export default class PlanetEventClient
     , 1000)
 
   disconnect: () ->
+    @disconnecting = true
     @socket.disconnect() if @client_state.planet.connecting || @client_state.planet.connected
 
   configure: () ->
@@ -51,10 +54,11 @@ export default class PlanetEventClient
     )
 
     @socket.on('disconnect', () =>
-      @client_state.planet.connecting = false
-      @client_state.planet.connected = false
-      @client_state.planet.notify_state_listeners()
-      @client_state.handle_connection_disconnect()
+      if !@disconnecting && @planet_id == @client_state.player.planet_id
+        @client_state.planet.connecting = false
+        @client_state.planet.connected = false
+        @client_state.planet.notify_state_listeners()
+        @client_state.handle_connection_disconnect()
     )
 
     @socket.on('initialize', (event) =>

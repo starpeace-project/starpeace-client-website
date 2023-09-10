@@ -1,30 +1,40 @@
 <template lang='pug'>
-a.is-menu-item(v-on:click.stop.prevent="select_item", :style="css_style_for_item")
+a.is-menu-item(:style="css_style_for_item" @click.stop.prevent='select')
   span.link-image
     template(v-if="item.type == 'TOWN'")
       misc-city-icon
-    template(v-else-if="true")
+
+    template(v-else)
       font-awesome-icon(:icon="['fas', 'map-marker-alt']")
-  span.link-label {{item.item_name}}
+
+  span.link-label {{label}}
 
 </template>
 
-<script lang='coffee'>
-export default
-  props:
-    item: Object
+<script lang='ts'>
+import BookmarkMenuItem from '~/plugins/starpeace-client/bookmark/bookmark-menu-item';
 
-    dragging_level: Number
+export default {
+  props: {
+    item: { type: BookmarkMenuItem, required: true },
+  },
 
-  computed:
-    css_style_for_item: ->
-      level = if @dragging_level? && @dragging_level >= 0 then @dragging_level else @item.level
-      "padding-left: #{(level + 1) * 0.75}rem;"
+  computed: {
+    label (): string {
+      return this.item.itemNameKey ? this.$translate(this.item.itemNameKey) : (this.item.itemName ?? '');
+    },
 
-  methods:
-    select_item: () ->
-      return if @item.is_folder
-      @$emit('selected', @item.id)
+    css_style_for_item () {
+      return `padding-left: ${(this.item.level + 1) * 0.75}rem;`;
+    }
+  },
+
+  methods: {
+    select () {
+      this.$emit('select', this.item.id);
+    }
+  }
+}
 </script>
 
 <style lang='sass' scoped>

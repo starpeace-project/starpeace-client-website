@@ -50,20 +50,17 @@ export default class Client
     # update translations?
 
   notify_workflow_changed: () ->
-    if @client_state.workflow_status == 'pending_initialization' && !@client_state.loading
-      @client_state.loading = true
+    if @client_state.workflow_status == 'pending_initialization'
+      @renderer.initialize() if !@client_state.renderer_initialized && !@client_state.renderer_initializing
+      @managers.initialize(@renderer.application.renderer.extract) if @client_state.renderer_initialized && !@client_state.managers_initialized && !@client_state.managers_initializing
 
-      @renderer.initialize()
-      @managers.initialize(@renderer.application.renderer.extract)
-      @mini_map_renderer.initialize()
-      @construction_preview_renderer.initialize()
-      @inspect_preview_renderer.initialize()
+      @mini_map_renderer.initialize() if @client_state.managers_initialized && !@client_state.mini_map_renderer_initialized && !@client_state.mini_map_renderer_initializing
+      @construction_preview_renderer.initialize() if !@client_state.construction_preview_renderer_initialized && !@client_state.construction_preview_renderer_initializing
+      @inspect_preview_renderer.initialize() if !@client_state.inspect_preview_renderer_initialized && !@client_state.inspect_preview_renderer_initializing
 
-      @client_state.finish_initialization()
+      @client_state.finish_initialization() if !@client_state.initialized && @client_state.renderer_initialized && @client_state.mini_map_renderer_initialized && @client_state.construction_preview_renderer_initialized && @client_state.inspect_preview_renderer_initialized && @client_state.managers_initialized
 
     else if @client_state.workflow_status == 'ready'
-      @client_state.loading = false
-
       clearTimeout(@refresh_events_interval) if @refresh_events_interval?
       @refresh_events_interval = setInterval(=>
         if @client_state.workflow_status == 'ready'

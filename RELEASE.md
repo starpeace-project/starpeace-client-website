@@ -1,5 +1,5 @@
 
-## v0.3.13 - in progress - updated 2023-04-30
+## v0.3.13 - in progress - updated 2023-05-21
 ### platform
 * [done] improve API integration with galaxies [v0.3.1]
 * [done] document multiverse API integration [starpeace-server-multiverse-api]
@@ -30,8 +30,9 @@
 * [done] fix interaction performance and fps issues [v0.3.11]
 * [done] research visualization upgrade fixes [v0.3.11]
 * [done] bookmarks manage and performance fixes [v0.3.11]
-* [done] tycoon details API  [v0.3.12]
-* [in progress] building inspect API  [v0.3.13]
+* [done] tycoon details API [v0.3.12]
+* [done] fixed galaxy and research menu bugs  [v0.3.13]
+* [in progress] building inspect API [v0.3.13]
 * [in progress] improve auth and remember me token and error handling
 * [pending] player, building, and planet event handling
 

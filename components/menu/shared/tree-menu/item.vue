@@ -40,7 +40,6 @@
   .sp-menu-list(v-if='has_children' v-show='expanded')
     .menu-item(v-for='child in all_children' :key='child.id')
       menu-shared-tree-menu-item(
-        :managers='managers'
         :client-state='clientState'
         :item='child'
         :visible='visible && expanded'
@@ -52,64 +51,88 @@
 
 </template>
 
-<script lang='coffee'>
+<script lang='ts'>
 import _ from 'lodash';
+import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
 
-export default
-  props:
-    managers: Object
-    clientState: Object
+export default {
+  props: {
+    clientState: { type: ClientState, required: true },
 
-    visible: Boolean
-    level: Number
+    visible: Boolean,
+    level: Number,
     item: Object
+  },
 
-  data: ->
-    loading_error: false
-    expanded: false
-    children: null
+  data () {
+    return {
+      loading_error: false,
+      expanded: false,
+      children: null
+    };
+  },
 
-  computed:
-    is_folder: -> @item?.type == 'FOLDER'
+  computed: {
+    is_folder () { return this.item?.type == 'FOLDER'; },
 
-    might_have_children: -> @item?.load_children_callback? && !@children?
-    has_children: -> @all_children.length > 0
-    all_children: -> _.concat(@item?.children || [], @children || [])
+    might_have_children () { return !!this.item?.load_children_callback && !this.children; },
+    has_children () { return this.all_children.length > 0; },
+    all_children () { return _.concat(this.item?.children ?? [], this.children ?? []); },
 
-    link_style: -> "padding-left: #{@level * 0.75}rem;"
-    link_class: ->
-      disabled: (@is_folder || !@item.action?) && !(@has_children || @might_have_children)
+    link_style () { return `padding-left: ${this.level * 0.75}rem;`; },
+    link_class () {
+      return {
+        disabled: (this.is_folder || !this.item.action) && !(this.has_children || this.might_have_children)
+      };
+    },
 
-    container_class: ->
-      'is-primary': @item?.primary
+    container_class () {
+      return {
+        'is-primary': this.item?.primary
+      };
+    },
 
-    label: -> if @item?.labelKey?.length then @translate(@item.labelKey) else (@item?.label || '')
+    label () { return this.item?.labelKey?.length ? this.$translate(this.item.labelKey) : (this.item?.label ?? ''); }
+  },
 
-  watch:
-    visible: () ->
-      if @visible
-        @expanded = false
-        @loading_error = false
-        @children = null
+  watch: {
+    visible () {
+      if (this.visible) {
+        this.expanded = false;
+        this.loading_error = false;
+        this.children = null;
+      }
+    },
 
-    expanded: () ->
-      if @visible && @expanded && @might_have_children
-        @item.load_children_callback()
-          .then (buildings) =>
-            @children = @item.convert_children_callback(buildings)
-          .catch (err) =>
-            @clientState.add_error_message('Failure loading details from server', err)
-            @loading_error = true
+    expanded () {
+      if (this.visible && this.expanded && this.might_have_children) {
+        this.refresh_buildings();
+      }
+    }
+  },
 
-  methods:
-    translate: (text_key) -> @managers?.translation_manager?.text(text_key)
+  methods: {
+    toggle () {
+      if (this.item.action) {
+        this.item.action();
+      }
+      else if (this.has_children || this.might_have_children) {
+        this.expanded = !this.expanded;
+      }
+    },
 
-    toggle: () ->
-      if @item.action?
-        @item.action()
-      else if @has_children || @might_have_children
-        @expanded = !@expanded
-
+    async refresh_buildings () {
+      try {
+        const buildings: Array<any> = await this.item.load_children_callback();
+        this.children = this.item.convert_children_callback(buildings);
+      }
+      catch (err) {
+        this.clientState.add_error_message('Failure loading details from server', err);
+        this.loading_error = true;
+      }
+    }
+  }
+}
 </script>
 
 <style lang='sass' scoped>

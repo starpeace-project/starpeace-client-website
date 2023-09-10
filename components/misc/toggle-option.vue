@@ -6,17 +6,20 @@
     font-awesome-icon(:icon="['fas', 'toggle-off']")
 </template>
 
-<script lang='coffee'>
-export default
-  props:
-    value: Boolean
+<script lang='ts'>
+export default {
+  props: {
+    value: Boolean,
     disabled: Boolean
+  },
 
-  methods:
-    toggle: ->
-      return if @disabled
-      @$emit('toggle')
-
+  methods: {
+    toggle (): void {
+      if (this.disabled) return;
+      this.$emit('toggle');
+    }
+  }
+}
 </script>
 
 <style lang='sass' scoped>

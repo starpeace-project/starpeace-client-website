@@ -7,6 +7,7 @@ import TimeUtils from '~/plugins/starpeace-client/utils/time-utils.coffee'
 import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
 
 import Sandbox from '~/plugins/starpeace-client/api/sandbox/sandbox.coffee'
+import SandboxSocketEvents from '~/plugins/starpeace-client/api/sandbox/sandbox-socket-events.coffee'
 import SandboxApiConfigure from '~/plugins/starpeace-client/api/sandbox/api/sandbox-api-configure'
 
 export BASE_HOSTNAME = 'sandbox-galaxy.starpeace.io'
@@ -17,6 +18,8 @@ export default class SandboxConfiguration
   constructor: (axios) ->
     @mock = new MockAdapter(axios, { delayResponse: 500 })
     @sandbox = new Sandbox()
+
+    @socketEvents = new SandboxSocketEvents(@sandbox)
 
     setInterval((=> @sandbox.tick_day()), 1000)
 

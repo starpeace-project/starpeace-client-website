@@ -14,13 +14,15 @@ span.company-seal-icon-wrapper(:class="with_min_size ? 'is-min-sized' : ''")
     font-awesome-icon(:icon="['far', 'circle']")
 </template>
 
-<script lang='coffee'>
-export default
-  name: 'company-seal-icon'
-  props:
-    seal_id: String
+<script lang='ts'>
+export default {
+  name: 'company-seal-icon',
+  props: {
+    seal_id: { type: String, required: true },
 
-    with_min_size: Boolean
+    with_min_size: { type: Boolean, required: false }
+  }
+}
 </script>
 
 <style lang='sass' scoped>

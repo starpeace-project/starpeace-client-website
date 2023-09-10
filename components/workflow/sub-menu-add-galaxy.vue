@@ -2,7 +2,7 @@
 .remove-galaxy-dialog
   .card.is-starpeace.has-header
     .card-header
-      .card-header-title {{translate('ui.workflow.universe.galaxy.add.label')}}
+      .card-header-title {{$translate('ui.workflow.universe.galaxy.add.label')}}
       .card-header-icon.card-close(v-on:click.stop.prevent="close_sub_menu")
         font-awesome-icon(:icon="['fas', 'times']")
 
@@ -37,57 +37,69 @@
 
       .level.is-mobile.galaxy-actions
         .level-item
-          button.button.is-medium.is-fullwidth.is-starpeace.is-square(v-on:click.stop.prevent="close_sub_menu") {{translate('misc.action.cancel')}}
+          button.button.is-medium.is-fullwidth.is-starpeace.is-square(v-on:click.stop.prevent="close_sub_menu") {{$translate('misc.action.cancel')}}
         .level-item
-          button.button.is-medium.is-fullwidth.is-starpeace.is-square(v-on:click.stop.prevent="add_galaxy", :disabled='!has_form_data') {{translate('misc.action.add')}}
+          button.button.is-medium.is-fullwidth.is-starpeace.is-square(v-on:click.stop.prevent="add_galaxy", :disabled='!has_form_data') {{$translate('misc.action.add')}}
 
 
 </template>
 
-<script lang='coffee'>
-export default
-  props:
-    client_state: Object
-    managers: Object
+<script lang='ts'>
+import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
 
-  data: ->
-    protocol: 'http'
-    host: null
-    port: null
+export default {
+  props: {
+    client_state: { type: ClientState, required: true }
+  },
 
-  computed:
-    is_visible: -> @client_state?.interface?.show_add_galaxy
+  data () {
+    return {
+      protocol: 'http',
+      host: '',
+      port: ''
+    };
+  },
 
-    port_as_number: ->
-      try
-        value = parseInt(@port)
-        if isNaN(value) || !isFinite(value) then 0 else value
-      catch
-        0
+  computed: {
+    is_visible (): boolean { return this.client_state?.interface?.add_galaxy_visible ?? false; },
 
-    has_form_data: ->
-      @is_visible && (@protocol == 'http' || @protocol == 'https') && !!@host?.length && (@port_as_number > 0)
+    port_as_number (): number {
+      try {
+        const value: number = parseInt(this.port);
+        return isNaN(value) || !isFinite(value) ? 0 : value;
+      }
+      catch {
+        return 0;
+      }
+    },
 
-  watch:
-    is_visible: (new_value, old_value) ->
-      if @is_visible
-        @protocol = 'http'
-        @host = null
-        @port = null
+    has_form_data (): boolean {
+      return this.is_visible && (this.protocol == 'http' || this.protocol == 'https') && this.host?.length > 0 && this.port_as_number > 0;
+    }
+  },
 
-  methods:
-    translate: (key) -> if @managers? then @managers.translation_manager.text(key) else key
+  watch: {
+    is_visible (new_value, old_value) {
+      if (this.is_visible) {
+        this.protocol = 'http';
+        this.host = '';
+        this.port = '';
+      }
+    }
+  },
 
-    close_sub_menu: () -> @client_state?.interface?.show_add_galaxy = false
+  methods: {
+    close_sub_menu (): void { this.client_state?.interface?.hide_add_galaxy(); },
 
-    add_galaxy: () ->
-      return unless @has_form_data
+    add_galaxy (): void {
+      if (!this.has_form_data) return;
 
-      galaxy = @client_state.options.add_galaxy(@protocol, @host, @port)
-      @client_state.core.galaxy_cache.load_galaxy_configuration(galaxy.id, galaxy)
-
-      @client_state.interface.show_add_galaxy = false
-
+      const galaxy = this.client_state.options.add_galaxy(this.protocol, this.host, this.port);
+      this.client_state.core.galaxy_cache.load_galaxy_configuration(galaxy.id, galaxy);
+      this.client_state.interface.hide_add_galaxy();
+    }
+  }
+}
 </script>
 
 <style lang='sass' scoped>

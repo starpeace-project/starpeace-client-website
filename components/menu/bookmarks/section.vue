@@ -1,263 +1,266 @@
 <template lang='pug'>
 .sp-section
-  a(@click.stop.prevent='toggle_section')
-    span(v-if='has_items')
+  a(@click.stop.prevent='toggleSection')
+    span(v-if='flattenedMenuItems.length > 0')
       font-awesome-icon(v-show='!section_expanded' :icon="['fas', 'plus-square']")
       font-awesome-icon(v-show='section_expanded' :icon="['fas', 'minus-square']")
     span.sp-folder-icon(v-else)
       font-awesome-icon(:icon="['fas', 'square']")
-    span.sp-section-label {{label_text}}
+    span.sp-section-label {{$translate(labelKey)}}
 
-  .sp-menu-list(v-if='has_items' v-show="section_expanded")
-    template(v-if='is_draggable')
-      draggable(v-model='items_as_options' @start='start_move_item' @choose='choose_item' :move='move_item' item-key='id')
-        template(#item='{element}')
-          .draggable-item.bookmark-item
-            template(v-if="element.type == 'slot'")
-              div.slot-item
-            template(v-else-if="element.is_folder")
-              menu-bookmarks-section-folder(:item="element" :dragging_level="dragging_item_id == element.id ? dragging_item_level : -1" @toggled='refresh_tree')
+  .sp-menu-list(v-if='flattenedMenuItems.length > 0' v-show='section_expanded' :style='draggingLevelStyle')
+    template(v-if='draggable && false')
+      draggable-list(v-model='flattenedMenuItems' @start='startDragItem' @change='dragItem' @end='endDragItem' @update='updateItem')
+        template(#item='{ item }')
+          .bookmark-item.draggable-item(:key='item.id' :data-id='item.id')
+            template(v-if="item.type == 'SLOT'")
+              div.slot-item(v-if="draggingItemId && ('slot-' + draggingItemId) != item.id")
+            template(v-else-if="item.folder")
+              menu-bookmarks-section-folder(:item="item" @toggle='toggleFolder')
             template(v-else)
-              menu-bookmarks-section-item(:item='element' :dragging_level="dragging_item_id == element.id ? dragging_item_level : -1" @selected='item_selected')
+              menu-bookmarks-section-item(:item='item' @select='selectBookmark')
+
 
     template(v-else)
-      .bookmark-item(v-for="child in items_as_options" :key="child.id")
-        template(v-if="child.type == 'slot'")
-        template(v-else-if="child.is_folder")
-          menu-bookmarks-section-folder(:item="child" @toggled='refresh_tree')
+      .bookmark-item(v-for="child in flattenedMenuItems" :key="child.id")
+        template(v-if="child.type == 'SLOT'")
+        template(v-else-if="child.folder")
+          menu-bookmarks-section-folder(:item="child" @toggle='toggleFolder')
         template(v-else)
-          menu-bookmarks-section-item(:item='child' @selected='item_selected')
+          menu-bookmarks-section-item(:item='child' @select='selectBookmark')
 
 </template>
 
-<script lang='coffee'>
+<script lang='ts'>
 import _ from 'lodash';
 
-menu_item_slot = (id, order, level) ->
-  {
-    id: id
-    order: order
-    fixed: true
-    level: level
-    is_folder: false
-    has_children: false
-    type: 'slot'
-    item_name: 'slot'
-  }
+import { SortableStartEvent, SortableSortedEvent, SortableStopEvent } from '@shopify/draggable';
 
-menu_item_from_bookmark = (managers, existing_option, bookmark_item, tree_item, order, level) ->
-  {
-    id: bookmark_item.id
-    order: order
-    level: level
-    is_folder: bookmark_item.is_folder()
-    has_children: Object.keys(tree_item.child_ids || {}).length
-    type: bookmark_item.type
-    seal_id: if bookmark_item.type == 'CORPORATION' then bookmark_item.seal_id else null
-    industry_type: if bookmark_item.type == 'INDUSTRY' then bookmark_item.industry_type else null
-    item_name: if bookmark_item.name_key? then managers.translation_manager.text(bookmark_item.name_key) else bookmark_item.name
-    expanded: if existing_option? then existing_option.expanded else false
-    attributes: {}
-  }
+import Bookmark from '~/plugins/starpeace-client/bookmark/bookmark';
+import BookmarkMenuItem from '~/plugins/starpeace-client/bookmark/bookmark-menu-item';
+import BookmarkMenuItems from '~/plugins/starpeace-client/bookmark/bookmark-menu-items';
 
-name_for_item = (managers, item) -> if item.name_key?.length then managers.translation_manager.text(item.name_key) || item.name_key else item.name
+declare interface SectionData {
+  actionCounter: number;
+  section_expanded: boolean;
+  draggingItemId: string | undefined;
+  draggingItemLevel: number;
+}
 
-tree_to_options = (managers, is_draggable, existing_options_by_id, items_by_id, items_as_tree) ->
-  children = []
-  add_flattened_child = (level, tree_item) =>
-    bookmark_item = items_by_id[tree_item.id]
-    existing_option = existing_options_by_id[tree_item.id]
-    menu_item = menu_item_from_bookmark(managers, existing_option, bookmark_item, tree_item, children.length, level)
-    children.push menu_item
+declare interface MoveEvent {
+  oldIndex: number;
+  newIndex: number;
+}
 
-    if tree_item.child_ids?
-      child_ids = Object.keys(tree_item.child_ids)
-      if child_ids.length && menu_item.expanded
-        for tree_child_id in _.sortBy(child_ids, (item_id) -> if is_draggable then items_by_id[item_id].order else name_for_item(managers, items_by_id[item_id]))
-          add_flattened_child(level + 1, tree_item.child_ids[tree_child_id])
+export default {
+  props: {
+    client_state: { type: Object, required: false },
 
-      unless !is_draggable || child_ids.length && !menu_item.expanded
-        children.push menu_item_slot("slot-#{tree_item.id}", children.length, level + 1)
+    rootId: { type: String, required: true },
+    labelKey: { type: String, required: true },
+    bookmarkById: { type: Object, required: true },
 
-  for item_id in _.sortBy(Object.keys(items_as_tree), (item_id) -> if is_draggable then items_by_id[item_id].order else name_for_item(managers, items_by_id[item_id]))
-    add_flattened_child(0, items_as_tree[item_id])
+    draggable: { type: Boolean, required: false, default: false }
+  },
 
-  children
+  mounted (): void {
+    //if @rootId == 'bookmarks'
+    //  @$root.$on('add_folder_action', () => @section_expanded = true unless @section_expanded)
+    //  @$root.$on('add_bookmark_action', () => @section_expanded = true unless @section_expanded)
 
-options_to_tree_pairs = (pending_items, parent_id, level) ->
-  items = []
-  item_level = level
-  last_item = null
+    this.client_state?.options?.subscribe_options_listener(() => this.actionCounter++);
+  },
 
-  while pending_items.length && item_level >= level
-    item_level = level_for_item(pending_items[0])
-    if pending_items[0].type == 'slot'
-      pending_items.shift()
-    else if item_level > level
-      last_item.children = options_to_tree_pairs(pending_items, last_item.id, level + 1) if last_item?
-    else if item_level == level
-      item = pending_items.shift()
-      last_item = {
-        id: item.id
-        parent_id: parent_id
-        order: item.order
-        level: item.level
+  data (): SectionData {
+    return {
+      actionCounter: 0,
+      section_expanded: false,
+
+      draggingItemId: undefined,
+      draggingItemLevel: 0
+    };
+  },
+
+  watch: {
+    items_as_options (new_value, old_value) {
+      if (this.draggable) {
+        this.persist_bookmark_updates();
       }
-      items.push last_item
-
-  _.forEach(_.sortBy(items, (item) -> item.order), (item, index) -> item.order = index)
-
-
-level_for_item = (item) -> if item.attributes?.future_level? && item.attributes?.future_level != item.level then item.attributes?.future_level else item.level
-
-export default
-  props:
-    managers: Object
-    client_state: Object
-
-    root_id: String
-    label_text: String
-    items_by_id: Object
-
-    is_draggable: Boolean
-
-  mounted: ->
-    #if @root_id == 'bookmarks'
-    #  @$root.$on('add_folder_action', () => @section_expanded = true unless @section_expanded)
-    #  @$root.$on('add_bookmark_action', () => @section_expanded = true unless @section_expanded)
-
-    @client_state?.options?.subscribe_options_listener => @refresh_tree()
-
-  data: ->
-    items_as_tree = @items_to_tree(@items_by_id)
-    {
-      persist_bookmark_updates_debounced: null
-
-      section_expanded: false
-      items_as_tree: items_as_tree
-      items_as_options: tree_to_options(@managers, @is_draggable, {}, @items_by_id, items_as_tree)
-
-      dragging_item_id: null
-      dragging_item_level: 0
     }
+  },
 
-  watch:
-    items_hash: (new_value, old_value) ->
-      @items_as_tree = @items_to_tree(@items_by_id)
-      @refresh_tree()
+  computed: {
+    draggingLevelStyle (): string {
+      return `--dragging-level: ${((this.draggingItemId ? this.draggingItemLevel : 0) + 1) * 0.75}rem;`;
+    },
 
-    items_as_options: (new_value, old_value) ->
-      @persist_bookmark_updates() if @is_draggable
+    menuItems (): BookmarkMenuItems {
+      return BookmarkMenuItems.create(this.bookmarkById, this.rootId);
+    },
 
-  computed:
-    bookmark_metadata: -> @managers.bookmark_manager
+    flattenedMenuItems: {
+      get (): Array<BookmarkMenuItem> {
+        return this.actionCounter < 0 ? [] : this.menuItems.flatten((lhs: BookmarkMenuItem, rhs: BookmarkMenuItem): number => {
+          if (lhs.order !== undefined && rhs.order !== undefined) {
+            return lhs.order - rhs.order;
+          }
+          const lhsLabel = lhs.itemNameKey ? this.$translate(lhs.itemNameKey) : (lhs.itemName ?? '');
+          const rhsLabel = rhs.itemNameKey ? this.$translate(rhs.itemNameKey) : (rhs.itemName ?? '');
+          return lhsLabel.localeCompare(rhsLabel);
+        });
+      },
+      set (items: Array<BookmarkMenuItem>): void {
+        // handled with events
+      }
+    }
+  },
 
-    has_items: -> Object.keys(@items_by_id).length
-    items_hash: ->
-      hash = ''
-      hash = "#{hash}#{item.id}#{item.parent_id}#{item.order}" for item in _.values(@items_by_id)
-      hash
+  methods: {
+    toggleSection (): void {
+      this.section_expanded = !this.section_expanded;
+    },
 
-    options_by_id: ->
-      by_id = {}
-      for item in @items_as_options
-        by_id[item.id] = item if item?
-      by_id
+    selectBookmark (itemId: string): void {
+      const item = this.menuItems.byId[itemId];
+      if (!item || item.folder || !this.client_state) return;
+      if (item.mapX !== undefined && item.mapY !== undefined) {
+        this.client_state.jump_to(item.mapX, item.mapY, item.buildingId);
+        this.actionCounter++;
+      }
+    },
+    toggleFolder (itemId: string): void {
+      const item = this.menuItems.byId[itemId];
+      const bookmark = this.bookmarkById[itemId];
+      if (!item || !item.folder || !item.hasChildren || !bookmark || !this.client_state) return;
 
-    index_levels: ->
-      index_level = {0: 0}
-      last_level = 0
-      for item,index in @items_as_options
-        item_level = level_for_item(item)
-        if item.type == 'slot'
-          if item.level == last_level
-            index_level[index] = last_level
-            last_level -= 1
-          else
-            index_level[index] = item.level
-        else
-          last_level += 1 if item_level > last_level
-          index_level[index] = last_level
-      index_level
+      bookmark.expanded = !bookmark.expanded;
+      this.actionCounter++;
+    },
 
+    parentItemForIndex (beforeIndex: number, afterIndex: number): BookmarkMenuItem | undefined {
+      let parentIndex: number = afterIndex - (afterIndex < beforeIndex ?  1 : 0);
+      let skipNextFolderCount: number = 0;
+      while (parentIndex >= 0) {
+        if (parentIndex === beforeIndex || !this.flattenedMenuItems[parentIndex]) {
+          // skip item
+        }
+        else if (this.flattenedMenuItems[parentIndex].type === 'SLOT') {
+          skipNextFolderCount++;
+        }
+        else if (this.flattenedMenuItems[parentIndex].folder && (this.flattenedMenuItems[parentIndex].expanded || !this.flattenedMenuItems[parentIndex].hasChildren)) {
+          if (skipNextFolderCount <= 0) {
+            return this.flattenedMenuItems[parentIndex];
+          }
+          skipNextFolderCount--;
+        }
+        parentIndex--;
+      }
+      return undefined;
+    },
 
-  methods:
-    toggle_section: () -> @section_expanded = !@section_expanded
+    updateItem (event: any): void {
+      const oldIndex: number = event.oldIndex;
+      const newIndex: number = event.newIndex;
+      if (newIndex < 0 || newIndex >= this.flattenedMenuItems.length || oldIndex >= this.flattenedMenuItems.length) {
+        return;
+      }
 
-    refresh_tree: () ->
-      @items_as_options = tree_to_options(@managers, @is_draggable, @options_by_id, @items_by_id, @items_as_tree)
+      const item: BookmarkMenuItem = this.flattenedMenuItems[oldIndex];
+      const parent: BookmarkMenuItem | undefined = this.parentItemForIndex(oldIndex, newIndex);
+      const newParentId: string = parent?.id ?? 'bookmarks';
 
+      const updates = [];
+      if (this.bookmarkById[item.id] && this.bookmarkById[item.id].parentId !== newParentId) {
+        this.bookmarkById[item.id].parentId = newParentId;
+        updates.push({
+          id: item.id,
+          parentId: newParentId
+        });
+      }
 
-    item_selected: (item_id) ->
-      return unless @items_by_id[item_id]?
-      item = @items_by_id[item_id]
-      @client_state.jump_to(item.map_x, item.map_y, item.building_id) if item.type == 'TOWN' || item.type == 'LOCATION' || item.type == 'BUILDING'
+      const items = [];
+      for (let index = 0; index < this.flattenedMenuItems.length; index++) {
+        if (index == oldIndex) {
+          // skip item
+          continue;
+        }
+        if (this.flattenedMenuItems[index].type !== 'SLOT' && this.flattenedMenuItems[index].parentId === newParentId) {
+          items.push(this.flattenedMenuItems[index]);
+        }
+        if (items.length == newIndex) {
+          items.push(item);
+        }
+      }
 
+      for (let index = 0; index < items.length; index++) {
+        const bookmark: Bookmark | undefined = this.bookmarkById[items[index].id];
+        if (bookmark && bookmark.order !== index) {
+          bookmark.order = index;
+          updates.push({
+            id: bookmark.id,
+            order: index
+          });
+        }
+      }
 
-    start_move_item: (event) ->
-      if @items_as_options[event?.oldIndex]? && @index_levels[event?.oldIndex]?
-        @dragging_item_id = @items_as_options[event?.oldIndex].id
-        @dragging_item_level = @index_levels[event?.oldIndex]
+      if (updates.length) {
+        this.actionCounter++;
+      }
+    },
+    startDragItem (event: any): void {
+      const item = this.flattenedMenuItems[event.startIndex];
+      if (item) {
+        this.draggingItemId = item.id;
+        this.draggingItemLevel = item.level;
+      }
+    },
+    dragItem (event: any): void {
+      const oldIndex: number = event.oldIndex;
+      const newIndex: number = event.newIndex;
+      const parent: BookmarkMenuItem | undefined = this.parentItemForIndex(oldIndex, newIndex);
+      if (parent) {
+        this.draggingItemLevel = parent.level + 1;
+      }
+      else {
+        this.draggingItemLevel = 0;
+      }
+    },
+    endDragItem (event: SortableStopEvent): void {
+      this.draggingItemId = undefined;
+      this.draggingItemLevel = 0;
+    },
 
-    choose_item: (event) ->
-      if @items_as_options[event?.oldIndex]? && @index_levels[event?.oldIndex]?
-        @dragging_item_id = @items_as_options[event?.oldIndex].id
-        @dragging_item_level = @index_levels[event?.oldIndex]
+    persist_bookmark_updates () {
+      this.$debounce(1000, async () => {
+        const pending_items = [];
+        for (const [index, item] of Object.entries({})) { //this.items_as_options
+          // item.order = index;
+          pending_items.push(item);
+        }
+        const tree_pairs = options_to_tree_pairs(pending_items, this.rootId, 0);
 
-    move_item: (event) ->
-      relatedElement = event?.relatedContext?.element
-      draggedElement = event?.draggedContext?.element
+        const deltas: Array<any> = [];
+        const add_to_delta = (item: any) => {
+          const bookmark_item = this.bookmarkById[item.id]
+          if (bookmark_item.parentId !== item.parentId || bookmark_item.order !== item.order) {
+            deltas.push(item);
+          }
+          for (const child of (item.children ?? [])) {
+            add_to_delta(child);
+          }
+        };
 
-      future_index = event?.draggedContext.futureIndex
-      future_index += 1 if event?.draggedContext.futureIndex > event?.draggedContext.index
+        for (const item of tree_pairs) {
+          add_to_delta(item);
+        }
 
-      can_move = (!relatedElement? || !relatedElement.fixed) && !draggedElement.fixed && (!draggedElement.has_children || !draggedElement.expanded)
-      if can_move
-        @dragging_item_level = @index_levels[future_index]
-        draggedElement.attributes.future_level = @index_levels[future_index]
-      can_move
-
-
-    items_to_tree: (items_by_id) ->
-      pending_items = []
-      pending_items.push item for item in _.values(items_by_id)
-
-      roots = {}
-      by_id = {}
-      while pending_items.length
-        item = pending_items.shift()
-        if item.parent_id == @root_id
-          by_id[item.id] = roots[item.id] = { id: item.id }
-          by_id[item.id].child_ids = {} if item.is_folder()
-        else if by_id[item.parent_id]
-          by_id[item.parent_id].child_ids = {} unless by_id[item.parent_id].child_ids?
-          by_id[item.id] = by_id[item.parent_id].child_ids[item.id] = { id: item.id }
-          by_id[item.id].child_ids = {} if item.is_folder()
-        else
-          pending_items.push item
-
-      roots
-
-    persist_bookmark_updates: ->
-      unless @persist_bookmark_updates_debounced
-        @persist_bookmark_updates_debounced = _.debounce(=>
-          pending_items = []
-          for item,index in this.items_as_options
-            item.order = index
-            pending_items.push item
-          tree_pairs = options_to_tree_pairs(pending_items, @root_id, 0)
-
-          deltas = []
-          add_to_delta = (item) =>
-            bookmark_item = @items_by_id[item.id]
-            deltas.push item unless bookmark_item.parent_id == item.parent_id && bookmark_item.order == item.order
-            add_to_delta(child) for child in (item.children || [])
-          add_to_delta(item) for item in tree_pairs
-
-          await @managers.bookmark_manager.merge_bookmark_deltas(deltas) if deltas.length
-        , 1000, { leading: true, trailing: true })
-      @persist_bookmark_updates_debounced()
-
+        if (deltas.length) {
+          await this.$starpeaceClient.managers.bookmark_manager.merge_bookmark_deltas(deltas);
+        }
+      });
+    }
+  }
+}
 </script>
 
 <style lang='sass' scoped>
@@ -271,7 +274,7 @@ export default
 
 .slot-item
   width: 100%
-  height: 0
+  height: .25rem
 
 .sp-menu
   height: calc(100% - .5rem - 4rem - 3.5rem - 3.5rem)
@@ -364,6 +367,11 @@ export default
   &:active
     color: #8bb3a7 !important
     font-weight: normal
+
+
+:deep(.draggable-source--is-dragging)
+  .is-menu-item
+    padding-left: var(--dragging-level) !important
 
 .sortable-chosen
   .is-menu-item

@@ -2,91 +2,123 @@
 .remove-galaxy-dialog
   .card.is-starpeace.has-header
     .card-header
-      .card-header-title {{translate('ui.workflow.universe.galaxy.remove.label')}}
-      .card-header-icon.card-close(v-on:click.stop.prevent="close_sub_menu")
+      .card-header-title {{$translate('ui.workflow.universe.galaxy.remove.label')}}
+      .card-header-icon.card-close(@click.stop.prevent="close_sub_menu")
         font-awesome-icon(:icon="['fas', 'times']")
 
     .card-content.sp-menu-background
       .galaxies-container.sp-scrollbar
         .columns.is-vcentered.galaxy-row(v-for='galaxy,index in galaxies')
           .column.is-1.has-text-centered
-            span.select-galaxy-toggle(v-on:click.stop.prevent="toggle_galaxy_index(index)")
-              font-awesome-icon(v-show="selected_indices.indexOf(index) >= 0", :icon="['fas', 'square']")
-              font-awesome-icon(v-show="selected_indices.indexOf(index) < 0", :icon="['far', 'square']")
+            span.select-galaxy-toggle(@click.stop.prevent="toggle_galaxy_index(index)")
+              font-awesome-icon(v-show="selected_indices.indexOf(index) >= 0" :icon="['fas', 'square']")
+              font-awesome-icon(v-show="selected_indices.indexOf(index) < 0" :icon="['far', 'square']")
           .column.is-11
-            .galaxy-name(v-on:click.stop.prevent="toggle_galaxy_index(index)") {{galaxy_name(galaxy)}}
+            .galaxy-name(@click.stop.prevent="toggle_galaxy_index(index)") {{galaxy_name(galaxy)}}
 
       .level.is-mobile.galaxy-actions
         .level-item
-          button.button.is-medium.is-fullwidth.is-starpeace.is-square(v-on:click.stop.prevent="close_sub_menu") {{translate('misc.action.cancel')}}
+          button.button.is-medium.is-fullwidth.is-starpeace.is-square(@click.stop.prevent="close_sub_menu") {{$translate('misc.action.cancel')}}
         .level-item
-          button.button.is-medium.is-fullwidth.is-starpeace.is-square(v-on:click.stop.prevent="remove_galaxies", :disabled='selected_indices.length == 0') {{translate('misc.action.remove')}}
-
+          button.button.is-medium.is-fullwidth.is-starpeace.is-square(@click.stop.prevent="remove_galaxies" :disabled='selected_indices.length == 0') {{$translate('misc.action.remove')}}
 
 </template>
 
-<script lang='coffee'>
-export default
-  props:
-    client_state: Object
-    managers: Object
+<script lang='ts'>
+import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
+import Galaxy from '~/plugins/starpeace-client/galaxy/galaxy.coffee';
 
-  data: ->
-    selected_indices: []
-    galaxies: []
+declare interface SubMenuRemoveGalaxyData {
+  selected_indices: Array<number>;
+    galaxies: Array<Galaxy>;
+}
 
-  computed:
-    is_visible: -> @client_state?.interface?.show_remove_galaxy
+export default {
+  props: {
+    client_state: { type: ClientState, required: true }
+  },
 
-  mounted: ->
-    @galaxies = @client_state.options.get_galaxies()
+  data (): SubMenuRemoveGalaxyData {
+    return {
+      selected_indices: [],
+      galaxies: []
+    };
+  },
 
-    @client_state.options.subscribe_galaxies_listener =>
-      @galaxies = @client_state.options.get_galaxies()
-      @selected_indices = []
-    @client_state.core.galaxy_cache.subscribe_configuration_listener =>
-      @$forceUpdate() if @is_visible
-    @client_state.core.galaxy_cache.subscribe_metadata_listener =>
-      @$forceUpdate() if @is_visible
+  computed: {
+    is_visible (): boolean {
+      return this.client_state.interface.remove_galaxy_visible;
+    }
+  },
 
-  watch:
-    is_visible: (new_value, old_value) ->
-      if @is_visible
-        @galaxies = @client_state.options.get_galaxies()
-      else
-        @selected_indices = []
+  mounted () {
+    this.galaxies = this.client_state.options.get_galaxies();
 
-  methods:
-    translate: (key) -> if @managers? then @managers.translation_manager.text(key) else key
+    this.client_state.options.subscribe_galaxies_listener(() => {
+      this.galaxies = this.client_state.options.get_galaxies();
+      this.selected_indices = [];
+    });
+    this.client_state.core.galaxy_cache.subscribe_configuration_listener(() => {
+      if (this.is_visible) this.$forceUpdate();
+    });
+    this.client_state.core.galaxy_cache.subscribe_metadata_listener(() => {
+      if (this.is_visible) this.$forceUpdate();
+    });
+  },
 
-    metadata_for_galaxy: (galaxy_id) -> if @client_state.core.galaxy_cache.has_galaxy_metadata(galaxy_id) then @client_state.core.galaxy_cache.galaxy_metadata(galaxy_id) else null
+  watch: {
+    is_visible (new_value, old_value) {
+      if (this.is_visible) {
+        this.galaxies = this.client_state.options.get_galaxies();
+      }
+      else {
+        this.selected_indices = [];
+      }
+    }
+  },
 
-    galaxy_name: (galaxy) ->
-      metadata = @metadata_for_galaxy(galaxy.id)
-      if metadata? then metadata.name else "#{galaxy.api_url}:#{galaxy.api_port}"
+  methods: {
+    metadata_for_galaxy (galaxy_id: string) {
+      return this.client_state.core.galaxy_cache.has_galaxy_metadata(galaxy_id) ? this.client_state.core.galaxy_cache.galaxy_metadata(galaxy_id) : null;
+    },
 
-    toggle_galaxy_index: (index) ->
-      array_index = @selected_indices.indexOf(index)
-      if array_index >= 0
-        @selected_indices.splice(array_index, 1)
-      else
-        @selected_indices.push index
+    galaxy_name (galaxy: Galaxy) {
+      const metadata = this.metadata_for_galaxy(galaxy.id);
+      return metadata ? metadata.name : `${galaxy.api_url}:${galaxy.api_port}`;
+    },
 
-    close_sub_menu: () -> @client_state?.interface?.show_remove_galaxy = false
+    toggle_galaxy_index (index: number) {
+      const array_index: number = this.selected_indices.indexOf(index);
+      if (array_index >= 0) {
+        this.selected_indices.splice(array_index, 1);
+      }
+      else {
+        this.selected_indices.push(index);
+      }
+    },
 
-    remove_galaxies: () ->
-      return unless @selected_indices.length
+    close_sub_menu () {
+      this.client_state.interface.hide_remove_galaxy();
+    },
 
-      galaxies = []
-      galaxies.push @galaxies[index] for index in @selected_indices
+    remove_galaxies () {
+      if (!this.selected_indices.length) return;
 
-      for galaxy in galaxies
-        @client_state.core.galaxy_cache.remove_galaxy(galaxy.id)
-        @client_state.options.remove_galaxy(galaxy.id)
+      const galaxies: Array<Galaxy> = [];
+      for (const index of this.selected_indices) {
+        galaxies.push(this.galaxies[index]);
+      }
 
-      @galaxies = @client_state.options.get_galaxies()
-      @selected_indices = []
+      for (const galaxy of galaxies) {
+        this.client_state.core.galaxy_cache.remove_galaxy(galaxy.id);
+        this.client_state.options.remove_galaxy(galaxy.id);
+      }
 
+      this.galaxies = this.client_state.options.get_galaxies();
+      this.selected_indices = [];
+    }
+  }
+}
 </script>
 
 <style lang='sass' scoped>

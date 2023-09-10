@@ -10,24 +10,34 @@
 
 </template>
 
-<script lang='coffee'>
-export default
-  props:
-    managers: Object
-    client_state: Object
+<script lang='ts'>
+import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
+import Managers from '~/plugins/starpeace-client/managers.coffee';
 
-  computed:
-    bookmark_categories: -> [ 'SERVICE', 'INDUSTRY', 'LOGISTICS', 'CIVIC', 'COMMERCE', 'REAL_ESTATE' ]
+export default {
+  props: {
+    client_state: { type: ClientState, required: true }
+  },
 
-  methods:
-    translate: (text_key) -> @managers?.translation_manager?.text(text_key)
-    text_for_category: (category_id) -> if category_id? then @managers.translation_manager.text(@client_state.core.planet_library.category_for_id(category_id)?.label) else category_id
+  computed: {
+    bookmark_categories (): Array<string> { return [ 'SERVICE', 'INDUSTRY', 'LOGISTICS', 'CIVIC', 'COMMERCE', 'REAL_ESTATE' ]; }
+  },
 
-    filter_class: (type) ->
-      ""
-    toggle_filter: (type) ->
-      console.log "toggle #{type}"
+  methods: {
+    text_for_category (category_id: string): string {
+      const category = category_id ? this.client_state.core.planet_library.category_for_id(category_id) : null;
+      return category ? this.$translate(category.label) : category_id;
+    },
 
+    filter_class (type: string): string {
+      return "";
+    },
+
+    toggle_filter (type: string) {
+      console.log(`toggle ${type}`);
+    }
+  }
+}
 </script>
 
 <style lang='sass' scoped>

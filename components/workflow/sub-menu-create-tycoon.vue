@@ -2,7 +2,7 @@
 .create-tycoon-dialog
   .card.is-starpeace.has-header
     .card-header
-      .card-header-title {{translate('ui.workflow.universe.create_tycoon.label')}}
+      .card-header-title {{$translate('ui.workflow.universe.create_tycoon.label')}}
       .card-header-icon.card-close(v-on:click.stop.prevent="close_sub_menu")
         font-awesome-icon(:icon="['fas', 'times']")
 
@@ -12,7 +12,7 @@
           .field-body
             .field
               .control.has-icons-left.is-expanded
-                input.input(type='text' v-model='username' :disabled='saving' :placeholder="translate('ui.workflow.universe.username.label')")
+                input.input(type='text' v-model='username' :disabled='saving' :placeholder="$translate('ui.workflow.universe.username.label')")
                 span.icon.is-small.is-left
                   font-awesome-icon(:icon="['fas', 'user-tie']")
 
@@ -20,7 +20,7 @@
           .field-body
             .field
               .control.has-icons-left.is-expanded
-                input.input(type='text' v-model='username' :placeholder="translate('ui.workflow.universe.name.label')" disabled)
+                input.input(type='text' v-model='username' :placeholder="$translate('ui.workflow.universe.name.label')" disabled)
                 span.icon.is-small.is-left
                   font-awesome-icon(:icon="['fas', 'user-tie']")
 
@@ -28,7 +28,7 @@
           .field-body
             .field
               .control.has-icons-left.is-expanded
-                input.input(type='password' v-model='password' :disabled='saving' :placeholder="translate('ui.workflow.universe.password.label')")
+                input.input(type='password' v-model='password' :disabled='saving' :placeholder="$translate('ui.workflow.universe.password.label')")
                 span.icon.is-small.is-left
                   font-awesome-icon(:icon="['fas', 'lock']")
 
@@ -36,7 +36,7 @@
           .field-body
             .field
               .control.has-icons-left.is-expanded
-                input.input(type='password' v-model='password_confirm' :disabled='saving' :placeholder="translate('ui.workflow.universe.confirm_password.label')")
+                input.input(type='password' v-model='password_confirm' :disabled='saving' :placeholder="$translate('ui.workflow.universe.confirm_password.label')")
                 span.icon.is-small.is-left
                   font-awesome-icon(:icon="['fas', 'lock']")
 
@@ -45,105 +45,130 @@
             .field
               .control.remember-toggle
                 misc-toggle-option(:value='remember_me' @toggle="remember_me=!remember_me" :disabled='saving')
-                span.toggle-label(@click.stop.prevent="remember_me=!remember_me") {{translate('ui.workflow.universe.remember_tycoon.label')}}
+                span.toggle-label(@click.stop.prevent="remember_me=!remember_me") {{$translate('ui.workflow.universe.remember_tycoon.label')}}
 
         .field.is-horizontal(v-show='error_code')
           .field-body
             .field
               .control.is-narrow
-                span.has-text-danger {{translate(error_code_key)}}
+                span.has-text-danger {{$translate(error_code_key)}}
 
       .level.is-mobile.galaxy-actions
         .level-item
-          button.button.is-medium.is-fullwidth.is-starpeace.is-square(@click.stop.prevent="close_sub_menu") {{translate('misc.action.cancel')}}
+          button.button.is-medium.is-fullwidth.is-starpeace.is-square(@click.stop.prevent="close_sub_menu") {{$translate('misc.action.cancel')}}
         .level-item
-          button.button.is-medium.is-fullwidth.is-starpeace.is-square(@click.stop.prevent="create_tycoon" :disabled='!can_create') {{translate('misc.action.create')}}
-
-
+          button.button.is-medium.is-fullwidth.is-starpeace.is-square(@click.stop.prevent="create_tycoon" :disabled='!can_create') {{$translate('misc.action.create')}}
 </template>
 
-<script lang='coffee'>
+<script lang='ts'>
 import _ from 'lodash';
+import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
 
-ERROR_CODE_GENERAL = 'GENERAL'
-ERROR_CODE_INVALID_NAME = 'INVALID_NAME'
-ERROR_CODE_PASSWORD_MISMATCH = 'PASSWORD_MISMATCH'
-ERROR_CODE_USERNAME_CONFLICT = 'USERNAME_CONFLICT'
-ERROR_CODES = [ERROR_CODE_GENERAL, ERROR_CODE_INVALID_NAME, ERROR_CODE_PASSWORD_MISMATCH, ERROR_CODE_USERNAME_CONFLICT]
+const ERROR_CODE_GENERAL = 'GENERAL';
+const ERROR_CODE_INVALID_NAME = 'INVALID_NAME';
+const ERROR_CODE_PASSWORD_MISMATCH = 'PASSWORD_MISMATCH';
+const ERROR_CODE_USERNAME_CONFLICT = 'USERNAME_CONFLICT';
+const ERROR_CODES = [ERROR_CODE_GENERAL, ERROR_CODE_INVALID_NAME, ERROR_CODE_PASSWORD_MISMATCH, ERROR_CODE_USERNAME_CONFLICT];
 
-MIN_USERNAME = 1 # TODO: raise to like 3+ in future
-MIN_PASSWORD = 1 # TODO: raise to like 3+ in future
+const MIN_USERNAME = 1; // TODO: raise to like 3+ in future
+const MIN_PASSWORD = 1; // TODO: raise to like 3+ in future
 
-export default
-  props:
-    client_state: Object
-    managers: Object
+declare interface SubMenuCreateTycoonData {
+  saving: boolean;
+  error_code: string | null;
 
-  data: ->
-    saving: false
-    error_code: null
+  username: string;
+  password: string;
+  password_confirm: string;
+  remember_me: boolean;
+}
 
-    username: ''
-    password: ''
-    password_confirm: ''
-    remember_me: true
+export default {
+  props: {
+    client_state: { type: ClientState, required: true }
+  },
 
-  computed:
-    is_visible: -> @client_state?.interface?.show_create_tycoon && @client_state?.interface?.create_tycoon_galaxy_id?
+  data (): SubMenuCreateTycoonData {
+    return {
+      saving: false,
+      error_code: null,
 
-    error_code_key: ->
-      return 'ui.workflow.universe.error.general_problem.label' if @error_code == ERROR_CODE_GENERAL
-      return 'ui.workflow.universe.error.username_invalid.label' if @error_code == ERROR_CODE_INVALID_NAME
-      return 'ui.workflow.universe.error.password_mismatch.label' if @error_code == ERROR_CODE_PASSWORD_MISMATCH
-      return 'ui.workflow.universe.error.username_conflict.label' if @error_code == ERROR_CODE_USERNAME_CONFLICT
-      ''
+      username: '',
+      password: '',
+      password_confirm: '',
+      remember_me: true
+    };
+  },
 
-    can_create: -> !@saving && _.trim(@username).length >= MIN_USERNAME && _.trim(@password).length >= MIN_PASSWORD && _.trim(@password_confirm).length >= MIN_PASSWORD
+  computed: {
+    is_visible (): boolean { return this.client_state?.interface?.show_create_tycoon && this.client_state?.interface?.create_tycoon_galaxy_id; },
 
-  watch:
-    is_visible: (new_value, old_value) ->
-      if @is_visible
-        @saving = false
-        @error_code = null
-        @username = ''
-        @password = ''
-        @password_confirm = ''
-        @remember_me = true
+    error_code_key (): string {
+      if (this.error_code === ERROR_CODE_GENERAL) return 'ui.workflow.universe.error.general_problem.label';
+      if (this.error_code === ERROR_CODE_INVALID_NAME) return 'ui.workflow.universe.error.username_invalid.label';
+      if (this.error_code === ERROR_CODE_PASSWORD_MISMATCH) return 'ui.workflow.universe.error.password_mismatch.label';
+      if (this.error_code == ERROR_CODE_USERNAME_CONFLICT) return 'ui.workflow.universe.error.username_conflict.label';
+      return '';
+    },
 
-  methods:
-    translate: (key) -> if @managers? then @managers.translation_manager.text(key) else key
+    can_create (): boolean { return !this.saving && _.trim(this.username).length >= MIN_USERNAME && _.trim(this.password).length >= MIN_PASSWORD && _.trim(this.password_confirm).length >= MIN_PASSWORD; }
+  },
 
-    close_sub_menu: () ->
-      @client_state?.interface?.show_create_tycoon = false
-      @client_state?.interface?.create_tycoon_galaxy_id = null
+  watch: {
+    is_visible (new_value, old_value) {
+      if (this.is_visible) {
+        this.saving = false;
+        this.error_code = null;
+        this.username = '';
+        this.password = '';
+        this.password_confirm = '';
+        this.remember_me = true;
+      }
+    }
+  },
 
-    create_tycoon: () ->
-      return unless @can_create
+  methods: {
+    close_sub_menu (): void {
+      if (this.client_state?.interface) {
+        this.client_state.interface.show_create_tycoon = false;
+        this.client_state.interface.create_tycoon_galaxy_id = null;
+      }
+    },
 
-      @error_code = null
-      if @password != @password_confirm
-        @error_code = ERROR_CODE_PASSWORD_MISMATCH
-      else
-        @saving = true
-        galaxy_id = @client_state?.interface?.create_tycoon_galaxy_id
-        @managers.galaxy_manager.create(galaxy_id, @username, @password, @remember_me)
-          .then (tycoon) =>
-            @client_state.identity.set_visa(galaxy_id, 'tycoon', tycoon)
-            @client_state.player.tycoon_id = tycoon.id
-            @managers.galaxy_manager.load_metadata(galaxy_id)
-              .then =>
-                @saving = false
-                @close_sub_menu()
-              .catch (e) =>
-                @close_sub_menu()
-                @saving = false
+    async create_tycoon (): Promise<void> {
+      if (!this.can_create) return;
 
-          .catch (e) =>
-            @saving = false
-            @error_code = if ERROR_CODES.indexOf(e?.data?.code) >= 0 then e?.data?.code else ERROR_CODE_GENERAL
-            @$forceUpdate() if @is_visible
+      if (this.password != this.password_confirm) {
+        this.error_code = ERROR_CODE_PASSWORD_MISMATCH;
+        return;
+      }
 
+      this.error_code = null;
+      this.saving = true;
+      const galaxy_id = this.client_state?.interface?.create_tycoon_galaxy_id;
 
+      try {
+        const tycoon = await this.$starpeaceClient.managers.galaxy_manager.create(galaxy_id, this.username, this.password, this.remember_me);
+        this.client_state.identity.set_visa(galaxy_id, 'tycoon', tycoon);
+        this.client_state.player.tycoon_id = tycoon.id;
+
+        try {
+          await this.$starpeaceClient.managers.galaxy_manager.load_metadata(galaxy_id);
+        }
+        finally {
+          this.close_sub_menu();
+        }
+      }
+      catch (err) {
+        this.error_code = ERROR_CODES.indexOf(err?.data?.code) >= 0 ? err?.data?.code : ERROR_CODE_GENERAL;
+        if (this.is_visible) this.$forceUpdate();
+      }
+      finally {
+        this.saving = false;
+      }
+    }
+  }
+}
 </script>
 
 <style lang='sass' scoped>

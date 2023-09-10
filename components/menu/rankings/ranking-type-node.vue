@@ -21,12 +21,11 @@
       span.sp-section-icon
         font-awesome-icon(:icon="['fas', 'medal']")
 
-    span.sp-section-label {{translate(node.label)}}
+    span.sp-section-label {{$translate(node.label)}}
 
   .sp-menu-list(v-if='has_children' v-show='node.expanded')
     menu-rankings-ranking-type-node(
       v-for="child in sorted_children"
-      :managers='managers'
       :node='child'
       :level='level+1'
       :key='child.id'
@@ -35,33 +34,33 @@
 
 </template>
 
-<script lang='coffee'>
+<script lang='ts'>
 import _ from 'lodash';
-export default
-  props:
-    managers: Object
 
-    node: Object
-    level: Number
+export default {
+  props: {
+    node: { type: Object, required: true },
+    level: { type: Number, required: true }
+  },
 
-  computed:
-    level_style: -> 'width: ' + Math.max(0, @level - 1) + 'rem'
-    has_children: -> @node?.children?.length
+  computed: {
+    level_style (): string { return `width: ${Math.max(0, this.level - 1)}rem`; },
+    has_children (): boolean { return this.node.children?.length > 0; },
 
-    label: -> @label_for_node(@node)
+    sorted_children (): Array<any> { return  _.orderBy(this.node?.children, [(node => node.category_total ? 0 : 1), ((node) => this.$translate(node.label))], ['asc', 'asc']); }
+  },
 
-    sorted_children: -> _.orderBy(@node?.children, [((node) -> if node.category_total then 0 else 1), ((node) => @translate(node.label))], ['asc', 'asc'])
-
-  methods:
-    translate: (text_key) -> @managers?.translation_manager?.text(text_key)
-
-    toggle: () ->
-      if @has_children
-        @node.expanded = !@node.expanded
-      else
-        @$emit('select', @node.id)
-
-
+  methods: {
+    toggle (): void {
+      if (this.has_children) {
+        this.node.expanded = !this.node.expanded;
+      }
+      else {
+        this.$emit('select', this.node.id);
+      }
+    }
+  }
+}
 </script>
 
 <style lang='sass' scoped>

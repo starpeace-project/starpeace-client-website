@@ -16,15 +16,16 @@ span.industry-category-icon(:class="{'is-small': small, 'no-active': no_active}"
     font-awesome-icon(:icon="['far', 'circle']")
 </template>
 
-<script lang='coffee'>
-export default
-  name: 'industry-category-icon'
-  props:
-    category: String
+<script lang='ts'>
+export default {
+  name: 'industry-category-icon',
+  props: {
+    category: String,
 
-    small: Boolean
+    small: Boolean,
     no_active: Boolean
-
+  }
+}
 </script>
 
 <style lang='sass' scoped>

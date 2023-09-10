@@ -115,6 +115,7 @@ export default class Layers
     construction_width = @client_state.interface.construction_building_width
     construction_height = @client_state.interface.construction_building_height
 
+    rendered_building_selection = false
 
     x = i_start
     while x < i_max
@@ -128,7 +129,10 @@ export default class Layers
             tile_item = @tile_item_cache.cache_item(tile_info, tile_cache_index, x, j, current_season, render_buildings, render_building_animations, render_building_effects, selected_building_id, selected_corporation_id)
           construction_item = if construction_building_id? && construction_x == x && construction_y == j then @tile_item_cache.building_construction_sprite_info_for(render_building_animations, construction_building_id, can_construct) else null
           within_construction = construction_x >= 0 && x > construction_x - construction_width && x <= construction_x && construction_y >= 0 && j > construction_y - construction_height && j <= construction_y
-          @layer_manager.render_tile_item(render_state, tile_item, selected_building, selected_company_name, construction_item, within_construction, viewport.iso_to_canvas(x, j, view_center), viewport) if tile_item?
+
+          if tile_item?
+            @layer_manager.render_tile_item(render_state, tile_item, selected_building, selected_company_name, construction_item, within_construction, viewport.iso_to_canvas(x, j, view_center), viewport)
+            rendered_building_selection ||= tile_item.sprite_info?.building?.is_selected;
 
         j += 1
 
@@ -153,7 +157,7 @@ export default class Layers
 
       x += 1
 
-    unless selected_building_id?.length
+    unless rendered_building_selection
       @layer_manager.building_graphics_background.visible = false
       @layer_manager.building_graphics_foreground.visible = false
       @layer_manager.building_text.visible = false

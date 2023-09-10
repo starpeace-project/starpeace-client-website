@@ -2,7 +2,7 @@ import _ from 'lodash'
 
 import SimulationDefinition from '~/plugins/starpeace-client/building/simulation/simulation-definition.coffee'
 import StorageQuantity from '~/plugins/starpeace-client/building/simulation/storage/storage-quantity.coffee'
-import ResourceQuantity from '~/plugins/starpeace-client/industry/resource-quantity.coffee'
+import ResourceQuantity from '~/plugins/starpeace-client/industry/resource-quantity'
 
 export default class StorageDefinition extends SimulationDefinition
   @TYPE: () -> 'STORAGE'

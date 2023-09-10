@@ -1,104 +1,122 @@
 <template lang='pug'>
 #establish-corporation-container(:oncontextmenu="'return ' + !$config.public.disableRightClick")
   .modal-background
-  .card.is-starpeace.has-header
+  .card.is-starpeace.has-header(v-if='is_visible')
     .card-header
-      .card-header-title {{translate('ui.menu.corporation.establish.header')}}
+      .card-header-title {{$translate('ui.menu.corporation.establish.header')}}
     .card-content.sp-menu-background
       .content
         p.intro
-          | {{translate('ui.menu.corporation.establish.planet.welcome')}}
+          | {{$translate('ui.menu.corporation.establish.planet.welcome')}}
           |
-          span.planet-name {{planet_name()}}
+          span.planet-name {{planet_name}}
           | ,
           |
-          | {{translate('identity.tycoon')}}!
+          | {{$translate('identity.tycoon')}}!
         p.info
-          | {{translate('ui.menu.corporation.establish.description')}}
+          | {{$translate('ui.menu.corporation.establish.description')}}
 
         form.corporation-form
           .field.is-horizontal
             .field-body
               .field
                 .control.is-expanded
-                  input.input.is-large(type='text' v-model='corporation_name' :disabled='saving' :placeholder="translate('ui.menu.corporation.establish.field.name')")
+                  input.input.is-large(type='text' v-model='corporation_name' :disabled='saving' :placeholder="$translate('ui.menu.corporation.establish.field.name')")
 
           .field.is-horizontal(v-show='error_code')
             .field-body
               .field
                 .control.is-narrow
-                  span.has-text-danger {{translate(error_code_key)}}
+                  span.has-text-danger {{$translate(error_code_key)}}
 
     footer.card-footer
       .card-footer-item.level.is-mobile
         .level-left
-          button.button.is-primary.is-medium.is-outlined(@click.stop.prevent='cancel') {{translate('ui.menu.corporation.establish.action.cancel')}}
+          button.button.is-primary.is-medium.is-outlined(@click.stop.prevent='cancel') {{$translate('ui.menu.corporation.establish.action.cancel')}}
         .level-right
-          button.button.is-primary.is-medium(@click.stop.prevent='establish' :disabled='!can_establish') {{translate('ui.menu.corporation.establish.action.establish')}}
+          button.button.is-primary.is-medium(@click.stop.prevent='establish' :disabled='!can_establish') {{$translate('ui.menu.corporation.establish.action.establish')}}
 
 </template>
 
-<script lang='coffee'>
+<script lang='ts'>
 import _ from 'lodash';
+import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
 
-ERROR_CODE_GENERAL = 'GENERAL'
-ERROR_CODE_INVALID_NAME = 'INVALID_NAME'
-ERROR_CODE_TYCOON_LIMIT = 'TYCOON_LIMIT'
-ERROR_CODE_NAME_CONFLICT = 'NAME_CONFLICT'
-ERROR_CODES = [ERROR_CODE_GENERAL, ERROR_CODE_INVALID_NAME, ERROR_CODE_TYCOON_LIMIT, ERROR_CODE_NAME_CONFLICT]
+const ERROR_CODE_GENERAL = 'GENERAL';
+const ERROR_CODE_INVALID_NAME = 'INVALID_NAME';
+const ERROR_CODE_TYCOON_LIMIT = 'TYCOON_LIMIT';
+const ERROR_CODE_NAME_CONFLICT = 'NAME_CONFLICT';
+const ERROR_CODES = [ERROR_CODE_GENERAL, ERROR_CODE_INVALID_NAME, ERROR_CODE_TYCOON_LIMIT, ERROR_CODE_NAME_CONFLICT];
 
-export default
-  props:
-    managers: Object
-    client_state: Object
+export default {
+  props: {
+    client_state: { type: ClientState, required: true }
+  },
 
-  data: ->
-    saving: false
-    error_code: null
+  data () {
+    return {
+      saving: false,
+      error_code: null,
 
-    corporation_name: ''
+      corporation_name: ''
+    };
+  },
 
-  computed:
-    is_visible: -> @client_state.initialized && @client_state.workflow_status == 'ready' && @client_state.is_tycoon() && !@client_state.player.corporation_id?.length
-    can_establish: -> @is_visible && !@saving && _.trim(@corporation_name).length >= 3
+  computed: {
+    is_visible (): boolean {
+      return this.client_state.initialized && this.client_state.workflow_status === 'ready' && this.client_state.is_tycoon() && !(this.client_state.player.corporation_id?.length ?? 0);
+    },
+    can_establish () { return this.is_visible && !this.saving && _.trim(this.corporation_name).length >= 3; },
 
-    error_code_key: ->
-      return 'ui.menu.corporation.establish.error.general' if @error_code == ERROR_CODE_GENERAL
-      return 'ui.menu.corporation.establish.error.name' if @error_code == ERROR_CODE_INVALID_NAME
-      return 'ui.menu.corporation.establish.error.limit' if @error_code == ERROR_CODE_TYCOON_LIMIT
-      return 'ui.menu.corporation.establish.error.conflict' if @error_code == ERROR_CODE_NAME_CONFLICT
-      ''
+    error_code_key (): string {
+      if (this.error_code === ERROR_CODE_GENERAL) return 'ui.menu.corporation.establish.error.general';
+      if (this.error_code === ERROR_CODE_INVALID_NAME) return 'ui.menu.corporation.establish.error.name';
+      if (this.error_code === ERROR_CODE_TYCOON_LIMIT) return 'ui.menu.corporation.establish.error.limit';
+      if (this.error_code === ERROR_CODE_NAME_CONFLICT) return 'ui.menu.corporation.establish.error.conflict';
+      return '';
+    },
 
-  watch:
-    is_visible: (new_value, old_value) ->
-      if @is_visible
-        @saving = false
-        @error_code = null
-        @corporation_name = ''
+    planet_name () { return this.client_state.current_planet_metadata()?.name ?? ''; }
+  },
 
-  methods:
-    translate: (text_key) -> @managers?.translation_manager?.text(text_key)
+  watch: {
+    is_visible (new_value, old_value) {
+      if (this.is_visible) {
+        this.saving = false;
+        this.error_code = null;
+        this.corporation_name = '';
+      }
+    }
+  },
 
-    planet_name: -> @client_state?.current_planet_metadata().name
+  methods: {
+    cancel () {
+      this.client_state.reset_to_galaxy();
+      if (window?.document) {
+        window.document.title = "STARPEACE";
+      }
+    },
 
-    cancel: () ->
-      @client_state.reset_to_galaxy()
-      window.document.title = "STARPEACE" if window?.document?
-
-    establish: () ->
-      return unless @can_establish
-      @saving = true
-      @managers.corporation_manager.create(_.trim(@corporation_name))
-        .then (corporation) =>
-          @client_state.player.set_planet_corporation_id(corporation.id)
-          @saving = false
-
-        .catch (err) =>
-          @client_state.add_error_message('Failure establishing corporation, please try again', err)
-          @saving = false
-          @error_code = if ERROR_CODES.indexOf(err?.response?.data?.code) >= 0 then err?.response?.data?.code else ERROR_CODE_GENERAL
-          @$forceUpdate() if @is_visible
-
+    async establish () {
+      if (!this.can_establish) return;
+      this.saving = true
+      try {
+        const corporation = await this.$starpeaceClient.managers.corporation_manager.create(_.trim(this.corporation_name));
+        this.client_state.player.set_planet_corporation_id(corporation.id);
+      }
+      catch (err) {
+        this.client_state.add_error_message('Failure establishing corporation, please try again', err);
+        this.error_code = ERROR_CODES.indexOf(err?.response?.data?.code) >= 0 ? err?.response?.data?.code : ERROR_CODE_GENERAL;
+        if (this.is_visible) {
+          this.$forceUpdate();
+        }
+      }
+      finally {
+        this.saving = false;
+      }
+    }
+  }
+}
 </script>
 
 <style lang='sass' scoped>

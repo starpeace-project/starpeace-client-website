@@ -10,10 +10,10 @@
         table.basic-table.sp-striped.sp-solid-header.sp-sticky-header.strategy
           thead
             tr
-              th.sp-kv-key {{translate('ui.menu.tycoon_details.tab.strategy.tycoon_name')}}
-              th.sp-kv-key {{translate('ui.menu.tycoon_details.tab.strategy.corporation_name')}}
-              th.has-text-centered.sp-kv-key.column-policy {{translate('ui.menu.tycoon_details.tab.strategy.their_policy')}}
-              th.has-text-centered.sp-kv-key.column-policy {{translate('ui.menu.tycoon_details.tab.strategy.your_policy')}}
+              th.sp-kv-key {{$translate('ui.menu.tycoon_details.tab.strategy.tycoon_name')}}
+              th.sp-kv-key {{$translate('ui.menu.tycoon_details.tab.strategy.corporation_name')}}
+              th.has-text-centered.sp-kv-key.column-policy {{$translate('ui.menu.tycoon_details.tab.strategy.their_policy')}}
+              th.has-text-centered.sp-kv-key.column-policy {{$translate('ui.menu.tycoon_details.tab.strategy.your_policy')}}
               th.column-action
 
           tbody
@@ -21,14 +21,14 @@
               tr
                 td {{strategy.otherTycoonName}}
                 td.is-size-5 {{strategy.otherCorporationName}}
-                td.has-text-centered {{translate(text_key_for_strategy_policy(strategy.otherPolicy))}}
-                td.has-text-centered {{translate(text_key_for_strategy_policy(strategy.policy))}}
+                td.has-text-centered {{$translate(text_key_for_strategy_policy(strategy.otherPolicy))}}
+                td.has-text-centered {{$translate(text_key_for_strategy_policy(strategy.policy))}}
                 td.column-action
                   .is-flex.is-justify-content-center(v-if='has_corporation && is_self')
                     template(v-if='strategy.isPrioritize')
-                      button.button.is-small.is-starpeace(disabled) {{translate('misc.action.cancel')}}
+                      button.button.is-small.is-starpeace(disabled) {{$translate('misc.action.cancel')}}
                     template(v-else)
-                      button.button.is-small.is-starpeace(disabled) {{translate('ui.menu.tycoon_details.tab.action.prioritize')}}
+                      button.button.is-small.is-starpeace(disabled) {{$translate('ui.menu.tycoon_details.tab.action.prioritize')}}
 
           tfoot(v-if='has_corporation && is_self')
             tr
@@ -38,22 +38,22 @@
                     .tabs.is-centered.is-small.is-toggle.sp-tabs
                       ul
                         li(:class="{'is-active': allyMode == 'CORPORATION'}" @click.stop.prevent="swap_ally_mode('CORPORATION')")
-                          a {{translate('ui.menu.tycoon_search.toggle.corporation')}}
+                          a {{$translate('ui.menu.tycoon_search.toggle.corporation')}}
                         li(:class="{'is-active': allyMode == 'TYCOON'}" @click.stop.prevent="swap_ally_mode('TYCOON')")
-                          a {{translate('ui.menu.tycoon_search.toggle.tycoon')}}
+                          a {{$translate('ui.menu.tycoon_search.toggle.tycoon')}}
                   .control
                     input.input.is-small(type='text' v-model='allyValue' disabled)
                   .control
-                    button.button.is-small.is-starpeace(@click.stop.prevent='make_ally' disabled) {{translate('ui.menu.tycoon_details.tab.action.prioritize')}}
+                    button.button.is-small.is-starpeace(@click.stop.prevent='make_ally' disabled) {{$translate('ui.menu.tycoon_details.tab.action.prioritize')}}
 
       .sp-scrollbar
         table.basic-table.sp-striped.sp-solid-header.sp-sticky-header.strategy
           thead
             tr
-              th.sp-kv-key {{translate('ui.menu.tycoon_details.tab.strategy.tycoon_name')}}
-              th.sp-kv-key {{translate('ui.menu.tycoon_details.tab.strategy.corporation_name')}}
-              th.has-text-centered.sp-kv-key.column-policy {{translate('ui.menu.tycoon_details.tab.strategy.their_policy')}}
-              th.has-text-centered.sp-kv-key.column-policy {{translate('ui.menu.tycoon_details.tab.strategy.your_policy')}}
+              th.sp-kv-key {{$translate('ui.menu.tycoon_details.tab.strategy.tycoon_name')}}
+              th.sp-kv-key {{$translate('ui.menu.tycoon_details.tab.strategy.corporation_name')}}
+              th.has-text-centered.sp-kv-key.column-policy {{$translate('ui.menu.tycoon_details.tab.strategy.their_policy')}}
+              th.has-text-centered.sp-kv-key.column-policy {{$translate('ui.menu.tycoon_details.tab.strategy.your_policy')}}
               th.column-action
 
           tbody
@@ -61,14 +61,14 @@
               tr
                 td {{strategy.otherTycoonName}}
                 td.is-size-5 {{strategy.otherCorporationName}}
-                td.has-text-centered {{translate(text_key_for_strategy_policy(strategy.otherPolicy))}}
-                td.has-text-centered {{translate(text_key_for_strategy_policy(strategy.policy))}}
+                td.has-text-centered {{$translate(text_key_for_strategy_policy(strategy.otherPolicy))}}
+                td.has-text-centered {{$translate(text_key_for_strategy_policy(strategy.policy))}}
                 td.column-action
                   .is-flex.is-justify-content-center(v-if='has_corporation && is_self')
                     template(v-if='strategy.isEmbargo')
-                      button.button.is-small.is-starpeace(disabled) {{translate('misc.action.cancel')}}
+                      button.button.is-small.is-starpeace(disabled) {{$translate('misc.action.cancel')}}
                     template(v-else)
-                      button.button.is-small.is-starpeace(disabled) {{translate('ui.menu.tycoon_details.tab.action.embargo')}}
+                      button.button.is-small.is-starpeace(disabled) {{$translate('ui.menu.tycoon_details.tab.action.embargo')}}
 
           tfoot(v-if='has_corporation && is_self')
             tr
@@ -78,116 +78,152 @@
                     .tabs.is-centered.is-small.is-toggle.sp-tabs
                       ul
                         li(:class="{'is-active': embargoMode == 'CORPORATION'}" @click.stop.prevent="swap_embargo_mode('CORPORATION')")
-                          a {{translate('ui.menu.tycoon_search.toggle.corporation')}}
+                          a {{$translate('ui.menu.tycoon_search.toggle.corporation')}}
                         li(:class="{'is-active': embargoMode == 'TYCOON'}" @click.stop.prevent="swap_embargo_mode('TYCOON')")
-                          a {{translate('ui.menu.tycoon_search.toggle.tycoon')}}
+                          a {{$translate('ui.menu.tycoon_search.toggle.tycoon')}}
                   .control
                     input.input.is-small(type='text' v-model='embargoValue' disabled)
                   .control
-                    button.button.is-small.is-starpeace(@click.stop.prevent='make_embargo' disabled) {{translate('ui.menu.tycoon_details.tab.action.embargo')}}
+                    button.button.is-small.is-starpeace(@click.stop.prevent='make_embargo' disabled) {{$translate('ui.menu.tycoon_details.tab.action.embargo')}}
 
 </template>
 
-<script lang='coffee'>
+<script lang='ts'>
 import _ from 'lodash';
+import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
 
-import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
+declare interface StrategyData {
+  loadingStrategies: boolean;
+  allyMode: string;
+  allyValue: string;
+  embargoMode: string;
+  embargoValue: string;
+  strategies: Array<any>;
+}
 
-export default
-  props:
-    managers: Object
-    clientState: Object
-    tycoonId: String
+export default {
+  props: {
+    clientState: { type: ClientState, required: true },
+    tycoonId: String,
     corporationId: String
+  },
 
-  data: ->
-    loadingStrategies: false
+  data (): StrategyData {
+    return {
+      loadingStrategies: false,
 
-    allyMode: 'TYCOON'
-    allyValue: ''
-    embargoMode: 'TYCOON'
-    embargoValue: ''
+      allyMode: 'TYCOON',
+      allyValue: '',
+      embargoMode: 'TYCOON',
+      embargoValue: '',
 
-    strategies: []
+      strategies: []
+    };
+  },
 
-  computed:
-    has_corporation: -> @corporationId?.length
-    is_self: -> @clientState.player.tycoon_id == @tycoonId
+  computed: {
+    has_corporation (): boolean { return (this.corporationId?.length ?? 0) > 0; },
+    is_self (): boolean { return this.clientState.player.tycoon_id === this.tycoonId; },
 
-    tycoon: -> if @tycoonId?.length then @clientState.core.tycoon_cache.metadata_for_id(@tycoonId) else null
-    corporation: -> if @has_corporation then @clientState.core.corporation_cache.metadata_for_id(@corporationId) else null
+    tycoon (): any | null { return this.tycoonId?.length ? this.clientState.core.tycoon_cache.metadata_for_id(this.tycoonId) : null; },
+    corporation (): any | null { return this.has_corporation ? this.clientState.core.corporation_cache.metadata_for_id(this.corporationId) : null; },
 
-    sorted_strategies: ->
-      prioritize = []
-      embargo = []
+    sorted_strategies () {
+      const prioritize: Array<any> = [];
+      const embargo: Array<any> = [];
 
-      for strategy in @strategies
-        if strategy.isPrioritize || (!strategy.isEmbargo && strategy.isOtherPrioritize)
-          prioritize.push(strategy)
-        else
-          embargo.push(strategy)
+      for (const strategy of this.strategies) {
+        if (strategy.isPrioritize || (!strategy.isEmbargo && strategy.isOtherPrioritize)) {
+          prioritize.push(strategy);
+        }
+        else {
+          embargo.push(strategy);
+        }
+      }
 
-      { prioritize: _.orderBy(prioritize, ['otherTycoonName'], ['asc']), embargo: _.orderBy(embargo, ['otherTycoonName'], ['asc']) }
+      return { prioritize: _.orderBy(prioritize, ['otherTycoonName'], ['asc']), embargo: _.orderBy(embargo, ['otherTycoonName'], ['asc']) };
+    }
+  },
 
-  mounted: ->
-    @refresh_details()
+  mounted () {
+    this.refresh_details();
+  },
 
-  watch:
-    tycoonId: (newValue, oldValue) ->
-      if newValue != oldValue
-        @reset_state() if oldValue
-        @refresh_details()
-    corporationId: (newValue, oldValue) ->
-      if newValue != oldValue
-        @reset_state() if oldValue
-        @refresh_details()
+  watch: {
+    tycoonId (newValue, oldValue) {
+      if (newValue !== oldValue) {
+        if (oldValue) this.reset_state();
+        this.refresh_details();
+      }
+    },
+    corporationId (newValue, oldValue) {
+      if (newValue !== oldValue) {
+        if (oldValue) this.reset_state();
+        this.refresh_details();
+      }
+    }
+  },
 
-  methods:
-    translate: (text_key) -> @managers?.translation_manager?.text(text_key)
+  methods: {
+    text_key_for_strategy_policy (policy: string) {
+      if (policy === 'PRIORITIZE') {
+        return 'ui.menu.tycoon_details.tab.status.prioritize';
+      }
+      else if (policy === 'EMBARGO') {
+        return 'ui.menu.tycoon_details.tab.status.embargo';
+      }
+      else {
+        return 'ui.menu.tycoon_details.tab.status.neutral';
+      }
+    },
 
-    text_key_for_strategy_policy: (policy) ->
-      if policy == 'PRIORITIZE'
-        'ui.menu.tycoon_details.tab.status.prioritize'
-      else if policy == 'EMBARGO'
-        'ui.menu.tycoon_details.tab.status.embargo'
-      else
-        'ui.menu.tycoon_details.tab.status.neutral'
+    reset_state () {
+      this.allyMode = 'TYCOON';
+      this.allyValue = '';
+      this.embargoMode = 'TYCOON';
+      this.embargoValue = '';
+      this.strategies = [];
+    },
 
-    reset_state: () ->
-      @allyMode = 'TYCOON'
-      @allyValue = ''
-      @embargoMode = 'TYCOON'
-      @embargoValue = ''
-      @strategies = []
-
-    refresh_details: () ->
-      return if @loadingStrategies || !@has_corporation
-      try
-        @loadingStrategies = true
-        @strategies = await @managers.corporation_manager.load_strategies_by_corporation(@corporationId)
-      catch err
-        @clientState.add_error_message('Failure loading tycoon details from server', err)
-        @strategies = []
-      finally
-        @loadingStrategies = false
+    async refresh_details () {
+      if (this.loadingStrategies || !this.has_corporation) return;
+      try {
+        this.loadingStrategies = true;
+        this.strategies = await this.$starpeaceClient.managers.corporation_manager.load_strategies_by_corporation(this.corporationId);
+      }
+      catch (err) {
+        this.clientState.add_error_message('Failure loading tycoon details from server', err);
+        this.strategies = [];
+      }
+      finally {
+        this.loadingStrategies = false;
+      }
+    },
 
 
-    swap_ally_mode: (mode) ->
-      if @allyMode != mode
-        @allyMode = mode
-        @allyValue = ''
+    swap_ally_mode (mode: string) {
+      if (this.allyMode !== mode) {
+        this.allyMode = mode;
+        this.allyValue = '';
+      }
+    },
 
-    make_ally: () ->
-      console.log 'make_ally', @allyValue
+    make_ally () {
+      console.log('make_ally', this.allyValue);
+    },
 
-    swap_embargo_mode: (mode) ->
-      if @embargoMode != mode
-        @embargoMode = mode
-        @embargoValue = ''
+    swap_embargo_mode (mode: string) {
+      if (this.embargoMode !== mode) {
+        this.embargoMode = mode;
+        this.embargoValue = '';
+      }
+    },
 
-    make_embargo: () ->
-      console.log 'make_embargo', @embargoValue
-
+    make_embargo () {
+      console.log('make_embargo', this.embargoValue);
+    }
+  }
+}
 </script>
 
 <style lang='sass' scoped>

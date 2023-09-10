@@ -15,7 +15,7 @@ const nowDate = `${year}-${month}-${day}`;
 const client_version = 'v' + pjson.version + '-' + nowDate;
 
 var render_and_convert_markdown = function(markdown) {
-  var release_notes_html = marked.marked.parse(markdown);
+  var release_notes_html = marked.marked.parse(markdown, { mangle: false, headerIds: false, headerPrefix: false });
   release_notes_html = release_notes_html.replace(new RegExp(/\<li\>/, 'g'), "<li class='columns is-mobile'>");
   release_notes_html = release_notes_html.replace(new RegExp(/\<\/li\>/, 'g'), "</span></li>");
   release_notes_html = release_notes_html.replace(new RegExp(/\[done\]/, 'g'), "<span class='column is-2'><span class='tag is-link'>done</span></span><span class='column is-10'>");

@@ -13,12 +13,14 @@
       span(v-once=true, v-html='copyright()')
 </template>
 
-<script lang='coffee'>
+<script lang='ts'>
 import { DateTime } from 'luxon';
 
-export default
-  methods:
-    copyright: () -> "Copyright &copy; #{DateTime.now().year}"
+export default {
+  methods: {
+    copyright (): string { return `Copyright &copy; ${DateTime.now().year}`; }
+  }
+}
 </script>
 
 <style lang='sass' scoped>

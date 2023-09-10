@@ -9,39 +9,38 @@ div
 
     .details-column
       .detail-row(v-if='!hideTycoon && tycoon')
-        span.detail-label {{translate('ui.menu.corporation.panel.details.tycoon')}}:
+        span.detail-label {{$translate('ui.menu.corporation.panel.details.tycoon')}}:
         span.detail-value {{tycoon.tycoonName}}
       .detail-row(v-if='!hideCorporation && corporation')
-        span.detail-label {{translate('ui.menu.corporation.panel.details.corporation')}}:
+        span.detail-label {{$translate('ui.menu.corporation.panel.details.corporation')}}:
         span.detail-value {{corporation.name}}
       .detail-row
-        span.detail-label {{translate('ui.menu.corporation.panel.details.fortune')}}:
+        span.detail-label {{$translate('ui.menu.corporation.panel.details.fortune')}}:
         span.detail-value
           misc-money-text(:value='100000000000000' no_styling)
       .detail-row
-        span.detail-label {{translate('ui.menu.corporation.panel.details.fortune_ytd')}}:
+        span.detail-label {{$translate('ui.menu.corporation.panel.details.fortune_ytd')}}:
         span.detail-value
           misc-money-text(:value='1000000000' no_styling)
       .detail-row
-        span.detail-label {{translate('ui.menu.corporation.panel.details.ranking')}}:
+        span.detail-label {{$translate('ui.menu.corporation.panel.details.ranking')}}:
         span.detail-value 0
       .detail-row
-        span.detail-label {{translate('misc.corporation.level')}}:
+        span.detail-label {{$translate('misc.corporation.level')}}:
         span.detail-value
-          template(v-if='level') {{translate(level.label)}}
+          template(v-if='level') {{$translate(level.label)}}
       .detail-row
-        span.detail-label {{translate('misc.corporation.prestige')}}:
+        span.detail-label {{$translate('misc.corporation.prestige')}}:
         span.detail-value 0
 
   .corporation-actions.level.is-mobile
     .level-item.action-column
-      button.button.is-fullwidth.is-small.is-starpeace(@click.stop.prevent='show_profile') {{translate('ui.menu.corporation.panel.action.show_profile')}}
+      button.button.is-fullwidth.is-small.is-starpeace(@click.stop.prevent='show_profile') {{$translate('ui.menu.corporation.panel.action.show_profile')}}
     .level-item.action-column
-      button.button.is-fullwidth.is-small.is-starpeace(:disabled='!canSend' @click.stop.prevent='send_mail') {{translate('ui.menu.corporation.panel.action.send_mail')}}
+      button.button.is-fullwidth.is-small.is-starpeace(:disabled='!canSend' @click.stop.prevent='send_mail') {{$translate('ui.menu.corporation.panel.action.send_mail')}}
 
   menu-shared-tree-menu-item(
     visible=true
-    :managers='managers'
     :client-state='clientState'
     :item='item'
     :level='1'
@@ -49,58 +48,74 @@ div
 
 </template>
 
-<script lang='coffee'>
+<script lang='ts'>
 import _ from 'lodash';
+import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
 
-export default
-  props:
-    managers: Object
-    clientState: Object
+export default {
+  props: {
+    clientState: { type: ClientState, required: true },
 
-    hideTycoon: Boolean
-    hideCorporation: Boolean
+    hideTycoon: Boolean,
+    hideCorporation: Boolean,
 
-    corporation: Object
+    corporation: Object,
     tycoon: Object
+  },
 
-  data: ->
-    item: @companies_item()
+  data () {
+    return {
+      item: this.companies_item()
+    };
+  },
 
-  computed:
-    ready: -> @clientState.workflow_status == 'ready'
-    canSend: -> @ready && @clientState.is_tycoon() && @clientState.player.corporation_id?.length
+  computed: {
+    ready () { return this.clientState.workflow_status === 'ready'; },
+    canSend () { return this.ready && this.clientState.is_tycoon() && this.clientState.player.corporation_id?.length > 0; },
 
-    level: -> if @corporation?.level_id? then @clientState?.core?.planet_library?.level_for_id(@corporation?.level_id) else null
+    level () { return this.corporation?.level_id ? this.clientState?.core?.planet_library?.level_for_id(this.corporation?.level_id) : null; }
+  },
 
-  watch:
-    corporation: () ->
-      @item = @companies_item()
+  watch: {
+    corporation () {
+      this.item = this.companies_item();
+    }
+  },
 
-  methods:
-    translate: (text_key) -> @managers?.translation_manager?.text(text_key)
-
-    companies_item: ->
-      {
-        id: 'companies'
-        type: 'FOLDER'
-        primary: true
-        labelKey: 'ui.menu.corporation.panel.action.companies'
-        children: if !@corporation? then [] else _.map(@corporation.companies, (company) => {
-          id: company.id
-          label: company.name
-          type: 'COMPANY'
-          seal_id: company.seal_id
-          load_children_callback: () => @managers.building_manager.load_by_company(company.id)
-          convert_children_callback: (buildings) => @managers.utils.tree_menu.organize_buildings(company.id, buildings)
+  methods: {
+    companies_item () {
+      return {
+        id: 'companies',
+        type: 'FOLDER',
+        primary: true,
+        labelKey: 'ui.menu.corporation.panel.action.companies',
+        children: !this.corporation ? [] : _.map(this.corporation.companies, (company) => {
+          return {
+            id: company.id,
+            label: company.name,
+            type: 'COMPANY',
+            seal_id: company.seal_id,
+            load_children_callback: () => this.$starpeaceClient.managers.building_manager.load_by_company(company.id),
+            convert_children_callback: (buildings) => this.$starpeaceClient.managers.utils.tree_menu.organize_buildings(company.id, buildings)
+          };
         })
+      };
+    },
+
+    show_profile () {
+      if (this.tycoon?.tycoonId) {
+        this.clientState.show_tycoon_profile(this.tycoon.tycoonId);
       }
+    },
 
-    show_profile: -> @clientState.show_tycoon_profile(@tycoon.tycoonId) if @tycoon?.tycoonId?
-    send_mail: ->
-      return unless @canSend
-      @clientState.send_mail(@tycoon.tycoonId, @tycoon.tycoonName, @corporation.id) if @tycoon?.tycoonId? && @corporation?.id?
-
-
+    send_mail (): void {
+      if (!this.canSend) return;
+      if (this.tycoon?.tycoonId && this.corporation?.id) {
+        this.clientState.send_mail(this.tycoon.tycoonId, this.tycoon.tycoonName, this.corporation.id);
+      }
+    }
+  }
+}
 </script>
 
 <style lang='sass' scoped>

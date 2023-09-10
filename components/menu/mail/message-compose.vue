@@ -3,76 +3,81 @@
   .message-header-info
     .send-details-column
       .compose-metadata-row
-        span {{translate('ui.menu.mail.contacts.compose.to')}}
+        span {{$translate('ui.menu.mail.contacts.compose.to')}}
         input.input(type='text' v-model='mail_to' :disabled='loading')
 
       .compose-metadata-row
-        span {{translate('ui.menu.mail.contacts.compose.subject')}}
+        span {{$translate('ui.menu.mail.contacts.compose.subject')}}
         input.input(type='text' v-model='mail_subject' :disabled='loading')
 
     .send-cancel-column
-      button.button.is-fullwidth.is-starpeace(@click.stop.prevent="$emit('cancel')" :disabled='loading') {{translate('ui.menu.mail.contacts.action.cancel')}}
+      button.button.is-fullwidth.is-starpeace(@click.stop.prevent="$emit('cancel')" :disabled='loading') {{$translate('ui.menu.mail.contacts.action.cancel')}}
 
     .send-action-column
-      button.button.is-fullwidth.is-starpeace(@click.stop.prevent="$emit('send')" :disabled='!can_send') {{translate('ui.menu.mail.contacts.action.send')}}
+      button.button.is-fullwidth.is-starpeace(@click.stop.prevent="$emit('send')" :disabled='!can_send') {{$translate('ui.menu.mail.contacts.action.send')}}
 
   textarea.mail-body-input.sp-scrollbar(ref='mailBody' v-model='mail_body' :disabled='loading')
 
 </template>
 
-<script lang='coffee'>
+<script lang='ts'>
 import _ from 'lodash';
+import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
 
-export default
-  props:
-    managers: Object
-    ajax_state: Object
-    client_state: Object
+export default {
+  props: {
+    ajax_state: Object,
+    client_state: { type: ClientState, required: true },
 
-    loading: Boolean
+    loading: { type: Boolean, required: true }
+  },
 
-  computed:
-    compose_mode: -> @client_state.player.mail_compose_mode
+  computed: {
+    compose_mode (): boolean { return this.client_state.player.mail_compose_mode; },
 
     mail_to: {
-      get: -> @client_state.player.mail_compose_to
-      set: (new_value) -> @client_state.player.mail_compose_to = new_value
-    }
+      get (): string { return this.client_state.player.mail_compose_to; },
+      set (new_value: string) { this.client_state.player.mail_compose_to = new_value; }
+    },
     mail_subject: {
-      get: -> @client_state.player.mail_compose_subject
-      set: (new_value) -> @client_state.player.mail_compose_subject = new_value
-    }
+      get (): string { return this.client_state.player.mail_compose_subject; },
+      set (new_value: string) { this.client_state.player.mail_compose_subject = new_value; }
+    },
     mail_body: {
-      get: -> @client_state.player.mail_compose_body
-      set: (new_value) -> @client_state.player.mail_compose_body = new_value
-    }
+      get (): string { return this.client_state.player.mail_compose_body; },
+      set (new_value: string) { this.client_state.player.mail_compose_body = new_value; }
+    },
 
-    can_send: -> @compose_mode && !@loading && _.trim(@mail_to).length > 0 && _.trim(@mail_subject).length > 0 && _.trim(@mail_body).length > 0
+    can_send (): boolean { return this.compose_mode && !this.loading && _.trim(this.mail_to).length > 0 && _.trim(this.mail_subject).length > 0 && _.trim(this.mail_body).length > 0; }
+  },
 
-  watch:
+  watch: {
     compose_mode: {
-      immediate: true
-      handler: ->
-        setTimeout(=>
-          if @$refs.mailBody?.setSelectionRange?
-            @$refs.mailBody.focus()
-            @$refs.mailBody.setSelectionRange(0, 0)
-            @$refs.mailBody.scrollTop = 0
-          else if @$refs.mailBody?.createTextRange?
-            range = @$refs.mailBody.createTextRange()
-            range.moveStart('character', 0)
-            range.select()
-            @$refs.mailBody.scrollTop = 0
-        , 250) if @compose_mode
+      immediate: true,
+      handler () {
+        if (this.compose_mode) {
+          setTimeout(() => this.scroll_to_top(), 250);
+        }
+      }
     }
+  },
 
-    watch:
-      compose_mode: ->
-
-
-  methods:
-    translate: (text_key) -> @managers?.translation_manager?.text(text_key)
-
+  methods: {
+    scroll_to_top (): void {
+      if (this.$refs.mailBody?.setSelectionRange) {
+        this.$refs.mailBody.focus();
+        this.$refs.mailBody.setSelectionRange(0, 0);
+        this.$refs.mailBody.scrollTop = 0;
+      }
+      else if (this.$refs.mailBody?.createTextRange) {
+        const range = this.$refs.mailBody.createTextRange();
+        range.moveStart('character', 0);
+        range.select();
+        this.$refs.mailBody.scrollTop = 0;
+      }
+    }
+  }
+}
 </script>
 
 <style lang='sass' scoped>

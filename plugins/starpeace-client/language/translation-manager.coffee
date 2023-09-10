@@ -14,7 +14,7 @@ import StorageDefinition from '~/plugins/starpeace-client/building/simulation/st
 import StoreDefinition from '~/plugins/starpeace-client/building/simulation/store/store-definition.coffee'
 
 
-import Translation from '~/plugins/starpeace-client/language/translation.coffee'
+import Translation from '~/plugins/starpeace-client/language/translation'
 import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
 
 import DURATION from '~/plugins/starpeace-client/language/language-duration.json'

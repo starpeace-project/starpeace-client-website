@@ -5,7 +5,7 @@ import { BASE_HOSTNAME, BASE_PORT } from '~/plugins/starpeace-client/api/sandbox
 
 
 export default class SandboxSocketEvents
-  constructor: (@sandbox, @planet_id, @visa_id) ->
+  constructor: (@sandbox) ->
     @mockServer = new Server("ws://#{BASE_HOSTNAME}:#{BASE_PORT}")
 
     determineCashflowJson = () =>
@@ -26,6 +26,7 @@ export default class SandboxSocketEvents
 
     @mockServer.on('connect', (socket) =>
       socket.on('disconnect', (data) =>
+        clearTimeout(@simulationEmitter) if @simulationEmitter
       )
 
       socket.on('view', (data) =>
@@ -42,7 +43,7 @@ export default class SandboxSocketEvents
         corporation: determineCashflowJson()
       })
 
-      setInterval(() =>
+      @simulationEmitter = setInterval(() =>
         socket.emit('simulation', {
           planet: {
             time: @sandbox.sandbox_data.planet_id_dates[@planet_id].toISO(),

@@ -9,29 +9,30 @@
 
   .inspect-body.is-marginless
 
-
 </template>
 
-<script lang='coffee'>
-export default
-  props:
-    clientState: Object
-    managers: Object
+<script lang='ts'>
+import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
 
-  data: ->
-    tab_index: 0
+export default {
+  props: {
+    clientState: { type: ClientState, required: true }
+  },
 
-  computed:
-    interface_state: ->
-    is_ready: -> @clientState?.initialized && @clientState?.workflow_status == 'ready'
+  data () {
+    return {
+      tab_index: 0
+    };
+  },
 
-    show_inspect: -> @clientState?.interface?.selected_building_id? && @clientState?.interface?.show_inspect
+  computed: {
+    is_ready (): boolean { return this.clientState?.initialized && this.clientState?.workflow_status === 'ready'; },
 
-    tabs: -> ['General']
+    show_inspect () { return this.clientState?.interface?.selected_building_id && this.clientState?.interface?.show_inspect; },
 
-  methods:
-    translate: (key) -> if @managers? then @managers.translation_manager.text(key) else key
-
+    tabs () { return ['General']; }
+  }
+}
 </script>
 
 <style lang='sass' scoped>

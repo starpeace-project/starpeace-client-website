@@ -17,88 +17,100 @@
               .column.planet-item.info
                 .planet-name {{planet_chunk[n - 1].name}}
                 .planet-population.planet-info-row
-                  span {{translate('ui.menu.galaxy.details.population.label')}}:
+                  span {{$translate('ui.menu.galaxy.details.population.label')}}:
                   span.planet-value {{planet_chunk[n - 1].population || 0}}
                 .planet-investments.planet-info-row
-                  span {{translate('ui.menu.galaxy.details.investments.label')}}:
+                  span {{$translate('ui.menu.galaxy.details.investments.label')}}:
                   span.planet-value
                     misc-money-text(:value='planet_chunk[n - 1].investment_value')
                 .planet-tycoons.planet-info-row
-                  span {{translate('ui.menu.galaxy.details.corporations.label')}}:
+                  span {{$translate('ui.menu.galaxy.details.corporations.label')}}:
                   span.planet-value {{planet_chunk[n - 1].corporation_count || 0}}
                 .planet-online.planet-info-row
-                  span {{translate('ui.menu.galaxy.details.online.label')}}:
+                  span {{$translate('ui.menu.galaxy.details.online.label')}}:
                   span.planet-value {{planet_chunk[n - 1].online_count || 0}}
 
             .columns
               .column.is-5
-                button.button.is-primary.is-fullwidth.is-outlined.workflow-action.visitor-action(@click.stop.prevent='select_visitor(planet_chunk[n - 1])' :disabled='!planet_chunk[n - 1].enabled || is_loading_corporation_identifiers') {{translate('identity.visitor')}} {{translate('identity.visa')}}
+                button.button.is-primary.is-fullwidth.is-outlined.workflow-action.visitor-action(@click.stop.prevent='select_visitor(planet_chunk[n - 1])' :disabled='!planet_chunk[n - 1].enabled || is_loading_corporation_identifiers') {{$translate('identity.visitor')}} {{$translate('identity.visa')}}
               .column.is-7
                 template(v-if='corporations_by_planet_id[planet_chunk[n - 1].id]')
                   button.button.is-primary.is-fullwidth.workflow-action.corporation-action(@click.stop.prevent='select_tycoon(planet_chunk[n - 1])' :disabled='!planet_chunk[n - 1].enabled || is_loading_corporation_identifiers')
                     .action-text {{corporations_by_planet_id[planet_chunk[n - 1].id].name}}
                 template(v-else)
                   button.button.is-primary.is-fullwidth.is-outlined.workflow-action.corporation-action(@click.stop.prevent='select_tycoon(planet_chunk[n - 1])' :disabled='!planet_chunk[n - 1].enabled || is_loading_corporation_identifiers || !tycoon_id?.length')
-                    .action-text {{translate('ui.menu.corporation.establish.action.establish')}}
+                    .action-text {{$translate('ui.menu.corporation.establish.action.establish')}}
 
           .disabled-overlay(v-if='is_loading_corporation_identifiers')
-            .disabled-text {{translate('ui.workflow.loading')}}
+            .disabled-text {{$translate('ui.workflow.loading')}}
 
           .disabled-overlay(v-else-if='!planet_chunk[n - 1].enabled')
-            .disabled-text {{translate('ui.menu.galaxy.planet_not_available.label')}}
+            .disabled-text {{$translate('ui.menu.galaxy.planet_not_available.label')}}
 
 </template>
 
-<script lang='coffee'>
+<script lang='ts'>
 import _ from 'lodash';
+import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
 
-export default
-  props:
-    managers: Object
-    client_state: Object
+export default {
+  props: {
+    client_state: { type: ClientState, required: true }
+  },
 
-  data: ->
-    corporation_identifiers: null
+  data () {
+    return {
+      corporation_identifiers: null
+    };
+  },
 
-  mounted: ->
-    @client_state.core.corporation_cache.subscribe_corporation_metadata_listener => @refresh_identities()
+  mounted () {
+    this.client_state.core.corporation_cache.subscribe_corporation_metadata_listener(() => this.refresh_identities());
+  },
 
-  computed:
-    galaxy_id: -> @client_state.identity.galaxy_id
-    galaxy_metadata: -> if @galaxy_id? && @client_state.core.galaxy_cache.has_galaxy_metadata(@galaxy_id) then @client_state.core.galaxy_cache.galaxy_metadata(@galaxy_id) else null
+  computed: {
+    galaxy_id (): string { return this.client_state.identity.galaxy_id; },
+    galaxy_metadata () { return this.galaxy_id && this.client_state.core.galaxy_cache.has_galaxy_metadata(this.galaxy_id) ? this.client_state.core.galaxy_cache.galaxy_metadata(this.galaxy_id) : null; },
 
-    tycoon_id: -> if @client_state.identity?.galaxy_visa_type == 'tycoon' then @client_state.identity?.galaxy_tycoon_id else null
+    tycoon_id () { return this.client_state.identity?.galaxy_visa_type === 'tycoon' ? this.client_state.identity?.galaxy_tycoon_id : null; },
 
-    is_loading_corporation_identifiers: -> @tycoon_id?.length && !@corporation_identifiers
+    is_loading_corporation_identifiers (): boolean { return this.tycoon_id?.length > 0 && !this.corporation_identifiers; },
 
-    planets: -> if @galaxy_metadata? then _.sortBy(@galaxy_metadata.planets || [], (planet) -> planet.name) else []
-    sorted_planet_chunks: -> _.chunk(@planets, 3)
+    planets () { return this.galaxy_metadata ? _.sortBy(this.galaxy_metadata.planets ?? [], (planet) => planet.name) : []; },
+    sorted_planet_chunks () { return _.chunk(this.planets, 3); },
 
-    corporations_by_planet_id: -> if @corporation_identifiers then _.keyBy(@corporation_identifiers, 'planetId') else {}
+    corporations_by_planet_id () { return this.corporation_identifiers ? _.keyBy(this.corporation_identifiers, 'planetId') : {}; }
+  },
 
-  watch:
-    tycoon_id: -> @refresh_identities()
+  watch: {
+    tycoon_id: {
+      immediate: true,
+      handler () { this.refresh_identities(); }
+    }
+  },
 
-  methods:
-    translate: (key) -> if @managers? then @managers.translation_manager.text(key) else key
+  methods: {
+    planet_animation_url (planet): string { return this.$starpeaceClient.managers.asset_manager.planet_animation_url(planet); },
 
-    planet_animation_url: (planet) -> @managers.asset_manager.planet_animation_url(planet)
+    refresh_identities (): void {
+      this.corporation_identifiers = this.tycoon_id?.length ? this.client_state.core.corporation_cache.identifiers_for_tycoon_id(this.tycoon_id) : [];
+    },
 
-    refresh_identities: () ->
-      @corporation_identifiers = if @tycoon_id?.length then @client_state.core.corporation_cache.identifiers_for_tycoon_id(@tycoon_id) else []
+    select_visitor (planet): void {
+      if (!planet.enabled || this.is_loading_corporation_identifiers) return;
 
-    select_visitor: (planet) ->
-      return unless planet.enabled && !@is_loading_corporation_identifiers
+      this.client_state.player.set_planet_visa_type(planet.id, 'visitor');
+      if (window?.document) window.document.title = `${planet.name} - STARPEACE`;
+    },
 
-      @client_state.player.set_planet_visa_type(planet.id, 'visitor')
-      window.document.title = "#{planet.name} - STARPEACE" if window?.document?
+    select_tycoon (planet): void {
+      if (!planet.enabled || this.is_loading_corporation_identifiers || !this.tycoon_id?.length) return;
 
-    select_tycoon: (planet) ->
-      return unless planet.enabled && !@is_loading_corporation_identifiers && @tycoon_id?.length
-
-      @client_state.player.set_planet_visa_type(planet.id, 'tycoon')
-      window.document.title = "#{planet.name} - STARPEACE" if window?.document?
-
+      this.client_state.player.set_planet_visa_type(planet.id, 'tycoon');
+      if (window?.document) window.document.title = `${planet.name} - STARPEACE`;
+    }
+  }
+}
 </script>
 
 <style lang='sass' scoped>

@@ -3,9 +3,10 @@ span.sp-city-icon
   img(src='~/assets/images/icons/general/cityscape.svg')
 </template>
 
-<script lang='coffee'>
-export default
+<script lang='ts'>
+export default {
   name: 'city-icon'
+}
 </script>
 
 <style lang='sass' scoped>

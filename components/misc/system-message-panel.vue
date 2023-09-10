@@ -6,18 +6,20 @@
 
 </template>
 
-<script lang='coffee'>
-export default
-  props:
-    clientState: Object
-    managers: Object
+<script lang='ts'>
+import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
+import Managers from '~/plugins/starpeace-client/managers.coffee';
 
-  computed:
-    visible: -> @clientState.initialized && @clientState.workflow_status == 'ready'
-    messages: -> @clientState.recent_system_messages
+export default {
+  props: {
+    clientState: { type: ClientState, required: true }
+  },
 
-  methods:
-    translate: (key) -> if @managers? then @managers.translation_manager.text(key) else key
+  computed: {
+    visible (): boolean { return this.clientState.initialized && this.clientState.workflow_status === 'ready'; },
+    messages (): Array<string> { return this.clientState.recent_system_messages; }
+  }
+}
 </script>
 
 <style lang='sass' scoped>

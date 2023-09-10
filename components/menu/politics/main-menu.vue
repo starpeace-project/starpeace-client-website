@@ -1,7 +1,7 @@
 <template lang='pug'>
 .card.has-header.is-starpeace.sp-menu(v-show='visible' :oncontextmenu="'return ' + !$config.public.disableRightClick")
   .card-header
-    .card-header-title {{translate('ui.menu.politics.header')}}
+    .card-header-title {{$translate('ui.menu.politics.header')}}
     .card-header-icon.card-close(v-on:click.stop.prevent="client_state.menu.toggle_menu('politics')")
       font-awesome-icon(:icon="['fas', 'times']")
 
@@ -16,11 +16,11 @@
                 a(@click.stop.prevent='clear_selected_politics')
                   span.sp-breadcrumb-icon
                     font-awesome-icon(:icon="['fas', 'home']")
-                  span {{translate('ui.menu.politics.header')}}
+                  span {{$translate('ui.menu.politics.header')}}
 
               li.is-active
                 a
-                  span {{translate(selected_type == 'MAYOR' ? 'ui.menu.politics.title.mayor' : 'ui.menu.politics.title.president')}} {{selected_name}}
+                  span {{$translate(selected_type == 'MAYOR' ? 'ui.menu.politics.title.mayor' : 'ui.menu.politics.title.president')}} {{selected_name}}
 
         aside.sp-scrollbar.sp-scroll-container.politics-details
           template(v-if='loading')
@@ -30,62 +30,62 @@
             .tabs.is-centered.is-toggle.is-small.is-fullwidth.sp-tabs.politics-mode-toggle
               ul
                 li(:class="{'is-active':mode=='CURRENT'}" @click.stop.prevent="mode='CURRENT'")
-                  a {{translate('ui.menu.politics.toggle.current')}}
+                  a {{$translate('ui.menu.politics.toggle.current')}}
                 li(:class="{'is-active':mode=='NEXT'}" @click.stop.prevent="mode='NEXT'")
-                  a {{translate('ui.menu.politics.toggle.next')}}
+                  a {{$translate('ui.menu.politics.toggle.next')}}
 
             template(v-if="mode == 'CURRENT'")
               div
-                span.sp-kv-key {{translate(selected_type == 'MAYOR' ? 'ui.menu.politics.details.mayor.label' : 'ui.menu.politics.details.president.label')}}:
+                span.sp-kv-key {{$translate(selected_type == 'MAYOR' ? 'ui.menu.politics.details.mayor.label' : 'ui.menu.politics.details.president.label')}}:
                 span.sp-kv-value
                   template(v-if='current_politician') {{current_politician.name}}
-                  template(v-else) {{translate('ui.misc.none')}}
+                  template(v-else) {{$translate('ui.misc.none')}}
 
               template(v-if='current_politician')
                 div
-                  span.sp-kv-key {{translate('misc.corporation.prestige')}}:
+                  span.sp-kv-key {{$translate('misc.corporation.prestige')}}:
                   span.sp-kv-value {{current_politician.prestige}}
                 div
-                  span.sp-kv-key {{translate('ui.menu.politics.details.overall_rating.label')}}:
-                  span.sp-kv-value {{format_percent(current_overall_rating)}}
+                  span.sp-kv-key {{$translate('ui.menu.politics.details.overall_rating.label')}}:
+                  span.sp-kv-value {{$format_percent(current_overall_rating)}}
                 div
-                  span.sp-kv-key {{translate('ui.menu.politics.details.terms.label')}}:
+                  span.sp-kv-key {{$translate('ui.menu.politics.details.terms.label')}}:
                   span.sp-kv-value {{current_politician.terms}}
 
               div
-                span.sp-kv-key {{translate('ui.menu.politics.details.remaining.label')}}:
+                span.sp-kv-key {{$translate('ui.menu.politics.details.remaining.label')}}:
                 span.sp-kv-value {{current_remaining_label}}
 
               table
                 thead
                   tr
                     th
-                    th.has-text-right.sp-kv-key {{translate('ui.menu.politics.details.delta.label')}}
-                    th.has-text-right.sp-kv-key {{translate('ui.menu.politics.details.rating.label')}}
+                    th.has-text-right.sp-kv-key {{$translate('ui.menu.politics.details.delta.label')}}
+                    th.has-text-right.sp-kv-key {{$translate('ui.menu.politics.details.rating.label')}}
                 tbody
                   tr(v-for='rating in current_service_ratings')
                     td.sp-kv-key {{label_for_type(rating.type)}}
                     td.has-text-right.sp-kv-value {{rating.delta}}
-                    td.has-text-right.sp-kv-value {{format_percent(rating.rating)}}
+                    td.has-text-right.sp-kv-value {{$format_percent(rating.rating)}}
 
             template(v-else-if="mode == 'NEXT'")
               div
-                span.sp-kv-key {{translate('ui.menu.politics.details.term_start.label')}}:
+                span.sp-kv-key {{$translate('ui.menu.politics.details.term_start.label')}}:
                 span.sp-kv-value {{term_start}}
               div
-                span.sp-kv-key {{translate('ui.menu.politics.details.term_length.label')}}:
+                span.sp-kv-key {{$translate('ui.menu.politics.details.term_length.label')}}:
                 span.sp-kv-value {{term_length}}
 
               table.candidates-table
                 thead
                   tr
-                    th.sp-kv-key {{translate('ui.menu.politics.details.candidate.label')}}
-                    th.has-text-right.sp-kv-key {{translate('misc.corporation.prestige')}}
-                    th.has-text-right.sp-kv-key {{translate('ui.menu.politics.details.votes.label')}}
+                    th.sp-kv-key {{$translate('ui.menu.politics.details.candidate.label')}}
+                    th.has-text-right.sp-kv-key {{$translate('misc.corporation.prestige')}}
+                    th.has-text-right.sp-kv-key {{$translate('ui.menu.politics.details.votes.label')}}
                     th
                 tbody
                   tr(v-if='!term_candidates.length')
-                    td(colspan=4) {{translate('ui.misc.none')}}
+                    td(colspan=4) {{$translate('ui.misc.none')}}
 
                   tr(v-for='candidate in term_candidates')
                     td.sp-kv-value {{candidate.name}}
@@ -93,15 +93,15 @@
                     td.has-text-right.sp-kv-value {{candidate.votes}}
                     td.has-text-right
                       template(v-if='tycoon_id == candidate.id')
-                        a.button.is-small.is-starpeace(disabled) {{translate('ui.menu.politics.action.withdraw.label')}}
+                        a.button.is-small.is-starpeace(disabled) {{$translate('ui.menu.politics.action.withdraw.label')}}
                       template(v-else)
-                        a.button.is-small.is-starpeace(disabled) {{translate('ui.menu.politics.action.vote.label')}}
+                        a.button.is-small.is-starpeace(disabled) {{$translate('ui.menu.politics.action.vote.label')}}
 
 
               .launch-campaign
-                a.button.is-fullwidth.is-starpeace(disabled) {{translate('ui.menu.politics.action.launch_campaign.label')}}
+                a.button.is-fullwidth.is-starpeace(disabled) {{$translate('ui.menu.politics.action.launch_campaign.label')}}
 
-                span.information {{translate('ui.menu.politics.info.launch_campaign.label')}}
+                span.information {{$translate('ui.menu.politics.info.launch_campaign.label')}}
 
     template(v-else)
       aside.sp-scrollbar.sp-scroll-container.politics-options
@@ -109,104 +109,132 @@
           a(@click.stop.prevent="select_politics(option.type, option.id)")
             span.item-icon
               font-awesome-icon(:icon="['fas', 'landmark']")
-            span.item-label {{translate(option.type == 'MAYOR' ? 'ui.menu.politics.title.mayor' : 'ui.menu.politics.title.president')}} {{option.name}}
+            span.item-label {{$translate(option.type == 'MAYOR' ? 'ui.menu.politics.title.mayor' : 'ui.menu.politics.title.president')}} {{option.name}}
 
 </template>
 
-<script lang='coffee'>
+<script lang='ts'>
 import _ from 'lodash';
-import ServiceType from '~/plugins/starpeace-client/planet/details/service-type.coffee'
 
-export default
-  props:
-    client_state: Object
-    managers: Object
+import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
+import ServiceType from '~/plugins/starpeace-client/planet/details/service-type'
+
+declare interface PoliticsData {
+  mode: string;
+  details_promise: Promise<any> | undefined;
+  details: any | undefined;
+}
+
+export default {
+  props: {
+    client_state: { type: ClientState, required: true },
     visible: Boolean
+  },
 
-  data: ->
-    mode: 'CURRENT'
-    details_promise: null
-    details: null
+  data (): PoliticsData {
+    return {
+      mode: 'CURRENT',
+      details_promise: undefined,
+      details: undefined
+    };
+  },
 
-  computed:
-    is_ready: -> @client_state?.workflow_status == 'ready'
-    tycoon_id: -> if @is_ready then @client_state?.player?.tycoon_id else null
+  computed: {
+    is_ready () { return this.client_state.workflow_status === 'ready'; },
+    tycoon_id () { return this.is_ready ? this.client_state.player?.tycoon_id : null; },
 
-    loading: -> @details_promise? || !@details?
-    has_selection: -> @selected_type?.length && @selected_id?.length
-    selected_id: -> @client_state?.interface?.selected_politics_id
-    selected_type: -> @client_state?.interface?.selected_politics_type
+    loading () { return !!this.details_promise || !this.details; },
+    has_selection () { return this.selected_type?.length > 0 && this.selected_id?.length > 0; },
+    selected_id () { return this.client_state.interface?.selected_politics_id; },
+    selected_type () { return this.client_state.interface?.selected_politics_type; },
 
-    planet_id: -> if @is_ready then @client_state.player.planet_id else null
-    planet_name: -> if @is_ready then @client_state.current_planet_metadata()?.name else null
-    selected_name: -> if @is_ready && @has_selection then if @selected_type == 'MAYOR' then @client_state.planet.town_for_id(@selected_id)?.name else @planet_name
+    planet_id () { return this.is_ready ? this.client_state.player.planet_id : null; },
+    planet_name () { return this.is_ready ? this.client_state.current_planet_metadata()?.name : null; },
+    selected_name () {
+      if (!this.is_ready || !this.has_selection) return '';
+      return this.selected_type == 'MAYOR' ? this.client_state.planet.town_for_id(this.selected_id)?.name : this.planet_name;
+    },
 
-    menu_options: ->
-      return [] unless @is_ready
-      [{
-        type: 'PRESIDENT'
-        name: @planet_name
-        id: @client_state.player.planet_id
-      }].concat(_.map(_.orderBy(@client_state.planet.towns, ['name'], ['asc']), (t) => {
-        type: 'MAYOR'
-        name: t.name
-        id: t.id
-      }))
+    menu_options () {
+      return !this.is_ready ? [] : [{
+        type: 'PRESIDENT',
+        name: this.planet_name,
+        id: this.client_state.player.planet_id
+      }].concat(_.map(_.orderBy(this.client_state.planet.towns, ['name'], ['asc']), (t) => {
+        return {
+          type: 'MAYOR',
+          name: t.name,
+          id: t.id
+        };
+      }));
+    },
 
-    current_politician: -> @details?.current_term?.politician
+    current_politician () { return this.details?.current_term?.politician; },
 
-    current_remaining_label: ->
-      return @translate('ui.misc.none') unless @details?.current_term?.end? && @client_state?.planet?.current_time?
-      months = Math.ceil(@client_state?.planet?.current_time.diff(@details?.current_term?.end, 'months', true))
-      return @translate('ui.misc.none') unless months <= 0
-      @format_months(-months + 1)
+    current_remaining_label () {
+      if (!this.details?.current_term?.end || !this.client_state?.planet?.current_time) return this.$translate('ui.misc.none');
+      const months = Math.ceil(this.client_state.planet.current_time.diff(this.details.current_term.end, 'months').as('months'));
+      if (months > 0) return this.$translate('ui.misc.none');
+      return this.format_months(-months + 1);
+    },
 
-    current_overall_rating: -> @details?.current_term?.overall_rating || 0
-    current_service_ratings: -> @details?.current_term?.service_ratings || []
+    current_overall_rating () { return this.details?.current_term?.overall_rating ?? 0; },
+    current_service_ratings () { return this.details?.current_term?.service_ratings ?? []; },
 
-    term_start: -> @details?.next_term?.start?.toFormat('MMM d, yyyy')
-    term_length: -> @format_months(@details?.next_term?.length)
-    term_candidates: -> @details?.next_term?.candidates || []
+    term_start () { return this.details?.next_term?.start?.toFormat('MMM d, yyyy'); },
+    term_length () { return this.format_months(this.details?.next_term?.length); },
+    term_candidates () { return this.details?.next_term?.candidates ?? []; }
+  },
 
-  watch:
-    selected_id: ->
-      @mode = 'CURRENT'
-      @refresh_details()
-    visible: -> @refresh_details()
+  watch: {
+    selected_id () {
+      this.mode = 'CURRENT';
+      this.refresh_details();
+    },
+    visible () {
+      this.refresh_details();
+    }
+  },
 
-  methods:
-    translate: (text_key) -> @managers?.translation_manager?.text(text_key)
+  methods: {
+    label_for_type (service_type: string): string {
+      return this.$translate(ServiceType.label_for_type(service_type));
+    },
+    format_months (months: number): string {
+      const years = Math.floor(months / 12);
+      const leftover_months = months % 12;
+      const labels = [];
+      if (years > 0) labels.push(`${years} ${years > 1 ? this.$translate('misc.unit.year.plural') : this.$translate('misc.unit.year.singular')}`);
+      if (leftover_months > 0) labels.push(`${leftover_months} ${leftover_months > 1 ? this.$translate('misc.unit.month.plural') : this.$translate('misc.unit.month.singular')}`);
+      return labels.join(', ');
+    },
 
-    label_for_type: (service_type) -> @translate(ServiceType.label_for_type(service_type))
-    format_percent: (value) -> if _.isNumber(value) then "#{Math.round(value * 100)}%" else ''
-    format_months: (months) ->
-      years = Math.floor(months / 12)
-      leftover_months = months % 12
-      labels = []
-      labels.push("#{years} #{if years > 1 then @translate('misc.unit.year.plural') else @translate('misc.unit.year.singular')}") if years > 0
-      labels.push("#{leftover_months} #{if leftover_months > 1 then @translate('misc.unit.month.plural') else @translate('misc.unit.month.singular')}") if leftover_months > 0
-      labels.join(', ')
+    clear_selected_politics () { this.client_state?.interface?.unselect_politics(); },
+    select_politics (type: string, id: string): void { this.client_state?.interface?.select_politics(type, id); },
 
+    async refresh_details () {
+      this.details = null;
+      if (!this.has_selection || !this.visible) return;
 
-    clear_selected_politics: -> @client_state?.interface?.unselect_politics()
-    select_politics: (type, id) -> @client_state?.interface?.select_politics(type, id)
-
-    refresh_details: ->
-      @details = null
-      return unless @has_selection && @visible
-
-      try
-        if @selected_type == 'PRESIDENT'
-          @details_promise = @managers.planets_manager.load_planet_details(@planet_id)
-          @details = await @details_promise
-          @details_promise = null
-        else if @selected_type == 'MAYOR'
-          @details_promise = @managers.planets_manager.load_town_details(@planet_id, @selected_id)
-          @details = await @details_promise
-          @details_promise = null
-      catch err
-        @client_state.add_error_message('Failure loading politics details from server', err)
-        @details_promise = null
+      try {
+        if (this.selected_type === 'PRESIDENT') {
+          this.details_promise = this.$starpeaceClient.managers.planets_manager.load_planet_details(this.planet_id);
+          this.details = await this.details_promise;
+        }
+        else if (this.selected_type === 'MAYOR') {
+          this.details_promise = this.$starpeaceClient.managers.planets_manager.load_town_details(this.planet_id, this.selected_id);
+          this.details = await this.details_promise;
+        }
+      }
+      catch (err) {
+        this.client_state.add_error_message('Failure loading politics details from server', err);
+      }
+      finally {
+        this.details_promise = undefined;
+      }
+    }
+  }
+}
 
 </script>
 

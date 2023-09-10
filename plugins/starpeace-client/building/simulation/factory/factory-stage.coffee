@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-import ResourceQuantity from '~/plugins/starpeace-client/industry/resource-quantity.coffee'
+import ResourceQuantity from '~/plugins/starpeace-client/industry/resource-quantity'
 
 export default class FactoryStage
 

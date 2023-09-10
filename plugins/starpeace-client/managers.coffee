@@ -3,10 +3,10 @@ import _ from 'lodash';
 import GameMap from '~/plugins/starpeace-client/map/game-map.coffee'
 
 import AssetManager from '~/plugins/starpeace-client/asset/asset-manager.coffee'
-import BookmarkManager from '~/plugins/starpeace-client/bookmark/bookmark-manager.coffee'
+import BookmarkManager from '~/plugins/starpeace-client/bookmark/bookmark-manager'
 import BuildingManager from '~/plugins/starpeace-client/building/building-manager.coffee'
 import ConcreteManager from '~/plugins/starpeace-client/building/concrete-manager.coffee'
-import CompanyManager from '~/plugins/starpeace-client/company/company-manager.coffee'
+import CompanyManager from '~/plugins/starpeace-client/company/company-manager'
 import CorporationManager from '~/plugins/starpeace-client/corporation/corporation-manager'
 import EffectManager from '~/plugins/starpeace-client/asset/effect-manager.coffee'
 import EventManager from '~/plugins/starpeace-client/event/event-manager.coffee'
@@ -17,7 +17,7 @@ import MapManager from '~/plugins/starpeace-client/land/map-manager.coffee'
 import MailManager from '~/plugins/starpeace-client/mail/mail-manager.coffee'
 import OverlayManager from '~/plugins/starpeace-client/overlay/overlay-manager.coffee'
 import PlaneManager from '~/plugins/starpeace-client/plane/plane-manager.coffee'
-import PlanetsManager from '~/plugins/starpeace-client/planet/planets-manager.coffee'
+import PlanetsManager from '~/plugins/starpeace-client/planet/planets-manager'
 import RoadManager from '~/plugins/starpeace-client/road/road-manager.coffee'
 import SignManager from '~/plugins/starpeace-client/asset/sign-manager.coffee'
 import TranslationManager from '~/plugins/starpeace-client/language/translation-manager.coffee'
@@ -118,7 +118,7 @@ export default class Managers
           promises.push @building_manager.load_by_company(company.id)
           promises.push @invention_manager.load_by_company(company.id)
 
-        promises.push @bookmark_manager.load_by_corporation(@client_state.player.corporation_id)
+        promises.push @bookmark_manager.loadByCorporation(@client_state.player.corporation_id)
         promises.push @mail_manager.load_by_corporation(@client_state.player.corporation_id)
 
         await Promise.all(promises)
@@ -158,3 +158,5 @@ export default class Managers
     @invention_manager.initialize()
     @bookmark_manager.initialize()
     @event_manager.initialize()
+
+    @client_state.managers_initialized = true

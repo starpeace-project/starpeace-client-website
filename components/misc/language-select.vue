@@ -23,24 +23,31 @@
       | pt
 </template>
 
-<script lang='coffee'>
-export default
-  name: 'language-select'
-  props:
+<script lang='ts'>
+export default {
+  name: 'language-select',
+  props: {
     language_code: String
+  },
 
-  computed:
-    current_language_flag: ->
-      return 'fi-de' if @language_code == 'DE'
-      return 'fi-gb' if @language_code == 'EN'
-      return 'fi-es' if @language_code == 'ES'
-      return 'fi-fr' if @language_code == 'FR'
-      return 'fi-it' if @language_code == 'IT'
-      return 'fi-br' if @language_code == 'PT'
-      'fi-gb'
+  computed: {
+    current_language_flag () {
+      if (this.language_code === 'DE') return 'fi-de';
+      if (this.language_code === 'EN') return 'fi-gb';
+      if (this.language_code === 'ES') return 'fi-es';
+      if (this.language_code === 'FR') return 'fi-fr';
+      if (this.language_code === 'IT') return 'fi-it';
+      if (this.language_code === 'PT') return 'fi-br';
+      return 'fi-gb';
+    }
+  },
 
-  methods:
-    change_language: (code) -> @$emit('changed', code)
+  methods: {
+    change_language (code: string): void {
+      this.$emit('changed', code);
+    }
+  }
+}
 </script>
 
 <style lang='sass' scoped>

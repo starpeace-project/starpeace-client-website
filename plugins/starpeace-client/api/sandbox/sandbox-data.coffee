@@ -24,7 +24,6 @@ PLANET_MAP_BUILDINGS = {
 }
 
 MONTH_SEASONS = {
-  0: 'winter'
   1: 'winter'
   2: 'spring'
   3: 'spring'
@@ -36,6 +35,7 @@ MONTH_SEASONS = {
   9: 'fall'
   10: 'fall'
   11: 'winter'
+  12: 'winter'
 }
 
 SERVICE_TYPES = ['COLLEGE', 'GARBAGE', 'FIRE', 'HOSPITAL', 'PRISON', 'MUSEUM', 'POLICE', 'SCHOOL', 'PARK']
@@ -623,7 +623,7 @@ export default class SandboxData
     }
 
   season_for_planet: (planet_id) ->
-    if @planet_id_dates[planet_id]? then MONTH_SEASONS[@planet_id_dates[planet_id].month] else 'winter'
+    MONTH_SEASONS[@planet_id_dates[planet_id]?.month] || 'winter'
 
   add_building: (planet_id, company_id, chunk_key, building) ->
     @planet_id_chunk_id_buildings[planet_id] = {} unless @planet_id_chunk_id_buildings[planet_id]?

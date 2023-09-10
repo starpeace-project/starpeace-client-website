@@ -19,8 +19,8 @@ export default class InterfaceState
     @static_news_index = -1
     @event_ticker_message = '' # FIXME: TODO: move to better state class
 
-    @show_remove_galaxy = false
-    @show_add_galaxy = false
+    @remove_galaxy_visible = false
+    @add_galaxy_visible = false
 
     @show_create_tycoon = false
     @create_tycoon_galaxy_id = null
@@ -76,6 +76,12 @@ export default class InterfaceState
   notify_selected_ranking_type_id_listeners: () -> @event_listener.notify_listeners('interface.selected_ranking_type_id')
   subscribe_selected_ranking_corporation_id_listener: (listener_callback) -> @event_listener.subscribe('interface.selected_ranking_corporation_id', listener_callback)
   notify_selected_ranking_corporation_id_listeners: () -> @event_listener.notify_listeners('interface.selected_ranking_corporation_id')
+
+  show_add_galaxy: () -> @add_galaxy_visible = true
+  hide_add_galaxy: () -> @add_galaxy_visible = false
+
+  show_remove_galaxy: () -> @remove_galaxy_visible = true
+  hide_remove_galaxy: () -> @remove_galaxy_visible = false
 
   toggle_overlay: () ->
     if @show_overlay

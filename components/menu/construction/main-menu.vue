@@ -1,7 +1,7 @@
 <template lang='pug'>
 #construction-container.card.is-starpeace.has-header(:oncontextmenu="'return ' + !$config.public.disableRightClick")
   .card-header
-    .card-header-title {{translate('ui.menu.construction.header')}}
+    .card-header-title {{$translate('ui.menu.construction.header')}}
     .card-header-icon.card-close(@click.stop.prevent="client_state.menu.toggle_menu('construction')")
       font-awesome-icon(:icon="['fas', 'times']")
 
@@ -22,7 +22,7 @@
             template(v-else-if='true')
               span.icon.is-small
                 font-awesome-icon.tycoon-icon(:icon="['fas', 'user-secret']")
-              span {{translate('identity.visitor')}}
+              span {{$translate('identity.visitor')}}
         template(v-if='selected_menu_industry_category_id')
           li.is-active
             a.construction-breadcrumb-item
@@ -51,14 +51,14 @@
                 article.tile.is-child
                   .building-description {{building_description(info)}}
                   .building-research(v-show="info.required_invention_ids.length")
-                    span.research-label {{translate('ui.menu.construction.requires')}}:
+                    span.research-label {{$translate('ui.menu.construction.requires')}}:
                     template(v-for='id,index in info.required_invention_ids')
                       template(v-if='is_invention_completed(id)')
                         span.research-completed {{invention_name(id)}}
                       template(v-else)
                         a.research-pending(@click.stop.prevent='select_invention(id)') {{invention_name(id)}}
                       span.research-separator(v-if="index < info.required_invention_ids.length - 1") {{separator_label_for_index(index, info.required_invention_ids.length)}}
-                  button.button.is-fullwidth.is-starpeace.construct-button(@click.stop.prevent="select_building(info)", :disabled='!can_construct_building(info)') {{translate('ui.menu.construction.construct_building')}}
+                  button.button.is-fullwidth.is-starpeace.construct-button(@click.stop.prevent="select_building(info)", :disabled='!can_construct_building(info)') {{$translate('ui.menu.construction.construct_building')}}
 
     aside.sp-menu-overall.sp-scrollbar(v-else)
       .tile.is-ancestor.construction-items
@@ -97,117 +97,146 @@
 
   #no-company-modal.modal-background(v-show='has_no_company')
     .content
-      span {{translate('ui.menu.construction.company_required.label')}}
-      a(@click.stop.prevent='toggle_form_company_menu') {{translate('ui.menu.construction.company_required.action')}}
+      span {{$translate('ui.menu.construction.company_required.label')}}
+      a(@click.stop.prevent='toggle_form_company_menu') {{$translate('ui.menu.construction.company_required.action')}}
 
 </template>
 
-<script lang='coffee'>
+<script lang='ts'>
 import _ from 'lodash';
+import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
 
-export default
-  props:
-    client_state: Object
-    managers: Object
+export default {
+  props: {
+    client_state: { type: ClientState, required: true }
+  },
 
-  computed:
-    is_ready: -> @client_state?.workflow_status == 'ready'
-    is_visible: -> @is_ready && @client_state?.menu?.is_visible('construction')
+  computed: {
+    is_ready (): boolean { return this.client_state?.workflow_status === 'ready'; },
+    is_visible (): boolean { return this.is_ready && (this.client_state?.menu?.is_visible('construction') ?? false); },
 
-    is_tycoon: -> @is_ready && @client_state?.is_tycoon()
-    company_id: -> if @is_tycoon then @client_state.player.company_id else null
-    company_seal_id: -> if @company_id? then @client_state.seal_for_company_id(@company_id) else null
-    company_seal_name: -> if @company_seal_id? then @translate(@client_state.core.planet_library.seal_for_id(@company_seal_id)?.name_short) else null
+    is_tycoon () { return this.is_ready && this.client_state?.is_tycoon(); },
+    company_id () { return this.is_tycoon ? this.client_state.player.company_id : null; },
+    company_seal_id () { return this.company_id ? this.client_state.seal_for_company_id(this.company_id) : null; },
+    company_seal_name () { return this.company_seal_id ? this.$translate(this.client_state.core.planet_library.seal_for_id(this.company_seal_id)?.name_short) : null; },
 
-    has_no_company: ->
-      return false unless @client_state?.workflow_status == 'ready'
-      @client_state.is_tycoon() && !@client_state.player.company_id?
+    has_no_company () { return this.is_ready && this.is_tycoon && !this.client_state.player.company_id; },
 
-    root_breadcrumb_class: -> if @selected_menu_industry_category_id? then '' else 'is-active'
+    root_breadcrumb_class () { return this.selected_menu_industry_category_id ? '' : 'is-active'; },
 
-    has_selected_menu_category: -> @selected_menu_industry_category_id?
-    selected_menu_industry_category_id: -> @client_state.interface.construction_selected_category_id
-    selected_building_id: -> @client_state.interface.construction_selected_building_id
+    has_selected_menu_category () { return this.selected_menu_industry_category_id?.length > 0; },
+    selected_menu_industry_category_id () { return this.client_state.interface.construction_selected_category_id; },
+    selected_building_id () { return this.client_state.interface.construction_selected_building_id; },
 
-    buildings_for_company_by_category: ->
-      definitions = if @company_seal_id? then @client_state.core.building_library.definitions_for_seal(@company_seal_id) else _.values(@client_state.core.building_library.metadata_by_id)
-      _.groupBy(_.filter(definitions || [], (info) -> !info.restricted), (info) -> info.industry_category_id)
+    buildings_for_company_by_category () {
+      const definitions = this.company_seal_id ? this.client_state.core.building_library.definitions_for_seal(this.company_seal_id) : _.values(this.client_state.core.building_library.metadata_by_id);
+      return _.groupBy(_.filter(definitions || [], (info) => !info.restricted), (info) => info.industry_category_id);
+    }
+  },
 
-  watch:
-    company_id: (new_value, old_value) ->
-      @client_state.interface.construction_selected_category_id = null
-      @client_state.interface.construction_building_id = null
+  watch: {
+    company_id (new_value, old_value) {
+      this.client_state.interface.construction_selected_category_id = null;
+      this.client_state.interface.construction_building_id = null;
+    }
+  },
 
-  mounted: ->
-    @client_state.corporation.subscribe_company_inventions_listener => @$forceUpdate() if @is_visible
-    @client_state?.options?.subscribe_options_listener => @$forceUpdate() if @is_visible
+  mounted () {
+    this.client_state.corporation.subscribe_company_inventions_listener(() => {
+      if (this.is_visible) {
+        this.$forceUpdate()
+      }
+    });
+    this.client_state?.options?.subscribe_options_listener(() => {
+      if (this.is_visible) {
+        this.$forceUpdate()
+      }
+    });
+  },
 
-  methods:
-    translate: (text_key) -> @managers?.translation_manager?.text(text_key)
+  methods: {
+    toggle_form_company_menu (): void { this.client_state.menu.toggle_menu('company_form'); },
 
-    toggle_form_company_menu: () -> @client_state.menu.toggle_menu('company_form')
+    building_cost (definition_id: string): number { return this.$starpeaceClient.managers?.building_manager?.cost_for_building_definition_id(definition_id) ?? 0; },
+    sort_buildings (buildings: Array<any>): Array<any> { return _.sortBy(buildings, (info) => `${info.industry_type}-${_.padStart(this.building_cost(info.id), 12, '0')}`); },
 
-    building_cost: (definition_id) -> @managers?.building_manager?.cost_for_building_definition_id(definition_id) || 0
-    sort_buildings: (buildings) -> _.sortBy(buildings, (info) => "#{info.industry_type}-#{_.padStart(@building_cost(info.id), 12, '0')}")
+    separator_label_for_index (index: number, length: number): string {
+      return length > 2 ? (index == length - 2 ? ', and ' : ', ') : ' and ';
+    },
 
-    separator_label_for_index: (index, length) ->
-      if length > 2 then (if index == length - 2 then ', and ' else ', ') else ' and '
+    category_has_buildings (category_id: string) { return this.buildings_for_company_by_category[category_id]?.length > 0; },
+    text_for_category (category_id: string) { return category_id ? this.$starpeaceClient.managers.translation_manager.text(this.client_state.core.planet_library.category_for_id(category_id)?.label) : category_id; },
 
-    category_has_buildings: (category_id) -> @buildings_for_company_by_category[category_id]?.length
-    text_for_category: (category_id) -> if category_id? then @managers.translation_manager.text(@client_state.core.planet_library.category_for_id(category_id)?.label) else category_id
+    can_construct_building (building_info) { return this.client_state.has_construction_requirements(building_info.id); },
 
-    can_construct_building: (building_info) -> @client_state.has_construction_requirements(building_info.id)
+    building_name (building_info) { return this.$starpeaceClient.managers.translation_manager.text(building_info.name); },
+    building_description (building_info) { return this.$starpeaceClient.managers.translation_manager.description_for_building(building_info); },
 
-    building_name: (building_info) -> @managers.translation_manager.text(building_info.name)
-    building_description: (building_info) -> @managers.translation_manager.description_for_building(building_info)
+    building_size (building_info) {
+      const building_definition = this.client_state.core.building_library.metadata_by_id[building_info.id];
+      if (!building_definition) return 0;
+      const building_image = this.client_state.core.building_library.images_by_id[building_definition.image_id];
+      if (!building_image) return 0;
+      return (building_image.w * 20) * (building_image.h * 20);
+    },
 
-    building_size: (building_info) ->
-      building_definition = @client_state.core.building_library.metadata_by_id[building_info.id]
-      return 0 unless building_definition?
-      building_image = @client_state.core.building_library.images_by_id[building_definition.image_id]
-      return 0 unless building_image?
-      (building_image.w * 20) * (building_image.h * 20)
+    invention_name (id: string): string {
+      const metadata = this.client_state.core.invention_library.metadata_for_id(id);
+      return metadata ? this.$starpeaceClient.managers.translation_manager.text(metadata.name) : id;
+    },
 
-    invention_name: (id) ->
-      metadata = @client_state.core.invention_library.metadata_for_id(id)
-      if metadata? then @managers.translation_manager.text(metadata.name) else id
-
-    is_invention_completed: (id) ->
-      return false unless @company_id?
-      @client_state.corporation.completed_invention_ids_for_company(@company_id).indexOf(id) >= 0
+    is_invention_completed (id: string): boolean {
+      return this.company_id && this.client_state.corporation.completed_invention_ids_for_company(this.company_id).indexOf(id) >= 0;
+    },
 
 
-    select_root_breadcrumb: ->
-      return unless @selected_menu_industry_category_id?
-      @client_state.interface.construction_selected_category_id = null
-      if @selected_building_id?
-        @client_state.interface.construction_selected_building_id = null
-        @$refs.previewContainer.parentElement.removeChild(@$refs.previewContainer)
-        @$refs.pendingContainer.appendChild(@$refs.previewContainer)
+    select_root_breadcrumb (): void {
+      if (!this.selected_menu_industry_category_id) return;
+      this.client_state.interface.construction_selected_category_id = null;
+      if (this.selected_building_id && this.$refs.previewContainer && this.$refs.pendingContainer) {
+        this.client_state.interface.construction_selected_building_id = null;
+        this.$refs.previewContainer.parentElement.removeChild(this.$refs.previewContainer);
+        this.$refs.pendingContainer.appendChild(this.$refs.previewContainer);
+      }
+    },
 
-    select_category: (category) ->
-      return unless @category_has_buildings(category)
-      @client_state.interface.construction_selected_category_id = category
+    select_category (category: string): void {
+      if (!this.category_has_buildings(category)) return;
+      this.client_state.interface.construction_selected_category_id = category;
+    },
 
-    toggle_building: (info) ->
-      @$refs.previewContainer.parentElement.removeChild(@$refs.previewContainer)
-      if @selected_building_id == info.id
-        @client_state.interface.construction_selected_building_id = null
-        @$refs.pendingContainer.appendChild(@$refs.previewContainer)
-      else
-        @client_state.interface.construction_selected_building_id = info.id
-        preview_container = @$refs["previewItem.#{info.id}"]
-        preview_container = preview_container[0] if Array.isArray(preview_container)
-        preview_container.appendChild(@$refs.previewContainer)
+    toggle_building (info): void {
+      if (!this.$refs.previewContainer || !this.$refs.pendingContainer) return;
+      this.$refs.previewContainer.parentElement.removeChild(this.$refs.previewContainer);
+      if (this.selected_building_id == info.id) {
+        this.client_state.interface.construction_selected_building_id = null;
+        this.$refs.pendingContainer.appendChild(this.$refs.previewContainer);
+      }
+      else {
+        this.client_state.interface.construction_selected_building_id = info.id;
+        const preview_container: any = this.$refs[`previewItem.${info.id}`];
+        if (preview_container) {
+          if (Array.isArray(preview_container)) {
+            preview_container[0].appendChild(this.$refs.previewContainer);
+          }
+          else {
+            preview_container.appendChild(this.$refs.previewContainer);
+          }
+        }
+      }
+    },
 
-    select_building: (info) ->
-      return unless @can_construct_building(info)
-      @client_state.initiate_building_construction(info.id)
+    select_building (info) {
+      if (!this.can_construct_building(info)) return;
+      this.client_state.initiate_building_construction(info.id);
+    },
 
-    select_invention: (id) ->
-      @client_state.interface.inventions_selected_invention_id = id
-      @client_state.menu.toggle_menu('research')
-
+    select_invention (id: string) {
+      this.client_state.interface.inventions_selected_invention_id = id;
+      this.client_state.menu.toggle_menu('research');
+    }
+  }
+}
 </script>
 
 <style lang='sass' scoped>

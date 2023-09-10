@@ -18,52 +18,62 @@
     template(v-else)
       menu-shared-menu-panel-corporation(
         hide-corporation=true
-        :managers='managers'
         :client-state='clientState'
         :tycoon='ranking'
         :corporation='corporation'
       )
 </template>
 
-<script lang='coffee'>
-export default
-  props:
-    managers: Object
-    clientState: Object
-    ajaxState: Object
+<script lang='ts'>
+import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
 
-    rankingType: Object
+export default {
+  props: {
+    clientState: { type: ClientState, required: true },
+    ajaxState: Object,
+
+    rankingType: Object,
     ranking: Object
+  },
 
-  data: ->
-    corporation: null
+  data () {
+    return {
+      corporation: null
+    };
+  },
 
-  computed:
-    ranking_class: ->
-      classes = []
-      classes.push 'rank-player' if @ranking.corporationId == @clientState?.player?.corporation_id
-      classes.push 'rank-first' if @ranking.rank == 1
-      classes.push 'rank-top' if @ranking.rank > 1 && @ranking.rank <= 5
-      classes.push 'is-active' if @is_selected
-      classes
+  computed: {
+    ranking_class () {
+      const classes = [];
+      if (this.ranking.corporationId == this.clientState?.player?.corporation_id) classes.push('rank-player');
+      if (this.ranking.rank == 1) classes.push('rank-first');
+      if (this.ranking.rank > 1 && this.ranking.rank <= 5) classes.push('rank-top');
+      if (this.is_selected) classes.push('is-active');
+      return classes;
+    },
 
-    selected_ranking_corporation_id: -> @clientState?.interface?.selected_ranking_corporation_id
-    is_selected: -> @ranking.corporationId == @selected_ranking_corporation_id
-    is_loading: ->
-      return false unless @is_selected && @selected_ranking_corporation_id?.length
-      @ajaxState.request_mutex['corporation_metadata']?[@selected_ranking_corporation_id] || !@corporation?
+    selected_ranking_corporation_id () { return this.clientState?.interface?.selected_ranking_corporation_id; },
+    is_selected (): boolean { return this.ranking.corporationId == this.selected_ranking_corporation_id; },
+    is_loading (): boolean {
+      if (!this.is_selected || !this.selected_ranking_corporation_id?.length) return false;
+      return this.ajaxState?.request_mutex['corporation_metadata']?.[this.selected_ranking_corporation_id] || !this.corporation;
+    }
+  },
 
-  mounted: ->
-    @clientState.core.corporation_cache.subscribe_corporation_metadata_listener => @refresh_corporation()
+  mounted () {
+    this.clientState.core.corporation_cache.subscribe_corporation_metadata_listener(() => this.refresh_corporation());
+  },
 
-  watch:
-    selected_ranking_corporation_id: -> @refresh_corporation()
+  watch: {
+    selected_ranking_corporation_id () { this.refresh_corporation(); }
+  },
 
-  methods:
-    translate: (text_key) -> @managers?.translation_manager?.text(text_key)
-
-    refresh_corporation: () -> @corporation = if @is_selected then @clientState.core.corporation_cache.metadata_for_id(@selected_ranking_corporation_id) else null
-
+  methods: {
+    refresh_corporation () {
+      this.corporation = this.is_selected ? this.clientState.core.corporation_cache.metadata_for_id(this.selected_ranking_corporation_id) : null;
+    }
+  }
+}
 </script>
 
 <style lang='sass' scoped>

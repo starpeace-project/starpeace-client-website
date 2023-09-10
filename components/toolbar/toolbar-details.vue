@@ -9,7 +9,7 @@
             | {{corporation_name}}
           template(v-else-if='!is_tycoon')
             span.corporation-name-temp
-              | [{{translate('identity.visitor')}} {{translate('identity.visa')}}]
+              | [{{$translate('identity.visitor')}} {{$translate('identity.visa')}}]
         p.corporation-cash
           misc-money-text(:value='corporation_cash')
         p.corporation-cashflow
@@ -34,51 +34,53 @@
 
         template(v-if='can_form_company')
           .company-panel.form-company(:class="{'is-selected':is_form_company_visible, 'no-companies':!companies.length}" @click.stop.prevent='toggle_form_company_menu')
-            .form-label {{translate('ui.menu.company.form.action.form')}}
+            .form-label {{$translate('ui.menu.company.form.action.form')}}
 
 </template>
 
-<script lang='coffee'>
+<script lang='ts'>
 import _ from 'lodash';
+import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
 
-export default
-  props:
-    ajax_state: Object
-    client_state: Object
-    managers: Object
+export default {
+  props: {
+    ajax_state: Object,
+    client_state: { type: ClientState, required: true }
+  },
 
-  computed:
-    is_ready: -> @client_state.initialized && @client_state?.workflow_status == 'ready'
-    planet_date: -> if @client_state?.planet?.current_time? then @client_state.planet.current_time.toFormat('MMM d, yyyy') else ''
+  computed: {
+    is_ready () { return this.client_state.initialized && this.client_state?.workflow_status === 'ready'; },
+    planet_date () { return this.client_state?.planet?.current_time ? this.client_state.planet.current_time.toFormat('MMM d, yyyy') : ''; },
 
-    ticker_message: -> @client_state?.interface?.event_ticker_message || ''
+    ticker_message () { return this.client_state?.interface?.event_ticker_message ?? ''; },
 
-    is_tycoon: -> @is_ready && @client_state?.is_tycoon()
-    can_form_company: -> @is_tycoon && @client_state.player.corporation_id?.length
-    companies: ->
-      return [] unless @is_ready && @is_tycoon && @client_state?.corporation?.company_ids?.length
-      _.compact(_.map(@client_state.corporation.company_ids, (id) => @client_state.core.company_cache.metadata_for_id(id)))
-    sorted_companies: -> _.orderBy(@companies, ['name'], ['asc'])
+    is_tycoon () { return this.is_ready && this.client_state?.is_tycoon(); },
+    can_form_company () { return this.is_tycoon && this.client_state.player.corporation_id?.length; },
+    companies () {
+      if (!this.is_ready || !this.is_tycoon || !this.client_state?.corporation?.company_ids?.length) return [];
+      return _.compact(_.map(this.client_state.corporation.company_ids, (id) => this.client_state.core.company_cache.metadata_for_id(id)));
+    },
+    sorted_companies () { return _.orderBy(this.companies, ['name'], ['asc']); },
 
-    corporation_metadata: -> if @is_ready && @client_state.player.corporation_id?.length then @client_state.current_corporation_metadata() else null
-    corporation_name: -> if @corporation_metadata? then @corporation_metadata.name else '[PENDING]'
-    corporation_cash: -> if @is_ready && @client_state.corporation.cash? then @client_state.corporation.cash else null
-    corporation_cashflow: -> if @is_ready && @client_state.corporation?.cashflow? then @client_state.corporation.cashflow else null
+    corporation_metadata () { return this.is_ready && this.client_state.player.corporation_id?.length ? this.client_state.current_corporation_metadata() : null; },
+    corporation_name () { return this.corporation_metadata ? this.corporation_metadata.name : '[PENDING]'; },
+    corporation_cash () { return this.is_ready && this.client_state.corporation.cash ? this.client_state.corporation.cash : null; },
+    corporation_cashflow () { return this.is_ready && this.client_state.corporation?.cashflow ? this.client_state.corporation.cashflow : null; },
 
-    is_form_company_visible: () -> @client_state.initialized && !@client_state.session_expired_warning && @client_state?.workflow_status == 'ready' && @client_state?.menu?.is_visible('company_form')
+    is_form_company_visible () { return this.client_state.initialized && !this.client_state.session_expired_warning && this.client_state?.workflow_status == 'ready' && this.client_state?.menu?.is_visible('company_form'); },
+  },
 
-  methods:
-    translate: (text_key) -> @managers?.translation_manager?.text(text_key)
+  methods: {
+    company_cashflow (company_id: string) { return this.is_ready && this.client_state.corporation.cashflow_by_company_id[company_id] ? this.client_state.corporation.cashflow_by_company_id[company_id] : null; },
 
-    company_cashflow: (company_id) -> if @is_ready && @client_state.corporation.cashflow_by_company_id[company_id]? then @client_state.corporation.cashflow_by_company_id[company_id] else null
+    building_count_for_company_id (company_id: string) { return (this.client_state.corporation.buildings_ids_by_company_id?.[company_id] ?? []).length; },
 
-    building_count_for_company_id: (company_id) -> (@client_state.corporation.buildings_ids_by_company_id?[company_id] || []).length
+    is_selected (company_id: string) { return this.client_state.player.company_id == company_id; },
+    select_company (company_id: string) { return this.client_state.player.company_id = company_id; },
 
-    is_selected: (company_id) -> @client_state.player.company_id == company_id
-    select_company: (company_id) -> @client_state.player.company_id = company_id
-
-    toggle_form_company_menu: () -> @client_state.menu.toggle_menu('company_form')
-
+    toggle_form_company_menu () { return this.client_state.menu.toggle_menu('company_form'); }
+  }
+}
 </script>
 
 <style lang='sass' scoped>

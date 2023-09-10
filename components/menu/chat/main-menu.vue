@@ -1,17 +1,17 @@
 <template lang='pug'>
 .card.is-starpeace.has-header.sp-menu(:oncontextmenu="'return ' + !$config.public.disableRightClick")
   .card-header
-    .card-header-title {{translate('ui.menu.chat.header')}}
+    .card-header-title {{$translate('ui.menu.chat.header')}}
     .card-header-icon.card-close(v-on:click.stop.prevent="client_state.menu.toggle_menu('chat')")
       font-awesome-icon(:icon="['fas', 'times']")
 
   .card-content.sp-menu-background
     .section-discord
-      | {{translate('ui.menu.chat.discord.prefix')}}
+      | {{$translate('ui.menu.chat.discord.prefix')}}
       |
       a.header-item.discord(href='https://discord.gg/TF9Bmsj', target='_blank') Discord
       |
-      | {{translate('ui.menu.chat.discord.suffix')}}
+      | {{$translate('ui.menu.chat.discord.suffix')}}
 
     aside.sp-scrollbar.container-results
       .sp-menu-loading-container(v-if='loading || !onlineTycoons')
@@ -24,68 +24,93 @@
           :client-state='client_state'
           :label='tycoon.tycoonName'
           :details-id='tycoon.corporationId'
-          :details-callback="tycoon.type == 'visitor' ? null : loadCorporation()"
+          :details-callback="tycoon.type == 'visitor' ? null : loadCorporation"
           v-slot:default='slotProps'
         )
           menu-shared-menu-panel-corporation(
             hide-tycoon
-            :managers='managers'
             :client-state='client_state'
             :tycoon='tycoon'
             :corporation='slotProps.details'
           )
 
       template(v-else)
-        .none-container {{translate('ui.misc.none')}}
+        .none-container {{$translate('ui.misc.none')}}
 
 </template>
 
-<script lang='coffee'>
+<script lang='ts'>
 import _ from 'lodash';
+import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
+import Tycoon from '~/plugins/starpeace-client/tycoon/tycoon';
 
-export default
-  props:
-    managers: Object
-    client_state: Object
+declare interface MainMenuData {
+  visible: boolean;
+  onlinePromise: Promise<any> | null;
+  onlineTycoons: Array<Tycoon> | null;
+}
 
-  data: ->
-    visible: @client_state?.menu?.is_visible('chat')
-    onlinePromise: null
-    onlineTycoons: null
+export default {
+  props: {
+    client_state: { type: ClientState, required: true }
+  },
 
-  computed:
-    loading: -> false
-    sortedTycoons: -> _.orderBy(_.map(@onlineTycoons, (tycoon) =>
-      if tycoon.type == 'visitor'
-        tycoon.tycoonName = @translate('identity.visitor')
-        tycoon.corporationId = tycoon.tycoonId
-      tycoon
-    ), ['tycoonName'], ['asc'])
+  data (): MainMenuData {
+    return {
+      visible: this.client_state?.menu?.is_visible('chat'),
+      onlinePromise: null,
+      onlineTycoons: null
+    };
+  },
 
-  mounted: ->
-    @client_state?.menu?.subscribe_menu_listener =>
-      @visible = @client_state?.menu?.is_visible('chat')
+  computed: {
+    loading () { return false; },
+    sortedTycoons (): Array<Tycoon> {
+      return _.orderBy(_.map(this.onlineTycoons, (tycoon) => {
+        if (tycoon.type === 'visitor') {
+          tycoon.tycoonName = this.$translate('identity.visitor');
+          tycoon.corporationId = tycoon.tycoonId;
+        }
+        return tycoon;
+      }), ['tycoonName'], ['asc']);
+    }
+  },
 
-  watch:
-    visible: ->
-      if @visible
-        @refreshTycoons()
-      else
-        @onlineTycoons = null
+  mounted () {
+    this.client_state?.menu?.subscribe_menu_listener(() => {
+      this.visible = this.client_state?.menu?.is_visible('chat');
+    });
+  },
 
-  methods:
-    translate: (text_key) -> @managers?.translation_manager?.text(text_key)
-    loadCorporation: -> (corporationId) => @managers.corporation_manager.load_by_corporation(corporationId)
+  watch: {
+    visible () {
+      if (this.visible) {
+        this.refreshTycoons();
+      }
+      else {
+        this.onlineTycoons = null;
+      }
+    }
+  },
 
-    refreshTycoons: ->
-      try
-        @onlinePromise = @managers.planets_manager.load_online_tycoons(@client_state.player.planet_id)
-        @onlineTycoons = await @onlinePromise
-        @onlinePromise = null
-      catch err
-        @onlinePromise = null
-        @client_state.add_error_message('Failure loading online tycoons from server', err)
+  methods: {
+    loadCorporation (corporationId: string) {
+      this.$starpeaceClient.managers.corporation_manager.load_by_corporation(corporationId);
+    },
 
+    async refreshTycoons () {
+      try {
+        this.onlinePromise = this.$starpeaceClient.managers.planets_manager.load_online_tycoons(this.client_state.player.planet_id);
+        this.onlineTycoons = await this.onlinePromise;
+        this.onlinePromise = null
+      }
+      catch (err) {
+        this.onlinePromise = null;
+        this.client_state.add_error_message('Failure loading online tycoons from server', err);
+      }
+    }
+  }
+}
 </script>
 
 <style lang='sass' scoped>

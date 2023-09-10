@@ -1,7 +1,7 @@
 <template lang='pug'>
 .card.has-header.is-starpeace.sp-menu(:oncontextmenu="'return ' + !$config.public.disableRightClick")
   .card-header
-    .card-header-title {{translate('ui.menu.tycoon_search.header')}}
+    .card-header-title {{$translate('ui.menu.tycoon_search.header')}}
     .card-header-icon.card-close(@click.stop.prevent="client_state.menu.toggle_menu('tycoon_search')")
       font-awesome-icon(:icon="['fas', 'times']")
 
@@ -14,7 +14,7 @@
               a(@click.stop.prevent='clear_query')
                 span.sp-breadcrumb-icon
                   font-awesome-icon(:icon="['fas', 'home']")
-                span {{translate('ui.menu.tycoon_search.breadcrumb')}}
+                span {{$translate('ui.menu.tycoon_search.breadcrumb')}}
 
             li.is-active
               a
@@ -37,23 +37,22 @@
             menu-shared-menu-panel-corporation(
               :hide-tycoon="mode=='TYCOONS'"
               :hide-corporation="mode=='CORPORATIONS'"
-              :managers='managers'
               :client-state='client_state'
               :tycoon='result'
               :corporation='slotProps.details'
             )
 
         template(v-else)
-          span.empty-results {{translate('ui.menu.tycoon_search.results.none')}}
+          span.empty-results {{$translate('ui.menu.tycoon_search.results.none')}}
 
     template(v-else)
       .query-fields
         .tabs.is-centered.is-toggle.is-small.is-fullwidth.sp-tabs.query-mode-toggle
           ul
             li(:class="{'is-active':mode=='CORPORATIONS'}" @click.stop.prevent="swap_mode('CORPORATIONS')")
-              a {{translate('ui.menu.tycoon_search.toggle.corporation')}}
+              a {{$translate('ui.menu.tycoon_search.toggle.corporation')}}
             li(:class="{'is-active':mode=='TYCOONS'}" @click.stop.prevent="swap_mode('TYCOONS')")
-              a {{translate('ui.menu.tycoon_search.toggle.tycoon')}}
+              a {{$translate('ui.menu.tycoon_search.toggle.tycoon')}}
 
         form.field.has-addons.query-input(@submit.stop.prevent='query_search')
           p.control.has-icons-left.is-expanded
@@ -61,77 +60,96 @@
             span.icon.is-left
               font-awesome-icon(:icon="['fas', 'search']")
           p.control
-            button.button.is-starpeace(@click.stop.prevent='query_search' :disabled='!can_query') {{translate('ui.menu.tycoon_search.action.search')}}
+            button.button.is-starpeace(@click.stop.prevent='query_search' :disabled='!can_query') {{$translate('ui.menu.tycoon_search.action.search')}}
 
         .query-index.is-size-4
           a(v-for='n in 26' @click.stop.prevent='query_prefix(n)') {{String.fromCharCode(65 + n - 1)}}
 
 </template>
 
-<script lang='coffee'>
-export default
-  props:
-    managers: Object
-    ajax_state: Object
-    client_state: Object
+<script lang='ts'>
+import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
 
-  data: ->
-    mode: 'TYCOONS'
-    query: ''
+export default {
+  props: {
+    ajax_state: Object,
+    client_state: { type: ClientState, required: true }
+  },
 
-    querying: false
-    results: null
+  data () {
+    return {
+      mode: 'TYCOONS',
+      query: '',
 
-  computed:
-    is_ready: -> @client_state?.workflow_status == 'ready'
+      querying: false,
+      results: null
+    };
+  },
 
-    can_query: -> !@querying && @query.length >= 3
-    has_query: -> @querying || @results != null
+  computed: {
+    is_ready () { return this.client_state?.workflow_status == 'ready'; },
 
-  watch:
-    is_ready: () ->
-      unless @is_ready
-        @mode = 'TYCOONS'
-        @query = ''
-        @results = null
+    can_query () { return !this.querying && this.query.length >= 3; },
+    has_query () { return this.querying || !!this.results; }
+  },
 
-  methods:
-    translate: (text_key) -> @managers?.translation_manager?.text(text_key)
+  watch: {
+    is_ready () {
+      if (!this.is_ready) {
+        this.mode = 'TYCOONS';
+        this.query = '';
+        this.results = null;
+      }
+    }
+  },
 
-    swap_mode: (mode) ->
-      @mode = mode
-      @query = ''
+  methods: {
+    swap_mode (mode: string) {
+      this.mode = mode;
+      this.query = '';
+    },
 
-    clear_query: () ->
-      @query = ''
-      @results = null
+    clear_query () {
+      this.query = '';
+      this.results = null;
+    },
 
-    query_prefix: (num) ->
-      @query = String.fromCharCode(65 + num - 1)
-      @do_query(@query, true)
+    query_prefix (num: number) {
+      this.query = String.fromCharCode(65 + num - 1);
+      this.do_query(this.query, true)
+    },
 
-    query_search: () ->
-      return unless @can_query
-      @do_query(@query, false)
+    query_search () {
+      if (!this.can_query) return;
+      this.do_query(this.query, false);
+    },
 
-    do_query: (query, queryPrefix) ->
-      try
-        @querying = true
+    async do_query (query: string, queryPrefix: boolean) {
+      try {
+        this.querying = true;
 
-        if @mode == 'TYCOONS'
-          results = await @managers.planets_manager.search_tycoons(query, queryPrefix)
-          @results = results if query == @query
-        else
-          results = await @managers.planets_manager.search_corporations(query, queryPrefix)
-          @results = results if query == @query
+        if (this.mode === 'TYCOONS') {
+          const results = await this.$starpeaceClient.managers.planets_manager.search_tycoons(query, queryPrefix);
+          if (query === this.query) this.results = results;
+        }
+        else {
+          const results = await this.$starpeaceClient.managers.planets_manager.search_corporations(query, queryPrefix);
+          if (query === this.query) this.results = results;
+        }
 
-        @querying = false
-      catch err
-        @client_state.add_error_message('Failure loading results from server', err)
-        @querying = false
+        this.querying = false;
+      }
+      catch (err) {
+        this.client_state.add_error_message('Failure loading results from server', err);
+        this.querying = false;
+      }
+    },
 
-    load_corporation: (corporation_id) -> @managers.corporation_manager.load_by_corporation(corporation_id)
-
+    load_corporation (corporation_id: string) {
+      this.$starpeaceClient.managers.corporation_manager.load_by_corporation(corporation_id);
+    }
+  }
+}
 </script>
 
 <style lang='sass' scoped>

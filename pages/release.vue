@@ -1,7 +1,7 @@
 <template lang='pug'>
 client-only
   #application-container(v-cloak=true)
-    sp-header(:translation_manager='translation_manager', :options='options')
+    page-layout-header(:client_state='client_state')
 
     #application-body
       .columns
@@ -14,35 +14,24 @@ client-only
             .card-header
               .card-header-title Release Notes - Archive
             .card-content.release-notes(v-html='release_notes_archive_html')
-    sp-footer
+
+    page-layout-footer
 </template>
 
-<script lang='coffee'>
-import Header from '~/components/page-layout/header.vue'
-import Footer from '~/components/page-layout/footer.vue'
-
-import Options from '~/plugins/starpeace-client/state/options.coffee'
-import TranslationManager from '~/plugins/starpeace-client/language/translation-manager.coffee'
-
-if process.client
-  options = new Options()
-  translation_manager = new TranslationManager(null, null, options)
-
+<script>
 definePageMeta({
   layout: 'release'
 })
 
-export default
-  components:
-    'sp-header': Header
-    'sp-footer': Footer
-
-  data: ->
-    translation_manager: translation_manager
-    options: options
-
-    release_notes_latest_html: @$config.public.RELEASE_NOTES_HTML
-    release_notes_archive_html: @$config.public.RELEASE_NOTES_ARCHIVE_HTML
+export default {
+  data () {
+    return {
+      client_state: this.$starpeaceClient?.client_state,
+      release_notes_latest_html: this.$config.public.RELEASE_NOTES_HTML,
+      release_notes_archive_html: this.$config.public.RELEASE_NOTES_ARCHIVE_HTML
+    };
+  }
+}
 </script>
 
 <style lang='sass' scoped>

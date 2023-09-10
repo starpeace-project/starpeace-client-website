@@ -1,7 +1,7 @@
 import _ from 'lodash'
 
 import StoreProductOutput from '~/plugins/starpeace-client/building/simulation/store/store-product-output.coffee'
-import ResourceQuantity from '~/plugins/starpeace-client/industry/resource-quantity.coffee'
+import ResourceQuantity from '~/plugins/starpeace-client/industry/resource-quantity'
 
 export default class StoreProduct
 

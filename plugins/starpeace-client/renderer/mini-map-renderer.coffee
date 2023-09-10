@@ -38,7 +38,6 @@ export default class MiniMapRenderer
   update_map_data: (source_x, target_x, source_y, target_y) ->
     return unless @client_state.planet.game_map?.map_rgba_pixels?
 
-    now = DateTime.now()
     game_map = @client_state.planet.game_map
     building_library = @client_state.core.building_library
     planet_library = @client_state.core.planet_library
@@ -54,7 +53,7 @@ export default class MiniMapRenderer
         building_chunk_info = game_map.building_map.chunk_building_info_at(x, y)
         road_chunk_info = game_map.building_map.chunk_road_info_at(x, y)
 
-        if building_chunk_info?.is_current(now) && road_chunk_info?.is_current(now)
+        if building_chunk_info?.has_data() && road_chunk_info?.has_data()
           building_info = game_map.building_map.building_info_at(x, y)
           building_metadata = if building_info? then building_library.metadata_by_id[building_info.definition_id] else null
           if game_map.road_map.road_info_at(x, y)

@@ -27,6 +27,8 @@ export default class OverlayMap
         )
       true
 
+  stop: () -> chunk.stop() for chunk in Object.values(@chunks)
+
   chunk_update_at: (type, x, y) -> @chunks[type]?.update_at(x, y)
   chunk_info_at: (type, x, y) -> @chunks[type]?.info_at(x, y)
 

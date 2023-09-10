@@ -19,6 +19,7 @@ export default class PlanetState
     @tycoons_online = null
 
   reset_state: () ->
+    @game_map.stop() if @game_map
     @game_map = null
 
     @connecting = false
@@ -68,28 +69,27 @@ export default class PlanetState
   can_place_building: (map_x, map_y, building_city_zone_id, width, height) ->
     has_all_data = true
     can_place = true
-    now = DateTime.now()
     for j in [0...height]
       for i in [0...width]
         tile_i = map_x - i
         tile_j = map_y - j
 
         building_chunk_info = @game_map.building_map.chunk_building_info_at(tile_i, tile_j)
-        unless building_chunk_info?.is_current(now)
+        unless building_chunk_info?.has_data()
           has_all_data = false
           @game_map.building_map.chunk_building_update_at(tile_i, tile_j)
         else if @game_map.building_map.building_info_at(tile_i, tile_j)?
           can_place = false
 
         road_chunk_info = @game_map.building_map.chunk_road_info_at(tile_i, tile_j)
-        unless road_chunk_info?.is_current(now)
+        unless road_chunk_info?.has_data()
           has_all_data = false
           @game_map.building_map.chunk_road_update_at(tile_i, tile_j)
         else if @game_map.road_map.road_info_at(tile_i, tile_j)?
           can_place = false
 
         zone_chunk_info = @game_map.overlay_map.chunk_info_at('ZONES', tile_i, tile_j)
-        unless zone_chunk_info?.is_current(now)
+        unless zone_chunk_info?.has_data()
           has_all_data = false
           @game_map.overlay_map.chunk_update_at('ZONES', tile_i, tile_j)
         else

@@ -2,30 +2,34 @@
 #webgl-warning-container(v-show='is_visible')
   .card.is-starpeace.has-header
     .card-header
-      .card-header-title {{translate('misc.webgl.warning.header')}}
+      .card-header-title {{$translate('misc.webgl.warning.header')}}
       .card-header-icon.card-close(v-on:click.stop.prevent="dismissed = true")
         font-awesome-icon(:icon="['fas', 'times']")
 
     .card-content.sp-menu-background
       .card-description
-        | {{translate('misc.webgl.warning.description')}}
+        | {{$translate('misc.webgl.warning.description')}}
 
 </template>
 
-<script lang='coffee'>
-export default
-  props:
-    managers: Object
-    client_state: Object
+<script lang='ts'>
+import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
 
-  data: ->
-    dismissed: false
+export default {
+  props: {
+    client_state: { type: ClientState, required: true }
+  },
 
-  computed:
-    is_visible: -> !@dismissed && (@client_state?.initialized || false) && (@client_state?.webgl_warning || false)
+  data () {
+    return {
+      dismissed: false
+    };
+  },
 
-  methods:
-    translate: (text_key) -> @managers?.translation_manager?.text(text_key)
+  computed: {
+    is_visible (): boolean { return !this.dismissed && this.client_state?.initialized && this.client_state?.webgl_warning; }
+  }
+}
 </script>
 
 <style lang='sass' scoped>

@@ -22,17 +22,23 @@ export default class GameMap
     @road_map = new RoadMap(client_state, @ground_map, @building_map, @concrete_map, @width, @height)
     @overlay_map = new OverlayMap(client_state, overlay_manager, @width, @height)
 
+  stop: () -> map.stop() for map in [@building_map, @overlay_map]
+
   town_color_at: (x, y) ->
     index = ((@height - x) * @width + (@width - y)) * 4
     ((@towns_rgba_pixels[index + 0] << 16) & 0xFF0000) | ((@towns_rgba_pixels[index + 1] << 8) & 0x00FF00) | ((@towns_rgba_pixels[index + 2] << 0) & 0x0000FF)
 
-
   info_for_tile: (now, x, y, render_trees, show_zones, show_overlay, current_overlay) ->
     building_chunk_info = @building_map.chunk_building_info_at(x, y)
-    @building_map.chunk_building_update_at(x, y) unless building_chunk_info?.is_current(now)
+    @building_map.chunk_building_update_at(x, y) if !building_chunk_info || building_chunk_info?.is_expired(now)
 
     road_chunk_info = @building_map.chunk_road_info_at(x, y)
-    @building_map.chunk_road_update_at(x, y) unless road_chunk_info?.is_current(now)
+    @building_map.chunk_road_update_at(x, y) if !road_chunk_info || road_chunk_info?.is_expired(now)
+
+    zone_chunk_info = if show_zones then @overlay_map.chunk_info_at('ZONES', x, y) else null
+    overlay_chunk_info = if !show_zones && show_overlay then @overlay_map.chunk_info_at(current_overlay.type, x, y) else null
+    @overlay_map.chunk_update_at('ZONES', x, y) if show_zones && !zone_chunk_info || zone_chunk_info?.is_expired(now)
+    @overlay_map.chunk_update_at(current_overlay.type, x, y) if !show_zones && show_overlay && !overlay_chunk_info || overlay_chunk_info?.is_expired(now)
 
     zone_info = null
     overlay_info = null
@@ -40,21 +46,10 @@ export default class GameMap
     road_info = null
     concrete_info = null
 
-    chunk_loaded = building_chunk_info?.is_current(now) && road_chunk_info?.is_current(now)
+    chunk_loaded = building_chunk_info?.has_data() && road_chunk_info?.has_data()
     if chunk_loaded
-      if show_zones
-        zone_chunk_info = @overlay_map.chunk_info_at('ZONES', x, y)
-        if zone_chunk_info?.is_current(now)
-          zone_info = @overlay_map.overlay_at('ZONES', x, y)
-        else
-          @overlay_map.chunk_update_at('ZONES', x, y)
-
-      else if show_overlay
-        overlay_chunk_info = @overlay_map.chunk_info_at(current_overlay.type, x, y)
-        if overlay_chunk_info?.is_current(now)
-          overlay_info = @overlay_map.overlay_at(current_overlay.type, x, y)
-        else
-          @overlay_map.chunk_update_at(current_overlay.type, x, y)
+      zone_info = if zone_chunk_info?.has_data() then @overlay_map.overlay_at('ZONES', x, y) else null
+      overlay_info = if overlay_chunk_info?.has_data() then @overlay_map.overlay_at(current_overlay.type, x, y) else null
 
       building_info = @building_map.building_info_at(x, y)
       road_info = @road_map.road_info_at(x, y)

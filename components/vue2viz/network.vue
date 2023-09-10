@@ -49,6 +49,7 @@ export default {
     },
     options (newValue, oldValue) {
       this.network.setOptions(this.options);
+      this.network.fit();
       this.network.redraw();
     }
   },

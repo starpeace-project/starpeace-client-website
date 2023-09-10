@@ -9,25 +9,25 @@
 
   .column.connections
     .connection-information(v-if='product')
-      span.sp-kv-key {{translate('toolbar.inspect.products.label.price')}}:
-      span.sp-kv-value {{format_percent(priceRatio)}} ({{format_money(product.price)}})
-      span.sp-kv-key {{translate('toolbar.inspect.products.label.last_value')}}:
-      span.sp-kv-value {{format_number(product.total_velocity)}} {{resourceTypeLabel(product.resource_id)}}
-      span.sp-kv-key {{translate('toolbar.inspect.products.label.quality')}}:
-      span.sp-kv-value {{format_percent(product.quality)}}
+      span.sp-kv-key {{$translate('toolbar.inspect.products.label.price')}}:
+      span.sp-kv-value {{$format_percent(priceRatio)}} ({{$format_money(product.price)}})
+      span.sp-kv-key {{$translate('toolbar.inspect.products.label.last_value')}}:
+      span.sp-kv-value {{$format_number(product.total_velocity)}} {{resourceTypeLabel(product.resource_id)}}
+      span.sp-kv-key {{$translate('toolbar.inspect.products.label.quality')}}:
+      span.sp-kv-value {{$format_percent(product.quality)}}
 
     .connection-details.sp-scrollbar
       table
         thead
           tr
-            th.sp-kv-key {{translate('toolbar.inspect.products.label.customer')}}
-            th.sp-kv-key {{translate('toolbar.inspect.products.label.company')}}
-            th.has-text-right.sp-kv-key {{translate('toolbar.inspect.products.label.sales')}}
-            th.has-text-right.sp-kv-key {{translate('toolbar.inspect.products.label.transport_cost')}}
+            th.sp-kv-key {{$translate('toolbar.inspect.products.label.customer')}}
+            th.sp-kv-key {{$translate('toolbar.inspect.products.label.company')}}
+            th.has-text-right.sp-kv-key {{$translate('toolbar.inspect.products.label.sales')}}
+            th.has-text-right.sp-kv-key {{$translate('toolbar.inspect.products.label.transport_cost')}}
         tbody
           template(v-if='!connections.length')
             tr.is-empty
-              td(colspan=4) {{translate('ui.misc.none')}}
+              td(colspan=4) {{$translate('ui.misc.none')}}
           template(v-else v-for='connection,index in connections')
             tr(:class="{ 'is-active': selectedIndices[index] }" @click.stop.prevent='clickConnection(connection, index)')
               td.sp-kv-value
@@ -38,72 +38,90 @@
                     font-awesome-icon(:icon="['fas', 'times']")
                 | {{connection.sink_building_name}}
               td.sp-kv-value {{connection.sink_company_name}}
-              td.has-text-right.sp-kv-value {{format_number(connection.velocity)}}
-              td.has-text-right.sp-kv-value {{format_money(connection.transport_cost)}}
+              td.has-text-right.sp-kv-value {{$format_number(connection.velocity)}}
+              td.has-text-right.sp-kv-value {{$format_money(connection.transport_cost)}}
 
 </template>
 
-<script lang='coffee'>
+<script lang='ts'>
 import _ from 'lodash';
+import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
 
-export default
-  props:
-    clientState: Object
-    managers: Object
+declare interface TabProductsData {
+  clickTimeout: ReturnType<typeof setTimeout> | null;
 
-    products: Array
+  productIndex: number;
+  selectedIndices: Record<string, boolean>;
+}
 
-    building: Object
-    definition: Object
+export default {
+  props: {
+    clientState: { type: ClientState, required: true },
+
+    products: Array,
+
+    building: Object,
+    definition: Object,
     simulation: Object
+  },
 
-  data: ->
-    clickTimeout: null
+  data (): TabProductsData {
+    return {
+      clickTimeout: null,
 
-    productIndex: 0
-    selectedIndices: {}
+      productIndex: 0,
+      selectedIndices: {}
+    };
+  },
 
-  computed:
-    sortedProducts: -> _.orderBy(@products, [(t) => @resourceTypeLabel(t.resource_id)], ['asc'])
+  computed: {
+    sortedProducts () { return _.orderBy(this.products, [(t) => this.resourceTypeLabel(t.resource_id)], ['asc']); },
 
-    product: -> @sortedProducts[@productIndex]
+    product () { return this.sortedProducts[this.productIndex]; },
 
-    priceRatio: ->
-      ifel_price = @resourceType(@product.resource_id)?.price || 0
-      if ifel_price > 0 then (@product.price / ifel_price) else 0
+    priceRatio () {
+      const ifel_price = this.resourceType(this.product.resource_id)?.price ?? 0;
+      return ifel_price > 0 ? (this.product.price / ifel_price) : 0
+    },
 
-    connections: -> @product?.connections || []
+    connections () { return this.product?.connections ?? []; }
+  },
 
-  watch:
-    productIndex: -> @selectedIndices = {}
+  watch: {
+    productIndex () {
+      this.selectedIndices = {};
+    }
+  },
 
-  methods:
-    translate: (key) -> if @managers? then @managers.translation_manager.text(key) else key
+  methods: {
+    resourceType (type_id: string) { return this.clientState.core.planet_library.resource_type_for_id(type_id); },
+    resourceTypeLabel (type_id: string) { return this.$translate(this.resourceType(type_id)?.label_plural); },
 
-    format_percent: (value) -> if _.isNumber(value) then "#{Math.round(value * 100)}%" else ''
-    format_money: (value) -> if _.isNumber(value) then "$#{Math.round(value).toLocaleString()}" else ''
-    format_number: (value) -> if _.isNumber(value) then value.toLocaleString() else ''
+    validConnection (index: number) { return index % 3 == 0; },
 
-    resourceType: (type_id) ->@clientState.core.planet_library.resource_type_for_id(type_id)
-    resourceTypeLabel: (type_id) -> @translate(@resourceType(type_id)?.label_plural)
+    clickConnection (connection, index) {
+      if (this.clickTimeout) {
+        clearTimeout(this.clickTimeout);
+        this.clickTimeout = null;
+        this.jumpConnection(connection);
+      }
+      else {
+        const should_deselect = this.selectedIndices[index];
+        this.$set(this.selectedIndices, index, true);
+        this.clickTimeout = setTimeout(() => {
+          if (should_deselect) this.$delete(this.selectedIndices, index);
+          this.clickTimeout = null
+        }, 250);
+      }
+    },
 
-    validConnection: (index) -> index % 3 == 0
-
-    clickConnection: (connection, index) ->
-      if @clickTimeout?
-        clearTimeout(@clickTimeout)
-        @clickTimeout = null
-        @jumpConnection(connection)
-      else
-        should_deselect = @selectedIndices[index]
-        @$set(@selectedIndices, index, true)
-        @clickTimeout = setTimeout(=>
-          @$delete(@selectedIndices, index) if should_deselect
-          @clickTimeout = null
-        , 250)
-
-    jumpConnection: (connection) -> @clientState.jump_to(connection.sink_building_map_x, connection.sink_building_map_y, null) if connection?.sink_building_map_x? && connection?.sink_building_map_y?
-
+    jumpConnection (connection) {
+      if (connection?.sink_building_map_x && connection?.sink_building_map_y) {
+        this.clientState.jump_to(connection.sink_building_map_x, connection.sink_building_map_y, null);
+      }
+    }
+  }
+}
 </script>
 
 <style lang='sass' scoped>

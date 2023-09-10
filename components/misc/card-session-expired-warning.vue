@@ -3,26 +3,26 @@
   .modal-background
   .card.is-starpeace.has-header
     .card-header
-      .card-header-title {{translate('misc.expired_session.warning.header')}}
+      .card-header-title {{$translate('misc.expired_session.warning.header')}}
 
     .card-content.sp-menu-background
       .card-description
-        | {{translate('misc.expired_session.warning.description')}}
+        | {{$translate('misc.expired_session.warning.description')}}
 
 </template>
 
-<script lang='coffee'>
-export default
-  props:
-    managers: Object
-    client_state: Object
+<script lang='ts'>
+import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
 
-  computed:
-    is_visible: -> @client_state?.initialized && @client_state?.session_expired_warning
+export default {
+  props: {
+    client_state: { type: ClientState, required: true }
+  },
 
-  methods:
-    translate: (text_key) -> @managers?.translation_manager?.text(text_key)
-
+  computed: {
+    is_visible (): boolean { return this.client_state?.initialized && this.client_state?.session_expired_warning; }
+  }
+}
 </script>
 
 <style lang='sass' scoped>

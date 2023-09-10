@@ -6,7 +6,7 @@ import EventListener from '~/plugins/starpeace-client/state/event-listener'
 
 import CoreState from '~/plugins/starpeace-client/state/core/core-state.coffee'
 
-import BookmarkState from '~/plugins/starpeace-client/state/player/bookmark-state.coffee'
+import BookmarkState from '~/plugins/starpeace-client/state/player/bookmark-state'
 import CorporationState from '~/plugins/starpeace-client/state/player/corporation-state.coffee'
 import IdentityState from '~/plugins/starpeace-client/state/player/identity-state'
 import PlanetState from '~/plugins/starpeace-client/state/player/planet-state.coffee'
@@ -59,7 +59,7 @@ export default class ClientState
     @core.road_library.subscribe_listener => @update_state()
     @core.sign_library.subscribe_listener => @update_state()
 
-    @bookmarks.subscribe_bookmarks_metadata_listener => @update_state()
+    @bookmarks.subscribeBookmarksMetadataListener => @update_state()
     @corporation.subscribe_company_ids_listener => @update_state()
     @corporation.subscribe_cashflow_listener => @update_state()
     @corporation.subscribe_company_buildings_listener => @update_state()
@@ -81,8 +81,12 @@ export default class ClientState
     @session_expired_warning = false
     @server_connection_warning = false
 
-    @loading = false
     @workflow_status = 'initializing'
+
+    @renderer_initializing = false
+    @mini_map_renderer_initializing = false
+    @construction_preview_renderer_initializing = false
+    @inspect_preview_renderer_initializing = false
 
     @renderer_initialized = false
     @mini_map_renderer_initialized = false
@@ -100,7 +104,10 @@ export default class ClientState
     @reset_planet_state()
 
   reset_planet_state: () ->
+    @managers_initializing = false
+    @managers_initialized = false
     @initialized = false
+
     @planet_event_client.disconnect() if @planet_event_client?
     @planet_event_client = null
 
@@ -114,7 +121,7 @@ export default class ClientState
 
     @core.reset_planet()
 
-    @bookmarks.reset_state()
+    @bookmarks.reset()
     @corporation.reset_state()
     @player.reset_state()
     @planet.reset_state()
@@ -139,7 +146,7 @@ export default class ClientState
       @notify_workflow_status_listeners()
 
   determine_state: () ->
-    unless @initialized && @renderer_initialized && @mini_map_renderer_initialized && @construction_preview_renderer_initialized && @inspect_preview_renderer_initialized
+    unless @initialized && @managers_initialized && @renderer_initialized && @mini_map_renderer_initialized && @construction_preview_renderer_initialized && @inspect_preview_renderer_initialized
       return 'pending_universe' unless @identity.galaxy_id? || @identity.galaxy_visa_type?
 
       planet_metadata = @current_planet_metadata()
@@ -152,7 +159,7 @@ export default class ClientState
 
     'ready'
 
-  state_needs_player_data: () -> @is_tycoon() && @player.corporation_id? && (!@player.has_data() || !@corporation.has_data() || !@bookmarks.has_data())
+  state_needs_player_data: () -> @is_tycoon() && @player.corporation_id? && (!@player.has_data() || !@corporation.has_data() || !@bookmarks.hasData)
 
 
   has_session: () -> @player.planet_visa_id? && @ajax_state.invalid_connection_counter < MAX_FAILED_CONNECTION_ERRORS && @ajax_state.invalid_session_counter < MAX_FAILED_AUTH_ERRORS
@@ -183,13 +190,13 @@ export default class ClientState
 
   reset_to_galaxy: () ->
     setTimeout(=>
-      @initialized = false
+      #@initialized = false
       @reset_planet_state()
     , 250)
 
   change_planet_id: (new_planet_visa_type, planet_id) ->
-    @initialized = false
     setTimeout(=>
+      #@initialized = false
       @reset_planet_state()
       @player.set_planet_visa_type(planet_id, new_planet_visa_type)
     , 250)

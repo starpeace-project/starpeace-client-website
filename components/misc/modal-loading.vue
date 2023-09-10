@@ -1,12 +1,14 @@
 <template lang='pug'>
-#loading-modal(:class="{'is-grid':withinGrid, 'is-absolute':withinAbsolute}")
+#loading-modal(:class="{'is-grid': withinGrid, 'is-absolute': withinAbsolute}")
 </template>
 
-<script lang='coffee'>
-export default
-  props:
-    withinGrid: Boolean
+<script lang='ts'>
+export default {
+  props: {
+    withinGrid: Boolean,
     withinAbsolute: Boolean
+  }
+}
 </script>
 
 <style lang='sass' scoped>

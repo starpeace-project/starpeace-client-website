@@ -3,13 +3,13 @@
 
   .level.is-mobile.sp-actions-container.is-top
     .level-item.action-column
-      button.button.is-fullwidth.is-starpeace(@click.stop.prevent="$emit('compose')" :disabled='!can_compose' :class="{'is-active': compose_mode}") {{translate('ui.menu.mail.contacts.action.new')}}
+      button.button.is-fullwidth.is-starpeace(@click.stop.prevent="$emit('compose')" :disabled='!can_compose' :class="{'is-active': compose_mode}") {{$translate('ui.menu.mail.contacts.action.new')}}
     .level-item.action-column
-      button.button.is-fullwidth.is-starpeace(@click.stop.prevent="$emit('delete')" :disabled='!can_message_action') {{translate('ui.menu.mail.contacts.action.delete')}}
+      button.button.is-fullwidth.is-starpeace(@click.stop.prevent="$emit('delete')" :disabled='!can_message_action') {{$translate('ui.menu.mail.contacts.action.delete')}}
     .level-item.action-column
-      button.button.is-fullwidth.is-starpeace(@click.stop.prevent="$emit('reply')" :disabled='!can_message_action') {{translate('ui.menu.mail.contacts.action.reply')}}
+      button.button.is-fullwidth.is-starpeace(@click.stop.prevent="$emit('reply')" :disabled='!can_message_action') {{$translate('ui.menu.mail.contacts.action.reply')}}
     .level-item.action-column
-      button.button.is-fullwidth.is-starpeace(@click.stop.prevent="$emit('forward')" :disabled='!can_message_action') {{translate('ui.menu.mail.contacts.action.forward')}}
+      button.button.is-fullwidth.is-starpeace(@click.stop.prevent="$emit('forward')" :disabled='!can_message_action') {{$translate('ui.menu.mail.contacts.action.forward')}}
 
   aside.sp-scrollbar
     .mail-item(v-for='mail in mails' :class="{'selected':mail.id==selected_mail_id, 'unread':!mail.read}")
@@ -23,77 +23,99 @@
 
 </template>
 
-<script lang='coffee'>
+<script lang='ts'>
 import _ from 'lodash';
+import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
 
-export default
-  props:
-    managers: Object
-    ajax_state: Object
-    client_state: Object
+declare interface MessagesData {
+  menu_visible: boolean;
+  mode: string;
+  mark_read_mail_id: string | null;
+  mark_read_callback: any | null;
+}
 
-    loading: Boolean
 
-  data: ->
-    menu_visible: @client_state?.menu?.is_visible('mail')
+export default {
+  props: {
+    ajax_state: Object,
+    client_state: { type: ClientState, required: true },
 
-    mode: 'CONTACTS'
+    loading: { type: Boolean, required: true }
+  },
 
-    mark_read_mail_id: null
-    mark_read_callback: null
+  data (): MessagesData {
+    return {
+      menu_visible: this.client_state.menu?.is_visible('mail') ?? false,
 
-  mounted: ->
-    @client_state?.menu?.subscribe_menu_listener =>
-      @menu_visible = @client_state?.menu?.is_visible('mail')
+      mode: 'CONTACTS',
 
-  computed:
-    is_ready: -> @client_state.workflow_status == 'ready'
-    has_corporation: -> if @is_ready then @client_state.is_tycoon() && @client_state.player.corporation_id?.length else false
+      mark_read_mail_id: null,
+      mark_read_callback: null
+    };
+  },
 
-    selected_mail_id: -> @client_state.player.selected_mail_id
-    selected_mail: -> if @selected_mail_id? then @client_state.player.mail_by_id[@selected_mail_id] else null
+  mounted () {
+    this.client_state?.menu?.subscribe_menu_listener(() => {
+      this.menu_visible = this.client_state?.menu?.is_visible('mail') ?? false;
+    });
+  },
 
-    compose_mode: -> @client_state.player.mail_compose_mode
+  computed: {
+    is_ready () { return this.client_state.workflow_status === 'ready'; },
+    has_corporation () { return this.is_ready && this.client_state.is_tycoon() && this.client_state.player.corporation_id?.length > 0; },
 
-    can_compose: -> @has_corporation && !@loading
-    can_message_action: -> @has_corporation && @selected_mail_id?.length && !@compose_mode && !@loading
-    actions_disabled: -> !@is_ready && @has_corporation
+    selected_mail_id () { return this.client_state.player.selected_mail_id; },
+    selected_mail () { return this.selected_mail_id ? this.client_state.player.mail_by_id[this.selected_mail_id] : null; },
 
-    mails: -> _.orderBy(_.values(@client_state.player.mail_by_id), ['sent_at'], ['desc'])
+    compose_mode () { return this.client_state.player.mail_compose_mode; },
 
-  methods:
-    translate: (text_key) -> @managers?.translation_manager?.text(text_key)
+    can_compose (): boolean { return this.has_corporation && !this.loading; },
+    can_message_action (): boolean { return this.has_corporation && this.selected_mail_id?.length > 0 && !this.compose_mode && !this.loading; },
+    actions_disabled (): boolean { return !this.is_ready && this.has_corporation; },
 
-    mark_read: (mail_id) ->
-      @managers.mail_manager.mark_read(@client_state.player.corporation_id, mail_id)
-        .then =>
-          @mark_read_mail_id = null
-          @mark_read_callback = null
-        .catch (err) =>
-          @client_state.add_error_message('Failure marking mail read', err)
-          @mark_read_mail_id = null
-          @mark_read_callback = null
+    mails () { return _.orderBy(_.values(this.client_state.player.mail_by_id), ['sent_at'], ['desc']); }
+  },
 
-    select_mail: (mail_id) ->
-      return if @loading
+  methods: {
+    async mark_read (mail_id: string) {
+      try {
+        await this.$starpeaceClient.managers.mail_manager.mark_read(this.client_state.player.corporation_id, mail_id);
+      }
+      catch (err) {
+        this.client_state.add_error_message('Failure marking mail read', err);
+      }
+      finally {
+        this.mark_read_mail_id = null;
+        this.mark_read_callback = null;
+      }
+    },
 
-      if !@client_state.player.mail_compose_mode && @client_state.player.selected_mail_id == mail_id
-        @client_state.player.selected_mail_id = null
-        return
+    select_mail (mail_id: string) {
+      if (this.loading) return;
 
-      if @client_state.player.mail_compose_mode
-        @client_state.player.end_compose()
+      if (!this.client_state.player.mail_compose_mode && this.client_state.player.selected_mail_id === mail_id) {
+        this.client_state.player.selected_mail_id = null;
+        return;
+      }
 
-      if @mark_read_callback? && @mark_read_mail_id != mail_id
-        @mark_read_mail_id = null
-        clearTimeout(@mark_read_callback)
+      if (this.client_state.player.mail_compose_mode) {
+        this.client_state.player.end_compose();
+      }
 
-      if @client_state.player.mail_by_id[mail_id]? && !@client_state.player.mail_by_id[mail_id].read
-        @mark_read_mail_id = mail_id
-        @mark_read_callback = setTimeout((=> @mark_read(mail_id)), 500)
+      if (this.mark_read_callback && this.mark_read_mail_id !== mail_id) {
+        this.mark_read_mail_id = null;
+        clearTimeout(this.mark_read_callback);
+      }
 
-      @client_state.player.selected_mail_id = mail_id
+      if (this.client_state.player.mail_by_id[mail_id] && !this.client_state.player.mail_by_id[mail_id].read) {
+        this.mark_read_mail_id = mail_id;
+        this.mark_read_callback = setTimeout(() => this.mark_read(mail_id), 500);
+      }
 
+      this.client_state.player.selected_mail_id = mail_id;
+    }
+  }
+}
 </script>
 
 <style lang='sass' scoped>

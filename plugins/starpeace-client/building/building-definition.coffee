@@ -1,5 +1,5 @@
 
-import Translation from '~/plugins/starpeace-client/language/translation.coffee'
+import Translation from '~/plugins/starpeace-client/language/translation'
 
 export default class BuildingDefinition
   constructor: (@id) ->

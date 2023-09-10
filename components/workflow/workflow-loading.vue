@@ -4,12 +4,12 @@
   .label-loading {{message}}
 </template>
 
-<script lang='coffee'>
-export default
-  props:
-    message: String
-    show_menu: Boolean
-
+<script lang='ts'>
+export default {
+  props: {
+    message: { type: String, required: true }
+  }
+}
 </script>
 
 <style lang='sass' scoped>

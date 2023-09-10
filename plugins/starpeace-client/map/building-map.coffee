@@ -22,6 +22,10 @@ export default class BuildingMap
       @client_state.planet.notify_map_data_listeners({ type: 'road', info: chunk_info })
     )
 
+  stop: () ->
+    @building_chunks.stop()
+    @road_chunks.stop()
+
   chunk_building_update_at: (x, y) -> @building_chunks.update_at(x, y)
   chunk_building_info_at: (x, y) -> @building_chunks.info_at(x, y)
   chunk_road_update_at: (x, y) -> @road_chunks.update_at(x, y)

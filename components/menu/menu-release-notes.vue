@@ -2,31 +2,32 @@
 #notes-container(:oncontextmenu="'return ' + !$config.public.disableRightClick")
   .card.is-starpeace.has-header
     .card-header
-      .card-header-title {{translate('ui.menu.release_notes.header')}}
+      .card-header-title {{$translate('ui.menu.release_notes.header')}}
       .card-header-icon.card-close(v-on:click.stop.prevent="client_state.menu.toggle_menu('release_notes')")
         font-awesome-icon(:icon="['fas', 'times']")
     .card-content.sp-menu-background.release-notes
       .card-description
-        | {{translate('ui.menu.release_notes.info.prefix')}}
+        | {{$translate('ui.menu.release_notes.info.prefix')}}
         |
-        a(href='/release', target='_blank') {{translate('ui.menu.release_notes.info.link')}}
+        a(href='/release', target='_blank') {{$translate('ui.menu.release_notes.info.link')}}
         |
-        | {{translate('ui.menu.release_notes.info.suffix')}}
+        | {{$translate('ui.menu.release_notes.info.suffix')}}
       span.notes-wrapper
         aside.notes-content.sp-scrollbar(v-html='release_notes_html')
 </template>
 
-<script lang='coffee'>
-export default
-  props:
-    client_state: Object
-    managers: Object
+<script lang='ts'>
+export default {
+  props: {
+    client_state: { type: Object, required: true }
+  },
 
-  data: ->
-    release_notes_html: @$config.public.RELEASE_NOTES_HTML
-
-  methods:
-    translate: (text_key) -> @managers?.translation_manager?.text(text_key)
+  data () {
+    return {
+      release_notes_html: this.$config.public.RELEASE_NOTES_HTML
+    };
+  }
+}
 </script>
 
 <style lang='sass' scoped>

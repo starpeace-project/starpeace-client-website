@@ -9,50 +9,52 @@
       img.loading-image.starpeace-logo.logo-loading
 
   template(v-else-if="building_type == 'PORTAL'")
-    toolbar-inspect-portal(:client-state='client_state' :managers='managers' :key='selected_building_id')
+    toolbar-inspect-portal(:client-state='client_state' :key='selected_building_id')
 
   template(v-else-if="building_type == 'TOWNHALL'")
-    toolbar-inspect-townhall(:client-state='client_state' :managers='managers' :key='selected_building_id')
+    toolbar-inspect-townhall(:client-state='client_state' :key='selected_building_id')
 
   template(v-else-if="building_type == 'TRADECENTER'")
     toolbar-inspect-trade-center(
       :key='selected_building_id'
       :client-state='client_state'
-      :managers='managers'
       :building='selected_building'
       :definition='selected_building_definition'
       :simulation='selected_building_simulation'
     )
 
   template(v-else)
-    toolbar-inspect-building(:client-state='client_state' :managers='managers' :key='selected_building_id')
+    toolbar-inspect-building(:client-state='client_state' :key='selected_building_id')
 
 </template>
 
-<script lang='coffee'>
-export default
-  props:
-    client_state: Object
-    managers: Object
+<script lang='ts'>
+import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
 
-  data: ->
-    tab_index: 0
+export default {
+  props: {
+    client_state: { type: ClientState, required: true }
+  },
 
-  computed:
-    is_ready: -> @client_state.initialized && @client_state?.workflow_status == 'ready'
+  data () {
+    return {
+      tab_index: 0
+    };
+  },
 
-    show_inspect: -> @client_state.interface?.selected_building_id? && @client_state.interface?.show_inspect
+  computed: {
+    is_ready () { return this.client_state.initialized && this.client_state?.workflow_status == 'ready'; },
 
-    selected_building_id: -> @client_state.interface?.selected_building_id
-    selected_building: -> if @show_inspect then @client_state.core.building_cache.building_for_id(@selected_building_id) else null
-    selected_building_definition: -> if @selected_building then @client_state.core.building_library.definition_for_id(@selected_building.definition_id) else null
-    selected_building_simulation: -> if @selected_building then @client_state.core.building_library.simulation_definition_for_id(@selected_building.definition_id) else null
+    show_inspect () { return this.client_state.interface?.selected_building_id?.length > 0 && this.client_state.interface?.show_inspect; },
 
-    building_type: -> @selected_building_simulation?.type
+    selected_building_id () { return this.client_state.interface?.selected_building_id; },
+    selected_building () { return this.show_inspect ? this.client_state.core.building_cache.building_for_id(this.selected_building_id) : null; },
+    selected_building_definition () { return this.selected_building ? this.client_state.core.building_library.definition_for_id(this.selected_building.definition_id) : null; },
+    selected_building_simulation () { return this.selected_building ? this.client_state.core.building_library.simulation_definition_for_id(this.selected_building.definition_id) : null; },
 
-  methods:
-    translate: (key) -> if @managers? then @managers.translation_manager.text(key) else key
-
+    building_type () { return this.selected_building_simulation?.type; }
+  }
+}
 </script>
 
 <style lang='sass' scoped>

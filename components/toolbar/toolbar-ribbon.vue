@@ -16,71 +16,88 @@
 
   .action-overlays
     button.button.is-fullwidth.is-fullheight.is-small.is-uppercase.is-starpeace.is-starpeace-light(:class="{ 'is-active': show_overlay }" @click.stop.prevent='toggle_overlay()')
-      | {{translate('footer.ribbon.overlay')}}
+      | {{$translate('footer.ribbon.overlay')}}
   .action-zones
     button.button.is-fullwidth.is-fullheight.is-small.is-uppercase.is-starpeace.is-starpeace-light(:class="{ 'is-active': show_zones }" @click.stop.prevent='toggle_zones')
-      | {{translate('footer.ribbon.city_zones')}}
+      | {{$translate('footer.ribbon.city_zones')}}
 
   .action-inspect
     button.button.is-fullwidth.is-fullheight.is-small.is-uppercase.is-starpeace.is-starpeace-light(:class="{ 'is-active': show_inspect }" :disabled='!can_inspect' @click.stop.prevent='toggle_inspect')
-      | {{translate('footer.ribbon.inspect')}}
+      | {{$translate('footer.ribbon.inspect')}}
 
   .details-ticker.primary
-    | {{translate('footer.ribbon.message.welcome')}}
+    | {{$translate('footer.ribbon.message.welcome')}}
   .details-ticker.secondary
-    | {{translate('footer.ribbon.hint.tycoon')}}
+    | {{$translate('footer.ribbon.hint.tycoon')}}
 
   .action-jump-back
     button.button.is-fullwidth.is-fullheight.is-small.is-uppercase.is-starpeace(:disabled='!can_jump_back' @click.stop.prevent='jump_back')
       font-awesome-icon(:icon="['fas', 'chevron-left']")
-      | {{translate('footer.ribbon.jump_back')}}
+      | {{$translate('footer.ribbon.jump_back')}}
   .action-jump-next
     button.button.is-fullwidth.is-fullheight.is-small.is-uppercase.is-starpeace(:disabled='!can_jump_next' @click.stop.prevent='jump_next')
-      | {{translate('footer.ribbon.jump_next')}}
+      | {{$translate('footer.ribbon.jump_next')}}
       font-awesome-icon(:icon="['fas', 'chevron-right']")
   .action-jump-town
     button.button.is-fullwidth.is-fullheight.is-small.is-uppercase.is-starpeace(@click.stop.prevent='jump_town')
-      | {{translate('footer.ribbon.jump_town')}}
+      | {{$translate('footer.ribbon.jump_town')}}
 
 </template>
 
-<script lang='coffee'>
-export default
-  props:
-    client_state: Object
-    managers: Object
+<script lang='ts'>
+import _ from 'lodash';
+import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
 
-  computed:
-    is_ready: -> @client_state.initialized && @client_state?.workflow_status == 'ready'
+export default {
+  props: {
+    client_state: { type: ClientState, required: true }
+  },
 
-    show_overlay: -> @client_state.interface?.show_overlay || false
-    show_zones: -> @client_state.interface?.show_zones || false
-    show_inspect: -> @client_state.interface?.show_inspect || false
+  computed: {
+    is_ready () { return this.client_state.initialized && this.client_state?.workflow_status === 'ready'; },
 
-    can_inspect: -> @client_state.interface?.selected_building_id?.length
-    can_jump_back: ->
-      return false unless @client_state.camera.view_offset_x? && @client_state.camera.view_offset_y? && @client_state.interface.location_history.length
-      return true if @client_state.interface.location_index < @client_state.interface.location_history.length - 1
-      location = @client_state.current_location()
-      return false unless location?
-      !@client_state.matches_jump_history(location.i, location.j)
-    can_jump_next: -> @client_state.interface.location_index > 0
+    show_overlay () { return this.client_state.interface?.show_overlay ?? false; },
+    show_zones () { return this.client_state.interface?.show_zones ?? false; },
+    show_inspect () { return this.client_state.interface?.show_inspect ?? false; },
 
-  methods:
-    translate: (key) -> if @managers? then @managers.translation_manager.text(key) else key
+    can_inspect () { return this.client_state.interface?.selected_building_id?.length; },
+    can_jump_back () {
+      if (!_.isNumber(this.client_state.camera.view_offset_x) || !_.isNumber(this.client_state.camera.view_offset_y) || !this.client_state.interface.location_history.length) return false;
+      if (this.client_state.interface.location_index < this.client_state.interface.location_history.length - 1) return true;
+      const location = this.client_state.current_location();
+      if (!location) return false;
+      return !this.client_state.matches_jump_history(location.i, location.j);
+    },
+    can_jump_next () { return this.client_state.interface.location_index > 0; }
+  },
 
-    toggle_overlay: -> @client_state.interface.toggle_overlay()
-    toggle_zones: -> @client_state.interface.toggle_zones()
-    toggle_inspect: ->
-      return unless @can_inspect
-      @client_state.interface.toggle_inspect()
+  methods: {
+    toggle_overlay () { this.client_state.interface.toggle_overlay(); },
+    toggle_zones () { this.client_state.interface.toggle_zones(); },
+    toggle_inspect () {
+      if (this.can_inspect) {
+        this.client_state.interface.toggle_inspect();
+      }
+    },
 
-    jump_back: -> @client_state.jump_back() if @can_jump_back
-    jump_next: -> @client_state.jump_next() if @can_jump_next
-    jump_town: ->
-      town = @client_state.town_for_location()
-      @client_state.jump_to(town.map_x, town.map_y, town.building_id) if town?.building_id? && town?.map_x? && town?.map_y?
-
+    jump_back () {
+      if (this.can_jump_back) {
+        this.client_state.jump_back();
+      }
+    },
+    jump_next () {
+      if (this.can_jump_next) {
+        this.client_state.jump_next();
+      }
+    },
+    jump_town () {
+      const town = this.client_state.town_for_location();
+      if (town?.building_id && _.isNumber(town?.map_x) && _.isNumber(town?.map_y)) {
+        this.client_state.jump_to(town.map_x, town.map_y, town.building_id);
+      }
+    }
+  }
+}
 </script>
 
 <style lang='sass' scoped>

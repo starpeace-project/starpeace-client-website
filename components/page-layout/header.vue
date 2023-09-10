@@ -12,12 +12,12 @@
       h1 PEACE
 
   .welcome.is-hidden-mobile.is-hidden-tablet-only
-    span {{translate('ui.page-layout.header.greeting')}}, {{tycoon_name}}!
-    a(v-if='is_authenticated' v-on:click.stop.prevent="logout_tycoon()") ({{translate('ui.workflow.universe.signout.label')}})
+    span {{$translate('ui.page-layout.header.greeting')}}, {{tycoon_name}}!
+    a(v-if='is_authenticated' v-on:click.stop.prevent="logout_tycoon()") ({{$translate('ui.workflow.universe.signout.label')}})
 
   .development.is-hidden-mobile.is-hidden-tablet-only
-    a.header-item.documentation(href='https://docs.starpeace.io') {{translate('ui.page-layout.header.documentation')}}
-    a.header-item.community(href='https://starpeace-project.com/', target='_blank') {{translate('ui.page-layout.header.community')}}
+    a.header-item.documentation(href='https://docs.starpeace.io') {{$translate('ui.page-layout.header.documentation')}}
+    a.header-item.community(href='https://starpeace-project.com/', target='_blank') {{$translate('ui.page-layout.header.community')}}
     misc-language-select(:language_code='language_code', @changed='change_language')
     a.header-item.discord(href='https://discord.gg/TF9Bmsj', target='_blank')
       font-awesome-icon(:icon="['fab', 'discord']")
@@ -26,44 +26,49 @@
 
 </template>
 
-<script lang='coffee'>
-export default
-  props:
-    options: Object
-    translation_manager: Object
+<script lang='ts'>
+export default {
+  props: {
+    client_state: { type: Object, required: true }
+  },
 
-    client_state: Object
-    managers: Object
+  data () {
+    return {
+      show_header: this.client_state.options?.option('general.show_header') ?? true,
+      language_code: this.client_state.options?.language() ?? 'EN'
+    };
+  },
 
-  mounted: ->
-    @client_options?.subscribe_options_listener =>
-      @show_header = @client_options?.option('general.show_header')
-      @show_header = true unless @show_header?
-      @language_code = @client_options?.language()
+  mounted () {
+    this.client_state.options?.subscribe_options_listener(() => {
+      this.show_header = this.client_state.options?.option('general.show_header') ?? true;
+      this.language_code = this.client_state.options?.language();
+    });
+  },
 
-  data: ->
-    show_header: if @client_options? then @client_options.option('general.show_header') else true
-    language_code: if @client_options? then @client_options?.language() else 'EN'
+  computed: {
+    is_authenticated (): boolean { return !!this.client_state?.identity?.galaxy_tycoon_id; },
+    tycoon_name (): string { return this.is_authenticated ? this.client_state?.identity?.galaxy_tycoon_name : this.$translate('identity.visitor'); }
+  },
 
-  computed:
-    client_options: -> if @client_state?.options? then @client_state?.options else @options
-    translator: -> if @managers?.translation_manager? then @managers.translation_manager else @translation_manager
+  methods: {
+    change_language (code: string): void {
+      this.client_state.options.set_language(code);
+    },
 
-    is_authenticated: -> @client_state?.identity?.galaxy_tycoon_id?
-    tycoon_name: -> if @is_authenticated then @client_state?.identity?.galaxy_tycoon_name else @translate('identity.visitor')
-
-  methods:
-    translate: (key) -> if @translator? then @translator.text(key) else key
-    change_language: (code) -> @client_options?.set_language(code)
-
-    logout_tycoon: () ->
-      return unless @client_state?.identity?.galaxy_id? && @managers?.galaxy_manager?
-      @managers.galaxy_manager.logout(@client_state?.identity?.galaxy_id)
-        .then () =>
-          @client_state.reset_full_state()
-        .catch (e) =>
-          console.error e
-          @$forceUpdate()
+    async logout_tycoon (): void {
+      if (!this.client_state?.identity?.galaxy_id || !this.managers?.galaxy_manager) return;
+      try {
+        await this.managers.galaxy_manager.logout(this.client_state?.identity?.galaxy_id);
+        this.client_state.reset_full_state();
+      }
+      catch (err) {
+        console.error(err);
+        this.$forceUpdate();
+      }
+    }
+  }
+}
 </script>
 
 <style lang='sass' scoped>

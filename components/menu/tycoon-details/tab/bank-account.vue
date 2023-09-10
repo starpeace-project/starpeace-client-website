@@ -10,14 +10,14 @@
         table.basic-table.sp-striped.sp-solid-header.sp-sticky-header.bank-accounts
           thead
             tr
-              th.sp-kv-key.column-account {{translate('ui.menu.tycoon_details.tab.bank_account.accounts.account')}}
-              th.sp-kv-key.column-banker {{translate('ui.menu.tycoon_details.tab.bank_account.accounts.banker')}}
-              th.has-text-right.sp-kv-key.column-balance {{translate('ui.menu.tycoon_details.tab.bank_account.accounts.balance')}}
-              th.has-text-right.sp-kv-key.column-interest {{translate('ui.menu.tycoon_details.tab.bank_account.accounts.interest_rate')}}
+              th.sp-kv-key.column-account {{$translate('ui.menu.tycoon_details.tab.bank_account.accounts.account')}}
+              th.sp-kv-key.column-banker {{$translate('ui.menu.tycoon_details.tab.bank_account.accounts.banker')}}
+              th.has-text-right.sp-kv-key.column-balance {{$translate('ui.menu.tycoon_details.tab.bank_account.accounts.balance')}}
+              th.has-text-right.sp-kv-key.column-interest {{$translate('ui.menu.tycoon_details.tab.bank_account.accounts.interest_rate')}}
 
           tbody
             tr
-              td.is-size-5 {{translate('ui.menu.tycoon_details.tab.bank_account.accounts.personal')}}
+              td.is-size-5 {{$translate('ui.menu.tycoon_details.tab.bank_account.accounts.personal')}}
               td IFEL
               td.has-text-right
                 misc-money-text(:value='corporation_cash' no_styling)
@@ -27,12 +27,12 @@
         table.basic-table.sp-striped.sp-solid-header.sp-sticky-header.bank-loan-payments
           thead
             tr
-              th.sp-kv-key.column-date {{translate('ui.menu.tycoon_details.tab.bank_account.loans.maturity')}}
-              th.sp-kv-key.column-banker {{translate('ui.menu.tycoon_details.tab.bank_account.loans.banker')}}
-              th.sp-kv-key.column-date {{translate('ui.menu.tycoon_details.tab.bank_account.loans.next_payment')}}
-              th.has-text-right.sp-kv-key.column-payment {{translate('ui.menu.tycoon_details.tab.bank_account.loans.payment_amount')}}
-              th.has-text-right.sp-kv-key.column-balance {{translate('ui.menu.tycoon_details.tab.bank_account.loans.principle_balance')}}
-              th.has-text-right.sp-kv-key.column-interest {{translate('ui.menu.tycoon_details.tab.bank_account.loans.interest_rate')}}
+              th.sp-kv-key.column-date {{$translate('ui.menu.tycoon_details.tab.bank_account.loans.maturity')}}
+              th.sp-kv-key.column-banker {{$translate('ui.menu.tycoon_details.tab.bank_account.loans.banker')}}
+              th.sp-kv-key.column-date {{$translate('ui.menu.tycoon_details.tab.bank_account.loans.next_payment')}}
+              th.has-text-right.sp-kv-key.column-payment {{$translate('ui.menu.tycoon_details.tab.bank_account.loans.payment_amount')}}
+              th.has-text-right.sp-kv-key.column-balance {{$translate('ui.menu.tycoon_details.tab.bank_account.loans.principle_balance')}}
+              th.has-text-right.sp-kv-key.column-interest {{$translate('ui.menu.tycoon_details.tab.bank_account.loans.interest_rate')}}
               th.column-action
 
           tbody
@@ -47,16 +47,16 @@
               td.has-text-right {{payment.interestRatePercent.toFixed(2)}}%
               td.column-action
                 .is-flex.is-justify-content-center(v-if='has_corporation && is_self')
-                  button.button.is-small.is-starpeace(disabled) {{translate('ui.menu.tycoon_details.tab.bank_account.loans.repay')}}
+                  button.button.is-small.is-starpeace(disabled) {{$translate('ui.menu.tycoon_details.tab.bank_account.loans.repay')}}
 
     .sp-scrollbar.right-panel
       table.basic-table.sp-striped.sp-solid-header.sp-sticky-header.bank-loan-offers
         thead
           tr
-            th.sp-kv-key.column-banker {{translate('ui.menu.tycoon_details.tab.bank_account.loans.banker')}}
-            th.has-text-right.sp-kv-key.column-max-loan {{translate('ui.menu.tycoon_details.tab.bank_account.loans.max_loan')}}
-            th.has-text-right.sp-kv-key.column-interest {{translate('ui.menu.tycoon_details.tab.bank_account.loans.interest_rate')}}
-            th.has-text-right.sp-kv-key.column-term {{translate('ui.menu.tycoon_details.tab.bank_account.loans.term')}}
+            th.sp-kv-key.column-banker {{$translate('ui.menu.tycoon_details.tab.bank_account.loans.banker')}}
+            th.has-text-right.sp-kv-key.column-max-loan {{$translate('ui.menu.tycoon_details.tab.bank_account.loans.max_loan')}}
+            th.has-text-right.sp-kv-key.column-interest {{$translate('ui.menu.tycoon_details.tab.bank_account.loans.interest_rate')}}
+            th.has-text-right.sp-kv-key.column-term {{$translate('ui.menu.tycoon_details.tab.bank_account.loans.term')}}
             th.column-action
 
         tbody
@@ -67,83 +67,95 @@
             td.has-text-right {{offer.interestRatePercent.toFixed(2)}}%
             td.has-text-right
               template(v-if='offer.maxTermYears > 1')
-                span {{offer.maxTermYears}} {{translate('misc.unit.year.plural')}}
+                span {{offer.maxTermYears}} {{$translate('misc.unit.year.plural')}}
               template(v-else)
-                span {{offer.maxTermYears}} {{translate('misc.unit.year.singular')}}
+                span {{offer.maxTermYears}} {{$translate('misc.unit.year.singular')}}
             td
               .is-flex.is-justify-content-center(v-if='has_corporation && is_self')
-                button.button.is-small.is-starpeace(disabled) {{translate('ui.menu.tycoon_details.tab.bank_account.loans.apply')}}
+                button.button.is-small.is-starpeace(disabled) {{$translate('ui.menu.tycoon_details.tab.bank_account.loans.apply')}}
 
 
 </template>
 
-<script lang='coffee'>
+<script lang='ts'>
 import _ from 'lodash';
+import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
 
-import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
-
-export default
-  props:
-    managers: Object
-    clientState: Object
-    tycoonId: String
+export default {
+  props: {
+    clientState: { type: ClientState, required: true },
+    tycoonId: String,
     corporationId: String
+  },
 
-  data: ->
-    loadingLoans: false
+  data () {
+    return {
+      loadingLoans: false,
 
-    loanPayments: []
-    loanOffers: []
+      loanPayments: [],
+      loanOffers: []
+    };
+  },
 
+  computed: {
+    has_corporation (): boolean { return (this.corporationId?.length ?? 0) > 0; },
+    is_self (): boolean { return this.clientState.player.tycoon_id === this.tycoonId; },
 
-  computed:
-    has_corporation: -> @corporationId?.length
-    is_self: -> @clientState.player.tycoon_id == @tycoonId
+    corporation (): any { return this.has_corporation ? this.clientState.core.corporation_cache.metadata_for_id(this.corporationId) : null; },
 
-    corporation: -> if @has_corporation then @clientState.core.corporation_cache.metadata_for_id(@corporationId) else null
+    corporation_cash (): number { return this.corporation?.cash ?? 0; },
 
-    corporation_cash: -> @corporation?.cash || 0
+    sortedLoanPayments (): Array<any> { return _.orderBy(this.loanPayments, ['nextPaymentAt', 'nextPaymentAmount'], ['asc', 'desc']); },
+    sortedLoanOffers (): Array<any> { return _.orderBy(this.loanOffers, ['maxAmount', 'interestRate'], ['desc', 'asc']); }
+  },
 
-    sortedLoanPayments: -> _.orderBy(@loanPayments, ['nextPaymentAt', 'nextPaymentAmount'], ['asc', 'desc'])
-    sortedLoanOffers: -> _.orderBy(@loanOffers, ['maxAmount', 'interestRate'], ['desc', 'asc'])
+  mounted () {
+    this.refresh_details();
+  },
 
-  mounted: ->
-    @refresh_details()
+  watch: {
+    tycoonId (newValue, oldValue) {
+      if (newValue !== oldValue) {
+        if (oldValue) this.reset_state();
+        this.refresh_details();
+      }
+    },
+    corporationId (newValue, oldValue) {
+      if (newValue !== oldValue) {
+        if (oldValue) this.reset_state();
+        this.refresh_details();
+      }
+    }
+  },
 
-  watch:
-    tycoonId: (newValue, oldValue) ->
-      if newValue != oldValue
-        @reset_state() if oldValue
-        @refresh_details()
-    corporationId: (newValue, oldValue) ->
-      if newValue != oldValue
-        @reset_state() if oldValue
-        @refresh_details()
+  methods: {
+    reset_state () {
+      this.loanPayments = [];
+      this.loanOffers = [];
+    },
 
-  methods:
-    translate: (text_key) -> @managers?.translation_manager?.text(text_key)
-
-    reset_state: () ->
-      @loanPayments = []
-      @loanOffers = []
-
-    refresh_details: () ->
-      return if @loadingLoans || !@has_corporation
-      try
-        @loadingLoans = true
-        promiseResults = await Promise.all([
-          @managers.corporation_manager.load_loan_payments_by_corporation(@corporationId),
-          @managers.corporation_manager.load_loan_offers_by_corporation(@corporationId)
-        ])
-        @loanPayments = promiseResults[0] || []
-        @loanOffers = promiseResults[1] || []
-      catch err
-        @clientState.add_error_message('Failure loading tycoon details from server', err)
-        @loanPayments = []
-        @loanOffers = []
-      finally
-        @loadingLoans = false
-
+    async refresh_details () {
+      if (this.loadingLoans || !this.has_corporation) return;
+      try {
+        this.loadingLoans = true;
+        const promiseResults = await Promise.all([
+          this.$starpeaceClient.managers.corporation_manager.load_loan_payments_by_corporation(this.corporationId),
+          this.$starpeaceClient.managers.corporation_manager.load_loan_offers_by_corporation(this.corporationId)
+        ]);
+        this.loanPayments = promiseResults[0] ?? [];
+        this.loanOffers = promiseResults[1] ?? [];
+      }
+      catch (err) {
+        this.clientState.add_error_message('Failure loading tycoon details from server', err);
+        this.loanPayments = [];
+        this.loanOffers = [];
+      }
+      finally {
+        this.loadingLoans = false;
+      }
+    }
+  }
+}
 </script>
 
 <style lang='sass' scoped>

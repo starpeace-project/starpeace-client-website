@@ -1,41 +1,57 @@
 <template lang='pug'>
 .card.has-header.is-starpeace.sp-menu(:oncontextmenu="'return ' + !$config.public.disableRightClick")
   .card-header
-    .card-header-title {{translate('ui.menu.research.header')}}
+    .card-header-title {{$translate('ui.menu.research.header')}}
     .card-header-icon.card-close(v-on:click.stop.prevent="client_state.menu.toggle_menu('research')")
       font-awesome-icon(:icon="['fas', 'times']")
 
   .card-content.sp-menu-background.is-paddingless
-    menu-research-sections(:managers='managers' :client_state='client_state')
-    menu-research-tree(:managers='managers' :client_state='client_state')
-    menu-research-details(:managers='managers' :ajax_state='ajax_state' :client_state='client_state')
+    menu-research-sections(:is-visible='is_visible' :client_state='client_state')
+    menu-research-tree(:is-visible='is_visible' :client_state='client_state')
+    menu-research-details(:ajax_state='ajax_state' :client_state='client_state')
 
   .sp-menu-modal(v-show='has_no_company')
     .content
-      span {{translate('ui.menu.construction.company_required.label')}}
-      a(@click.stop.prevent='toggle_form_company_menu') {{translate('ui.menu.construction.company_required.action')}}
+      span {{$translate('ui.menu.construction.company_required.label')}}
+      a(@click.stop.prevent='toggle_form_company_menu') {{$translate('ui.menu.construction.company_required.action')}}
 
 </template>
 
-<script lang='coffee'>
-import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
+<script lang='ts'>
+import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
 
-export default
-  props:
-    managers: Object
-    ajax_state: Object
-    client_state: Object
+export default {
+  props: {
+    ajax_state: Object,
+    client_state: { type: ClientState, required: true }
+  },
 
-  computed:
-    has_no_company: ->
-      return false unless @client_state?.workflow_status == 'ready'
-      @client_state.is_tycoon() && !@client_state.player.company_id?
+  data () {
+    return {
+      menuVisible: this.client_state?.menu?.is_visible('research') ?? false
+    };
+  },
 
-  methods:
-    translate: (text_key) -> @managers?.translation_manager?.text(text_key)
+  mounted () {
+    this.client_state?.menu?.subscribe_menu_listener(() => {
+      this.menuVisible = this.client_state?.menu?.is_visible('research') ?? false;
+    });
+  },
 
-    toggle_form_company_menu: () -> @client_state.menu.toggle_menu('company_form')
+  computed: {
+    is_visible (): boolean { return this.client_state.workflow_status === 'ready' && this.menuVisible; },
 
+    has_no_company () {
+      return this.client_state?.workflow_status === 'ready' && this.client_state.is_tycoon() && !this.client_state.player.company_id?.length;
+    }
+  },
+
+  methods: {
+    toggle_form_company_menu () {
+      this.client_state.menu.toggle_menu('company_form');
+    }
+  }
+}
 </script>
 
 <style lang='sass' scoped>

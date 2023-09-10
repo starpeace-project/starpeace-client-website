@@ -1,54 +1,54 @@
 <template lang='pug'>
 .columns.universe-starpeace-actions
   .column.is-6
-    h3 {{translate('identity.visitor')}} {{translate('identity.visa')}}
+    h3 {{$translate('identity.visitor')}} {{$translate('identity.visa')}}
     .visa-icon
       font-awesome-icon.tycoon-icon(:icon="['fas', 'user-secret']")
     .visa-info
       ul.fa-ul
         li
           font-awesome-icon.fa-li(:icon="['fas', 'check']")
-          span {{translate('ui.workflow.visa-type.visitor.bullet1')}}
+          span {{$translate('ui.workflow.visa-type.visitor.bullet1')}}
         li
           font-awesome-icon.fa-li(:icon="['fas', 'check']")
-          span {{translate('ui.workflow.visa-type.visitor.bullet2')}}
+          span {{$translate('ui.workflow.visa-type.visitor.bullet2')}}
         li
           font-awesome-icon.fa-li(:icon="['fas', 'check']")
-          span {{translate('ui.workflow.visa-type.visitor.bullet3')}}
-    a.button.is-medium.is-starpeace.tooltip.is-tooltip-bottom(disabled=true, :data-tooltip="translate('ui.workflow.visa-type.univerese.not_available')") {{translate('identity.visitor')}} {{translate('identity.visa')}}
+          span {{$translate('ui.workflow.visa-type.visitor.bullet3')}}
+    a.button.is-medium.is-starpeace.tooltip.is-tooltip-bottom(disabled=true, :data-tooltip="$translate('ui.workflow.visa-type.univerese.not_available')") {{$translate('identity.visitor')}} {{$translate('identity.visa')}}
 
   .column.is-6.tycoon-column
-    h3 {{translate('identity.tycoon')}} {{translate('identity.visa')}}
+    h3 {{$translate('identity.tycoon')}} {{$translate('identity.visa')}}
     .visa-icon
       font-awesome-icon.tycoon-icon(:icon="['fas', 'user-tie']")
     .visa-info
       ul.fa-ul
         li
           font-awesome-icon.fa-li(:icon="['fas', 'check']")
-          span {{translate('ui.workflow.visa-type.tycoon.bullet1')}}
+          span {{$translate('ui.workflow.visa-type.tycoon.bullet1')}}
         li
           font-awesome-icon.fa-li(:icon="['fas', 'check']")
-          span {{translate('ui.workflow.visa-type.tycoon.bullet2')}}
+          span {{$translate('ui.workflow.visa-type.tycoon.bullet2')}}
         li
           font-awesome-icon.fa-li(:icon="['fas', 'check']")
-          span {{translate('ui.workflow.visa-type.tycoon.bullet3')}}
-    a.button.is-medium.is-starpeace.is-inverted.tooltip.is-tooltip-bottom(disabled=true, :data-tooltip="translate('ui.workflow.visa-type.univerese.not_available')") {{translate('identity.tycoon')}} {{translate('identity.visa')}}
+          span {{$translate('ui.workflow.visa-type.tycoon.bullet3')}}
+    a.button.is-medium.is-starpeace.is-inverted.tooltip.is-tooltip-bottom(disabled=true, :data-tooltip="$translate('ui.workflow.visa-type.univerese.not_available')") {{$translate('identity.tycoon')}} {{$translate('identity.visa')}}
 
 </template>
 
-<script lang='coffee'>
-import WorkflowUniverseMultiverse from '~/components/workflow/workflow-universe-multiverse.vue'
+<script lang='ts'>
+import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
 
-export default
-  props:
-    client_state: Object
-    managers: Object
+export default {
+  props: {
+    client_state: { type: ClientState, required: true }
+  },
 
-  methods:
-    translate: (key) -> if @managers? then @managers.translation_manager.text(key) else key
-
-    proceed_as_visitor: -> @client_state.identity.set_visa_type('visitor')
-    proceed_as_tycoon: -> @client_state.identity.set_visa_type('tycoon')
+  methods: {
+    proceed_as_visitor (): void { this.client_state.identity.set_visa_type('visitor'); },
+    proceed_as_tycoon (): void { this.client_state.identity.set_visa_type('tycoon'); }
+  }
+}
 </script>
 
 <style lang='sass' scoped>

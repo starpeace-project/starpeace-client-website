@@ -1,44 +1,54 @@
 <template lang='pug'>
 .sp-folder
   template(v-if="item")
-    a.is-folder-item(v-on:click.stop.prevent="toggle_item", :class="css_class_for_item", :style="css_style_for_item")
-      template(v-if="item.type == 'CORPORATION'")
+    a.is-folder-item(:class="{'is-empty-folder': !item.hasChildren}" :style="css_style_for_item" @click.stop.prevent='toggle')
+      template(v-if="item.type == 'CORPORATION' && item.sealId")
         span.company-icon-wrapper
-          misc-company-seal-icon(:seal_id="item.seal_id", with_min_size=true)
-      template(v-else-if="item.type == 'INDUSTRY'")
-        misc-industry-type-icon(:industry_type="item.industry_type", :small='true')
+          misc-company-seal-icon(:seal_id='item.sealId' with_min_size)
+
+      template(v-else-if="item.type == 'INDUSTRY' && item.industryTypeId")
+        misc-industry-type-icon(:industry_type='item.industryTypeId' small)
+
       template(v-else-if="item.type == 'TOWN'")
         misc-city-icon
-      template(v-else)
-        span.sp-folder-icon(v-show="item.has_children && !item.expanded")
-          font-awesome-icon(:icon="['fas', 'folder']")
-        span.sp-folder-icon(v-show="item.has_children && item.expanded")
-          font-awesome-icon(:icon="['fas', 'folder-open']")
-        span.sp-folder-icon(v-show="!item.has_children")
+
+      template(v-else-if='!item.hasChildren')
+        span.sp-folder-icon
           font-awesome-icon(:icon="['far', 'folder']")
-      span.sp-folder-label {{item.item_name}}
+
+      template(v-else)
+        span.sp-folder-icon(v-show="!item.expanded")
+          font-awesome-icon(:icon="['fas', 'folder']")
+        span.sp-folder-icon(v-show="item.expanded")
+          font-awesome-icon(:icon="['fas', 'folder-open']")
+
+      span.sp-folder-label {{label}}
 </template>
 
-<script lang='coffee'>
-export default
-  props:
-    item: Object
+<script lang='ts'>
+import BookmarkMenuItem from '~/plugins/starpeace-client/bookmark/bookmark-menu-item';
 
-    dragging_level: Number
+export default {
+  props: {
+    item: { type: BookmarkMenuItem, required: true },
+  },
 
-  computed:
-    css_class_for_item: -> if @item.has_children then '' else 'is-empty-folder'
-    css_style_for_item: ->
-      level = if @dragging_level? && @dragging_level >= 0 then @dragging_level else @item.level
-      "padding-left: #{(level + 1) * 0.75}rem;"
+  computed: {
+    label (): string {
+      return this.item.itemNameKey ? this.$translate(this.item.itemNameKey) : (this.item.itemName ?? '');
+    },
 
-  methods:
-    toggle_item: () ->
-      return unless @item.has_children
+    css_style_for_item () {
+      return `padding-left: ${(this.item.level + 1) * 0.75}rem;`;
+    }
+  },
 
-      @item.expanded = !@item.expanded
-      @$emit('toggled')
-
+  methods: {
+    toggle () {
+      this.$emit('toggle', this.item.id);
+    }
+  }
+}
 </script>
 
 <style lang='sass' scoped>

@@ -1,29 +1,34 @@
 <template lang='pug'>
 #render-parent-container(v-show='is_ready' v-cloak=true oncontextmenu='return false')
   #fps-container(v-show='show_fps')
-  #render-container(:class='render_css_class' :data-disable-right-click='$config.public.disableRightClick')
+  #render-container(:class="{'construction-mode': is_construction_mode}" :data-disable-right-click='$config.public.disableRightClick')
 </template>
 
-<script lang='coffee'>
-export default
-  props:
-    client_state: Object
+<script lang='ts'>
+import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
 
-  mounted: ->
-    @client_state.options?.subscribe_options_listener =>
-      @show_fps = @client_state.options?.option('general.show_fps')
+export default {
+  props: {
+    client_state: { type: ClientState, required: true }
+  },
 
-  data: ->
-    show_fps: @client_state.options?.option('general.show_fps')
+  data () {
+    return {
+      show_fps: this.client_state.options?.option('general.show_fps') ?? true
+    };
+  },
 
-  computed:
-    is_ready: -> @client_state.initialized && @client_state.workflow_status == 'ready'
-    is_construction_mode: -> if @is_ready then @client_state.interface.construction_building_id?.length else false
+  mounted () {
+    this.client_state.options?.subscribe_options_listener(() => {
+      this.show_fps = this.client_state.options?.option('general.show_fps') ?? true;
+    });
+  },
 
-    render_css_class: ->
-      classes = []
-      classes.push 'construction-mode' if @is_construction_mode
-      classes
+  computed: {
+    is_ready (): boolean { return this.client_state.initialized && this.client_state.workflow_status == 'ready'; },
+    is_construction_mode (): boolean { return this.is_ready && this.client_state.interface.construction_building_id?.length > 0; }
+  }
+}
 </script>
 
 <style lang='sass' scoped>

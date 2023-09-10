@@ -27,7 +27,12 @@ export default class ChunkInfo {
   x_offset (): number { return this.chunk_x * this.width; }
   y_offset (): number { return this.chunk_y * this.height; }
 
-  is_current (now: DateTime): boolean { return !!this.expires && this.expires > now; }
+  is_expired (now: DateTime): boolean {
+    return !this.expires || this.expires <= now;
+  }
+  has_data (): boolean {
+    return !!this.expires;
+  }
 
   update () {
     this.last_updated = DateTime.now();

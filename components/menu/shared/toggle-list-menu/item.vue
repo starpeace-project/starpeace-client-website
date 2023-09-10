@@ -18,45 +18,59 @@
 
 </template>
 
-<script lang='coffee'>
+<script lang='ts'>
+import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
 
-export default
-  props:
-    clientState: Object
-    label: String
-    detailsId: String
+export default {
+  props: {
+    clientState: { type: ClientState, required: true },
+    label: String,
+    detailsId: String,
     detailsCallback: Function
+  },
 
-  data: ->
-    expanded: false
-    detailsPromise: null
-    details: null
+  data () {
+    return {
+      expanded: false,
+      detailsPromise: null,
+      details: null
+    };
+  },
 
-  computed:
-    loading: -> @expanded && @detailsId?.length && @detailsPromise?
+  computed: {
+    loading (): boolean { return this.expanded && (this.detailsId?.length ?? 0) > 0 && !!this.detailsPromise; }
+  },
 
-  watch:
-    expanded: -> @refreshDetails()
-    detailsId: -> @refreshDetails()
+  watch: {
+    expanded () { this.refreshDetails(); },
+    detailsId () { this.refreshDetails(); }
+  },
 
-  methods:
-    toggle: ->
-      return unless @detailsCallback?
-      @expanded = !@expanded
+  methods: {
+    toggle () {
+      if (!this.detailsCallback) return;
+      this.expanded = !this.expanded;
+    },
 
-    refreshDetails: ->
-      try
-        if @expanded
-          return if @detailsPromise?
-          @detailsPromise = @detailsCallback(@detailsId)
-          @details = await @detailsPromise
-          @detailsPromise = null
-        else
-          @details = null
-      catch err
-        @clientState.add_error_message('Failure loading details from server', err)
-        @detailsPromise = null
-
+    async refreshDetails () {
+      try {
+        if (this.expanded) {
+          if (!!this.detailsPromise || !this.detailsCallback) return;
+          this.detailsPromise = this.detailsCallback(this.detailsId);
+          this.details = await this.detailsPromise;
+          this.detailsPromise = null;
+        }
+        else {
+          this.details = null;
+        }
+      }
+      catch (err) {
+        this.clientState.add_error_message('Failure loading details from server', err);
+        this.detailsPromise = null;
+      }
+    }
+  }
+}
 </script>
 
 <style lang='sass' scoped>

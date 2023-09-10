@@ -112,13 +112,15 @@ span.industry-type-icon-wrapper(:class="small ? 'is-small' : ''")
     font-awesome-icon(:icon="['far', 'circle']")
 </template>
 
-<script lang='coffee'>
-export default
-  name: 'industry-type-icon'
-  props:
-    industry_type: String
-    default_research: Boolean
+<script lang='ts'>
+export default {
+  name: 'industry-type-icon',
+  props: {
+    industry_type: String,
+    default_research: Boolean,
     small: Boolean
+  }
+}
 </script>
 
 <style lang='sass' scoped>

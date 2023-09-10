@@ -1,32 +1,34 @@
 <template lang='pug'>
 #application-container(:class='application_css_class', v-cloak=true)
-  page-layout-header(:managers='managers', :client_state='client_state')
+  page-layout-header(:client_state='client_state')
   misc-card-loading(:client_state='client_state' within-grid=true)
   misc-modal-loading(:client_state='client_state' within-grid=true)
   misc-card-webgl-warning(:client_state='client_state')
-  workflow(:client='client', :client_state='client_state')
+  workflow(:client_state='client_state')
   page-layout-render-container(:client_state='client_state')
 </template>
 
-<script lang='coffee'>
-export default
-  props:
-    client: Object
+<script lang='ts'>
+export default {
+  mounted () {
+    this.$starpeaceClient.options?.subscribe_options_listener(() => {
+      this.show_header = this.$starpeaceClient.options.option('general.show_header');
+    });
+  },
 
-  mounted: ->
-    @client.options?.subscribe_options_listener =>
-      @show_header = @client.options.option('general.show_header')
+  data () {
+    return {
+      client_state: this.$starpeaceClient?.client_state,
+      options: this.$starpeaceClient?.options,
 
-  data: ->
-    client_state: @client?.client_state
-    options: @client?.options
+      show_header: this.$starpeaceClient?.options?.option('general.show_header')
+    };
+  },
 
-    show_header: @client?.options?.option('general.show_header')
-
-  computed:
-    application_css_class: -> if @show_header then [] else ['no-header']
-
-    managers: -> @client?.managers
+  computed: {
+    application_css_class () { return this.show_header ? [] : ['no-header']; }
+  }
+}
 </script>
 
 <style lang='sass' scoped>

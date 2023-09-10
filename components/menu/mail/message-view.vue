@@ -22,22 +22,22 @@
 
 </template>
 
-<script lang='coffee'>
-export default
-  props:
-    managers: Object
-    ajax_state: Object
-    client_state: Object
+<script lang='ts'>
+import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
 
-  computed:
-    mail: -> if @client_state.player.selected_mail_id? then @client_state.player.mail_by_id[@client_state.player.selected_mail_id] else null
+export default {
+  props: {
+    ajax_state: Object,
+    client_state: { type: ClientState, required: true }
+  },
 
-    sent_at: -> if @mail?.sent_at? then @mail.sent_at.toFormat('yyyy-MM-dd HH:mm z') else '' #.setZone('UTC')
-    planet_sent_at: -> if @mail?.planet_sent_at? then @mail.planet_sent_at.toFormat('MMM d, yyyy') else '' #.setZone('UTC')
+  computed: {
+    mail () { return this.client_state.player.selected_mail_id ? this.client_state.player.mail_by_id[this.client_state.player.selected_mail_id] : null; },
 
-  methods:
-    translate: (text_key) -> @managers?.translation_manager?.text(text_key)
-
+    sent_at () { return this.mail?.sent_at ? this.mail.sent_at.toFormat('yyyy-MM-dd HH:mm z') : ''; },
+    planet_sent_at () { return this.mail?.planet_sent_at ? this.mail.planet_sent_at.toFormat('MMM d, yyyy') : ''; }
+  }
+}
 </script>
 
 <style lang='sass' scoped>

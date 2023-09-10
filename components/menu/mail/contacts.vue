@@ -14,43 +14,49 @@
 
   .level.is-mobile.sp-actions-container.is-bottom
     .level-item.action-column
-      button.button.is-small.is-fullwidth.is-starpeace(disabled='disabled') {{translate('ui.menu.mail.contacts.action.organize')}}
+      button.button.is-small.is-fullwidth.is-starpeace(disabled='disabled') {{$translate('ui.menu.mail.contacts.action.organize')}}
     .level-item.action-column
-      button.button.is-small.is-fullwidth.is-starpeace(@click.stop.prevent='show_add_contact' :disabled='actions_disabled') {{translate('ui.menu.mail.contacts.action.add')}}
+      button.button.is-small.is-fullwidth.is-starpeace(@click.stop.prevent='show_add_contact' :disabled='actions_disabled') {{$translate('ui.menu.mail.contacts.action.add')}}
 
 </template>
 
-<script lang='coffee'>
+<script lang='ts'>
+import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
 
-export default
-  props:
-    managers: Object
-    ajax_state: Object
-    client_state: Object
+export default {
+  props: {
+    ajax_state: Object,
+    client_state: { type: ClientState, required: true },
 
     loading: Boolean
+  },
 
-  data: ->
-    menu_visible: @client_state?.menu?.is_visible('mail')
+  data () {
+    return {
+      menu_visible: this.client_state?.menu?.is_visible('mail'),
+      mode: 'CONTACTS'
+    };
+  },
 
-    mode: 'CONTACTS'
+  mounted () {
+    this.client_state?.menu?.subscribe_menu_listener(() => {
+      this.menu_visible = this.client_state?.menu?.is_visible('mail') ?? false;
+    })
+  },
 
-  mounted: ->
-    @client_state?.menu?.subscribe_menu_listener =>
-      @menu_visible = @client_state?.menu?.is_visible('mail')
+  computed: {
+    is_ready (): boolean { return this.client_state.workflow_status === 'ready'; },
+    has_corporation () { return this.is_ready && this.client_state.is_tycoon() && this.client_state.player.corporation_id?.length > 0; },
 
-  computed:
-    is_ready: -> @client_state.workflow_status == 'ready'
-    has_corporation: -> if @is_ready then @client_state.is_tycoon() && @client_state.player.corporation_id?.length else false
+    actions_disabled () { return !(this.is_ready && this.has_corporation && !this.loading); }
+  },
 
-    actions_disabled: -> !(@is_ready && @has_corporation && !@loading)
-
-  methods:
-    translate: (text_key) -> @managers?.translation_manager?.text(text_key)
-
-    show_add_contact: () ->
-      console.log 'show add contact'
-
+  methods: {
+    show_add_contact () {
+      console.log('show add contact');
+    }
+  }
+}
 </script>
 
 <style lang='sass' scoped>

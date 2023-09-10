@@ -4,24 +4,23 @@
     .card.is-starpeace
       .card-content
         img.starpeace-logo
-        .label-loading {{translate('ui.workflow.loading')}}
+        .label-loading {{$translate('ui.workflow.loading')}}
 </template>
 
-<script lang='coffee'>
-export default
-  props:
-    client_state: Object
-    managers: Object
+<script lang='ts'>
+export default {
+  props: {
+    client_state: Object,
 
-    withinGrid: Boolean
-    withinAbsolute: Boolean
+    withinGrid: Boolean,
+    withinAbsolute: Boolean,
     visible: Boolean
+  },
 
-  computed:
-    is_visible: -> @client_state?.initialized && @client_state?.loading || @visible
-
-  methods:
-    translate: (key) -> if @managers? then @managers.translation_manager.text(key) else key
+  computed: {
+    is_visible (): boolean { return this.client_state?.initialized && this.client_state?.loading || this.visible; }
+  }
+}
 </script>
 
 <style lang='sass' scoped>
