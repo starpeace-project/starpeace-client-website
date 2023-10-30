@@ -221,12 +221,12 @@ export default {
       if (!this.clientState?.player?.planet_id || !this.town) return;
 
       try {
-        this.details_promise = this.$starpeaceClient.managers.planets_manager.load_town_details(this.clientState.player.planet_id, this.town.id);
+        this.details_promise = this.$starpeaceClient.managers.planets_manager.load_town_details(this.town.id);
         this.details = await this.details_promise;
         this.details_promise = null;
       }
       catch (err) {
-        this.clientState.add_error_message('Failure loading building details, please try again', err);
+        this.clientState.add_error_message('Failure loading town details, please try again', err);
         this.details_promise = null;
       }
     },

@@ -7,7 +7,7 @@ PLANE_CHECK_SPEED = 5000
 PLANE_COUNT = 6
 
 export default class Layers
-  constructor: (@renderer, building_manager, effect_manager, @plane_manager, @client_state, @options) ->
+  constructor: (@renderer, building_manager, effect_manager, @plane_manager, @translation_manager, @client_state, @options) ->
     @tile_item_cache = new TileItemCache(building_manager, effect_manager, @plane_manager, @client_state, @options)
     @layer_manager = new LayerManager(@client_state)
 
@@ -100,9 +100,7 @@ export default class Layers
     selected_building_id = @client_state.interface.selected_building_id
     selected_building = if selected_building_id then @client_state.selected_building() else null
     selected_corporation_id = if selected_building? then selected_building?.corporation_id else null
-    selected_company = if selected_building? then @client_state.core.company_cache.metadata_for_id(selected_building.company_id) else null
-    selected_company_name = if selected_company? then selected_company.name else null
-
+    selected_building_label = if selected_building_id? then @translation_manager.label_for_building(selected_building) else undefined
 
     current_season = @client_state.planet.current_season
     game_map = @client_state.planet.game_map
@@ -131,7 +129,7 @@ export default class Layers
           within_construction = construction_x >= 0 && x > construction_x - construction_width && x <= construction_x && construction_y >= 0 && j > construction_y - construction_height && j <= construction_y
 
           if tile_item?
-            @layer_manager.render_tile_item(render_state, tile_item, selected_building, selected_company_name, construction_item, within_construction, viewport.iso_to_canvas(x, j, view_center), viewport)
+            @layer_manager.render_tile_item(render_state, tile_item, selected_building_label, construction_item, within_construction, viewport.iso_to_canvas(x, j, view_center), viewport)
             rendered_building_selection ||= tile_item.sprite_info?.building?.is_selected;
 
         j += 1

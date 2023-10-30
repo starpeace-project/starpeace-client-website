@@ -44,17 +44,21 @@ export default class Translation {
     return this.textByCode['PT'];
   }
 
+  forCode (code: string): string | undefined {
+    return this.textByCode[code];
+  }
+
   static from_json (json: any): Translation {
     return Translation.fromJson(json);
   }
-  static fromJson (json: any): Translation {
+  static fromJson (json: any | undefined): Translation {
     return new Translation({
-      DE: json.DE ?? '',
-      EN: json.EN ?? '',
-      ES: json.ES ?? '',
-      FR: json.FR ?? '',
-      IT: json.IT ?? '',
-      PT: json.PT ?? ''
+      DE: json?.DE ?? '',
+      EN: json?.EN ?? '',
+      ES: json?.ES ?? '',
+      FR: json?.FR ?? '',
+      IT: json?.IT ?? '',
+      PT: json?.PT ?? ''
     });
   }
 }

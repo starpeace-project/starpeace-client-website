@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import Building from '~/plugins/starpeace-client/building/building.coffee'
+import Building from '~/plugins/starpeace-client/building/building'
 import BuildingDetails from '~/plugins/starpeace-client/building/building-details.coffee'
 
 import ChunkMap from '~/plugins/starpeace-client/map/chunk/chunk-map.coffee'
@@ -38,7 +38,7 @@ export default class BuildingManager
   load_chunk: (chunk_x, chunk_y) ->
     throw Error() if !@client_state.has_session() || !chunk_x? || !chunk_y?
     await @ajax_state.locked('building_load_chunk', "#{chunk_x}x#{chunk_y}", =>
-      buildings = _.map(await @api.buildings_for_planet(chunk_x, chunk_y), (json) -> Building.from_json(json))
+      buildings = _.map(await @api.buildings_for_planet(chunk_x, chunk_y), (json) -> Building.fromJson(json))
       @client_state.core.building_cache.load_buildings(buildings)
       Logger.debug("loaded building chunk at #{chunk_x}x#{chunk_y}")
       _.map(buildings, 'id')
@@ -48,7 +48,7 @@ export default class BuildingManager
     throw Error() if !@client_state.has_session() || !company_id?
     await @ajax_state.locked('building_metadata', company_id, =>
       buildings_json = await @api.buildings_for_company(company_id)
-      buildings = buildings_json.map(Building.from_json)
+      buildings = buildings_json.map(Building.fromJson)
       @client_state.core.building_cache.load_buildings(buildings)
       @client_state.corporation.set_company_building_ids(company_id, buildings.map((b) -> b.id))
     )
@@ -56,7 +56,7 @@ export default class BuildingManager
   load_building_metadata: (building_id) ->
     throw Error() if !@client_state.has_session() || !building_id?
     await @ajax_state.locked('building_metadata', building_id, =>
-      building = Building.from_json(await @api.building_for_id(building_id))
+      building = Building.fromJson(await @api.building_for_id(building_id))
       @client_state.core.building_cache.load_building(building)
       building
     )
@@ -77,7 +77,7 @@ export default class BuildingManager
 
     throw Error() if !@client_state.has_session() || !building_metadata?
     await @ajax_state.locked('building_construction', 'ALL', =>
-      temporary_building = Building.from_json({
+      temporary_building = Building.fromJson({
         id: Utils.uuid()
         tycoonId: @client_state.player.tycoon_id
         corporationId: @client_state.player.corporation_id
@@ -96,7 +96,7 @@ export default class BuildingManager
 
       try
         building_info = await @api.construct_building(temporary_building.company_id, temporary_building.definition_id, temporary_building.name, temporary_building.map_x, temporary_building.map_y)
-        constructed_building = Building.from_json(building_info)
+        constructed_building = Building.fromJson(building_info)
         @client_state.core.building_cache.load_building(constructed_building)
         @client_state.planet.game_map.building_map.remove_building(temporary_building.id)
         @client_state.planet.game_map.building_map.add_building(constructed_building.id)

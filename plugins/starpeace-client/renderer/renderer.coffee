@@ -72,7 +72,7 @@ export default class Renderer
   initialize_map: () ->
     @layers?.remove_layers(@application.stage)
     @layers?.destroy()
-    @layers = new Layers(@, @managers.building_manager, @managers.effect_manager, @managers.plane_manager, @client_state, @options)
+    @layers = new Layers(@, @managers.building_manager, @managers.effect_manager, @managers.plane_manager, @managers.translation_manager, @client_state, @options)
     @layers.add_layers(@application.stage)
 
   initialize: () ->

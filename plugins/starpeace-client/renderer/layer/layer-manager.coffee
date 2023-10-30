@@ -98,11 +98,11 @@ export default class LayerManager
     @plane_sprite_cache.new_sprite(render_state, { textures })
 
 
-  render_building_selection: (viewport, building_sprite, building_image_metadata, building_name, company_name) ->
+  render_building_selection: (viewport, building_sprite, building_image_metadata, building_label) ->
     @building_graphics_background.clear()
     @building_graphics_foreground.clear()
 
-    @building_text.text = if building_name && company_name then "#{building_name}\n#{company_name}\n($0/h)" else 'Scanning...'
+    @building_text.text = building_label
     @building_text.scale.set(viewport.game_scale * 0.5)
 
     offset_y = viewport.tile_height * 0.75
@@ -173,7 +173,7 @@ export default class LayerManager
     @building_text.visible = true
 
 
-  render_tile_item: (render_state, tile_item, selected_building, selected_company_name, construction_item, within_construction, canvas, viewport) ->
+  render_tile_item: (render_state, tile_item, selected_building_label, construction_item, within_construction, canvas, viewport) ->
     if (within_construction || !within_construction && !tile_item.sprite_info.tree?) && tile_item.sprite_info.land?.within_canvas(canvas, viewport)
       land = @land_sprite_cache.new_sprite(render_state, { texture:tile_item.sprite_info.land.texture })
       tile_item.sprite_info.land.render(land, canvas, viewport)
@@ -231,7 +231,7 @@ export default class LayerManager
         sign_info.render(sign, building, canvas, viewport)
 
       if tile_item.sprite_info.building.is_selected
-        @render_building_selection(viewport, building, tile_item.sprite_info.building.image_metadata, selected_building.name, selected_company_name)
+        @render_building_selection(viewport, building, tile_item.sprite_info.building.image_metadata, selected_building_label)
 
 
     if construction_item?.within_canvas(canvas, viewport)

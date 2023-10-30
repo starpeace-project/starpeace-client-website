@@ -117,7 +117,7 @@ export default class APIClient
     @get("details", {}, (result) -> result || [])
   online_tycoons_for_planet: () ->
     @get("online", {}, (result) -> result || [])
-  rankings_for_planet: (, ranking_type_id) ->
+  rankings_for_planet: (ranking_type_id) ->
     @get("rankings/#{ranking_type_id}", {}, (result) -> result || [])
   search_corporations_for_planet: (, query, startsWithQuery) ->
     @get("search/corporations", { query, startsWithQuery }, (result) -> result || [])
@@ -127,18 +127,18 @@ export default class APIClient
     @get("towns", {}, (result) -> result)
   buildings_for_town: (town_id, industryCategoryId, industryTypeId) ->
     @get("towns/#{town_id}/buildings", { industryCategoryId, industryTypeId }, (result) -> result || [])
-  companies_for_town: (, town_id) ->
+  companies_for_town: (town_id) ->
     @get("towns/#{town_id}/companies", {}, (result) -> result || [])
-  details_for_town: (, town_id) ->
+  details_for_town: (town_id) ->
     @get("towns/#{town_id}/details", {}, (result) -> result || [])
 
-  overlay_data_for_planet: (, type, chunk_x, chunk_y) ->
+  overlay_data_for_planet: (type, chunk_x, chunk_y) ->
     @get_binary("overlay/#{type}", {
       chunkX: chunk_x
       chunkY: chunk_y
     }, (result) -> if result? then new Uint8Array(result) else null)
 
-  road_data_for_planet: (, chunk_x, chunk_y) ->
+  road_data_for_planet: (chunk_x, chunk_y) ->
     @get_binary("roads", {
       chunkX: chunk_x
       chunkY: chunk_y

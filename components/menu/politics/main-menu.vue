@@ -222,7 +222,7 @@ export default {
           this.details = await this.details_promise;
         }
         else if (this.selected_type === 'MAYOR') {
-          this.details_promise = this.$starpeaceClient.managers.planets_manager.load_town_details(this.planet_id, this.selected_id);
+          this.details_promise = this.$starpeaceClient.managers.planets_manager.load_town_details(this.selected_id);
           this.details = await this.details_promise;
         }
       }

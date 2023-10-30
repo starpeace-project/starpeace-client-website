@@ -32,7 +32,7 @@
 
             .columns
               .column.is-5
-                button.button.is-primary.is-fullwidth.is-outlined.workflow-action.visitor-action(@click.stop.prevent='select_visitor(planet_chunk[n - 1])' :disabled='!planet_chunk[n - 1].enabled || is_loading_corporation_identifiers') {{$translate('identity.visitor')}} {{$translate('identity.visa')}}
+                button.button.is-primary.is-fullwidth.is-outlined.workflow-action.visitor-action(@click.stop.prevent='select_visitor(planet_chunk[n - 1])' :disabled='true || !planet_chunk[n - 1].enabled || is_loading_corporation_identifiers') {{$translate('identity.visitor')}} {{$translate('identity.visa')}}
               .column.is-7
                 template(v-if='corporations_by_planet_id[planet_chunk[n - 1].id]')
                   button.button.is-primary.is-fullwidth.workflow-action.corporation-action(@click.stop.prevent='select_tycoon(planet_chunk[n - 1])' :disabled='!planet_chunk[n - 1].enabled || is_loading_corporation_identifiers')
@@ -97,7 +97,7 @@ export default {
     },
 
     select_visitor (planet): void {
-      if (!planet.enabled || this.is_loading_corporation_identifiers) return;
+      if (true || !planet.enabled || this.is_loading_corporation_identifiers) return;
 
       this.client_state.player.set_planet_visa_type(planet.id, 'visitor');
       if (window?.document) window.document.title = `${planet.name} - STARPEACE`;

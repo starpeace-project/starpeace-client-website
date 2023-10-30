@@ -8,6 +8,8 @@ export default class Town {
   map_x: number | undefined;
   map_y: number | undefined;
 
+  population: number = 0; // TODO: FIXME: hookup
+
   constructor (id: string) {
     this.id = id;
   }

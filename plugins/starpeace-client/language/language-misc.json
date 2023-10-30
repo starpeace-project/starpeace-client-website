@@ -190,5 +190,45 @@
     "FR": "ans",
     "IT": "anni",
     "PT": "anos"
+  },
+  "misc.selected.building.scanning": {
+    "DE": "Scannen...",
+    "EN": "Scanning...",
+    "ES": "Exploración...",
+    "FR": "Balayage...",
+    "IT": "Scansione...",
+    "PT": "Varredura..."
+  },
+  "misc.selected.building.townhall": {
+    "DE": "Rathaus",
+    "EN": "Town Hall",
+    "ES": "Ayuntamiento",
+    "FR": "Mairie",
+    "IT": "Municipio",
+    "PT": "Prefeitura"
+  },
+  "misc.selected.building.townhall.population": {
+    "DE": "bewohner",
+    "EN": "inhabitants",
+    "ES": "habitantes",
+    "FR": "habitants",
+    "IT": "abitanti",
+    "PT": "habitantes"
+  },
+  "misc.selected.building.tradecenter": {
+    "DE": "Handelszentrum",
+    "EN": "Trade Center",
+    "ES": "Centro de Comercio",
+    "FR": "Centre Commercial",
+    "IT": "Centro Commerciale",
+    "PT": "Centro Comercial"
+  },
+  "misc.selected.building.portal": {
+    "DE": "Portal",
+    "EN": "Portal",
+    "ES": "Portal",
+    "FR": "Portail",
+    "IT": "Portal",
+    "PT": "Portal"
   }
 }

@@ -21,7 +21,7 @@
               template(v-else) {{$translate('ui.misc.none')}}
           div
             span.sp-kv-key {{$translate('toolbar.inspect.tradecenter.label.built')}}:
-            span.sp-kv-value Jan 1, 2500
+            span.sp-kv-value {{constructionDate}}
           div
             span.sp-kv-key {{$translate('toolbar.inspect.tradecenter.label.owner')}}:
             span.sp-kv-value IFEL
@@ -76,6 +76,9 @@ export default {
       if (this.building?.name) return this.building.name;
       if (this.definition?.name) return this.$translate(this.definition.name);
       return null;
+    },
+    constructionDate () {
+      return this.building.constructionFinishedAt?.toFormat('LLL dd, yyyy');
     },
 
     products () { return this.details?.products ?? []; }

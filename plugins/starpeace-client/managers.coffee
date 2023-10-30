@@ -20,7 +20,7 @@ import PlaneManager from '~/plugins/starpeace-client/plane/plane-manager.coffee'
 import PlanetsManager from '~/plugins/starpeace-client/planet/planets-manager'
 import RoadManager from '~/plugins/starpeace-client/road/road-manager.coffee'
 import SignManager from '~/plugins/starpeace-client/asset/sign-manager.coffee'
-import TranslationManager from '~/plugins/starpeace-client/language/translation-manager.coffee'
+import TranslationManager from '~/plugins/starpeace-client/language/translation-manager'
 import TycoonManager from '~/plugins/starpeace-client/tycoon/tycoon-manager'
 
 import PlanetEventClient from '~/plugins/starpeace-client/api/planet-event-client.coffee'

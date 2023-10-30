@@ -23,7 +23,7 @@ export default class AssetManager
       Logger.debug "attempted to load same key more than once: #{key}"
       return callback()
 
-    Assets.add(key, asset_url)
+    Assets.add({ alias: key, src: asset_url })
     @key_callbacks[key] = callback
 
   load_queued: () ->
