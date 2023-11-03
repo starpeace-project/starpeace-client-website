@@ -1,11 +1,27 @@
 {
-  "toolbar.inspect.townhall.tabs.general": {
+  "toolbar.inspect.common.tabs.general": {
     "DE": "Allgemeines",
     "EN": "General",
     "ES": "General",
     "FR": "Général",
     "IT": "Generale",
     "PT": "Geral"
+  },
+  "toolbar.inspect.common.tabs.products": {
+    "DE": "Produkte",
+    "EN": "Products",
+    "ES": "Productos",
+    "FR": "Produits",
+    "IT": "Prodotti",
+    "PT": "Produtos"
+  },
+  "toolbar.inspect.common.tabs.jobs": {
+    "DE": "Arbeitsplätze",
+    "EN": "Jobs",
+    "ES": "Trabajos",
+    "FR": "Emplois",
+    "IT": "Lavori",
+    "PT": "Empregos"
   },
   "toolbar.inspect.townhall.tabs.commerce": {
     "DE": "Handel",
@@ -190,22 +206,6 @@
     "FR": "Indice de Qualité",
     "IT": "Indice di Qualità",
     "PT": "Índice de Qualidade"
-  },
-  "toolbar.inspect.tradecenter.tabs.general": {
-    "DE": "Allgemeines",
-    "EN": "General",
-    "ES": "General",
-    "FR": "Général",
-    "IT": "Generale",
-    "PT": "Geral"
-  },
-  "toolbar.inspect.tradecenter.tabs.products": {
-    "DE": "Produkte",
-    "EN": "Products",
-    "ES": "Productos",
-    "FR": "Produits",
-    "IT": "Prodotti",
-    "PT": "Produtos"
   },
   "toolbar.inspect.tradecenter.label.name": {
     "DE": "Name",

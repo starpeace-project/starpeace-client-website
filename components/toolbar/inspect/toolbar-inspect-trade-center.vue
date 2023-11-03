@@ -6,13 +6,11 @@
   template(v-else)
     .inspect-tabs.tabs.is-small.is-marginless
       ul
-        li(:class="{ 'is-active': tab_index == 0 }" @click.stop.prevent='tab_index = 0')
-          a {{$translate('toolbar.inspect.tradecenter.tabs.general')}}
-        li(:class="{ 'is-active': tab_index == 1 }" @click.stop.prevent='tab_index = 1')
-          a {{$translate('toolbar.inspect.tradecenter.tabs.products')}}
+        li(v-for='tab in tabs' :class="{ 'is-active': tabId == tab.id }" @click.stop.prevent='tabId = tab.id')
+          a {{$translate(tab.label)}}
 
     .inspect-body.columns.is-marginless
-      template(v-if='tab_index == 0')
+      template(v-if="tabId == 'general'")
         .column.is-narrow.extra-padding-right.general
           div
             span.sp-kv-key {{$translate('toolbar.inspect.tradecenter.label.name')}}:
@@ -29,11 +27,18 @@
         .column.is-narrow.extra-padding-left.general-actions
           a.button.is-fullwidth.is-starpeace(disabled) {{$translate('toolbar.inspect.tradecenter.action.connect')}}
 
-      template(v-else-if='tab_index == 1')
-        .column.is-paddingless.products
+      template(v-else-if="tabId == 'products'")
+        .column.is-paddingless.is-relative.is-clipped
           toolbar-inspect-shared-tab-products(
             :client-state='clientState'
             :products='products'
+          )
+
+      template(v-else-if="tabId == 'jobs'")
+        .column.is-paddingless.is-relative.is-clipped
+          toolbar-inspect-shared-tab-jobs(
+            :client-state='clientState'
+            :jobs='jobs'
           )
 
 </template>
@@ -42,11 +47,11 @@
 import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
 
 declare interface ToolbarInspectTradeCenterData {
-  tab_index: number;
+  tabId: string | undefined;
   product_index: number;
 
-  details_promise: null;
-  details: null;
+  details_promise: any | null;
+  details: any | null;
 }
 
 export default {
@@ -60,7 +65,7 @@ export default {
 
   data (): ToolbarInspectTradeCenterData {
     return {
-      tab_index: 0,
+      tabId: undefined,
       product_index: 0,
 
       details_promise: null,
@@ -81,13 +86,47 @@ export default {
       return this.building.constructionFinishedAt?.toFormat('LLL dd, yyyy');
     },
 
-    products () { return this.details?.products ?? []; }
+    products () { return this.details?.products ?? []; },
+    jobs () { return this.details?.labors ?? []; },
+
+    tabs () {
+      const tabs = [
+        {
+          id: 'general',
+          label: 'toolbar.inspect.common.tabs.general'
+        }
+      ];
+      if (this.products.length > 0) {
+        tabs.push({
+          id: 'products',
+          label: 'toolbar.inspect.common.tabs.products'
+        });
+      }
+      if (this.jobs.length > 0) {
+        tabs.push({
+          id: 'jobs',
+          label: 'toolbar.inspect.common.tabs.jobs'
+        });
+      }
+      return tabs;
+    }
   },
 
   watch: {
     building_id: {
       immediate: true,
       handler () { this.refresh_details(); }
+    },
+    tabs: {
+      immediate: true,
+      handler () {
+        if (!this.tabs.length) {
+          this.tabId = undefined;
+        }
+        else if (!this.tabId || !this.tabs.find(t => t.id === this.tabId)) {
+          this.tabId = this.tabs[0].id;
+        }
+      }
     }
   },
 
@@ -119,9 +158,5 @@ export default {
 .column
   &.general-actions
     min-width: 16rem
-
-  &.products
-    overflow: hidden
-    position: relative
 
 </style>

@@ -7,7 +7,7 @@
     .inspect-tabs.tabs.is-small.is-marginless
       ul
         li(:class="{ 'is-active': tab_index == 0 }" @click.stop.prevent='tab_index = 0')
-          a {{$translate('toolbar.inspect.townhall.tabs.general')}}
+          a {{$translate('toolbar.inspect.common.tabs.general')}}
         li(:class="{ 'is-active': tab_index == 1 }" @click.stop.prevent='tab_index = 1')
           a {{$translate('toolbar.inspect.townhall.tabs.commerce')}}
         li(:class="{ 'is-active': tab_index == 2 }" @click.stop.prevent='tab_index = 2')
@@ -16,6 +16,8 @@
           a {{$translate('toolbar.inspect.townhall.tabs.employment')}}
         li(:class="{ 'is-active': tab_index == 4 }" @click.stop.prevent='tab_index = 4')
           a {{$translate('toolbar.inspect.townhall.tabs.housing')}}
+        li(:class="{ 'is-active': tab_index == 5 }" @click.stop.prevent='tab_index = 5')
+          a {{$translate('toolbar.inspect.common.tabs.jobs')}}
 
     .inspect-body.columns.is-marginless
       template(v-if='tab_index == 0')

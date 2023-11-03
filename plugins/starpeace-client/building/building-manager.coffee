@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
 import Building from '~/plugins/starpeace-client/building/building'
-import BuildingDetails from '~/plugins/starpeace-client/building/building-details.coffee'
+import BuildingDetails from '~/plugins/starpeace-client/building/building-details'
 
 import ChunkMap from '~/plugins/starpeace-client/map/chunk/chunk-map.coffee'
 
@@ -66,7 +66,7 @@ export default class BuildingManager
     return details if details?
     throw Error() if !@client_state.has_session() || !building_id?
     await @ajax_state.locked('building_details', building_id, =>
-      details = BuildingDetails.from_json(await @api.building_details_for_id(building_id))
+      details = BuildingDetails.fromJson(await @api.building_details_for_id(building_id))
       @client_state.core.building_cache.load_building_details(details)
       details
     )
