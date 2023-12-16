@@ -46,7 +46,8 @@ export default class PlanetEventClient {
       this.configure();
     }
     else {
-      this.socket = io(`ws://${galaxyConfig.api_url}:${galaxyConfig.api_port}`, {
+      const protocol = galaxyConfig.api_protocol === 'https' ? 'wss' : 'ws';
+      this.socket = io(`${protocol}://${galaxyConfig.api_url}:${galaxyConfig.api_port}`, {
         autoConnect: false,
         transports: ['websocket'], // disable 'polling' as long-poll upgrade depends on sticky sessions,
         query: {
