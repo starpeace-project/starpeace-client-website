@@ -22,7 +22,7 @@ export default class Client {
   ajax_state: AjaxState;
   client_state: ClientState;
 
-  api: APIClient;
+  api: ApiClient;
   managers: Managers;
 
   renderer: Renderer;
@@ -30,7 +30,7 @@ export default class Client {
   construction_preview_renderer: Renderer;
   inspect_preview_renderer: Renderer;
 
-  constructor (disableRightClick: boolean) {
+  constructor (clientVersion: string, disableRightClick: boolean) {
     this.options = reactive(new Options());
     this.options.initialize();
     this.ajax_state = reactive(new AjaxState());
@@ -51,7 +51,7 @@ export default class Client {
       () => this.client_state.inspect_preview_renderer_initialized, () => this.client_state.inspect_preview_renderer_initialized = true,
       () => this.client_state.selected_building()?.definition_id, this.options));
 
-    Logger.banner();
+    Logger.banner(clientVersion);
   }
 
   notify_workflow_changed (): void {

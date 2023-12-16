@@ -5,7 +5,7 @@ import { CompanySeal, IndustryCategory, InventionDefinition, ResourceType, Resou
 import Client from '~/plugins/starpeace-client/client.js';
 
 export default defineNuxtPlugin((nuxtApp) => {
-  const client: Client = new Client(nuxtApp.$config.public.disableRightClick ?? true);
+  const client: Client = new Client(nuxtApp.$config.public.CLIENT_VERSION ?? '0.0.0', nuxtApp.$config.public.disableRightClick ?? true);
 
   const translate = (key: Translation | string | undefined): string | undefined => {
     return key ? client.managers.translation_manager?.text(key) : undefined
