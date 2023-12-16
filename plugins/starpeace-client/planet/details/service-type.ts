@@ -1,7 +1,7 @@
 
 export default class ServiceType {
-  static label_for_type (type: string): string {
-    switch (type) {
+  static labelForTypeId (typeId: string): string {
+    switch (typeId) {
       case 'COLLEGE': return 'ui.menu.politics.details.colleges.label'
       case 'GARBAGE': return 'ui.menu.politics.details.garbage.label'
       case 'FIRE': return 'ui.menu.politics.details.fire.label'
@@ -15,7 +15,7 @@ export default class ServiceType {
       case 'EMPLOYMENT': return 'ui.menu.politics.details.employment.label'
       case 'POPULATION_GROWTH': return 'ui.menu.politics.details.population_growth.label'
       case 'ECONOMIC_GROWTH': return 'ui.menu.politics.details.economic_growth.label'
-      default: return type
+      default: return typeId
     }
   }
 }

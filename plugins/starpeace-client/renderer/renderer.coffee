@@ -2,7 +2,7 @@ import '~/plugins/javascript-detect-element-resize/detect-element-resize';
 import { Application, Renderer as PixiRenderer } from 'pixi.js';
 import Stats from 'stats.js';
 
-import ChunkMap from '~/plugins/starpeace-client/map/chunk/chunk-map.coffee'
+import ChunkMap from '~/plugins/starpeace-client/map/chunk/chunk-map'
 
 import InputHandler from '~/plugins/starpeace-client/renderer/input/input-handler.coffee'
 import Layers from '~/plugins/starpeace-client/renderer/layer/layers.coffee'
@@ -88,7 +88,7 @@ export default class Renderer
 
     @update_offset(document?.getElementById('render-container')) unless @offset?
 
-    #@client_state.planet_event_client.updateViewTarget() if @layers?.has_dirty_view()
+    @client_state.planet_event_client.updateView() if @layers?.tile_item_cache?.has_dirty_view()
     @layers.refresh() if @layers?.should_refresh()
     @layers?.refresh_planes()
 

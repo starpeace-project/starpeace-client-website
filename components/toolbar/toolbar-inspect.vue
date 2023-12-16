@@ -1,58 +1,193 @@
 <template lang='pug'>
-.inspect-container(v-show='show_inspect' :oncontextmenu="'return ' + !$config.public.disableRightClick")
-
+.inspect-container(v-show='isVisible' :oncontextmenu="'return ' + !$config.public.disableRightClick")
   .inspect-preview.is-marginless
     #inspect-image-webgl-container(ref='previewContainer')
 
-  template(v-if='!building_type')
-    .loading-container
+  template(v-if='!isVisible || isLoading || !buildingType')
+    .column
       img.loading-image.starpeace-logo.logo-loading
 
-  template(v-else-if="building_type == 'PORTAL'")
-    toolbar-inspect-portal(:client-state='client_state' :key='selected_building_id')
-
-  template(v-else-if="building_type == 'TOWNHALL'")
-    toolbar-inspect-townhall(:client-state='client_state' :key='selected_building_id')
-
-  template(v-else-if="building_type == 'TRADECENTER'")
-    toolbar-inspect-trade-center(
-      :key='selected_building_id'
-      :client-state='client_state'
-      :building='selected_building'
-      :definition='selected_building_definition'
-      :simulation='selected_building_simulation'
-    )
-
   template(v-else)
-    toolbar-inspect-building(:client-state='client_state' :key='selected_building_id')
+    template(v-if="buildingTypeInspectType == 'PORTAL'")
+      toolbar-inspect-portal(:client-state='clientState' :key='selectedBuildingId' :building='selectedBuilding')
+
+    template(v-else-if="buildingTypeInspectType == 'TOWNHALL'")
+      toolbar-inspect-townhall(
+        :key='selectedBuildingId'
+        :client-state='clientState'
+        :building='selectedBuilding'
+        :definition='selectedBuildingDefinition'
+        :simulation='selectedBuildingSimulation'
+        :building-details='buildingDetails'
+        )
+
+    template(v-else-if="buildingTypeInspectType == 'TRADECENTER'")
+      toolbar-inspect-trade-center(
+        :key='selectedBuildingId'
+        :client-state='clientState'
+        :building='selectedBuilding'
+        :definition='selectedBuildingDefinition'
+        :simulation='selectedBuildingSimulation'
+        :building-details='buildingDetails'
+      )
+
+    template(v-else)
+      toolbar-inspect-building(
+        :key='selectedBuildingId'
+        :client-state='clientState'
+        :building='selectedBuilding'
+        :definition='selectedBuildingDefinition'
+        :simulation='selectedBuildingSimulation'
+        :building-details='buildingDetails'
+        @refresh-details='refreshBuildingDetails'
+      )
 
 </template>
 
 <script lang='ts'>
-import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
+import { BuildingDefinition, SimulationDefinition } from '@starpeace/starpeace-assets-types';
+
+import ClientState from '~/plugins/starpeace-client/state/client-state';
+import Building from '~/plugins/starpeace-client/building/building';
+import BuildingDetails from '~/plugins/starpeace-client/building/building-details';
+
+declare interface ToolbarInspectData {
+  buildingDetailsPromise: Promise<BuildingDetails> | undefined;
+  buildingDetails: BuildingDetails | undefined;
+  buildingDetailsConstructed: boolean | undefined;
+  buildingDetailsUpgrading: boolean | undefined;
+}
 
 export default {
   props: {
-    client_state: { type: ClientState, required: true }
+    clientState: { type: ClientState, required: true }
   },
 
-  data () {
+  data (): ToolbarInspectData {
     return {
-      tab_index: 0
+      buildingDetailsPromise: undefined,
+      buildingDetails: undefined,
+      buildingDetailsConstructed: undefined,
+      buildingDetailsUpgrading: undefined
     };
   },
 
   computed: {
-    is_ready () { return this.client_state.initialized && this.client_state?.workflow_status == 'ready'; },
+    isReady (): boolean {
+      return this.clientState.initialized && this.clientState.workflow_status === 'ready';
+    },
+    isLoading (): boolean {
+      return !this.buildingDetails;
+    },
 
-    show_inspect () { return this.client_state.interface?.selected_building_id?.length > 0 && this.client_state.interface?.show_inspect; },
+    isVisible (): boolean {
+      return this.isReady && (this.clientState.interface?.selected_building_id?.length ?? 0) > 0 && this.clientState.interface?.show_inspect;
+    },
 
-    selected_building_id () { return this.client_state.interface?.selected_building_id; },
-    selected_building () { return this.show_inspect ? this.client_state.core.building_cache.building_for_id(this.selected_building_id) : null; },
-    selected_building_definition () { return this.selected_building ? this.client_state.core.building_library.definition_for_id(this.selected_building.definition_id) : null; },
-    selected_building_simulation () { return this.selected_building ? this.client_state.core.building_library.simulation_definition_for_id(this.selected_building.definition_id) : null; },
+    selectedBuildingId (): string | undefined | null {
+      return this.isVisible ? this.clientState.interface?.selected_building_id : undefined;
+    },
+    selectedBuilding (): Building | undefined | null {
+      return this.isVisible && this.selectedBuildingId ? this.clientState.core.building_cache.building_for_id(this.selectedBuildingId) : undefined;
+    },
+    selectedBuildingConstructed (): boolean {
+      return !!this.selectedBuilding?.constructionFinishedAt;
+    },
+    selectedBuildingUpgrading (): boolean {
+      return this.selectedBuilding?.upgrading ?? false;
+    },
+    selectedBuildingDefinition (): BuildingDefinition | undefined | null {
+      return this.selectedBuilding ? this.clientState.core.building_library.definition_for_id(this.selectedBuilding.definition_id) : undefined;
+    },
+    selectedBuildingSimulation (): SimulationDefinition | undefined | null {
+      return this.selectedBuilding ? this.clientState.core.building_library.simulation_definition_for_id(this.selectedBuilding.definition_id) : undefined;
+    },
 
-    building_type () { return this.selected_building_simulation?.type; }
+    selectedBuildingDetailsStale (): boolean {
+      return !this.buildingDetails || this.buildingDetails && (
+        this.buildingDetailsConstructed !== this.selectedBuildingConstructed ||
+        this.buildingDetailsUpgrading !== this.selectedBuildingUpgrading
+      );
+    },
+
+    buildingType (): string | undefined {
+      return this.selectedBuildingSimulation?.type;
+    },
+    buildingTypeInspectType (): string {
+      if (this.buildingType === 'PORTAL') {
+        return 'PORTAL';
+      }
+      else if (this.buildingType === 'TOWNHALL') {
+        return 'TOWNHALL';
+      }
+      else if (this.buildingType === 'TRADECENTER') {
+        return 'TRADECENTER';
+      }
+      else {
+        return 'DEFAULT';
+      }
+    }
+  },
+
+  mounted() {
+    this.clientState.planet.subscribeBuildingListener((event: any) => {
+      if (this.isVisible && this.selectedBuildingId === event.id) {
+        this.refreshBuildingDetails();
+      }
+    });
+  },
+
+  watch: {
+    isVisible () {
+      if (this.isVisible) {
+        this.refreshBuildingDetails();
+      }
+    },
+    selectedBuildingId: {
+      immediate: true,
+      handler () {
+        if (this.isVisible) {
+          this.refreshBuildingDetails();
+        }
+      }
+    },
+    selectedBuildingDetailsStale: {
+      immediate: false,
+      handler () {
+        if (this.isVisible && this.selectedBuildingDetailsStale) {
+          this.refreshBuildingDetails();
+        }
+      }
+    },
+    buildingTypeInspectType () {
+      this.clientState.interface.selectedInspectTabId = undefined;
+    }
+  },
+
+  methods: {
+    async refreshBuildingDetails (): Promise<void> {
+      if (!this.selectedBuildingId || !this.isVisible) {
+        return;
+      }
+
+      if (this.selectedBuildingId !== this.buildingDetails?.id) {
+        this.buildingDetails = undefined;
+        this.buildingDetailsConstructed = undefined;
+        this.buildingDetailsUpgrading = undefined;
+      }
+
+      try {
+        this.buildingDetailsPromise = this.$starpeaceClient.managers.building_manager.load_building_details(this.selectedBuildingId, true);
+        this.buildingDetails = await this.buildingDetailsPromise;
+        this.buildingDetailsConstructed = this.selectedBuildingConstructed;
+        this.buildingDetailsUpgrading = this.selectedBuildingUpgrading;
+        this.buildingDetailsPromise = undefined;
+      }
+      catch (err) {
+        this.clientState.add_error_message('Failure loading building details, please try again', err);
+        this.buildingDetailsPromise = undefined;
+      }
+    }
   }
 }
 </script>
@@ -84,18 +219,13 @@ export default {
   top: 0
   width: 100%
 
-.loading-container
-  grid-column: start-details / end-details
-  grid-row: 1 / 2
-  position: relative
-
-  .loading-image
-    background-size: 8rem
-    height: 8rem
-    left: calc(50% - 4rem)
-    margin: 1rem 0
-    position: absolute
-    top: calc(40% - 4rem)
-    width: 8rem
+.loading-image
+  background-size: 8rem
+  height: 8rem
+  left: calc(50% - 4rem)
+  margin: 1rem 0
+  position: absolute
+  top: calc(40% - 4rem)
+  width: 8rem
 
 </style>

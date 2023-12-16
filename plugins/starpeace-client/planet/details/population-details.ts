@@ -1,12 +1,12 @@
 
 export default class PopulationDetails {
-  type: string;
+  resourceId: string;
   population: number;
   unemployed: number;
   homeless: number;
 
-  constructor (type: string, population: number, unemployed: number, homeless: number) {
-    this.type = type;
+  constructor (resourceId: string, population: number, unemployed: number, homeless: number) {
+    this.resourceId = resourceId;
     this.population = population;
     this.unemployed = unemployed;
     this.homeless = homeless;
@@ -14,7 +14,7 @@ export default class PopulationDetails {
 
   static fromJson (json: any): PopulationDetails {
     return new PopulationDetails(
-      json.type,
+      json.resourceId,
       json.population,
       json.unemployed,
       json.homeless

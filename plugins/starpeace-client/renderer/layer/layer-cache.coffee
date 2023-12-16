@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import * as PIXI from 'pixi.js'
 
-import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
-import Logger from '~/plugins/starpeace-client/logger.coffee'
+import Logger from '~/plugins/starpeace-client/logger'
+import Utils from '~/plugins/starpeace-client/utils/utils'
 
 SPRITE_BUFFER = 100000
 

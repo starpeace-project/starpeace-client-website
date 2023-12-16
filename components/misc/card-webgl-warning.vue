@@ -13,7 +13,7 @@
 </template>
 
 <script lang='ts'>
-import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
+import ClientState from '~/plugins/starpeace-client/state/client-state';
 
 export default {
   props: {

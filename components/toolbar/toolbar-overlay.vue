@@ -25,7 +25,7 @@
 
 <script lang='ts'>
 import Overlay from '~/plugins/starpeace-client/overlay/overlay.coffee';
-import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
+import ClientState from '~/plugins/starpeace-client/state/client-state';
 
 export default {
   props: {

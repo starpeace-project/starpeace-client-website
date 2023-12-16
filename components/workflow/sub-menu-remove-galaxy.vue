@@ -12,7 +12,7 @@
           .column.is-1.has-text-centered
             span.select-galaxy-toggle(@click.stop.prevent="toggle_galaxy_index(index)")
               font-awesome-icon(v-show="selected_indices.indexOf(index) >= 0" :icon="['fas', 'square']")
-              font-awesome-icon(v-show="selected_indices.indexOf(index) < 0" :icon="['far', 'square']")
+              font-awesome-icon(v-show="!(selected_indices.indexOf(index) >= 0)" :icon="['far', 'square']")
           .column.is-11
             .galaxy-name(@click.stop.prevent="toggle_galaxy_index(index)") {{galaxy_name(galaxy)}}
 
@@ -25,8 +25,8 @@
 </template>
 
 <script lang='ts'>
-import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
-import Galaxy from '~/plugins/starpeace-client/galaxy/galaxy.coffee';
+import ClientState from '~/plugins/starpeace-client/state/client-state';
+import Galaxy from '~/plugins/starpeace-client/galaxy/galaxy.js';
 
 declare interface SubMenuRemoveGalaxyData {
   selected_indices: Array<number>;

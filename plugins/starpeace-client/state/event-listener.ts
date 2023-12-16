@@ -14,10 +14,10 @@ export default class EventListener {
     this.listeners[type].push(callback);
   }
 
-  notify_listeners (type: string, callback_data=null) {
+  notify_listeners (type: string, callbackData: any | null | undefined = undefined) {
     setTimeout(() => {
       for (const listener of (this.listeners[type] ?? [])) {
-        setTimeout((() => listener(callback_data)), 0);
+        setTimeout((() => listener(callbackData)), 0);
       }
     }, 5);
   }

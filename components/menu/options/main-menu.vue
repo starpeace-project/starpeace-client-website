@@ -59,14 +59,14 @@
 
     footer.card-footer
       .card-footer-item.reset-item
-        button.button.is-primary.is-medium.is-outlined(@click.stop.prevent='reset_options', :disabled='!can_reset') {{$translate('ui.menu.options.actions.reset')}}
+        button.button.is-primary.is-medium.is-outlined(@click.stop.prevent='resetOptions' :disabled='!can_reset') {{$translate('ui.menu.options.actions.reset')}}
       .card-footer-item.save-item
-        button.button.is-primary.is-medium(@click.stop.prevent='save_options', :disabled='!is_dirty') {{$translate('ui.menu.options.actions.save')}}
+        button.button.is-primary.is-medium(@click.stop.prevent='saveOptions' :disabled='!is_dirty') {{$translate('ui.menu.options.actions.save')}}
 
 </template>
 
 <script lang='ts'>
-import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
+import ClientState from '~/plugins/starpeace-client/state/client-state';
 
 export default {
   props: {
@@ -75,35 +75,37 @@ export default {
 
   data () {
     return {
-      language_code: this.client_state?.options?.language() ?? 'EN',
+      language_code: this.client_state.options.language() ?? 'EN',
 
-      can_reset: this.client_state?.options?.can_reset(),
-      is_dirty: this.client_state?.options?.is_dirty()
+      can_reset: this.client_state.options.can_reset(),
+      is_dirty: this.client_state.options.is_dirty()
     };
   },
 
   computed: {
-    options () { return this.client_state.options; }
+    options () {
+      return this.client_state.options;
+    }
   },
 
   mounted () {
     this.client_state.options?.subscribe_options_listener(() => {
-      this.can_reset = this.client_state.options?.can_reset() ?? false;
-      this.is_dirty = this.client_state.options?.is_dirty() ?? false;
-      this.language_code = this.client_state.options?.language() ?? 'EN';
+      this.can_reset = this.client_state.options.can_reset() ?? false;
+      this.is_dirty = this.client_state.options.is_dirty() ?? false;
+      this.language_code = this.client_state.options.language() ?? 'EN';
       this.$forceUpdate();
     });
   },
 
   methods: {
-    change_language (code: string) {
-      this.client_state.options?.set_language(code);
+    change_language (code: string): void {
+      this.client_state.options.set_language(code);
     },
-    reset_options () {
-      this.client_state.options?.reset_state();
+    resetOptions (): void {
+      this.client_state.options.reset_state();
     },
-    save_options () {
-      this.client_state.options?.save_state();
+    saveOptions (): void {
+      this.client_state.options.save_state();
     }
   }
 }

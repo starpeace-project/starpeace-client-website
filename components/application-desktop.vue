@@ -24,7 +24,7 @@ client-only
     menu-help(v-show="is_menu_visible('help')" :client_state='client_state')
     menu-rankings-main-menu(v-show="is_menu_visible('rankings')" :ajax_state='ajax_state' :client_state='client_state')
     menu-release-notes(v-show="is_menu_visible('release_notes')" :client_state='client_state')
-    menu-research-main-menu(v-show="is_menu_visible('research')" :ajax_state='ajax_state' :client_state='client_state')
+    menu-research-main-menu(v-show="is_menu_visible('research')" :client-state='client_state')
     menu-galaxy-menu(v-show="is_menu_visible('galaxy')" :ajax_state='ajax_state' :client_state='client_state')
     menu-town-search-main-menu(v-show="is_menu_visible('town_search')" :client_state='client_state')
     menu-tycoon-details-main-menu(v-show="is_menu_visible('tycoon')" :client_state='client_state')
@@ -37,7 +37,7 @@ client-only
     toolbar-overlay(:client_state='client_state')
     toolbar-minimap(:client_state='client_state')
     toolbar-ribbon(:client_state='client_state')
-    toolbar-inspect(:ajax_state='ajax_state' :client_state='client_state')
+    toolbar-inspect(:client-state='client_state')
     toolbar-menubar(:ajax_state='ajax_state' :client_state='client_state')
     toolbar-details(:ajax_state='ajax_state' :client_state='client_state')
 
@@ -48,7 +48,7 @@ client-only
 </template>
 
 <script lang='ts'>
-import Utils from '~/plugins/starpeace-client/utils/utils.coffee';
+import Utils from '~/plugins/starpeace-client/utils/utils.js';
 
 export default {
   data () {

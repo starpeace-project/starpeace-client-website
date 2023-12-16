@@ -1,8 +1,8 @@
 
-import Galaxy from '~/plugins/starpeace-client/galaxy/galaxy.coffee'
+import Galaxy from '~/plugins/starpeace-client/galaxy/galaxy'
 import Tycoon from '~/plugins/starpeace-client/tycoon/tycoon'
 
-import Logger from '~/plugins/starpeace-client/logger.coffee'
+import Logger from '~/plugins/starpeace-client/logger'
 
 
 export default class GalaxyManager

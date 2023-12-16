@@ -2,9 +2,9 @@ import _ from 'lodash'
 
 import MockAdapter from 'axios-mock-adapter'
 
-import ChunkMap from '~/plugins/starpeace-client/map/chunk/chunk-map.coffee'
-import TimeUtils from '~/plugins/starpeace-client/utils/time-utils.coffee'
-import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
+import ChunkMap from '~/plugins/starpeace-client/map/chunk/chunk-map'
+import TimeUtils from '~/plugins/starpeace-client/utils/time-utils'
+import Utils from '~/plugins/starpeace-client/utils/utils'
 
 import Sandbox from '~/plugins/starpeace-client/api/sandbox/sandbox.coffee'
 import SandboxSocketEvents from '~/plugins/starpeace-client/api/sandbox/sandbox-socket-events.coffee'
@@ -25,21 +25,48 @@ export default class SandboxConfiguration
 
     SandboxApiConfigure.configure(@mock, @sandbox)
 
-    @get 'metadata/buildings', (config) => _.cloneDeep(_.merge({ planetId: config.headers['PlanetId'] }, @sandbox.sandbox_data.metadata.buildings))
-    @get 'metadata/core', (config) => _.cloneDeep(_.merge({ planetId: config.headers['PlanetId'] }, @sandbox.sandbox_data.metadata.core))
-    @get 'metadata/inventions', (config) => _.cloneDeep(_.merge({ planetId: config.headers['PlanetId'] }, @sandbox.sandbox_data.metadata.inventions))
+    @get 'metadata/buildings', (config) => _.merge({ planetId: config.headers['PlanetId'] }, {
+      definitions: @sandbox.sandbox_data.metadata.building.definitions.map((d) -> d.toJson()),
+      simulationDefinitions: @sandbox.sandbox_data.metadata.building.simulations.map((d) -> d.toJson())
+    })
+    @get 'metadata/core', (config) => _.merge({ planetId: config.headers['PlanetId'] }, {
+      cityZones: @sandbox.sandbox_data.metadata.core.cityZones.map((s) -> s.toJson())
+      industryCategories: @sandbox.sandbox_data.metadata.core.industryCategories.map((s) -> s.toJson())
+      industryTypes: @sandbox.sandbox_data.metadata.core.industryTypes.map((s) -> s.toJson())
+      levels: @sandbox.sandbox_data.metadata.core.levels.map((s) -> s.toJson())
+      rankingTypes: @sandbox.sandbox_data.metadata.core.rankingTypes
+      resourceTypes: @sandbox.sandbox_data.metadata.core.resourceTypes.map((s) -> s.toJson())
+      resourceUnits: @sandbox.sandbox_data.metadata.core.resourceUnits.map((s) -> s.toJson())
+      seals: @sandbox.sandbox_data.metadata.core.seals.map((s) -> s.toJson())
+    })
+    @get 'metadata/inventions', (config) => _.merge({ planetId: config.headers['PlanetId'] }, {
+      inventions: @sandbox.sandbox_data.metadata.invention.inventions.map((i) -> i.toJson())
+    })
 
+    @get 'buildings/(.+?)/details', (config, building_id) =>
+      _.cloneDeep(@sandbox.sandbox_data.building.detailsById[building_id] || {})
+    @patch 'buildings/(.+?)/details', (config, building_id) =>
+      # TODO: save changes to cache
+      _.cloneDeep({})
+    @get 'buildings/(.+)', (config, building_id) =>
+      throw new Error(404) unless @sandbox.sandbox_data.building.buildingById[building_id]?
+      _.cloneDeep(@sandbox.sandbox_data.building.buildingById[building_id])
+    @post 'buildings/(.+)/demolish', (config, building_id) =>
+      # TODO: remove from caches
+      throw new Error(404) unless @sandbox.sandbox_data.building.buildingById[building_id]?
+      {}
+    @post 'buildings', (config, params) =>
+      @sandbox.sandbox_buildings.queue_construction(config.headers['PlanetId'], params)
     @get 'buildings', (config, params) =>
       planet_id = config.headers['PlanetId']
-      throw new Error(404) unless @sandbox.sandbox_data.planet_id_chunk_id_buildings[planet_id]?
-      _.cloneDeep(@sandbox.sandbox_data.planet_id_chunk_id_buildings[planet_id]["#{params.chunkX}x#{params.chunkY}"] || [])
-    @post 'buildings', (config, params) => @sandbox.sandbox_buildings.queue_construction(config.headers['PlanetId'], params)
+      throw new Error(404) unless @sandbox.sandbox_data.building.buildingsByPlanetIdChunkId[planet_id]?
+      _.cloneDeep(@sandbox.sandbox_data.building.buildingsByPlanetIdChunkId[planet_id]["#{params.chunkX}x#{params.chunkY}"] || [])
 
 
-    @get('rankings/(.+)', (config, ranking_type_id) => _.cloneDeep(@sandbox.sandbox_data.planet_rankings_by_type_id[config.headers['PlanetId']]?[ranking_type_id] || []))
+    @get('rankings/(.+)', (config, ranking_type_id) => _.cloneDeep(@sandbox.sandbox_data.rankings.rankingsByPlanetIdTypeId[config.headers['PlanetId']]?[ranking_type_id] || []))
 
     @get('search/corporations', (config, params) =>
-      _.map(_.filter(_.values(@sandbox.sandbox_data.corporation_by_id), (c) ->
+      _.map(_.filter(_.values(@sandbox.sandbox_data.corporation.corporationById), (c) ->
         return false unless c.planetId == config.headers['PlanetId']
         if params.startsWithQuery
           return c.name.toLowerCase().startsWith(params.query.toLowerCase())
@@ -47,20 +74,20 @@ export default class SandboxConfiguration
           return c.name.toLowerCase().includes(params.query.toLowerCase())
       ), (c) => {
         tycoonId: c.tycoonId
-        tycoonName: @sandbox.sandbox_data.tycoon_by_id[c.tycoonId].name
+        tycoonName: @sandbox.sandbox_data.corporation.tycoonById[c.tycoonId].name
         corporationId: c.id
         corporationName: c.name
       })
     )
     @get('search/tycoons', (config, params) =>
-      _.map(_.filter(_.values(@sandbox.sandbox_data.corporation_by_id), (c) =>
+      _.map(_.filter(_.values(@sandbox.sandbox_data.corporation.corporationById), (c) =>
         return false unless c.planetId == config.headers['PlanetId']
-        tycoon = @sandbox.sandbox_data.tycoon_by_id[c.tycoonId]
+        tycoon = @sandbox.sandbox_data.corporation.tycoonById[c.tycoonId]
         return false unless tycoon?
         if params.startsWithQuery then tycoon.name.startsWith(params.query) else tycoon.name.includes(params.query)
       ), (c) => {
         tycoonId: c.tycoonId
-        tycoonName: @sandbox.sandbox_data.tycoon_by_id[c.tycoonId].name
+        tycoonName: @sandbox.sandbox_data.corporation.tycoonById[c.tycoonId].name
         corporationId: c.id
         corporationName: c.name
       })
@@ -68,7 +95,7 @@ export default class SandboxConfiguration
 
 
     @get('details', (config, params) =>
-      _.merge(_.cloneDeep(@sandbox.sandbox_data?.planet_details), {
+      _.merge(_.cloneDeep(@sandbox.sandbox_data?.government.planet), {
         id: config.headers['PlanetId']
       })
     )
@@ -103,7 +130,8 @@ export default class SandboxConfiguration
     )
     @get('towns/(.+?)/details', (config, town_id, params) =>
       throw new Error(404) unless @sandbox.sandbox_data?.planet_towns?[config.headers['PlanetId']]?
-      _.merge(_.cloneDeep(@sandbox.sandbox_data?.town_details[town_id] || @sandbox.sandbox_data?.empty_town_details), {
+      throw new Error(404) unless @sandbox.sandbox_data?.government.detailsByTownId[town_id]?
+      _.merge(_.cloneDeep(@sandbox.sandbox_data?.government.detailsByTownId[town_id]), {
         id: town_id
       })
     )
@@ -114,35 +142,29 @@ export default class SandboxConfiguration
     )
 
     @get('overlay/(.+)', (config, type_id, params) =>
-      if @sandbox.sandbox_data?.overlay_chunk_data["#{type_id}x#{params.chunkX}x#{params.chunkY}"]?
-        _.cloneDeep(@sandbox.sandbox_data.overlay_chunk_data["#{type_id}x#{params.chunkX}x#{params.chunkY}"].data)
+      if @sandbox.sandbox_data?.overlay.chunkInfoByKey["#{type_id}x#{params.chunkX}x#{params.chunkY}"]?
+        _.cloneDeep(@sandbox.sandbox_data.overlay.chunkInfoByKey["#{type_id}x#{params.chunkX}x#{params.chunkY}"].data)
       else
-        _.cloneDeep(@sandbox.sandbox_data.empty_overlay_data)
+        _.cloneDeep(@sandbox.sandbox_data.overlay.emptyChunKData)
     )
 
     @get('roads', (config, params) =>
-      if @sandbox.sandbox_data?.road_chunk_data["#{params.chunkX}x#{params.chunkY}"]?
-        _.cloneDeep(@sandbox.sandbox_data.road_chunk_data["#{params.chunkX}x#{params.chunkY}"].buffer)
+      if @sandbox.sandbox_data?.roads.chunkDataByKey["#{params.chunkX}x#{params.chunkY}"]?
+        _.cloneDeep(@sandbox.sandbox_data.roads.chunkDataByKey["#{params.chunkX}x#{params.chunkY}"].buffer)
       else
-        _.cloneDeep(@sandbox.sandbox_data.empty_road_buffer)
+        _.cloneDeep(@sandbox.sandbox_data.roads.emptyBuffer)
     )
 
 
-    @get 'buildings/(.+?)/details', (config, building_id) =>
-      _.cloneDeep(@sandbox.sandbox_data.building_id_building_details[building_id] || {})
-    @get 'buildings/(.+)', (config, building_id) =>
-      throw new Error(404) unless @sandbox.sandbox_data.building_id_building[building_id]?
-      _.cloneDeep(@sandbox.sandbox_data.building_id_building[building_id])
-
     @post 'companies', (config, params) => throw new Error(500)
-    @get 'companies/(.+?)/buildings', (config, company_id) => _.cloneDeep(@sandbox.sandbox_data.company_id_buildings[company_id] || [])
+    @get 'companies/(.+?)/buildings', (config, company_id) => _.cloneDeep(@sandbox.sandbox_data.building.buildingsByCompanyId[company_id] || [])
     @get 'companies/(.+?)/inventions', (config, company_id) => @sandbox.sandbox_inventions.company_inventions(company_id)
     @put 'companies/(.+?)/inventions/(.+)', (config, company_id, invention_id) => @sandbox.sandbox_inventions.queue_company_invention(company_id, invention_id)
     @delete 'companies/(.+?)/inventions/(.+)', (config, company_id, invention_id) => @sandbox.sandbox_inventions.sell_company_invention(company_id, invention_id)
 
     @get 'companies/(.+)', (config, company_id) =>
-      throw new Error(404) if !@sandbox.sandbox_data.company_id_info[company_id]?
-      _.cloneDeep(@sandbox.sandbox_data.company_id_info[company_id])
+      throw new Error(404) if !@sandbox.sandbox_data.corporation.infoByCompanyId[company_id]?
+      _.cloneDeep(@sandbox.sandbox_data.corporation.infoByCompanyId[company_id])
 
 
     @mock.onAny().passThrough()

@@ -6,21 +6,32 @@
 import { markRaw } from 'vue';
 import { Network } from 'vis-network';
 
+declare interface NetworkData {
+  network: Network | undefined;
+}
+
 export default {
   props: {
     options: { type: Object, required: true },
-    nodes: { type: Array, required: true },
-    edges: { type: Array, required: true }
+    nodes: { type: Array<any>, required: true },
+    edges: { type: Array<any>, required: true },
+    selectedNodes: { type: Array<string>, required: false }
   },
 
-  data () {
+  data (): NetworkData {
     return {
-      network: null
+      network: undefined
     };
   },
 
   computed: {
-    networkNodedIds () { return new Set<string>(this.nodes.map(n => n.id)); }
+    networkNodedIds (): Set<string> {
+      return new Set<string>(this.nodes.map((n: any) => n.id));
+    },
+
+    selectableNodeIds (): Array<string> {
+      return (this.selectedNodes ?? []).filter((id: string) => this.networkNodedIds.has(id));
+    }
   },
 
   mounted () {
@@ -29,6 +40,7 @@ export default {
       nodes: this.nodes,
       edges: this.edges
     }, this.options));
+    this.network.selectNodes(this.selectableNodeIds);
 
     this.network.on('selectNode', (event) => this.$emit('select-node', event));
     this.network.on('deselectNode', (event) => this.$emit('deselect-node', event));
@@ -39,28 +51,36 @@ export default {
   },
 
   watch: {
-    nodes (newValue, oldValue) {
-      this.network.setData({
-        nodes: this.nodes ?? [],
-        edges: this.edges ?? []
-      });
-      this.network.fit();
-      this.network.redraw();
+    nodes: {
+      deep: true,
+      handler (newValue, oldValue) {
+        if (this.network) {
+          this.network.setData({
+            nodes: this.nodes,
+            edges: this.edges
+          });
+          this.network.selectNodes(this.selectableNodeIds);
+          this.network.fit();
+          this.network.redraw();
+        }
+      }
     },
     options (newValue, oldValue) {
-      this.network.setOptions(this.options);
-      this.network.fit();
-      this.network.redraw();
+      if (this.network) {
+        this.network.setOptions(this.options);
+        this.network.fit();
+        this.network.redraw();
+      }
     }
   },
 
   methods: {
-    selectNodes (nodeIds) {
-      this.network.selectNodes(nodeIds.filter(id => this.networkNodedIds.has(id)));
+    selectNodes (nodeIds: Array<string>) {
+      this.network?.selectNodes(nodeIds.filter(id => this.networkNodedIds.has(id)));
     },
 
     fit () {
-      this.network.fit();
+      this.network?.fit();
     }
   }
 }

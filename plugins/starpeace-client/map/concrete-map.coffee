@@ -1,8 +1,8 @@
 
-import Logger from '~/plugins/starpeace-client/logger.coffee'
+import Logger from '~/plugins/starpeace-client/logger'
 
 import Concrete from '~/plugins/starpeace-client/building/concrete.coffee'
-import ChunkMap from '~/plugins/starpeace-client/map/chunk/chunk-map.coffee'
+import ChunkMap from '~/plugins/starpeace-client/map/chunk/chunk-map'
 
 export default class ConcreteMap
   constructor: (client_state, @ground_map, @building_map, @width, @height) ->
@@ -205,7 +205,7 @@ export default class ConcreteMap
           if is_water
             @concrete_info[index] = { type: Concrete.TYPES.PLATFORM_CENTER }
           else
-            unless @building_map.tile_info_building[y * @width + x]? || is_road || (x % 2 == 1) ^ (y % 2 == 1)
+            unless @building_map.tile_info_building_id[y * @width + x]? || is_road || (x % 2 == 1) ^ (y % 2 == 1)
               @concrete_info[index] = { type: Concrete.TYPES.CENTER_TREEABLE }
             else
               @concrete_info[index] = { type: Concrete.TYPES.CENTER }

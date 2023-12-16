@@ -29,9 +29,9 @@
               a
                 span {{$translate(label)}}
 
-        .is-size-5.ranking-title-industry(v-if='selected_ranking_type.category_total || selected_ranking_type.industry_type_id')
-          misc-industry-type-icon(:industry_type='selected_ranking_type.industry_type_id' v-if='selected_ranking_type.industry_type_id')
-          misc-industry-category-icon(small=true :category='selected_ranking_type.industry_category_id' v-else-if='selected_ranking_type.industry_category_id')
+        .is-size-5.ranking-title-industry(v-if='selected_ranking_type.category_total || selected_ranking_type.industryTypeId')
+          misc-industry-type-icon(:industry_type='selected_ranking_type.industryTypeId' v-if='selected_ranking_type.industryTypeId')
+          misc-industry-category-icon(small=true :category='selected_ranking_type.industryCategoryId' v-else-if='selected_ranking_type.industryCategoryId')
           font-awesome-icon(:icon="['fas', 'medal']" v-else)
           span.title-label {{$translate(label_for_type(selected_ranking_type))}}
 
@@ -55,7 +55,7 @@
 
 <script lang='ts'>
 import _ from 'lodash';
-import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
+import ClientState from '~/plugins/starpeace-client/state/client-state';
 
 declare interface MainMenuData {
   ranking_nodes: Array<any>;
@@ -84,7 +84,7 @@ export default {
 
     is_loading () {
       if (!this.is_visible || !this.client_state.player.planet_id?.length || !this.selected_ranking_type_id?.length || !this.rankings) return false;
-      return this.ajax_state?.request_mutex['planet_rankings']?.[`${this.client_state.player.planet_id}:${this.selected_ranking_type_id}`] ?? false;
+      return this.ajax_state?.requestMutexByTypeKey['planet_rankings']?.[`${this.client_state.player.planet_id}:${this.selected_ranking_type_id}`] ?? false;
     },
 
     selected_ranking_type_id () { return this.is_visible ? this.client_state?.interface?.selected_ranking_type_id : null; },
@@ -154,8 +154,8 @@ export default {
         id: type.id,
         label: this.label_for_type(type),
         category_total: type.category_total,
-        industry_category_id: type.industry_category_id,
-        industry_type_id: type.industry_type_id,
+        industryCategoryId: type.industryCategoryId,
+        industryTypeId: type.industryTypeId,
         expanded: false,
         children: _.map(this.client_state.core.planet_library.ranking_type_for_parent_id(type.id), this.type_to_node)
       };
@@ -164,8 +164,8 @@ export default {
     label_for_type (type: any) {
       if (type.category_total) return 'ui.menu.rankings.label.total';
       if (type.label) return type.label;
-      if (type.industry_type_id) return this.client_state.core.planet_library.type_for_id(type.industry_type_id)?.label;
-      if (type.industry_category_id) return this.client_state.core.planet_library.category_for_id(type.industry_category_id)?.label;
+      if (type.industryTypeId) return this.client_state.core.planet_library.type_for_id(type.industryTypeId)?.label;
+      if (type.industryCategoryId) return this.client_state.core.planet_library.category_for_id(type.industryCategoryId)?.label;
       return type.id;
     }
   }

@@ -21,7 +21,7 @@ export default class SandboxApiVisa {
         const access_token: string | null = config.headers['Authorization']?.split(' ')?.[1];
         if (params.identityType == 'tycoon' && access_token) {
           tycoonId = sandbox.sandbox_data.access_tokens[access_token].tycoon_id;
-          corporationId = _.values(sandbox.sandbox_data.corporation_by_id).find((corporation) => corporation.planetId == planetId && corporation.tycoonId == tycoonId)?.id;
+          corporationId = _.values(sandbox.sandbox_data.corporation.corporationById).find((corporation) => corporation.planetId == planetId && corporation.tycoonId == tycoonId)?.id;
         }
 
         const visa = {

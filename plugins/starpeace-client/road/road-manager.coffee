@@ -1,13 +1,12 @@
 
-import Logger from '~/plugins/starpeace-client/logger.coffee'
+import Logger from '~/plugins/starpeace-client/logger'
 
-import ChunkMap from '~/plugins/starpeace-client/map/chunk/chunk-map.coffee'
+import ChunkMap from '~/plugins/starpeace-client/map/chunk/chunk-map'
 import Road from '~/plugins/starpeace-client/road/road.coffee'
 import MetadataRoad from '~/plugins/starpeace-client/road/metadata-road.coffee'
 
 export default class RoadManager
   constructor: (@api, @asset_manager, @ajax_state, @client_state) ->
-    @chunk_promises = {}
 
   queue_asset_load: () ->
     return if @client_state.core.road_library.has_assets() || @ajax_state.is_locked('assets.road_metadata', 'ALL')

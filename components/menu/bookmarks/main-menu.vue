@@ -49,11 +49,11 @@
 </template>
 
 <script lang='ts'>
-import AjaxState from '~/plugins/starpeace-client/state/ajax-state.coffee';
-import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
-import BookmarkState from '~/plugins/starpeace-client/state/player/bookmark-state';
+import AjaxState from '~/plugins/starpeace-client/state/ajax-state.js';
+import ClientState from '~/plugins/starpeace-client/state/client-state';
+import BookmarkState from '~/plugins/starpeace-client/state/player/bookmark-state.js';
 
-import Bookmark from '~/plugins/starpeace-client/bookmark/bookmark';
+import Bookmark from '~/plugins/starpeace-client/bookmark/bookmark.js';
 
 export default {
   props: {
@@ -141,10 +141,10 @@ export default {
       if (!this.is_ready || !this.menu_visible || !this.hasCorporation) {
         return true;
       }
-      return this.ajax_state.request_mutex.bookmark_metadata?.[this.client_state.player.corporation_id] ||
-          this.ajax_state.request_mutex.update_bookmark?.[this.client_state.player.corporation_id] ||
-          this.ajax_state.request_mutex.new_bookmark_folder?.[this.client_state.player.corporation_id] ||
-          this.ajax_state.request_mutex.new_bookmark_item?.[this.client_state.player.corporation_id];
+      return this.ajax_state.requestMutexByTypeKey.bookmark_metadata?.[this.client_state.player.corporation_id] ||
+          this.ajax_state.requestMutexByTypeKey.update_bookmark?.[this.client_state.player.corporation_id] ||
+          this.ajax_state.requestMutexByTypeKey.new_bookmark_folder?.[this.client_state.player.corporation_id] ||
+          this.ajax_state.requestMutexByTypeKey.new_bookmark_item?.[this.client_state.player.corporation_id];
     }
   },
 

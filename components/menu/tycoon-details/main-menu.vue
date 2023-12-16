@@ -37,7 +37,7 @@
     .tycoon-tabs(v-if='has_tycoon')
       template(v-if='!tycoon || loadingTycoon')
         .sp-loading.is-flex.is-align-items-center.is-justify-content-center
-            img.starpeace-logo
+          img.starpeace-logo
 
       template(v-else-if="mode=='CURRICULUM'")
         menu-tycoon-details-tab-curriculum(:client-state='client_state' :tycoon-id='tycoon_id' :corporation-id='corporation_id')
@@ -60,7 +60,7 @@
 
 <script lang='ts'>
 import _ from 'lodash';
-import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
+import ClientState from '~/plugins/starpeace-client/state/client-state';
 
 export default {
   props: {

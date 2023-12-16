@@ -1,6 +1,8 @@
 <template lang='pug'>
 #toolbar-details.columns.is-marginless.is-paddingless(v-show='is_ready' v-cloak=true :oncontextmenu="'return ' + !$config.public.disableRightClick")
-  .column.column-news-ticker {{ ticker_message }}
+  .column.column-news-ticker
+    span.is-clickable(v-if='tickerHasTarget' @click.stop.prevent='jumpTickerTarget') {{ ticker_message }}
+    span(v-else) {{ ticker_message }}
   .column.column-tycoon-details
     #corporation-details.level.is-mobile
       .level-left.content.corporation-panel
@@ -26,7 +28,7 @@
             span.company-name {{client_state.name_for_company_id(company.id)}}
           .company-building-count
             font-awesome-icon(:icon="['far', 'building']")
-            span.count {{building_count_for_company_id(company.id)}}
+            span.count {{ building_count_for_company_id(company.id) }}
           p.company-cashflow
             | (
             misc-money-text(:value='company_cashflow(company.id)')
@@ -40,7 +42,7 @@
 
 <script lang='ts'>
 import _ from 'lodash';
-import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
+import ClientState from '~/plugins/starpeace-client/state/client-state';
 
 export default {
   props: {
@@ -52,7 +54,12 @@ export default {
     is_ready () { return this.client_state.initialized && this.client_state?.workflow_status === 'ready'; },
     planet_date () { return this.client_state?.planet?.current_time ? this.client_state.planet.current_time.toFormat('MMM d, yyyy') : ''; },
 
-    ticker_message () { return this.client_state?.interface?.event_ticker_message ?? ''; },
+    ticker_message (): string {
+      return this.client_state?.interface?.eventTickerMessage ?? '';
+    },
+    tickerHasTarget (): boolean {
+      return !!this.client_state?.interface?.eventTickerTarget;
+    },
 
     is_tycoon () { return this.is_ready && this.client_state?.is_tycoon(); },
     can_form_company () { return this.is_tycoon && this.client_state.player.corporation_id?.length; },
@@ -75,10 +82,20 @@ export default {
 
     building_count_for_company_id (company_id: string) { return (this.client_state.corporation.buildings_ids_by_company_id?.[company_id] ?? []).length; },
 
-    is_selected (company_id: string) { return this.client_state.player.company_id == company_id; },
-    select_company (company_id: string) { return this.client_state.player.company_id = company_id; },
+    is_selected (company_id: string): boolean {
+      return this.client_state.player.company_id === company_id;
+    },
+    select_company (company_id: string): void {
+      return this.client_state.player.set_company_id(company_id);
+    },
 
-    toggle_form_company_menu () { return this.client_state.menu.toggle_menu('company_form'); }
+    toggle_form_company_menu () { return this.client_state.menu.toggle_menu('company_form'); },
+
+    jumpTickerTarget (): void {
+      if (this.client_state?.interface?.eventTickerTarget) {
+        this.client_state.jump_to(this.client_state?.interface?.eventTickerTarget.mapX, this.client_state?.interface?.eventTickerTarget.mapY, this.client_state?.interface?.eventTickerTarget.buildingId);
+      }
+    }
   }
 }
 </script>
@@ -111,6 +128,10 @@ export default {
     height: 100%
     max-width: 24rem
     padding: .5rem
+
+    .is-clickable
+      &:hover
+        text-decoration: underline
 
 
 #corporation-details

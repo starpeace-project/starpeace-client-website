@@ -72,7 +72,7 @@
               td
                 span(v-for='label,index in rank.labels' :class="{'ml-1': index > 0}") {{$translate(label)}}
               td.has-text-right
-                span(v-if='rank.rank < 1') -
+                span(v-if='!(rank.rank >= 1)') -
                 span(v-else) {{rank.rank}}
 
     .sp-scrollbar
@@ -101,8 +101,8 @@
 
 <script lang='ts'>
 import _ from 'lodash';
-import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
-import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
+import ClientState from '~/plugins/starpeace-client/state/client-state';
+import Utils from '~/plugins/starpeace-client/utils/utils.js'
 
 export default {
   props: {
@@ -241,8 +241,8 @@ export default {
         return ['ui.menu.rankings.label.total'];
       }
       if (type.label) return [type.label];
-      if (type.industry_type_id) return [this.clientState.core.planet_library.type_for_id(type.industry_type_id)?.label];
-      if (type.industry_category_id) return [this.clientState.core.planet_library.category_for_id(type.industry_category_id)?.label];
+      if (type.industryTypeId) return [this.clientState.core.planet_library.type_for_id(type.industryTypeId)?.label];
+      if (type.industryCategoryId) return [this.clientState.core.planet_library.category_for_id(type.industryCategoryId)?.label];
       return [type.id];
     },
 

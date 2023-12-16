@@ -1,6 +1,6 @@
 import { Assets } from '@pixi/assets';
 
-import Logger from '~/plugins/starpeace-client/logger.coffee'
+import Logger from '~/plugins/starpeace-client/logger'
 
 export default class AssetManager
   @CDN_URL: 'https://cdn.starpeace.io'

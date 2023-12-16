@@ -1,5 +1,5 @@
 
-## v0.3.13 - in progress - updated 2023-05-21
+## v0.3.14 - in progress - updated 2023-12-16
 ### platform
 * [done] improve API integration with galaxies [v0.3.1]
 * [done] document multiverse API integration [starpeace-server-multiverse-api]
@@ -32,9 +32,9 @@
 * [done] bookmarks manage and performance fixes [v0.3.11]
 * [done] tycoon details API [v0.3.12]
 * [done] fixed galaxy and research menu bugs  [v0.3.13]
-* [in progress] building inspect API [v0.3.13]
-* [in progress] improve auth and remember me token and error handling
-* [pending] player, building, and planet event handling
+* [done] building inspect API [v0.3.13]
+* [done] player and building event handling [v0.3.13]
+* [in progress] admin API [v0.3.14]
 
 ### assets
 * [done] finish initial language translation for assets [v0.3.1]
@@ -47,6 +47,7 @@
 * [done] building sign assets [v0.3.5]
 * [done] headquarters requirements for research per seal [v0.3.5]
 * [done] fixing building foundation configurations [v0.3.6]
+* [in progress] fix blur in created sprite spreets [v0.3.14]
 
 ### gameplay
 * [done] update UI and menus for better concept of universes and galaxies [v0.3.1]
@@ -69,6 +70,7 @@
 * [done] onscreen building text rendering on selection [v0.3.10]
 * [done] construction descriptions for commerce, real estate, and services [v0.3.10]
 * [done] tycoon details menu [v0.3.12]
-* [in progress] building inspect menu [v0.3.13]
-* [pending] city-specific ribbon ticker updates
-* [pending] integrate player and planet events with news ticker
+* [done] building inspect menu [v0.3.13]
+* [done] selected building text for IFEL buildings [v0.3.13]
+* [done] cashflow and construction included in selected building text [v0.3.13]
+* [done] integrate building events with news ticker [v0.3.13]

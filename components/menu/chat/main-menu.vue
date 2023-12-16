@@ -41,7 +41,7 @@
 
 <script lang='ts'>
 import _ from 'lodash';
-import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
+import ClientState from '~/plugins/starpeace-client/state/client-state';
 import Tycoon from '~/plugins/starpeace-client/tycoon/tycoon';
 
 declare interface MainMenuData {

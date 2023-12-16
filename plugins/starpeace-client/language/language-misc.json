@@ -7,6 +7,22 @@
     "IT": "e",
     "PT": "e"
   },
+  "misc.in": {
+    "DE": "in",
+    "EN": "in",
+    "ES": "en",
+    "FR": "dans",
+    "IT": "in",
+    "PT": "em"
+  },
+  "misc.imminently": {
+    "DE": "inminisch",
+    "EN": "imminently",
+    "ES": "inmineramente",
+    "FR": "imminemment",
+    "IT": "imminentemente",
+    "PT": "iminentemente"
+  },
   "misc.filter": {
     "DE": "Filter",
     "EN": "Filter",
@@ -55,6 +71,14 @@
     "IT": "Maneggio",
     "PT": "Gerenciar"
   },
+  "ui.misc.never": {
+    "DE": "Niemals",
+    "EN": "Never",
+    "ES": "Nunca",
+    "FR": "Jamais",
+    "IT": "Mai",
+    "PT": "Nunca"
+  },
   "ui.misc.none": {
     "DE": "Keiner",
     "EN": "None",
@@ -62,6 +86,14 @@
     "FR": "Aucun",
     "IT": "Nessuna",
     "PT": "Nenhum"
+  },
+  "ui.misc.unknown": {
+    "DE": "Unbekannt",
+    "EN": "Unknown",
+    "ES": "Desconocido",
+    "FR": "Inconnu",
+    "IT": "Sconosciuto",
+    "PT": "Desconhecido"
   },
   "misc.hide_menus.label": {
     "DE": "Menüs Ausblenden",
@@ -175,6 +207,14 @@
     "IT": "mesi",
     "PT": "meses"
   },
+  "misc.unit.month.current": {
+    "DE": "diesen monat",
+    "EN": "this month",
+    "ES": "este mes",
+    "FR": "ce mois-ci",
+    "IT": "questo mese",
+    "PT": "este mês"
+  },
   "misc.unit.year.singular": {
     "DE": "jahr",
     "EN": "year",
@@ -191,6 +231,30 @@
     "IT": "anni",
     "PT": "anos"
   },
+  "misc.event.visa.issued": {
+    "DE": "<%= tycoonName %> ist <%= planetName %> eingetreten",
+    "EN": "<%= tycoonName %> has entered <%= planetName %>",
+    "ES": "<%= tycoonName %> ha entrado en <%= planetName %>",
+    "FR": "<%= tycoonName %> est entré dans <%= planetName %>",
+    "IT": "<%= tycoonName %> è entrato in <%= planetName %>",
+    "PT": "<%= tycoonName %> entrou em <%= planetName %>"
+  },
+  "misc.event.visa.issued.with_corporation": {
+    "DE": "<%= tycoonName %> von <%= corporationName %> ist <%= planetName %> eingetreten",
+    "EN": "<%= tycoonName %> of <%= corporationName %> has entered <%= planetName %>",
+    "ES": "<%= tycoonName %> de <%= corporationName %> ha entrado en <%= planetName %>",
+    "FR": "<%= tycoonName %> de <%= corporationName %> est entré dans <%= planetName %>",
+    "IT": "<%= tycoonName %> di <%= corporationName %> è entrato in <%= planetName %>",
+    "PT": "<%= tycoonName %> de <%= corporationName %> entrou em <%= planetName %>"
+  },
+  "misc.event.ticker.construction": {
+    "DE": "<%= planetTime %> - <%= tycoonName %> von <%= companyName %> gebaut <%= buildingDescription %> in der nähe von <%= townName %>",
+    "EN": "<%= planetTime %> - <%= tycoonName %> of <%= companyName %> built <%= buildingDescription %> near <%= townName %>",
+    "ES": "<%= planetTime %> - <%= tycoonName %> de <%= companyName %> construido <%= buildingDescription %> cerca de <%= townName %>",
+    "FR": "<%= planetTime %> - <%= tycoonName %> de <%= companyName %> construit <%= buildingDescription %> près de <%= townName %>",
+    "IT": "<%= planetTime %> - <%= tycoonName %> di <%= companyName %> costruito <%= buildingDescription %> vicino a <%= townName %>",
+    "PT": "<%= planetTime %> - <%= tycoonName %> de <%= companyName %> construído <%= buildingDescription %> perto de <%= townName %>"
+  },
   "misc.selected.building.scanning": {
     "DE": "Scannen...",
     "EN": "Scanning...",
@@ -198,6 +262,14 @@
     "FR": "Balayage...",
     "IT": "Scansione...",
     "PT": "Varredura..."
+  },
+  "misc.selected.building.completed": {
+    "DE": "vollendet",
+    "EN": "completed",
+    "ES": "terminado",
+    "FR": "complété",
+    "IT": "completato",
+    "PT": "concluído"
   },
   "misc.selected.building.townhall": {
     "DE": "Rathaus",

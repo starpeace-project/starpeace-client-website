@@ -3,7 +3,7 @@ import * as PIXI from 'pixi.js'
 
 import LayerCache from '~/plugins/starpeace-client/renderer/layer/layer-cache.coffee'
 
-import Logger from '~/plugins/starpeace-client/logger.coffee'
+import Logger from '~/plugins/starpeace-client/logger'
 
 export default class LayerManager
   @MAX_PARTICLES: 65536

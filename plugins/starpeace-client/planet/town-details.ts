@@ -17,8 +17,8 @@ export default class TownDetails {
   population: Array<PopulationDetails> = [];
   employment: Array<EmploymentDetails> = [];
   housing: Array<HousingDetails> = [];
-  current_term: CurrentTerm | undefined;
-  next_term: NextTerm | undefined;
+  currentTerm: CurrentTerm | undefined;
+  nextTerm: NextTerm | undefined;
 
   static fromJson (json: any): any {
     const metadata = new TownDetails();
@@ -30,8 +30,8 @@ export default class TownDetails {
     metadata.population = (json.population ?? []).map(PopulationDetails.fromJson);
     metadata.employment = (json.employment ?? []).map(EmploymentDetails.fromJson);
     metadata.housing = (json.housing ?? []).map(HousingDetails.fromJson);
-    metadata.current_term = CurrentTerm.fromJson(json.currentTerm);
-    metadata.next_term = NextTerm.fromJson(json.nextTerm);
+    metadata.currentTerm = CurrentTerm.fromJson(json.currentTerm);
+    metadata.nextTerm = NextTerm.fromJson(json.nextTerm);
     return metadata;
   }
 }

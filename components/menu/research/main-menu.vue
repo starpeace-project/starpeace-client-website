@@ -1,54 +1,200 @@
 <template lang='pug'>
 .card.has-header.is-starpeace.sp-menu(:oncontextmenu="'return ' + !$config.public.disableRightClick")
   .card-header
-    .card-header-title {{$translate('ui.menu.research.header')}}
-    .card-header-icon.card-close(v-on:click.stop.prevent="client_state.menu.toggle_menu('research')")
+    .card-header-title {{ $translate('ui.menu.research.header') }}
+    .card-header-icon.card-close(@click.stop.prevent="clientState.menu.toggle_menu('research')")
       font-awesome-icon(:icon="['fas', 'times']")
 
-  .card-content.sp-menu-background.is-paddingless
-    menu-research-sections(:is-visible='is_visible' :client_state='client_state')
-    menu-research-tree(:is-visible='is_visible' :client_state='client_state')
-    menu-research-details(:ajax_state='ajax_state' :client_state='client_state')
+  .card-content.sp-menu-background.is-paddingless(v-if='menuVisible')
+    menu-research-sections(:invention-definitions='inventionDefinitions' :client-state='clientState')
+    menu-research-tree(:connected-invention-definitions='connectedInventionDefinitions' :company-inventions='companyInventions' :client-state='clientState')
+    menu-research-details(
+      :corporation='corporation'
+      :company='company'
+      :company-inventions='companyInventions'
+      :client-state='clientState'
+    )
 
-  .sp-menu-modal(v-show='has_no_company')
+  .sp-menu-modal(v-if='!companyId')
     .content
-      span {{$translate('ui.menu.construction.company_required.label')}}
-      a(@click.stop.prevent='toggle_form_company_menu') {{$translate('ui.menu.construction.company_required.action')}}
+      span {{ $translate('ui.menu.construction.company_required.label') }}
+      a(@click.stop.prevent='toggleFormCompany') {{ $translate('ui.menu.construction.company_required.action') }}
 
 </template>
 
 <script lang='ts'>
-import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
+import { InventionDefinition } from '@starpeace/starpeace-assets-types';
+import Company from '~/plugins/starpeace-client/company/company';
+import Corporation from '~/plugins/starpeace-client/corporation/corporation';
+import CompanyInventions from '~/plugins/starpeace-client/invention/company-inventions';
+
+import ClientState from '~/plugins/starpeace-client/state/client-state';
+
+interface MenuResearchMainMenuData {
+  menuVisible: boolean;
+
+  corporation: Corporation | undefined;
+  company: Company | undefined;
+  companyInventions: CompanyInventions | undefined;
+
+  corporationPromise: Promise<Corporation> | undefined;
+  companyPromise: Promise<Company> | undefined;
+  inventionsPromise: Promise<CompanyInventions> | undefined;
+}
 
 export default {
   props: {
-    ajax_state: Object,
-    client_state: { type: ClientState, required: true }
+    clientState: { type: ClientState, required: true }
   },
 
-  data () {
+  data (): MenuResearchMainMenuData {
     return {
-      menuVisible: this.client_state?.menu?.is_visible('research') ?? false
+      menuVisible: this.clientState?.menu?.is_visible('research') ?? false,
+
+      corporation: undefined,
+      company: undefined,
+      companyInventions: undefined,
+
+      corporationPromise: undefined,
+      companyPromise: undefined,
+      inventionsPromise: undefined
     };
   },
 
   mounted () {
-    this.client_state?.menu?.subscribe_menu_listener(() => {
-      this.menuVisible = this.client_state?.menu?.is_visible('research') ?? false;
+    this.clientState?.menu?.subscribe_menu_listener(() => {
+      this.menuVisible = this.clientState?.menu?.is_visible('research') ?? false;
     });
+    this.clientState.corporation.subscribe_company_inventions_listener(() => this.refreshInventions());
   },
 
   computed: {
-    is_visible (): boolean { return this.client_state.workflow_status === 'ready' && this.menuVisible; },
+    isVisible (): boolean {
+      return this.clientState.workflow_status === 'ready' && this.menuVisible;
+    },
 
-    has_no_company () {
-      return this.client_state?.workflow_status === 'ready' && this.client_state.is_tycoon() && !this.client_state.player.company_id?.length;
+    corporationId (): string | undefined {
+      return this.clientState.player?.corporation_id ?? undefined;
+    },
+    companyId (): string | undefined {
+      return this.clientState.player.company_id ?? undefined;
+    },
+
+    selectedCategoryId (): string | undefined {
+      return this.clientState.interface.inventions_selected_category_id ?? undefined;
+    },
+    selectedIndustryTypeId (): string | undefined {
+      return this.clientState.interface.inventions_selected_industry_type_id ?? undefined;
+    },
+
+    inventionDefinitions (): Array<InventionDefinition> {
+      if (this.companyId && this.company?.id === this.companyId) {
+        return this.clientState.core.invention_library.metadata_for_seal_id(this.company.sealId) ?? [];
+      }
+      else {
+        return this.clientState.core.invention_library.all_metadata() ?? [];
+      }
+    },
+    connectedInventionDefinitions (): Array<InventionDefinition> {
+      const inventionById: Record<string, InventionDefinition> = {};
+      const toSearch: Array<any> = [];
+      for (const invention of this.inventionDefinitions) {
+        if (invention.industryCategoryId === this.selectedCategoryId && (invention.industryTypeId || 'GENERAL') === this.selectedIndustryTypeId) {
+          inventionById[invention.id] = invention;
+          toSearch.push(invention.id);
+        }
+      }
+
+      while (toSearch.length) {
+        const invention_id = toSearch.pop()
+        const invention_metadata = this.clientState.core.invention_library.metadata_for_id(invention_id);
+
+        for (const dependsId of (invention_metadata?.dependsOnIds ?? [])) {
+          if (!inventionById[dependsId]) {
+            inventionById[dependsId] = this.clientState.core.invention_library.metadata_for_id(dependsId);
+            toSearch.push(dependsId);
+          }
+        }
+      }
+      return Object.values(inventionById);
+    },
+  },
+
+  watch: {
+    isVisible () {
+      if (this.isVisible) {
+        this.refreshCorporation();
+        this.refreshCompany();
+        this.refreshInventions();
+      }
+    },
+    corporationId () {
+      if (this.isVisible) {
+        this.refreshCorporation();
+      }
+    },
+    companyId () {
+      if (this.isVisible) {
+        this.refreshCompany();
+        this.refreshInventions();
+      }
     }
   },
 
   methods: {
-    toggle_form_company_menu () {
-      this.client_state.menu.toggle_menu('company_form');
+    async refreshCorporation (): Promise<void> {
+      this.corporation = undefined;
+      if (!this.corporationId || !this.isVisible) {
+        return;
+      }
+
+      try {
+        this.corporationPromise = this.$starpeaceClient.managers.corporation_manager.load_by_corporation(this.corporationId);
+        this.corporation = await this.corporationPromise;
+        this.corporationPromise = undefined;
+      }
+      catch (err) {
+        this.clientState.add_error_message('Failure loading corporation, please try again', err);
+        this.corporationPromise = undefined;
+      }
+    },
+
+    async refreshCompany (): Promise<void> {
+      this.company = undefined;
+      if (!this.companyId || !this.isVisible) {
+        return;
+      }
+
+      try {
+        this.companyPromise = this.$starpeaceClient.managers.company_manager.load_by_company(this.companyId);
+        this.company = await this.companyPromise;
+        this.companyPromise = undefined;
+      }
+      catch (err) {
+        this.clientState.add_error_message('Failure loading company, please try again', err);
+        this.companyPromise = undefined;
+      }
+    },
+
+    async refreshInventions (): Promise<void> {
+      this.companyInventions = undefined;
+      if (!this.companyId || !this.isVisible) {
+        return;
+      }
+
+      try {
+        this.inventionsPromise = this.$starpeaceClient.managers.invention_manager.loadByCompany(this.companyId);
+        this.companyInventions = await this.inventionsPromise;
+        this.inventionsPromise = undefined;
+      }
+      catch (err) {
+        this.clientState.add_error_message('Failure loading inventions, please try again', err);
+        this.inventionsPromise = undefined;
+      }
+    },
+
+    toggleFormCompany () {
+      this.clientState.menu.toggle_menu('company_form');
     }
   }
 }

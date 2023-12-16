@@ -12,11 +12,11 @@ export default class SandboxSocketEvents
       visa = @sandbox.visasById[@visa_id]
       if !visa.corporationId then null else {
         id: visa.corporationId,
-        lastMailAt: @sandbox.sandbox_data.corporation_id_cashflow[visa.corporationId]?.lastMailAt?.toISO(),
-        cash: (@sandbox.sandbox_data.corporation_id_cashflow[visa.corporationId]?.cash || 0),
-        cashCurrentYear: (@sandbox.sandbox_data.corporation_id_cashflow[visa.corporationId]?.cashCurrentYear || 0),
-        cashflow: (@sandbox.sandbox_data.corporation_id_cashflow[visa.corporationId]?.cashflow() || 0),
-        companies: _.map(_.values(@sandbox.sandbox_data.corporation_id_cashflow[visa.corporationId]?.companies_by_id), (company) =>
+        lastMailAt: @sandbox.sandbox_data.corporation.cashflowByCorporationId[visa.corporationId]?.lastMailAt?.toISO(),
+        cash: (@sandbox.sandbox_data.corporation.cashflowByCorporationId[visa.corporationId]?.cash || 0),
+        cashCurrentYear: (@sandbox.sandbox_data.corporation.cashflowByCorporationId[visa.corporationId]?.cashCurrentYear || 0),
+        cashflow: (@sandbox.sandbox_data.corporation.cashflowByCorporationId[visa.corporationId]?.cashflow() || 0),
+        companies: _.map(_.values(@sandbox.sandbox_data.corporation.cashflowByCorporationId[visa.corporationId]?.companiesById), (company) =>
           return {
             id: company.id,
             cashflow: company.cashflow
@@ -57,10 +57,10 @@ export default class SandboxSocketEvents
     # @get 'corporations/(.+?)/cashflow', (config, corporation_id) =>
     #   corp_metadata = {
     #     id: corporation_id
-    #     lastMailAt: @sandbox.sandbox_data.corporation_id_cashflow[corporation_id]?.lastMailAt?.toISO()
-    #     cash: (@sandbox.sandbox_data.corporation_id_cashflow[corporation_id]?.cash || 0)
-    #     cashflow: (@sandbox.sandbox_data.corporation_id_cashflow[corporation_id]?.cashflow() || 0)
-    #     companies: _.map(_.values(@sandbox.sandbox_data.corporation_id_cashflow[corporation_id]?.companies_by_id), (company) -> {
+    #     lastMailAt: @sandbox.sandbox_data.corporation.cashflowByCorporationId[corporation_id]?.lastMailAt?.toISO()
+    #     cash: (@sandbox.sandbox_data.corporation.cashflowByCorporationId[corporation_id]?.cash || 0)
+    #     cashflow: (@sandbox.sandbox_data.corporation.cashflowByCorporationId[corporation_id]?.cashflow() || 0)
+    #     companies: _.map(_.values(@sandbox.sandbox_data.corporation.cashflowByCorporationId[corporation_id]?.companiesById), (company) -> {
     #       id: company.id
     #       cashflow: company.cashflow
     #     })

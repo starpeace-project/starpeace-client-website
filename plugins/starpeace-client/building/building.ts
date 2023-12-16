@@ -2,19 +2,26 @@ import { DateTime } from 'luxon';
 
 export default class Building {
   id: string;
+
   tycoonId: string;
   corporationId: string;
   companyId: string;
+
   definitionId: string;
   townId: string;
-  name: string | undefined | null;
+  name: string | undefined;
+
   mapX: number;
   mapY: number;
-  stage: number;
-  constructionStartedAt: DateTime;
+
+  level: number;
+  upgrading: boolean;
+  constructionStartedAt: DateTime | undefined;
   constructionFinishedAt: DateTime | undefined;
 
-  constructor (id: string, tycoonId: string, corporationId: string, companyId: string, definitionId: string, townId: string, name: string | undefined | null, mapX: number, mapY: number, stage: number, constructionStartedAt: DateTime, constructionFinishedAt: DateTime | undefined) {
+  condemnedAt: DateTime | undefined;
+
+  constructor (id: string, tycoonId: string, corporationId: string, companyId: string, definitionId: string, townId: string, name: string | undefined, mapX: number, mapY: number, level: number, upgrading: boolean, constructionStartedAt: DateTime | undefined, constructionFinishedAt: DateTime | undefined, condemnedAt: DateTime | undefined) {
     this.id = id;
     this.tycoonId = tycoonId;
     this.corporationId = corporationId;
@@ -24,9 +31,19 @@ export default class Building {
     this.name = name;
     this.mapX = mapX;
     this.mapY = mapY;
-    this.stage = stage;
+    this.level = level;
+    this.upgrading = upgrading;
     this.constructionStartedAt = constructionStartedAt;
     this.constructionFinishedAt = constructionFinishedAt;
+    this.condemnedAt = condemnedAt;
+  }
+
+  get constructed (): boolean {
+    return !!this.constructionFinishedAt;
+  }
+
+  get isIfel (): boolean {
+    return this.tycoonId === 'IFEL' || this.companyId === 'IFEL';
   }
 
   get tycoon_id () { return this.tycoonId; }
@@ -48,9 +65,11 @@ export default class Building {
       json.name,
       json.mapX,
       json.mapY,
-      json.stage ?? 0,
-      DateTime.fromISO(json.constructionStartedAt),
-      json.constructionFinishedAt ? DateTime.fromISO(json.constructionFinishedAt) : undefined
+      json.level ?? 0,
+      json.upgrading ?? false,
+      json.constructionStartedAt ? DateTime.fromISO(json.constructionStartedAt) : undefined,
+      json.constructionFinishedAt ? DateTime.fromISO(json.constructionFinishedAt) : undefined,
+      json.condemnedAt ? DateTime.fromISO(json.condemnedAt) : undefined
     );
   }
 }

@@ -3,7 +3,7 @@
 
   .tile.is-ancestor(v-for='planet_chunk in sorted_planet_chunks')
     template(v-for='n in 3')
-      template(v-if='planet_chunk.length < n')
+      template(v-if='!(planet_chunk.length >= n)')
         .tile.is-parent.planet.is-empty
           article.tile.is-child.planet-row
 
@@ -51,7 +51,7 @@
 
 <script lang='ts'>
 import _ from 'lodash';
-import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
+import ClientState from '~/plugins/starpeace-client/state/client-state';
 
 export default {
   props: {

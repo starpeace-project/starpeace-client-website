@@ -1,7 +1,7 @@
 
 import MetadataEffect from '~/plugins/starpeace-client/asset/metadata-effect.coffee'
 
-import Logger from '~/plugins/starpeace-client/logger.coffee'
+import Logger from '~/plugins/starpeace-client/logger'
 
 
 export default class EffectManager

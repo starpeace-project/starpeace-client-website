@@ -6,33 +6,23 @@
   template(v-else)
     .inspect-tabs.tabs.is-small.is-marginless
       ul
-        li(:class="{ 'is-active': tab_index == 0 }" @click.stop.prevent='tab_index = 0')
-          a {{$translate('toolbar.inspect.common.tabs.general')}}
-        li(:class="{ 'is-active': tab_index == 1 }" @click.stop.prevent='tab_index = 1')
-          a {{$translate('toolbar.inspect.townhall.tabs.commerce')}}
-        li(:class="{ 'is-active': tab_index == 2 }" @click.stop.prevent='tab_index = 2')
-          a {{$translate('toolbar.inspect.townhall.tabs.taxes')}}
-        li(:class="{ 'is-active': tab_index == 3 }" @click.stop.prevent='tab_index = 3')
-          a {{$translate('toolbar.inspect.townhall.tabs.employment')}}
-        li(:class="{ 'is-active': tab_index == 4 }" @click.stop.prevent='tab_index = 4')
-          a {{$translate('toolbar.inspect.townhall.tabs.housing')}}
-        li(:class="{ 'is-active': tab_index == 5 }" @click.stop.prevent='tab_index = 5')
-          a {{$translate('toolbar.inspect.common.tabs.jobs')}}
+        li(v-for='tab in tabs' :class="{ 'is-active': tabId == tab.id }" @click.stop.prevent='tabId = tab.id')
+            a {{$translate(tab.label)}}
 
     .inspect-body.columns.is-marginless
-      template(v-if='tab_index == 0')
+      template(v-if="tabId == 'general'")
         .column.is-narrow.sp-scrollbar.service-levels
           table.basic-table.condensed
             thead
               tr
                 th.sp-kv-key {{$translate('ui.menu.town_search.panel.details.qol.label')}}
-                th.has-text-right.sp-kv-value {{$format_percent(.9)}}
+                th.has-text-right.sp-kv-value {{$formatPercent(qol)}}
             tbody
               tr(v-for='level in service_levels')
-                td.sp-kv-key {{label_for_type(level.type)}}
-                td.has-text-right.sp-kv-value {{$format_percent(level.value)}}
+                td.sp-kv-key {{labelForServiceTypeId(level.typeId)}}
+                td.has-text-right.sp-kv-value {{$formatPercent(level.value)}}
 
-        .column.is-narrow.extra-padding-left.extra-padding-right.politics
+        .column.is-narrow.px-5.politics
           div
             span.sp-kv-key {{$translate('ui.menu.politics.details.mayor.label')}}:
             span.sp-kv-value
@@ -42,7 +32,7 @@
           template(v-if='mayor')
             div
               span.sp-kv-key {{$translate('ui.menu.politics.details.overall_rating.label')}}:
-              span.sp-kv-value {{$format_percent(mayor_overall_rating)}}
+              span.sp-kv-value {{$formatPercent(mayor_overall_rating)}}
             div
               span.sp-kv-key {{$translate('ui.menu.politics.details.terms.label')}}:
               span.sp-kv-value {{mayor.terms}}
@@ -53,12 +43,12 @@
 
           a.button.is-fullwidth.is-starpeace(@click.stop.prevent='show_politics') {{$translate('ui.menu.town_search.panel.action.show_politics')}}
 
-        .column.is-narrow.extra-padding-left.population
+        .column.is-narrow.pl-5.population
           table.basic-table
             thead
               tr
                 th
-                th.has-text-right.sp-kv-key(v-for='population in populations') {{population.type}}
+                th.has-text-right.sp-kv-key(v-for='population in populations') {{ resourceTypeLabel(population.resourceId) }}
             tbody
               tr
                 td.sp-kv-key {{$translate('toolbar.inspect.townhall.label.population')}}
@@ -70,7 +60,7 @@
                 td.sp-kv-key {{$translate('toolbar.inspect.townhall.label.homelessness')}}
                 td.has-text-right.sp-kv-value(v-for='population in populations') {{format_homelessness(population)}}
 
-      template(v-else-if='tab_index == 1')
+      template(v-else-if="tabId == 'commerce'")
         .column.sp-scrollbar.commerce
           table.basic-table.sp-striped.sp-solid-header.sp-sticky-header
             thead
@@ -85,17 +75,17 @@
                 th.has-text-right.sp-kv-key {{$translate('toolbar.inspect.townhall.label.quality')}}
             tbody
               tr(v-for='commerce in commerces')
-                td.sp-kv-value {{industry_type_label(commerce.industry_type_id)}}
+                td.sp-kv-value {{industryTypeLabel(commerce.industryTypeId)}}
                 td.has-text-right.sp-kv-value {{commerce.demand.toLocaleString()}}
                 td.has-text-right.sp-kv-value {{commerce.supply.toLocaleString()}}
                 td.has-text-right.sp-kv-value {{commerce.capacity.toLocaleString()}}
-                td.has-text-right.sp-kv-value {{$format_percent(commerce.ratio)}}
-                td.has-text-right.sp-kv-value {{$format_money(commerce.ifel_price)}}
-                td.has-text-right.sp-kv-value {{$format_money(commerce.average_price)}} ({{$format_percent(commerce.ifel_price > 0 ? commerce.average_price / commerce.ifel_price : 0)}})
-                td.has-text-right.sp-kv-value {{$format_percent(commerce.quality)}}
+                td.has-text-right.sp-kv-value {{$formatPercent(commerce.ratio)}}
+                td.has-text-right.sp-kv-value {{$format_money(commerce.ifelPrice)}}
+                td.has-text-right.sp-kv-value {{$format_money(commerce.average_price)}} ({{$formatPercent(commerce.averagePrice, commerce.ifelPrice)}})
+                td.has-text-right.sp-kv-value {{$formatPercent(commerce.quality)}}
 
 
-      template(v-else-if='tab_index == 2')
+      template(v-else-if="tabId == 'taxes'")
         .column.sp-scrollbar.taxes
           table.basic-table.sp-striped.sp-solid-header.sp-sticky-header
             thead
@@ -105,136 +95,231 @@
                 th.has-text-right.sp-kv-key {{$translate('toolbar.inspect.townhall.label.last_year')}}
             tbody
               tr(v-for='tax in taxes')
-                td.sp-kv-value {{industry_category_label(tax.industry_category_id)}} - {{industry_type_label(tax.industry_type_id)}}
-                td.has-text-right.sp-kv-value {{$format_percent(tax.tax_rate)}}
-                td.has-text-right.sp-kv-value {{$format_money(tax.last_year)}}
+                td.sp-kv-value {{industryCategoryLabel(tax.industryCategoryId)}} - {{industryTypeLabel(tax.industryTypeId)}}
+                td.has-text-right.sp-kv-value {{$formatPercent(tax.taxRate)}}
+                td.has-text-right.sp-kv-value {{$format_money(tax.lastYear)}}
 
-      template(v-else-if='tab_index == 3')
+      template(v-else-if="tabId == 'employment'")
         .column.is-narrow.employment
+          datalist(id='wage-markers')
+            option(value=0)
+            option(value=100)
+            option(value=250)
           table.basic-table
             thead
               tr
                 th
-                th.has-text-right.sp-kv-key(v-for='employment in employments') {{employment.type}}
+                th.has-text-right.sp-kv-key(v-for='employment in employments') {{ resourceTypeLabel(employment.resourceId) }}
             tbody
               tr
-                td.sp-kv-key {{$translate('toolbar.inspect.townhall.label.vacancies')}}
-                td.has-text-right.sp-kv-value(v-for='employment in employments') {{employment.vacancies}}
+                td.sp-kv-key {{$translate('toolbar.inspect.townhall.label.total')}}
+                td.has-text-right.sp-kv-value(v-for='employment in employments') {{ employment.total }}
               tr
-                td.sp-kv-key {{$translate('toolbar.inspect.townhall.label.spending_power')}}
-                td.has-text-right.sp-kv-value(v-for='employment in employments') {{$format_percent(employment.spending_power)}}
+                td.sp-kv-key {{$translate('toolbar.inspect.townhall.label.vacancies')}}
+                td.has-text-right.sp-kv-value(v-for='employment in employments') {{ employment.vacancies }}
+              tr
+                td.sp-kv-key {{$translate('toolbar.inspect.townhall.label.spending_power') }}
+                td.has-text-right.sp-kv-value(v-for='employment in employments') {{ $formatPercent(employment.spendingPower) }}
               tr
                 td.sp-kv-key {{$translate('toolbar.inspect.townhall.label.average_wage')}}
-                td.has-text-right.sp-kv-value(v-for='employment in employments') {{$format_percent(employment.average_wage)}}
+                td.has-text-right.sp-kv-value(v-for='employment in employments') {{ $formatPercent(employment.averageWage) }}
               tr
                 td.sp-kv-key {{$translate('toolbar.inspect.townhall.label.minimum_wage')}}
                 td.has-text-right.sp-kv-value(v-for='employment in employments')
                   .sp-slider
-                    input(type='range' min='0' max='200' value='100' disabled)
-                    span {{$format_percent(employment.minimum_wage)}}
+                    input(type='range' list='wage-markers' min='0' max='250' value='100' disabled)
+                    span {{$formatPercent(employment.minimum_wage)}}
 
-      template(v-else-if='tab_index == 4')
+      template(v-else-if="tabId == 'housing'")
         .column.is-narrow.housing
           table.basic-table
             thead
               tr
                 th
-                th.has-text-right.sp-kv-key(v-for='housing in housings') {{housing.type}}
+                th.has-text-right.sp-kv-key(v-for='housing in housings') {{ resourceTypeLabel(housing.resourceId) }}
             tbody
               tr
-                td.sp-kv-key {{$translate('toolbar.inspect.townhall.label.vacancies')}}
-                td.has-text-right.sp-kv-value(v-for='housing in housings') {{housing.vacancies}}
+                td.sp-kv-key {{$translate('toolbar.inspect.townhall.label.total')}}
+                td.has-text-right.sp-kv-value(v-for='housing in housings') {{ housing.total }}
               tr
-                td.sp-kv-key {{$translate('toolbar.inspect.townhall.label.average_rent')}}
-                td.has-text-right.sp-kv-value(v-for='housing in housings') {{$format_percent(housing.average_rent)}}
+                td.sp-kv-key {{$translate('toolbar.inspect.townhall.label.vacancies')}}
+                td.has-text-right.sp-kv-value(v-for='housing in housings') {{ housing.vacancies }}
+              tr
+                td.sp-kv-key {{$translate('toolbar.inspect.townhall.label.average_rent') }}
+                td.has-text-right.sp-kv-value(v-for='housing in housings') {{ $formatPercent(housing.averageRent) }}
               tr
                 td.sp-kv-key {{$translate('toolbar.inspect.townhall.label.quality_index')}}
-                td.has-text-right.sp-kv-value(v-for='housing in housings') {{$format_percent(housing.quality_index)}}
+                td.has-text-right.sp-kv-value(v-for='housing in housings') {{ $formatPercent(housing.qualityIndex) }}
+
+      template(v-else-if="tabId == 'jobs'")
+        .column.is-paddingless.is-relative.is-clipped
+          toolbar-inspect-shared-tab-jobs(
+            :client-state='clientState'
+            :jobs='jobs'
+            :building='building'
+            :definition='definition'
+            :simulation='simulation'
+          )
 
 </template>
 
 <script lang='ts'>
 import _ from 'lodash';
 
-import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
+import { BuildingDefinition, ResourceType, SimulationDefinition } from '@starpeace/starpeace-assets-types';
+
+import ClientState from '~/plugins/starpeace-client/state/client-state';
+import Building from '~/plugins/starpeace-client/building/building';
+import BuildingDetails from '~/plugins/starpeace-client/building/building-details';
+import PopulationDetails from '~/plugins/starpeace-client/planet/details/population-details'
 import ServiceType from '~/plugins/starpeace-client/planet/details/service-type'
+import TownDetails from '~/plugins/starpeace-client/planet/town-details'
+
 
 declare interface ToolbarInspectTownhallData {
-  tab_index: number;
-  details_promise: Promise<any> | null;
-  details: any;
+  tabId: string | undefined;
+
+  governmentPromise: Promise<TownDetails> | undefined;
+  government: TownDetails | undefined;
 }
 
 export default {
   props: {
-    clientState: { type: ClientState, required: true }
+    clientState: { type: ClientState, required: true },
+
+    building: { type: Building, required: true },
+    definition: { type: BuildingDefinition, required: true },
+    simulation: { type: SimulationDefinition, required: true },
+
+    buildingDetails: { type: BuildingDetails, required: true }
   },
 
   data (): ToolbarInspectTownhallData {
     return {
-      tab_index: 0,
-      details_promise: null,
-      details: null
+      tabId: undefined,
+
+      governmentPromise: undefined,
+      government: undefined
     };
   },
 
   computed: {
-    loading () { return !!this.details_promise || !this.details; },
+    loading (): boolean {
+      return !!this.governmentPromise || !this.government;
+    },
+
+    tabs () {
+      const tabs = [
+        {
+          id: 'general',
+          label: 'toolbar.inspect.common.tabs.general'
+        },
+        {
+          id: 'commerce',
+          label: 'toolbar.inspect.townhall.tabs.commerce'
+        },
+        {
+          id: 'taxes',
+          label: 'toolbar.inspect.townhall.tabs.taxes'
+        },
+        {
+          id: 'employment',
+          label: 'toolbar.inspect.townhall.tabs.employment'
+        },
+        {
+          id: 'housing',
+          label: 'toolbar.inspect.townhall.tabs.housing'
+        }
+      ];
+      if (this.jobs.length > 0) {
+        tabs.push({
+          id: 'jobs',
+          label: 'toolbar.inspect.common.tabs.jobs'
+        });
+      }
+      return tabs;
+    },
 
     town () { return _.find(this.clientState?.planet?.towns, (t) => t.building_id === this.clientState?.interface?.selected_building_id); },
-    mayor () { return this.details?.current_term?.politician; },
-    mayor_overall_rating () { return this.details?.current_term?.overall_rating ?? 0; },
-    service_levels () { return this.details?.services ?? []; },
+    mayor () { return this.government?.currentTerm?.politician; },
+    mayor_overall_rating () { return this.government?.currentTerm?.overall_rating ?? 0; },
 
-    next_election_label () { return this.details?.next_term?.start?.toFormat('MMM d, yyyy') ?? this.$translate('ui.misc.none'); },
+    qol () { return this.government?.qol ?? 0 },
+    service_levels () { return this.government?.services ?? []; },
 
-    commerces () { return _.orderBy(this.details?.commerce, [(c) => this.industry_type_label(c.industry_type_id)], ['asc']); },
-    taxes () { return _.orderBy(this.details?.taxes, [(t) => this.industry_category_label(t.industry_category_id), (t) => this.industry_type_label(t.industry_type_id)], ['asc', 'asc']); },
-    populations () { return this.details?.population ?? []; },
-    employments () { return this.details?.employment ?? []; },
-    housings () { return this.details?.housing ?? []; },
+    next_election_label () { return this.government?.nextTerm?.start?.toFormat('MMM d, yyyy') ?? this.$translate('ui.misc.none'); },
+
+    commerces () { return _.orderBy(this.government?.commerce, [(c) => this.industryTypeLabel(c.industryTypeId)], ['asc']); },
+    taxes () { return _.orderBy(this.government?.taxes, [(t) => this.industryCategoryLabel(t.industryCategoryId), (t) => this.industryTypeLabel(t.industryTypeId)], ['asc', 'asc']); },
+    populations () { return this.government?.population ?? []; },
+    employments () { return this.government?.employment ?? []; },
+    housings () { return this.government?.housing ?? []; },
+    jobs () { return this.buildingDetails?.labors ?? []; },
   },
 
   watch: {
     town: {
       immediate: true,
-      handler () { this.refresh_details(); }
+      handler (): void {
+        this.refreshGovernment();
+      }
+    },
+    tabs: {
+      immediate: true,
+      handler () {
+        if (!this.tabs.length) {
+          this.tabId = undefined;
+        }
+        else if (!this.tabId || !this.tabs.find(t => t.id === this.tabId)) {
+          this.tabId = this.tabs[0].id;
+        }
+      }
     }
   },
 
   methods: {
-    label_for_type (service_type: string): string { return this.$translate(ServiceType.label_for_type(service_type)); },
-    industry_category_label (category_id: string): string { return this.$translate(this.clientState.core.planet_library.category_for_id(category_id)?.label); },
-    industry_type_label (type_id: string): string { return this.$translate(this.clientState.core.planet_library.type_for_id(type_id)?.label); },
-
-    format_unemployment (census): string {
-      const unemployment: number = _.isNumber(census.unemployment) ? census.unemployment : 0;
-      const population: number = _.isNumber(census.population) ? census.population : 0;
-      return this.$format_percent(population > 0 ? (unemployment / population) : 0);
+    labelForServiceTypeId (typeId: string): string {
+      return this.$translate(ServiceType.labelForTypeId(typeId));
     },
-    format_homelessness (census): string {
-      const homeless: number = _.isNumber(census.homeless) ? census.homeless : 0;
-      const population: number = _.isNumber(census.population) ? census.population : 0;
-      return this.$format_percent(population > 0 ? (homeless / population) : 0);
+    industryCategoryLabel (categoryId: string): string {
+      return this.$translate(this.clientState.core.planet_library.category_for_id(categoryId)?.label);
+    },
+    industryTypeLabel (typeId: string): string {
+      return this.$translate(this.clientState.core.planet_library.type_for_id(typeId)?.label);
+    },
+    resourceType (typeId: string): ResourceType {
+      return this.clientState.core.planet_library.resource_type_for_id(typeId);
+    },
+    resourceTypeLabel (typeId: string): string {
+      return this.$translate(this.resourceType(typeId)?.labelPlural);
     },
 
-    async refresh_details () {
-      this.details = null;
+    format_unemployment (census: PopulationDetails): string {
+      return this.$formatPercent(census.unemployed, census.population);
+    },
+    format_homelessness (census: PopulationDetails): string {
+      return this.$formatPercent(census.homeless, census.population);
+    },
+
+    async refreshGovernment (): Promise<void> {
+      this.government = undefined;
       if (!this.clientState?.player?.planet_id || !this.town) return;
 
       try {
-        this.details_promise = this.$starpeaceClient.managers.planets_manager.load_town_details(this.town.id);
-        this.details = await this.details_promise;
-        this.details_promise = null;
+        this.governmentPromise = this.$starpeaceClient.managers.planets_manager.load_town_details(this.town.id);
+        this.government = await this.governmentPromise;
+        this.governmentPromise = undefined;
       }
       catch (err) {
         this.clientState.add_error_message('Failure loading town details, please try again', err);
-        this.details_promise = null;
+        this.governmentPromise = undefined;
       }
     },
 
     show_politics (): void {
-      if (this.town?.id) this.clientState.show_politics(this.town.id);
+      if (this.town?.id) {
+        this.clientState.show_politics(this.town.id);
+      }
     }
   }
 }

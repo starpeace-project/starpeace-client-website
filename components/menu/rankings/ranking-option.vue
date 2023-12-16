@@ -25,7 +25,7 @@
 </template>
 
 <script lang='ts'>
-import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
+import ClientState from '~/plugins/starpeace-client/state/client-state';
 
 export default {
   props: {
@@ -56,7 +56,7 @@ export default {
     is_selected (): boolean { return this.ranking.corporationId == this.selected_ranking_corporation_id; },
     is_loading (): boolean {
       if (!this.is_selected || !this.selected_ranking_corporation_id?.length) return false;
-      return this.ajaxState?.request_mutex['corporation_metadata']?.[this.selected_ranking_corporation_id] || !this.corporation;
+      return this.ajaxState?.requestMutexByTypeKey['corporation_metadata']?.[this.selected_ranking_corporation_id] || !this.corporation;
     }
   },
 

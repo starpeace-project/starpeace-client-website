@@ -4,8 +4,7 @@ import { markRaw } from 'vue';
 
 import Cache from '~/plugins/starpeace-client/state/core/cache/cache'
 
-import TimeUtils from '~/plugins/starpeace-client/utils/time-utils.coffee'
-import Logger from '~/plugins/starpeace-client/logger.coffee'
+import Logger from '~/plugins/starpeace-client/logger'
 
 export default class PlanetCache extends Cache
   constructor: () ->
@@ -40,5 +39,5 @@ export default class PlanetCache extends Cache
   town_companies: (town_id) -> @companies_by_town_id.get(town_id)
   load_town_companies: (town_id, companies) -> @companies_by_town_id.put(town_id, companies, Cache.FIVE_MINUTES)
 
-  town_buildings: (town_id, industry_category_id, industry_type_id) -> @buildings_by_town_id.get("#{town_id}-#{industry_category_id}-#{industry_type_id}")
-  load_town_buildings: (town_id, industry_category_id, industry_type_id, buildings) -> @buildings_by_town_id.put("#{town_id}-#{industry_category_id}-#{industry_type_id}", buildings, Cache.FIVE_MINUTES)
+  town_buildings: (town_id, industryCategoryId, industryTypeId) -> @buildings_by_town_id.get("#{town_id}-#{industryCategoryId}-#{industryTypeId}")
+  load_town_buildings: (town_id, industryCategoryId, industryTypeId, buildings) -> @buildings_by_town_id.put("#{town_id}-#{industryCategoryId}-#{industryTypeId}", buildings, Cache.FIVE_MINUTES)

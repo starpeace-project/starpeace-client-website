@@ -75,16 +75,17 @@ export default class InputHandler
       @client_state.interface.last_mouse_y = Math.round(event.offsetY)
 
       if !event.stopped && @client_state.interface.last_mouse_x == @client_state.interface.start_mouse_x && @client_state.interface.last_mouse_y == @client_state.interface.start_mouse_y
-        unless is_right_click
+        if is_right_click
+          @client_state.interface.selectConstructionBuildingId(null) if @client_state.interface.construction_building_id?
+
+        else
           if @client_state.interface.construction_building_id?.length
             @managers.building_manager.construct_building() if @client_state.can_construct_building()
-            @client_state.interface.construction_building_id = null
+            @client_state.interface.selectConstructionBuildingId(null)
 
           else if @client_state.interface.selected_building_id?.length
             @client_state.interface.unselect_building()
 
-        else
-          @client_state.interface.construction_building_id = null if @client_state.interface.construction_building_id?
 
     event.preventDefault()
     event.stopPropagation()

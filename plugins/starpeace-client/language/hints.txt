@@ -147,10 +147,6 @@
       mtidNotEnoughProfitLostLevel     := TRegMultiString.Create( 'mtidNotEnoughProfitLostLevel', 'Lost level %s in %d. You didn''t have the required average profit ratio of $%.0n/h (last year you had $%.0n/h)' );
       mtidLevelLost                    := TRegMultiString.Create( 'mtidLevelLost', 'Lost level %s in %d.' );
 
-      // Misc
-      mtidJoinedWorld := TRegMultiString.Create( 'mtidJoinedWorld', 'Joined %s in %d' );
-      mtidAND         := TRegMultiString.Create( 'mtidAND', 'and' );
-
       // Events
       mtidSetTaxes                  := TRegMultiString.Create( 'mtidSetTaxes', 'Mayor of %s set taxes for %s at %s%%.' );
       mtidSubsidy                   := TRegMultiString.Create( 'mtidSubsidy', 'Mayor of %s set a subsidy for %s.' );
@@ -232,7 +228,3 @@
       mtidFilmProject         := TRegMultiString.Create('mtidFilmProject', 'Filming: "%s" Day %d of %d, %d%% done.');
       mtidNowPlaying          := TRegMultiString.Create('mtidNowPlaying', 'Now playing:');
 
-      mtidInvCatGeneral       := TRegMultiString.Create('mtidInvCatGeneral', 'General');
-      mtidInvCatCommerce      := TRegMultiString.Create('mtidInvCatCommerce', 'Commerce');
-      mtidInvCatIndustry      := TRegMultiString.Create('mtidInvCatIndustry', 'Industry');
-      mtidInvCatRlEstate      := TRegMultiString.Create('mtidInvCatRlEstate', 'Real Estate');

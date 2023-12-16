@@ -1,20 +1,12 @@
 import _ from 'lodash';
 
-import BankDefinition from '~/plugins/starpeace-client/building/simulation/bank/bank-definition.coffee';
-import MausoleumDefinition from '~/plugins/starpeace-client/building/simulation/civic/mausoleum-definition.coffee';
-import FactoryDefinition from '~/plugins/starpeace-client/building/simulation/factory/factory-definition.coffee';
-import HeadquartersDefinition from '~/plugins/starpeace-client/building/simulation/headquarters/headquarters-definition.coffee';
-import AntennaDefinition from '~/plugins/starpeace-client/building/simulation/media/antenna-definition.coffee';
-import MediaStationDefinition from '~/plugins/starpeace-client/building/simulation/media/media-station-definition.coffee';
-import OfficeDefinition from '~/plugins/starpeace-client/building/simulation/office/office-definition.coffee';
-import ParkDefinition from '~/plugins/starpeace-client/building/simulation/park/park-definition.coffee';
-import ResidenceDefinition from '~/plugins/starpeace-client/building/simulation/residence/residence-definition.coffee';
-import ServiceDefinition from '~/plugins/starpeace-client/building/simulation/service/service-definition.coffee';
-import StorageDefinition from '~/plugins/starpeace-client/building/simulation/storage/storage-definition.coffee';
-import StoreDefinition from '~/plugins/starpeace-client/building/simulation/store/store-definition.coffee';
+import { AntennaDefinition, BankDefinition, FactoryDefinition, HeadquartersDefinition, MausoleumDefinition, MediaStationDefinition, OfficeDefinition, ParkDefinition, ResidenceDefinition, ResourceType, ServiceDefinition, StorageDefinition, StoreDefinition, Translation } from '@starpeace/starpeace-assets-types';
 
-import Translation from '~/plugins/starpeace-client/language/translation';
-import Utils from '~/plugins/starpeace-client/utils/utils.coffee';
+import Building from '~/plugins/starpeace-client/building/building.js';
+import ClientState from '~/plugins/starpeace-client/state/client-state.js';
+import AjaxState from '~/plugins/starpeace-client/state/ajax-state.js';
+
+import Utils from '~/plugins/starpeace-client/utils/utils.js';
 
 import DURATION from '~/plugins/starpeace-client/language/language-duration.json';
 import IDENTITY from '~/plugins/starpeace-client/language/language-identity.json';
@@ -45,6 +37,7 @@ import UI_PAGE_LAYOUT from '~/plugins/starpeace-client/language/language-ui-page
 
 import UI_WORKFLOW_LOADING from '~/plugins/starpeace-client/language/language-ui-workflow-loading.json';
 import UI_WORKFLOW_UNIVERSE from '~/plugins/starpeace-client/language/language-ui-workflow-universe.json';
+
 
 const LANGUAGE_STRINGS = [
   DURATION,
@@ -77,9 +70,9 @@ const LANGUAGE_STRINGS = [
 
 export default class TranslationManager {
   asset_manager: any;
-  ajax_state: any;
+  ajax_state: AjaxState;
   options: any;
-  client_state: any;
+  client_state: ClientState;
 
   translations_by_language_code: Record<string, Record<string, string>> = {};
 
@@ -114,8 +107,8 @@ export default class TranslationManager {
   }
 
   resource_details (resourceId: string, maxVelocity: number): any {
-    const type = this.client_state.core.planet_library.resource_type_for_id(resourceId);
-    const unit = type ? this.client_state.core.planet_library.resource_unit_for_id(type.unit_id) : undefined;
+    const type: ResourceType | undefined = this.client_state.core.planet_library.resource_type_for_id(resourceId);
+    const unit = type ? this.client_state.core.planet_library.resource_unit_for_id(type.unitId) : undefined;
     const amount = maxVelocity * 24;
     return {
       type: type,
@@ -125,128 +118,143 @@ export default class TranslationManager {
     }
   }
 
-  label_for_building (building: any): string {
-    const simulation_definition = building ? this.client_state.core.building_library.simulation_definition_for_id(building.definition_id) : undefined;
-    if (simulation_definition?.type == 'TOWNHALL') {
+  label_for_building (building: Building): string {
+    const definition = building ? this.client_state.core.building_library.simulation_definition_for_id(building.definition_id) : undefined;
+    if (definition?.type == 'TOWNHALL') {
       const town = building.townId ? this.client_state.planet.town_for_id(building.townId) : undefined;
       if (town) {
         return `${this.text('misc.selected.building.townhall')}\n${town.name}\n${town.population} ${this.text('misc.selected.building.townhall.population')}`;
       }
     }
-    else if (simulation_definition?.type == 'PORTAL') {
+    else if (definition?.type == 'PORTAL') {
       const town = building.townId ? this.client_state.planet.town_for_id(building.townId) : undefined;
       if (town) {
         return `${this.text('misc.selected.building.portal')}\n${town.name}`;
       }
     }
-    else if (simulation_definition?.type == 'TRADECENTER') {
+    else if (definition?.type == 'TRADECENTER') {
       const town = building.townId ? this.client_state.planet.town_for_id(building.townId) : undefined;
       const seal = town?.seal_id ? this.client_state.core.planet_library.seal_for_id(town.seal_id) : undefined;
       if (seal) {
-        return `${this.text('misc.selected.building.tradecenter')}\n${seal.name_short}`;
+        return `${this.text('misc.selected.building.tradecenter')}\n${seal.nameShort}`;
       }
     }
     else {
       const building_name = building?.name;
       const company = building ? this.client_state.core.company_cache.metadata_for_id(building.company_id) : undefined;
-      const company_name = company?.name
-      const building_profit = 0; // TODO: FIXME: hookup
+      const company_name = company?.name;
 
+      const parts = [];
       if (building_name && company_name) {
-        return `${building_name}\n${company_name}\n($${building_profit}/h)`;
+        parts.push(building_name);
+        parts.push(company_name);
+
+        if (!building.constructed || building.upgrading) {
+          const progress: number | undefined = this.client_state.core.building_cache.constructionProgressForBuildingId(building.id);
+          if (progress === undefined) {
+            parts.push(this.text('misc.selected.building.scanning'));
+          }
+          else {
+            parts.push(`${Math.round(progress * 100)}% ${this.text('misc.selected.building.completed')}`);
+          }
+        }
+
+        const cashflow: number | undefined = this.client_state.core.building_cache.cashflowForBuildingId(building.id);
+        if (cashflow !== undefined) {
+          parts.push(`($${Math.round(cashflow).toLocaleString()}/h)`);
+        }
+        return parts.join('\n');
       }
     }
-    return this.text('misc.selected.building.scanning') ?? '';
+    return this.text('misc.selected.building.scanning') ?? '...';
   }
 
 
   description_for_building (building_definition: any): string {
-    const text_separator = this.text('misc.and');
+    const textSeparator: string = this.text('misc.and') ?? '&';
 
-    const simulation_definition = this.client_state.core.building_library.simulation_definition_for_id(building_definition.id);
+    const definition = this.client_state.core.building_library.simulation_definition_for_id(building_definition.id);
 
-    if (simulation_definition instanceof BankDefinition) {
+    if (definition instanceof BankDefinition) {
       return this.text('ui.menu.construction.description.bank.label') ?? '';
     }
-    else if (simulation_definition instanceof MausoleumDefinition) {
+    else if (definition instanceof MausoleumDefinition) {
       return this.text('ui.menu.construction.description.mausoleum.label') ?? '';
     }
-    else if (simulation_definition instanceof FactoryDefinition) {
+    else if (definition instanceof FactoryDefinition) {
       const template_description = _.template(this.text('ui.menu.construction.description.industry.label'))
       const template_output = _.template(this.text('ui.menu.construction.description.industry.output.label'))
       const template_input = _.template(this.text('ui.menu.construction.description.industry.input.label'))
 
       const description_parts = []
-      for (const stage of simulation_definition.stages) {
-        const output_label_parts = _.map(stage.outputs, (output) => {
-          const resurce = this.resource_details(output.resource_id, output.max_velocity);
-          return template_output({amount: resurce.amount, resource: this.text(resurce.type?.label_plural), unit: this.text(resurce.unit?.label_plural), duration: this.text(resurce.duration)});
-        });
+      const output_label_parts = _.map(definition.outputs, (output) => {
+        const resurce = this.resource_details(output.resourceId, output.maxVelocity);
+        return template_output({amount: resurce.amount, resource: this.text(resurce.type?.labelPlural), unit: this.text(resurce.unit?.labelPlural), duration: this.text(resurce.duration)});
+      });
 
-        if (output_label_parts.length) {
-          description_parts.push(template_description({output: Utils.join_with_oxford_comma(output_label_parts, text_separator)}));
-        }
+      if (output_label_parts.length) {
+        description_parts.push(template_description({output: Utils.join_with_oxford_comma(output_label_parts, textSeparator)}));
+      }
 
-        const inputs = _.map(stage.inputs, (input) => this.text(this.client_state.core.planet_library.resource_type_for_id(input.resource_id)?.label_plural));
-        if (inputs.length) {
-          description_parts.push(template_input({input: Utils.join_with_oxford_comma(inputs, text_separator)}));
-        }
+      const inputs = definition.inputs.map((input) => this.text(this.client_state.core.planet_library.resource_type_for_id(input.resourceId)?.labelPlural) ?? input.resourceId);
+      if (inputs.length) {
+        description_parts.push(template_input({input: Utils.join_with_oxford_comma(inputs, textSeparator)}));
       }
 
       return description_parts.join(' ');
     }
-    else if (simulation_definition instanceof HeadquartersDefinition) {
+    else if (definition instanceof HeadquartersDefinition) {
       return this.text('ui.menu.construction.description.headquarters.label') ?? '';
     }
-    else if (simulation_definition instanceof AntennaDefinition) {
+    else if (definition instanceof AntennaDefinition) {
       const template_antenna = _.template(this.text('ui.menu.construction.description.media.antenna.label'));
-      return template_antenna({ range: (simulation_definition.range * 20) });
+      return template_antenna({ range: (definition.range * 20) });
     }
-    else if (simulation_definition instanceof MediaStationDefinition) {
+    else if (definition instanceof MediaStationDefinition) {
       return this.text('ui.menu.construction.description.media.station.label') ?? '';
     }
-    else if (simulation_definition instanceof OfficeDefinition) {
+    else if (definition instanceof OfficeDefinition) {
       const template_efficiency = _.template(this.text('ui.menu.construction.description.real_estate.efficiency.label'));
       const template_offices = _.template(this.text('ui.menu.construction.description.offices.rent.label'));
 
-      const params_efficiency = { efficiency: Math.round(simulation_definition.efficiency * 100) };
-      const params_offices = { amount: simulation_definition.capacity };
+      const params_efficiency = { efficiency: Math.round(definition.efficiency * 100) };
+      const params_offices = { amount: definition.capacity };
 
       return `${template_offices(params_offices)}. ${template_efficiency(params_efficiency)}`;
     }
-    else if (simulation_definition instanceof ParkDefinition) {
+    else if (definition instanceof ParkDefinition) {
       // TODO: no existing descriptions to re-use
       return '';
     }
-    else if (simulation_definition instanceof ResidenceDefinition) {
-      const residential_type = this.client_state.core.planet_library.type_for_id(building_definition.industry_type_id);
+    else if (definition instanceof ResidenceDefinition) {
+      const residential_type = this.client_state.core.planet_library.type_for_id(building_definition.industryTypeId);
       const template_efficiency = _.template(this.text('ui.menu.construction.description.real_estate.efficiency.label'))
       const template_inhabitants = _.template(this.text('ui.menu.construction.description.residential.inhabitants.label'))
       const template_resistences = _.template(this.text('ui.menu.construction.description.residential.resistences.label'))
 
-      const params_efficiency = { efficiency: Math.round(simulation_definition.efficiency * 100) }
-      const params_inhabitants = { amount: simulation_definition.capacity }
-      const params_resistences = { crime: Math.round(simulation_definition.crime_resistence * 100), pollution: Math.round(simulation_definition.pollution_resistence * 100) }
+      const params_efficiency = { efficiency: Math.round(definition.efficiency * 100) }
+      const params_inhabitants = { amount: definition.capacity }
+      const params_resistences = { crime: Math.round(definition.crimeResistence * 100), pollution: Math.round(definition.pollutionResistence * 100) }
 
       return `${this.text(residential_type.label)}. ${template_inhabitants(params_inhabitants)}. ${template_resistences(params_resistences)}. ${template_efficiency(params_efficiency)}`;
     }
-    else if (simulation_definition instanceof ServiceDefinition) {
+    else if (definition instanceof ServiceDefinition) {
       // TODO: no existing descriptions to re-use
       return '';
     }
-    else if (simulation_definition instanceof StorageDefinition) {
+    else if (definition instanceof StorageDefinition) {
       const template_description = _.template(this.text('ui.menu.construction.description.warehouse.label'));
       const template_output = _.template(this.text('ui.menu.construction.description.warehouse.output.label'));
 
-      const storage_parts = _.map(simulation_definition.storage, (storage) => {
-        const type = this.client_state.core.planet_library.resource_type_for_id(storage.resource_id);
-        const unit = type ? this.client_state.core.planet_library.resource_unit_for_id(type.unit_id) : undefined;
-        return template_output({amount: storage.max, resource: this.text(type?.label_plural), unit: this.text(unit?.label_plural)})
+      const storage_parts = _.map(definition.storage, (storage) => {
+        const type = this.client_state.core.planet_library.resource_type_for_id(storage.resourceId);
+        const unit = type ? this.client_state.core.planet_library.resource_unit_for_id(type.unitId) : undefined;
+        return template_output({amount: storage.max, resource: this.text(type?.labelPlural), unit: this.text(unit?.labelPlural)})
       });
 
-      return template_description({storage: Utils.join_with_oxford_comma(storage_parts, text_separator)})
+      return template_description({storage: Utils.join_with_oxford_comma(storage_parts, textSeparator)})
     }
-    else if (simulation_definition instanceof StoreDefinition) {
+    else if (definition instanceof StoreDefinition) {
       const template_sells = _.template(this.text('ui.menu.construction.description.store.sells.label'));
       const template_provides = _.template(this.text('ui.menu.construction.description.store.provides.label'));
       const template_resource = _.template(this.text('ui.menu.construction.description.store.resource.label'));
@@ -255,34 +263,34 @@ export default class TranslationManager {
       const buy_parts = [];
       const provide_parts = [];
 
-      for (const product of simulation_definition.products) {
-        const inputs = product.inputs.map((i) => _.pick(i, 'resource_id', 'max_velocity'));
-        const outputs = product.outputs.map((o) => _.pick(o, 'resource_id', 'max_velocity'));
+      for (const product of definition.products) {
+        const inputs = product.inputs.map((i) => _.pick(i, 'resourceId', 'maxVelocity'));
+        const outputs = product.outputs.map((o) => _.pick(o, 'resourceId', 'maxVelocity'));
 
         if (_.isEqual(inputs, outputs)) {
           for (const output of outputs) {
-            const resource = this.resource_details(output.resource_id, output.max_velocity);
-            sell_parts.push(template_resource({amount: resource.amount, resource: this.text(resource.type?.label_plural), unit: this.text(resource.unit?.label_plural), duration: this.text(resource.duration)}));
+            const resource = this.resource_details(output.resourceId, output.maxVelocity);
+            sell_parts.push(template_resource({amount: resource.amount, resource: this.text(resource.type?.labelPlural), unit: this.text(resource.unit?.labelPlural), duration: this.text(resource.duration)}));
           }
         }
         else {
           for (const input of inputs) {
-            const resource = this.resource_details(input.resource_id, input.max_velocity);
-            buy_parts.push(template_resource({amount: resource.amount, resource: this.text(resource.type?.label_plural), unit: this.text(resource.unit?.label_plural), duration: this.text(resource.duration)}));
+            const resource = this.resource_details(input.resourceId, input.maxVelocity);
+            buy_parts.push(template_resource({amount: resource.amount, resource: this.text(resource.type?.labelPlural), unit: this.text(resource.unit?.labelPlural), duration: this.text(resource.duration)}));
           }
           for (const output of outputs) {
-            const resource = this.resource_details(output.resource_id, output.max_velocity);
-            provide_parts.push(template_resource({amount: resource.amount, resource: this.text(resource.type?.label_plural), unit: this.text(resource.unit?.label_plural), duration: this.text(resource.duration)}));
+            const resource = this.resource_details(output.resourceId, output.maxVelocity);
+            provide_parts.push(template_resource({amount: resource.amount, resource: this.text(resource.type?.labelPlural), unit: this.text(resource.unit?.labelPlural), duration: this.text(resource.duration)}));
           }
         }
       }
 
       const descriptions = [];
       if (sell_parts.length) {
-        descriptions.push(template_sells({sells: Utils.join_with_oxford_comma(sell_parts, text_separator)}));
+        descriptions.push(template_sells({sells: Utils.join_with_oxford_comma(sell_parts, textSeparator)}));
       }
       if (buy_parts.length && provide_parts.length) {
-        descriptions.push(template_provides({buys: Utils.join_with_oxford_comma(buy_parts, text_separator), provides: Utils.join_with_oxford_comma(provide_parts, text_separator)}));
+        descriptions.push(template_provides({buys: Utils.join_with_oxford_comma(buy_parts, textSeparator), provides: Utils.join_with_oxford_comma(provide_parts, textSeparator)}));
       }
       return descriptions.join(' ');
     }

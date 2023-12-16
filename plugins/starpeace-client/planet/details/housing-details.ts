@@ -1,20 +1,23 @@
 
 export default class HousingDetails {
-  type: string;
+  resourceId: string;
+  total: number;
   vacancies: number;
-  average_rent: number;
-  quality_index: number;
+  averageRent: number;
+  qualityIndex: number;
 
-  constructor (type: string, vacancies: number, average_rent: number, quality_index: number) {
-    this.type = type;
+  constructor (resourceId: string, total: number, vacancies: number, averageRent: number, qualityIndex: number) {
+    this.resourceId = resourceId;
+    this.total = total;
     this.vacancies = vacancies;
-    this.average_rent = average_rent;
-    this.quality_index = quality_index;
+    this.averageRent = averageRent;
+    this.qualityIndex = qualityIndex;
   }
 
   static fromJson (json: any): HousingDetails {
     return new HousingDetails(
-      json.type,
+      json.resourceId,
+      json.total,
       json.vacancies,
       json.averageRent,
       json.qualityIndex

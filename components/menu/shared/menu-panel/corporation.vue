@@ -50,7 +50,7 @@ div
 
 <script lang='ts'>
 import _ from 'lodash';
-import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
+import ClientState from '~/plugins/starpeace-client/state/client-state';
 
 export default {
   props: {
@@ -111,7 +111,7 @@ export default {
     send_mail (): void {
       if (!this.canSend) return;
       if (this.tycoon?.tycoonId && this.corporation?.id) {
-        this.clientState.send_mail(this.tycoon.tycoonId, this.tycoon.tycoonName, this.corporation.id);
+        this.clientState.send_mail(this.tycoon.tycoonName);
       }
     }
   }

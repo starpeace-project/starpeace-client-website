@@ -47,7 +47,7 @@
                   span.sp-kv-value {{current_politician.prestige}}
                 div
                   span.sp-kv-key {{$translate('ui.menu.politics.details.overall_rating.label')}}:
-                  span.sp-kv-value {{$format_percent(current_overall_rating)}}
+                  span.sp-kv-value {{$formatPercent(current_overall_rating)}}
                 div
                   span.sp-kv-key {{$translate('ui.menu.politics.details.terms.label')}}:
                   span.sp-kv-value {{current_politician.terms}}
@@ -66,7 +66,7 @@
                   tr(v-for='rating in current_service_ratings')
                     td.sp-kv-key {{label_for_type(rating.type)}}
                     td.has-text-right.sp-kv-value {{rating.delta}}
-                    td.has-text-right.sp-kv-value {{$format_percent(rating.rating)}}
+                    td.has-text-right.sp-kv-value {{$formatPercent(rating.rating)}}
 
             template(v-else-if="mode == 'NEXT'")
               div
@@ -116,7 +116,7 @@
 <script lang='ts'>
 import _ from 'lodash';
 
-import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
+import ClientState from '~/plugins/starpeace-client/state/client-state';
 import ServiceType from '~/plugins/starpeace-client/planet/details/service-type'
 
 declare interface PoliticsData {

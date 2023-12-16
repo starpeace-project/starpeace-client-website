@@ -1,7 +1,7 @@
 
 import SignDefinition from '~/plugins/starpeace-client/asset/sign-definition.coffee'
 
-import Logger from '~/plugins/starpeace-client/logger.coffee'
+import Logger from '~/plugins/starpeace-client/logger'
 
 
 export default class SignManager

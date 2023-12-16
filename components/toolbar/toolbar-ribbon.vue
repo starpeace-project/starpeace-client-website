@@ -46,7 +46,7 @@
 
 <script lang='ts'>
 import _ from 'lodash';
-import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
+import ClientState from '~/plugins/starpeace-client/state/client-state';
 
 export default {
   props: {
@@ -60,7 +60,9 @@ export default {
     show_zones () { return this.client_state.interface?.show_zones ?? false; },
     show_inspect () { return this.client_state.interface?.show_inspect ?? false; },
 
-    can_inspect () { return this.client_state.interface?.selected_building_id?.length; },
+    can_inspect () {
+      return this.client_state.interface?.selected_building_id?.length && !!this.client_state.selected_building();
+    },
     can_jump_back () {
       if (!_.isNumber(this.client_state.camera.view_offset_x) || !_.isNumber(this.client_state.camera.view_offset_y) || !this.client_state.interface.location_history.length) return false;
       if (this.client_state.interface.location_index < this.client_state.interface.location_history.length - 1) return true;

@@ -18,9 +18,13 @@ export default class CorporationManager {
   }
 
   async load_identifiers_by_tycoon (tycoonId: string): Promise<CorporationIdentifier[]> {
-    if (!tycoonId) throw Error()
+    if (!tycoonId) {
+      throw Error();
+    }
     const identifiers: CorporationIdentifier[] | null = this.clientState.core.corporation_cache.identifiers_for_tycoon_id(tycoonId);
-    if (identifiers) return identifiers;
+    if (identifiers) {
+      return Promise.resolve(identifiers);
+    }
 
     return await this.ajaxState.locked('tycoon_corporations', tycoonId, async () => {
       const identifiersJson: any[] = await this.apiClient.corporation_identifiers_for_tycoon_id(tycoonId);
@@ -32,9 +36,13 @@ export default class CorporationManager {
 
 
   async load_by_corporation (corporationId: string): Promise<Corporation> {
-    if (!this.clientState.has_session() || !corporationId) throw Error()
+    if (!this.clientState.has_session() || !corporationId) {
+      throw Error();
+    }
     const corporation = this.clientState.core.corporation_cache.metadata_for_id(corporationId);
-    if (corporation) return corporation;
+    if (!!corporation) {
+      return corporation;
+    }
 
     return await this.ajaxState.locked('corporation_metadata', corporationId, async () => {
       const corporationJson: any = await this.apiClient.corporation_for_id(corporationId);

@@ -1,4 +1,4 @@
-import Translation from '~/plugins/starpeace-client/language/translation';
+import { Translation } from '@starpeace/starpeace-assets-types';
 
 export default class RankingType {
   id: string;
@@ -7,19 +7,19 @@ export default class RankingType {
   category_total: boolean;
   unit: string;
   label: Translation | undefined;
-  industry_category_id: string;
-  industry_type_id: string;
+  industryCategoryId: string;
+  industryTypeId: string;
   children: Array<RankingType>;
 
-  constructor (id: string, parent_id: string, type: string, category_total: boolean, unit: string, label: Translation | undefined, industry_category_id: string, industry_type_id: string, children: Array<RankingType>) {
+  constructor (id: string, parent_id: string, type: string, category_total: boolean, unit: string, label: Translation | undefined, industryCategoryId: string, industryTypeId: string, children: Array<RankingType>) {
     this.id = id;
     this.parent_id = parent_id;
     this.type = type;
     this.category_total = category_total;
     this.unit = unit;
     this.label = label;
-    this.industry_category_id = industry_category_id;
-    this.industry_type_id = industry_type_id;
+    this.industryCategoryId = industryCategoryId;
+    this.industryTypeId = industryTypeId;
     this.children = children;
   }
 

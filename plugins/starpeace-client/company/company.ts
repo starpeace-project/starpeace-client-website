@@ -1,17 +1,27 @@
 
 export default class Company {
   id: string;
-  tycoon_id: string;
-  corporation_id: string;
+  tycoonId: string;
+  corporationId: string;
   name: string;
-  seal_id: string;
+  sealId: string;
 
-  constructor (id: string, tycoon_id: string, corporation_id: string, name: string, seal_id: string) {
+  constructor (id: string, tycoonId: string, corporationId: string, name: string, sealId: string) {
     this.id = id;
-    this.tycoon_id = tycoon_id;
-    this.corporation_id = corporation_id;
+    this.tycoonId = tycoonId;
+    this.corporationId = corporationId;
     this.name = name;
-    this.seal_id = seal_id;
+    this.sealId = sealId;
+  }
+
+  get tycoon_id (): string {
+    return this.tycoonId;
+  }
+  get corporation_id (): string {
+    return this.corporationId;
+  }
+  get seal_id (): string {
+    return this.sealId;
   }
 
   static from_json (json: any): Company {

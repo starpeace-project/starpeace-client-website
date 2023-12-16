@@ -1,8 +1,8 @@
 <template lang='pug'>
-#application-container(:class='application_css_class', v-cloak=true)
+#application-container(:class='application_css_class' v-cloak=true)
   page-layout-header(:client_state='client_state')
-  misc-card-loading(:client_state='client_state' within-grid=true)
-  misc-modal-loading(:client_state='client_state' within-grid=true)
+  misc-card-loading(:client_state='client_state' within-grid)
+  misc-modal-loading(:client_state='client_state' within-grid)
   misc-card-webgl-warning(:client_state='client_state')
   workflow(:client_state='client_state')
   page-layout-render-container(:client_state='client_state')

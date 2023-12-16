@@ -10,18 +10,33 @@
   top: calc(40% - 4rem)
   width: 8rem
 
+.loading-image-inline
+  background-size: 1.25rem
+  height: 1.25rem
+  width: 1.25rem
+
 
 .sp-slider
-  display: inline-flex
+  display: flex
+
+  input[type="range" i]
+    accent-color: $sp-primary
+    color: $sp-primary
+    width: 100%
 
   span
     margin-left: .5rem
 
 
 .basic-table
+  tr
+    &:not(:last-child)
+      th,
+      td
+        border-bottom: 1px solid $sp-dark-bg
+
   th,
   td
-    border-bottom: 1px solid $sp-dark-bg
     vertical-align: middle
 
     &:not(:first-child)
@@ -75,16 +90,23 @@
         border-bottom-color: $sp-dark-bg
         color: #fff
 
+    &:not(:first-child)
+      a
+        border-left: 1px solid $sp-dark-bg
+        border-right: 1px solid $sp-dark-bg
+
   a
     border-bottom-color: $sp-primary-bg
     color: $sp-primary
     letter-spacing: .05rem
+    padding: .5rem 1.5rem
     text-transform: uppercase
 
     &:active,
     &:hover
       background-color: $sp-primary-bg
       border-bottom-color: $sp-primary-bg
+      border-color: $sp-primary-bg
       color: #fff
 
 .inspect-body
@@ -93,13 +115,38 @@
   position: relative
   overflow: hidden
 
-  .column
-    &.extra-padding-left
-      padding-left: 2rem
-
-    &.extra-padding-right
-      padding-right: 2rem
-
   .button
     letter-spacing: .1rem
     text-transform: uppercase
+
+.sp-sub-tabs
+  direction: rtl
+  overflow-y: auto
+
+  .sp-tabs-menu
+    direction: ltr
+
+    ul
+      flex-direction: column
+
+      li
+        display: flex
+        justify-content: flex-end
+        text-align: right
+
+        a
+          border-radius: 0
+          color: $sp-primary
+          letter-spacing: .05rem
+          text-transform: uppercase
+
+          &:hover
+            color: $sp-light
+
+          &:active
+            color: lighten($sp-light, 10%)
+
+        &.is-active
+          a
+            background-color: $sp-dark-bg
+            color: #fff

@@ -1,22 +1,22 @@
 
 export default class CommerceDetails {
-  industry_type_id: string;
+  industryTypeId: string;
   demand: number;
   supply: number;
   capacity: number;
   ratio: number;
-  ifel_price: number;
-  average_price: number;
+  ifelPrice: number;
+  averagePrice: number;
   quality: number;
 
-  constructor (industry_type_id: string, demand: number, supply: number, capacity: number, ratio: number, ifel_price: number, average_price: number, quality: number) {
-    this.industry_type_id = industry_type_id;
+  constructor (industryTypeId: string, demand: number, supply: number, capacity: number, ratio: number, ifelPrice: number, averagePrice: number, quality: number) {
+    this.industryTypeId = industryTypeId;
     this.demand = demand;
     this.supply = supply;
     this.capacity = capacity;
     this.ratio = ratio;
-    this.ifel_price = ifel_price;
-    this.average_price = average_price;
+    this.ifelPrice = ifelPrice;
+    this.averagePrice = averagePrice;
     this.quality = quality;
   }
 

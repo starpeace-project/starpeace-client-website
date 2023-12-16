@@ -95,6 +95,26 @@ h3
     border-radius: 9999em
     box-shadow: rgba(255, 255, 255, 0.25) 0 0 1px 0 inset
 
+.sp-select
+  &::after
+    border-color: $sp-primary !important
+
+  select
+    background-color: $sp-dark-bg
+    border: 1px solid $sp-dark
+    color: $sp-light
+    outline: none !important
+
+    &:focus,
+    &:hover
+      outline: none !important
+      border: 1px solid $sp-dark
+
+  option
+    background-color: $sp-dark-bg
+    color: $sp-primary
+
+
 .sp-profile
   .profile-container
     padding-bottom: 150%
@@ -123,11 +143,29 @@ h3
   color: darken($sp-primary, 5%)
   font-size: .7rem
   letter-spacing: 0.05rem
+  position: relative
   text-transform: uppercase
+
 .sp-kv-value
   color: #ddd
   font-size: 1.1rem
   margin-left: .5rem
+  position: relative
+
+  &.centered
+    vertical-align: middle
+
+
+.sp-has-dark-background
+  background-color: $sp-dark-bg
+
+
+.sp-notification
+  &.is-warning
+    background-color: $sp-light-bg
+    color: #FFF
+
+
 
 // remove border around research tree component
 .vis-network

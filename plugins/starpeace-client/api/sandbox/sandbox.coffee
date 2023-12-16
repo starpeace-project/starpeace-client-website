@@ -2,12 +2,12 @@
 import _ from 'lodash'
 import { DateTime } from 'luxon';
 
-import TimeUtils from '~/plugins/starpeace-client/utils/time-utils.coffee'
-import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
+import TimeUtils from '~/plugins/starpeace-client/utils/time-utils'
+import Utils from '~/plugins/starpeace-client/utils/utils'
 
 import SandboxBookmarks from '~/plugins/starpeace-client/api/sandbox/sandbox-bookmarks.coffee'
 import SandboxBuildings from '~/plugins/starpeace-client/api/sandbox/sandbox-buildings.coffee'
-import SandboxData from '~/plugins/starpeace-client/api/sandbox/sandbox-data.coffee'
+import SandboxData from '~/plugins/starpeace-client/api/sandbox/sandbox-data'
 import SandboxInventions from '~/plugins/starpeace-client/api/sandbox/sandbox-inventions.coffee'
 import SandboxMail from '~/plugins/starpeace-client/api/sandbox/sandbox-mail.coffee'
 
@@ -38,13 +38,13 @@ export default class Sandbox
   tick_day: () ->
     @sandbox_data.planet_id_dates[id] = @sandbox_data.planet_id_dates[id].plus({ day: 1 }) for id,date of @sandbox_data.planet_id_dates
 
-    for corp_id,corp_cashflow of @sandbox_data.corporation_id_cashflow
+    for corp_id,corp_cashflow of @sandbox_data.corporation.cashflowByCorporationId
       corp_cashflow.cashCurrentYear = 0 if @sandbox_data.planet_id_dates[id].month == 1 && @sandbox_data.planet_id_dates[id].day == 1
 
-      for company_id,company of corp_cashflow.companies_by_id
+      for company_id,company of corp_cashflow.companiesById
         cashflow_adjustment = 0
         cashflow_adjustment += @sandbox_inventions.do_pending(company_id)
         cashflow_adjustment += @sandbox_buildings.do_construction(company_id)
 
-        company.adjust_cashflow(cashflow_adjustment)
-      corp_cashflow.increment_cash()
+        company.adjustCashflow(cashflow_adjustment)
+      corp_cashflow.incrementCash()

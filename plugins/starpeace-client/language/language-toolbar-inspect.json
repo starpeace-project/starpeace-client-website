@@ -7,6 +7,22 @@
     "IT": "Generale",
     "PT": "Geral"
   },
+  "toolbar.inspect.common.tabs.supplies": {
+    "DE": "Lieferungen",
+    "EN": "Supplies",
+    "ES": "Suministros",
+    "FR": "Fournitures",
+    "IT": "Forniture",
+    "PT": "Suprimentos"
+  },
+  "toolbar.inspect.common.tabs.operations": {
+    "DE": "Operationen",
+    "EN": "Operations",
+    "ES": "Operaciones",
+    "FR": "Opérations",
+    "IT": "Operazioni",
+    "PT": "Operações"
+  },
   "toolbar.inspect.common.tabs.products": {
     "DE": "Produkte",
     "EN": "Products",
@@ -15,6 +31,22 @@
     "IT": "Prodotti",
     "PT": "Produtos"
   },
+  "toolbar.inspect.common.tabs.research": {
+    "DE": "Forschung",
+    "EN": "Research",
+    "ES": "Investigación",
+    "FR": "Recherche",
+    "IT": "Ricerca",
+    "PT": "Indagação"
+  },
+  "toolbar.inspect.common.tabs.services": {
+    "DE": "Dienstleistungen",
+    "EN": "Services",
+    "ES": "Servicios",
+    "FR": "Prestations de Service",
+    "IT": "Servizi",
+    "PT": "Serviços"
+  },
   "toolbar.inspect.common.tabs.jobs": {
     "DE": "Arbeitsplätze",
     "EN": "Jobs",
@@ -22,6 +54,606 @@
     "FR": "Emplois",
     "IT": "Lavori",
     "PT": "Empregos"
+  },
+  "toolbar.inspect.common.tabs.management": {
+    "DE": "Management",
+    "EN": "Management",
+    "ES": "Gestión",
+    "FR": "Gestion",
+    "IT": "Gestione",
+    "PT": "Gerenciamento"
+  },
+  "toolbar.inspect.common.tabs.history": {
+    "DE": "Geschichte",
+    "EN": "History",
+    "ES": "Historia",
+    "FR": "Histoire",
+    "IT": "Storia",
+    "PT": "História"
+  },
+  "toolbar.inspect.common.label.name": {
+    "DE": "Name",
+    "EN": "Name",
+    "ES": "Nombre",
+    "FR": "Nom",
+    "IT": "Nome",
+    "PT": "Nome"
+  },
+  "toolbar.inspect.common.label.land_purchased": {
+    "DE": "Land Gekauft",
+    "EN": "Land Purchased",
+    "ES": "Tierra Comprada",
+    "FR": "Terre Achetée",
+    "IT": "Terra Acquistata",
+    "PT": "Terra Comprada"
+  },
+  "toolbar.inspect.common.label.built": {
+    "DE": "Gebaut",
+    "EN": "Built",
+    "ES": "Construido",
+    "FR": "Construit",
+    "IT": "Costruito",
+    "PT": "Construído"
+  },
+  "toolbar.inspect.common.label.owner": {
+    "DE": "Inhaber",
+    "EN": "Owner",
+    "ES": "Propietario",
+    "FR": "Propriétaire",
+    "IT": "Proprietario",
+    "PT": "Proprietário"
+  },
+  "toolbar.inspect.common.label.company": {
+    "DE": "Unternehmen",
+    "EN": "Company",
+    "ES": "Compañía",
+    "FR": "Entreprise",
+    "IT": "Azienda",
+    "PT": "Empresa"
+  },
+  "toolbar.inspect.common.label.value": {
+    "DE": "Eigentumswert",
+    "EN": "Property Value",
+    "ES": "Valor de la Propiedad",
+    "FR": "Valeur de la Propriété",
+    "IT": "Costo dell'immobile",
+    "PT": "Valor da Propriedade"
+  },
+  "toolbar.inspect.common.label.cumulative_profit": {
+    "DE": "Kumulatives Gewinn",
+    "EN": "Cumulative Profit",
+    "ES": "Beneficio Acumulativo",
+    "FR": "Profit Cumulatif",
+    "IT": "Profitto Cumulativo",
+    "PT": "Lucro Cumulativo"
+  },
+  "toolbar.inspect.common.label.roi": {
+    "DE": "ROI",
+    "EN": "ROI",
+    "ES": "ROI",
+    "FR": "ROI",
+    "IT": "ROI",
+    "PT": "ROI"
+  },
+  "toolbar.inspect.common.label.connection_posture": {
+    "DE": "Handeln mit",
+    "EN": "Trade with",
+    "ES": "Comercio con",
+    "FR": "Échanger avec",
+    "IT": "Scambiare con",
+    "PT": "Negociar com"
+  },
+  "toolbar.inspect.common.label.connection_posture.anyone": {
+    "DE": "Irgendjemand",
+    "EN": "Anyone",
+    "ES": "Alguien",
+    "FR": "N'importe qui",
+    "IT": "Chiunque",
+    "PT": "Qualquer um"
+  },
+  "toolbar.inspect.common.label.connection_posture.allies": {
+    "DE": "Nur Verbündete",
+    "EN": "Only Allies",
+    "ES": "Solo aliados",
+    "FR": "Seulement les alliés",
+    "IT": "Solo alleati",
+    "PT": "Apenas aliados"
+  },
+  "toolbar.inspect.common.label.connection_posture.self": {
+    "DE": "Nur",
+    "EN": "Only",
+    "ES": "Solo",
+    "FR": "Seule",
+    "IT": "Solo",
+    "PT": "Somente"
+  },
+  "toolbar.inspect.common.label.connection_posture.self.corporation": {
+    "DE": "Nur Unternehmen",
+    "EN": "Only Corporation",
+    "ES": "Solo corporación",
+    "FR": "Seule société",
+    "IT": "Solo società",
+    "PT": "Somente corporação"
+  },
+  "toolbar.inspect.common.demolition.message": {
+    "DE": "Aufmerksamkeit! Dieses Gebäude ist für den Abriss auf oder danach geplant",
+    "EN": "Attention! This building is scheduled for demolition on or after",
+    "ES": "¡Atención! Este edificio está programado para la demolición o después",
+    "FR": "Attention! Ce bâtiment est prévu pour la démolition ou après",
+    "IT": "Attenzione! Questo edificio è previsto per la demolizione o dopo",
+    "PT": "Atenção! Este edifício está programado para demolição em ou depois"
+  },
+  "toolbar.inspect.common.action.connect": {
+    "DE": "Verbinden",
+    "EN": "Connect",
+    "ES": "Conectar",
+    "FR": "Relier",
+    "IT": "Collegare",
+    "PT": "Conectar"
+  },
+  "toolbar.inspect.common.action.rename": {
+    "DE": "Umbenennen",
+    "EN": "Rename",
+    "ES": "Rebautizar",
+    "FR": "Renommer",
+    "IT": "Rinominare",
+    "PT": "Renomear"
+  },
+  "toolbar.inspect.common.action.rename.save": {
+    "DE": "Speichern",
+    "EN": "Save",
+    "ES": "Salvar",
+    "FR": "Sauvegarder",
+    "IT": "Salvare",
+    "PT": "Salve"
+  },
+  "toolbar.inspect.common.action.cancel": {
+    "DE": "Stornieren",
+    "EN": "Cancel",
+    "ES": "Cancelar",
+    "FR": "Annuler",
+    "IT": "Annulla",
+    "PT": "Cancelar"
+  },
+  "toolbar.inspect.common.action.close": {
+    "DE": "Schließen",
+    "EN": "Close",
+    "ES": "Cerca",
+    "FR": "Fermer",
+    "IT": "Vicino",
+    "PT": "Fechar"
+  },
+  "toolbar.inspect.common.action.open": {
+    "DE": "Offen",
+    "EN": "Open",
+    "ES": "Abierto",
+    "FR": "Ouvrir",
+    "IT": "Aprire",
+    "PT": "Abrir"
+  },
+  "toolbar.inspect.common.action.demolish": {
+    "DE": "Zerstören",
+    "EN": "Demolish",
+    "ES": "Demoler",
+    "FR": "Démolir",
+    "IT": "Demolire",
+    "PT": "Demolir"
+  },
+  "toolbar.inspect.common.action.repair": {
+    "DE": "Reparatur",
+    "EN": "Repair",
+    "ES": "Reparar",
+    "FR": "Réparation",
+    "IT": "Riparazione",
+    "PT": "Reparar"
+  },
+  "toolbar.inspect.products.label.local_demand": {
+    "DE": "Lokale Nachfrage",
+    "EN": "Local Demand",
+    "ES": "Demanda Local",
+    "FR": "Demande Locale",
+    "IT": "Domanda Locale",
+    "PT": "Demanda Local"
+  },
+  "toolbar.inspect.products.label.price": {
+    "DE": "Preis",
+    "EN": "Price",
+    "ES": "Precio",
+    "FR": "Prix",
+    "IT": "Prezzo",
+    "PT": "Preço"
+  },
+  "toolbar.inspect.products.label.last_value": {
+    "DE": "Letzter Wert",
+    "EN": "Last Value",
+    "ES": "Último Valor",
+    "FR": "Dernière Valeur",
+    "IT": "Ultimo Valore",
+    "PT": "Último Valor"
+  },
+  "toolbar.inspect.products.label.quality": {
+    "DE": "Qualität",
+    "EN": "Quality",
+    "ES": "Calidad",
+    "FR": "Qualité",
+    "IT": "Qualità",
+    "PT": "Qualidade"
+  },
+  "toolbar.inspect.products.label.customer": {
+    "DE": "Kunde",
+    "EN": "Customer",
+    "ES": "Cliente",
+    "FR": "Client",
+    "IT": "Cliente",
+    "PT": "Cliente"
+  },
+  "toolbar.inspect.products.label.company": {
+    "DE": "Unternehmen",
+    "EN": "Company",
+    "ES": "Empresa",
+    "FR": "Entreprise",
+    "IT": "Azienda",
+    "PT": "Companhia"
+  },
+  "toolbar.inspect.products.label.sales": {
+    "DE": "Umsatz",
+    "EN": "Sales",
+    "ES": "Ventas",
+    "FR": "Ventes",
+    "IT": "I Saldi",
+    "PT": "Vendas"
+  },
+  "toolbar.inspect.products.label.transport_cost": {
+    "DE": "Transportkosten",
+    "EN": "Transport Cost",
+    "ES": "Coste de Transporte",
+    "FR": "Coût de Transport",
+    "IT": "Costo di Trasporto",
+    "PT": "Custo de Transporte"
+  },
+  "toolbar.inspect.supplies.label.price": {
+    "DE": "Preis",
+    "EN": "Price",
+    "ES": "Precio",
+    "FR": "Prix",
+    "IT": "Prezzo",
+    "PT": "Preço"
+  },
+  "toolbar.inspect.supplies.label.last_value": {
+    "DE": "Letzter Wert",
+    "EN": "Last Value",
+    "ES": "Último Valor",
+    "FR": "Dernière Valeur",
+    "IT": "Ultimo Valore",
+    "PT": "Último Valor"
+  },
+  "toolbar.inspect.supplies.label.quality": {
+    "DE": "Qualität",
+    "EN": "Quality",
+    "ES": "Calidad",
+    "FR": "Qualité",
+    "IT": "Qualità",
+    "PT": "Qualidade"
+  },
+  "toolbar.inspect.supplies.label.facility": {
+    "DE": "Einrichtung",
+    "EN": "Facility",
+    "ES": "Instalación",
+    "FR": "Facilité",
+    "IT": "Facilità",
+    "PT": "Instalação"
+  },
+  "toolbar.inspect.supplies.label.company": {
+    "DE": "Unternehmen",
+    "EN": "Company",
+    "ES": "Empresa",
+    "FR": "Entreprise",
+    "IT": "Azienda",
+    "PT": "Companhia"
+  },
+  "toolbar.inspect.supplies.label.transport_cost": {
+    "DE": "Transportkosten",
+    "EN": "Transport Cost",
+    "ES": "Coste de Transporte",
+    "FR": "Coût de Transport",
+    "IT": "Costo di Trasporto",
+    "PT": "Custo de Transporte"
+  },
+  "toolbar.inspect.supplies.label.max_price": {
+    "DE": "Maximaler Preis",
+    "EN": "Max Price",
+    "ES": "Precio Máximo",
+    "FR": "Prix ​Maximum",
+    "IT": "Prezzo Massimo",
+    "PT": "Preço Máximo"
+  },
+  "toolbar.inspect.supplies.label.min_quality": {
+    "DE": "Min Qualität",
+    "EN": "Min Quality",
+    "ES": "Min Calidad",
+    "FR": "Qualité Min",
+    "IT": "Qualità min",
+    "PT": "Min Quality"
+  },
+  "toolbar.inspect.supplies.action.hire": {
+    "DE": "Mieten",
+    "EN": "Hire ",
+    "ES": "Contratar",
+    "FR": "Embaucher",
+    "IT": "Assumere",
+    "PT": "Contratar"
+  },
+  "toolbar.inspect.supplies.action.modify": {
+    "DE": "Ändern",
+    "EN": "Modify ",
+    "ES": "Modificar",
+    "FR": "Modifier",
+    "IT": "Modificare",
+    "PT": "Modificar"
+  },
+  "toolbar.inspect.rent.label.rent": {
+    "DE": "Mieten",
+    "EN": "Rent",
+    "ES": "Alquilar",
+    "FR": "Louer",
+    "IT": "Affitto",
+    "PT": "Aluguel"
+  },
+  "toolbar.inspect.rent.label.maintenance": {
+    "DE": "Wartung",
+    "EN": "Maintenance",
+    "ES": "Mantenimiento",
+    "FR": "Entretien",
+    "IT": "Manutenzione",
+    "PT": "Manutenção"
+  },
+  "toolbar.inspect.jobs.label.workers": {
+    "DE": "Aktuelle Arbeiter",
+    "EN": "Current Workers",
+    "ES": "Trabajadores Actuales",
+    "FR": "Travailleurs Actuels",
+    "IT": "Lavoratori Attuali",
+    "PT": "Trabalhadores Atuais"
+  },
+  "toolbar.inspect.jobs.label.quality": {
+    "DE": "Qualitätsqualität",
+    "EN": "Work Force Quality",
+    "ES": "Calidad de la Fuerza laboral",
+    "FR": "Qualité de la Main-D'œuvre",
+    "IT": "Qualità della Forza Lavoro",
+    "PT": "Qualidade da Força de Trabalho"
+  },
+  "toolbar.inspect.jobs.label.salary": {
+    "DE": "Gehalt",
+    "EN": "Salary",
+    "ES": "Salario",
+    "FR": "Salaire",
+    "IT": "Stipendio",
+    "PT": "Salário"
+  },
+  "toolbar.inspect.services.label.requesting": {
+    "DE": "Anfrage",
+    "EN": "Requesting",
+    "ES": "Solicitante",
+    "FR": "Demande",
+    "IT": "Richiesta",
+    "PT": "Solicitando"
+  },
+  "toolbar.inspect.services.label.receiving": {
+    "DE": "Empfang",
+    "EN": "Receiving",
+    "ES": "Recepción",
+    "FR": "Réception",
+    "IT": "Ricevere",
+    "PT": "Recebendo"
+  },
+  "toolbar.inspect.services.label.ratio": {
+    "DE": "Verhältnis",
+    "EN": "Ratio",
+    "ES": "Relación",
+    "FR": "Rapport",
+    "IT": "Rapporto",
+    "PT": "Razão"
+  },
+  "toolbar.inspect.management.label.incoming": {
+    "DE": "Eingehende Einstellungen zulassen",
+    "EN": "Allow Incoming Settings",
+    "ES": "Permitir configuraciones entrantes",
+    "FR": "Autoriser les paramètres entrants",
+    "IT": "Consenti le impostazioni in arrivo",
+    "PT": "Permitir configurações de entrada"
+  },
+  "toolbar.inspect.management.label.incoming.allow": {
+    "DE": "Dieses Gebäude AKZEPTIERT Einstellungen aus einem anderen Gebäude",
+    "EN": "This building WILL ACCEPT settings from another building",
+    "ES": "Este edificio ACEPTARÁ la configuración de otro edificio.",
+    "FR": "Ce bâtiment ACCEPTERA les paramètres d'un autre bâtiment",
+    "IT": "Questo edificio ACCETTERÀ impostazioni da un altro edificio",
+    "PT": "Este edifício ACEITARÁ configurações de outro edifício"
+  },
+  "toolbar.inspect.management.label.incoming.block": {
+    "DE": "Dieses Gebäude AKZEPTIERT KEINE Einstellungen aus einem anderen Gebäude aus",
+    "EN": "This building WILL NOT accept settings from another building",
+    "ES": "Este edificio NO ACEPTARÁ la configuración de otro edificio.",
+    "FR": "Ce bâtiment N'ACCEPTERA PAS les paramètres d'un autre bâtiment",
+    "IT": "Questo edificio NON ACCETTERÀ le impostazioni da un altro edificio",
+    "PT": "Este edifício NÃO ACEITARÁ configurações de outro edifício"
+  },
+  "toolbar.inspect.management.label.clone": {
+    "DE": "Kloneinstellungen",
+    "EN": "Clone Settings",
+    "ES": "Configuración de Clon",
+    "FR": "Paramètres de Clonage",
+    "IT": "Impostazioni Cloni",
+    "PT": "Configurações de Clone"
+  },
+  "toolbar.inspect.management.label.clone.same_company": {
+    "DE": "Gleiche Firma",
+    "EN": "Same Company",
+    "ES": "La Misma Compania",
+    "FR": "Même Entreprise",
+    "IT": "Stessa Compagnia",
+    "PT": "Mesma Companhia"
+  },
+  "toolbar.inspect.management.label.clone.same_town": {
+    "DE": "Gleiche Stadt",
+    "EN": "Same Town",
+    "ES": "Mismo Pueblo",
+    "FR": "Même Ville",
+    "IT": "Stessa Città",
+    "PT": "Mesma Cidade"
+  },
+  "toolbar.inspect.management.label.clone.name": {
+    "DE": "Name",
+    "EN": "Name",
+    "ES": "Nombre",
+    "FR": "Nom",
+    "IT": "Nome",
+    "PT": "Nome"
+  },
+  "toolbar.inspect.management.label.clone.connection_posture": {
+    "DE": "Handelspolitik",
+    "EN": "Trade Policy",
+    "ES": "Política Comercial",
+    "FR": "Politique d'échange",
+    "IT": "Politica Commerciale",
+    "PT": "Política Comercial"
+  },
+  "toolbar.inspect.management.label.clone.salaries": {
+    "DE": "Gehälter",
+    "EN": "Salaries",
+    "ES": "Salarios",
+    "FR": "Les Salaires",
+    "IT": "Stipendi",
+    "PT": "Salários"
+  },
+  "toolbar.inspect.management.label.clone.price": {
+    "DE": "Preis",
+    "EN": "Price",
+    "ES": "Precio",
+    "FR": "Prix",
+    "IT": "Prezzo",
+    "PT": "Preço"
+  },
+  "toolbar.inspect.management.label.clone.suppliers": {
+    "DE": "Lieferanten",
+    "EN": "Suppliers",
+    "ES": "Proveedor",
+    "FR": "Fournisseurs",
+    "IT": "Fornitori",
+    "PT": "Fornecedores"
+  },
+  "toolbar.inspect.management.label.clone.services": {
+    "DE": "Dienstleistungen",
+    "EN": "Services",
+    "ES": "Servicios",
+    "FR": "Prestations de Service",
+    "IT": "Servizi",
+    "PT": "Serviços"
+  },
+  "toolbar.inspect.management.label.clone.rent": {
+    "DE": "Mieten",
+    "EN": "Rent",
+    "ES": "Alquilar",
+    "FR": "Louer",
+    "IT": "Affitto",
+    "PT": "Aluguel"
+  },
+  "toolbar.inspect.management.label.clone.maintenance": {
+    "DE": "Wartung",
+    "EN": "Maintenance",
+    "ES": "Mantenimiento",
+    "FR": "Entretien",
+    "IT": "Manutenzione",
+    "PT": "Manutenção"
+  },
+  "toolbar.inspect.management.clone.notification": {
+    "DE": "Klonte Einstellungen zu <%= count %> anderen Gebäuden",
+    "EN": "Cloned settings to <%= count %> other buildings",
+    "ES": "Configuración clonada para <%= count %> otros edificios",
+    "FR": "Paramètres clonés sur <%= count %> autres bâtiments",
+    "IT": "Impostazioni clonate su <%= count %> altri edifici",
+    "PT": "Configurações clonadas para <%= count %> outros edifícios"
+  },
+  "toolbar.inspect.management.clone.notification.none": {
+    "DE": "Klonte Einstellungen an keinen anderen Gebäuden",
+    "EN": "Cloned settings to no other buildings",
+    "ES": "Configuración clonada a ningún otro edificio",
+    "FR": "Paramètres clonés à aucun autre bâtiment",
+    "IT": "Impostazioni clonate per nessun altro edificio",
+    "PT": "Configurações clonadas para nenhum outro edifício"
+  },
+  "toolbar.inspect.management.level": {
+    "DE": "Rang",
+    "EN": "Level",
+    "ES": "Rango",
+    "FR": "Rang",
+    "IT": "Nivel",
+    "PT": "Classe"
+  },
+  "toolbar.inspect.management.level.separator": {
+    "DE": "von",
+    "EN": "of",
+    "ES": "de",
+    "FR": "sur",
+    "IT": "di",
+    "PT": "de"
+  },
+  "toolbar.inspect.management.level.pending": {
+    "DE": "Ausstehend",
+    "EN": "Pending",
+    "ES": "Pendiente",
+    "FR": "En attente",
+    "IT": "In attesa di",
+    "PT": "Pendente"
+  },
+  "toolbar.inspect.management.level.next": {
+    "DE": "Nächstes Upgrade",
+    "EN": "Next Upgrade",
+    "ES": "Siguiente actualización",
+    "FR": "Prochaine mise à niveau",
+    "IT": "Aggiornamento successivo",
+    "PT": "Próxima atualização"
+  },
+  "toolbar.inspect.management.action.clone": {
+    "DE": "Klon",
+    "EN": "Clone",
+    "ES": "Clon",
+    "FR": "Cloner",
+    "IT": "Clone",
+    "PT": "Clone"
+  },
+  "toolbar.inspect.management.action.upgrade": {
+    "DE": "Aktualisierung",
+    "EN": "Upgrade",
+    "ES": "Mejora",
+    "FR": "Mise à niveau",
+    "IT": "Aggiornamento",
+    "PT": "Atualizar"
+  },
+  "toolbar.inspect.management.action.downgrade": {
+    "DE": "Herabstufung",
+    "EN": "Downgrade",
+    "ES": "Degradar",
+    "FR": "Rétrograder",
+    "IT": "Downgrade",
+    "PT": "Downgrade"
+  },
+  "toolbar.inspect.history.label.pending": {
+    "DE": "Nach Jahresende werden nach Jahresende Informationen verfügbar sein",
+    "EN": "History information will be available after the end of the year",
+    "ES": "La información del historial estará disponible después de fin de año",
+    "FR": "Les informations sur l'historique seront disponibles après la fin de l'année",
+    "IT": "Le informazioni sulla storia saranno disponibili dopo la fine dell'anno",
+    "PT": "As informações do histórico estarão disponíveis após o final do ano"
+  },
+  "toolbar.inspect.portal.message": {
+    "DE": "Die internationale Grundlage für das außerirdische Leben begrüßt Sie in <%= townName %>!",
+    "EN": "International Foundation for Extraterrestrial Life welcomes you to <%= townName %>!",
+    "ES": "La Fundación Internacional para la Vida Extraterrestre te da la bienvenida a <%= townName %>!",
+    "FR": "La Fondation internationale pour la vie extraterrestre vous accueille à <%= townName %>!",
+    "IT": "La fondazione internazionale per la vita extraterrestre ti accoglie in <%= townName %>!",
+    "PT": "Fundação Internacional para a Vida Extraterrestre dá as boas vindas a <%= townName %>!"
   },
   "toolbar.inspect.townhall.tabs.commerce": {
     "DE": "Handel",
@@ -159,6 +791,14 @@
     "IT": "L'Anno Scorso",
     "PT": "Ano Passado"
   },
+  "toolbar.inspect.townhall.label.total": {
+    "DE": "Gesamt",
+    "EN": "Total",
+    "ES": "Total",
+    "FR": "Total",
+    "IT": "Totale",
+    "PT": "Total"
+  },
   "toolbar.inspect.townhall.label.vacancies": {
     "DE": "Stellenangebote",
     "EN": "Vacancies",
@@ -206,93 +846,5 @@
     "FR": "Indice de Qualité",
     "IT": "Indice di Qualità",
     "PT": "Índice de Qualidade"
-  },
-  "toolbar.inspect.tradecenter.label.name": {
-    "DE": "Name",
-    "EN": "Name",
-    "ES": "Nombre",
-    "FR": "Nom",
-    "IT": "Nome",
-    "PT": "Nome"
-  },
-  "toolbar.inspect.tradecenter.label.built": {
-    "DE": "Gebaut",
-    "EN": "Built",
-    "ES": "Construido",
-    "FR": "Construit",
-    "IT": "Costruito",
-    "PT": "Construído"
-  },
-  "toolbar.inspect.tradecenter.label.owner": {
-    "DE": "Inhaber",
-    "EN": "Owner",
-    "ES": "Propietario",
-    "FR": "Propriétaire",
-    "IT": "Proprietario",
-    "PT": "Proprietário"
-  },
-  "toolbar.inspect.tradecenter.action.connect": {
-    "DE": "Verbinden",
-    "EN": "Connect",
-    "ES": "Conectar",
-    "FR": "Relier",
-    "IT": "Collegare",
-    "PT": "Conectar"
-  },
-  "toolbar.inspect.products.label.price": {
-    "DE": "Preis",
-    "EN": "Price",
-    "ES": "Precio",
-    "FR": "Prix",
-    "IT": "Prezzo",
-    "PT": "Preço"
-  },
-  "toolbar.inspect.products.label.last_value": {
-    "DE": "Letzter Wert",
-    "EN": "Last Value",
-    "ES": "Último Valor",
-    "FR": "Dernière Valeur",
-    "IT": "Ultimo Valore",
-    "PT": "Último Valor"
-  },
-  "toolbar.inspect.products.label.quality": {
-    "DE": "Qualität",
-    "EN": "Quality",
-    "ES": "Calidad",
-    "FR": "Qualité",
-    "IT": "Qualità",
-    "PT": "Qualidade"
-  },
-  "toolbar.inspect.products.label.customer": {
-    "DE": "Kunde",
-    "EN": "Customer",
-    "ES": "Cliente",
-    "FR": "Client",
-    "IT": "Cliente",
-    "PT": "Cliente"
-  },
-  "toolbar.inspect.products.label.company": {
-    "DE": "Unternehmen",
-    "EN": "Company",
-    "ES": "Empresa",
-    "FR": "Entreprise",
-    "IT": "Azienda",
-    "PT": "Companhia"
-  },
-  "toolbar.inspect.products.label.sales": {
-    "DE": "Umsatz",
-    "EN": "Sales",
-    "ES": "Ventas",
-    "FR": "Ventes",
-    "IT": "I Saldi",
-    "PT": "Vendas"
-  },
-  "toolbar.inspect.products.label.transport_cost": {
-    "DE": "Transportkosten",
-    "EN": "Transport Cost",
-    "ES": "Coste de Transporte",
-    "FR": "Coût de Transport",
-    "IT": "Costo di Trasporto",
-    "PT": "Custo de Transporte"
   }
 }

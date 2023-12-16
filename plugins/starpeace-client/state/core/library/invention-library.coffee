@@ -2,8 +2,8 @@ import _ from 'lodash'
 
 import Library from '~/plugins/starpeace-client/state/core/library/library.coffee'
 
-import Logger from '~/plugins/starpeace-client/logger.coffee'
-import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
+import Logger from '~/plugins/starpeace-client/logger'
+import Utils from '~/plugins/starpeace-client/utils/utils'
 
 export default class InventionLibrary extends Library
   constructor: () ->
@@ -29,7 +29,7 @@ export default class InventionLibrary extends Library
     for seal_id in planet_library.seals_for_inventions()
       invention_ids = {}
       for definition in building_library.definitions_for_seal(seal_id)
-        for invention_id in (definition.allowed_invention_ids || [])
+        for invention_id in (definition.allowedInventionIds || [])
           invention_ids[invention_id] = new Set() unless invention_ids[invention_id]?
           invention_ids[invention_id].add(definition.id)
       @allowing_building_by_seal_id[seal_id] = invention_ids
@@ -46,7 +46,7 @@ export default class InventionLibrary extends Library
     for invention in inventions
       @metadata_by_id[invention.id] = invention
 
-      for invention_id in (invention.depends_on || [])
+      for invention_id in (invention.dependsOnIds || [])
         @child_ids_by_id[invention_id] = [] unless @child_ids_by_id[invention_id]?
         @child_ids_by_id[invention_id].push invention.id
 
@@ -58,7 +58,7 @@ export default class InventionLibrary extends Library
       pending_search = [invention_id]
       while pending_search.length
         pending_invention = @metadata_by_id[pending_search.pop()]
-        for parent_invention_id in (pending_invention.depends_on || [])
+        for parent_invention_id in (pending_invention.dependsOnIds || [])
           unless upstream_ids[parent_invention_id]?
             upstream_ids[parent_invention_id] = true
             pending_search.push parent_invention_id

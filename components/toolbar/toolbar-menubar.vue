@@ -40,7 +40,7 @@
           | {{$translate('identity.visitor')}}
 
       span.column-tycoon-buildings
-        span.count 0 / 0
+        span.count {{ buildingCount }} / {{ maxBuildingCount }}
         font-awesome-icon(:icon="['far', 'building']")
 
       .column-notification-icons.level
@@ -49,13 +49,13 @@
 
         template(v-if='show_game_music')
           .level-item.game-music(:class='game_music_class')
-            font-awesome-icon(:icon="['fas', 'play']" v-show='!game_music_playing' @click.stop.prevent='music_state.toggle_music()')
-            font-awesome-icon(:icon="['fas', 'pause']" v-show='game_music_playing' @click.stop.prevent='music_state.toggle_music()')
+            font-awesome-icon(:icon="['fas', 'play']" v-show='!game_music_playing' @click.stop.prevent='music_state.toggleMusic()')
+            font-awesome-icon(:icon="['fas', 'pause']" v-show='game_music_playing' @click.stop.prevent='music_state.toggleMusic()')
           .level-item.game-music-next(:class='game_music_volume_class')
-            font-awesome-icon(:icon="['fas', 'fast-forward']" @click.stop.prevent='music_state.next_song()')
+            font-awesome-icon(:icon="['fas', 'fast-forward']" @click.stop.prevent='music_state.nextSong()')
           .level-item.game-music-volume(:class='game_music_volume_class')
-            font-awesome-icon(:icon="['fas', 'volume-up']" v-show='music_state.game_music_volume' @click.stop.prevent='music_state.toggle_volume()')
-            font-awesome-icon(:icon="['fas', 'volume-off']" v-show='!music_state.game_music_volume' @click.stop.prevent='music_state.toggle_volume()')
+            font-awesome-icon(:icon="['fas', 'volume-up']" v-show='music_state.gameMusicVolume' @click.stop.prevent='music_state.toggleVolume()')
+            font-awesome-icon(:icon="['fas', 'volume-off']" v-show='!music_state.gameMusicVolume' @click.stop.prevent='music_state.toggleVolume()')
 
         .level-item.notification-mail(:class="{'has-unread':unread_mail.length>0}" @click.stop.prevent='toggle_mail()')
           font-awesome-icon(:icon="['far', 'envelope']")
@@ -67,7 +67,7 @@
 
 <script lang='ts'>
 import _ from 'lodash';
-import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
+import ClientState from '~/plugins/starpeace-client/state/client-state';
 
 export default {
   props: {
@@ -87,7 +87,6 @@ export default {
 
     is_ready () { return this.client_state.initialized && this.client_state?.workflow_status === 'ready'; },
     is_tycoon () { return this.is_ready && this.client_state?.is_tycoon(); },
-    ticker_message () { return this.client_state?.interface?.event_ticker_message ?? ''; },
 
     unread_mail () { return _.filter(_.values(this.client_state.player.mail_by_id), (m) => !m.read); },
 
@@ -97,17 +96,36 @@ export default {
       };
     },
 
-    game_music_playing () { return this.music_state.game_music_playing; },
-    game_music_class () { return this.music_state.game_music_playing ? 'music-pause' : 'music-play'; },
-    game_music_volume_class () { return this.music_state.game_music_volume ? 'music-volume' : 'music-mute'; },
+    game_music_playing () { return this.music_state.gameMusicPlaying; },
+    game_music_class () { return this.music_state.gameMusicPlaying ? 'music-pause' : 'music-play'; },
+    game_music_volume_class () { return this.music_state.gameMusicVolume ? 'music-volume' : 'music-mute'; },
 
     notification_loading_css_class () {
       return {
-        'ajax-loading': (this.ajax_state?.ajax_requests ?? 0) > 0
+        'ajax-loading': (this.ajax_state?.ajaxRequests ?? 0) > 0
       };
     },
 
-    tycoon_name () { return this.is_tycoon ? this.client_state?.identity?.galaxy_tycoon_name : ''; }
+    tycoon_name () { return this.is_tycoon ? this.client_state?.identity?.galaxy_tycoon_name : ''; },
+
+    maxBuildingCount (): number {
+      if (this.is_tycoon && this.client_state.player.corporation_id) {
+        const corporation = this.client_state.core.corporation_cache.metadata_for_id(this.client_state.player.corporation_id);
+        const level = corporation ? this.client_state.core.planet_library.level_for_id(corporation.level_id) : undefined;
+        if (level) {
+          return level.facilityLimit ?? 0;
+        }
+      }
+      return 0;
+    },
+    buildingCount (): number {
+      if (this.is_tycoon) {
+        return (this.client_state.corporation.company_ids ?? []).map((id: string) => {
+          return (this.client_state.corporation.buildings_ids_by_company_id?.[id] ?? []).length;
+        }).reduce((sum: number, val: number) => sum + val, 0);
+      }
+      return 0;
+    }
   },
 
   mounted () {

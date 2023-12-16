@@ -1,82 +1,77 @@
 <template lang='pug'>
 .inspect-details
-  template(v-if='loading')
-    img.loading-image.starpeace-logo.logo-loading
+  .inspect-tabs.tabs.is-small.is-marginless
+    ul
+      li(v-for='tab in tabs' :class="{ 'is-active': tabId == tab.id }" @click.stop.prevent='tabId = tab.id')
+        a {{$translate(tab.label)}}
 
-  template(v-else)
-    .inspect-tabs.tabs.is-small.is-marginless
-      ul
-        li(v-for='tab in tabs' :class="{ 'is-active': tabId == tab.id }" @click.stop.prevent='tabId = tab.id')
-          a {{$translate(tab.label)}}
+  .inspect-body.columns.is-marginless
+    template(v-if="tabId == 'general'")
+      .column.is-narrow.pr-5.general
+        div
+          span.sp-kv-key {{$translate('toolbar.inspect.common.label.name')}}:
+          span.sp-kv-value
+            template(v-if='name') {{name}}
+            template(v-else) {{$translate('ui.misc.none')}}
+        div
+          span.sp-kv-key {{$translate('toolbar.inspect.common.label.built')}}:
+          span.sp-kv-value {{constructionDate}}
+        div
+          span.sp-kv-key {{$translate('toolbar.inspect.common.label.owner')}}:
+          span.sp-kv-value IFEL
 
-    .inspect-body.columns.is-marginless
-      template(v-if="tabId == 'general'")
-        .column.is-narrow.extra-padding-right.general
-          div
-            span.sp-kv-key {{$translate('toolbar.inspect.tradecenter.label.name')}}:
-            span.sp-kv-value
-              template(v-if='name') {{name}}
-              template(v-else) {{$translate('ui.misc.none')}}
-          div
-            span.sp-kv-key {{$translate('toolbar.inspect.tradecenter.label.built')}}:
-            span.sp-kv-value {{constructionDate}}
-          div
-            span.sp-kv-key {{$translate('toolbar.inspect.tradecenter.label.owner')}}:
-            span.sp-kv-value IFEL
+    template(v-else-if="tabId == 'products'")
+      .column.is-paddingless.is-relative.is-clipped
+        toolbar-inspect-shared-tab-products(
+          :client-state='clientState'
+          :products='products'
+          :building='building'
+          :definition='definition'
+          :simulation='simulation'
+        )
 
-        .column.is-narrow.extra-padding-left.general-actions
-          a.button.is-fullwidth.is-starpeace(disabled) {{$translate('toolbar.inspect.tradecenter.action.connect')}}
-
-      template(v-else-if="tabId == 'products'")
-        .column.is-paddingless.is-relative.is-clipped
-          toolbar-inspect-shared-tab-products(
-            :client-state='clientState'
-            :products='products'
-          )
-
-      template(v-else-if="tabId == 'jobs'")
-        .column.is-paddingless.is-relative.is-clipped
-          toolbar-inspect-shared-tab-jobs(
-            :client-state='clientState'
-            :jobs='jobs'
-          )
+    template(v-else-if="tabId == 'jobs'")
+      .column.is-paddingless.is-relative.is-clipped
+        toolbar-inspect-shared-tab-jobs(
+          :client-state='clientState'
+          :jobs='jobs'
+          :building='building'
+          :definition='definition'
+          :simulation='simulation'
+        )
 
 </template>
 
 <script lang='ts'>
-import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
+import { BuildingDefinition, SimulationDefinition } from '@starpeace/starpeace-assets-types';
+
+import ClientState from '~/plugins/starpeace-client/state/client-state';
+import Building from '~/plugins/starpeace-client/building/building';
+import BuildingDetails from '~/plugins/starpeace-client/building/building-details';
 
 declare interface ToolbarInspectTradeCenterData {
   tabId: string | undefined;
-  product_index: number;
-
-  details_promise: any | null;
-  details: any | null;
 }
 
 export default {
   props: {
     clientState: { type: ClientState, required: true },
 
-    building: { type: Object, required: true },
-    definition: Object,
-    simulation: Object
+    building: { type: Building, required: true },
+    definition: { type: BuildingDefinition, required: true },
+    simulation: { type: SimulationDefinition, required: true },
+
+    buildingDetails: { type: BuildingDetails, required: true }
   },
 
   data (): ToolbarInspectTradeCenterData {
     return {
-      tabId: undefined,
-      product_index: 0,
-
-      details_promise: null,
-      details: null
+      tabId: undefined
     };
   },
 
   computed:  {
-    loading (): boolean { return !!this.details_promise || !this.details; },
-
-    building_id () { return this.building.id; },
+    buildingId () { return this.building.id; },
     name () {
       if (this.building?.name) return this.building.name;
       if (this.definition?.name) return this.$translate(this.definition.name);
@@ -86,8 +81,8 @@ export default {
       return this.building.constructionFinishedAt?.toFormat('LLL dd, yyyy');
     },
 
-    products () { return this.details?.products ?? []; },
-    jobs () { return this.details?.labors ?? []; },
+    products () { return this.buildingDetails.outputs ?? []; },
+    jobs () { return this.buildingDetails.labors ?? []; },
 
     tabs () {
       const tabs = [
@@ -113,10 +108,6 @@ export default {
   },
 
   watch: {
-    building_id: {
-      immediate: true,
-      handler () { this.refresh_details(); }
-    },
     tabs: {
       immediate: true,
       handler () {
@@ -128,25 +119,6 @@ export default {
         }
       }
     }
-  },
-
-  methods: {
-    resource_type_label (type_id: string) { return this.$translate(this.clientState.core.planet_library.resource_type_for_id(type_id)?.label_plural); },
-
-    async refresh_details (): Promise<void> {
-      this.details = null;
-      if (!this.building_id) return;
-
-      try {
-        this.details_promise = this.$starpeaceClient.managers.building_manager.load_building_details(this.building_id);
-        this.details = await this.details_promise;
-        this.details_promise = null;
-      }
-      catch (err) {
-        this.clientState.add_error_message('Failure loading building details, please try again', err);
-        this.details_promise = null;
-      }
-    }
   }
 }
 </script>
@@ -154,9 +126,4 @@ export default {
 <style lang='sass' scoped>
 @import '~/assets/stylesheets/starpeace-variables'
 @import '~/assets/stylesheets/starpeace-inspect'
-
-.column
-  &.general-actions
-    min-width: 16rem
-
 </style>

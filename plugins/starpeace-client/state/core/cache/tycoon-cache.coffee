@@ -1,7 +1,7 @@
 import Cache from '~/plugins/starpeace-client/state/core/cache/cache'
 import Tycoon from '~/plugins/starpeace-client/tycoon/tycoon'
 
-import Logger from '~/plugins/starpeace-client/logger.coffee'
+import Logger from '~/plugins/starpeace-client/logger'
 
 export default class TycoonCache extends Cache
   constructor: () ->

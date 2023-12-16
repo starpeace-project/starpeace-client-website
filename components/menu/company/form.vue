@@ -15,7 +15,7 @@
             template(v-for='seal in seals')
               .seal-option(:class="{'is-selected': seal_id == seal.id}" @click.stop.prevent='seal_id=seal.id')
                 misc-company-seal-icon.company-seal(:seal_id="seal.id")
-                span.company-label {{seal.name_long}}
+                span.company-label {{seal.nameLong}}
 
           .column
             template(v-for='seal in seals')
@@ -56,7 +56,7 @@
 
 <script lang='ts'>
 import _ from 'lodash';
-import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
+import ClientState from '~/plugins/starpeace-client/state/client-state';
 
 const ERROR_CODE_GENERAL = 'GENERAL';
 const ERROR_CODE_INVALID_NAME = 'INVALID_NAME';

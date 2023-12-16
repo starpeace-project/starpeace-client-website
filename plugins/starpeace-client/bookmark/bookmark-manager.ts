@@ -49,7 +49,7 @@ export default class BookmarkManager {
   addBuildingBookmark (buildingId: string): void {
     const building = this.clientState.core.building_cache.building_for_id(buildingId);
     const definition = this.clientState.core.building_library.metadata_by_id[building?.definition_id]
-    const industry_type = this.clientState.core.planet_library.type_for_id(definition?.industry_type_id)
+    const industry_type = this.clientState.core.planet_library.type_for_id(definition?.industryTypeId)
     if (!building || !definition || !industry_type) {
       return;
     }

@@ -6,7 +6,7 @@ span(:class='money_css_class')
 
 <script lang='ts'>
 import _ from 'lodash';
-import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
+import Utils from '~/plugins/starpeace-client/utils/utils.js'
 
 export default {
   name: 'money-text',

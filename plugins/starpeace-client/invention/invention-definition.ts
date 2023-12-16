@@ -1,23 +1,22 @@
-
-import Translation from '~/plugins/starpeace-client/language/translation';
+import { Translation } from '@starpeace/starpeace-assets-types';
 
 export default class InventionDefinition {
   id: string;
-  industry_category_id: string;
-  industry_type_id: string;
+  industryCategoryId: string;
+  industryTypeId: string;
   name: Translation;
   description: Translation;
   properties: Record<string, any> = {};
-  depends_on: Array<string> = [];
+  dependsOnIds: Array<string> = [];
 
-  constructor (id: string, industry_category_id: string, industry_type_id: string, name: Translation, description: Translation, properties: Record<string, any>, depends_on: Array<string>) {
+  constructor (id: string, industryCategoryId: string, industryTypeId: string, name: Translation, description: Translation, properties: Record<string, any>, dependsOnIds: Array<string>) {
     this.id = id;
-    this.industry_category_id = industry_category_id;
-    this.industry_type_id = industry_type_id;
+    this.industryCategoryId = industryCategoryId;
+    this.industryTypeId = industryTypeId;
     this.name = name;
     this.description = description;
     this.properties = properties;
-    this.depends_on = depends_on;
+    this.dependsOnIds = dependsOnIds;
   }
 
   static fromJson (json: any): InventionDefinition {

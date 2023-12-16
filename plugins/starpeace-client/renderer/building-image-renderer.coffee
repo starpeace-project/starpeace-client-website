@@ -53,7 +53,7 @@ export default class BuildingImageRenderer
     building_id = @building_id_callback()
     if building_id?.length
       definition = @client_state.core.building_library.definition_for_id(building_id)
-      building_image = if definition?.image_id? then @client_state.core.building_library.images_by_id[definition.image_id] else null
+      building_image = if definition?.imageId? then @client_state.core.building_library.images_by_id[definition.imageId] else null
       texture = if building_image?.frames?.length then PIXI.utils.TextureCache[building_image.frames[0]] else PIXI.Texture.EMPTY
 
       height_if_render_width = @renderer_width * (texture.height / texture.width)

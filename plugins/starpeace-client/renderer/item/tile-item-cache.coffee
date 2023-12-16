@@ -15,7 +15,7 @@ import SpriteRoad from '~/plugins/starpeace-client/renderer/sprite/sprite-road.c
 import SpriteSign from '~/plugins/starpeace-client/renderer/sprite/sprite-sign.coffee'
 import SpriteTree from '~/plugins/starpeace-client/renderer/sprite/sprite-tree.coffee'
 
-import Logger from '~/plugins/starpeace-client/logger.coffee'
+import Logger from '~/plugins/starpeace-client/logger'
 
 RENDER_OPTIONS = [
   'renderer.trees',
@@ -34,21 +34,38 @@ export default class TileItemCache
 
     @is_dirty = true
 
+    @last_view_offset_x = 0
+    @last_view_offset_y = 0
     @last_scale_rendered = 0
     @last_season_rendered = null
     @last_rendered_zones = false
     @last_rendered_overlay = false
     @last_rendered_overlay_type = null
 
-    @last_rendered_selection_options = { building_id: null }
+    @last_rendered_selection_options = {
+      construction_building_id: null,
+      construction_building_x: 0,
+      construction_building_y: 0,
+      building_id: null
+    }
     @last_rendered_render_options = { }
 
     @tile_items = {}
 
+  has_dirty_view: () ->
+    return true if @client_state.camera.view_offset_x != @last_view_offset_x || @client_state.camera.view_offset_y != @last_view_offset_y
+    return true if @client_state.interface.selected_building_id != @last_rendered_selection_options.building_id
+    return false
+
   should_clear_cache: () ->
-    return true if @client_state.camera.game_scale != @last_scale_rendered || @client_state.planet.current_season != @last_season_rendered ||
-      @client_state.interface.show_zones != @last_rendered_zones || @client_state.interface.show_overlay != @last_rendered_overlay || @client_state.interface.current_overlay.type != @last_rendered_overlay_type ||
-      @client_state.interface.selected_building_id != @last_rendered_selection_options.building_id
+    return true if @has_dirty_view()
+    return true if @client_state.camera.game_scale != @last_scale_rendered
+    return true if @client_state.planet.current_season != @last_season_rendered
+    return true if @client_state.interface.show_zones != @last_rendered_zones
+    return true if @client_state.interface.show_overlay != @last_rendered_overlay
+    return true if @client_state.interface.current_overlay.type != @last_rendered_overlay_type
+    return true if @client_state.interface.construction_building_id != @last_rendered_selection_options.construction_building_id
+    return true if @client_state.interface.construction_building_map_x != @last_rendered_selection_options.construction_building_x || @client_state.interface.construction_building_map_y != @last_rendered_selection_options.construction_building_y
 
     for option in RENDER_OPTIONS
       return true unless @options.option(option) == @last_rendered_render_options[option]
@@ -56,6 +73,8 @@ export default class TileItemCache
     false
 
   reset_cache: () ->
+    @last_view_offset_x = @client_state.camera.view_offset_x
+    @last_view_offset_y = @client_state.camera.view_offset_y
     @last_scale_rendered = @client_state.camera.game_scale
     @last_season_rendered = @client_state.planet.current_season
     @last_rendered_zones = @client_state.interface.show_zones
@@ -63,6 +82,9 @@ export default class TileItemCache
     @last_rendered_overlay_type = @client_state.interface.current_overlay.type
 
     @last_rendered_selection_options.building_id = @client_state.interface.selected_building_id
+    @last_rendered_selection_options.construction_building_id = @client_state.interface.construction_building_id
+    @last_rendered_selection_options.construction_building_x = @client_state.interface.construction_building_map_x
+    @last_rendered_selection_options.construction_building_y = @client_state.interface.construction_building_map_y
 
     @last_rendered_render_options[option] = @options.option(option) for option in RENDER_OPTIONS
 
@@ -157,9 +179,9 @@ export default class TileItemCache
       Logger.warn("unable to load building definition metadata for #{tile_info.building_info.definition_id}")
       return null
 
-    image_metadata = @building_library.images_by_id[metadata.image_id]
+    image_metadata = @building_library.images_by_id[metadata.imageId]
     unless image_metadata?
-      Logger.warn("unable to load building image metadata for #{metadata.image_id}")
+      Logger.warn("unable to load building image metadata for #{metadata.imageId}")
       return null
 
     texture = PIXI.utils.TextureCache["overlay.#{image_metadata.w}"]
@@ -180,9 +202,10 @@ export default class TileItemCache
       Logger.warn("unable to load building definition metadata for #{tile_info.building_info.definition_id}")
       return null
 
-    image_metadata = if tile_info.building_info.stage >= 0 then @building_library.images_by_id[metadata.image_id] else @building_library.images_by_id[metadata.construction_image_id]
+    imageId = metadata.getImageIdForLevel(tile_info.building_info.level) || metadata.imageId
+    image_metadata = if !tile_info.building_info.constructed || tile_info.building_info.upgrading then @building_library.images_by_id[metadata.constructionImageId] else @building_library.images_by_id[imageId]
     unless image_metadata?
-      Logger.warn("unable to load building image metadata for #{metadata.image_id} stage #{tile_info.building_info.stage}")
+      Logger.warn("unable to load building image metadata for #{imageId} #{tile_info.building_info}")
       return null
 
     textures = _.map(image_metadata?.frames || [], (texture_id) -> PIXI.utils.TextureCache[texture_id])
@@ -201,8 +224,8 @@ export default class TileItemCache
         effects.push(new SpriteEffect(effect_textures, effect, effect_metadata))
 
     signs = []
-    if metadata.sign_id? && image_metadata.sign?
-      sign_metadata = @sign_library.metadata_by_id[metadata.sign_id]
+    if metadata.signId? && image_metadata.sign?
+      sign_metadata = @sign_library.metadata_by_id[metadata.signId]
       sign_textures = _.map(sign_metadata?.frames || [], (texture_id) -> PIXI.utils.TextureCache[texture_id])
       signs.push(new SpriteSign(sign_textures, image_metadata.sign, sign_metadata)) if sign_metadata? && sign_textures.length
 
@@ -217,7 +240,7 @@ export default class TileItemCache
   building_construction_sprite_info_for: (render_building_animations, building_id, is_valid_location) ->
     metadata = @building_library.metadata_by_id[building_id]
     return null unless metadata?
-    image_metadata = @building_library.images_by_id[metadata.image_id]
+    image_metadata = @building_library.images_by_id[metadata.imageId]
     return null unless image_metadata?
 
     textures = _.map(image_metadata?.frames || [], (texture_id) -> PIXI.utils.TextureCache[texture_id])

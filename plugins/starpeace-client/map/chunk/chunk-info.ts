@@ -7,7 +7,7 @@ export default class ChunkInfo {
   height: number;
   max_age_mins: number;
 
-  refresh_promise: any;
+  refresh_promise: any | null;
 
   last_updated: DateTime | null;
   expires: DateTime | null;

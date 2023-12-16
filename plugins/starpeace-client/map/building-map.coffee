@@ -1,13 +1,13 @@
-import Logger from '~/plugins/starpeace-client/logger.coffee'
+import Logger from '~/plugins/starpeace-client/logger'
 
 import Concrete from '~/plugins/starpeace-client/building/concrete.coffee'
-import ChunkMap from '~/plugins/starpeace-client/map/chunk/chunk-map.coffee'
+import ChunkMap from '~/plugins/starpeace-client/map/chunk/chunk-map'
 
 export default class BuildingMap
   constructor: (@client_state, @building_manager, @road_manager, @width, @height) ->
     @building_library = @client_state.core.building_library
 
-    @tile_info_building = new Array(@width * @height)
+    @tile_info_building_id = new Array(@width * @height)
     @tile_info_concrete = new Array(@width * @height)
     @tile_info_road = new Array(@width * @height)
 
@@ -31,9 +31,10 @@ export default class BuildingMap
   chunk_road_update_at: (x, y) -> @road_chunks.update_at(x, y)
   chunk_road_info_at: (x, y) -> @road_chunks.info_at(x, y)
 
-  building_info_at: (x, y) -> @tile_info_building[y * @width + x]
+  building_id_at: (x, y) -> @tile_info_building_id[y * @width + x]
   has_concrete_at: (x, y) ->
-    building = @building_info_at(x, y)
+    building_id = @building_id_at(x, y)
+    building = if building_id? then @client_state.core.building_cache.building_for_id(building_id) else undefined
     metadata = if building? then @building_library.definition_for_id(building.definition_id) else null
     metadata?.foundation
 
@@ -51,7 +52,7 @@ export default class BuildingMap
       # FIXME: TODO: add dummy/empty placeholder
       return
 
-    image_metadata = @building_library.images_by_id[metadata.image_id]
+    image_metadata = @building_library.images_by_id[metadata.imageId]
     unless image_metadata?
       Logger.warn("unable to load building image metadata for #{building.definition_id}")
       return
@@ -59,13 +60,13 @@ export default class BuildingMap
     for y in [0...image_metadata.h]
       for x in [0...image_metadata.w]
         map_index = (building.map_y - y) * @width + (building.map_x - x)
-        @tile_info_building[map_index] = building
+        @tile_info_building_id[map_index] = building_id
         @tile_info_concrete[map_index] = if metadata.foundation then Concrete.FILL_TYPE.FILLED else Concrete.FILL_TYPE.NO_FILL
 
   remove_building: (building_id) ->
-    building = @client_state.core.building_cache.building_metadata_by_id[building_id]
+    building = @client_state.core.building_cache.building_for_id(building_id)
     metadata = if building? then @building_library.metadata_by_id[building.definition_id] else null
-    image_metadata = if metadata? then @building_library.images_by_id[metadata.image_id] else null
+    image_metadata = if metadata? then @building_library.images_by_id[metadata.imageId] else null
 
     unless metadata? && image_metadata?
       Logger.debug("unable to load building metadata for #{building_id} of type #{building?.definition_id || 'UNKNOWN'}")
@@ -74,7 +75,7 @@ export default class BuildingMap
     for y in [0...image_metadata.h]
       for x in [0...image_metadata.w]
         map_index = (building.map_y - y) * @width + (building.map_x - x)
-        delete @tile_info_building[map_index]
+        delete @tile_info_building_id[map_index]
         delete @tile_info_concrete[map_index]
 
   update_roads: (chunk_info, road_data) ->

@@ -1,5 +1,5 @@
 import Library from '~/plugins/starpeace-client/state/core/library/library.coffee'
-import Logger from '~/plugins/starpeace-client/logger.coffee'
+import Logger from '~/plugins/starpeace-client/logger'
 
 export default class NewsLibrary extends Library
   constructor: () ->

@@ -1,6 +1,7 @@
 import _ from 'lodash';
 
 import SandboxApiAdapter from './sandbox-api-adapter';
+import Utils from '~/plugins/starpeace-client/utils/utils';
 
 export interface CorporationIdentifier {
   id: string;
@@ -23,22 +24,23 @@ export default class SandboxApiTycoon {
   static configure (adapter: SandboxApiAdapter, sandbox: any): void {
 
     adapter.get('tycoons/(.+?)/corporation-ids', (config: any, tycoonId: string): GetTycoonCorporationsResponse => {
-      if (!sandbox.sandbox_data?.corporation_identifiers_by_tycoon_id?.[tycoonId]) {
-        throw new Error('404');
-      }
       return {
-        identifiers: _.cloneDeep(sandbox.sandbox_data.corporation_identifiers_by_tycoon_id[tycoonId])
+        identifiers: _.cloneDeep(sandbox.sandbox_data.corporation.corporationIdentifiersByTycoonId?.[tycoonId] ?? [])
       };
     });
 
     adapter.get('tycoons/(.+)', (config: any, tycoonId: string): GetTycoonResponse => {
-      if (!sandbox.sandbox_data?.tycoon_by_id?.[tycoonId]) {
-        throw new Error('404');
+      if (!sandbox.sandbox_data?.corporation.tycoonById?.[tycoonId]) {
+        return {
+          id: tycoonId,
+          username: "Unknown " + Utils.uuid(),
+          name: "Name " + Utils.uuid()
+        };
       }
       return {
-        id: sandbox.sandbox_data.tycoon_by_id[tycoonId].id,
-        username: sandbox.sandbox_data.tycoon_by_id[tycoonId].username,
-        name: sandbox.sandbox_data.tycoon_by_id[tycoonId].name
+        id: sandbox.sandbox_data.corporation.tycoonById[tycoonId].id,
+        username: sandbox.sandbox_data.corporation.tycoonById[tycoonId].username,
+        name: sandbox.sandbox_data.corporation.tycoonById[tycoonId].name
       };
     });
 

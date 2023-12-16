@@ -19,7 +19,7 @@ export default class SandboxApiGalaxy {
     });
 
     adapter.post('galaxy/login', (config: any, params: any): LoginResponse => {
-      if (params.username == 'test' && params.password == 'test' && sandbox.sandbox_data.tycoon_by_id['tycoon-id-1']) {
+      if (params.username == 'test' && params.password == 'test' && sandbox.sandbox_data.corporation.tycoonById['tycoon-id-1']) {
         const access_token: string = uuidv4();
         const tycoonId: string = 'tycoon-id-1';
         sandbox.sandbox_data.access_tokens[access_token] = {
@@ -28,9 +28,9 @@ export default class SandboxApiGalaxy {
         };
 
         return {
-          id: sandbox.sandbox_data.tycoon_by_id[tycoonId].id,
-          username: sandbox.sandbox_data.tycoon_by_id[tycoonId].username,
-          name: sandbox.sandbox_data.tycoon_by_id[tycoonId].name,
+          id: sandbox.sandbox_data.corporation.tycoonById[tycoonId].id,
+          username: sandbox.sandbox_data.corporation.tycoonById[tycoonId].username,
+          name: sandbox.sandbox_data.corporation.tycoonById[tycoonId].name,
           accessToken: access_token
         };
       }

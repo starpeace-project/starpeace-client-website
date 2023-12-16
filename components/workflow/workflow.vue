@@ -12,7 +12,7 @@ client-only
         .card-content
           workflow-loading(v-if="status == 'initializing'" :message="$translate('ui.workflow.loading.initializing')")
 
-          workflow-universe(v-else-if="status == 'pending_universe'" :ajax_state='ajax_state' :client_state='client_state')
+          workflow-universe(v-else-if="status == 'pending_universe'" :ajax_state='client_state.ajax_state' :client_state='client_state')
           workflow-planet(v-else-if="status == 'pending_planet'" :client_state='client_state')
           workflow-loading(v-else-if="status == 'pending_visa'" :message="$translate('ui.workflow.loading.pending_visa')")
           workflow-loading(v-else-if="status == 'pending_assets'" :message="$translate('ui.workflow.loading.pending_assets')")
@@ -24,7 +24,7 @@ client-only
 </template>
 
 <script lang='ts'>
-import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
+import ClientState from '~/plugins/starpeace-client/state/client-state';
 
 const STATUS_MAX_WIDTHS: Record<string, string> = {
   'pending_universe': '60rem',
@@ -37,7 +37,6 @@ const STATUS_MAX_WIDTHS: Record<string, string> = {
 export default {
   props: {
     client_state: { type: ClientState, required: true },
-    ajax_state: { type: Object, required: true }
   },
 
   computed: {

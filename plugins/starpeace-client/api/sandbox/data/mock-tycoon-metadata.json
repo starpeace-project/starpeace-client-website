@@ -10,6 +10,7 @@
         "tycoonId": "tycoon-id-1",
         "planetId": "planet-1",
         "levelId": "ENTREPRENEUR",
+        "cash": 0,
         "buildingCount": 0,
         "companyIds": ["company-id-1", "company-id-2", "company-id-3", "company-id-4", "company-id-5"],
         "companies": [
@@ -67,6 +68,7 @@
         "tycoonId": "tycoon-id-2",
         "planetId": "planet-1",
         "levelId": "APPRENTICE",
+        "cash": 0,
         "buildingCount": 0,
         "companyIds": [],
         "companies": []

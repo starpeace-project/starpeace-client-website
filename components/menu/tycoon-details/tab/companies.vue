@@ -32,7 +32,7 @@
 
 <script lang='ts'>
 import _ from 'lodash';
-import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
+import ClientState from '~/plugins/starpeace-client/state/client-state';
 
 export default {
   props: {
@@ -52,7 +52,7 @@ export default {
         return {
           id: c.id,
           name: this.clientState.name_for_company_id(c.id),
-          seal_name: this.clientState.core.planet_library.seal_for_id(this.clientState.seal_for_company_id(c.id))?.name_long,
+          seal_name: this.clientState.core.planet_library.seal_for_id(this.clientState.seal_for_company_id(c.id))?.nameLong,
           building_count: (this.clientState.corporation.buildings_ids_by_company_id?.[c.id] ?? []).length
         };
       });
@@ -60,8 +60,12 @@ export default {
   },
 
   methods: {
-    is_company_selected (company_id: string): boolean { return this.clientState.player.company_id == company_id; },
-    select_company (company_id: string): void { this.clientState.player.company_id = company_id; },
+    is_company_selected (company_id: string): boolean {
+      return this.clientState.player.company_id === company_id;
+    },
+    select_company (company_id: string): void {
+      this.clientState.player.set_company_id(company_id);
+    },
 
     toggle_form_company_menu () {
       if (this.has_corporation && this.is_self) {

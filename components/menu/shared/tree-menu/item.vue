@@ -6,10 +6,10 @@
         misc-company-seal-icon(:seal_id='item.seal_id' with_min_size=true)
 
       template(v-else-if="item.type == 'INDUSTRY_TYPE'")
-        misc-industry-type-icon(:industry_type='item.industry_type_id' small=true)
+        misc-industry-type-icon(:industry_type='item.industryTypeId' small=true)
 
       template(v-else-if="item.type == 'INDUSTRY_CATEGORY'")
-        misc-industry-category-icon(:category='item.industry_category_id' small=true)
+        misc-industry-category-icon(:category='item.industryCategoryId' small=true)
 
       template(v-else-if="item.type == 'TOWN'")
         misc-city-icon
@@ -53,7 +53,7 @@
 
 <script lang='ts'>
 import _ from 'lodash';
-import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
+import ClientState from '~/plugins/starpeace-client/state/client-state';
 
 export default {
   props: {

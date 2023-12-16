@@ -1,7 +1,7 @@
 
 import Sprite from '~/plugins/starpeace-client/renderer/sprite/sprite.coffee'
 
-import Logger from '~/plugins/starpeace-client/logger.coffee'
+import Logger from '~/plugins/starpeace-client/logger'
 
 export default class SpritePlane extends Sprite
   constructor: (@textures, @flight_plan) ->

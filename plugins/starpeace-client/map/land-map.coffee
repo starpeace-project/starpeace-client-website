@@ -1,5 +1,5 @@
 
-import Logger from '~/plugins/starpeace-client/logger.coffee'
+import Logger from '~/plugins/starpeace-client/logger'
 
 TREE_TYPE_PERCENTAGE = {}
 TREE_TYPE_PERCENTAGE.grass = .3

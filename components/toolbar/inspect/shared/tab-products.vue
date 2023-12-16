@@ -1,33 +1,53 @@
 <template lang='pug'>
-.products-tab.columns.is-marginless
-  .column.is-narrow.is-paddingless.sp-scrollbar.products
-    .product-tabs
+.columns.is-marginless.is-relative.is-clipped.products-tab
+  .column.is-narrow.is-paddingless.sp-scrollbar.sp-sub-tabs
+    .sp-tabs-menu
       ul
         template(v-for='product,index in sortedProducts')
-          li(:class="{ 'is-active': productIndex == index }" @click.stop.prevent='productIndex = index')
-            a.sp-kv-key {{resourceTypeLabel(product.resource_id)}}
+          li(:class="{ 'is-active': productIndex == index }" @click.stop.prevent='selectProduct(index)')
+            a.sp-kv-key.py-2.px-3 {{ $resourceTypeLabel(product.resourceId) }}
 
-  .column.connections
+  .column.is-narrow.is-paddingless.px-3.py-1.is-flex.is-flex-direction-column.sp-has-dark-background
+    div.is-flex-grow-1(v-if='product')
+      div
+        span.sp-kv-key {{$translate('toolbar.inspect.products.label.price')}}:
+        span.sp-kv-value {{$format_money(product.price)}} ({{ $formatPercent(product.price, $resourceTypePrice(product.resourceId)) }})
+      misc-resource-price-slider(
+        :markers='[0, 100, 400]'
+        :min='0'
+        :max='400'
+        :resource-id='product.resourceId'
+        :price='product.price'
+        :disabled='!canManage'
+        @update='updatePrice(product.resourceId, $event)'
+        @change='debouncedUpdateBuildingPrice(building.id, product.resourceId, $event)'
+      )
+
+    div.mt-2
+      button.button.is-fullwidth.is-starpeace.disabled.mb-2(disabled) Offer
+      button.button.is-fullwidth.is-starpeace(disabled) Delete
+
+  .column.connections.p-1
     .connection-information(v-if='product')
-      span.sp-kv-key {{$translate('toolbar.inspect.products.label.price')}}:
-      span.sp-kv-value {{$format_percent(priceRatio)}} ({{$format_money(product.price)}})
-      span.sp-kv-key {{$translate('toolbar.inspect.products.label.last_value')}}:
-      span.sp-kv-value {{$format_number(product.total_velocity)}} {{resourceTypeLabel(product.resource_id)}}
-      span.sp-kv-key {{$translate('toolbar.inspect.products.label.quality')}}:
-      span.sp-kv-value {{$format_percent(product.quality)}}
+      span.sp-kv-key {{ $translate('toolbar.inspect.products.label.last_value') }}:
+      span.sp-kv-value {{ $format_number(product.mostRecentVelocity) }} {{ $resourceTypeUnitLabel(product.resourceId) }}
+      span.sp-kv-key {{ $translate('toolbar.inspect.products.label.quality') }}:
+      span.sp-kv-value {{ $formatPercent(product.mostRecentTotalQuality, product.mostRecentVelocity) }}
 
     .connection-details.sp-scrollbar
       table
         thead
           tr
-            th.sp-kv-key {{$translate('toolbar.inspect.products.label.customer')}}
-            th.sp-kv-key {{$translate('toolbar.inspect.products.label.company')}}
-            th.has-text-right.sp-kv-key {{$translate('toolbar.inspect.products.label.sales')}}
-            th.has-text-right.sp-kv-key {{$translate('toolbar.inspect.products.label.transport_cost')}}
+            th.column-validity
+            th.sp-kv-key {{ $translate('toolbar.inspect.products.label.customer') }}
+            th.sp-kv-key {{ $translate('toolbar.inspect.products.label.company') }}
+            th.has-text-right.sp-kv-key {{ $translate('toolbar.inspect.products.label.sales') }}
+            th.has-text-right.sp-kv-key {{ $translate('toolbar.inspect.products.label.transport_cost') }}
         tbody
           template(v-if='!connections.length')
             tr.is-empty
-              td(colspan=4) {{$translate('ui.misc.none')}}
+              td(colspan=5) {{$translate('ui.misc.none')}}
+
           template(v-else v-for='connection,index in connections')
             tr(:class="{ 'is-active': selectedIndices[index] }" @click.stop.prevent='clickConnection(connection, index)')
               td.sp-kv-value
@@ -36,70 +56,139 @@
                     font-awesome-icon(:icon="['fas', 'check']")
                   template(v-else)
                     font-awesome-icon(:icon="['fas', 'times']")
-                | {{connection.sink_building_name}}
-              td.sp-kv-value {{connection.sink_company_name}}
-              td.has-text-right.sp-kv-value {{$format_number(connection.velocity)}}
-              td.has-text-right.sp-kv-value {{$format_money(connection.transport_cost)}}
+              td.sp-kv-value
+                span(v-if='connection.sinkBuildingName') {{ connection.sinkBuildingName }}
+                span(v-else-if='connection.sinkBuildingDefinitionId') {{ buildingName(connection.sinkBuildingDefinitionId) }}
+              td.sp-kv-value {{ connection.sinkCompanyName }}
+              td.has-text-right.sp-kv-value {{ $format_number(connection.mostRecentVelocity) }}
+              td.has-text-right.sp-kv-value {{ $format_money(connection.mostRecentTransportCost) }}
 
 </template>
 
 <script lang='ts'>
 import _ from 'lodash';
-import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
+
+import { BuildingDefinition, SimulationDefinition } from '@starpeace/starpeace-assets-types';
+
+import ClientState from '~/plugins/starpeace-client/state/client-state';
+import BuildingOutput from '~/plugins/starpeace-client/building/details/building-output.js';
+import Building from '~/plugins/starpeace-client/building/building.js';
+import BuildingConnection from '~/plugins/starpeace-client/building/details/building-connection';
 
 declare interface TabProductsData {
+  debouncedUpdateBuildingPrice: (buildingId: string, resourceId: string, price: number) => void;
   clickTimeout: ReturnType<typeof setTimeout> | null;
 
   productIndex: number;
   selectedIndices: Record<string, boolean>;
+
+  connectionsBuildingId: string | undefined,
+  connectionsResourceId: string | undefined;
+  connections: BuildingConnection[];
+  connectionsPromise: Promise<BuildingConnection[]> | undefined;
 }
 
 export default {
   props: {
     clientState: { type: ClientState, required: true },
 
-    products: Array,
+    building: { type: Building, required: true },
+    definition: { type: BuildingDefinition, required: true },
+    simulation: { type: SimulationDefinition, required: true },
 
-    building: Object,
-    definition: Object,
-    simulation: Object
+    products: { type: Array<BuildingOutput>, required: true },
   },
 
   data (): TabProductsData {
     return {
+      debouncedUpdateBuildingPrice: this.$debounce(250, async (buildingId: string, resourceId: string, price: number) => {
+        await this.$starpeaceClient.managers.building_manager.update_building_settings(buildingId, {
+          output: {
+            resourceId: resourceId,
+            price: price
+          }
+        });
+      }),
       clickTimeout: null,
 
       productIndex: 0,
-      selectedIndices: {}
+      selectedIndices: {},
+
+      connectionsBuildingId: undefined,
+      connectionsResourceId: undefined,
+      connections: [],
+      connectionsPromise: undefined
     };
   },
 
   computed: {
-    sortedProducts () { return _.orderBy(this.products, [(t) => this.resourceTypeLabel(t.resource_id)], ['asc']); },
-
-    product () { return this.sortedProducts[this.productIndex]; },
-
-    priceRatio () {
-      const ifel_price = this.resourceType(this.product.resource_id)?.price ?? 0;
-      return ifel_price > 0 ? (this.product.price / ifel_price) : 0
+    canManage (): boolean {
+      return this.clientState.player.corporation_id === this.building.corporationId;
     },
 
-    connections () { return this.product?.connections ?? []; }
+    sortedProducts (): Array<BuildingOutput> {
+      return _.orderBy(this.products, [(t) => this.$resourceTypeLabel(t.resourceId)], ['asc']);
+    },
+    product (): BuildingOutput | undefined {
+      return this.productIndex < this.sortedProducts.length ? this.sortedProducts[this.productIndex] : undefined;
+    },
+
+    staleConnections (): boolean {
+      return this.connectionsBuildingId !== this.building.id || (!!this.product && this.connectionsResourceId !== this.product.resourceId);
+    }
   },
 
   watch: {
     productIndex () {
       this.selectedIndices = {};
+    },
+    staleConnections: {
+      immediate: true,
+      handler () {
+        this.refreshBuildingConnections();
+      }
     }
   },
 
   methods: {
-    resourceType (type_id: string) { return this.clientState.core.planet_library.resource_type_for_id(type_id); },
-    resourceTypeLabel (type_id: string) { return this.$translate(this.resourceType(type_id)?.label_plural); },
+    buildingName (definitionId: string): string {
+      const definition = this.clientState.core.building_library.definition_for_id(definitionId);
+      return (definition ? this.$translate(definition.name) : undefined) ?? '';
+    },
 
-    validConnection (index: number) { return index % 3 == 0; },
+    selectProduct (index: number): void {
+      this.productIndex = index;
+    },
 
-    clickConnection (connection, index) {
+    updatePrice (resourceId: string, price: number) {
+      if (this.product?.resourceId === resourceId) {
+        this.product.price = price;
+      }
+    },
+
+    async refreshBuildingConnections (): Promise<void> {
+      if (!this.product) {
+        return;
+      }
+
+      if (this.connectionsBuildingId !== this.building?.id || this.connectionsResourceId !== this.product.resourceId) {
+        this.connections = [];
+      }
+
+      try {
+        this.connectionsPromise = this.$starpeaceClient.managers.building_manager.loadBuildingConnections(this.building.id, 'output', this.product.resourceId, true);
+        this.connections = await this.connectionsPromise;
+        this.connectionsBuildingId = this.building.id;
+        this.connectionsResourceId = this.product.resourceId;
+        this.connectionsPromise = undefined;
+      }
+      catch (err) {
+        this.clientState.add_error_message('Failure loading building connections, please try again', err);
+        this.connectionsPromise = undefined;
+      }
+    },
+
+    clickConnection (connection: any, index: number): void {
       if (this.clickTimeout) {
         clearTimeout(this.clickTimeout);
         this.clickTimeout = null;
@@ -107,17 +196,18 @@ export default {
       }
       else {
         const should_deselect = this.selectedIndices[index];
-        this.$set(this.selectedIndices, index, true);
+        this.selectedIndices[index] = true;
         this.clickTimeout = setTimeout(() => {
-          if (should_deselect) this.$delete(this.selectedIndices, index);
+          if (should_deselect) {
+            delete this.selectedIndices[index];
+          }
           this.clickTimeout = null
         }, 250);
       }
     },
-
-    jumpConnection (connection) {
-      if (connection?.sink_building_map_x && connection?.sink_building_map_y) {
-        this.clientState.jump_to(connection.sink_building_map_x, connection.sink_building_map_y, null);
+    jumpConnection (connection: BuildingConnection): void {
+      if (connection?.sinkBuildingMapX !== undefined && connection?.sinkBuildingMapY !== undefined) {
+        this.clientState.jump_to(connection.sinkBuildingMapX, connection.sinkBuildingMapY, null);
       }
     }
   }
@@ -126,59 +216,19 @@ export default {
 
 <style lang='sass' scoped>
 @import '~/assets/stylesheets/starpeace-variables'
+@import '~/assets/stylesheets/starpeace-inspect'
 
 .products-tab
   height: 100%
-  position: relative
-  overflow: hidden
   width: 100%
 
-.button
-  letter-spacing: .1rem
-  text-transform: uppercase
-
 .column
-  &.products
-    direction: rtl
-    overflow-y: auto
-
-    .product-tabs
-      direction: ltr
-
-      ul
-        flex-direction: column
-
-        li
-          display: flex
-          justify-content: flex-end
-          margin-left: .25rem
-          text-align: right
-
-          a
-            border-radius: 0
-            color: $sp-primary
-            padding: .5rem
-            letter-spacing: .05rem
-            text-transform: uppercase
-
-            &:hover
-              color: $sp-light
-
-            &:active
-              color: lighten($sp-light, 10%)
-
-          &.is-active
-            a
-              background-color: $sp-dark-bg
-              color: #fff
-
   &.connections
     background-color: $sp-dark-bg
     display: grid
     grid-template-columns: auto
     grid-template-rows: [start-information] 2rem [end-information start-details] auto [end-details]
     overflow: hidden
-    padding: .25rem
     position: relative
 
     .connection-information
@@ -226,11 +276,15 @@ export default {
         padding: .5rem
         position: sticky
         top: 0
+        z-index: 250
 
       td
         color: #000
         padding: .25rem .5rem
         vertical-align: middle
+
+    .column-validity
+      width: 2rem
 
     .validity-icon
       display: inline-block

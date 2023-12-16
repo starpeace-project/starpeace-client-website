@@ -1,13 +1,12 @@
 
 import MetadataOverlay from '~/plugins/starpeace-client/overlay/metadata-overlay.coffee'
 import Overlay from '~/plugins/starpeace-client/overlay/overlay.coffee'
-import ChunkMap from '~/plugins/starpeace-client/map/chunk/chunk-map.coffee'
+import ChunkMap from '~/plugins/starpeace-client/map/chunk/chunk-map'
 
-import Logger from '~/plugins/starpeace-client/logger.coffee'
+import Logger from '~/plugins/starpeace-client/logger'
 
 export default class OverlayManager
   constructor: (@api, @asset_manager, @ajax_state, @client_state) ->
-    @chunk_promises = {}
 
   queue_asset_load: () ->
     return if @client_state.core.overlay_library.has_assets() || @ajax_state.is_locked('assets.overlay_metadata', 'ALL')

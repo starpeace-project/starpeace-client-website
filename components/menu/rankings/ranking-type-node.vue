@@ -3,13 +3,13 @@
   a(@click.stop.prevent='toggle')
     span.sp-section-indent(:style='level_style')
 
-    template(v-if='node.industry_type_id')
+    template(v-if='node.industryTypeId')
       span.sp-section-icon
-        misc-industry-type-icon(:industry_type='node.industry_type_id')
+        misc-industry-type-icon(:industry_type='node.industryTypeId')
 
-    template(v-else-if='node.industry_category_id')
+    template(v-else-if='node.industryCategoryId')
       span.sp-section-icon
-        misc-industry-category-icon(small=true :category='node.industry_category_id')
+        misc-industry-category-icon(small=true :category='node.industryCategoryId')
 
     template(v-else-if='has_children')
       span.sp-section-icon(v-show='!node.expanded')

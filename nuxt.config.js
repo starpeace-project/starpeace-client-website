@@ -29,7 +29,6 @@ var release_notes_archive_html = render_and_convert_markdown(fs.readFileSync('./
 
 export default defineNuxtConfig({
   css: [
-    'bulma',
     '@/assets/stylesheets/starpeace-tooltip.sass',
     '@/assets/stylesheets/starpeace-bulma.sass',
     '@/assets/stylesheets/starpeace-flags.sass',

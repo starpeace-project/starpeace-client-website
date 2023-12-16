@@ -8,7 +8,7 @@ export default class SandboxApiCorporation {
 
   static configure (adapter: SandboxApiAdapter, sandbox: any): void {
 
-    adapter.get('corporations/(.+?)/rankings', (config: any, corporation_id: string): any => {
+    adapter.get('corporations/(.+?)/rankings', (_config: any, corporation_id: string): any => {
       return sandbox.sandbox_data.metadata.core.rankingTypes.map((t: any) => {
         return {
           rankingTypeId: t.id,
@@ -16,8 +16,8 @@ export default class SandboxApiCorporation {
         };
       });
     });
-    adapter.get('corporations/(.+?)/prestige-history', (config: any, corporation_id: string): any => {
-      const corporation: any = sandbox.sandbox_data.corporation_by_id[corporation_id];
+    adapter.get('corporations/(.+?)/prestige-history', (_config: any, corporation_id: string): any => {
+      const corporation: any = sandbox.sandbox_data.corporation.corporationById[corporation_id];
       const currentTime = sandbox.sandbox_data.planet_id_dates[corporation.planetId].toISO();
       return _.cloneDeep([{
         id: 'id-1',
@@ -53,8 +53,8 @@ export default class SandboxApiCorporation {
         prestige: 300
       }]);
     });
-    adapter.get('corporations/(.+?)/loan-payments', (config: any, corporation_id: string): any => {
-      const corporation: any = sandbox.sandbox_data.corporation_by_id[corporation_id];
+    adapter.get('corporations/(.+?)/loan-payments', (_config: any, corporation_id: string): any => {
+      const corporation: any = sandbox.sandbox_data.corporation.corporationById[corporation_id];
       const currentTime = sandbox.sandbox_data.planet_id_dates[corporation.planetId];
       return _.cloneDeep([{
         id: 'loan-id-1',
@@ -76,7 +76,7 @@ export default class SandboxApiCorporation {
         interestRate: 0.08
       }]);
     });
-    adapter.get('corporations/(.+?)/loan-offers', (config: any, corporation_id: string): any => {
+    adapter.get('corporations/(.+?)/loan-offers', (_config: any, corporation_id: string): any => {
       return _.cloneDeep([{
         id: 'loan-offer-1',
         bankerType: 'IFEL',
@@ -85,44 +85,44 @@ export default class SandboxApiCorporation {
         interestRate: 0.0655
       }]);
     });
-    adapter.get('corporations/(.+?)/strategies', (config: any, corporation_id: string): any => {
-      return _.cloneDeep(sandbox.sandbox_data.strategies_by_corporation_id[corporation_id] ?? []);
+    adapter.get('corporations/(.+?)/strategies', (_config: any, corporation_id: string): any => {
+      return _.cloneDeep(sandbox.sandbox_data.corporation.strategiesByCorporationId[corporation_id] ?? []);
     });
 
-    adapter.get('corporations/(.+?)/bookmarks', (config: any, corporation_id: string): any => {
+    adapter.get('corporations/(.+?)/bookmarks', (_config: any, corporation_id: string): any => {
       return sandbox.sandbox_bookmarks.get_bookmarks(corporation_id);
     });
-    adapter.post('corporations/(.+?)/bookmarks', (config: any, corporation_id: string, parameters: any): any => {
+    adapter.post('corporations/(.+?)/bookmarks', (_config: any, corporation_id: string, parameters: any): any => {
       return sandbox.sandbox_bookmarks.create_bookmark(corporation_id, parameters);
     });
-    adapter.patch('corporations/(.+?)/bookmarks', (config: any, corporation_id: string, parameters: any): any => {
+    adapter.patch('corporations/(.+?)/bookmarks', (_config: any, corporation_id: string, parameters: any): any => {
       return sandbox.sandbox_bookmarks.update_bookmarks(corporation_id, parameters.deltas);
     });
 
-    adapter.get('corporations/(.+?)/mail', (config: any, corporation_id: string): any => {
+    adapter.get('corporations/(.+?)/mail', (_config: any, corporation_id: string): any => {
       return sandbox.sandbox_mail.get(corporation_id);
     });
-    adapter.post('corporations/(.+?)/mail', (config: any, corporation_id: string, parameters: any): any => {
+    adapter.post('corporations/(.+?)/mail', (_config: any, corporation_id: string, parameters: any): any => {
       return sandbox.sandbox_mail.create(corporation_id, parameters);
     });
-    adapter.put('corporations/(.+?)/mail/(.+)/mark-read', (config: any, corporation_id: string, mail_id: string): any => {
+    adapter.put('corporations/(.+?)/mail/(.+)/mark-read', (_config: any, corporation_id: string, mail_id: string): any => {
       return sandbox.sandbox_mail.mark_read(corporation_id, mail_id);
     });
-    adapter.delete('corporations/(.+?)/mail/(.+)', (config: any, corporation_id: string, mail_id: string): any => {
+    adapter.delete('corporations/(.+?)/mail/(.+)', (_config: any, corporation_id: string, mail_id: string): any => {
       return sandbox.sandbox_mail.delete(corporation_id, mail_id);
     });
 
-    adapter.post('corporations', (config: any, params: any): any => {
+    adapter.post('corporations', (_config: any, params: any): any => {
       throw new Error('500');
     });
-    adapter.get('corporations/(.+)', (config: any, corporation_id: string): any => {
-      if (!sandbox.sandbox_data?.corporation_by_id?.[corporation_id]) {
+    adapter.get('corporations/(.+)', (_config: any, corporation_id: string): any => {
+      if (!sandbox.sandbox_data?.corporation.corporationById?.[corporation_id]) {
         throw new Error('404');
       }
-      const corporation: any = _.cloneDeep(sandbox.sandbox_data.corporation_by_id[corporation_id]);
+      const corporation: any = _.cloneDeep(sandbox.sandbox_data.corporation.corporationById[corporation_id]);
       corporation.cashAsOf = sandbox.sandbox_data.planet_id_dates[corporation.planetId].toISO();
-      corporation.cash = sandbox.sandbox_data.corporation_id_cashflow[corporation_id]?.cash ?? 0;
-      corporation.cashCurrentYear = sandbox.sandbox_data.corporation_id_cashflow[corporation_id]?.cashCurrentYear ?? 0;
+      corporation.cash = sandbox.sandbox_data.corporation.cashflowByCorporationId[corporation_id]?.cash ?? 0;
+      corporation.cashCurrentYear = sandbox.sandbox_data.corporation.cashflowByCorporationId[corporation_id]?.cashCurrentYear ?? 0;
       corporation.prestige = Math.ceil(Math.random() * 200);
       return corporation;
     });

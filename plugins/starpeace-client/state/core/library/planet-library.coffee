@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
 import Library from '~/plugins/starpeace-client/state/core/library/library.coffee'
-import Logger from '~/plugins/starpeace-client/logger.coffee'
+import Logger from '~/plugins/starpeace-client/logger'
 
 export default class PlanetLibrary extends Library
   constructor: () ->
@@ -39,7 +39,7 @@ export default class PlanetLibrary extends Library
       @city_zones_by_id[city_zone.id] = city_zone
       @city_zones_by_value[city_zone.value] = city_zone
 
-  category_for_id: (industry_category_id) -> @industry_categories_by_id[industry_category_id]
+  category_for_id: (industryCategoryId) -> @industry_categories_by_id[industryCategoryId]
   categories_for_inventions: () -> _.without(_.map(_.values(@industry_categories_by_id), 'id'), 'NONE')
   load_industry_categories: (categories) ->
     for category in (categories || [])

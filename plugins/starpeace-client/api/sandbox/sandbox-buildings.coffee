@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { DateTime } from 'luxon';
 
-import Utils from '~/plugins/starpeace-client/utils/utils.coffee'
+import Utils from '~/plugins/starpeace-client/utils/utils'
 
 CHUNK_WIDTH = 20
 CHUNK_HEIGHT = 20
@@ -17,7 +17,7 @@ export default class SandboxBuildings
     throw new Error(400) unless parameters.mapX?
     throw new Error(400) unless parameters.mapY?
 
-    company = @sandbox.sandbox_data.company_id_info[parameters.companyId]
+    company = @sandbox.sandbox_data.corporation.infoByCompanyId[parameters.companyId]
     throw new Error(404) unless company?
 
     building = {
@@ -29,7 +29,7 @@ export default class SandboxBuildings
       definitionId: parameters.definitionId
       mapX: parameters.mapX
       mapY: parameters.mapY
-      stage: -1
+      constructionFinishedAt: undefined
       progress: 0
     }
 
@@ -52,14 +52,14 @@ export default class SandboxBuildings
     if @company_id_construction[company_id]?.length
       to_remove = []
       for building,index in @company_id_construction[company_id]
-        if building.stage == -1
+        if !building.constructionFinishedAt
           building.progress = 22 + (building.progress || 0)
           building.progress = 100 if building.progress > 100
 
           cashflow_adjustment -= (5000 + Math.random() * 5000)
 
           if building.progress == 100
-            building.stage = 0
+            building.constructionFinishedAt = DateTime.now()
             # @sandbox.sandbox_events.building_events.push { createdAt: DateTime.now(), type: 'stage', id: building.id, definitionId: building.definitionId, x: building.mapX, y: building.mapY }
             to_remove.push index
         else

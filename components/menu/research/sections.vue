@@ -2,127 +2,136 @@
 .research-container
   .field.is-marginless.filter-input-container
     .control.has-icons-left.is-expanded
-      input.input(type="text" :placeholder="$translate('misc.filter')")
+      input.input(type='text' :placeholder="$translate('misc.filter')" v-model='filterInputValue')
       span.icon.is-left
         font-awesome-icon(:icon="['fas', 'search-location']")
 
-  misc-filter-industry-categories(:client_state='client_state')
+  misc-filter-industry-categories(:client_state='clientState')
 
   aside.sp-menu.sp-scrollbar
-    p.sp-section(v-for='item in sections')
-      a(@click.stop.prevent="item.expanded = !item.expanded")
-        span(v-show="item.children.length && !item.expanded")
+    p.sp-section(v-for='item in filteredSections')
+      a(@click.stop.prevent='toggleSection(item.industryCategoryId)')
+        span(v-if='item.children.length && !expandedByIndustryCategoryId[item.industryCategoryId]')
           font-awesome-icon(:icon="['fas', 'plus-square']")
-        span(v-show="item.children.length && item.expanded")
+        span(v-else-if='item.children.length && expandedByIndustryCategoryId[item.industryCategoryId]')
           font-awesome-icon(:icon="['fas', 'minus-square']")
-        span.sp-folder-icon(v-show="!item.children.length")
+        span.sp-folder-icon(v-else)
           font-awesome-icon(:icon="['fas', 'square']")
         span.sp-section-label {{item.name}}
 
-      ul.sp-section-items(v-show="item.children.length && item.expanded")
-        li(v-for="child in item.children")
-          a.is-menu-item(@click.stop.prevent="select_inventions(item.industry_category_id, child.industry_type_id)", :class="section_item_class(item, child)")
-            misc-industry-type-icon(:industry_type="child.industry_type_id", :class="['sp-section-item-image', 'sp-indusry-icon']", :default_research='true')
+      ul.sp-section-items(v-show='item.children.length && expandedByIndustryCategoryId[item.industryCategoryId]')
+        li(v-for='child in item.children')
+          a.is-menu-item(
+            :class="{'is-active': selectedCategoryId == item.industryCategoryId && selectedIndustryTypeId == child.industryTypeId}"
+            @click.stop.prevent='selectCategoryType(item.industryCategoryId, child.industryTypeId)'
+          )
+            misc-industry-type-icon(:industry_type='child.industryTypeId' :class="['sp-section-item-image', 'sp-indusry-icon']" default_research)
             span.sp-section-item-label {{child.name}}
 
 </template>
 
 <script lang='ts'>
 import _ from 'lodash';
-import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
+import { IndustryCategory, InventionDefinition } from '@starpeace/starpeace-assets-types';
+
+import ClientState from '~/plugins/starpeace-client/state/client-state';
+
+declare interface CategorySection {
+  name: string;
+  industryCategoryId: string;
+
+  childrenByType: Record<string, IndustryTypeSection>;
+  children: Array<IndustryTypeSection>;
+}
+
+declare interface IndustryTypeSection {
+  name: string;
+  industryTypeId: string;
+}
 
 declare interface SectionsData {
-  filter_input_value: string;
-  sections: Array<any>;
+  filterInputValue: string;
+  expandedByIndustryCategoryId: Record<string, boolean>;
 }
 
 export default {
   props: {
-    client_state: { type: ClientState, required: true },
-    isVisible: Boolean
+    clientState: { type: ClientState, required: true },
+    inventionDefinitions: { type: Array<InventionDefinition>, required: true }
   },
 
   data (): SectionsData {
     return {
-      filter_input_value: '',
+      filterInputValue: '',
 
-      sections: []
+      expandedByIndustryCategoryId: {}
     };
   },
 
-  mounted () {
-    this.client_state?.options?.subscribe_options_listener(() => this.refresh_sections());
-  },
-
-  watch: {
-    isVisible (new_value, old_value) {
-      this.refresh_sections();
-    },
-    selected_category_id (new_value, old_value) {
-      this.refresh_sections();
-    },
-    company_id (new_value, old_value) {
-      this.refresh_sections();
-    }
-  },
-
   computed: {
-    selected_category_id (): string | null { return this.client_state.interface.inventions_selected_category_id; },
-    selected_industry_type_id (): string | null { return this.client_state.interface.inventions_selected_industry_type_id; },
-
-    company_id (): string | null { return this.client_state.player.company_id; }
-  },
-
-  methods: {
-    filter_class (type: any) {
-      return '';
+    selectedCategoryId (): string | undefined {
+      return this.clientState.interface.inventions_selected_category_id ?? undefined;
     },
-    section_item_class (item: any, child: any) {
-      return {
-        'is-active': this.selected_category_id == item.industry_category_id && this.selected_industry_type_id == child.industry_type_id
-      };
+    selectedIndustryTypeId (): string | undefined {
+      return this.clientState.interface.inventions_selected_industry_type_id ?? undefined;
     },
 
-    refresh_sections () {
-      if (!this.isVisible) return;
-      const sections_by_category: Record<string, any> = {}
-      for (const invention of this.inventions_for_company()) {
-        if (!sections_by_category[invention.industry_category_id]) {
-          const category = this.client_state.core.planet_library.category_for_id(invention.industry_category_id);
-          sections_by_category[invention.industry_category_id] = {
-            name: category ? this.$translate(category.label) : invention.industry_category_id,
-            industry_category_id: invention.industry_category_id,
-            expanded: invention.industry_category_id == this.selected_category_id,
-            children_by_type: {}
+    filteredSections (): Array<CategorySection> {
+      const sectionByCategory: Record<string, CategorySection> = {}
+      for (const invention of this.inventionDefinitions) {
+        const category: IndustryCategory | undefined = this.clientState.core.planet_library.category_for_id(invention.industryCategoryId);
+        if (!category || category.id === 'NONE') {
+          continue;
+        }
+
+        if (!sectionByCategory[invention.industryCategoryId]) {
+          sectionByCategory[invention.industryCategoryId] = {
+            name: (category ? this.$translate(category.label) : undefined) ?? invention.industryCategoryId,
+            industryCategoryId: invention.industryCategoryId,
+            childrenByType: {},
+            children: []
           };
         }
 
-        const type_id = invention.industry_type_id ?? 'GENERAL';
-        if (!sections_by_category[invention.industry_category_id].children_by_type[type_id]) {
-          const industry_type = this.client_state.core.planet_library.type_for_id(type_id);
-          sections_by_category[invention.industry_category_id].children_by_type[type_id] = {
-            name: industry_type ? this.$translate(industry_type.label) : type_id,
-            industry_type_id: invention.industry_type_id
+        const typeId = invention.industryTypeId ?? 'GENERAL';
+        if (!sectionByCategory[invention.industryCategoryId].childrenByType[typeId]) {
+          const industryType = this.clientState.core.planet_library.type_for_id(typeId);
+          sectionByCategory[invention.industryCategoryId].childrenByType[typeId] = {
+            name: (industryType ? this.$translate(industryType.label) : undefined) ?? typeId,
+            industryTypeId: invention.industryTypeId
           };
         }
       }
 
       const sections = [];
-      for (const category_id of this.client_state.core.planet_library.categories_for_inventions()) {
-        if (sections_by_category[category_id]) {
-          const section = sections_by_category[category_id];
-          section.children = _.sortBy(_.values(section.children_by_type), (child) => child.name);
-          sections.push(section);
+      for (const section of Object.values(sectionByCategory)) {
+        section.children = _.orderBy(Object.values(section.childrenByType), ['name'], ['asc']);
+        sections.push(section);
+      }
+      return _.orderBy(sections, ['name'], ['asc']);
+    }
+  },
+
+  watch: {
+    selectedCategoryId: {
+      immediate: true,
+      handler () {
+        if (this.selectedCategoryId) {
+          this.expandedByIndustryCategoryId[this.selectedCategoryId] = true;
         }
       }
-      this.sections = sections;
+    }
+  },
+
+  methods: {
+    selectCategoryType (industryCategoryId: string, industryTypeId: string) {
+      // TODO: move to method/event
+      this.clientState.interface.inventions_selected_category_id = industryCategoryId;
+      this.clientState.interface.inventions_selected_industry_type_id = industryTypeId;
     },
 
-    inventions_for_company () { return this.client_state.inventions_for_company(); },
-
-    select_inventions (industry_category_id: string, industry_type_id: string) {
-      this.client_state.interface.inventions_selected_category_id = industry_category_id;
-      this.client_state.interface.inventions_selected_industry_type_id = industry_type_id;
+    toggleSection (industryCategoryId: string) {
+      this.expandedByIndustryCategoryId[industryCategoryId] = !this.expandedByIndustryCategoryId[industryCategoryId];
     }
   }
 }

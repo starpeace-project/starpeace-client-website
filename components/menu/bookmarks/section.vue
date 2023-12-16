@@ -231,33 +231,33 @@ export default {
     },
 
     persist_bookmark_updates () {
-      this.$debounce(1000, async () => {
-        const pending_items = [];
-        for (const [index, item] of Object.entries({})) { //this.items_as_options
-          // item.order = index;
-          pending_items.push(item);
-        }
-        const tree_pairs = options_to_tree_pairs(pending_items, this.rootId, 0);
+      // this.$debounce(1000, async () => {
+      //   const pending_items = [];
+      //   for (const [index, item] of Object.entries({})) { //this.items_as_options
+      //     // item.order = index;
+      //     pending_items.push(item);
+      //   }
+      //   const tree_pairs = options_to_tree_pairs(pending_items, this.rootId, 0);
 
-        const deltas: Array<any> = [];
-        const add_to_delta = (item: any) => {
-          const bookmark_item = this.bookmarkById[item.id]
-          if (bookmark_item.parentId !== item.parentId || bookmark_item.order !== item.order) {
-            deltas.push(item);
-          }
-          for (const child of (item.children ?? [])) {
-            add_to_delta(child);
-          }
-        };
+      //   const deltas: Array<any> = [];
+      //   const add_to_delta = (item: any) => {
+      //     const bookmark_item = this.bookmarkById[item.id]
+      //     if (bookmark_item.parentId !== item.parentId || bookmark_item.order !== item.order) {
+      //       deltas.push(item);
+      //     }
+      //     for (const child of (item.children ?? [])) {
+      //       add_to_delta(child);
+      //     }
+      //   };
 
-        for (const item of tree_pairs) {
-          add_to_delta(item);
-        }
+      //   for (const item of tree_pairs) {
+      //     add_to_delta(item);
+      //   }
 
-        if (deltas.length) {
-          await this.$starpeaceClient.managers.bookmark_manager.merge_bookmark_deltas(deltas);
-        }
-      });
+      //   if (deltas.length) {
+      //     await this.$starpeaceClient.managers.bookmark_manager.merge_bookmark_deltas(deltas);
+      //   }
+      // });
     }
   }
 }

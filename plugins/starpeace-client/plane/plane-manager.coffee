@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 import MetadataPlane from '~/plugins/starpeace-client/plane/metadata-plane.coffee'
 
-import Logger from '~/plugins/starpeace-client/logger.coffee'
+import Logger from '~/plugins/starpeace-client/logger'
 
 PLANE_TYPES = ['plane.adchopper', 'plane.balloon.1', 'plane.balloon.2', 'plane.saucer', 'plane.zeppelin', 'plane.ufo']
 PLANE_TYPE_WITH_DIRECTION = new Set(['plane.zeppelin'])

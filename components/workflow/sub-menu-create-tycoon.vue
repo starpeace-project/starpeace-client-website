@@ -62,7 +62,7 @@
 
 <script lang='ts'>
 import _ from 'lodash';
-import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
+import ClientState from '~/plugins/starpeace-client/state/client-state';
 
 const ERROR_CODE_GENERAL = 'GENERAL';
 const ERROR_CODE_INVALID_NAME = 'INVALID_NAME';

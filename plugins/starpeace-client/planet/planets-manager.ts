@@ -1,19 +1,10 @@
 import _ from 'lodash';
 
-import BuildingDefinition from '~/plugins/starpeace-client/building/building-definition.coffee';
-import SimulationDefinitionParser from '~/plugins/starpeace-client/building/simulation/simulation-definition-parser.coffee';
+import { BuildingDefinition, CityZone, CompanySeal, IndustryCategory, IndustryType, Level, ResourceType, ResourceUnit, SimulationDefinitionParser } from '@starpeace/starpeace-assets-types';
 
 import Company from '~/plugins/starpeace-client/company/company';
-import CompanySeal from '~/plugins/starpeace-client/company/company-seal';
 import RankingType from '~/plugins/starpeace-client/corporation/ranking-type';
 import TycoonInfo from '~/plugins/starpeace-client/tycoon/tycoon-info';
-
-import CityZone from '~/plugins/starpeace-client/industry/city-zone';
-import IndustryCategory from '~/plugins/starpeace-client/industry/industry-category';
-import IndustryType from '~/plugins/starpeace-client/industry/industry-type';
-import Level from '~/plugins/starpeace-client/industry/level';
-import ResourceType from '~/plugins/starpeace-client/industry/resource-type';
-import ResourceUnit from '~/plugins/starpeace-client/industry/resource-unit';
 
 import InventionDefinition from '~/plugins/starpeace-client/invention/invention-definition';
 
@@ -46,6 +37,10 @@ export default class PlanetsManager {
   async load_rankings (ranking_type_id: string): Promise<any> {
     if (!this.client_state.has_session() || !ranking_type_id) {
       throw Error();
+    }
+    const rankings = this.clientState.core.planet_cache.rankings(ranking_type_id);
+    if (rankings) {
+      return Promise.resolve(rankings);
     }
     return await this.ajax_state.locked('planet_rankings', ranking_type_id, async () => {
       const rankings = await this.api.rankings_for_planet(ranking_type_id);
@@ -95,17 +90,17 @@ export default class PlanetsManager {
   }
 
 
-  async buildings_by_town (town_id: string, industry_category_id: string, industry_type_id: string): Promise<Array<any>> {
-    if (!this.client_state.has_session() || !town_id || !industry_category_id || !industry_type_id) {
+  async buildings_by_town (town_id: string, industryCategoryId: string, industryTypeId: string): Promise<Array<any>> {
+    if (!this.client_state.has_session() || !town_id || !industryCategoryId || !industryTypeId) {
       throw Error();
     }
-    const buildings = this.client_state.core.planet_cache.town_buildings(town_id, industry_category_id, industry_type_id);
+    const buildings = this.client_state.core.planet_cache.town_buildings(town_id, industryCategoryId, industryTypeId);
     if (buildings) {
       return Promise.resolve(buildings);
     }
-    return await this.ajax_state.locked('planet_town_buildings', `${town_id}-${industry_category_id}-${industry_type_id}`, async () => {
-      const buildings = await this.api.buildings_for_town(town_id, industry_category_id, industry_type_id);
-      this.client_state.core.planet_cache.load_town_buildings(town_id, industry_category_id, industry_type_id, buildings);
+    return await this.ajax_state.locked('planet_town_buildings', `${town_id}-${industryCategoryId}-${industryTypeId}`, async () => {
+      const buildings = await this.api.buildings_for_town(town_id, industryCategoryId, industryTypeId);
+      this.client_state.core.planet_cache.load_town_buildings(town_id, industryCategoryId, industryTypeId, buildings);
       return buildings;
     });
   }
@@ -130,8 +125,8 @@ export default class PlanetsManager {
     }
     return await this.ajax_state.locked('planet_metadata_building', 'ALL', async () => {
       const definitions_json = await this.api.building_metadata_for_planet();
-      this.client_state.core.building_library.load_definitions((definitions_json?.definitions ?? []).map(BuildingDefinition.from_json));
-      this.client_state.core.building_library.load_simulation_definitions((definitions_json?.simulationDefinitions ?? []).map(SimulationDefinitionParser.from_json));
+      this.client_state.core.building_library.load_definitions((definitions_json?.definitions ?? []).map(BuildingDefinition.fromJson));
+      this.client_state.core.building_library.load_simulation_definitions((definitions_json?.simulationDefinitions ?? []).map(SimulationDefinitionParser.fromJson));
     });
   }
   async load_metadata_core (): Promise<void> {

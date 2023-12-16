@@ -4,7 +4,7 @@ import { DateTime } from 'luxon'
 
 import MetadataLand from '~/plugins/starpeace-client/land/metadata-land.coffee'
 
-import ChunkMap from '~/plugins/starpeace-client/map/chunk/chunk-map.coffee'
+import ChunkMap from '~/plugins/starpeace-client/map/chunk/chunk-map'
 
 import MiniMapInputHandler from '~/plugins/starpeace-client/renderer/input/mini-map-input-handler.coffee'
 
@@ -54,15 +54,17 @@ export default class MiniMapRenderer
         road_chunk_info = game_map.building_map.chunk_road_info_at(x, y)
 
         if building_chunk_info?.has_data() && road_chunk_info?.has_data()
-          building_info = game_map.building_map.building_info_at(x, y)
+          building_id = game_map.building_map.building_id_at(x, y)
+          building_info = if building_id? then @client_state.core.building_cache.building_for_id(building_id) else undefined
+
           building_metadata = if building_info? then building_library.metadata_by_id[building_info.definition_id] else null
           if game_map.road_map.road_info_at(x, y)
             @rgba_buffer[index + 0] = 30
             @rgba_buffer[index + 1] = 30
             @rgba_buffer[index + 2] = 30
           else if building_info? && building_metadata?
-            zone = planet_library.zone_for_id(building_metadata.city_zone_id)
-            color = zone?.mini_map_color || 0x800000
+            zone = planet_library.zone_for_id(building_metadata.zoneId)
+            color = zone?.miniMapColor || 0x800000
             @rgba_buffer[index + 0] = (color & 0xFF0000) >> 16
             @rgba_buffer[index + 1] = (color & 0x00FF00) >> 8
             @rgba_buffer[index + 2] = (color & 0x0000FF) >> 0

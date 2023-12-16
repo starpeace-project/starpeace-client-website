@@ -78,8 +78,8 @@
 
 <script lang='ts'>
 import _ from 'lodash';
-import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
-import Galaxy from '~/plugins/starpeace-client/galaxy/galaxy.coffee';
+import ClientState from '~/plugins/starpeace-client/state/client-state';
+import Galaxy from '~/plugins/starpeace-client/galaxy/galaxy.js';
 
 const VISITOR_ENABLED = false; // TODO: FIXME: turn on when working
 
@@ -155,13 +155,19 @@ export default {
       }
     },
 
-    galaxies (new_value, old_value) { this.refresh_galaxies(); }
+    galaxies (new_value, old_value) {
+      this.refresh_galaxies();
+    }
   },
 
   computed: {
-    is_visible (): boolean { return this.client_state.workflow_status === 'pending_universe'; },
+    is_visible (): boolean {
+      return this.client_state.workflow_status === 'pending_universe';
+    },
 
-    has_tycoon_credentials () { return _.trim(this.username).length >= MIN_USERNAME && _.trim(this.password).length >= MIN_PASSWORD; },
+    has_tycoon_credentials () {
+      return _.trim(this.username).length >= MIN_USERNAME && _.trim(this.password).length >= MIN_PASSWORD;
+    },
 
     error_code_key () {
       if (this.error_code == ERROR_CODE_GENERAL) return 'ui.workflow.universe.error.signin_problem.label';
@@ -194,11 +200,19 @@ export default {
 
     async refresh_galaxies () {
       const pending_galaxies = _.reject(this.galaxies, (galaxy) => this.client_state.core.galaxy_cache.has_galaxy_metadata(galaxy.id) || this.is_galaxy_loading(galaxy.id));
-      await Promise.all(pending_galaxies.map((galaxy) => new Promise((done, error) => {
-        if (this.galaxy_errors[galaxy.id]) this.galaxy_errors[galaxy.id] = false;
+      await Promise.all(pending_galaxies.map((galaxy) => new Promise<void>((done, _error) => {
+        if (this.galaxy_errors[galaxy.id]) {
+          this.galaxy_errors[galaxy.id] = false;
+        }
         this.$starpeaceClient.managers.galaxy_manager.load_metadata(galaxy.id)
-          .then(done)
-          .catch((e) => {
+          .then((metadata: Galaxy) => {
+            if (galaxy.id !== metadata.id) {
+              this.client_state.options.change_galaxy_id(galaxy.id, metadata.id);
+              this.client_state.core.galaxy_cache.change_galaxy_id(galaxy.id, metadata.id);
+            }
+          })
+          .catch((e: Error) => {
+            console.error(e);
             this.galaxy_errors[galaxy.id] = true;
             done();
           });
@@ -216,7 +230,9 @@ export default {
         this.galaxy_errors[galaxy_id] = true
       }
       finally {
-        if (this.is_visible) this.$forceUpdate();
+        if (this.is_visible) {
+          this.$forceUpdate();
+        }
       }
     },
 

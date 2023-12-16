@@ -1,5 +1,5 @@
 
-import Logger from '~/plugins/starpeace-client/logger.coffee'
+import Logger from '~/plugins/starpeace-client/logger'
 
 export default class TextureAtlasCache
   constructor: () ->

@@ -1,8 +1,8 @@
 
-import ChunkMap from '~/plugins/starpeace-client/map/chunk/chunk-map.coffee'
+import ChunkMap from '~/plugins/starpeace-client/map/chunk/chunk-map'
 import Road from '~/plugins/starpeace-client/road/road.coffee'
 
-import Logger from '~/plugins/starpeace-client/logger.coffee'
+import Logger from '~/plugins/starpeace-client/logger'
 
 export default class RoadMap
   constructor: (client_state, @ground_map, @building_map, @concrete_map, @width, @height) ->

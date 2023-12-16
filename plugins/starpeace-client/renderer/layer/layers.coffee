@@ -11,12 +11,6 @@ export default class Layers
     @tile_item_cache = new TileItemCache(building_manager, effect_manager, @plane_manager, @client_state, @options)
     @layer_manager = new LayerManager(@client_state)
 
-    @last_view_offset_x = 0
-    @last_view_offset_y = 0
-    @last_construction_building_id = null
-    @last_construction_building_x = 0
-    @last_construction_building_y = 0
-
     @check_loop = setInterval(=>
       return unless @client_state.initialized && @options.option('renderer.planes')
 
@@ -37,10 +31,7 @@ export default class Layers
   remove_layers: (stage) -> @layer_manager.remove_from_stage(stage)
   add_layers: (stage) -> @layer_manager.add_to_stage(stage)
 
-  has_dirty_view: () -> @last_view_offset_x != @client_state.camera.view_offset_x || @last_view_offset_y != @client_state.camera.view_offset_y
-  should_refresh: () -> @has_dirty_view() || @client_state.has_dirty_metadata ||
-      @last_construction_building_id != @client_state.interface.construction_building_id || @last_construction_building_x != @client_state.interface.construction_building_map_x ||
-      @last_construction_building_y != @client_state.interface.construction_building_map_y || @tile_item_cache.is_dirty || @tile_item_cache.should_clear_cache()
+  should_refresh: () -> @client_state.has_dirty_metadata || @tile_item_cache.is_dirty || @tile_item_cache.should_clear_cache()
 
   refresh_planes: () ->
     return unless @client_state.initialized && @client_state.renderer_initialized && @client_state.plane_sprites.length
@@ -97,8 +88,8 @@ export default class Layers
     show_zones = @client_state.interface.show_zones
     show_overlay = @client_state.interface.show_overlay
     current_overlay = @client_state.interface.current_overlay
-    selected_building_id = @client_state.interface.selected_building_id
-    selected_building = if selected_building_id then @client_state.selected_building() else null
+    selected_building = if @client_state.interface.selected_building_id then @client_state.selected_building() else null
+    selected_building_id = if selected_building then @client_state.interface.selected_building_id else null
     selected_corporation_id = if selected_building? then selected_building?.corporation_id else null
     selected_building_label = if selected_building_id? then @translation_manager.label_for_building(selected_building) else undefined
 
@@ -161,9 +152,4 @@ export default class Layers
       @layer_manager.building_text.visible = false
 
     @layer_manager.clear_cache_sprites(render_state)
-    @last_view_offset_x = @client_state.camera.view_offset_x
-    @last_view_offset_y = @client_state.camera.view_offset_y
-    @last_construction_building_id = @client_state.interface.construction_building_id
-    @last_construction_building_x = @client_state.interface.construction_building_map_x
-    @last_construction_building_y = @client_state.interface.construction_building_map_y
     @client_state.has_dirty_metadata = false

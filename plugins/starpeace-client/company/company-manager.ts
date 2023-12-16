@@ -30,7 +30,7 @@ export default class CompanyManager {
       throw Error();
     }
     const company = this.client_state.core.company_cache.metadata_for_id(company_id);
-    if (!company) {
+    if (!!company) {
       return company;
     }
     return await this.ajax_state.locked('company_metadata', company_id, async () => {

@@ -9,7 +9,7 @@
 
 <script lang='ts'>
 import interact from 'interactjs';
-import ClientState from '~/plugins/starpeace-client/state/client-state.coffee';
+import ClientState from '~/plugins/starpeace-client/state/client-state';
 
 const MIN_MINI_MAP_WIDTH = 300;
 const MIN_MINI_MAP_HEIGHT = 200;

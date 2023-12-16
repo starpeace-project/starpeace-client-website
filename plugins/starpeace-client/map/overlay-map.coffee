@@ -1,8 +1,8 @@
 
 import Overlay from '~/plugins/starpeace-client/overlay/overlay.coffee'
-import ChunkMap from '~/plugins/starpeace-client/map/chunk/chunk-map.coffee'
+import ChunkMap from '~/plugins/starpeace-client/map/chunk/chunk-map'
 
-import Logger from '~/plugins/starpeace-client/logger.coffee'
+import Logger from '~/plugins/starpeace-client/logger'
 
 export default class OverlayMap
   constructor: (client_state, @overlay_manager, @width, @height) ->
