@@ -95,6 +95,12 @@ export default class Options {
       api_url: 'sandbox-galaxy.starpeace.io',
       api_port: 19160
     };
+    galaxies_by_id['api-us-east-1'] = {
+      id: 'api-us-east-1',
+      api_protocol: 'https',
+      api_url: 'api-us-east-1.starpeace.io',
+      api_port: 443
+    };
 
     const raw_galaxies = JSON.parse(localStorage.getItem('galaxies') ?? "[]");
     if (Array.isArray(raw_galaxies)) {
@@ -115,7 +121,7 @@ export default class Options {
           }
 
           const id = galaxy[0] ?? Utils.uuid();
-          if (galaxies_by_id[id] && id !== 'browser-sandbox') {
+          if (galaxies_by_id[id] && (id !== 'browser-sandbox' && id !== 'api-us-east-1')) {
             Logger.warn("duplicate galaxy in storage, will ignore");
           }
           else
