@@ -41,7 +41,7 @@ export default class Tycoon {
     this.bannedReason = parameters.bannedReason;
   }
 
-  static from_json (json: any): Tycoon {
+  static fromJson (json: any): Tycoon {
     return new Tycoon({
       id: json.id,
       username: json.username,

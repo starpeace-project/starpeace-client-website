@@ -6,7 +6,7 @@ import Managers from '~/plugins/starpeace-client/managers.js'
 
 import AjaxState from '~/plugins/starpeace-client/state/ajax-state.js'
 import ClientState from '~/plugins/starpeace-client/state/client-state.js'
-import Options from '~/plugins/starpeace-client/state/options.js'
+import Options from '~/plugins/starpeace-client/state/options/options.js'
 
 import BuildingImageRenderer from '~/plugins/starpeace-client/renderer/building-image-renderer.coffee'
 import MiniMapRenderer from '~/plugins/starpeace-client/renderer/mini-map-renderer.coffee'

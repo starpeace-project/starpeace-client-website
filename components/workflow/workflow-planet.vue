@@ -28,7 +28,7 @@
                   span.planet-value {{planet_chunk[n - 1].corporation_count || 0}}
                 .planet-online.planet-info-row
                   span {{$translate('ui.menu.galaxy.details.online.label')}}:
-                  span.planet-value {{planet_chunk[n - 1].online_count || 0}}
+                  span.planet-value {{ planet_chunk[n - 1].onlineCount || 0 }}
 
             .columns
               .column.is-5
@@ -51,6 +51,8 @@
 
 <script lang='ts'>
 import _ from 'lodash';
+
+import Planet from '~/plugins/starpeace-client/planet/planet';
 import ClientState from '~/plugins/starpeace-client/state/client-state';
 
 export default {
@@ -69,8 +71,8 @@ export default {
   },
 
   computed: {
-    galaxy_id (): string { return this.client_state.identity.galaxy_id; },
-    galaxy_metadata () { return this.galaxy_id && this.client_state.core.galaxy_cache.has_galaxy_metadata(this.galaxy_id) ? this.client_state.core.galaxy_cache.galaxy_metadata(this.galaxy_id) : null; },
+    galaxy_id (): string | undefined { return this.client_state.identity.galaxy_id ?? undefined; },
+    galaxy_metadata () { return this.galaxy_id ? this.client_state.core.galaxy_cache.metadataForGalaxyId(this.galaxy_id) : undefined; },
 
     tycoon_id () { return this.client_state.identity?.galaxy_visa_type === 'tycoon' ? this.client_state.identity?.galaxy_tycoon_id : null; },
 
@@ -90,20 +92,20 @@ export default {
   },
 
   methods: {
-    planet_animation_url (planet): string { return this.$starpeaceClient.managers.asset_manager.planet_animation_url(planet); },
+    planet_animation_url (planet: Planet): string { return this.$starpeaceClient.managers.asset_manager.planet_animation_url(planet); },
 
     refresh_identities (): void {
       this.corporation_identifiers = this.tycoon_id?.length ? this.client_state.core.corporation_cache.identifiers_for_tycoon_id(this.tycoon_id) : [];
     },
 
-    select_visitor (planet): void {
+    select_visitor (planet: Planet): void {
       if (true || !planet.enabled || this.is_loading_corporation_identifiers) return;
 
       this.client_state.player.set_planet_visa_type(planet.id, 'visitor');
       if (window?.document) window.document.title = `${planet.name} - STARPEACE`;
     },
 
-    select_tycoon (planet): void {
+    select_tycoon (planet: Planet): void {
       if (!planet.enabled || this.is_loading_corporation_identifiers || !this.tycoon_id?.length) return;
 
       this.client_state.player.set_planet_visa_type(planet.id, 'tycoon');

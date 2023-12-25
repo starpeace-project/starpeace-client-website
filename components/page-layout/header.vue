@@ -53,7 +53,7 @@ export default {
 
   methods: {
     change_language (code: string): void {
-      this.client_state.options.set_language(code);
+      this.client_state.options.setLanguage(code);
     },
 
     async logout_tycoon (): void {

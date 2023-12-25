@@ -18,7 +18,7 @@ export default class TycoonManager {
 
     return await this.ajaxState.locked('tycoon_metadata', tycoonId, async () => {
       const tycoonJson: any = await this.apiClient.tycoon_for_id(tycoonId);
-      const tycoon: Tycoon = Tycoon.from_json(tycoonJson);
+      const tycoon: Tycoon = Tycoon.fromJson(tycoonJson);
 
       this.clientState.core.tycoon_cache.set_tycoon_metadata(tycoon)
       // this.clientState.core.corporation_cache.load_tycoon_corporations(tycoon.id, tycoon.corporations)

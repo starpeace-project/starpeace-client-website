@@ -158,14 +158,18 @@ export default {
   },
 
   watch: {
-    selectedInventionId () {
-      const invention_within_selection = this.connectedInventionDefinitions.find((invention) => invention.id === this.selectedInventionId);
-      if (!invention_within_selection && this.selectedInventionId) {
-        const invention_metadata = this.clientState.core.invention_library.metadata_for_id(this.selectedInventionId);
-        if (invention_metadata) {
-          this.clientState.interface.inventions_selected_category_id = invention_metadata.industryCategoryId;
-          this.clientState.interface.inventions_selected_industry_type_id = invention_metadata.industryTypeId;
+    selectedInventionId: {
+      immediate: true,
+      handler () {
+        const invention_within_selection = this.connectedInventionDefinitions.find((invention) => invention.id === this.selectedInventionId);
+        if (!invention_within_selection && this.selectedInventionId) {
+          const invention_metadata = this.clientState.core.invention_library.metadata_for_id(this.selectedInventionId);
+          if (invention_metadata) {
+            this.clientState.interface.inventions_selected_category_id = invention_metadata.industryCategoryId;
+            this.clientState.interface.inventions_selected_industry_type_id = invention_metadata.industryTypeId;
+          }
         }
+        this.refreshNetwork();
       }
     }
   },

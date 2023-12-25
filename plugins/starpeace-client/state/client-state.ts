@@ -18,7 +18,7 @@ import Building from '~/plugins/starpeace-client/building/building.js';
 
 import AjaxState from '~/plugins/starpeace-client/state/ajax-state.js';
 import EventListener from '~/plugins/starpeace-client/state/event-listener.js';
-import Options from '~/plugins/starpeace-client/state/options.js';
+import Options from '~/plugins/starpeace-client/state/options/options.js';
 
 import TimeUtils from '~/plugins/starpeace-client/utils/time-utils.js';
 import Logger from '~/plugins/starpeace-client/logger.js';
@@ -147,8 +147,8 @@ export default class ClientState {
 
     this.core.reset_multiverse();
     this.core.reset_planet();
-    for (const galaxy of this.options.get_galaxies()) {
-      this.core.galaxy_cache.load_galaxy_configuration(galaxy.id, galaxy);
+    for (const galaxy of this.options.galaxy.getGalaxies()) {
+      this.core.galaxy_cache.loadGalaxyConfiguration(galaxy.id, galaxy);
     }
 
     this.identity.reset_state();

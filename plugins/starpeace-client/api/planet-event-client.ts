@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { DateTime } from 'luxon';
+import { gunzipSync } from 'fflate';
 import { io, Socket } from 'socket.io-client';
 import { SocketIO as MockIO, SocketIOClient } from 'mock-socket';
 
@@ -7,7 +7,11 @@ import { BASE_HOSTNAME } from '~/plugins/starpeace-client/api/sandbox/sandbox-co
 import type ApiClient from '~/plugins/starpeace-client/api/api-client.js'
 import BuildingEvent from '~/plugins/starpeace-client/event/building-event.js';
 import type ClientState from '~/plugins/starpeace-client/state/client-state.js';
-import VisaEvent from '../event/visa-event';
+import VisaEvent from '~/plugins/starpeace-client/event/visa-event';
+import GalaxyConfiguration from '~/plugins/starpeace-client/galaxy/galaxy-configuration';
+import Galaxy from '~/plugins/starpeace-client/galaxy/galaxy';
+import InitializePayload from './events/initialize-payload';
+import SimulationPayload from './events/simulation-payload';
 
 const SEND_VIEW_UPDATE_DELAY_MS = 1000;
 
@@ -18,6 +22,7 @@ export default class PlanetEventClient {
   disconnecting: boolean;
   planetId: string;
 
+  socketEncoding: string;
   socket: Socket | SocketIOClient;
 
   updateViewTarget: (() => void) | undefined = undefined;
@@ -26,8 +31,10 @@ export default class PlanetEventClient {
     this.api = api;
     this.clientState = clientState;
 
-    const galaxyConfig = this.clientState.core.galaxy_cache.galaxy_configuration(this.clientState.identity.galaxy_id);
-    if (!galaxyConfig?.api_url || !galaxyConfig?.api_port) {
+    const galaxyId = this.clientState.identity.galaxy_id ?? undefined;
+    const galaxyConfig: GalaxyConfiguration | undefined = galaxyId ? this.clientState.core.galaxy_cache.configurationForGalaxyId(galaxyId) : undefined;
+    const galaxy: Galaxy | undefined = galaxyId ? this.clientState.core.galaxy_cache.metadataForGalaxyId(galaxyId) : undefined;
+    if (!galaxyConfig?.host || !galaxyConfig?.port || !galaxy) {
       throw new Error("no configuration for galaxy");
     }
 
@@ -38,20 +45,21 @@ export default class PlanetEventClient {
     this.disconnecting = false;
     this.planetId = this.clientState.player.planet_id;
     this.clientState.planet.connecting = true;
+    this.socketEncoding = galaxy.settings.streamEncoding;
 
-    if (galaxyConfig.api_url == BASE_HOSTNAME) {
+    if (galaxyConfig.host == BASE_HOSTNAME) {
       this.api.mockConfiguration.socketEvents.planet_id = this.clientState.player.planet_id
       this.api.mockConfiguration.socketEvents.visa_id = this.clientState.player.planet_visa_id
-      this.socket = MockIO.connect(`ws://${galaxyConfig.api_url}:${galaxyConfig.api_port}`);
+      this.socket = MockIO.connect(`ws://${galaxyConfig.host}:${galaxyConfig.port}`);
       this.configure();
     }
     else {
-      const protocol = galaxyConfig.api_protocol === 'https' ? 'wss' : 'ws';
-      this.socket = io(`${protocol}://${galaxyConfig.api_url}:${galaxyConfig.api_port}`, {
+      const protocol = galaxyConfig.protocol === 'https' ? 'wss' : 'ws';
+      this.socket = io(`${protocol}://${galaxyConfig.host}:${galaxyConfig.port}`, {
         autoConnect: false,
         transports: ['websocket'], // disable 'polling' as long-poll upgrade depends on sticky sessions,
         query: {
-          JWT: this.clientState.options.galaxy_jwt,
+          JWT: this.clientState.options.authentication.galaxyJwt,
           PlanetId: this.clientState.player.planet_id,
           VisaId: this.clientState.player.planet_visa_id
         }
@@ -88,28 +96,37 @@ export default class PlanetEventClient {
       }
     });
 
-    this.socket.on('initialize', (event) => {
-      const time = DateTime.fromISO(event.planet.time);
+    this.socket.on('initialize', (rawEvent) => {
+      let eventJson: any = rawEvent;
+      if (this.socketEncoding === 'gzip') {
+        eventJson = JSON.parse(Array.from(gunzipSync(new Uint8Array(rawEvent))).map(b => String.fromCharCode(b)).join(''));
+      }
+
+      const event = InitializePayload.fromJson(eventJson);
       if (event.view) {
         this.clientState.camera.recenter_at(event.view.x, event.view.y);
       }
-      this.clientState.planet.load_state(time, event.planet);
+      this.clientState.planet.load_state(event.planet.time, event.planet);
 
-      if (event.corporation) {
-        const last_mail = event.corporation.lastMailAt ? DateTime.fromISO(event.corporation.lastMailAt) : undefined;
-        this.clientState.corporation.update_cashflow(last_mail, event.corporation.cash, event.corporation.cashCurrentYear, event.corporation.cashflow);
+      if (event.corporation && this.clientState.player.corporation_id) {
+        this.clientState.corporation.update_cashflow(event.corporation.lastMailAt, event.corporation.cash, event.corporation.cashflow);
         this.clientState.corporation.update_cashflow_companies(event.corporation.companies);
-        this.clientState.core.corporation_cache.update_cashflow(this.clientState.player.corporation_id, time, event.corporation.cash, event.corporation.cashCurrentYear, event.corporation.cashflow);
+        this.clientState.core.corporation_cache.update_cashflow(this.clientState.player.corporation_id, event.planet.time, event.corporation.cash, event.corporation.cashflow);
       }
     });
 
-    this.socket.on('simulation', (event) => {
-      const time = DateTime.fromISO(event.planet.time);
-      this.clientState.planet.load_state(time, event.planet);
+    this.socket.on('simulation', (rawEvent) => {
+      let eventJson: any = rawEvent;
+      if (this.socketEncoding === 'gzip') {
+        eventJson = JSON.parse(Array.from(gunzipSync(new Uint8Array(rawEvent))).map(b => String.fromCharCode(b)).join(''));
+      }
+
+      const event = SimulationPayload.fromJson(eventJson);
+      this.clientState.planet.load_state(event.planet.time, event.planet);
 
       for (const visa of (event.issuedVisas ?? [])) {
         this.clientState.planet.notifyIssuedVisaListener(new VisaEvent(
-          time,
+          event.planet.time,
           visa.tycoonName,
           visa.corporationName
         ));
@@ -117,7 +134,7 @@ export default class PlanetEventClient {
 
       for (const buildingEvent of (event.buildingEvents ?? [])) {
         this.clientState.planet.notifyBuildingListeners(new BuildingEvent(
-          time,
+          event.planet.time,
           buildingEvent.type,
           buildingEvent.id,
           buildingEvent.definitionId,
@@ -137,11 +154,10 @@ export default class PlanetEventClient {
         this.clientState.has_dirty_metadata = true;
       }
 
-      if (event.corporation) {
-        const last_mail = event.corporation.lastMailAt ? DateTime.fromISO(event.corporation.lastMailAt) : undefined;
-        this.clientState.corporation.update_cashflow(last_mail, event.corporation.cash, event.corporation.cashCurrentYear, event.corporation.cashflow);
+      if (event.corporation && this.clientState.player.corporation_id) {
+        this.clientState.corporation.update_cashflow(event.corporation.lastMailAt, event.corporation.cash, event.corporation.cashflow);
         this.clientState.corporation.update_cashflow_companies(event.corporation.companies);
-        this.clientState.core.corporation_cache.update_cashflow(this.clientState.player.corporation_id, time, event.corporation.cash, event.corporation.cashCurrentYear, event.corporation.cashflow);
+        this.clientState.core.corporation_cache.update_cashflow(this.clientState.player.corporation_id, event.planet.time, event.corporation.cash, event.corporation.cashflow);
       }
     })
   }

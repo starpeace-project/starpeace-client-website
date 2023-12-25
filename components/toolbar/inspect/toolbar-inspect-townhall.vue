@@ -1,9 +1,9 @@
 <template lang='pug'>
-.inspect-details
-  template(v-if='loading')
+.is-relative
+  .is-flex.is-align-items-center.is-justify-content-center.loading-container(v-if='loading')
     img.loading-image.starpeace-logo.logo-loading
 
-  template(v-else)
+  .inspect-details(v-else)
     .inspect-tabs.tabs.is-small.is-marginless
       ul
         li(v-for='tab in tabs' :class="{ 'is-active': tabId == tab.id }" @click.stop.prevent='tabId = tab.id')
@@ -328,6 +328,9 @@ export default {
 <style lang='sass' scoped>
 @import '~/assets/stylesheets/starpeace-variables'
 @import '~/assets/stylesheets/starpeace-inspect'
+
+.loading-container
+  height: 100%
 
 .column
   &.service-levels

@@ -4,7 +4,7 @@ import BuildingEvent, { BuildingNewsEvent } from '~/plugins/starpeace-client/eve
 
 import Overlay from '~/plugins/starpeace-client/overlay/overlay.coffee'
 import EventListener from '~/plugins/starpeace-client/state/event-listener'
-import Options from '~/plugins/starpeace-client/state/options';
+import Options from '~/plugins/starpeace-client/state/options/options';
 import { VisaNewsEvent } from '../../event/visa-event';
 
 const MINI_MAP_ZOOM_MAX = 2;
@@ -259,7 +259,7 @@ export default class InterfaceState {
     const before = this.options.option('mini_map.zoom');
     const zoom = Math.min(MINI_MAP_ZOOM_MAX, Math.max(MINI_MAP_ZOOM_MIN, before + zoomDelta));
     if (zoom != before) {
-      this.options.set_and_save_option('mini_map.zoom', zoom);
+      this.options.setAndSaveOption('mini_map.zoom', zoom);
       this.notify_mini_map_zoom_listeners();
       return true;
     }
@@ -273,8 +273,8 @@ export default class InterfaceState {
   }
 
   update_mini_map (width: number, height: number): void {
-    this.options.set_and_save_option('mini_map.width', width)
-    this.options.set_and_save_option('mini_map.height', height)
+    this.options.setAndSaveOption('mini_map.width', width)
+    this.options.setAndSaveOption('mini_map.height', height)
     this.notify_mini_map_size_listeners()
   }
 

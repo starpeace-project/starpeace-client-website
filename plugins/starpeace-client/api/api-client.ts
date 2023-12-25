@@ -19,9 +19,10 @@ export default class ApiClient {
   }
 
   galaxyUrl (galaxyId: string | null = null): string {
-    const galaxy_config = this.client_state.core.galaxy_cache.galaxy_configuration(galaxyId ?? this.client_state.identity.galaxy_id);
+    const id = galaxyId ?? this.client_state.identity.galaxy_id ?? undefined;
+    const galaxy_config = id ? this.client_state.core.galaxy_cache.configurationForGalaxyId(id) : undefined;
 
-    if (!galaxy_config?.api_protocol ?? !galaxy_config?.api_url ?? !galaxy_config?.api_port) {
+    if (!galaxy_config?.api_protocol || !galaxy_config?.api_url || !galaxy_config?.api_port) {
       throw Error(`no configuration for galaxy ${galaxyId}`);
     }
     return `${galaxy_config.api_protocol}://${galaxy_config.api_url}:${galaxy_config.api_port}`;
@@ -30,8 +31,8 @@ export default class ApiClient {
   galaxyAuth (options: any, galaxyId: string | null = null): any {
     const headers: Record<string, string> = { };
 
-    if (this.client_state.options.galaxy_id == (galaxyId ?? this.client_state.identity.galaxy_id) && this.client_state.options.galaxy_jwt?.length) {
-      headers.Authorization = `JWT ${this.client_state.options.galaxy_jwt}`;
+    if (this.client_state.options.authentication.galaxyId === (galaxyId ?? this.client_state.identity.galaxy_id) && this.client_state.options.authentication.galaxyJwt?.length) {
+      headers.Authorization = `JWT ${this.client_state.options.authentication.galaxyJwt}`;
     }
     if (this.client_state.player.planet_id?.length) {
       headers.PlanetId = this.client_state.player.planet_id;
@@ -89,39 +90,30 @@ export default class ApiClient {
   }
 
   async galaxy_create (galaxyId: string, username: string, password: string, rememberMe: boolean): Promise<any> {
-    try {
-      const response = await this.client.post(`${this.galaxyUrl(galaxyId)}/galaxy/create`, {
-        username: username,
-        password: password,
-        rememberMe: rememberMe
-      });
-      return response.data;
-    }
-    catch (err) {
-      throw err;
-    }
+    const response = await this.client.post(`${this.galaxyUrl(galaxyId)}/galaxy/create`, {
+      username: username,
+      password: password,
+      rememberMe: rememberMe
+    });
+    return response.data;
   }
-  async galaxy_login (galaxyId: string, username: string, password: string, rememberMe: boolean): Promise<any> {
-    try {
-      const response = await this.client.post(`${this.galaxyUrl(galaxyId)}/galaxy/login`, {
-        username: username,
-        password: password,
-        rememberMe: rememberMe
-      });
-      return response.data;
-    }
-    catch (err) {
-      throw err;
-    }
+  async galaxyLogin (galaxyId: string, username: string, password: string, rememberMe: boolean): Promise<any> {
+    const response = await this.client.post(`${this.galaxyUrl(galaxyId)}/galaxy/login`, {
+      username: username,
+      password: password,
+      rememberMe: rememberMe
+    });
+    return response.data;
+  }
+  async galaxyLoginToken (galaxyId: string, token: string): Promise<any> {
+    const response = await this.client.post(`${this.galaxyUrl(galaxyId)}/galaxy/login`, {
+      refreshToken: token
+    });
+    return response.data;
   }
   async galaxy_logout (galaxyId: string) {
-    try {
-      const response = await this.client.post(`${this.galaxyUrl(galaxyId)}/galaxy/logout`, {}, this.galaxyAuth({}, galaxyId));
-      return response.data;
-    }
-    catch (err) {
-      throw err;
-    }
+    const response = await this.client.post(`${this.galaxyUrl(galaxyId)}/galaxy/logout`, {}, this.galaxyAuth({}, galaxyId));
+    return response.data;
   }
 
   async register_visa (galaxyId: string, visaType: string) {

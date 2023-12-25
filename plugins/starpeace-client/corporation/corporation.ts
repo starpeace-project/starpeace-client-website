@@ -13,7 +13,6 @@ export default class Corporation {
 
   cashAsOf: DateTime;
   cash: number;
-  cashCurrentYear: number;
   cashflow: number;
 
   prestige: number;
@@ -21,7 +20,7 @@ export default class Corporation {
   companies: Company[];
 
   constructor (id: string, tycoon_id: string, planet_id: string, name: string, level_id: string, building_count: number,
-        cashAsOf: DateTime, cash: number, cashCurrentYear: number, cashflow: number, prestige: number, companies: Company[]) {
+        cashAsOf: DateTime, cash: number, cashflow: number, prestige: number, companies: Company[]) {
     this.id = id;
     this.tycoon_id = tycoon_id;
     this.planet_id = planet_id;
@@ -30,7 +29,6 @@ export default class Corporation {
     this.building_count = building_count;
     this.cashAsOf = cashAsOf;
     this.cash = cash;
-    this.cashCurrentYear = cashCurrentYear;
     this.cashflow = cashflow;
     this.prestige = prestige;
     this.companies = companies;
@@ -46,7 +44,6 @@ export default class Corporation {
       json.buildingCount ?? 0,
       DateTime.fromISO(json.cashAsOf),
       json.cash ?? 0,
-      json.cashCurrentYear ?? 0,
       json.cashflow ?? 0,
       json.prestige ?? 0,
       (json.companies || []).map(Company.from_json)

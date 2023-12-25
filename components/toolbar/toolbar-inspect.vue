@@ -4,7 +4,7 @@
     #inspect-image-webgl-container(ref='previewContainer')
 
   template(v-if='!isVisible || isLoading || !buildingType')
-    .column
+    .is-flex.is-align-items-center.is-justify-content-center
       img.loading-image.starpeace-logo.logo-loading
 
   template(v-else)
@@ -194,6 +194,7 @@ export default {
 
 <style lang='sass' scoped>
 @import '~/assets/stylesheets/starpeace-variables'
+@import '~/assets/stylesheets/starpeace-inspect'
 
 .inspect-container
   background-color: #000
@@ -218,14 +219,5 @@ export default {
   height: 100%
   top: 0
   width: 100%
-
-.loading-image
-  background-size: 8rem
-  height: 8rem
-  left: calc(50% - 4rem)
-  margin: 1rem 0
-  position: absolute
-  top: calc(40% - 4rem)
-  width: 8rem
 
 </style>

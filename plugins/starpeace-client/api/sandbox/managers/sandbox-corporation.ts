@@ -25,13 +25,11 @@ interface CompanyInfo {
 export class Cashflow {
   lastMailAt: DateTime | undefined;
   cash: number;
-  cashCurrentYear: number;
   companiesById: Record<string, any>;
 
-  constructor (lastMailAt: DateTime | undefined, cash: number, cashCurrentYear: number, companiesById: Record<string, any>) {
+  constructor (lastMailAt: DateTime | undefined, cash: number, companiesById: Record<string, any>) {
     this.lastMailAt = lastMailAt;
     this.cash = cash;
-    this.cashCurrentYear = cashCurrentYear;
     this.companiesById = companiesById;
   }
 
@@ -41,7 +39,6 @@ export class Cashflow {
 
   incrementCash (): void {
     const daily = 24 * this.cashflow();
-    this.cashCurrentYear = this.cashCurrentYear + daily;
     this.cash = this.cash + daily;
   }
 }

@@ -25,23 +25,27 @@
   workflow-universe-multiverse(v-show="universe_mode == 'multiverse'" :ajax_state='ajax_state' :client_state='client_state')
 
   .news-container
-    .news-header
-      span {{$translate('ui.workflow.visa-type.header.news')}}
-      a.version(href='/release') {{client_version}}
+    template(v-if='showAnnouncement')
+      announcements-2023-12-18-nw-test
 
-    template(v-if='!news.length')
-      .news-loading
-        img.starpeace-logo.logo-loading
+    template(v-else)
+      .news-header
+        span {{$translate('ui.workflow.visa-type.header.news')}}
+        a.version(href='/release') {{client_version}}
 
-    template(v-else-if='news.length')
-      .news-content.sp-scrollbar
-        .news-item(v-for='news_item in news')
-          .news-date {{news_item.date}}
-          .news-title {{news_item.title}}
-          .news-body.content
-            span.details(v-html='news_item_html(news_item.body)')
-            ul(v-if='news_item.items && news_item.items.length')
-              li(v-for='item in news_item.items') {{item}}
+      template(v-if='!news.length')
+        .news-loading
+          img.starpeace-logo.logo-loading
+
+      template(v-else-if='news.length')
+        .news-content.sp-scrollbar
+          .news-item(v-for='news_item in news')
+            .news-date {{news_item.date}}
+            .news-title {{news_item.title}}
+            .news-body.content
+              span.details(v-html='news_item_html(news_item.body)')
+              ul(v-if='news_item.items && news_item.items.length')
+                li(v-for='item in news_item.items') {{item}}
 
 </template>
 
@@ -57,6 +61,7 @@ export default {
   data () {
     return {
       client_version: this.$config.public.CLIENT_VERSION,
+      showAnnouncement: true,
       news: [],
       universe_mode: 'multiverse'
     }
@@ -112,64 +117,6 @@ export default {
   > .column
     padding: 0
 
-
-.universe-starpeace-actions
-  height: 22rem
-  margin: 0
-
-  .column
-    padding-bottom: 2rem
-    padding-top: 1.5rem
-    text-align: center
-
-    &:first-child
-      +mobile
-        border-bottom: 1px solid $sp-primary
-        padding-bottom: 2rem
-
-      +tablet
-        border-right: 1px solid $sp-primary
-
-    &.tycoon-column
-      padding-left: 1.5rem
-
-    h3
-      color: #fff
-      font-size: 1.75rem
-      font-weight: 1000
-      letter-spacing: .25rem
-
-    .tycoon-icon
-      color: #fff
-      font-size: 4rem
-      margin: .5rem 0 1rem
-
-    ul
-      display: inline-block
-      font-size: 1.25rem
-      margin: 0 0 1.5rem 2rem
-      text-align: left
-
-      li
-        margin-bottom: .25rem
-
-      .fa-li
-        margin-top: .25rem
-
-.universe-multiverse-actions
-  position: relative
-
-  .galaxy-list
-    background-color: darken($sp-primary-bg, 17.5%)
-    border-left: 1px solid darken($sp-primary-bg, 15%)
-    border-top: 1px solid darken($sp-primary-bg, 15%)
-    border-right: 1px solid darken($sp-primary-bg, 5%)
-    border-bottom: 1px solid darken($sp-primary-bg, 5%)
-    min-height: 15rem
-
-  .galaxy-actions-level
-    margin-top: .5rem
-    margin-bottom: 1rem
 
 .news-container
   border-top: 1px solid $sp-primary

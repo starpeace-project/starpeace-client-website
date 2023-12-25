@@ -1,4 +1,3 @@
-import { DateTime }  from 'luxon';
 
 export default class Planet {
   id: string;
@@ -11,11 +10,9 @@ export default class Planet {
   population: number;
   investment_value: number;
   corporation_count: number;
-  online_count: number;
+  onlineCount: number;
 
-  as_of: DateTime;
-
-  constructor (id: string, name: string, enabled: boolean, planet_type: string, planet_width: number, planet_height: number, map_id: string, population: number, investment_value: number, corporation_count: number, online_count: number) {
+  constructor (id: string, name: string, enabled: boolean, planet_type: string, planet_width: number, planet_height: number, map_id: string, population: number, investment_value: number, corporation_count: number, onlineCount: number) {
     this.id = id;
     this.name = name;
     this.enabled = enabled;
@@ -26,12 +23,7 @@ export default class Planet {
     this.population = population;
     this.investment_value = investment_value;
     this.corporation_count = corporation_count;
-    this.online_count = online_count;
-    this.as_of = DateTime.now();
-  }
-
-  is_fresh (): boolean {
-    return this.as_of && DateTime.now() < this.as_of.plus({ minutes: 15 });
+    this.onlineCount = onlineCount;
   }
 
   static from_json (json: any): Planet {

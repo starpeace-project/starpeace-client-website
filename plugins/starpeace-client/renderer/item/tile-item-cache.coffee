@@ -189,8 +189,8 @@ export default class TileItemCache
       Logger.warn("unable to find cached overlay texture for size #{image_metadata.w}")
       return null
 
-    zone_color = if metadata.zone? then metadata.zone.color else 0
-    new SpriteBuildingFootprint(texture, image_metadata, zone_color)
+    zone = if metadata.zoneId? then @client_state.core.planet_library.zone_for_id(metadata.zoneId) else undefined
+    new SpriteBuildingFootprint(texture, image_metadata, zone?.color || 0)
 
   building_sprite_info_for: (render_building_animations, render_building_effects, tile_info, selected_building_id, selected_corporation_id) ->
     unless tile_info.building_info?

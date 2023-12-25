@@ -1,47 +1,105 @@
 import Planet from '~/plugins/starpeace-client/planet/planet.js'
 import Tycoon from '~/plugins/starpeace-client/tycoon/tycoon.js'
 
+
+export class VisaSettings {
+  issue: boolean;
+  create: boolean;
+
+  constructor (issue: boolean, create: boolean) {
+    this.issue = issue;
+    this.create = create;
+  }
+
+  static fromJson (json: any): VisaSettings {
+    if (json === true) {
+      return new VisaSettings(true, true);
+    }
+    return new VisaSettings(
+      json?.issue === true,
+      json?.create === true
+    );
+  }
+}
+
+export class VisasSettings {
+  visitor: VisaSettings;
+  tycoon: VisaSettings;
+
+  constructor (visitor: VisaSettings, tycoon: VisaSettings) {
+    this.visitor = visitor;
+    this.tycoon = tycoon;
+  }
+
+  static fromJson (json: any): VisasSettings {
+    return new VisasSettings(
+      VisaSettings.fromJson(json?.visitor),
+      VisaSettings.fromJson(json?.tycoon)
+    )
+  }
+}
+
+export class ServerSettings {
+  authentication: string;
+  streamEncoding: string;
+
+  constructor (authentication: string, streamEncoding: string) {
+    this.authentication = authentication;
+    this.streamEncoding = streamEncoding;
+  }
+
+  static fromJson (json: any): ServerSettings {
+    return new ServerSettings(
+      json?.authentication ?? 'password',
+      json?.streamEncoding ?? 'raw'
+    )
+  }
+}
+
+
 export default class Galaxy {
   id: string;
   name: string;
 
-  visitor_enabled: boolean;
-  tycoon_enabled: boolean;
-  tycoon_creation_enabled: boolean;
-  tycoon_authentication: string;
+  visas: VisasSettings;
+  settings: ServerSettings;
 
   tycoon: Tycoon | undefined | null;
   planets: Array<Planet>;
 
-  as_of: Date = new Date();
-
-  constructor (id: string, name: string, visitor_enabled: boolean, tycoon_enabled: boolean, tycoon_creation_enabled: boolean, tycoon_authentication: string, tycoon: Tycoon | undefined | null, planets: Array<Planet>) {
+  constructor (id: string, name: string, visas: VisasSettings, settings: ServerSettings, tycoon: Tycoon | undefined | null, planets: Array<Planet>) {
     this.id = id;
     this.name = name;
-    this.visitor_enabled = visitor_enabled;
-    this.tycoon_enabled = tycoon_enabled;
-    this.tycoon_creation_enabled = tycoon_creation_enabled;
-    this.tycoon_authentication = tycoon_authentication;
+    this.visas = visas;
+    this.settings = settings;
     this.tycoon = tycoon;
     this.planets = planets;
   }
 
-  get planet_count (): number {
+  get planetCount (): number {
     return this.planets.length;
   }
-  get online_count (): number {
-    return this.planets.map((p: Planet) => p.online_count).reduce((sum, val) => sum + val, 0);
+  get onlineCount (): number {
+    return this.planets.map((p: Planet) => p.onlineCount).reduce((sum, val) => sum + val, 0);
   }
 
-  static from_json (json: any): Galaxy {
+  get visitorIssueEnabled (): boolean {
+    return this.visas.visitor.issue;
+  }
+  get tycoonIssueEnabled (): boolean {
+    return this.visas.tycoon.issue;
+  }
+  get tycoonCreateEnabled (): boolean {
+    return this.visas.tycoon.create;
+  }
+
+  static fromJson (json: any): Galaxy {
     return new Galaxy(
       json.id,
       json.name,
-      json.visitorEnabled ?? false,
-      json.tycoonEnabled ?? false,
-      json.tycoonCreationEnabled ?? false,
-      json.tycoonAuthentication ?? 'password',
-      !!json.tycoon ? Tycoon.from_json(json.tycoon) : null,
+      VisasSettings.fromJson(json.visas),
+      ServerSettings.fromJson(json.settings),
+      !!json.tycoon ? Tycoon.fromJson(json.tycoon) : null,
       (json.planets ?? []).map(Planet.from_json)
     );
   }

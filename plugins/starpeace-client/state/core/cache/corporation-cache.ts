@@ -110,12 +110,12 @@ export default class CorporationCache extends Cache {
     }
   }
 
-  update_cashflow (corporation_id: string, time: DateTime, cash: number, cash_current_year: number, cashflow: number) {
+  update_cashflow (corporation_id: string, time: DateTime, cash: number, cashflow: number) {
     const corporation: Corporation | null = this.metadata_for_id(corporation_id);
     if (corporation) {
       corporation.cashAsOf = time;
       corporation.cash = cash;
-      corporation.cashCurrentYear = cash_current_year;
+      corporation.cashflow = cashflow;
     }
   }
 }

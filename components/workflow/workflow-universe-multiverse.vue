@@ -2,41 +2,48 @@
 .universe-multiverse-actions
   .galaxy-list.sp-scrollbar
 
-    template(v-for="galaxy in galaxies")
+    template(v-for='galaxy in galaxyConfigurations')
       .columns.is-vcentered.galaxy-row
-        .column.is-5
-          h3.galaxy-name(:class="galaxy_name_is_long(galaxy) ? 'is-smaller' : ''")
-            .galaxy-name-text {{galaxy_name(galaxy)}}
-        .column.is-2
+        .column
+          h3.galaxy-name(:class="{'is-smaller': infoByGalaxyId[galaxy.id].nameLong }")
+            .galaxy-name-text {{ infoByGalaxyId[galaxy.id].name }}
+        .column.is-narrow
           .content
             .galaxy-planets
               span.planet-label {{$translate('ui.menu.galaxy.details.planets.label')}}:
-              span.planet-value {{planet_count(galaxy)}}
+              span.planet-value {{ infoByGalaxyId[galaxy.id].planetCount }}
             .galaxy-online
               span.planet-label {{$translate('ui.menu.galaxy.details.online.label')}}:
-              span.planet-value {{online_count(galaxy)}}
+              span.planet-value {{ infoByGalaxyId[galaxy.id].onlineCount }}
 
-        .column.is-5.has-text-right.galaxy-actions
-          button.button.is-medium.is-starpeace.is-inverted.is-outlined(v-on:click.stop.prevent="proceed_as_visitor(galaxy.id)" :disabled='!visitor_enabled(galaxy)') {{$translate('identity.visitor')}}
-          button.button.is-medium.is-starpeace.is-inverted(:class="{'is-outlined': tycoon_galaxy_id != galaxy.id}" v-on:click.stop.prevent="toggle_tycoon_galaxy(galaxy.id)" :disabled='!tycoon_enabled(galaxy)') {{$translate('identity.tycoon')}}
+        .column.is-narrow.has-text-right.ml-6
+          button.button.is-medium.is-starpeace.is-inverted.is-outlined(
+            :disabled='!infoByGalaxyId[galaxy.id].visitorIssueEnabled'
+            @click.stop.prevent="proceed_as_visitor(galaxy.id)"
+          ) {{$translate('identity.visitor')}}
+          button.button.is-medium.is-starpeace.is-inverted.ml-2(
+            :class="{'is-outlined': tycoon_galaxy_id != galaxy.id}"
+            :disabled='!infoByGalaxyId[galaxy.id].tycoonIssueEnabled'
+            @click.stop.prevent="toggle_tycoon_galaxy(galaxy.id)"
+          ) {{$translate('identity.tycoon')}}
 
-        .galaxy-loading-modal(v-show='is_galaxy_loading(galaxy.id) || is_galaxy_error(galaxy.id)')
+        .galaxy-loading-modal(v-show='is_galaxy_loading(galaxy.id) || errorByGalaxyId[galaxy.id]')
           img.starpeace-logo(v-show='is_galaxy_loading(galaxy.id)')
-          .galaxy-error-message(v-show='is_galaxy_error(galaxy.id)')
+          .galaxy-error-message(v-show='errorByGalaxyId[galaxy.id]')
             | {{$translate('misc.unable_to_connect.label')}}
             a(@click.stop.prevent='refresh_galaxy(galaxy.id)') {{$translate('misc.try_again.label')}}
 
-      .columns.is-vcentered.galaxy-login-row(v-show="tycoon_galaxy_id && galaxy.id == tycoon_galaxy_id && !is_galaxy_loading(galaxy.id) && !is_galaxy_error(galaxy.id)")
+      .columns.is-vcentered.galaxy-login-row(v-show="tycoon_galaxy_id && galaxy.id == tycoon_galaxy_id && !is_galaxy_loading(galaxy.id) && !errorByGalaxyId[galaxy.id]")
         .column.is-12
           form
             .field.is-horizontal
               .field-body
                 .field.is-grouped
-                  template(v-if='tycoon_authenticated(galaxy) != null')
+                  template(v-if='infoByGalaxyId[galaxy.id] && infoByGalaxyId[galaxy.id].authenticatedTycoon')
                     .control
                       button.button.is-starpeace.is-inverted.is-outlined(@click.stop.prevent="logout_tycoon(galaxy.id)") {{$translate('ui.workflow.universe.signout.label')}}
                     .control.is-expanded
-                      | Signed in as {{tycoon_authenticated(galaxy).username}}
+                      | Signed in as {{ infoByGalaxyId[galaxy.id].authenticatedTycoon.username }}
                     .control
                       button.button.is-starpeace.is-inverted(@click.stop.prevent="proceed_as_tycoon(galaxy.id)") Proceed
 
@@ -44,7 +51,7 @@
                     .control
                       button.button.is-starpeace.is-inverted.is-outlined(
                         @click.stop.prevent="toggle_create_tycoon(galaxy.id)"
-                        :disabled='!tycoon_creation_enabled(galaxy.id)'
+                        :disabled='!infoByGalaxyId[galaxy.id].tycoonCreateEnabled'
                       ) {{$translate('misc.action.create')}}
                     .control.has-icons-left.is-expanded
                       input.input(type='text' autocomplete='username' :placeholder="$translate('ui.workflow.universe.username.label')" v-model='username' :disabled='!!authorizing')
@@ -56,20 +63,23 @@
                         font-awesome-icon(:icon="['fas', 'lock']")
                     .control
                       misc-toggle-option(:value='remember_me' @toggle="remember_me=!remember_me")
-                      span.toggle-label(@click.stop.prevent="remember_me=!remember_me") {{$translate('ui.workflow.universe.remember_tycoon.label')}}
+                      span.toggle-label(@click.stop.prevent="remember_me=!remember_me") {{ $translate('ui.workflow.universe.remember_tycoon.label') }}
                     .control
-                      button.button.is-starpeace.is-inverted(@click.stop.prevent="login_tycoon(galaxy.id)" :disabled='!tycoon_enabled(galaxy) || !has_tycoon_credentials || authorizing') {{$translate('ui.workflow.universe.signin.label')}}
+                      button.button.is-starpeace.is-inverted(
+                        :disabled='!hasTycoonCredentials || !infoByGalaxyId[galaxy.id] || !infoByGalaxyId[galaxy.id].tycoonIssueEnabled'
+                        @click.stop.prevent="login_tycoon(galaxy.id)"
+                      ) {{$translate('ui.workflow.universe.signin.label')}}
 
-            .field.is-horizontal(v-if='error_code')
+            .field.is-horizontal(v-if='errorCode')
               .field-body
                 .field.is-grouped
                   .control.is-narrow
-                    span.has-text-danger {{$translate(error_code_key)}}
+                    span.has-text-danger {{ $translate(errorCodeKey) }}
 
   .level.galaxy-actions-level
     .level-left
       .level-item
-        button.button.is-small.is-starpeace(@click.stop.prevent='toggle_remove_galaxy' :disabled='!galaxies.length') {{$translate('ui.workflow.universe.galaxy.remove.label')}}
+        button.button.is-small.is-starpeace(@click.stop.prevent='toggle_remove_galaxy' :disabled='!galaxyConfigurations.length') {{ $translate('ui.workflow.universe.galaxy.remove.label') }}
     .level-right
       .level-item
         button.button.is-small.is-starpeace(@click.stop.prevent='toggle_add_galaxy') {{$translate('ui.workflow.universe.galaxy.add.label')}}
@@ -80,8 +90,7 @@
 import _ from 'lodash';
 import ClientState from '~/plugins/starpeace-client/state/client-state';
 import Galaxy from '~/plugins/starpeace-client/galaxy/galaxy.js';
-
-const VISITOR_ENABLED = false; // TODO: FIXME: turn on when working
+import GalaxyConfiguration from '~/plugins/starpeace-client/galaxy/galaxy-configuration';
 
 const MIN_USERNAME = 1; // TODO: raise to like 3+ in future
 const MIN_PASSWORD = 1; // TODO: raise to like 3+ in future
@@ -91,14 +100,14 @@ const ERROR_CODE_INVALID = 'INVALID';
 const ERROR_CODES = [ERROR_CODE_GENERAL, ERROR_CODE_INVALID];
 
 declare interface WorkflowUniverseMultiverseData {
-  galaxies: Array<Galaxy>;
-  galaxy_errors: Record<string, boolean>;
+  galaxyConfigurations: Array<GalaxyConfiguration>;
+  errorByGalaxyId: Record<string, boolean>;
 
   authorizing: boolean;
   username: string;
   password: string;
   remember_me: boolean;
-  error_code: string | null;
+  errorCode: string | null;
 
   tycoon_galaxy_id: string | null;
 }
@@ -111,37 +120,70 @@ export default {
 
   data (): WorkflowUniverseMultiverseData {
     return {
-      galaxies: [],
-      galaxy_errors: {},
+      galaxyConfigurations: [],
+      errorByGalaxyId: {},
 
       authorizing: false,
       username: '',
       password: '',
       remember_me: true,
-      error_code: null,
+      errorCode: null,
 
       tycoon_galaxy_id: null
     };
   },
 
   mounted () {
-    this.galaxies = this.client_state.options.get_galaxies();
+    this.galaxyConfigurations = this.client_state.options.galaxy.getGalaxies();
 
     this.client_state.options.subscribe_galaxies_listener(() => {
-      this.galaxies = this.client_state.options.get_galaxies();
+      this.galaxyConfigurations = this.client_state.options.galaxy.getGalaxies();
     });
     this.client_state.core.galaxy_cache.subscribe_configuration_listener(() => {
-      if (this.is_visible) this.$forceUpdate();
+      if (this.isVisible) this.$forceUpdate();
     });
     this.client_state.core.galaxy_cache.subscribe_metadata_listener(() => {
-      if (this.is_visible) this.$forceUpdate();
+      if (this.isVisible) this.$forceUpdate();
     });
   },
 
+  computed: {
+    isVisible (): boolean {
+      return this.client_state.workflow_status === 'pending_universe';
+    },
+
+    hasTycoonCredentials () {
+      return _.trim(this.username).length >= MIN_USERNAME && _.trim(this.password).length >= MIN_PASSWORD;
+    },
+
+    infoByGalaxyId (): Record<string, any> {
+      return Object.fromEntries(this.galaxyConfigurations.map((g: GalaxyConfiguration) => {
+        const galaxy = this.client_state.core.galaxy_cache.metadataForGalaxyId(g.id);
+        const name = galaxy?.name ?? `${g.host}:${g.port}`;
+        return [g.id, {
+          nameLong: name.length > 40,
+          name: name,
+          planetCount: galaxy?.planetCount ?? 0,
+          onlineCount: galaxy?.onlineCount ?? 0,
+          visitorIssueEnabled: galaxy?.visitorIssueEnabled ?? false,
+          tycoonIssueEnabled: galaxy?.tycoonIssueEnabled ?? false,
+          tycoonCreateEnabled: galaxy?.tycoonCreateEnabled ?? false,
+          authenticatedTycoon: galaxy?.tycoon
+        }];
+      }));
+    },
+
+    errorCodeKey () {
+      if (this.errorCode === ERROR_CODE_GENERAL) return 'ui.workflow.universe.error.signin_problem.label';
+      if (this.errorCode === ERROR_CODE_INVALID) return 'ui.workflow.universe.error.signin_invalid.label';
+      return '';
+    }
+  },
+
   watch: {
-    is_visible (new_value, old_value) {
-      if (this.is_visible) {
-        this.galaxies = this.client_state.options.get_galaxies();
+    isVisible () {
+      if (this.isVisible) {
+        this.galaxyConfigurations = this.client_state.options.galaxy.getGalaxies();
         this.refresh_galaxies();
       }
     },
@@ -155,65 +197,32 @@ export default {
       }
     },
 
-    galaxies (new_value, old_value) {
+    galaxyConfigurations () {
       this.refresh_galaxies();
     }
   },
 
-  computed: {
-    is_visible (): boolean {
-      return this.client_state.workflow_status === 'pending_universe';
-    },
-
-    has_tycoon_credentials () {
-      return _.trim(this.username).length >= MIN_USERNAME && _.trim(this.password).length >= MIN_PASSWORD;
-    },
-
-    error_code_key () {
-      if (this.error_code == ERROR_CODE_GENERAL) return 'ui.workflow.universe.error.signin_problem.label';
-      if (this.error_code == ERROR_CODE_INVALID) return 'ui.workflow.universe.error.signin_invalid.label';
-      return '';
-    }
-  },
-
   methods: {
-    is_galaxy_loading (galaxy_id: string): boolean { return this.ajax_state.is_locked('galaxy_metadata', galaxy_id); },
-    is_galaxy_error (galaxy_id: string): boolean { return this.galaxy_errors[galaxy_id]; },
-
-    metadata_for_galaxy (galaxy_id: string) { return this.client_state.core.galaxy_cache.has_galaxy_metadata(galaxy_id) ? this.client_state.core.galaxy_cache.galaxy_metadata(galaxy_id) : null; },
-
-
-    galaxy_name_is_long (galaxy: Galaxy) { return (this.galaxy_name(galaxy)?.length ?? 0) > 20; },
-    galaxy_name (galaxy: Galaxy) {
-      const metadata = this.metadata_for_galaxy(galaxy.id);
-      return metadata ? metadata.name : `${galaxy.api_url}:${galaxy.api_port}`;
+    is_galaxy_loading (galaxy_id: string): boolean {
+      return this.ajax_state.is_locked('galaxy_metadata', galaxy_id);
     },
-
-    planet_count (galaxy: Galaxy) { return this.metadata_for_galaxy(galaxy.id)?.planet_count ?? 0; },
-    online_count (galaxy: Galaxy) { return this.metadata_for_galaxy(galaxy.id)?.online_count ?? 0; },
-
-    visitor_enabled (galaxy: Galaxy) { return VISITOR_ENABLED && (this.metadata_for_galaxy(galaxy.id)?.visitor_enabled ?? false); },
-    tycoon_enabled (galaxy: Galaxy) { return this.metadata_for_galaxy(galaxy.id)?.tycoon_enabled ?? false; },
-    tycoon_creation_enabled (galaxy_id: string) { return this.metadata_for_galaxy(galaxy_id)?.tycoon_creation_enabled ?? false; },
-
-    tycoon_authenticated (galaxy: Galaxy) { return this.metadata_for_galaxy(galaxy.id)?.tycoon; },
 
     async refresh_galaxies () {
-      const pending_galaxies = _.reject(this.galaxies, (galaxy) => this.client_state.core.galaxy_cache.has_galaxy_metadata(galaxy.id) || this.is_galaxy_loading(galaxy.id));
+      const pending_galaxies = _.reject(this.galaxyConfigurations, (galaxy) => !!this.client_state.core.galaxy_cache.metadataForGalaxyId(galaxy.id) || this.is_galaxy_loading(galaxy.id));
       await Promise.all(pending_galaxies.map((galaxy) => new Promise<void>((done, _error) => {
-        if (this.galaxy_errors[galaxy.id]) {
-          this.galaxy_errors[galaxy.id] = false;
+        if (this.errorByGalaxyId[galaxy.id]) {
+          this.errorByGalaxyId[galaxy.id] = false;
         }
         this.$starpeaceClient.managers.galaxy_manager.load_metadata(galaxy.id)
           .then((metadata: Galaxy) => {
             if (galaxy.id !== metadata.id) {
-              this.client_state.options.change_galaxy_id(galaxy.id, metadata.id);
+              this.client_state.options.galaxy.change_galaxy_id(galaxy.id, metadata.id);
               this.client_state.core.galaxy_cache.change_galaxy_id(galaxy.id, metadata.id);
             }
           })
           .catch((e: Error) => {
             console.error(e);
-            this.galaxy_errors[galaxy.id] = true;
+            this.errorByGalaxyId[galaxy.id] = true;
             done();
           });
       })))
@@ -221,16 +230,16 @@ export default {
 
     async refresh_galaxy (galaxy_id: string) {
       if (this.is_galaxy_loading(galaxy_id)) return;
-      if (this.galaxy_errors[galaxy_id]) this.galaxy_errors[galaxy_id] = false;
+      if (this.errorByGalaxyId[galaxy_id]) this.errorByGalaxyId[galaxy_id] = false;
 
       try {
         await this.$starpeaceClient.managers.galaxy_manager.load_metadata(galaxy_id);
       }
       catch (err) {
-        this.galaxy_errors[galaxy_id] = true
+        this.errorByGalaxyId[galaxy_id] = true
       }
       finally {
-        if (this.is_visible) {
+        if (this.isVisible) {
           this.$forceUpdate();
         }
       }
@@ -238,7 +247,7 @@ export default {
 
 
     toggle_remove_galaxy () {
-      if (!this.galaxies.length) return;
+      if (!this.galaxyConfigurations.length) return;
       if (this.client_state.interface.add_galaxy_visible || this.client_state.interface.show_create_tycoon) return;
       this.client_state.interface.show_remove_galaxy();
     },
@@ -248,17 +257,16 @@ export default {
       this.client_state.interface.show_add_galaxy();
     },
 
-    toggle_tycoon_galaxy (galaxy_id: string) {
+    toggle_tycoon_galaxy (galaxyId: string) {
       if (this.client_state?.interface?.remove_galaxy_visible || this.client_state?.interface?.add_galaxy_visible || this.client_state?.interface?.show_create_tycoon) return;
-      this.tycoon_galaxy_id = this.tycoon_galaxy_id === galaxy_id ? null : galaxy_id;
+      this.tycoon_galaxy_id = this.tycoon_galaxy_id === galaxyId ? null : galaxyId;
     },
 
-    toggle_create_tycoon (galaxy_id: string) {
-      if (this.client_state?.interface?.remove_galaxy_visible || this.client_state?.interface?.add_galaxy_visible) return;
-      if (!this.tycoon_creation_enabled(galaxy_id)) return;
+    toggle_create_tycoon (galaxyId: string) {
+      if (!this.infoByGalaxyId[galaxyId]?.tycoonCreateEnabled || this.client_state?.interface?.remove_galaxy_visible || this.client_state?.interface?.add_galaxy_visible) return;
       if (this.client_state?.interface) {
         this.client_state.interface.show_create_tycoon = true;
-        this.client_state.interface.create_tycoon_galaxy_id = galaxy_id;
+        this.client_state.interface.create_tycoon_galaxy_id = galaxyId;
       }
     },
 
@@ -266,27 +274,26 @@ export default {
       this.username = '';
       this.password = '';
       this.remember_me = true;
-      this.error_code = null;
+      this.errorCode = null;
     },
 
-    async login_tycoon (galaxy_id: string) {
-      if (this.authorizing) return;
-      const metadata = this.metadata_for_galaxy(galaxy_id);
-      if (!metadata || !metadata?.tycoon_enabled) return;
+    async login_tycoon (galaxyId: string) {
+      if (!this.hasTycoonCredentials || !this.infoByGalaxyId[galaxyId]?.tycoonIssueEnabled) return;
 
       this.authorizing = true;
       try {
-        const tycoon = await this.$starpeaceClient.managers.galaxy_manager.login(galaxy_id, this.username, this.password, this.remember_me);
+        const tycoon = await this.$starpeaceClient.managers.galaxy_manager.login(galaxyId, this.username, this.password, this.remember_me);
         this.clear_tycoon_credentials();
         this.authorizing = false;
-        this.client_state.identity.set_visa(galaxy_id, 'tycoon', tycoon);
+        this.client_state.identity.set_visa(galaxyId, 'tycoon', tycoon);
         this.client_state.player.tycoon_id = tycoon.id;
-        this.refresh_galaxy(galaxy_id);
+        this.refresh_galaxy(galaxyId);
       }
       catch (err) {
+        console.error(err);
         this.authorizing = false;
-        this.error_code = ERROR_CODES.indexOf(err?.data?.code) >= 0 ? err?.data?.code : ERROR_CODE_GENERAL;
-        if (this.is_visible) this.$forceUpdate();
+        this.errorCode = ERROR_CODES.indexOf(err?.data?.code) >= 0 ? err?.data?.code : ERROR_CODE_GENERAL;
+        if (this.isVisible) this.$forceUpdate();
       }
     },
 
@@ -299,22 +306,22 @@ export default {
         this.refresh_galaxies();
       }
       catch (err) {
-        this.error_code = ERROR_CODES.indexOf(err?.data?.code) >= 0 ? err?.data?.code : ERROR_CODE_GENERAL;
-        if (this.is_visible) this.$forceUpdate();
+        this.errorCode = ERROR_CODES.indexOf(err?.data?.code) >= 0 ? err?.data?.code : ERROR_CODE_GENERAL;
+        if (this.isVisible) this.$forceUpdate();
       }
     },
 
-    proceed_as_visitor (galaxy_id: string) {
-      const metadata = this.metadata_for_galaxy(galaxy_id);
-      if (!metadata || !metadata?.visitor_enabled) return;
-      this.client_state.identity.set_visa(galaxy_id, 'visitor', null);
+    proceed_as_visitor (galaxyId: string) {
+      if (!this.infoByGalaxyId[galaxyId].visitorIssueEnabled) return;
+      this.client_state.identity.set_visa(galaxyId, 'visitor', null);
     },
 
-    proceed_as_tycoon (galaxy_id: string) {
-      const metadata = this.metadata_for_galaxy(galaxy_id);
-      if (!metadata || !metadata?.tycoon_enabled || !metadata?.tycoon) return;
-      this.client_state.identity.set_visa(galaxy_id, 'tycoon', metadata.tycoon);
-      this.client_state.player.tycoon_id = metadata.tycoon.id;
+    proceed_as_tycoon (galaxyId: string) {
+      if (!this.infoByGalaxyId[galaxyId].tycoonIssueEnabled) return;
+      const galaxy = this.client_state.core.galaxy_cache.metadataForGalaxyId(galaxyId);
+      if (!galaxy?.tycoon) return;
+      this.client_state.identity.set_visa(galaxyId, 'tycoon', galaxy.tycoon);
+      this.client_state.player.tycoon_id = galaxy.tycoon.id;
     }
   }
 }
@@ -364,11 +371,6 @@ export default {
 
     .planet-value
       margin-left: .75rem
-
-    .galaxy-actions
-      .button
-        &:not(:first-child)
-          margin-left: .5rem
 
     .galaxy-loading-modal
       background-color: #000

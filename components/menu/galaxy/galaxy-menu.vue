@@ -1,17 +1,17 @@
 <template lang='pug'>
 #galaxy-container.card.is-starpeace.has-header(:oncontextmenu="'return ' + !$config.public.disableRightClick")
   .card-header
-    .card-header-title {{$translate('ui.menu.galaxy.header')}}
-    .card-header-icon.card-close(v-on:click.stop.prevent="client_state.menu.toggle_menu('galaxy')")
+    .card-header-title {{ $translate('ui.menu.galaxy.header') }}
+    .card-header-icon.card-close(@click.stop.prevent="client_state.menu.toggle_menu('galaxy')")
       font-awesome-icon(:icon="['fas', 'times']")
 
   .card-content.sp-menu-background.overall-container
     aside.sp-scrollbar
-      template(v-if='loading_galaxy || loading_tycoons')
+      template(v-if='loading_galaxy || loading_tycoons || !galaxyMetadata')
         img.loading-image.starpeace-logo.logo-loading
 
       template(v-else)
-        .planet(v-for='planet in planets' :disabled='!planet.enabled' :class="{'is-disabled': planet.enabled}")
+        .planet(v-for='planet in planets' :class="{'is-disabled': !planet.enabled}")
           .columns.is-vcentered
             .column.is-narrow.planet-image
               img.starpeace-logo.logo-loading(:src="planet_animation_url(planet)" @load="$event.target.classList.remove('starpeace-logo', 'logo-loading')")
@@ -27,20 +27,31 @@
                   misc-money-text(:value='planet.investment_value')
               .planet-tycoons.planet-info-row
                 span {{$translate('ui.menu.galaxy.details.corporations.label')}}:
-                span.planet-value {{planet.corporation_count}}
+                span.planet-value {{ planet.corporation_count }}
               .planet-online.planet-info-row
                 span {{$translate('ui.menu.galaxy.details.online.label')}}:
-                span.planet-value {{planet.online_count}}
+                span.planet-value {{ planet.onlineCount }}
 
           .columns
             .column.is-5
-              button.button.is-primary.is-fullwidth.is-outlined.workflow-action.visitor-action(@click.stop.prevent='select_visitor(planet)' :disabled='true || !planet.enabled') {{$translate('identity.visitor')}} {{$translate('identity.visa')}}
+              button.button.is-primary.is-fullwidth.is-outlined.workflow-action.visitor-action(
+                :disabled='!galaxyMetadata.visitorIssueEnabled || !planet.enabled'
+                @click.stop.prevent='select_visitor(planet)'
+              ) {{$translate('identity.visitor')}} {{$translate('identity.visa')}}
+
             .column.is-7
               template(v-if='corporation_identifiers_by_planet_id[planet.id]')
-                button.button.is-primary.is-fullwidth.workflow-action.corporation-action(@click.stop.prevent='select_tycoon(planet)' :disabled='!planet.enabled')
-                  .action-text {{corporation_identifiers_by_planet_id[planet.id].name}}
+                button.button.is-primary.is-fullwidth.workflow-action.corporation-action(
+                  :disabled='!galaxyMetadata.tycoonIssueEnabled || !planet.enabled'
+                  @click.stop.prevent='select_tycoon(planet)'
+                )
+                  .action-text {{ corporation_identifiers_by_planet_id[planet.id].name }}
+
               template(v-else)
-                button.button.is-primary.is-fullwidth.is-outlined.workflow-action.corporation-action(@click.stop.prevent='select_tycoon(planet)' :disabled='!planet.enabled || !is_tycoon_in_galaxy')
+                button.button.is-primary.is-fullwidth.is-outlined.workflow-action.corporation-action(
+                  :disabled='!galaxyMetadata.tycoonIssueEnabled || !planet.enabled || !is_tycoon_in_galaxy'
+                  @click.stop.prevent='select_tycoon(planet)'
+                )
                   .action-text {{$translate('ui.menu.corporation.establish.action.establish')}}
 
           .disabled-overlay(v-show='!planet.enabled')
@@ -50,15 +61,15 @@
 
 <script lang='ts'>
 import _ from 'lodash';
+import Galaxy from '~/plugins/starpeace-client/galaxy/galaxy';
 import ClientState from '~/plugins/starpeace-client/state/client-state';
-
-const VISITOR_ENABLED = false;
 
 declare interface GalaxyMenuData {
   menu_visible: boolean;
   loading_galaxy: boolean;
   loading_tycoons: boolean;
-  galaxy_metadata_by_id: Record<string, any>;
+
+  galaxy_metadata_by_id: Record<string, Galaxy>;
   corporation_identifiers_by_planet_id: Record<string, any>;
 }
 
@@ -99,14 +110,26 @@ export default {
   computed: {
     is_visible (): boolean { return this.client_state.initialized && this.menu_visible; },
 
-    galaxy_id (): string { return this.client_state.identity.galaxy_id; },
-    galaxy_metadata (): any { return this.galaxy_id ? this.galaxy_metadata_by_id[this.galaxy_id] : null; },
+    galaxy_id (): string | undefined {
+      return this.client_state.identity.galaxy_id ?? undefined;
+    },
+    galaxyMetadata (): Galaxy | undefined {
+      return this.galaxy_id ? this.galaxy_metadata_by_id[this.galaxy_id] : undefined;
+    },
 
-    is_tycoon_in_galaxy (): boolean { return this.client_state.identity?.galaxy_visa_type === 'tycoon' && this.tycoon_id?.length > 0; },
-    tycoon_id (): string { return this.client_state.identity?.galaxy_tycoon_id; },
+    is_tycoon_in_galaxy (): boolean {
+      return this.client_state.identity?.galaxy_visa_type === 'tycoon' && (this.tycoon_id?.length ?? 0) > 0;
+    },
+    tycoon_id (): string | undefined {
+      return this.client_state.identity?.galaxy_tycoon_id ?? undefined;
+    },
 
-    planets (): Array<any> { return this.galaxy_metadata && this.is_visible ? _.sortBy(this.galaxy_metadata.planets ?? [], (planet) => planet.name) : []; },
-    sorted_planet_chunks (): Array<Array<any>> { return _.chunk(this.planets, 3); }
+    planets (): Array<any> {
+      return this.galaxyMetadata && this.is_visible ? _.sortBy(this.galaxyMetadata.planets ?? [], (planet) => planet.name) : [];
+    },
+    sorted_planet_chunks (): Array<Array<any>> {
+      return _.chunk(this.planets, 3);
+    }
   },
 
 
@@ -142,13 +165,13 @@ export default {
     },
 
     select_visitor (planet: any) {
-      if (VISITOR_ENABLED && !planet.enabled) return;
+      if (!this.galaxyMetadata?.visitorIssueEnabled || !planet.enabled) return;
       this.client_state.change_planet_id('visitor', planet.id);
       if (window?.document) window.document.title = `${planet.name} - STARPEACE`;
     },
 
     select_tycoon (planet: any) {
-      if (!planet.enabled || !this.is_tycoon_in_galaxy) return;
+      if (!this.galaxyMetadata?.tycoonIssueEnabled || !planet.enabled || !this.is_tycoon_in_galaxy) return;
       this.client_state.change_planet_id('tycoon', planet.id);
       if (window?.document) window.document.title = `${planet.name} - STARPEACE`;
     }

@@ -61,7 +61,7 @@ export default {
   },
 
   computed: {
-    is_visible (): boolean { return this.client_state?.interface?.add_galaxy_visible ?? false; },
+    isVisible (): boolean { return this.client_state?.interface?.add_galaxy_visible ?? false; },
 
     port_as_number (): number {
       try {
@@ -74,13 +74,13 @@ export default {
     },
 
     has_form_data (): boolean {
-      return this.is_visible && (this.protocol == 'http' || this.protocol == 'https') && this.host?.length > 0 && this.port_as_number > 0;
+      return this.isVisible && (this.protocol == 'http' || this.protocol == 'https') && this.host?.length > 0 && this.port_as_number > 0;
     }
   },
 
   watch: {
     is_visible (new_value, old_value) {
-      if (this.is_visible) {
+      if (this.isVisible) {
         this.protocol = 'http';
         this.host = '';
         this.port = '';
@@ -94,8 +94,8 @@ export default {
     add_galaxy (): void {
       if (!this.has_form_data) return;
 
-      const galaxy = this.client_state.options.add_galaxy(this.protocol, this.host, this.port);
-      this.client_state.core.galaxy_cache.load_galaxy_configuration(galaxy.id, galaxy);
+      const galaxy = this.client_state.options.galaxy.add_galaxy(this.protocol, this.host, this.port_as_number);
+      this.client_state.core.galaxy_cache.loadGalaxyConfiguration(galaxy.id, galaxy);
       this.client_state.interface.hide_add_galaxy();
     }
   }

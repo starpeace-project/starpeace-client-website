@@ -16,11 +16,11 @@ import SignLibrary from '~/plugins/starpeace-client/state/core/library/sign-libr
 import BuildingCache from '~/plugins/starpeace-client/state/core/cache/building-cache.js'
 import CompanyCache from '~/plugins/starpeace-client/state/core/cache/company-cache.coffee'
 import CorporationCache from '~/plugins/starpeace-client/state/core/cache/corporation-cache.js'
-import GalaxyCache from '~/plugins/starpeace-client/state/core/cache/galaxy-cache.coffee'
+import GalaxyCache from '~/plugins/starpeace-client/state/core/cache/galaxy-cache.js'
 import PlanetCache from '~/plugins/starpeace-client/state/core/cache/planet-cache.coffee'
 import TycoonCache from '~/plugins/starpeace-client/state/core/cache/tycoon-cache.coffee'
 
-import Options from '~/plugins/starpeace-client/state/options.js';
+import Options from '~/plugins/starpeace-client/state/options/options.js';
 
 export default class CoreState {
   building_library: BuildingLibrary;

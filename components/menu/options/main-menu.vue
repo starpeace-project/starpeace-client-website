@@ -59,9 +59,9 @@
 
     footer.card-footer
       .card-footer-item.reset-item
-        button.button.is-primary.is-medium.is-outlined(@click.stop.prevent='resetOptions' :disabled='!can_reset') {{$translate('ui.menu.options.actions.reset')}}
+        button.button.is-primary.is-medium.is-outlined(@click.stop.prevent='resetOptions' :disabled='!canReset') {{$translate('ui.menu.options.actions.reset')}}
       .card-footer-item.save-item
-        button.button.is-primary.is-medium(@click.stop.prevent='saveOptions' :disabled='!is_dirty') {{$translate('ui.menu.options.actions.save')}}
+        button.button.is-primary.is-medium(@click.stop.prevent='saveOptions' :disabled='!isDirty') {{$translate('ui.menu.options.actions.save')}}
 
 </template>
 
@@ -77,8 +77,8 @@ export default {
     return {
       language_code: this.client_state.options.language() ?? 'EN',
 
-      can_reset: this.client_state.options.can_reset(),
-      is_dirty: this.client_state.options.is_dirty()
+      canReset: this.client_state.options.canReset(),
+      isDirty: this.client_state.options.isDirty()
     };
   },
 
@@ -90,8 +90,8 @@ export default {
 
   mounted () {
     this.client_state.options?.subscribe_options_listener(() => {
-      this.can_reset = this.client_state.options.can_reset() ?? false;
-      this.is_dirty = this.client_state.options.is_dirty() ?? false;
+      this.canReset = this.client_state.options.canReset() ?? false;
+      this.isDirty = this.client_state.options.isDirty() ?? false;
       this.language_code = this.client_state.options.language() ?? 'EN';
       this.$forceUpdate();
     });
@@ -99,13 +99,13 @@ export default {
 
   methods: {
     change_language (code: string): void {
-      this.client_state.options.set_language(code);
+      this.client_state.options.setLanguage(code);
     },
     resetOptions (): void {
-      this.client_state.options.reset_state();
+      this.client_state.options.reset();
     },
     saveOptions (): void {
-      this.client_state.options.save_state();
+      this.client_state.options.save();
     }
   }
 }

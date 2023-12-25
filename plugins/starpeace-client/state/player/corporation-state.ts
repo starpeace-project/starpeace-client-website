@@ -94,7 +94,7 @@ export default class CorporationState {
     this.notify_company_inventions_listeners();
   }
 
-  update_cashflow (last_mail_at: any, cash: number, _cashCurrentYear: any, cashflow: number) {
+  update_cashflow (last_mail_at: any, cash: number, cashflow: number) {
     this.last_mail_at = last_mail_at;
     this.cash = cash;
     this.cashflow = cashflow;

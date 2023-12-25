@@ -1,10 +1,17 @@
 {
   "id": "browser-sandbox",
   "name": "Browser Sandbox",
-  "visitorEnabled": true,
-  "tycoonEnabled": true,
-  "tycoonCreationEnabled": false,
-  "tycoonAuthentication": "password",
+  "visas": {
+    "visitor": false,
+    "tycoon": {
+      "issue": true,
+      "create": true
+    }
+  },
+  "settings": {
+    "authentication": "password",
+    "streamEncoding": "raw"
+  },
   "planets": [
     {
       "id": "planet-1",

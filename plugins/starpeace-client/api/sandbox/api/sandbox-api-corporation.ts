@@ -122,7 +122,6 @@ export default class SandboxApiCorporation {
       const corporation: any = _.cloneDeep(sandbox.sandbox_data.corporation.corporationById[corporation_id]);
       corporation.cashAsOf = sandbox.sandbox_data.planet_id_dates[corporation.planetId].toISO();
       corporation.cash = sandbox.sandbox_data.corporation.cashflowByCorporationId[corporation_id]?.cash ?? 0;
-      corporation.cashCurrentYear = sandbox.sandbox_data.corporation.cashflowByCorporationId[corporation_id]?.cashCurrentYear ?? 0;
       corporation.prestige = Math.ceil(Math.random() * 200);
       return corporation;
     });

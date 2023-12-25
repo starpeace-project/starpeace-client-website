@@ -31,15 +31,16 @@
             li(v-if='inventionAllows.length > 5') {{ inventionAllows.length - 3 }} {{ $translate('ui.menu.research.others.label') }}
             li(v-else-if='inventionAllows.length > 4') 1 {{ $translate('ui.menu.research.other.label') }}
 
-    .is-flex-grow-1.mt-2.inverse-card.sp-scrollbar.p-3.invention-properties(v-if='inventionProperties.length')
-      ul.inventions
-        li(v-for='option in inventionProperties')
-          span.property-label(:class='option.class') {{ option.type }}:
-          span.property-value(:class='option.class') {{ option.text_parts[0] }}{{ option.text_parts[1] }}{{ option.text_parts[2] }}
-      div.is-clearfix
+    .is-flex-grow-1
+      .mt-2.inverse-card.sp-scrollbar.p-3.invention-properties(v-if='inventionProperties.length')
+        ul.inventions
+          li(v-for='option in inventionProperties')
+            span.property-label(:class='option.class') {{ option.type }}:
+            span.property-value(:class='option.class') {{ option.text_parts[0] }}{{ option.text_parts[1] }}{{ option.text_parts[2] }}
+        div.is-clearfix
 
     .is-flex-grow-0.mt-2.actions-container(v-if="inventionStatus != 'NONE'")
-      .action-row.invention-status
+      .action-row.invention-status.mb-4
         span.sp-kv-key {{$translate('ui.menu.research.status.label')}}:
         span.invention-status-value.available(v-if="inventionStatus == 'AVAILABLE'") {{ $translate('ui.menu.research.details.status.available') }}
         span.invention-status-value.blocked(v-else-if="inventionStatus == 'AVAILABLE_BUILDING'") {{ $translate(first_allowing_building_name) }} {{ $translate('ui.menu.research.details.status.building_required') }}
@@ -388,8 +389,7 @@ export default {
   .actions-container
     .action-row
       &.invention-status
-        min-height: 4rem
-        margin-bottom: 1rem
+        min-height: 2rem
 
         .invention-status-value
           font-size: 1.3rem

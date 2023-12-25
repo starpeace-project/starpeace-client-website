@@ -3,16 +3,16 @@ import _ from 'lodash';
 import GameMap from '~/plugins/starpeace-client/map/game-map.coffee';
 
 import AssetManager from '~/plugins/starpeace-client/asset/asset-manager.coffee';
-import BookmarkManager from '~/plugins/starpeace-client/bookmark/bookmark-manager';
-import Building from '~/plugins/starpeace-client/building/building';
-import BuildingManager from '~/plugins/starpeace-client/building/building-manager';
+import BookmarkManager from '~/plugins/starpeace-client/bookmark/bookmark-manager.js';
+import Building from '~/plugins/starpeace-client/building/building.js';
+import BuildingManager from '~/plugins/starpeace-client/building/building-manager.js';
 import ConcreteManager from '~/plugins/starpeace-client/building/concrete-manager.coffee';
-import CompanyManager from '~/plugins/starpeace-client/company/company-manager';
-import CorporationManager from '~/plugins/starpeace-client/corporation/corporation-manager';
+import CompanyManager from '~/plugins/starpeace-client/company/company-manager.js';
+import CorporationManager from '~/plugins/starpeace-client/corporation/corporation-manager.js';
 import EffectManager from '~/plugins/starpeace-client/asset/effect-manager.coffee';
 import EventManager from '~/plugins/starpeace-client/event/event-manager';
-import GalaxyManager from '~/plugins/starpeace-client/galaxy/galaxy-manager.coffee';
-import InventionManager from '~/plugins/starpeace-client/invention/invention-manager';
+import GalaxyManager from '~/plugins/starpeace-client/galaxy/galaxy-manager.js';
+import InventionManager from '~/plugins/starpeace-client/invention/invention-manager.js';
 import LandManager from '~/plugins/starpeace-client/land/land-manager.coffee';
 import MapManager from '~/plugins/starpeace-client/land/map-manager.coffee';
 import MailManager from '~/plugins/starpeace-client/mail/mail-manager';
@@ -30,7 +30,7 @@ import type ApiClient from '~/plugins/starpeace-client/api/api-client.js';
 import TreeMenuUtils from '~/plugins/starpeace-client/utils/tree-menu-utils.coffee';
 import Logger from '~/plugins/starpeace-client/logger';
 
-import Options from '~/plugins/starpeace-client/state/options';
+import Options from '~/plugins/starpeace-client/state/options/options';
 import AjaxState from '~/plugins/starpeace-client/state/ajax-state';
 import type ClientState from '~/plugins/starpeace-client/state/client-state.js';
 

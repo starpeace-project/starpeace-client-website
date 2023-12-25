@@ -127,7 +127,7 @@ export default {
     corporation (): any | null { return this.has_corporation ? this.clientState.core.corporation_cache.metadata_for_id(this.corporationId) : null; },
 
     corporation_cash (): number { return this.corporation?.cash ?? 0; },
-    corporation_current_year_cash (): number { return this.corporation?.cashCurrentYear ?? 0; },
+    corporation_current_year_cash (): number { return 0; },
     corporation_current_year_hours (): number {
       if (!this.corporation?.cashAsOf) return 0;
       return this.corporation.cashAsOf.diff(this.corporation.cashAsOf.startOf('year'), 'hours').toObject().hours ?? 0;

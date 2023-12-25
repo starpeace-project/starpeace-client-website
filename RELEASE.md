@@ -1,5 +1,5 @@
 
-## v0.3.14 - in progress - updated 2023-12-16
+## v0.3.14 - in progress - updated 2023-12-25
 ### platform
 * [done] improve API integration with galaxies [v0.3.1]
 * [done] document multiverse API integration [starpeace-server-multiverse-api]

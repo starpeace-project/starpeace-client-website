@@ -5,7 +5,7 @@ import TranslationManager from '~/plugins/starpeace-client/language/translation-
 
 import type AjaxState from '~/plugins/starpeace-client/state/ajax-state.js'
 import type ClientState from '~/plugins/starpeace-client/state/client-state.js';
-import type Options from '~/plugins/starpeace-client/state/options.js';
+import type Options from '~/plugins/starpeace-client/state/options/options.js';
 import VisaEvent, { VisaNewsEvent } from './visa-event';
 
 const EVENT_CHANGE_SPEED = 15000;

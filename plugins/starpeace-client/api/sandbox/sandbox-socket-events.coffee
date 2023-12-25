@@ -14,7 +14,6 @@ export default class SandboxSocketEvents
         id: visa.corporationId,
         lastMailAt: @sandbox.sandbox_data.corporation.cashflowByCorporationId[visa.corporationId]?.lastMailAt?.toISO(),
         cash: (@sandbox.sandbox_data.corporation.cashflowByCorporationId[visa.corporationId]?.cash || 0),
-        cashCurrentYear: (@sandbox.sandbox_data.corporation.cashflowByCorporationId[visa.corporationId]?.cashCurrentYear || 0),
         cashflow: (@sandbox.sandbox_data.corporation.cashflowByCorporationId[visa.corporationId]?.cashflow() || 0),
         companies: _.map(_.values(@sandbox.sandbox_data.corporation.cashflowByCorporationId[visa.corporationId]?.companiesById), (company) =>
           return {

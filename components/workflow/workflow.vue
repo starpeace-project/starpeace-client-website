@@ -1,8 +1,8 @@
 <template lang='pug'>
 client-only
   transition(name='fade-in')
-    #workflow-container(v-show='is_active')
-      .card.is-starpeace(:style='workflow_card_style', :class='workflow_card_class')
+    #workflow-container(v-if='is_active')
+      .card.is-starpeace(:style='workflow_card_style' :class='workflow_card_class')
         .card-header(v-show='has_header')
           .card-header-title.card-header-planet(v-show="status == 'pending_planet'")
             a(v-on:click.stop.prevent='reset_galaxy') {{$translate('ui.workflow.universe.multiverse.label')}}
@@ -27,7 +27,7 @@ client-only
 import ClientState from '~/plugins/starpeace-client/state/client-state';
 
 const STATUS_MAX_WIDTHS: Record<string, string> = {
-  'pending_universe': '60rem',
+  'pending_universe': '70rem',
   'pending_visa': '20rem',
   'pending_planet': '80rem',
   'pending_assets': '20rem',
@@ -43,17 +43,26 @@ export default {
     status (): string { return this.client_state.workflow_status; },
     is_active (): boolean { return this.status !== 'ready'; },
 
-    workflow_card_class () { return { 'has-header': this.has_header, 'full-height': this.status === 'pending_universe', 'sp-scrollbar': this.status === 'pending_planet' }; },
-    workflow_card_style () { return { 'width': this.max_width, 'max-height': this.max_height }; },
+    workflow_card_class () {
+      return {
+        'has-header': this.has_header,
+        'full-height': this.status === 'pending_universe',
+        'sp-scrollbar': this.status === 'pending_planet'
+      };
+    },
+    workflow_card_style () {
+      return {
+        'width': this.max_width, 'max-height': this.max_height
+      };
+    },
 
     has_header (): boolean { return this.status === 'pending_planet'; },
     max_width (): string { return STATUS_MAX_WIDTHS[this.status] ?? 'inherit'; },
     max_height (): string { return this.status === 'pending_universe' ? '60rem' : 'inherit'; },
 
-    current_galaxy_name (): string | null {
-      if (!this.client_state.identity.galaxy_id) return null;
-      if (!this.client_state.core.galaxy_cache.has_galaxy_metadata(this.client_state.identity.galaxy_id)) return null;
-      return this.client_state.core.galaxy_cache.galaxy_metadata(this.client_state.identity.galaxy_id).name;
+    current_galaxy_name (): string | undefined {
+      if (!this.client_state.identity.galaxy_id) return undefined;
+      return this.client_state.core.galaxy_cache.metadataForGalaxyId(this.client_state.identity.galaxy_id)?.name;
     }
   },
 
