@@ -1,5 +1,5 @@
 
-## v0.3.14 - in progress - updated 2023-12-25
+## v0.3.14 - in progress - updated 2023-12-30
 ### platform
 * [done] improve API integration with galaxies [v0.3.1]
 * [done] document multiverse API integration [starpeace-server-multiverse-api]
@@ -47,7 +47,7 @@
 * [done] building sign assets [v0.3.5]
 * [done] headquarters requirements for research per seal [v0.3.5]
 * [done] fixing building foundation configurations [v0.3.6]
-* [in progress] fix blur in created sprite spreets [v0.3.14]
+* [done] fix blur in created sprite spreets [v0.3.14]
 
 ### gameplay
 * [done] update UI and menus for better concept of universes and galaxies [v0.3.1]

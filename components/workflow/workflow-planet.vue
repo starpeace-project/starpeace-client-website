@@ -12,7 +12,10 @@
           article.tile.is-child.planet-row
             .columns.is-vcentered
               .column.is-narrow.planet-image
-                img.starpeace-logo.logo-loading(:src="planet_animation_url(planet_chunk[n - 1])" @load="$event.target.classList.remove('starpeace-logo', 'logo-loading')")
+                template(v-if='false')
+                  img.starpeace-logo.logo-loading(:src="planet_animation_url(planet_chunk[n - 1])" @load="$event.target.classList.remove('starpeace-logo', 'logo-loading')")
+                template(v-else)
+                  img.starpeace-logo.logo-loading
 
               .column.planet-item.info
                 .planet-name {{planet_chunk[n - 1].name}}

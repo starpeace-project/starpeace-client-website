@@ -1,9 +1,6 @@
 import _ from 'lodash';
-import { reactive } from 'vue';
 
 import EventListener from '~/plugins/starpeace-client/state/event-listener.js';
-import Utils from '~/plugins/starpeace-client/utils/utils.js';
-import Logger from '~/plugins/starpeace-client/logger.js'
 import GalaxyOptions from './galaxy-options';
 import AuthenticationOptions from './authentication-options';
 
@@ -39,6 +36,7 @@ const OPTIONS = [
   { name: 'renderer.buildings', type: 'boolean', initial: true },
   { name: 'renderer.building_animations', type: 'boolean', initial: true },
   { name: 'renderer.building_effects', type: 'boolean', initial: true },
+  { name: 'renderer.building_anti_alias', type: 'boolean', initial: false },
   { name: 'renderer.planes', type: 'boolean', initial: true },
 
   { name: 'bookmarks.points_of_interest', type: 'boolean', initial: true },

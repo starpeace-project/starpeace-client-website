@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 import GameMap from '~/plugins/starpeace-client/map/game-map.coffee';
 
-import AssetManager from '~/plugins/starpeace-client/asset/asset-manager.coffee';
+import AssetManager from '~/plugins/starpeace-client/asset/asset-manager.js';
 import BookmarkManager from '~/plugins/starpeace-client/bookmark/bookmark-manager.js';
 import Building from '~/plugins/starpeace-client/building/building.js';
 import BuildingManager from '~/plugins/starpeace-client/building/building-manager.js';

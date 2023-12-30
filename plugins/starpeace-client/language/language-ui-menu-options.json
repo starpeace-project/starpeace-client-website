@@ -119,6 +119,14 @@
     "IT": "Effetti degli Edifici",
     "PT": "Efeitos de Edifício"
   },
+  "ui.menu.options.option.graphics.building_anti_alias.label": {
+    "DE": "Glättung Aufbauen",
+    "EN": "Building Smoothing",
+    "ES": "Suavizado de Edificios",
+    "FR": "Lissage du Bâtiment",
+    "IT": "Costruire Levigatura",
+    "PT": "Suavização de Edifícios"
+  },
   "ui.menu.options.option.graphics.planes.label": {
     "DE": "Flugzeuge",
     "EN": "Planes",

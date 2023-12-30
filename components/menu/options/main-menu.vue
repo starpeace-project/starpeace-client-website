@@ -41,6 +41,7 @@
           menu-options-menu-option(:label="$translate('ui.menu.options.option.graphics.buildings.label')", :value="options.option('renderer.buildings')", @toggle="options.toggle('renderer.buildings')")
           menu-options-menu-option(:label="$translate('ui.menu.options.option.graphics.building_animations.label')", :value="options.option('renderer.building_animations')", @toggle="options.toggle('renderer.building_animations')")
           menu-options-menu-option(:label="$translate('ui.menu.options.option.graphics.building_effects.label')", :value="options.option('renderer.building_effects')", @toggle="options.toggle('renderer.building_effects')")
+          menu-options-menu-option(:label="$translate('ui.menu.options.option.graphics.building_anti_alias.label')", :value="options.option('renderer.building_anti_alias')", @toggle="options.toggle('renderer.building_anti_alias')")
           menu-options-menu-option(:label="$translate('ui.menu.options.option.graphics.planes.label')", :value="options.option('renderer.planes')", @toggle="options.toggle('renderer.planes')")
 
         .column

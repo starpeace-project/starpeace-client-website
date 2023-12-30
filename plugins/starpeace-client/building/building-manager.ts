@@ -1,3 +1,5 @@
+import { SCALE_MODES } from '@pixi/constants'
+
 import type ApiClient from '~/plugins/starpeace-client/api/api-client.js'
 
 import BookmarkManager from '~/plugins/starpeace-client/bookmark/bookmark-manager'
@@ -36,6 +38,15 @@ export default class BuildingManager {
     this.clientState = clientState;
 
     this.clientState.planet.subscribeBuildingListener((event: any) => this.handleBuildingEvent(event));
+    this.clientState.options.subscribe_options_listener(async () => {
+      const disableAA = !this.clientState.options.option('renderer.building_anti_alias');
+      for (const atlas of this.clientState.core.building_library.allAtlases()) {
+        if (atlas.baseTexture) {
+          atlas.baseTexture.scaleMode = disableAA ? SCALE_MODES.NEAREST : SCALE_MODES.LINEAR;
+          atlas.baseTexture.update();
+        }
+      }
+    });
   }
 
   initialize () {
@@ -57,7 +68,12 @@ export default class BuildingManager {
             // FIXME: TODO: convert json to object
             this.clientState.core.building_library.load_images(resource.images);
             this.clientState.core.building_library.load_required_atlases(resource.atlas);
-            this.assetManager.queue_and_load_atlases((resource.atlas || []), (atlas_path: any, atlas: any) => this.clientState.core.building_library.load_atlas(atlas_path, atlas));
+            this.assetManager.queue_and_load_atlases((resource.atlas || []), (atlas_path: any, atlas: any) => {
+              if (atlas?.baseTexture && !this.clientState.options.option('renderer.building_anti_alias')) {
+                atlas.baseTexture.scaleMode = SCALE_MODES.NEAREST;
+              }
+              this.clientState.core.building_library.load_atlas(atlas_path, atlas);
+            });
             resolve();
           }
         });

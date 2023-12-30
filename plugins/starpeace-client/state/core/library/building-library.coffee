@@ -51,3 +51,6 @@ export default class BuildingLibrary extends Library
   load_atlas: (atlas_key, atlas) ->
     @texture_cache.load_atlas(atlas_key, atlas)
     @notify_listeners()
+
+  allAtlases: () ->
+    Object.values(@texture_cache.loaded_atlases || {})

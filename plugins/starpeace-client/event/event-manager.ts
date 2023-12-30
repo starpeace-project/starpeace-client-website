@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import AssetManager from '~/plugins/starpeace-client/asset/asset-manager.coffee';
+import AssetManager from '~/plugins/starpeace-client/asset/asset-manager.js';
 import TranslationManager from '~/plugins/starpeace-client/language/translation-manager.js';
 
 import type AjaxState from '~/plugins/starpeace-client/state/ajax-state.js'

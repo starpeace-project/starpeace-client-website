@@ -9,7 +9,7 @@
         li(v-for='tab in tabs' :class="{ 'is-active': tabId == tab.id }" @click.stop.prevent='tabId = tab.id')
             a {{$translate(tab.label)}}
 
-    .inspect-body.columns.is-marginless
+    .inspect-body.columns.is-marginless.is-clipped
       template(v-if="tabId == 'general'")
         .column.is-narrow.sp-scrollbar.service-levels
           table.basic-table.condensed

@@ -1,7 +1,7 @@
 import { markRaw } from 'vue';
 import { Howl, Howler } from 'howler';
 
-import AssetManager from '~/plugins/starpeace-client/asset/asset-manager.coffee'
+import AssetManager from '~/plugins/starpeace-client/asset/asset-manager.js';
 
 const MUSIC_MP3 = ['music.intro.mp3', 'music.inmap1.mp3', 'music.inmap3.mp3', 'music.inmap2.mp3','music.inmap4.mp3']; // inmap1 & inmap2 similar
 
