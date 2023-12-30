@@ -20,9 +20,6 @@ export default class SandboxConfiguration
     @sandbox = new Sandbox()
 
     @socketEvents = new SandboxSocketEvents(@sandbox)
-
-    setInterval((=> @sandbox.tick_day()), 1000)
-
     SandboxApiConfigure.configure(@mock, @sandbox)
 
     @get 'metadata/buildings', (config) => _.merge({ planetId: config.headers['PlanetId'] }, {

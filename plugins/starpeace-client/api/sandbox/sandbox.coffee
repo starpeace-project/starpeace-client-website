@@ -23,6 +23,8 @@ export default class Sandbox
     @session_tokens = {}
     @visasById = {}
 
+    @started = false
+
   valid_session: (token) -> @session_tokens[token]? && TimeUtils.within_minutes(@session_tokens[token], 60)
   register_session: (type) ->
     token = Utils.uuid()
@@ -34,6 +36,11 @@ export default class Sandbox
       window.starpeace_client.client_state.core.invention_library.metadata_by_id[invention_id]?.properties?.price || 0
     else
       0
+
+  start: () ->
+    if (!@started)
+      setInterval((=> @tick_day()), 1000)
+      @started = true;
 
   tick_day: () ->
     @sandbox_data.planet_id_dates[id] = @sandbox_data.planet_id_dates[id].plus({ day: 1 }) for id,date of @sandbox_data.planet_id_dates

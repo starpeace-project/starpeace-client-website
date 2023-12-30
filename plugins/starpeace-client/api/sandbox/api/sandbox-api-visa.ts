@@ -24,6 +24,8 @@ export default class SandboxApiVisa {
           corporationId = _.values(sandbox.sandbox_data.corporation.corporationById).find((corporation) => corporation.planetId == planetId && corporation.tycoonId == tycoonId)?.id;
         }
 
+        sandbox.start();
+
         const visa = {
           id: sandbox.register_session(params.identityType),
           identityType: params.identityType,

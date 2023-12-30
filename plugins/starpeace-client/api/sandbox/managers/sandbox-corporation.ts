@@ -25,9 +25,9 @@ interface CompanyInfo {
 export class Cashflow {
   lastMailAt: DateTime | undefined;
   cash: number;
-  companiesById: Record<string, any>;
+  companiesById: Record<string, CompanyCashflow>;
 
-  constructor (lastMailAt: DateTime | undefined, cash: number, companiesById: Record<string, any>) {
+  constructor (lastMailAt: DateTime | undefined, cash: number, companiesById: Record<string, CompanyCashflow>) {
     this.lastMailAt = lastMailAt;
     this.cash = cash;
     this.companiesById = companiesById;
@@ -118,7 +118,7 @@ export default class SandboxCorporation {
         for (const company of corporation.companies) {
           cashflowByCompanyId[company.id] = new CompanyCashflow(company.id, 0, 0);
         }
-        cashflowByCorporationId[corporation.id] = new Cashflow(mailAt ? DateTime.fromISO(mailAt) : undefined, cash, cash / 4, cashflowByCompanyId);
+        cashflowByCorporationId[corporation.id] = new Cashflow(mailAt ? DateTime.fromISO(mailAt) : undefined, cash / 4, cashflowByCompanyId);
       }
     }
     return cashflowByCorporationId;
