@@ -95,7 +95,7 @@ export default {
     },
 
     corporationLevelId (): string | undefined {
-      return this.corporation?.level_id ?? undefined;
+      return this.corporation?.levelId ?? undefined;
     },
     corporationLevel (): any | undefined {
       return this.corporationLevelId ? this.clientState.core.planet_library.level_for_id(this.corporationLevelId) : undefined;

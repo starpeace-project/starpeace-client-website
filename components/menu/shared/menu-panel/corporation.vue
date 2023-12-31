@@ -9,28 +9,27 @@ div
 
     .details-column
       .detail-row(v-if='!hideTycoon && tycoon')
-        span.detail-label {{$translate('ui.menu.corporation.panel.details.tycoon')}}:
-        span.detail-value {{tycoon.tycoonName}}
+        span.detail-label {{ $translate('ui.menu.corporation.panel.details.tycoon') }}:
+        span.detail-value {{ tycoon.tycoonName }}
       .detail-row(v-if='!hideCorporation && corporation')
-        span.detail-label {{$translate('ui.menu.corporation.panel.details.corporation')}}:
-        span.detail-value {{corporation.name}}
+        span.detail-label {{ $translate('ui.menu.corporation.panel.details.corporation') }}:
+        span.detail-value {{ corporation.name }}
       .detail-row
-        span.detail-label {{$translate('ui.menu.corporation.panel.details.fortune')}}:
+        span.detail-label {{ $translate('ui.menu.corporation.panel.details.fortune') }}:
         span.detail-value
-          misc-money-text(:value='100000000000000' no_styling)
+          misc-money-text(:value='cash' no_styling)
       .detail-row
-        span.detail-label {{$translate('ui.menu.corporation.panel.details.fortune_ytd')}}:
+        span.detail-label {{ $translate('ui.menu.corporation.panel.details.fortune_ytd') }}:
         span.detail-value
-          misc-money-text(:value='1000000000' no_styling)
+          misc-money-text(:value='cashYearToDate' no_styling)
       .detail-row
-        span.detail-label {{$translate('ui.menu.corporation.panel.details.ranking')}}:
+        span.detail-label {{ $translate('ui.menu.corporation.panel.details.ranking') }}:
         span.detail-value 0
+      .detail-row(v-if='level')
+        span.detail-label {{ $translate('misc.corporation.level') }}:
+        span.detail-value {{ $translate(level.label) }}
       .detail-row
-        span.detail-label {{$translate('misc.corporation.level')}}:
-        span.detail-value
-          template(v-if='level') {{$translate(level.label)}}
-      .detail-row
-        span.detail-label {{$translate('misc.corporation.prestige')}}:
+        span.detail-label {{ $translate('misc.corporation.prestige') }}:
         span.detail-value 0
 
   .corporation-actions.level.is-mobile
@@ -40,7 +39,7 @@ div
       button.button.is-fullwidth.is-small.is-starpeace(:disabled='!canSend' @click.stop.prevent='send_mail') {{$translate('ui.menu.corporation.panel.action.send_mail')}}
 
   menu-shared-tree-menu-item(
-    visible=true
+    visible
     :client-state='clientState'
     :item='item'
     :level='1'
@@ -50,6 +49,11 @@ div
 
 <script lang='ts'>
 import _ from 'lodash';
+
+import { Level } from '@starpeace/starpeace-assets-types';
+
+import Corporation from '~/plugins/starpeace-client/corporation/corporation';
+import { PlanetSearchResult } from '~/plugins/starpeace-client/planet/planets-manager';
 import ClientState from '~/plugins/starpeace-client/state/client-state';
 
 export default {
@@ -59,8 +63,8 @@ export default {
     hideTycoon: Boolean,
     hideCorporation: Boolean,
 
-    corporation: Object,
-    tycoon: Object
+    tycoon: { type: Object, required: true },
+    corporation: { type: Corporation, required: false }
   },
 
   data () {
@@ -70,10 +74,26 @@ export default {
   },
 
   computed: {
-    ready () { return this.clientState.workflow_status === 'ready'; },
-    canSend () { return this.ready && this.clientState.is_tycoon() && this.clientState.player.corporation_id?.length > 0; },
+    ready (): boolean {
+      return this.clientState.workflow_status === 'ready';
+    },
+    canSend (): boolean {
+      return this.ready && this.clientState.is_tycoon() && (this.clientState.player.corporation_id?.length ?? 0) > 0;
+    },
 
-    level () { return this.corporation?.level_id ? this.clientState?.core?.planet_library?.level_for_id(this.corporation?.level_id) : null; }
+    tycoonResult (): PlanetSearchResult {
+      return this.tycoon as PlanetSearchResult;
+    },
+
+    cash (): number | undefined {
+      return this.corporation?.cash;
+    },
+    cashYearToDate (): number | undefined {
+      return 0;
+    },
+    level (): Level | undefined {
+      return this.corporation?.levelId ? this.clientState?.core?.planet_library?.level_for_id(this.corporation?.levelId) : undefined;
+    }
   },
 
   watch: {

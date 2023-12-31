@@ -6,19 +6,19 @@
       font-awesome-icon(:icon="['fas', 'times']")
 
   .card-content.sp-menu-background
-    template(v-if='has_query')
+    template(v-if='hasQuery')
       .sp-section-breadcrumb
         nav.breadcrumb.sp-menu-breadcrumb
           ul
             li
-              a(@click.stop.prevent='clear_query')
+              a(@click.stop.prevent='clearQuery')
                 span.sp-breadcrumb-icon
                   font-awesome-icon(:icon="['fas', 'home']")
-                span {{$translate('ui.menu.tycoon_search.breadcrumb')}}
+                span {{ $translate('ui.menu.tycoon_search.breadcrumb') }}
 
             li.is-active
               a
-                span {{query}}
+                span {{ query }}
 
       aside.sp-scrollbar.container-results
         .sp-menu-loading-container(v-if='querying || !results')
@@ -43,16 +43,16 @@
             )
 
         template(v-else)
-          span.empty-results {{$translate('ui.menu.tycoon_search.results.none')}}
+          span.empty-results {{ $translate('ui.menu.tycoon_search.results.none') }}
 
     template(v-else)
       .query-fields
         .tabs.is-centered.is-toggle.is-small.is-fullwidth.sp-tabs.query-mode-toggle
           ul
             li(:class="{'is-active':mode=='CORPORATIONS'}" @click.stop.prevent="swap_mode('CORPORATIONS')")
-              a {{$translate('ui.menu.tycoon_search.toggle.corporation')}}
+              a {{ $translate('ui.menu.tycoon_search.toggle.corporation') }}
             li(:class="{'is-active':mode=='TYCOONS'}" @click.stop.prevent="swap_mode('TYCOONS')")
-              a {{$translate('ui.menu.tycoon_search.toggle.tycoon')}}
+              a {{ $translate('ui.menu.tycoon_search.toggle.tycoon') }}
 
         form.field.has-addons.query-input(@submit.stop.prevent='query_search')
           p.control.has-icons-left.is-expanded
@@ -60,7 +60,7 @@
             span.icon.is-left
               font-awesome-icon(:icon="['fas', 'search']")
           p.control
-            button.button.is-starpeace(@click.stop.prevent='query_search' :disabled='!can_query') {{$translate('ui.menu.tycoon_search.action.search')}}
+            button.button.is-starpeace(@click.stop.prevent='query_search' :disabled='!canQuery') {{$translate('ui.menu.tycoon_search.action.search')}}
 
         .query-index.is-size-4
           a(v-for='n in 26' @click.stop.prevent='query_prefix(n)') {{String.fromCharCode(65 + n - 1)}}
@@ -68,7 +68,16 @@
 </template>
 
 <script lang='ts'>
+import { PlanetSearchResult } from '~/plugins/starpeace-client/planet/planets-manager';
 import ClientState from '~/plugins/starpeace-client/state/client-state';
+
+declare interface MenuTycoonSearchData {
+  mode: string;
+  query: string;
+
+  querying: boolean;
+  results: Array<PlanetSearchResult> | undefined;
+}
 
 export default {
   props: {
@@ -76,29 +85,35 @@ export default {
     client_state: { type: ClientState, required: true }
   },
 
-  data () {
+  data (): MenuTycoonSearchData {
     return {
       mode: 'TYCOONS',
       query: '',
 
       querying: false,
-      results: null
+      results: undefined
     };
   },
 
   computed: {
-    is_ready () { return this.client_state?.workflow_status == 'ready'; },
+    ready (): boolean {
+      return this.client_state?.workflow_status === 'ready';
+    },
 
-    can_query () { return !this.querying && this.query.length >= 3; },
-    has_query () { return this.querying || !!this.results; }
+    canQuery (): boolean {
+      return !this.querying && this.query.length >= 3;
+    },
+    hasQuery () {
+      return this.querying || !!this.results;
+    }
   },
 
   watch: {
-    is_ready () {
-      if (!this.is_ready) {
+    ready () {
+      if (!this.ready) {
         this.mode = 'TYCOONS';
         this.query = '';
-        this.results = null;
+        this.results = undefined;
       }
     }
   },
@@ -109,44 +124,41 @@ export default {
       this.query = '';
     },
 
-    clear_query () {
+    clearQuery (): void {
       this.query = '';
-      this.results = null;
+      this.results = undefined;
     },
 
     query_prefix (num: number) {
       this.query = String.fromCharCode(65 + num - 1);
-      this.do_query(this.query, true)
+      this.executeQuery(this.query, true)
     },
 
     query_search () {
-      if (!this.can_query) return;
-      this.do_query(this.query, false);
+      if (!this.canQuery) return;
+      this.executeQuery(this.query, false);
     },
 
-    async do_query (query: string, queryPrefix: boolean) {
+    async executeQuery (query: string, queryPrefix: boolean): Promise<void> {
+      if (this.querying) {
+        return;
+      }
+
+      this.querying = true;
       try {
-        this.querying = true;
-
-        if (this.mode === 'TYCOONS') {
-          const results = await this.$starpeaceClient.managers.planets_manager.search_tycoons(query, queryPrefix);
-          if (query === this.query) this.results = results;
-        }
-        else {
-          const results = await this.$starpeaceClient.managers.planets_manager.search_corporations(query, queryPrefix);
-          if (query === this.query) this.results = results;
-        }
-
-        this.querying = false;
+        const queryPromise = this.mode === 'TYCOONS' ? this.$starpeaceClient.managers.planets_manager.search_tycoons(query, queryPrefix) : this.$starpeaceClient.managers.planets_manager.search_corporations(query, queryPrefix);
+        this.results = await queryPromise;
       }
       catch (err) {
         this.client_state.add_error_message('Failure loading results from server', err);
+      }
+      finally {
         this.querying = false;
       }
     },
 
     load_corporation (corporation_id: string) {
-      this.$starpeaceClient.managers.corporation_manager.load_by_corporation(corporation_id);
+      return this.$starpeaceClient.managers.corporation_manager.load_by_corporation(corporation_id);
     }
   }
 }

@@ -14,7 +14,10 @@
         .planet(v-for='planet in planets' :class="{'is-disabled': !planet.enabled}")
           .columns.is-vcentered
             .column.is-narrow.planet-image
-              img.starpeace-logo.logo-loading(:src="planet_animation_url(planet)" @load="$event.target.classList.remove('starpeace-logo', 'logo-loading')")
+              template(v-if='true')
+                img.starpeace-logo.logo-loading
+              template(v-else)
+                img.starpeace-logo.logo-loading(:src="planet_animation_url(planet)" @load="$event.target.classList.remove('starpeace-logo', 'logo-loading')")
 
             .column.planet-item
               .planet-name {{planet.name}}

@@ -5,7 +5,7 @@ export default class TreeMenuUtils
 
   organize_buildings: (root_id, buildings) ->
     category_type_buildings = {}
-    for building in buildings
+    for building in (buildings || [])
       definition = @client_state.core.building_library.metadata_by_id[building?.definition_id]
       industry_category = @client_state.core.planet_library.category_for_id(definition?.industryCategoryId)
       industry_type = @client_state.core.planet_library.type_for_id(definition?.industryTypeId)

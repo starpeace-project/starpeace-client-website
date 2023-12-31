@@ -109,6 +109,7 @@ export default class BuildingManager {
       const buildings: Building[] = ((await this.api.buildings_for_company(companyId)) ?? []).map(Building.fromJson);
       this.clientState.core.building_cache.load_buildings(buildings);
       this.clientState.corporation.set_company_building_ids(companyId, buildings.map((b: Building) => b.id));
+      return buildings;
     });
   }
 

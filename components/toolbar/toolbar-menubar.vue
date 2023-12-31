@@ -111,7 +111,7 @@ export default {
     maxBuildingCount (): number {
       if (this.is_tycoon && this.client_state.player.corporation_id) {
         const corporation = this.client_state.core.corporation_cache.metadata_for_id(this.client_state.player.corporation_id);
-        const level = corporation ? this.client_state.core.planet_library.level_for_id(corporation.level_id) : undefined;
+        const level = corporation ? this.client_state.core.planet_library.level_for_id(corporation.levelId) : undefined;
         if (level) {
           return level.facilityLimit ?? 0;
         }

@@ -184,11 +184,17 @@ export default class ApiClient {
   rankings_for_planet (rankingTypeId: string) {
     return this.get(`rankings/${rankingTypeId}`, {}, (result) => result ?? []);
   }
-  search_corporations_for_planet (query: string, startsWithQuery: string) {
-    return this.get('search/corporations', { query, startsWithQuery }, (result) => result ?? []);
+  search_corporations_for_planet (query: string, startsWithQuery: boolean) {
+    return this.get('search/corporations', {
+      query,
+      startsWithQuery: startsWithQuery.toString()
+    }, (result) => result ?? []);
   }
-  search_tycoons_for_planet (query: string, startsWithQuery: string) {
-    return this.get('search/tycoons', { query, startsWithQuery }, (result) => result ?? []);
+  search_tycoons_for_planet (query: string, startsWithQuery: boolean) {
+    return this.get('search/tycoons', {
+      query,
+      startsWithQuery: startsWithQuery.toString()
+    }, (result) => result ?? []);
   }
   towns_for_planet () {
     return this.get('towns', {}, (result) => result);

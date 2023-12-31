@@ -134,8 +134,8 @@ export default {
     },
     corporation_prestige (): number { return this.corporation?.prestige ?? 0; },
 
-    current_level (): any | null { return this.corporation?.level_id ? this.clientState.core.planet_library.level_for_id(this.corporation.level_id) : null; },
-    next_level (): any | null { return this.corporation?.level_id ? this.clientState.core.planet_library.next_level_for_id(this.corporation.level_id) : null; },
+    current_level (): any | null { return this.corporation?.levelId ? this.clientState.core.planet_library.level_for_id(this.corporation.levelId) : null; },
+    next_level (): any | null { return this.corporation?.levelId ? this.clientState.core.planet_library.next_level_for_id(this.corporation.levelId) : null; },
 
     current_level_label (): string { return this.current_level ? this.$translate(this.current_level.label) : ''; },
     current_level_description (): string { return this.description_for_label(this.current_level); },
