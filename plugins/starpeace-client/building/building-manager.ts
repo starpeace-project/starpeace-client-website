@@ -118,7 +118,7 @@ export default class BuildingManager {
       throw Error();
     }
     return await this.ajaxState.locked('building_metadata', buildingId, async () => {
-      const building = Building.fromJson(await this.api.building_for_id(buildingId));
+      const building = await this.api.building_for_id(buildingId);
       this.clientState.core.building_cache.load_building(building);
       return building;
     });

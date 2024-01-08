@@ -5,7 +5,6 @@ client-only
 
     #application-body
       .columns
-
         template(v-if='!tycoon')
           .column.is-offset-4.is-4
             .card.is-starpeace
@@ -27,23 +26,53 @@ client-only
                   .is-flex-grow-0.control
                     button.button.is-starpeace.px-5(:disabled='!canSignIn' @click.stop.prevent='doSignIn') Sign In
 
-        template(v-else-if='isAllowed')
-          .column.is-2
-            .card.is-starpeace
-              .card-content
-
-          .column.is-8
-            .card.is-starpeace
-              .card-header
-                .card-header-title Admin
-              .card-content
-                | Welcome, admin or game master!
-
-        template(v-else)
+        template(v-else-if='!isAllowed')
           .column.is-offset-4.is-4
             .card.is-starpeace
               .card-content.has-text-white.is-size-4.has-text-centered
                 | Sorry, only admin or game masters are allowed access.
+
+        template(v-else)
+          .column.is-2.ml-4
+            .card.is-starpeace
+              .card-content.sp-dark-background.p-2
+                admin-menu(:tab-id='tabId' @change='switchTab')
+
+          .column.mr-4
+            template(v-if="tabId == 'DASHBOARD'")
+              admin-dashboard(
+                :galaxy-metadata='galaxyMetadata'
+              )
+
+            template(v-else-if="tabId == 'SIMULATION'")
+              admin-simulation(
+                :galaxy-metadata='galaxyMetadata'
+              )
+
+            template(v-else-if="tabId == 'TYCOONS'")
+              admin-tycoons(
+                :tycoon-by-id='tycoonById'
+                @tycoon-changed='updateTycoon'
+              )
+
+            template(v-else-if="tabId == 'RESEARCH'")
+              .card.is-starpeace
+                .card-header
+                  .card-header-title Company Research
+                .card-content.sp-menu-background
+                  | Company research management TBD
+
+            template(v-else-if="tabId == 'POLITICS'")
+              .card.is-starpeace
+                .card-header
+                  .card-header-title Planet Politics
+                .card-content.sp-menu-background
+                  | Planet and town politics TBD
+
+            template(v-else-if="tabId == 'BUILDINGS'")
+              admin-buildings(
+                :galaxy-metadata='galaxyMetadata'
+              )
 
     page-layout-footer
 </template>
@@ -68,11 +97,15 @@ declare interface AdminData {
   password: string;
 
   tycoon: Tycoon | undefined;
+
+  tabId: string;
+  galaxyMetadata: Galaxy | undefined;
+  tycoonById: Record<string, Tycoon>;
 }
 
 export default {
   data (): AdminData {
-    const galaxies = this.$starpeaceClient?.client_state.options.get_galaxies() ?? [];
+    const galaxies = this.$starpeaceClient?.client_state.options.galaxy.getGalaxies() ?? [];
     return {
       galaxies: galaxies,
 
@@ -82,6 +115,10 @@ export default {
       password: '',
 
       tycoon: undefined,
+
+      tabId: 'DASHBOARD',
+      galaxyMetadata: undefined,
+      tycoonById: {},
     };
   },
 
@@ -96,7 +133,7 @@ export default {
 
     galaxyNameById (): Record<string, string> {
       return Object.fromEntries(this.galaxies.map((g: any) => {
-        const metadata = this.clientState.core.galaxy_cache.galaxy_metadata(g.id);
+        const metadata = this.clientState.core.galaxy_cache.metadataForGalaxyId(g.id);
         return [g.id, metadata ? metadata.name : `${g.api_url}:${g.api_port}`];
       }));
     },
@@ -104,9 +141,12 @@ export default {
     canSignIn (): boolean {
       return _.trim(this.username).length > 0 && _.trim(this.password).length > 0 && (this.galaxyId?.length ?? 0) > 0 && !this.authorizing;
     },
-
     isAllowed (): boolean {
       return !!this.tycoon?.admin || !!this.tycoon?.gameMaster;
+    },
+
+    planets (): Array<any> {
+      return _.orderBy(this.galaxyMetadata?.planets ?? [], ['name'], ['asc']);
     }
   },
 
@@ -115,6 +155,18 @@ export default {
       immediate: true,
       handler () {
         this.refreshGalaxies();
+      }
+    },
+    tycoon: {
+      immediate: true,
+      handler () {
+        this.refreshDetails();
+      }
+    },
+    tabId: {
+      immediate: true,
+      handler () {
+        this.refreshDetails();
       }
     }
   },
@@ -125,7 +177,7 @@ export default {
         return this.$starpeaceClient.managers.galaxy_manager.load_metadata(galaxy.id)
           .then((metadata: Galaxy) => {
             if (galaxy.id !== metadata.id) {
-              this.clientState.options.change_galaxy_id(galaxy.id, metadata.id);
+              this.clientState.options.galaxy.change_galaxy_id(galaxy.id, metadata.id);
               this.clientState.core.galaxy_cache.change_galaxy_id(galaxy.id, metadata.id);
             }
           })
@@ -136,7 +188,7 @@ export default {
     },
 
     async doSignIn (): Promise<void> {
-      if (this.canSignIn) {
+      if (this.canSignIn && this.galaxyId) {
         this.authorizing = true;
         try {
           const tycoon: Tycoon = await this.$starpeaceClient.managers.galaxy_manager.login(this.galaxyId, this.username, this.password, false);
@@ -144,11 +196,52 @@ export default {
           this.password = '';
           this.authorizing = false;
           this.tycoon = tycoon;
+          this.clientState.identity.galaxy_id = this.galaxyId;
         }
         catch (err) {
           console.error(err);
           this.authorizing = false;
         }
+      }
+    },
+
+    switchTab (tabId: string): void {
+      this.tabId = tabId;
+    },
+
+    updateTycoon (tycoon: Tycoon) {
+      this.tycoonById[tycoon.id] = tycoon;
+    },
+
+    async refreshPlanets () {
+      try {
+        if (!!this.tycoon && this.clientState.identity.galaxy_id) {
+          this.galaxyMetadata = await this.$starpeaceClient.api.galaxy_metadata(this.clientState.identity.galaxy_id);
+        }
+      }
+      catch (err) {
+        console.error(err);
+        this.galaxyMetadata = undefined;
+      }
+    },
+    async refreshTycoons () {
+      try {
+        if (!!this.tycoon) {
+          this.tycoonById = Object.fromEntries((await this.$starpeaceClient.api.allTycoons()).map((t: Tycoon) => [t.id, t]));
+        }
+      }
+      catch (err) {
+        console.error(err);
+        this.tycoonById = {};
+      }
+    },
+
+    async refreshDetails () {
+      if (this.tabId === 'DASHBOARD') {
+        this.refreshPlanets();
+      }
+      else if (this.tabId === 'TYCOONS') {
+        this.refreshTycoons();
       }
     }
   }
@@ -157,6 +250,7 @@ export default {
 
 <style lang='sass' scoped>
 @import 'bulma/sass/utilities/_all'
+@import '~/assets/stylesheets/starpeace-variables'
 
 #application-body
   +mobile

@@ -1,5 +1,5 @@
 
-## v0.3.14 - in progress - updated 2023-12-30
+## v0.3.14 - in progress - updated 2024-01-07
 ### platform
 * [done] improve API integration with galaxies [v0.3.1]
 * [done] document multiverse API integration [starpeace-server-multiverse-api]
@@ -34,7 +34,7 @@
 * [done] fixed galaxy and research menu bugs  [v0.3.13]
 * [done] building inspect API [v0.3.13]
 * [done] player and building event handling [v0.3.13]
-* [in progress] admin API [v0.3.14]
+* [done] admin API [v0.3.14]
 
 ### assets
 * [done] finish initial language translation for assets [v0.3.1]

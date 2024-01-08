@@ -687,6 +687,14 @@
     "IT": "Housing",
     "PT": "Habitação"
   },
+  "toolbar.inspect.townhall.label.budget": {
+    "DE": "Budget",
+    "EN": "Budget",
+    "ES": "Presupuesto",
+    "FR": "Budget",
+    "IT": "Budget",
+    "PT": "Orçamento"
+  },
   "toolbar.inspect.townhall.label.population": {
     "DE": "Population",
     "EN": "Population",

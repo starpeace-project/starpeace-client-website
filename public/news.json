@@ -1,6 +1,17 @@
 {
   "news":[
     {
+      "date": "2024-01-07",
+      "title": "Thank you for participating in the Pre-Alpha Network Test!",
+      "body": "Thanks everyone for joining our pre-alpha server and helping with first public network test! We'll keep server running and test different hardware configurations; please let us know in Discord if encounter any problems.\n\nWith conclusion of network test, we've released remaining features and arrived at version v0.4.0. Development continues into more aspects of game, including finishing menu interfaces and implementing core simulation logic",
+      "items": [
+        "launched public multiverse for network testing",
+        "added inspect menus and support for most building actions",
+        "major strides in backend server and simulation platform",
+        "lots of bug fixes and other improvements"
+      ]
+    },
+    {
       "date": "2023-02-05",
       "title": "Security and Platform Upgrades, Multiverse progress",
       "body": "Progress has resumed with a round of security and platform upgrades, and some major re-organizations to work with latest Multiverse backend server updates. Multiverse server was migrated to Typescript and initial end-to-end core platform implemented, though much work remains to adding game and simulation logic.\n\nAfter initial simulation logic is added, we're hoping to expand multiplayer and network testing in 2023; join Discord for more updates",

@@ -129,8 +129,10 @@ html
       background: linear-gradient(to bottom, $sp-primary-bg, #000)
       color: $sp-primary
 
+      &.sp-dark-background
+        background: $sp-dark-bg
+
       &.sp-menu-background
-        //background: linear-gradient(to bottom, darken($sp-primary-bg, 2.5%), darken($sp-primary-bg, 25%)) !important
         background: darken($sp-dark-bg, 12.5%)
 
       a
@@ -221,3 +223,63 @@ html
       &:active,
       &.is-active
         background-color: lighten($sp-dark-bg, 15%)
+
+.menu
+  &.is-starpeace
+    p
+      color: $sp-light
+
+      &:not(:first-child)
+        margin-top: 1.5rem
+
+    a
+      &.is-active
+        background-color: $sp-light-bg
+
+      &:hover
+        background-color: $sp-light-bg
+        color: #fff !important
+
+
+.tag
+  &.is-starpeace
+    &.is-primary
+      background-color: $sp-primary
+
+.table
+  &.is-starpeace
+    background-color: transparent
+    border-color: $sp-dark-bg
+
+    tr
+      &:not(:last-child)
+        th,
+        td
+          border-bottom: 1px solid $sp-dark-bg
+
+    tr
+      &.nowrap
+        th
+          white-space: nowrap
+
+    th,
+    td
+      border-color: $sp-dark-bg
+      color: $sp-primary
+      vertical-align: middle
+
+    &.sp-striped
+      tr:nth-child(even)
+        td
+          background-color: darken($sp-dark-bg, 10%)
+
+    &.sp-solid-header
+      th
+        background-color: $sp-dark-bg
+        color: $sp-light
+        z-index: 500
+
+    &.sp-sticky-header
+      th
+        position: sticky
+        top: 0

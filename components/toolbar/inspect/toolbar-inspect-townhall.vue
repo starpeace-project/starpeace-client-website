@@ -1,9 +1,9 @@
 <template lang='pug'>
-.is-relative
+.inspect-details
   .is-flex.is-align-items-center.is-justify-content-center.loading-container(v-if='loading')
     img.loading-image.starpeace-logo.logo-loading
 
-  .inspect-details(v-else)
+  template(v-else)
     .inspect-tabs.tabs.is-small.is-marginless
       ul
         li(v-for='tab in tabs' :class="{ 'is-active': tabId == tab.id }" @click.stop.prevent='tabId = tab.id')
@@ -23,6 +23,10 @@
                 td.has-text-right.sp-kv-value {{$formatPercent(level.value)}}
 
         .column.is-narrow.px-5.politics
+          div
+            span.sp-kv-key {{ $translate('toolbar.inspect.townhall.label.budget') }}:
+            span.sp-kv-value {{ $format_money(cash) }}
+
           div
             span.sp-kv-key {{$translate('ui.menu.politics.details.mayor.label')}}:
             span.sp-kv-value
@@ -81,7 +85,7 @@
                 td.has-text-right.sp-kv-value {{commerce.capacity.toLocaleString()}}
                 td.has-text-right.sp-kv-value {{$formatPercent(commerce.ratio)}}
                 td.has-text-right.sp-kv-value {{$format_money(commerce.ifelPrice)}}
-                td.has-text-right.sp-kv-value {{$format_money(commerce.average_price)}} ({{$formatPercent(commerce.averagePrice, commerce.ifelPrice)}})
+                td.has-text-right.sp-kv-value {{$format_money(commerce.averagePrice)}} ({{$formatPercent(commerce.averagePrice, commerce.ifelPrice)}})
                 td.has-text-right.sp-kv-value {{$formatPercent(commerce.quality)}}
 
 
@@ -118,17 +122,17 @@
                 td.sp-kv-key {{$translate('toolbar.inspect.townhall.label.vacancies')}}
                 td.has-text-right.sp-kv-value(v-for='employment in employments') {{ employment.vacancies }}
               tr
-                td.sp-kv-key {{$translate('toolbar.inspect.townhall.label.spending_power') }}
-                td.has-text-right.sp-kv-value(v-for='employment in employments') {{ $formatPercent(employment.spendingPower) }}
-              tr
                 td.sp-kv-key {{$translate('toolbar.inspect.townhall.label.average_wage')}}
-                td.has-text-right.sp-kv-value(v-for='employment in employments') {{ $formatPercent(employment.averageWage) }}
+                td.has-text-right.sp-kv-value(v-for='employment in employments')
+                  div
+                    span {{$format_money(employment.averageWage)}}
+                    span.ml-1 ({{ $formatPercent(employment.averageWage, $resourceTypePrice(employment.resourceId)) }})
               tr
                 td.sp-kv-key {{$translate('toolbar.inspect.townhall.label.minimum_wage')}}
                 td.has-text-right.sp-kv-value(v-for='employment in employments')
                   .sp-slider
-                    input(type='range' list='wage-markers' min='0' max='250' value='100' disabled)
-                    span {{$formatPercent(employment.minimum_wage)}}
+                    input(type='range' list='wage-markers' min='0' max='250' value='0' disabled)
+                    span {{$formatPercent(employment.minimumWage)}}
 
       template(v-else-if="tabId == 'housing'")
         .column.is-narrow.housing
@@ -244,8 +248,15 @@ export default {
     mayor () { return this.government?.currentTerm?.politician; },
     mayor_overall_rating () { return this.government?.currentTerm?.overall_rating ?? 0; },
 
-    qol () { return this.government?.qol ?? 0 },
-    service_levels () { return this.government?.services ?? []; },
+    qol (): number {
+      return this.government?.qol ?? 0;
+    },
+    service_levels (): Array<any> {
+      return this.government?.services ?? [];
+    },
+    cash (): number {
+      return this.government?.budget?.cash ?? 0;
+    },
 
     next_election_label () { return this.government?.nextTerm?.start?.toFormat('MMM d, yyyy') ?? this.$translate('ui.misc.none'); },
 
@@ -306,7 +317,7 @@ export default {
       if (!this.clientState?.player?.planet_id || !this.town) return;
 
       try {
-        this.governmentPromise = this.$starpeaceClient.managers.planets_manager.load_town_details(this.town.id);
+        this.governmentPromise = this.$starpeaceClient.managers.planets_manager.load_town_details(this.town.id, true);
         this.government = await this.governmentPromise;
         this.governmentPromise = undefined;
       }

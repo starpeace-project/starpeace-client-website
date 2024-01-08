@@ -84,17 +84,17 @@ export default class PlanetsManager {
       return details;
     });
   }
-  async load_town_details (town_id: string): Promise<TownDetails> {
-    if (!this.clientState.has_session() || !town_id) {
+  async load_town_details (townId: string, skipCache: boolean = false): Promise<TownDetails> {
+    if (!this.clientState.has_session() || !townId) {
       throw Error();
     }
-    const details = this.clientState.core.planet_cache.town_details(town_id);
-    if (details) {
+    const details = this.clientState.core.planet_cache.town_details(townId);
+    if (!skipCache && details) {
       return Promise.resolve(details);
     }
-    return await this.ajax_state.locked('planet_town_details', town_id, async () => {
-      const details = TownDetails.fromJson(await this.api.details_for_town(town_id));
-      this.clientState.core.planet_cache.load_town_details(town_id, details);
+    return await this.ajax_state.locked('planet_town_details', townId, async () => {
+      const details = TownDetails.fromJson(await this.api.details_for_town(townId));
+      this.clientState.core.planet_cache.load_town_details(townId, details);
       return details;
     });
   }

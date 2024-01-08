@@ -61,7 +61,7 @@ export default {
   data () {
     return {
       client_version: this.$config.public.CLIENT_VERSION,
-      showAnnouncement: true,
+      showAnnouncement: false,
       news: [],
       universe_mode: 'multiverse'
     }

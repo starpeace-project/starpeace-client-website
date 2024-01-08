@@ -50,7 +50,7 @@ export default class Tycoon {
       admin: json.admin,
       gameMaster: json.gameMaster,
       bannedAt: json.bannedAt ? DateTime.fromISO(json.bannedAt) : undefined,
-      bannedBy: json.bnnedBy,
+      bannedBy: json.bannedBy,
       bannedReason: json.bannedReason
     });
   }

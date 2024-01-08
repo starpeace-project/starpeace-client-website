@@ -9,7 +9,14 @@
 
   template(v-else)
     template(v-if="buildingTypeInspectType == 'PORTAL'")
-      toolbar-inspect-portal(:client-state='clientState' :key='selectedBuildingId' :building='selectedBuilding')
+      toolbar-inspect-portal(
+        :key='selectedBuildingId'
+        :client-state='clientState'
+        :building='selectedBuilding'
+        :definition='selectedBuildingDefinition'
+        :simulation='selectedBuildingSimulation'
+        :building-details='buildingDetails'
+      )
 
     template(v-else-if="buildingTypeInspectType == 'TOWNHALL'")
       toolbar-inspect-townhall(
@@ -19,7 +26,7 @@
         :definition='selectedBuildingDefinition'
         :simulation='selectedBuildingSimulation'
         :building-details='buildingDetails'
-        )
+      )
 
     template(v-else-if="buildingTypeInspectType == 'TRADECENTER'")
       toolbar-inspect-trade-center(
@@ -84,11 +91,11 @@ export default {
       return this.isReady && (this.clientState.interface?.selected_building_id?.length ?? 0) > 0 && this.clientState.interface?.show_inspect;
     },
 
-    selectedBuildingId (): string | undefined | null {
-      return this.isVisible ? this.clientState.interface?.selected_building_id : undefined;
+    selectedBuildingId (): string | undefined {
+      return this.isVisible ? this.clientState.interface?.selected_building_id ?? undefined : undefined;
     },
-    selectedBuilding (): Building | undefined | null {
-      return this.isVisible && this.selectedBuildingId ? this.clientState.core.building_cache.building_for_id(this.selectedBuildingId) : undefined;
+    selectedBuilding (): Building | undefined {
+      return this.isVisible && this.selectedBuildingId ? this.clientState.core.building_cache.building_for_id(this.selectedBuildingId) ?? undefined : undefined;
     },
     selectedBuildingConstructed (): boolean {
       return !!this.selectedBuilding?.constructionFinishedAt;

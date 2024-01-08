@@ -15,6 +15,12 @@ html
     font-family: 'Open Sans', sans-serif
     font-size: 12px
     height: 100%
+    -webkit-touch-callout: text
+    -webkit-user-select: text
+    -khtml-user-select: text
+    -moz-user-select: text
+    -ms-user-select: text
+    user-select: text
 
     #application-container
       display: grid

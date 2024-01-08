@@ -31,7 +31,7 @@ export default class SimulationPayload {
   static fromJson (json: any): SimulationPayload {
     return new SimulationPayload(
       PlanetPayload.fromJson(json.p),
-      CorporationPayload.fromJson(json.c),
+      json.c ? CorporationPayload.fromJson(json.c) : undefined,
       json.s ? BuildingPayload.fromJson(json.s) : undefined,
       json.b ?? [],
       json.v ?? []

@@ -1,3 +1,4 @@
+import BudgetDetails from '~/plugins/starpeace-client/planet/details/budget-details'
 import CommerceDetails from '~/plugins/starpeace-client/planet/details/commerce-details'
 import EmploymentDetails from '~/plugins/starpeace-client/planet/details/employment-details'
 import HousingDetails from '~/plugins/starpeace-client/planet/details/housing-details'
@@ -11,6 +12,7 @@ import NextTerm from '~/plugins/starpeace-client/planet/politics/next-term'
 export default class TownDetails {
   id: string | undefined;
   qol: number | undefined;
+  budget: BudgetDetails | undefined;
   services: Array<ServiceLevel> = [];
   commerce: Array<CommerceDetails> = [];
   taxes: Array<TaxDetails> = [];
@@ -24,6 +26,7 @@ export default class TownDetails {
     const metadata = new TownDetails();
     metadata.id = json.id;
     metadata.qol = json.qol;
+    metadata.budget = json.budget ? BudgetDetails.fromJson(json.budget) : undefined;
     metadata.services = (json.services ?? []).map(ServiceLevel.fromJson);
     metadata.commerce = (json.commerce ?? []).map(CommerceDetails.fromJson);
     metadata.taxes = (json.taxes ?? []).map(TaxDetails.fromJson);

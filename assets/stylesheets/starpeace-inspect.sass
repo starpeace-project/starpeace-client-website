@@ -56,6 +56,7 @@
     th
       background-color: $sp-dark-bg
       color: $sp-light
+      z-index: 500
 
   &.sp-sticky-header
     th
@@ -71,6 +72,9 @@
   grid-template-rows: [start-tabs] 2rem [end-tabs start-details] auto [end-details]
   position: relative
   overflow: hidden
+
+  .loading-container
+    grid-row: start-tabs / end-details
 
 .inspect-tabs
   grid-column: 1 / 2

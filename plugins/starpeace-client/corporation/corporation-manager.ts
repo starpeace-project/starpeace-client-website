@@ -27,8 +27,7 @@ export default class CorporationManager {
     }
 
     return await this.ajaxState.locked('tycoon_corporations', tycoonId, async () => {
-      const identifiersJson: any[] = await this.apiClient.corporation_identifiers_for_tycoon_id(tycoonId);
-      const identifiers: CorporationIdentifier[] = identifiersJson.map(CorporationIdentifier.fromJson);
+      const identifiers: CorporationIdentifier[] = await this.apiClient.corporationIdentifiersForTycoonId(tycoonId);
       this.clientState.core.corporation_cache.load_identifiers_for_tycoon_id(tycoonId, identifiers, this.clientState.identity.galaxy_tycoon_id !== tycoonId);
       return identifiers;
     });

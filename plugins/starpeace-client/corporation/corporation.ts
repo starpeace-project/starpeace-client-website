@@ -9,7 +9,7 @@ export default class Corporation {
   name: string;
   levelId: string;
 
-  building_count: number;
+  buildingCount: number;
 
   cashAsOf: DateTime;
   cash: number;
@@ -19,19 +19,23 @@ export default class Corporation {
 
   companies: Company[];
 
-  constructor (id: string, tycoon_id: string, planet_id: string, name: string, levelId: string, building_count: number,
+  constructor (id: string, tycoon_id: string, planet_id: string, name: string, levelId: string, buildingCount: number,
         cashAsOf: DateTime, cash: number, cashflow: number, prestige: number, companies: Company[]) {
     this.id = id;
     this.tycoon_id = tycoon_id;
     this.planet_id = planet_id;
     this.name = name;
     this.levelId = levelId;
-    this.building_count = building_count;
+    this.buildingCount = buildingCount;
     this.cashAsOf = cashAsOf;
     this.cash = cash;
     this.cashflow = cashflow;
     this.prestige = prestige;
     this.companies = companies;
+  }
+
+  get building_count (): number {
+    return this.buildingCount;
   }
 
   static from_json (json: any): Corporation {

@@ -23,7 +23,7 @@ export default class GalaxyManager {
       throw Error();
     }
     return await this.ajaxState.locked('galaxy_metadata', galaxyId, async () => {
-      const galaxy = Galaxy.fromJson(await this.api.galaxy_metadata(galaxyId));
+      const galaxy = await this.api.galaxy_metadata(galaxyId);
       this.clientState.core.galaxy_cache.loadGalaxyMetadata(galaxy.id, galaxy);
       return galaxy;
     });

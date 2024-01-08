@@ -2,8 +2,14 @@ import _ from 'lodash'
 import axios, { type AxiosInstance } from 'axios'
 
 import SandboxConfiguration from '~/plugins/starpeace-client/api/sandbox/sandbox-configuration.coffee'
-import ClientState from '../state/client-state';
-import BuildingConnection from '../building/details/building-connection';
+
+import Building from '~/plugins/starpeace-client/building/building';
+import BuildingConnection from '~/plugins/starpeace-client/building/details/building-connection';
+import CorporationIdentifier from '~/plugins/starpeace-client/corporation/corporation-identifier';
+import ClientState from '~/plugins/starpeace-client/state/client-state';
+import Galaxy from '~/plugins/starpeace-client/galaxy/galaxy';
+import PlanetFinances from '~/plugins/starpeace-client/planet/planet-finances';
+import Tycoon from '~/plugins/starpeace-client/tycoon/tycoon';
 
 
 export default class ApiClient {
@@ -79,10 +85,10 @@ export default class ApiClient {
     return this.handleRequest(this.client.patch(`${this.galaxyUrl()}/${path}`, parameters, this.galaxyAuth({})), transformResult);
   }
 
-  async galaxy_metadata (galaxyId: string): Promise<any> {
+  async galaxy_metadata (galaxyId: string): Promise<Galaxy> {
     try {
       const result = await this.client.get(`${this.galaxyUrl(galaxyId)}/galaxy/metadata`, this.galaxyAuth({}, galaxyId));
-      return result.data;
+      return Galaxy.fromJson(result.data);
     }
     catch (err) {
       throw err;
@@ -135,8 +141,8 @@ export default class ApiClient {
       chunkY: chunkY.toString()
     }, (result) => result ?? []);
   }
-  building_for_id (buildingId: string) {
-    return this.get(`buildings/${buildingId}`, {}, (result) => result);
+  building_for_id (buildingId: string): Promise<Building> {
+    return this.get(`buildings/${buildingId}`, {}, (result) => Building.fromJson(result));
   }
   building_details_for_id (buildingId: string) {
     return this.get(`buildings/${buildingId}/details`, {}, (result) => result);
@@ -175,6 +181,9 @@ export default class ApiClient {
     return this.get('metadata/inventions', {}, (result) => result ?? {});
   }
 
+  financesForPlanet () {
+    return this.get('finances', {}, PlanetFinances.fromJson);
+  }
   details_for_planet () {
     return this.get('details', {}, (result) => result ?? []);
   }
@@ -199,8 +208,8 @@ export default class ApiClient {
   towns_for_planet () {
     return this.get('towns', {}, (result) => result);
   }
-  buildings_for_town (townId: string, industryCategoryId: string, industryTypeId: string) {
-    return this.get(`towns/${townId}/buildings`, { industryCategoryId, industryTypeId }, (result) => result ?? []);
+  buildings_for_town (townId: string, industryCategoryId: string, industryTypeId: string): Promise<Array<Building>> {
+    return this.get(`towns/${townId}/buildings`, { industryCategoryId, industryTypeId }, (result) => (result ?? []).map(Building.fromJson));
   }
   companies_for_town (townId: string) {
     return this.get(`towns/${townId}/companies`, {}, (result) => result ?? []);
@@ -226,8 +235,25 @@ export default class ApiClient {
   tycoon_for_id (tycoonId: string) {
     return this.get(`tycoons/${tycoonId}`, {}, (result) => result);
   }
-  corporation_identifiers_for_tycoon_id (tycoonId: string) {
-    return this.get(`tycoons/${tycoonId}/corporation-ids`, {}, (result) => result?.identifiers ?? []);
+  corporationIdentifiersForTycoonId (tycoonId: string): Promise<Array<CorporationIdentifier>> {
+    return this.get(`tycoons/${tycoonId}/corporation-ids`, {}, (result) => (result?.identifiers ?? []).map(CorporationIdentifier.fromJson));
+  }
+  allTycoons () {
+    return this.get(`tycoons`, {}, (result) => result ?? []);
+  }
+
+  setTycoonRole (tycoonId: string, role: string): Promise<Tycoon> {
+    return this.put(`tycoons/${tycoonId}/role/${role}`, { }, Tycoon.fromJson);
+  }
+  removeTycoonRole (tycoonId: string, role: string): Promise<Tycoon> {
+    return this.delete(`tycoons/${tycoonId}/role/${role}`, { }, Tycoon.fromJson);
+  }
+
+  setTycoonBan (tycoonId: string): Promise<Tycoon> {
+    return this.put(`tycoons/${tycoonId}/ban`, {}, Tycoon.fromJson);
+  }
+  removeTycoonBan (tycoonId: string): Promise<Tycoon> {
+    return this.delete(`tycoons/${tycoonId}/ban`, {}, Tycoon.fromJson);
   }
 
   create_corporation (corporationName: string) {

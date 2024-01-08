@@ -3,27 +3,46 @@ export default class Planet {
   id: string;
   name: string;
   enabled: boolean;
-  planet_type: string;
-  planet_width: number;
-  planet_height: number;
-  map_id: string;
+  planetType: string;
+  planetWidth: number;
+  planetHeight: number;
+  mapId: string;
   population: number;
-  investment_value: number;
-  corporation_count: number;
+  investmentValue: number;
+  corporationCount: number;
   onlineCount: number;
 
   constructor (id: string, name: string, enabled: boolean, planet_type: string, planet_width: number, planet_height: number, map_id: string, population: number, investment_value: number, corporation_count: number, onlineCount: number) {
     this.id = id;
     this.name = name;
     this.enabled = enabled;
-    this.planet_type = planet_type;
-    this.planet_width = planet_width;
-    this.planet_height = planet_height;
-    this.map_id = map_id;
+    this.planetType = planet_type;
+    this.planetWidth = planet_width;
+    this.planetHeight = planet_height;
+    this.mapId = map_id;
     this.population = population;
-    this.investment_value = investment_value;
-    this.corporation_count = corporation_count;
+    this.investmentValue = investment_value;
+    this.corporationCount = corporation_count;
     this.onlineCount = onlineCount;
+  }
+
+  get planet_type (): string {
+    return this.planetType;
+  }
+  get planet_width (): number {
+    return this.planetWidth;
+  }
+  get planet_height (): number {
+    return this.planetHeight;
+  }
+  get map_id (): string {
+    return this.mapId;
+  }
+  get investment_value (): number {
+    return this.investmentValue;
+  }
+  get corporation_count (): number {
+    return this.corporationCount;
   }
 
   static from_json (json: any): Planet {
