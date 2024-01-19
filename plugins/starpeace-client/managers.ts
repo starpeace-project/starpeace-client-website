@@ -1,6 +1,7 @@
 import _ from 'lodash';
+import { ExtractSystem } from 'pixi.js';
 
-import GameMap from '~/plugins/starpeace-client/map/game-map.coffee';
+import GameMap from '~/plugins/starpeace-client/map/game-map.js';
 
 import AssetManager from '~/plugins/starpeace-client/asset/asset-manager.js';
 import BookmarkManager from '~/plugins/starpeace-client/bookmark/bookmark-manager.js';
@@ -9,7 +10,7 @@ import BuildingManager from '~/plugins/starpeace-client/building/building-manage
 import ConcreteManager from '~/plugins/starpeace-client/building/concrete-manager.coffee';
 import CompanyManager from '~/plugins/starpeace-client/company/company-manager.js';
 import CorporationManager from '~/plugins/starpeace-client/corporation/corporation-manager.js';
-import EffectManager from '~/plugins/starpeace-client/asset/effect-manager.coffee';
+import EffectManager from '~/plugins/starpeace-client/asset/effect-manager.js';
 import EventManager from '~/plugins/starpeace-client/event/event-manager';
 import GalaxyManager from '~/plugins/starpeace-client/galaxy/galaxy-manager.js';
 import InventionManager from '~/plugins/starpeace-client/invention/invention-manager.js';
@@ -33,6 +34,7 @@ import Logger from '~/plugins/starpeace-client/logger';
 import Options from '~/plugins/starpeace-client/state/options/options';
 import AjaxState from '~/plugins/starpeace-client/state/ajax-state';
 import type ClientState from '~/plugins/starpeace-client/state/client-state.js';
+
 
 
 interface Utilities {
@@ -244,12 +246,12 @@ export default class Managers {
     });
   }
 
-  initialize (extract: any): void {
+  initialize (): void {
     const planet_metadata = this.clientState.current_planet_metadata();
     this.clientState.planet.load_game_map(new GameMap(this.building_manager, this.road_manager, this.overlay_manager,
         this.clientState.core.land_library.metadata_for_planet_type(planet_metadata.planet_type),
         this.clientState.core.map_library.texture_for_id(planet_metadata.map_id), this.clientState.core.map_library.towns_texture_for_id(planet_metadata.map_id),
-        extract, this.clientState, this.options));
+        this.clientState, this.options));
 
     this.clientState.music.initialize();
 

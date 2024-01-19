@@ -8,7 +8,6 @@ client-only
 
     misc-card-server-connection-warning(:client_state='client_state')
     misc-card-session-expired-warning(:client_state='client_state')
-    misc-card-webgl-warning(:client_state='client_state')
 
     workflow(:ajax_state='ajax_state' :client_state='client_state')
 

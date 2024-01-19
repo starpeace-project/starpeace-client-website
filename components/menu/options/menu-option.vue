@@ -2,7 +2,11 @@
 .field.is-horizontal
   .column.is-paddingless.is-9
     .field-label
-      label.label {{label}}:
+      label.label
+        span.mr-1 {{ label }}
+        span.mr-1(v-if='hint' :data-tooltip='hint')
+          font-awesome-icon(:icon="['far', 'question-circle']")
+        span :
   .column.is-paddingless.field-body
     .field.is-narrow
       .control.toggle-field
@@ -12,8 +16,9 @@
 <script lang='ts'>
 export default {
   props: {
-    label: String,
-    value: Boolean
+    label: { type: String, required: true},
+    hint: { type: String, required: false},
+    value: { type: Boolean, required: true}
   }
 }
 </script>
@@ -24,6 +29,10 @@ export default {
     border-bottom: 1px solid
     font-weight: 1000
     padding-bottom: .25rem
+
+  span
+    &[data-tooltip]
+      border-bottom-width: 0 !important
 
 .toggle-field
   line-height: 1.5rem

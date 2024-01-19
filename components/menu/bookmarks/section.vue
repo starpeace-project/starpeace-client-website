@@ -34,7 +34,7 @@
 <script lang='ts'>
 import _ from 'lodash';
 
-import { SortableStartEvent, SortableSortedEvent, SortableStopEvent } from '@shopify/draggable';
+import { type SortableStopEvent } from '@shopify/draggable';
 
 import Bookmark from '~/plugins/starpeace-client/bookmark/bookmark';
 import BookmarkMenuItem from '~/plugins/starpeace-client/bookmark/bookmark-menu-item';

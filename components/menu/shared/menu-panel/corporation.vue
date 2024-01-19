@@ -53,7 +53,7 @@ import _ from 'lodash';
 import { Level } from '@starpeace/starpeace-assets-types';
 
 import Corporation from '~/plugins/starpeace-client/corporation/corporation';
-import { PlanetSearchResult } from '~/plugins/starpeace-client/planet/planets-manager';
+import { type PlanetSearchResult } from '~/plugins/starpeace-client/planet/planets-manager';
 import ClientState from '~/plugins/starpeace-client/state/client-state';
 
 export default {

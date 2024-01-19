@@ -1,76 +1,68 @@
 
-## v0.3.14 - in progress - updated 2024-01-07
+## v0.4.0 - in progress - updated 2024-01-18
 ### platform
-* [done] improve API integration with galaxies [v0.3.1]
-* [done] document multiverse API integration [starpeace-server-multiverse-api]
-* [done] upgrade platform dependencies (nuxt, PixiJS) [v0.3.2]
-* [done] document metadata and gameplay resources [starpeace-assets-types]
-* [done] align sandbox with multiverse API [v0.3.2]
-* [done] API authentication and authorization [v0.3.2]
-* [done] building simulation configurations API [v0.3.2]
-* [done] industry and resource configurations API [v0.3.2]
-* [done] inventions configurations API [v0.3.2]
-* [done] create tycoon account API [v0.3.2]
-* [done] manage corporation and company API's [v0.3.2]
-* [done] search and rankings API integration [v0.3.3]
-* [done] manage mail API integration [v0.3.3]
-* [done] cashflow API integration [v0.3.3]
-* [done] overlay API integration [v0.3.4]
-* [done] buildings (by chunk) API integration [v0.3.4]
-* [done] town boundaries and city detection [v0.3.4]
-* [done] roads API integration [v0.3.5]
-* [done] planet and town details API (services, commerce, taxes, jobs, housing) [v0.3.6]
-* [done] system messages and basic error messages [v0.3.7]
-* [done] socket network events and API [v0.3.8]
-* [done] improve tycoon, corporation, and company creation error handling [v0.3.8]
-* [done] visa and tycoon position API integration [v0.3.8]
-* [done] major version upgrade of platform dependencies (nuxt, PixiJS) [v0.3.8]
-* [done] fixing various defects with previous upgrades [v0.3.9]
-* [done] fixing research lifecycle and API integration [v0.3.9]
-* [done] fix interaction performance and fps issues [v0.3.11]
-* [done] research visualization upgrade fixes [v0.3.11]
-* [done] bookmarks manage and performance fixes [v0.3.11]
-* [done] tycoon details API [v0.3.12]
-* [done] fixed galaxy and research menu bugs  [v0.3.13]
-* [done] building inspect API [v0.3.13]
-* [done] player and building event handling [v0.3.13]
-* [done] admin API [v0.3.14]
+* [done] updated pixijs to v8 (with experimental WebGPU)
+* [in progress] road management API integration
+* [pending] improve auth and remember me token and error handling
+* [pending] minimum distance between buildings (statue and tower)
+* [pending] manage city zones API integration
+* [pending] follow tycoon support
+* [pending] politics campaign and voting API integration
+* [pending] error message translations
+* [pending] further improve auth and remember me token support (retries, auto-renew)
+* [pending] improved bookmark interaction and performance
+* [pending] tycoon bankruptcy and promotion API
+* [pending] tycoon prestige history labels
+* [pending] tycoon loans API
+* [pending] tycoon corporation and company P&L API
+* [pending] tycoon company rename and disolve API
+* [pending] tycoon initial suppliers and IFEL products API
+* [pending] tycoon strategy API
+* [pending] inspect menu trade settings
+* [pending] fix construction hover image z-order
+* [pending] improve building metadata and details events in inspect menu
 
 ### assets
-* [done] finish initial language translation for assets [v0.3.1]
-* [done] add mine industry and building metadata [v0.3.2]
-* [done] building stage metadata (timber, movies, farms) [v0.3.2]
-* [done] building construction metadata (all) [v0.3.2]
-* [done] office, residential, and civic building simulations and resources [v0.3.2]
-* [done] integrate assets from starpeace-assets [v0.3.2]
-* [done] town boundaries [v0.3.4]
-* [done] building sign assets [v0.3.5]
-* [done] headquarters requirements for research per seal [v0.3.5]
-* [done] fixing building foundation configurations [v0.3.6]
-* [done] fix blur in created sprite spreets [v0.3.14]
+* [in progress] track assets
+* [pending] car assets
+* [pending] street light and intersection lamp assets
+* [pending] dedicated research buildings per category and seal
 
 ### gameplay
-* [done] update UI and menus for better concept of universes and galaxies [v0.3.1]
-* [done] client language translations and menu option [v0.3.1]
-* [done] corporation and company formation menus [v0.3.2]
-* [done] town search menu [v0.3.3]
-* [done] tycoon search menu [v0.3.3]
-* [done] rankings menu [v0.3.3]
-* [done] mail menu [v0.3.3]
-* [done] city overlay rendering [v0.3.4]
-* [done] chat menu [v0.3.4]
-* [done] jump to townhall and history widgets [v0.3.4]
-* [done] mine building sign rendering [v0.3.5]
-* [done] limit research unless constructed required headquarters [v0.3.5]
-* [done] improved road orientation metadata [v0.3.5]
-* [done] politics menu [v0.3.6]
-* [done] townhall inspect menu [v0.3.6]
-* [done] trade center inspect menu [v0.3.6]
-* [done] building selection container box rendering [v0.3.10]
-* [done] onscreen building text rendering on selection [v0.3.10]
-* [done] construction descriptions for commerce, real estate, and services [v0.3.10]
-* [done] tycoon details menu [v0.3.12]
-* [done] building inspect menu [v0.3.13]
-* [done] selected building text for IFEL buildings [v0.3.13]
-* [done] cashflow and construction included in selected building text [v0.3.13]
-* [done] integrate building events with news ticker [v0.3.13]
+* [in progress] road and track construction
+* [in progress] basic traffic flow manager
+* [pending] city-specific ribbon ticker updates
+* [pending] building stage support (timber, movies, farms)
+* [pending] limit seals unless required level or nobility
+* [pending] road proximity building construction rules
+* [pending] waterquest and water building construction rules
+* [pending] overlay menu hierarchy organization
+* [pending] improve concrete and platform rendering
+* [pending] follow tycoon menu state and button
+* [pending] mail contacts menu
+* [pending] mail contacts organization menu
+* [pending] mail attachments
+* [pending] bookmark organization menu
+* [pending] bookmark manage context menu (rename, delete)
+* [pending] menu filter widget (bookmarks, research, construction)
+* [pending] camera rotation perspectives
+* [pending] auto-scroll and interaction of inspect and hint menu details
+* [pending] preview seal buildings during company creation
+* [pending] preview planet supply and demand during company creation
+* [pending] corporation profile icons
+* [pending] city zones menu and zoning support
+* [pending] car rendering
+* [pending] street light and intersection lamp rendering
+* [pending] building negative-income tinting rendering
+* [pending] fixed table headers (inspect menus)
+* [pending] mayor townhall management (min wage)
+* [pending] planet capital and president politics inspect menu
+* [pending] improve townhall population label translations in inspect menu
+* [pending] improve products select in inspect menu (control and shift clicking)
+* [pending] construction descriptions for civics
+* [pending] add prestige to construction descriptions
+* [pending] footer menu company scroll support
+* [pending] tycoon details loans apply and repay
+* [pending] tycoon details corporation and company P&L
+* [pending] advanced status included in selected building text
+* [pending] selected building text for warehouses

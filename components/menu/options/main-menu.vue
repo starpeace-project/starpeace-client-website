@@ -37,12 +37,8 @@
             .column.is-paddingless.second-group-header
               .field-label
                 label.label.group-header &nbsp;
-          menu-options-menu-option(:label="$translate('ui.menu.options.option.graphics.trees.label')",  :value="options.option('renderer.trees')", @toggle="options.toggle('renderer.trees')")
-          menu-options-menu-option(:label="$translate('ui.menu.options.option.graphics.buildings.label')", :value="options.option('renderer.buildings')", @toggle="options.toggle('renderer.buildings')")
-          menu-options-menu-option(:label="$translate('ui.menu.options.option.graphics.building_animations.label')", :value="options.option('renderer.building_animations')", @toggle="options.toggle('renderer.building_animations')")
-          menu-options-menu-option(:label="$translate('ui.menu.options.option.graphics.building_effects.label')", :value="options.option('renderer.building_effects')", @toggle="options.toggle('renderer.building_effects')")
-          menu-options-menu-option(:label="$translate('ui.menu.options.option.graphics.building_anti_alias.label')", :value="options.option('renderer.building_anti_alias')", @toggle="options.toggle('renderer.building_anti_alias')")
-          menu-options-menu-option(:label="$translate('ui.menu.options.option.graphics.planes.label')", :value="options.option('renderer.planes')", @toggle="options.toggle('renderer.planes')")
+          template(v-for='choice in optionsGraphics')
+            menu-options-menu-option(:label='$translate(choice.label)' :hint='$translate(choice.hint)' :value='options.option(choice.type)' @toggle='options.toggle(choice.type)')
 
         .column
           .field.is-horizontal
@@ -69,6 +65,45 @@
 <script lang='ts'>
 import ClientState from '~/plugins/starpeace-client/state/client-state';
 
+interface OptionChoice {
+  label: string;
+  hint?: string | undefined;
+  type: string;
+}
+
+const GRAPHICS_OPTIONS: OptionChoice[] = [
+  {
+    label: 'ui.menu.options.option.graphics.trees.label',
+    type: 'renderer.trees'
+  },
+  {
+    label: 'ui.menu.options.option.graphics.buildings.label',
+    type: 'renderer.buildings'
+  },
+  {
+    label: 'ui.menu.options.option.graphics.building_animations.label',
+    type: 'renderer.building_animations'
+  },
+  {
+    label: 'ui.menu.options.option.graphics.building_effects.label',
+    type: 'renderer.building_effects'
+  },
+  {
+    label: 'ui.menu.options.option.graphics.building_anti_alias.label',
+    type: 'renderer.building_anti_alias'
+  },
+  {
+    label: 'ui.menu.options.option.graphics.planes.label',
+    type: 'renderer.planes'
+  },
+  {
+    label: 'ui.menu.options.option.graphics.webgpu.label',
+    hint: 'ui.menu.options.option.graphics.webgpu_hint.label',
+    type: 'renderer.webgpu'
+  }
+];
+
+
 export default {
   props: {
     client_state: { type: ClientState, required: true }
@@ -86,6 +121,10 @@ export default {
   computed: {
     options () {
       return this.client_state.options;
+    },
+
+    optionsGraphics (): OptionChoice[] {
+      return GRAPHICS_OPTIONS
     }
   },
 

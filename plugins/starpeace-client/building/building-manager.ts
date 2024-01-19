@@ -1,4 +1,4 @@
-import { SCALE_MODES } from '@pixi/constants'
+import { SCALE_MODES } from 'pixi.js';
 
 import type ApiClient from '~/plugins/starpeace-client/api/api-client.js'
 
@@ -38,12 +38,15 @@ export default class BuildingManager {
     this.clientState = clientState;
 
     this.clientState.planet.subscribeBuildingListener((event: any) => this.handleBuildingEvent(event));
-    this.clientState.options.subscribe_options_listener(async () => {
-      const disableAA = !this.clientState.options.option('renderer.building_anti_alias');
-      for (const atlas of this.clientState.core.building_library.allAtlases()) {
-        if (atlas.baseTexture) {
-          atlas.baseTexture.scaleMode = disableAA ? SCALE_MODES.NEAREST : SCALE_MODES.LINEAR;
-          atlas.baseTexture.update();
+    this.clientState.options.subscribe_options_listener(async (event: any) => {
+      if (event.changedOptions.has('renderer.building_anti_alias')) {
+        // TODO: FIXME: fix for pixi v8
+        const disableAA = !this.clientState.options.option('renderer.building_anti_alias');
+        for (const atlas of this.clientState.core.building_library.allAtlases()) {
+          if (atlas.baseTexture) {
+            atlas.baseTexture.antialias = !disableAA;
+            atlas.baseTexture.update();
+          }
         }
       }
     });
@@ -69,8 +72,9 @@ export default class BuildingManager {
             this.clientState.core.building_library.load_images(resource.images);
             this.clientState.core.building_library.load_required_atlases(resource.atlas);
             this.assetManager.queue_and_load_atlases((resource.atlas || []), (atlas_path: any, atlas: any) => {
-              if (atlas?.baseTexture && !this.clientState.options.option('renderer.building_anti_alias')) {
-                atlas.baseTexture.scaleMode = SCALE_MODES.NEAREST;
+              if (atlas?.baseTexture) {
+                atlas.baseTexture.antialias = !!this.clientState.options.option('renderer.building_anti_alias');
+                atlas.baseTexture.update();
               }
               this.clientState.core.building_library.load_atlas(atlas_path, atlas);
             });

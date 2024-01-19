@@ -29,7 +29,6 @@ export default class RoadManager
   load_chunk: (chunk_x, chunk_y) ->
     throw Error() if !@client_state.has_session() || !chunk_x? || !chunk_y?
 
-    Logger.debug("attempting to load road chunk at #{chunk_x}x#{chunk_y}")
     await @ajax_state.locked('planet_roads', "#{chunk_x}x#{chunk_y}", =>
       road_data = await @api.road_data_for_planet(chunk_x, chunk_y)
       return new Array(ChunkMap.CHUNK_WIDTH, ChunkMap.CHUNK_HEIGHT) unless road_data?

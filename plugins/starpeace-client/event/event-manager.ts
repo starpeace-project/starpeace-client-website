@@ -25,10 +25,13 @@ export default class EventManager {
     this.ajaxState = ajaxState;
     this.clientState = clientState;
 
-    options.subscribe_options_listener(async () => {
+    options.subscribe_options_listener(async (event: any) => {
       await this.queue_asset_load();
       await this.assetManager.load_queued();
-      this.updateMessage();
+
+      if (event.changedOptions.has('general.language')) {
+        this.updateMessage();
+      }
     });
 
     this.clientState.planet.subscribeIssuedVisaListener((event: any) => this.handleIssuedVisa(event));
@@ -49,7 +52,7 @@ export default class EventManager {
 
   async queue_asset_load (): Promise<void> {
     const language = this.clientState.options.language()
-    if (this.clientState.core.news_library.has_metadata(language)) {
+    if (!language || this.clientState.core.news_library.has_metadata(language)) {
       return;
     }
 

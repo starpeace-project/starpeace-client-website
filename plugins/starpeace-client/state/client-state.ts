@@ -22,6 +22,7 @@ import Options from '~/plugins/starpeace-client/state/options/options.js';
 
 import TimeUtils from '~/plugins/starpeace-client/utils/time-utils.js';
 import Logger from '~/plugins/starpeace-client/logger.js';
+import SpritePlane from '../renderer/sprite/sprite-plane';
 
 
 const MAX_FAILED_AUTH_ERRORS = 3;
@@ -47,7 +48,6 @@ export default class ClientState {
 
   workflow_status: string | null = null;
 
-  webgl_warning: boolean = false;
   session_expired_warning: boolean = false;
   server_connection_warning: boolean = false;
 
@@ -73,7 +73,7 @@ export default class ClientState {
   older_system_messages: Array<any> = [];
   system_message_callback: any | null = null;
 
-  plane_sprites: Array<any> = [];
+  plane_sprites: Array<SpritePlane> = [];
 
 
   constructor (options: Options, ajaxState: AjaxState) {
@@ -127,7 +127,6 @@ export default class ClientState {
   }
 
   reset_full_state (): void {
-    this.webgl_warning = false;
     this.session_expired_warning = false;
     this.server_connection_warning = false;
 
@@ -152,7 +151,6 @@ export default class ClientState {
     }
 
     this.identity.reset_state();
-
     this.reset_planet_state();
   }
 
@@ -275,14 +273,12 @@ export default class ClientState {
 
   reset_to_galaxy (): void {
     setTimeout(() => {
-      //this.initialized = false;
       this.reset_planet_state();
     }, 250);
   }
 
   change_planet_id (newPlanetVisaType: string, planetId: string) {
     setTimeout(() => {
-      //this.initialized = false;
       this.reset_planet_state();
       this.player.set_planet_visa_type(planetId, newPlanetVisaType);
     }, 250);
@@ -445,7 +441,7 @@ export default class ClientState {
       this.interface.select_building_id(buildingId);
     }
     if (mapX !== undefined && mapY !== undefined) {
-      this.camera.recenter_at(mapX, mapY);
+      this.camera.recenterAt(mapX, mapY);
     }
   }
 

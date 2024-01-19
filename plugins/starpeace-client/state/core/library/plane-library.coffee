@@ -1,5 +1,5 @@
 
-import * as PIXI from 'pixi.js'
+import { Cache } from 'pixi.js'
 
 import Library from '~/plugins/starpeace-client/state/core/library/library.coffee'
 import TextureAtlasCache from '~/plugins/starpeace-client/state/core/texture-atlas-cache.coffee'
@@ -29,4 +29,3 @@ export default class PlaneLibrary extends Library
     @notify_listeners()
 
   metadata_for_id: (id) -> @metadata_by_id[id]
-  texture_for_id: (texture_id) -> PIXI.utils.TextureCache[texture_id]

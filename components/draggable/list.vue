@@ -8,7 +8,7 @@ div
 <script lang='ts'>
 import _ from 'lodash';
 
-import { Draggable, Sortable, SortableStartEvent, SortableSortedEvent, SortableStopEvent } from '@shopify/draggable';
+import { type Draggable, Sortable, type SortableStartEvent, type SortableSortedEvent, type SortableStopEvent } from '@shopify/draggable';
 
 export default {
   name: 'DraggableList',

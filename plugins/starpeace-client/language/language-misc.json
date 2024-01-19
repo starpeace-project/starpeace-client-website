@@ -127,14 +127,6 @@
     "IT": "Supporto WebGL non trovato",
     "PT": "Suporte WebGL não encontrado"
   },
-  "misc.webgl.warning.description": {
-    "DE": "Die WebGL-Unterstützung wurde nicht gefunden, die Client-Funktionalität und -Erfahrung wird erheblich reduziert. Öffnen Sie den Client entweder in einer neuen Registerkarte, starten Sie die Browsersitzung erneut oder versuchen Sie es mit einem anderen Browser.",
-    "EN": "WebGL support was not found, client functionality and experience will be severely reduced. Please either re-open client in new tab, restart browser session, or try a different browser.",
-    "ES": "No se encontró soporte para WebGL, la funcionalidad y la experiencia del cliente se reducirán considerablemente. Vuelva a abrir el cliente en una nueva pestaña, reinicie la sesión del navegador o pruebe un navegador diferente.",
-    "FR": "La prise en charge de WebGL n’a pas été trouvée, les fonctionnalités et l’expérience du client seront considérablement réduites. Veuillez ré-ouvrir le client dans un nouvel onglet, redémarrer la session du navigateur ou essayer un autre navigateur.",
-    "IT": "Il supporto WebGL non è stato trovato, la funzionalità e l'esperienza del cliente saranno gravemente ridotte. Si prega di riaprire il client in una nuova scheda, riavviare la sessione del browser o provare un altro browser.",
-    "PT": "O suporte a WebGL não foi encontrado, a funcionalidade e a experiência do cliente serão severamente reduzidas. Por favor, abra novamente o cliente em uma nova guia, reinicie a sessão do navegador ou tente um navegador diferente."
-  },
   "misc.expired_session.warning.header": {
     "DE": "Sitzung ist abgelaufen",
     "EN": "Session has expired",

@@ -2,67 +2,9 @@
 # Future Roadmap
 Some of the tentative future features and rough planned version are outlined below:
 
-## v0.5
+## v0.6
 ### platform
-* [pending] improve auth and remember me token and error handling
-* [pending] minimum distance between buildings (statue and tower)
-* [pending] manage city zones API integration
-* [pending] follow tycoon support
-* [pending] road management API integration
-* [pending] politics campaign and voting API integration
-* [pending] error message translations
-* [pending] further improve auth and remember me token support (retries, auto-renew)
-* [pending] improved bookmark interaction and performance
-* [pending] tycoon bankruptcy and promotion API
-* [pending] tycoon prestige history labels
-* [pending] tycoon loans API
-* [pending] tycoon corporation and company P&L API
-* [pending] tycoon company rename and disolve API
-* [pending] tycoon initial suppliers and IFEL products API
-* [pending] tycoon strategy API
-* [pending] inspect menu trade settings
-* [pending] fix construction hover image z-order
-* [pending] improve building metadata and details events in inspect menu
 
 ### assets
-* [pending] car assets
-* [pending] street light and intersection lamp assets
-* [pending] dedicated research buildings per category and seal
 
 ### gameplay
-* [pending] city-specific ribbon ticker updates
-* [pending] building stage support (timber, movies, farms)
-* [pending] limit seals unless required level or nobility
-* [pending] road proximity building construction rules
-* [pending] waterquest and water building construction rules
-* [pending] overlay menu hierarchy organization
-* [pending] road construction
-* [pending] improve concrete and platform rendering
-* [pending] follow tycoon menu state and button
-* [pending] mail contacts menu
-* [pending] mail contacts organization menu
-* [pending] mail attachments
-* [pending] bookmark organization menu
-* [pending] bookmark manage context menu (rename, delete)
-* [pending] menu filter widget (bookmarks, research, construction)
-* [pending] camera rotation perspectives
-* [pending] auto-scroll and interaction of inspect and hint menu details
-* [pending] preview seal buildings during company creation
-* [pending] preview planet supply and demand during company creation
-* [pending] corporation profile icons
-* [pending] city zones menu and zoning support
-* [pending] car rendering
-* [pending] street light and intersection lamp rendering
-* [pending] building negative-income tinting rendering
-* [pending] fixed table headers (inspect menus)
-* [pending] mayor townhall management (min wage)
-* [pending] planet capital and president politics inspect menu
-* [pending] improve townhall population label translations in inspect menu
-* [pending] improve products select in inspect menu (control and shift clicking)
-* [pending] construction descriptions for civics
-* [pending] add prestige to construction descriptions
-* [pending] footer menu company scroll support
-* [pending] tycoon details loans apply and repay
-* [pending] tycoon details corporation and company P&L
-* [pending] advanced status included in selected building text
-* [pending] selected building text for warehouses

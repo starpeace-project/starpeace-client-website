@@ -1,11 +1,13 @@
-import { Assets } from '@pixi/assets';
+import { Assets, extensions, spritesheetAsset } from 'pixi.js';
 
 import Logger from '~/plugins/starpeace-client/logger'
 import AjaxState from '~/plugins/starpeace-client/state/ajax-state';
 
+
+
 export default class AssetManager {
   static CDN_URL: string = 'https://cdn.starpeace.io';
-  static CDN_VERSION: string = '6d8ed62d91142c61f84c52efa4f5ae0c';
+  static CDN_VERSION: string = '1481373cba881bd76b347bf8e4f986d0';
 
   ajaxState: AjaxState;
   loading: boolean;
@@ -13,14 +15,19 @@ export default class AssetManager {
   loaded_keys: Set<string>;
 
   constructor (ajaxState: AjaxState) {
-    Assets.init({
-      basePath: `${AssetManager.CDN_URL}/${AssetManager.CDN_VERSION}`
-    });
-
     this.ajaxState = ajaxState;
     this.loading = false;
     this.key_callbacks = {};
     this.loaded_keys = new Set();
+    this.initialize();
+  }
+
+  async initialize (): Promise<void> {
+    // TODO: FIXME: remove pixi resolves
+    extensions.add(spritesheetAsset);
+    await Assets.init({
+      basePath: `${AssetManager.CDN_URL}/${AssetManager.CDN_VERSION}`
+    });
   }
 
   planet_animation_url (planet: any): string {
@@ -33,7 +40,10 @@ export default class AssetManager {
       return callback(Assets.get(key));
     }
 
-    Assets.add({ alias: key, src: asset_url })
+    Assets.add({
+      alias: key,
+      src: asset_url
+    })
     this.key_callbacks[key] = callback;
   }
 

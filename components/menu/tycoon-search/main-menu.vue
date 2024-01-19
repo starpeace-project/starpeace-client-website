@@ -68,7 +68,7 @@
 </template>
 
 <script lang='ts'>
-import { PlanetSearchResult } from '~/plugins/starpeace-client/planet/planets-manager';
+import { type PlanetSearchResult } from '~/plugins/starpeace-client/planet/planets-manager';
 import ClientState from '~/plugins/starpeace-client/state/client-state';
 
 declare interface MenuTycoonSearchData {

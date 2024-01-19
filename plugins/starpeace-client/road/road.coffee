@@ -108,33 +108,33 @@ export default class Road
 
     BRIDGE_EW:
       type: 'BRIDGE_EW'
-      city_texture_id: 'bridge.ew'
-      country_texture_id: 'bridge.ew'
+      city_texture_id: 'road.bridge.ew'
+      country_texture_id: 'road.bridge.ew'
       is_bridge: true
     BRIDGE_NS:
       type: 'BRIDGE_NS'
-      city_texture_id: 'bridge.ns'
-      country_texture_id: 'bridge.ns'
+      city_texture_id: 'road.bridge.ns'
+      country_texture_id: 'road.bridge.ns'
       is_bridge: true
     BRIDGE_E_RAMP:
       type: 'BRIDGE_E_RAMP'
-      city_texture_id: 'bridge.ramp.e'
-      country_texture_id: 'bridge.ramp.e'
+      city_texture_id: 'road.bridge.ramp.e'
+      country_texture_id: 'road.bridge.ramp.e'
       is_bridge: true
     BRIDGE_N_RAMP:
       type: 'BRIDGE_N_RAMP'
-      city_texture_id: 'bridge.ramp.n'
-      country_texture_id: 'bridge.ramp.n'
+      city_texture_id: 'road.bridge.ramp.n'
+      country_texture_id: 'road.bridge.ramp.n'
       is_bridge: true
     BRIDGE_S_RAMP:
       type: 'BRIDGE_S_RAMP'
-      city_texture_id: 'bridge.ramp.s'
-      country_texture_id: 'bridge.ramp.s'
+      city_texture_id: 'road.bridge.ramp.s'
+      country_texture_id: 'road.bridge.ramp.s'
       is_bridge: true
     BRIDGE_W_RAMP:
       type: 'BRIDGE_W_RAMP'
-      city_texture_id: 'bridge.ramp.w'
-      country_texture_id: 'bridge.ramp.w'
+      city_texture_id: 'road.bridge.ramp.w'
+      country_texture_id: 'road.bridge.ramp.w'
       is_bridge: true
 
   @connects_east: (type) ->

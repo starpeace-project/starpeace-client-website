@@ -33,7 +33,7 @@ client-only
                 | Sorry, only admin or game masters are allowed access.
 
         template(v-else)
-          .column.is-2.ml-4
+          .column.is-1.ml-4
             .card.is-starpeace
               .card-content.sp-dark-background.p-2
                 admin-menu(:tab-id='tabId' @change='switchTab')

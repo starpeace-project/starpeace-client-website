@@ -96,7 +96,7 @@ export default class PlanetEventClient {
       }
     });
 
-    this.socket.on('initialize', (rawEvent) => {
+    this.socket.on('initialize', (rawEvent: any) => {
       let eventJson: any = rawEvent;
       if (this.socketEncoding === 'gzip') {
         eventJson = JSON.parse(Array.from(gunzipSync(new Uint8Array(rawEvent))).map(b => String.fromCharCode(b)).join(''));
@@ -104,7 +104,7 @@ export default class PlanetEventClient {
 
       const event = InitializePayload.fromJson(eventJson);
       if (event.view) {
-        this.clientState.camera.recenter_at(event.view.x, event.view.y);
+        this.clientState.camera.recenterAt(event.view.x, event.view.y);
       }
       this.clientState.planet.load_state(event.planet.time, event.planet);
 
@@ -115,7 +115,7 @@ export default class PlanetEventClient {
       }
     });
 
-    this.socket.on('simulation', (rawEvent) => {
+    this.socket.on('simulation', (rawEvent: any) => {
       let eventJson: any = rawEvent;
       if (this.socketEncoding === 'gzip') {
         eventJson = JSON.parse(Array.from(gunzipSync(new Uint8Array(rawEvent))).map(b => String.fromCharCode(b)).join(''));

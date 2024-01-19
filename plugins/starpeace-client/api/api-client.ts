@@ -59,7 +59,7 @@ export default class ApiClient {
       if (!err.status || err.response?.status < 400 && err.response?.status >= 500) {
         this.client_state.handle_connection_error();
       }
-      if (err.response?.status === 401 ?? err.response?.status === 403) {
+      if (err.response?.status === 401 || err.response?.status === 403) {
         this.client_state.handle_authorization_error();
       }
       throw err;

@@ -59,11 +59,11 @@ export default class AjaxState {
     return !!this.requestMutexByTypeKey[type]?.[key];
   }
 
-  lock (type: string, key: string, lockedPromise: Promise<any>) {
+  lock (type: string, key: string, lockedPromise?: Promise<any>) {
     if (!this.requestMutexByTypeKey[type]) {
       this.requestMutexByTypeKey[type] = {};
     }
-    this.requestMutexByTypeKey[type][key] = lockedPromise ?? true;
+    this.requestMutexByTypeKey[type][key] = lockedPromise ?? Promise.resolve();
     this.startAjax();
   }
 

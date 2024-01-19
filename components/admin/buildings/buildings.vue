@@ -43,7 +43,10 @@
               template(v-else)
                 tr(v-for='building in buildings')
                   td {{ building.id }}
-                  td {{ building.name }}
+                  td
+                    span.is-flex.is-flex-direction-row.is-align-items-center
+                      span.is-flex-grow-1 {{ building.name }}
+                      button.button.is-small.is-starpeace(:disabled="building.corporationId == 'IFEL'" @click.stop.prevent='') Rename
                   td {{ building.definitionId }}
                   td {{ building.tycoonId }}
                   td {{ building.corporationId }}
@@ -56,7 +59,7 @@
                   td.has-text-right {{ building.constructionFinishedAt?.toFormat('yyyy-MM-dd HH:mm') }}
                   td.has-text-right {{ building.condemnedAt?.toFormat('yyyy-MM-dd HH:mm') }}
                   td.has-text-centered
-                    button.button.is-starpeace(:disabled="building.corporationId == 'IFEL'" @click.stop.prevent='demolishBuilding(building.id)') Demolish
+                    button.button.is-small.is-starpeace(:disabled="building.corporationId == 'IFEL'" @click.stop.prevent='demolishBuilding(building.id)') Demolish
 
 </template>
 

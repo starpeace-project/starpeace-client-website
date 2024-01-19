@@ -2,15 +2,15 @@ import { markRaw, reactive } from 'vue';
 
 import Logger from '~/plugins/starpeace-client/logger.js'
 
-import Managers from '~/plugins/starpeace-client/managers.js'
+import Managers from '~/plugins/starpeace-client/managers.js';
 
-import AjaxState from '~/plugins/starpeace-client/state/ajax-state.js'
-import ClientState from '~/plugins/starpeace-client/state/client-state.js'
-import Options from '~/plugins/starpeace-client/state/options/options.js'
+import AjaxState from '~/plugins/starpeace-client/state/ajax-state.js';
+import ClientState from '~/plugins/starpeace-client/state/client-state.js';
+import Options from '~/plugins/starpeace-client/state/options/options.js';
 
-import BuildingImageRenderer from '~/plugins/starpeace-client/renderer/building-image-renderer.coffee'
-import MiniMapRenderer from '~/plugins/starpeace-client/renderer/mini-map-renderer.coffee'
-import Renderer from '~/plugins/starpeace-client/renderer/renderer.coffee'
+import BuildingImageRenderer from '~/plugins/starpeace-client/renderer/building-image-renderer.js';
+import MiniMapRenderer from '~/plugins/starpeace-client/renderer/mini-map-renderer.js';
+import Renderer from '~/plugins/starpeace-client/renderer/renderer.js';
 
 import ApiClient from '~/plugins/starpeace-client/api/api-client.js';
 
@@ -26,9 +26,9 @@ export default class Client {
   managers: Managers;
 
   renderer: Renderer;
-  mini_map_renderer: Renderer;
-  construction_preview_renderer: Renderer;
-  inspect_preview_renderer: Renderer;
+  mini_map_renderer: MiniMapRenderer;
+  construction_preview_renderer: BuildingImageRenderer;
+  inspect_preview_renderer: BuildingImageRenderer;
 
   constructor (clientVersion: string, disableRightClick: boolean) {
     this.options = reactive(new Options());
@@ -54,23 +54,24 @@ export default class Client {
     Logger.banner(clientVersion);
   }
 
-  notify_workflow_changed (): void {
+  async notify_workflow_changed (): Promise<void> {
+    // FIXME: TODO: add try/catch, especially for renderer
     if (this.client_state.workflow_status == 'pending_initialization') {
       if (!this.client_state.renderer_initialized && !this.client_state.renderer_initializing) {
-        this.renderer.initialize();
+        await this.renderer.initialize();
       }
       if (this.client_state.renderer_initialized && !this.client_state.managers_initialized && !this.client_state.managers_initializing) {
-        this.managers.initialize(this.renderer.application.renderer.extract);
+        this.managers.initialize();
       }
 
       if (this.client_state.managers_initialized && !this.client_state.mini_map_renderer_initialized && !this.client_state.mini_map_renderer_initializing) {
-        this.mini_map_renderer.initialize();
+        await this.mini_map_renderer.initialize();
       }
       if (!this.client_state.construction_preview_renderer_initialized && !this.client_state.construction_preview_renderer_initializing) {
-        this.construction_preview_renderer.initialize();
+        await this.construction_preview_renderer.initialize();
       }
       if (!this.client_state.inspect_preview_renderer_initialized && !this.client_state.inspect_preview_renderer_initializing) {
-        this.inspect_preview_renderer.initialize();
+        await this.inspect_preview_renderer.initialize();
       }
 
       if (!this.client_state.initialized && this.client_state.renderer_initialized && this.client_state.mini_map_renderer_initialized && this.client_state.construction_preview_renderer_initialized && this.client_state.inspect_preview_renderer_initialized && this.client_state.managers_initialized) {

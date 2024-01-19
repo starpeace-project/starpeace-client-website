@@ -64,7 +64,7 @@ export default class CameraState
     }
 
 
-  recenter_at: (i, j) ->
+  recenterAt: (i, j) ->
     y = (i + j) * @half_tile_height
     x = (i - j) * @half_tile_width
 

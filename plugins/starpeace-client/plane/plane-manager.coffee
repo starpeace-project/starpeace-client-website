@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import MetadataPlane from '~/plugins/starpeace-client/plane/metadata-plane.coffee'
+import MetadataPlane from '~/plugins/starpeace-client/plane/metadata-plane'
 
 import Logger from '~/plugins/starpeace-client/logger'
 
@@ -103,11 +103,13 @@ export default class PlaneManager
       for key,json of (resource.planes || {})
         # FIXME: TODO: add ID to json, change from map to array
         json.id = key
-        plane_metadata.push MetadataPlane.from_json(json)
+        plane_metadata.push MetadataPlane.fromJson(json)
 
       @client_state.core.plane_library.load_plane_metadata(plane_metadata)
       @client_state.core.plane_library.load_required_atlases(resource.atlas)
 
-      @asset_manager.queue_and_load_atlases((resource.atlas || []), (atlas_path, atlas) => @client_state.core.plane_library.load_atlas(atlas_path, atlas))
+      @asset_manager.queue_and_load_atlases((resource.atlas || []), (atlas_path, atlas) =>
+        @client_state.core.plane_library.load_atlas(atlas_path, atlas)
+      )
       @ajax_state.unlock('assets.plane_metadata', 'ALL')
     )

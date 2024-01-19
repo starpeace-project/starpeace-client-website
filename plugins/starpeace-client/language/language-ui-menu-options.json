@@ -119,6 +119,14 @@
     "IT": "Effetti degli Edifici",
     "PT": "Efeitos de Edifício"
   },
+  "ui.menu.options.option.graphics.planes.label": {
+    "DE": "Flugzeuge",
+    "EN": "Planes",
+    "ES": "Aviones",
+    "FR": "Avions",
+    "IT": "Aerei",
+    "PT": "Aviões"
+  },
   "ui.menu.options.option.graphics.building_anti_alias.label": {
     "DE": "Glättung Aufbauen",
     "EN": "Building Smoothing",
@@ -127,13 +135,21 @@
     "IT": "Costruire Levigatura",
     "PT": "Suavização de Edifícios"
   },
-  "ui.menu.options.option.graphics.planes.label": {
-    "DE": "Flugzeuge",
-    "EN": "Planes",
-    "ES": "Aviones",
-    "FR": "Avions",
-    "IT": "Aerei",
-    "PT": "Aviões"
+  "ui.menu.options.option.graphics.webgpu.label": {
+    "DE": "WebGPU",
+    "EN": "WebGPU",
+    "ES": "WebGPU",
+    "FR": "WebGPU",
+    "IT": "WebGPU",
+    "PT": "WebGPU"
+  },
+  "ui.menu.options.option.graphics.webgpu_hint.label": {
+    "DE": "Verwenden Sie experimentelles WebGPU Rendering",
+    "EN": "Use experimental WebGPU rendering",
+    "ES": "Utilice la representación experimental de WebGPU",
+    "FR": "Utiliser le rendu expérimental de WebGPU",
+    "IT": "Usa il rendering sperimentale di WebGPU",
+    "PT": "Use a renderização experimental da WebGPU"
   },
   "ui.menu.options.option.locations.poi.label": {
     "DE": "Sehenswürdigkeiten",

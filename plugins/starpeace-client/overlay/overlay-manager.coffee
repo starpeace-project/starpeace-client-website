@@ -35,7 +35,6 @@ export default class OverlayManager
   load_chunk: (type, chunk_x, chunk_y) ->
     throw Error() if !@client_state.has_session() || !type? || !chunk_x? || !chunk_y?
 
-    Logger.debug("attempting to load overlay chunk for #{type} at #{chunk_x}x#{chunk_y}")
     return new Array(ChunkMap.CHUNK_WIDTH, ChunkMap.CHUNK_HEIGHT) if type == 'NONE'
     if type == 'TOWNS'
       @deserialize_towns_chunk(chunk_x, chunk_y)

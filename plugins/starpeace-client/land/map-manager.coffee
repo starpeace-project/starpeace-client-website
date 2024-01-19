@@ -8,14 +8,14 @@ export default class MapManager
 
     unless @ajax_state.is_locked('assets.map_texture', planet_metadata.map_id)
       @ajax_state.lock('assets.map_texture', planet_metadata.map_id)
-      @asset_manager.queue("map.#{planet_metadata.map_id}", "./map.#{planet_metadata.map_id}.texture.bmp", (resource) =>
+      @asset_manager.queue("map.#{planet_metadata.map_id}", "./map.#{planet_metadata.map_id}.texture.png", (resource) =>
         @client_state.core.map_library.load_map_texture(planet_metadata.map_id, resource)
         @ajax_state.unlock('assets.map_texture', planet_metadata.map_id)
       )
 
     unless @ajax_state.is_locked('assets.map_towns_texture', planet_metadata.map_id)
       @ajax_state.lock('assets.map_texture', planet_metadata.map_id)
-      @asset_manager.queue("map.#{planet_metadata.map_id}.towns", "./map.#{planet_metadata.map_id}.towns.texture.bmp", (resource) =>
+      @asset_manager.queue("map.#{planet_metadata.map_id}.towns", "./map.#{planet_metadata.map_id}.towns.texture.png", (resource) =>
         @client_state.core.map_library.load_map_towns_texture(planet_metadata.map_id, resource)
         @ajax_state.unlock('assets.map_towns_texture', planet_metadata.map_id)
       )

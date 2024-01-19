@@ -43,7 +43,7 @@ export default class InterfaceState {
   create_tycoon_galaxy_id: string | null = null;
 
   show_overlay: boolean = false;
-  current_overlay: string = Overlay.TYPES.TOWNS;
+  current_overlay: any = Overlay.TYPES.TOWNS;
   show_losing_facilities: boolean = false;
 
   show_zones: boolean = false;
@@ -61,7 +61,7 @@ export default class InterfaceState {
   show_inspect: boolean = false;
   selectedInspectTabId: string | undefined = undefined;
 
-  selected_building_id: string | null = null;
+  selected_building_id: string | undefined = undefined;
 
   inventions_selected_category_id: string | null = 'SERVICE';
   inventions_selected_industry_type_id: string | null = 'GENERAL';
@@ -121,7 +121,7 @@ export default class InterfaceState {
     this.show_inspect = false;
     this.selectedInspectTabId = undefined;
 
-    this.selected_building_id = null;
+    this.selected_building_id = undefined;
 
     this.inventions_selected_category_id = 'SERVICE';
     this.inventions_selected_industry_type_id = 'GENERAL';
@@ -289,7 +289,7 @@ export default class InterfaceState {
   unselect_building (): void {
     this.show_inspect = false;
     this.selectedInspectTabId = undefined;
-    this.selected_building_id = null;
+    this.selected_building_id = undefined;
     this.notifySelectedBuildingListeners();
   }
   select_and_inspect_building (buildingId: string): void {

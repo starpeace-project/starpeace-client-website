@@ -18,7 +18,7 @@ const LANGUAGE_FROM_CODE = (code: string | undefined | null) => {
 
 const DEFAULT_LANGUAGE = LANGUAGE_FROM_CODE(window?.navigator?.language) ?? 'EN';
 
-const OPTIONS_VERSION = 1;
+const OPTIONS_VERSION = 2;
 const OPTIONS = [
   { name: 'general.show_header', type: 'boolean', initial: true },
   { name: 'general.show_fps', type: 'boolean', initial: true },
@@ -38,6 +38,7 @@ const OPTIONS = [
   { name: 'renderer.building_effects', type: 'boolean', initial: true },
   { name: 'renderer.building_anti_alias', type: 'boolean', initial: false },
   { name: 'renderer.planes', type: 'boolean', initial: true },
+  { name: 'renderer.webgpu', type: 'boolean', initial: false },
 
   { name: 'bookmarks.points_of_interest', type: 'boolean', initial: true },
   { name: 'bookmarks.capital', type: 'boolean', initial: true },
@@ -71,8 +72,8 @@ export default class Options {
   subscribe_options_listener (listener_callback: any): void {
     this.event_listener.subscribe('options', listener_callback);
   }
-  notify_options_listeners (): void {
-    this.event_listener.notify_listeners('options');
+  notifyOptionsListeners (changedOptions: string[]): void {
+    this.event_listener.notify_listeners('options', { changedOptions: new Set(changedOptions) });
   }
 
   loadVersion (): number {
@@ -86,8 +87,10 @@ export default class Options {
     const version = this.loadVersion();
     const shouldReset = version < OPTIONS_VERSION;
 
+    const changedOptions: string[] = [];
     for (const option of OPTIONS) {
-      let value: any | undefined = shouldReset ? undefined : localStorage.getItem(option.name);
+      let initialValue: any | undefined = shouldReset ? undefined : localStorage.getItem(option.name);
+      let value: any | undefined = initialValue;
 
       if (value !== undefined) {
         try {
@@ -107,27 +110,38 @@ export default class Options {
         value = option.initial;
       }
 
+      if (value !== initialValue) {
+        changedOptions.push(option.name);
+      }
       this.optionsSaved[option.name] = this.optionsActive[option.name] = value;
     }
-    this.notify_options_listeners();
+    this.notifyOptionsListeners(changedOptions);
   }
 
   reset (): void {
+    const changedOptions: string[] = [];
     for (const option of OPTIONS) {
+      if (this.optionsActive[option.name] !== option.initial) {
+        changedOptions.push(option.name);
+      }
       localStorage.removeItem(option.name);
       this.optionsActive[option.name] = option.initial;
     }
     this.saveVersion();
-    this.notify_options_listeners();
+    this.notifyOptionsListeners(changedOptions);
   }
 
   save (): void {
+    const changedOptions: string[] = [];
     for (const option of OPTIONS) {
+      if (this.optionsSaved[option.name] !== this.optionsActive[option.name]) {
+        changedOptions.push(option.name);
+      }
       localStorage.setItem(option.name, this.optionsActive[option.name].toString());
       this.optionsSaved[option.name] = this.optionsActive[option.name];
     }
     this.saveVersion();
-    this.notify_options_listeners();
+    this.notifyOptionsListeners(changedOptions);
   }
 
   canReset (): boolean {
@@ -165,12 +179,12 @@ export default class Options {
     this.optionsSaved[name] = this.optionsActive[name] = value;
     localStorage.setItem(name, value.toString());
     this.saveVersion();
-    this.notify_options_listeners();
+    this.notifyOptionsListeners([name]);
   }
 
   toggle (name: string): void {
     this.optionsActive[name] = !this.optionsActive[name];
-    this.notify_options_listeners();
+    this.notifyOptionsListeners([name]);
   }
 
   getMiniMapZoom (): number {
