@@ -1,15 +1,15 @@
 <template lang='pug'>
 .inspect-details
-  .inspect-tabs.tabs.is-small.is-marginless
+  .inspect-tabs.tabs.is-small.m-0
     ul
       template(v-for='tab in tabs')
         li(:class="{ 'is-active': tab.id == tabId }" @click.stop.prevent='tabId = tab.id')
           a
             span {{ $translate(tab.label) }}
 
-  .inspect-body.columns.is-marginless
+  .inspect-body.columns.m-0
     template(v-if="tabId == 'general'")
-      .column.is-paddingless.is-relative.is-clipped
+      .column.p-0.is-relative.is-clipped
         toolbar-inspect-shared-tab-general(
           :client-state='clientState'
           :building='building'
@@ -20,7 +20,7 @@
         )
 
     template(v-if="tabId == 'research'")
-      .column.is-paddingless.is-relative.is-clipped
+      .column.p-0.is-relative.is-clipped
         toolbar-inspect-tab-headquarters-research(
           :client-state='clientState'
           :building='building'
@@ -29,7 +29,7 @@
         )
 
     template(v-else-if="tabId == 'operations' || tabId == 'supplies'")
-      .column.is-paddingless.is-relative.is-clipped
+      .column.p-0.is-relative.is-clipped
         toolbar-inspect-shared-tab-supplies(
           :client-state='clientState'
           :building='building'
@@ -39,7 +39,7 @@
         )
 
     template(v-else-if="tabId == 'products'")
-      .column.is-paddingless.is-relative.is-clipped
+      .column.p-0.is-relative.is-clipped
         toolbar-inspect-shared-tab-products(
           :client-state='clientState'
           :building='building'
@@ -49,7 +49,7 @@
         )
 
     template(v-else-if="tabId == 'services'")
-      .column.is-paddingless.is-relative.is-clipped
+      .column.p-0.is-relative.is-clipped
         toolbar-inspect-shared-tab-services(
           :client-state='clientState'
           :building='building'
@@ -59,7 +59,7 @@
         )
 
     template(v-else-if="tabId == 'jobs'")
-      .column.is-paddingless.is-relative.is-clipped
+      .column.p-0.is-relative.is-clipped
         toolbar-inspect-shared-tab-jobs(
           :client-state='clientState'
           :building='building'
@@ -69,7 +69,7 @@
         )
 
     template(v-else-if="tabId == 'management'")
-      .column.is-paddingless.is-relative.is-clipped
+      .column.p-0.is-relative.is-clipped
         toolbar-inspect-shared-tab-management(
           :client-state='clientState'
           :building='building'
@@ -80,7 +80,7 @@
         )
 
     template(v-else-if="tabId == 'history'")
-      .column.is-paddingless.is-relative.is-clipped
+      .column.p-0.is-relative.is-clipped
         toolbar-inspect-shared-tab-history(
           :client-state='clientState'
           :building='building'

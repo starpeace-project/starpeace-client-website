@@ -12,8 +12,12 @@ span.industry-category-icon(:class="{'is-small': small, 'no-active': no_active}"
     img(src='~/assets/images/icons/offices/office-block.svg')
   template(v-else-if="category == 'SERVICE'")
     img(src='~/assets/images/icons/services/headquarters.svg')
-  template(v-else-if="true")
+  template(v-else-if="category == 'TRANSPORT'")
+    img(src='~/assets/images/icons/transport/car-road.svg')
+
+  template(v-else)
     font-awesome-icon(:icon="['far', 'circle']")
+
 </template>
 
 <script lang='ts'>

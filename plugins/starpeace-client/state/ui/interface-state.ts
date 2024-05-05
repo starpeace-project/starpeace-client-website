@@ -2,7 +2,6 @@ import { markRaw } from 'vue';
 
 import BuildingEvent, { BuildingNewsEvent } from '~/plugins/starpeace-client/event/building-event';
 
-import Overlay from '~/plugins/starpeace-client/overlay/overlay.coffee'
 import EventListener from '~/plugins/starpeace-client/state/event-listener'
 import Options from '~/plugins/starpeace-client/state/options/options';
 import { VisaNewsEvent } from '../../event/visa-event';
@@ -43,7 +42,7 @@ export default class InterfaceState {
   create_tycoon_galaxy_id: string | null = null;
 
   show_overlay: boolean = false;
-  current_overlay: any = Overlay.TYPES.TOWNS;
+  selectedOverlayTypeId: string | undefined = 'TOWNS';
   show_losing_facilities: boolean = false;
 
   show_zones: boolean = false;
@@ -104,7 +103,7 @@ export default class InterfaceState {
     this.create_tycoon_galaxy_id = null;
 
     this.show_overlay = false;
-    this.current_overlay = Overlay.TYPES.TOWNS;
+    this.selectedOverlayTypeId = 'TOWNS';
     this.show_losing_facilities = false;
 
     this.show_zones = false;

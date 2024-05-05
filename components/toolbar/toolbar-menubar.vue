@@ -2,35 +2,9 @@
 #toolbar-header(v-show='is_ready' v-cloak=true :oncontextmenu="'return ' + !$config.public.disableRightClick")
   .columns.row-menu
     .column.column-menu
-      .toolbar-menu
-        button.button.is-starpeace.is-small.has-tooltip-arrow(:class="{'is-active':is_menu_visible('galaxy')}" @click.stop.prevent="toggle_menu('galaxy')" :data-tooltip="$translate('ui.menu.galaxy.header')")
-          font-awesome-icon(:icon="['fas', 'satellite']")
-        button.button.is-starpeace.is-small.has-tooltip-arrow(:class="{'is-active':is_menu_visible('bookmarks')}" @click.stop.prevent="toggle_menu('bookmarks')" :data-tooltip="$translate('ui.menu.bookmarks.header')")
-          font-awesome-icon(:icon="['fas', 'map-marker-alt']")
-        button.button.is-starpeace.is-small.has-tooltip-arrow(:class="{'is-active':is_menu_visible('tycoon')}" @click.stop.prevent='toggle_tycoon_details' :data-tooltip="$translate('ui.menu.tycoon_details.header')" :disabled='!is_tycoon')
-          font-awesome-icon(:icon="['fas', 'user-tie']")
-        button.button.is-starpeace.is-small.has-tooltip-arrow(:class="{'is-active':is_menu_visible('politics')}" @click.stop.prevent="toggle_menu('politics')" :data-tooltip="$translate('ui.menu.politics.header')")
-          font-awesome-icon(:icon="['fas', 'landmark']")
-        button.button.is-starpeace.is-small.has-tooltip-arrow(:class="{'is-active':is_menu_visible('rankings')}" @click.stop.prevent="toggle_menu('rankings')" :data-tooltip="$translate('ui.menu.rankings.header')")
-          font-awesome-icon(:icon="['fas', 'medal']")
-        button.button.is-starpeace.is-small.has-tooltip-arrow(:class="{'is-active':is_menu_visible('hide_all')}" @click.stop.prevent="toggle_menu('hide_all')" :data-tooltip="$translate('misc.hide_menus.label')")
-          font-awesome-icon(:icon="['far', 'eye']")
-        button.button.is-starpeace.is-small.has-tooltip-arrow(:class="{'is-active':is_menu_visible('town_search')}" @click.stop.prevent="toggle_menu('town_search')" :data-tooltip="$translate('ui.menu.town_search.header')")
-          font-awesome-icon(:icon="['fas', 'search-location']")
-        button.button.is-starpeace.is-small.has-tooltip-arrow(:class="{'is-active':is_menu_visible('tycoon_search')}" @click.stop.prevent="toggle_menu('tycoon_search')" :data-tooltip="$translate('ui.menu.tycoon_search.header')")
-          font-awesome-icon(:icon="['fas', 'search']")
-        button.button.is-starpeace.is-small.has-tooltip-arrow(:class="{'is-active':is_menu_visible('research')}" @click.stop.prevent="toggle_menu('research')" :data-tooltip="$translate('ui.menu.research.header')")
-          font-awesome-icon(:icon="['fas', 'flask']")
-        button.button.is-starpeace.is-small.has-tooltip-arrow(:class="{'is-active':is_menu_visible('construction')}" @click.stop.prevent="toggle_menu('construction')" :data-tooltip="$translate('ui.menu.construction.header')")
-          font-awesome-icon(:icon="['fas', 'hammer']")
-        button.button.is-starpeace.is-small.has-tooltip-arrow(:class="{'is-active':is_menu_visible('mail')}" @click.stop.prevent="toggle_menu('mail')" :data-tooltip="$translate('ui.menu.mail.header')")
-          font-awesome-icon(:icon="['far', 'envelope']")
-        button.button.is-starpeace.is-small.has-tooltip-arrow(:class="{'is-active':is_menu_visible('chat')}" @click.stop.prevent="toggle_menu('chat')" :data-tooltip="$translate('ui.menu.chat.header')")
-          font-awesome-icon(:icon="['far', 'comments']")
-        button.button.is-starpeace.is-small.has-tooltip-arrow(:class="{'is-active':is_menu_visible('options')}" @click.stop.prevent="toggle_menu('options')" :data-tooltip="$translate('ui.menu.options.header')")
-          font-awesome-icon(:icon="['fas', 'cogs']")
-        button.button.is-starpeace.is-small.has-tooltip-arrow(:class="{'is-active':is_menu_visible('help')}" @click.stop.prevent="toggle_menu('help')" :data-tooltip="$translate('ui.menu.help.header')")
-          font-awesome-icon(:icon="['far', 'question-circle']")
+      toolbar-menubar-options(
+        :client-state='client_state'
+      )
 
     .column.column-tycoon
       span.column-tycoon-name
@@ -135,25 +109,7 @@ export default {
   },
 
   methods: {
-    is_menu_visible (option_type: string) { return this.client_state.menu.is_visible(option_type); },
-    toggle_menu (option_type: string) {
-      if (option_type === 'hide_all' && this.client_state.interface.show_inspect) {
-        this.client_state.interface.hide_inspect();
-      }
-      this.client_state.menu.toggle_menu(option_type);
-    },
-
-    toggle_tycoon_details () {
-      if (!this.client_state.is_tycoon()) return;
-      if (this.client_state.menu.is_visible('tycoon')) {
-        this.client_state.menu.toggle_menu('tycoon');
-      }
-      else {
-        this.client_state.show_tycoon_profile(this.client_state.player.tycoon_id);
-      }
-    },
-
-    toggle_mail () {
+    toggle_mail (): void {
       if (!this.unread_mail.length) return;
       this.client_state.menu.toggle_menu('mail');
     }
@@ -174,12 +130,6 @@ export default {
   100%
     opacity: .5
 
-.button
-  &.is-starpeace
-    &.is-small
-      font-size: .875rem
-      line-height: 1.5
-      border-radius: .2rem
 
 #toolbar-header
   grid-column: start-left / end-right
@@ -285,41 +235,5 @@ export default {
 
           &.ajax-loading
             animation: spin 1.5s linear infinite
-
-.toolbar-menu
-  background: linear-gradient(to top, darken($sp-primary-bg, 5%), #06261D)
-  display: inline-block
-  padding: .25rem
-  text-align: center
-  width: 46rem
-
-  .button
-    height: 2.5rem
-    font-size: 1.25rem
-    padding: 0 .65rem
-
-    &.is-starpeace
-      &.is-small
-        border-radius: .2rem
-        height: 2.5rem
-        font-size: 1.25rem
-        line-height: 1.5
-        padding: 0 .65rem
-
-    &:first-child
-      &.has-tooltip-arrow
-        &.is-tooltip-active::before,
-        &:focus::before,
-        &:hover::before
-          left: 75%
-
-    &:not(:first-child)
-      margin-left: .5rem
-
-    &.has-tooltip-arrow
-      &.is-tooltip-active::before,
-      &:focus::before,
-      &:hover::before
-        z-index: 1200
 
 </style>

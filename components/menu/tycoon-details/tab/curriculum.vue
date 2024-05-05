@@ -33,8 +33,8 @@
             span.sp-kv-value {{corporation_prestige}}
 
         div.is-flex.is-flex-direction-column.is-justify-content-space-around(v-if='has_corporation && is_self')
-          button.button.is-starpeace(disabled) {{$translate('ui.menu.tycoon_details.tab.curriculum.action.bankruptcy')}}
-          button.button.is-starpeace(disabled) {{$translate('ui.menu.tycoon_details.tab.curriculum.action.promotion')}}
+          button.button.is-starpeace.is-uppercase(disabled) {{$translate('ui.menu.tycoon_details.tab.curriculum.action.bankruptcy')}}
+          button.button.is-starpeace.is-uppercase(disabled) {{$translate('ui.menu.tycoon_details.tab.curriculum.action.promotion')}}
 
       .resume-section.promotion-section
         .is-flex.is-flex-direction-column.level-current

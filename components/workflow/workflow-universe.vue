@@ -1,28 +1,16 @@
 <template lang='pug'>
 .identity-content
-  .welcome-message
-    span.salut {{$translate('ui.workflow.visa-type.greeting')}}, {{$translate('identity.visitor')}}!
-    |
-    |
-    | {{$translate('ui.workflow.visa-type.intro')}}
-    |
-    |
-    a(href='https://docs.starpeace.io') {{$translate('ui.workflow.visa-type.learnmore')}}
+  .welcome-message.pb-5.mb-0
+    span.salut {{ $translate('ui.workflow.visa-type.greeting') }}, {{ $translate('identity.visitor') }}!
+    span.mx-4 {{ $translate('ui.workflow.visa-type.intro') }}
+    a(href='https://docs.starpeace.io') {{ $translate('ui.workflow.visa-type.learnmore') }}
 
-  .columns.universe-mode
-    .column.is-6
-      a.button.is-medium.is-fullwidth.is-starpeace.is-square(
-        :class="{'is-active': universe_mode == 'starpeace'}"
-        @click.stop.prevent="select_universe('starpeace')"
-      ) STARPEACE {{$translate('ui.workflow.universe.universe.label')}}
-    .column.is-6
-      a.button.is-medium.is-fullwidth.is-starpeace.is-square(
-        :class="{'is-active': universe_mode == 'multiverse'}"
-        @click.stop.prevent="select_universe('multiverse')"
-      ) {{$translate('ui.workflow.universe.multiverse.label')}}
+  .universe-mode.is-flex.is-flex-direction-row
+    a.button.is-medium.is-flex-grow-1(:class="{'is-active': universeMode == 'starpeace'}" @click.stop.prevent="changeMode('starpeace')") STARPEACE {{ $translate('ui.workflow.universe.universe.label') }}
+    a.button.is-medium.is-flex-grow-1(:class="{'is-active': universeMode == 'multiverse'}" @click.stop.prevent="changeMode('multiverse')") {{ $translate('ui.workflow.universe.multiverse.label') }}
 
-  workflow-universe-starpeace(v-show="universe_mode == 'starpeace'" :client_state='client_state')
-  workflow-universe-multiverse(v-show="universe_mode == 'multiverse'" :ajax_state='ajax_state' :client_state='client_state')
+  workflow-universe-starpeace(v-if="universeMode=='starpeace'" :client-state='clientState')
+  workflow-multiverse-galaxy-list(v-else-if="universeMode=='multiverse'" :ajax-state='ajaxState' :client-state='clientState')
 
   .news-container
     template(v-if='showAnnouncement')
@@ -30,8 +18,8 @@
 
     template(v-else)
       .news-header
-        span {{$translate('ui.workflow.visa-type.header.news')}}
-        a.version(href='/release') {{client_version}}
+        span {{ $translate('ui.workflow.visa-type.header.news') }}
+        a.version(href='/release') {{ clientVersion }}
 
       template(v-if='!news.length')
         .news-loading
@@ -40,30 +28,44 @@
       template(v-else-if='news.length')
         .news-content.sp-scrollbar
           .news-item(v-for='news_item in news')
-            .news-date {{news_item.date}}
-            .news-title {{news_item.title}}
+            .news-date {{ news_item.date }}
+            .news-title {{ news_item.title }}
             .news-body.content
               span.details(v-html='news_item_html(news_item.body)')
               ul(v-if='news_item.items && news_item.items.length')
-                li(v-for='item in news_item.items') {{item}}
+                li(v-for='item in news_item.items') {{ item }}
 
 </template>
 
 <script lang='ts'>
 import ClientState from '~/plugins/starpeace-client/state/client-state';
 
+interface NewsUpdate {
+  date: string;
+  title: string;
+  body: string;
+  items: Array<string>;
+}
+
+interface WorkflowUniverseData {
+  clientVersion: string;
+  showAnnouncement: boolean;
+  news: Array<NewsUpdate>;
+  universeMode: string;
+}
+
 export default {
   props: {
-    client_state: { type: ClientState, required: true },
-    ajax_state: { type: Object, required: true }
+    clientState: { type: ClientState, required: true },
+    ajaxState: { type: Object, required: true }
   },
 
-  data () {
+  data (): WorkflowUniverseData {
     return {
-      client_version: this.$config.public.CLIENT_VERSION,
+      clientVersion: this.$config.public.CLIENT_VERSION,
       showAnnouncement: false,
       news: [],
-      universe_mode: 'multiverse'
+      universeMode: 'multiverse'
     }
   },
 
@@ -79,15 +81,19 @@ export default {
   },
 
   methods: {
-    select_universe (mode: string): void { this.universe_mode = mode; },
+    changeMode (mode: string): void {
+      this.universeMode = mode;
+    },
 
-    news_item_html (value: string): string { return value.replace(/\n/g, '<br>'); }
+    news_item_html (value: string): string {
+      return value.replace(/\n/g, '<br>');
+    }
   }
 }
 </script>
 
 <style lang='sass' scoped>
-@import 'bulma/sass/utilities/_all'
+@import 'bulma/sass/utilities'
 @import '~/assets/stylesheets/starpeace-variables'
 
 .identity-content
@@ -99,9 +105,6 @@ export default {
   border-bottom: 1px solid $sp-primary
   color: #fff
   font-size: 1.5rem
-  min-height: 6rem
-  padding: 0 .5rem 1.5rem
-  margin-bottom: 0
 
   .salut
     font-weight: bold
@@ -112,10 +115,9 @@ export default {
 
 .universe-mode
   border-bottom: 1px solid $sp-primary
-  margin: 0
 
-  > .column
-    padding: 0
+  .button
+    flex-basis: 0
 
 
 .news-container

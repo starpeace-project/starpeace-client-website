@@ -1,6 +1,6 @@
 <template lang='pug'>
 .research-container
-  .field.is-marginless.filter-input-container
+  .field.m-0.filter-input-container
     .control.has-icons-left.is-expanded
       input.input(type='text' :placeholder="$translate('misc.filter')" v-model='filterInputValue')
       span.icon.is-left

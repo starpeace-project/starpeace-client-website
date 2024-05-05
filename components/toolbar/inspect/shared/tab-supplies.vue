@@ -1,13 +1,13 @@
 <template lang='pug'>
-.columns.is-marginless.is-relative.is-clipped.supplies-tab
-  .column.is-narrow.is-paddingless.sp-scrollbar.sp-sub-tabs
+.columns.m-0.is-relative.is-clipped.supplies-tab
+  .column.is-narrow.p-0.sp-scrollbar.sp-sub-tabs
     .sp-tabs-menu
       ul
         template(v-for='supply,index in sortedSupplies')
           li(:class="{ 'is-active': supplyIndex == index }" @click.stop.prevent='selectSupply(index)')
             a.sp-kv-key.py-2.px-3 {{$resourceTypeLabel(supply.resourceId)}}
 
-  .column.is-narrow.is-paddingless.px-3.py-1.is-flex.is-flex-direction-column.sp-has-dark-background.price-settings
+  .column.is-narrow.px-3.py-1.is-flex.is-flex-direction-column.sp-has-dark-background.price-settings
     div.is-flex-grow-1(v-if='supply')
       div.is-flex.is-flex-direction-row.is-align-items-baseline
         span.sp-kv-key {{ $translate('toolbar.inspect.supplies.label.max_price') }}:

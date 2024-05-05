@@ -166,6 +166,7 @@ export default {
 <style lang='sass' scoped>
 @import '~/assets/stylesheets/starpeace-menus'
 @import '~/assets/stylesheets/starpeace-menus-tycoon-details'
+@import '~/assets/stylesheets/starpeace-profile'
 
 .sp-menu
   grid-column: start-left / end-render

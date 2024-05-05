@@ -64,7 +64,7 @@ export interface RenderContext {
 
   showZones: boolean;
   showOverlay: boolean;
-  currentOverlay: any | undefined;
+  selectedOverlayTypeId: string | undefined;
 
   selectedBuilding: Building | undefined;
   selectedBuildingId: string | undefined;
@@ -170,7 +170,7 @@ export default class Layers {
 
       showZones: false,
       showOverlay: false,
-      currentOverlay: undefined,
+      selectedOverlayTypeId: undefined,
 
       selectedBuilding: undefined,
       selectedBuildingId: undefined,
@@ -269,7 +269,7 @@ export default class Layers {
     this.context.renderBuildingEffects = this.options.option('renderer.building_effects');
     this.context.showZones = this.clientState.interface.show_zones;
     this.context.showOverlay = this.clientState.interface.show_overlay;
-    this.context.currentOverlay = this.clientState.interface.current_overlay;
+    this.context.selectedOverlayTypeId = this.clientState.interface.selectedOverlayTypeId;
     this.context.selectedBuilding = this.clientState.interface.selected_building_id ? this.clientState.selected_building() : undefined;
     this.context.selectedBuildingId = this.context.selectedBuilding ? this.clientState.interface.selected_building_id : undefined;
     this.context.selectedCorporationId = this.context.selectedBuilding?.corporationId ?? undefined;

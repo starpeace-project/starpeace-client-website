@@ -25,7 +25,7 @@ class RenderState {
 
   zones: boolean = false;
   overlay: boolean = false;
-  overlayType: string | undefined = undefined;
+  overlayTypeId: string | undefined = undefined;
 }
 
 class RenderSelection {
@@ -72,7 +72,7 @@ export default class TileItemCache {
         || this.clientState.planet.current_season != this.lastRendered.seasonRendered
         || this.clientState.interface.show_zones != this.lastRendered.zones
         || this.clientState.interface.show_overlay != this.lastRendered.overlay
-        || this.clientState.interface.current_overlay != this.lastRendered.overlayType;
+        || this.clientState.interface.selectedOverlayTypeId != this.lastRendered.overlayTypeId;
   }
 
   get isSelectionStale (): boolean {
@@ -101,7 +101,7 @@ export default class TileItemCache {
     this.lastRendered.seasonRendered = this.clientState.planet.current_season;
     this.lastRendered.zones = this.clientState.interface.show_zones;
     this.lastRendered.overlay = this.clientState.interface.show_overlay;
-    this.lastRendered.overlayType = this.clientState.interface.current_overlay;
+    this.lastRendered.overlayTypeId = this.clientState.interface.selectedOverlayTypeId;
 
     this.lastSelection.buildingId = this.clientState.interface.selected_building_id ?? undefined;
     this.lastSelection.constructionBuildingId = this.clientState.interface.construction_building_id ?? undefined;

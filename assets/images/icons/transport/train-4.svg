@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<!DOCTYPE svg  PUBLIC '-//W3C//DTD SVG 1.1//EN'  'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+<svg width="800px" height="800px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" id="_x3C_Layer_x3E_" version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="railroad_trip_x2C__passenger_train_x2C__railroad_x2C__train">
+<g id="XMLID_389_">
+<g id="XMLID_390_">
+<line fill="none" id="XMLID_3595_" stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="1.5" x2="30.5" y1="29.5" y2="29.5"/>
+<polyline fill="none" id="XMLID_3594_" points="     26.5,30.5 26.5,29.5 29.5,29.5 29.5,30.5    " stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/>
+<polyline fill="none" id="XMLID_3593_" points="     20.5,30.5 20.5,29.5 23.5,29.5 23.5,30.5    " stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/>
+<polyline fill="none" id="XMLID_3592_" points="     14.5,30.5 14.5,29.5 17.5,29.5 17.5,30.5    " stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/>
+<polyline fill="none" id="XMLID_3591_" points="     8.5,30.5 8.5,29.5 11.5,29.5 11.5,30.5    " stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/>
+<polyline fill="none" id="XMLID_3590_" points="     2.5,30.5 2.5,29.5 5.5,29.5 5.5,30.5    " stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/>
+</g>
+<circle cx="10.5" cy="27" fill="none" id="XMLID_391_" r="1" stroke="#263238" stroke-miterlimit="10"/>
+<circle cx="18.5" cy="27" fill="none" id="XMLID_392_" r="1" stroke="#263238" stroke-miterlimit="10"/>
+<circle cx="14.5" cy="27" fill="none" id="XMLID_393_" r="1" stroke="#263238" stroke-miterlimit="10"/>
+<path d="    M28,19.5l-4.67-6H20.5c-0.55,0-1,0.45-1,1v2c0,1.66,1.34,3,3,3H28z" fill="none" id="XMLID_394_" stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/>
+<path d="    M3,14.5H1.5v4H3c0.28,0,0.5-0.221,0.5-0.5v-3C3.5,14.72,3.28,14.5,3,14.5z" fill="none" id="XMLID_395_" stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/>
+<path d="    M12,18.5h3c0.28,0,0.5-0.221,0.5-0.5v-3c0-0.28-0.22-0.5-0.5-0.5h-3c-0.28,0-0.5,0.22-0.5,0.5v3C11.5,18.279,11.72,18.5,12,18.5z" fill="none" id="XMLID_396_" stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/>
+<path d="    M6,18.5h3c0.28,0,0.5-0.221,0.5-0.5v-3c0-0.28-0.22-0.5-0.5-0.5H6c-0.28,0-0.5,0.22-0.5,0.5v3C5.5,18.279,5.72,18.5,6,18.5z" fill="none" id="XMLID_397_" stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/>
+<line fill="none" id="XMLID_398_" stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="30.477" x2="27.5" y1="23.5" y2="23.5"/>
+<line fill="none" id="XMLID_399_" stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="15.5" x2="1.5" y1="21.5" y2="21.5"/>
+<path d="    M1.5,27.5h6l0.22-1.33c0.16-0.96,0.99-1.67,1.971-1.67h9.619c0.98,0,1.811,0.71,1.971,1.67l0.22,1.33H28l1.63-1.63    c1.07-1.07,1.17-2.771,0.24-3.96L23.1,13.2c-1.319-1.7-3.359-2.7-5.52-2.7H3.5" fill="none" id="XMLID_400_" stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/>
+<path d="    M1.5,29.5V11c0-5.939,1.57-8.5,3.5-8.5c0.96,0,1.84,0.61,2.47,1.98C7.917,5.43,8.242,6.755,8.397,8.5" fill="none" id="XMLID_401_" stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/>
+</g>
+</g>
+</svg>

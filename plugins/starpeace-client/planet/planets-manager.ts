@@ -3,13 +3,13 @@ import _ from 'lodash';
 import { BuildingDefinition, CityZone, CompanySeal, IndustryCategory, IndustryType, Level, ResourceType, ResourceUnit, SimulationDefinitionParser } from '@starpeace/starpeace-assets-types';
 
 import Company from '~/plugins/starpeace-client/company/company';
-import RankingType from '~/plugins/starpeace-client/corporation/ranking-type';
-import TycoonInfo from '~/plugins/starpeace-client/tycoon/tycoon-info';
-
 import InventionDefinition from '~/plugins/starpeace-client/invention/invention-definition';
-
+import OverlayType from '../overlay/overlay-type';
+import RankingType from '~/plugins/starpeace-client/corporation/ranking-type';
 import Town from '~/plugins/starpeace-client/planet/town';
 import TownDetails from '~/plugins/starpeace-client/planet/town-details';
+import TycoonInfo from '~/plugins/starpeace-client/tycoon/tycoon-info';
+
 import ApiClient from '~/plugins/starpeace-client/api/api-client';
 import AjaxState from '~/plugins/starpeace-client/state/ajax-state';
 import ClientState from '~/plugins/starpeace-client/state/client-state';
@@ -42,7 +42,6 @@ export default class PlanetsManager {
       return online_tycoons;
     });
   }
-
 
   async load_rankings (ranking_type_id: string): Promise<any> {
     if (!this.clientState.has_session() || !ranking_type_id) {
@@ -149,6 +148,7 @@ export default class PlanetsManager {
       this.clientState.core.planet_library.load_industry_categories(_.map(json.industryCategories, IndustryCategory.fromJson));
       this.clientState.core.planet_library.load_industry_types(_.map(json.industryTypes, IndustryType.fromJson));
       this.clientState.core.planet_library.load_levels(_.map(json.levels, Level.fromJson));
+      this.clientState.core.planet_library.loadOverlayTypes((json.overlayTypes ?? []).map(OverlayType.fromJson));
       this.clientState.core.planet_library.load_ranking_types(_.map(json.rankingTypes, RankingType.fromJson));
       this.clientState.core.planet_library.load_resource_types(_.map(json.resourceTypes, ResourceType.fromJson));
       this.clientState.core.planet_library.load_resource_units(_.map(json.resourceUnits, ResourceUnit.fromJson));

@@ -5,7 +5,7 @@
     .card-header-icon.card-close(v-on:click.stop.prevent="client_state.menu.toggle_menu('mail')")
       font-awesome-icon(:icon="['fas', 'times']")
 
-  .card-content.is-paddingless.sp-menu-background
+  .card-content.sp-menu-background.p-0
     misc-card-loading(:visible='loading' within-absolute=true)
     misc-modal-loading(v-show='loading' within-absolute=true)
 

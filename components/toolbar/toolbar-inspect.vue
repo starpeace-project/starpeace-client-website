@@ -1,6 +1,6 @@
 <template lang='pug'>
 .inspect-container(v-show='isVisible' :oncontextmenu="'return ' + !$config.public.disableRightClick")
-  .inspect-preview.is-marginless
+  .inspect-preview.m-0
     #inspect-image-webgl-container(ref='previewContainer')
 
   template(v-if='!isVisible || isLoading || !buildingType')

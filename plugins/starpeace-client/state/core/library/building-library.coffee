@@ -1,7 +1,5 @@
-import Library from '~/plugins/starpeace-client/state/core/library/library.coffee'
-import TextureAtlasCache from '~/plugins/starpeace-client/state/core/texture-atlas-cache.coffee'
-
-import Logger from '~/plugins/starpeace-client/logger'
+import Library from '~/plugins/starpeace-client/state/core/library/library'
+import TextureAtlasCache from '~/plugins/starpeace-client/state/core/texture-atlas-cache'
 
 export default class BuildingLibrary extends Library
   constructor: () ->
@@ -22,7 +20,7 @@ export default class BuildingLibrary extends Library
   has_assets: () -> @texture_cache.has_assets()
 
   initialize: (planet_library) ->
-    for seal_id in planet_library.seals_for_buildings()
+    for seal_id in planet_library.all_seal_ids_non_ifel()
       seal = planet_library.seal_for_id(seal_id)
       for building_id in seal.buildingIds
         if @metadata_by_id[building_id]

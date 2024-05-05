@@ -1,0 +1,116 @@
+@use 'sass:color';
+
+$primary-color: #6ea192;
+$primary-bg-color: darken($primary-color, 5%);
+$primary-dark-color: darken($primary-color, 10%);
+
+$primary-color-h: 162deg;
+$primary-color-s: 21%;
+$primary-color-l: 53%;
+
+$scheme-h: $primary-color-h;
+$scheme-s: $primary-color-s;
+$scheme-main-l: $primary-color-l;
+
+@use 'bulma/sass/utilities' with (
+  $family-primary: '"Open Sans", sans-serif',
+  $text: $primary-color,
+  $text-weak: lighten($primary-color, 5%),
+  $text-strong: darken($primary-color, 5%),
+  $primary: $primary-color,
+  $info: $primary-color,
+  $link: $primary-color,
+  $border: $primary-color,
+  $border-weak: lighten($primary-color, 5%),
+);
+@forward 'bulma/sass/themes';
+@forward 'bulma/sass/base';
+
+@use 'bulma/sass/elements/box' with (
+  $box-padding: .75rem
+);
+@forward 'bulma/sass/elements/button';
+@forward 'bulma/sass/elements/content';
+@forward 'bulma/sass/elements/notification';
+@forward 'bulma/sass/elements/icon';
+@forward 'bulma/sass/elements/table';
+@forward 'bulma/sass/elements/tag';
+
+@forward 'bulma/sass/form/shared';
+@forward 'bulma/sass/form/input-textarea';
+@forward 'bulma/sass/form/checkbox-radio';
+@forward 'bulma/sass/form/select';
+@forward 'bulma/sass/form/file';
+@forward 'bulma/sass/form/tools';
+
+
+@use 'bulma/sass/components/card' with (
+  $card-radius: 0
+);
+@use 'bulma/sass/components/modal' with (
+  $modal-background-background-color: color.adjust($primary-color, $lightness: -50%, $alpha: -0.4)
+);
+
+@forward 'bulma/sass/components/breadcrumb';
+@forward 'bulma/sass/components/dropdown';
+@forward 'bulma/sass/components/menu';
+@forward 'bulma/sass/components/message';
+
+@forward 'bulma/sass/components/navbar';
+@forward 'bulma/sass/components/tabs';
+
+@forward 'bulma/sass/grid';
+@forward 'bulma/sass/helpers';
+@forward 'bulma/sass/layout';
+
+@import 'bulma/sass/utilities/initial-variables';
+@import 'bulma/sass/utilities/derived-variables';
+@import 'bulma/sass/utilities/mixins';
+
+@import '~/assets/stylesheets/starpeace-variables';
+
+@import '~/assets/stylesheets/bulma/starpeace-button';
+@import '~/assets/stylesheets/bulma/starpeace-card';
+@import '~/assets/stylesheets/bulma/starpeace-dropdown';
+@import '~/assets/stylesheets/bulma/starpeace-form';
+@import '~/assets/stylesheets/bulma/starpeace-menu';
+@import '~/assets/stylesheets/bulma/starpeace-navbar';
+@import '~/assets/stylesheets/bulma/starpeace-table';
+@import '~/assets/stylesheets/bulma/starpeace-tag';
+@import '~/assets/stylesheets/bulma/starpeace-tooltip';
+
+.icon {
+  .svg-inline--fa {
+    height: 1rem;
+  }
+}
+
+.is-marginless {
+  margin: 0 !important;
+}
+
+.is-paddingless {
+  padding: 0 !important;
+}
+
+.label {
+  color: $sp-primary;
+}
+
+.sp-notification.is-warning {
+  background-color: $sp-light-bg;
+  color: #FFF;
+}
+
+.modal {
+  position: absolute;
+
+  .modal-content {
+    width: unset;
+  }
+}
+
+.box {
+  background-color: transparent;
+  border-radius: 0;
+}

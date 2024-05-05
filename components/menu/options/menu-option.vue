@@ -1,13 +1,13 @@
 <template lang='pug'>
 .field.is-horizontal
-  .column.is-paddingless.is-9
+  .column.p-0.is-9
     .field-label
       label.label
         span.mr-1 {{ label }}
         span.mr-1(v-if='hint' :data-tooltip='hint')
           font-awesome-icon(:icon="['far', 'question-circle']")
         span :
-  .column.is-paddingless.field-body
+  .column.p-0.field-body
     .field.is-narrow
       .control.toggle-field
         misc-toggle-option(:value='value' @toggle="$emit('toggle')")

@@ -1,7 +1,8 @@
 <template lang='pug'>
 client-only
   transition(name='fade-in')
-    #workflow-container(v-if='is_active')
+    #workflow-container(v-if='is_active' :style='containerStyle')
+      .is-flex-grow-1
       .card.is-starpeace(:style='workflow_card_style' :class='workflow_card_class')
         .card-header(v-show='has_header')
           .card-header-title.card-header-planet(v-show="status == 'pending_planet'")
@@ -10,16 +11,18 @@ client-only
             span.planet-name {{ current_galaxy_name }}
 
         .card-content
-          workflow-loading(v-if="status == 'initializing'" :message="$translate('ui.workflow.loading.initializing')")
+          workflow-loading(v-if="status == 'initializing'" message-key='ui.workflow.loading.initializing')
 
-          workflow-universe(v-else-if="status == 'pending_universe'" :ajax_state='client_state.ajax_state' :client_state='client_state')
-          workflow-planet(v-else-if="status == 'pending_planet'" :client_state='client_state')
-          workflow-loading(v-else-if="status == 'pending_visa'" :message="$translate('ui.workflow.loading.pending_visa')")
-          workflow-loading(v-else-if="status == 'pending_assets'" :message="$translate('ui.workflow.loading.pending_assets')")
-          workflow-loading(v-else-if="status == 'pending_planet_details'" :message="$translate('ui.workflow.loading.pending_planet_details')")
-          workflow-loading(v-else-if="status == 'pending_player_data'" :message="$translate('ui.workflow.loading.pending_player_data')")
-          workflow-loading(v-else-if="status == 'pending_initialization'" :message="$translate('ui.workflow.loading.pending_initialization')")
-          workflow-loading(v-else-if="status == 'ready'" :message="$translate('ui.workflow.loading.initializing')")
+          workflow-universe(v-else-if="status == 'pending_universe'" :ajax-state='client_state.ajax_state' :client-state='client_state')
+          workflow-planet-planets(v-else-if="status == 'pending_planet'" :client-state='client_state')
+          workflow-loading(v-else-if="status == 'pending_visa'" message-key='ui.workflow.loading.pending_visa')
+          workflow-loading(v-else-if="status == 'pending_assets'" message-key='ui.workflow.loading.pending_assets')
+          workflow-loading(v-else-if="status == 'pending_planet_details'" message-key='ui.workflow.loading.pending_planet_details')
+          workflow-loading(v-else-if="status == 'pending_player_data'" message-key='ui.workflow.loading.pending_player_data')
+          workflow-loading(v-else-if="status == 'pending_initialization'" message-key='ui.workflow.loading.pending_initialization')
+          workflow-loading(v-else-if="status == 'ready'" message-key='ui.workflow.loading.initializing')
+
+      .is-flex-grow-3
 
 </template>
 
@@ -52,13 +55,18 @@ export default {
     },
     workflow_card_style () {
       return {
-        'width': this.max_width, 'max-height': this.max_height
+        'width': this.max_width
+      };
+    },
+
+    containerStyle () {
+      return {
+        '--workflow-height': this.status === 'pending_universe' ? '60rem' : undefined
       };
     },
 
     has_header (): boolean { return this.status === 'pending_planet'; },
     max_width (): string { return STATUS_MAX_WIDTHS[this.status] ?? 'inherit'; },
-    max_height (): string { return this.status === 'pending_universe' ? '60rem' : 'inherit'; },
 
     current_galaxy_name (): string | undefined {
       if (!this.client_state.identity.galaxy_id) return undefined;
@@ -96,8 +104,9 @@ export default {
 
 .card
   display: inline-block
+  margin: 0
+  max-height: var(--workflow-height)
   overflow: hidden
-  position: relative
   text-align: left
   transition: max-width .5s
   z-index: 1050

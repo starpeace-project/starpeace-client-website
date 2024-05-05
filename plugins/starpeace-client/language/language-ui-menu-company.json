@@ -71,6 +71,14 @@
     "IT": "Costituire Societaria",
     "PT": "Forme Empresa"
   },
+  "ui.menu.company.form.hint.name": {
+    "DE": "Es muss ein gültiger Firmenname angegeben werden",
+    "EN": "Must provide a valid company name",
+    "ES": "Debe proporcionar un nombre de empresa válido",
+    "FR": "Doit fournir un nom d'entreprise valide",
+    "IT": "Deve fornire un nome di società valido",
+    "PT": "Deve fornecer um nome de empresa válido"
+  },
   "ui.menu.company.form.error.general": {
     "DE": "Fehlerbildungsunternehmen, bitte versuchen Sie es erneut",
     "EN": "Error forming company, please try again",

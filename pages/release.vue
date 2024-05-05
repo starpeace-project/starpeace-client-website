@@ -1,16 +1,16 @@
 <template lang='pug'>
 client-only
   #application-container(v-cloak=true)
-    page-layout-header(:client_state='client_state')
+    page-layout-header(:client-state='client_state')
 
     #application-body
       .columns
         .column.is-8.is-offset-2
-          .card.is-starpeace.notes-container
+          .card.is-starpeace.mt-4
             .card-header
               .card-header-title Release Notes - Latest
             .card-content.release-notes(v-html='release_notes_latest_html')
-          .card.is-starpeace.notes-container
+          .card.is-starpeace.mt-4
             .card-header
               .card-header-title Release Notes - Archive
             .card-content.release-notes(v-html='release_notes_archive_html')
@@ -35,10 +35,7 @@ export default {
 </script>
 
 <style lang='sass' scoped>
-@import 'bulma/sass/utilities/_all'
-
-.notes-container
-  margin-top: 1rem
+@import 'bulma/sass/utilities/mixins'
 
 #application-body
   +mobile

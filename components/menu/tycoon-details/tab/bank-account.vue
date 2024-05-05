@@ -47,7 +47,7 @@
               td.has-text-right {{payment.interestRatePercent.toFixed(2)}}%
               td.column-action
                 .is-flex.is-justify-content-center(v-if='has_corporation && is_self')
-                  button.button.is-small.is-starpeace(disabled) {{$translate('ui.menu.tycoon_details.tab.bank_account.loans.repay')}}
+                  button.button.is-uppercase.is-small.is-starpeace(disabled) {{$translate('ui.menu.tycoon_details.tab.bank_account.loans.repay')}}
 
     .sp-scrollbar.right-panel
       table.basic-table.sp-striped.sp-solid-header.sp-sticky-header.bank-loan-offers
@@ -72,7 +72,7 @@
                 span {{offer.maxTermYears}} {{$translate('misc.unit.year.singular')}}
             td
               .is-flex.is-justify-content-center(v-if='has_corporation && is_self')
-                button.button.is-small.is-starpeace(disabled) {{$translate('ui.menu.tycoon_details.tab.bank_account.loans.apply')}}
+                button.button.is-uppercase.is-small.is-starpeace(disabled) {{$translate('ui.menu.tycoon_details.tab.bank_account.loans.apply')}}
 
 
 </template>

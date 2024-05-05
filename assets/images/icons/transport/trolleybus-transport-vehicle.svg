@@ -1,0 +1,32 @@
+<?xml version="1.0" ?>
+<!DOCTYPE svg  PUBLIC '-//W3C//DTD SVG 1.1//EN'  'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+<svg width="800px" height="800px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" id="_x3C_Layer_x3E_" version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="trolleybus_x2C__transport">
+<g id="XMLID_2179_">
+<path d="    M10,19.5h5c0.28,0,0.5-0.221,0.5-0.5v-5c0-0.28-0.22-0.5-0.5-0.5h-5c-0.28,0-0.5,0.22-0.5,0.5v5C9.5,19.279,9.72,19.5,10,19.5z" fill="none" id="XMLID_2180_" stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/>
+<path d="    M25.5,14.5v5c0,0.55,0.45,1,1,1h4v-7h-4C25.95,13.5,25.5,13.95,25.5,14.5z" fill="none" id="XMLID_2181_" stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/>
+<path d="    M18,19.5h5c0.28,0,0.5-0.221,0.5-0.5v-5c0-0.28-0.22-0.5-0.5-0.5h-5c-0.28,0-0.5,0.22-0.5,0.5v5C17.5,19.279,17.72,19.5,18,19.5z" fill="none" id="XMLID_2182_" stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/>
+<line fill="none" id="XMLID_2183_" stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="1.5" x2="30.5" y1="3.5" y2="3.5"/>
+<line fill="none" id="XMLID_2184_" stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="16.5" x2="1.5" y1="28.5" y2="28.5"/>
+<path d="    M3.001,13.5H2.5c-0.55,0-1,0.45-1,1v14" fill="none" id="XMLID_2185_" stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/>
+<path d="    M4.5,13.5h2c0.55,0,1,0.45,1,1v14" fill="none" id="XMLID_2186_" stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/>
+<line fill="none" id="XMLID_2187_" stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="4.5" x2="7.5" y1="20.5" y2="20.5"/>
+<line fill="none" id="XMLID_2188_" stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="2" x2="3" y1="20.5" y2="20.5"/>
+<line fill="none" id="XMLID_2189_" stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="4.5" x2="4.5" y1="13.5" y2="28.5"/>
+<path d="    M1.5,10.5h26c1.66,0,3,1.34,3,3v14c0,0.55-0.45,1-1,1h-6" fill="none" id="XMLID_2190_" stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/>
+<g id="bus_x2C__transport_1_">
+<g id="XMLID_2192_">
+<line fill="none" id="XMLID_2193_" stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="21" x2="10.5" y1="30.5" y2="30.5"/>
+<line fill="none" id="XMLID_2194_" stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="8.6" x2="8.5" y1="30.5" y2="30.5"/>
+<circle cx="21" cy="28" fill="none" id="XMLID_2195_" r="2.5" stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/>
+<circle cx="21" cy="28" fill="none" id="XMLID_2196_" r="0.5" stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/>
+<line fill="none" id="XMLID_2197_" stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="8.6" x2="8.5" y1="30.5" y2="30.5"/>
+</g>
+</g>
+<line fill="none" id="XMLID_2191_" stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="8.551" x2="19" y1="5.049" y2="10.5"/>
+<line fill="none" id="XMLID_2198_" stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="4.516" x2="12.135" y1="5.03" y2="9.005"/>
+<rect fill="none" height="2" id="XMLID_2199_" stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" width="2" x="28.5" y="24.5"/>
+</g>
+</g>
+</svg>

@@ -2,7 +2,7 @@
 .card.is-starpeace
   .card-header
     .card-header-title Tycoons
-  .card-content.sp-menu-background.columns.is-marginless.is-paddingless
+  .card-content.sp-menu-background.columns.m-0.p-0
     .column.is-narrow
       aside.menu.is-starpeace.tycoon-selection
         ul.menu-list
@@ -13,8 +13,8 @@
               span.tag.is-info.ml-3(v-else-if='tycoon.gameMaster') GM
               span.tag.is-danger.ml-3(v-if='tycoon.bannedAt') Banned
 
-    .column.is-paddingless
-      .columns.is-marginless.is-paddingless
+    .column.p-0
+      .columns.m-0.p-0
         .column.is-narrow.actions-column
           .is-flex.is-flex-direction-column(v-if='selectedTycoon')
             button.button.is-starpeace(disabled) Change Username
@@ -74,7 +74,7 @@
             p.menu-label.px-3.py-2(v-else) No Companies
 
 
-      .columns.columns.is-marginless.is-paddingless.mt-4
+      .columns.columns.p-0.my-0.mb-0.mt-4
         .column.is-narrow.actions-column
           .is-flex.is-flex-direction-column(v-if='selectedCorporationIdentifier')
             button.button.is-starpeace(disabled) Rename Corporation

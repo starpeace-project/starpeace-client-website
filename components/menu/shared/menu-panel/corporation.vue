@@ -140,6 +140,7 @@ export default {
 
 <style lang='sass' scoped>
 @import '~/assets/stylesheets/starpeace-variables'
+@import '~/assets/stylesheets/starpeace-profile'
 
 .information
   display: grid

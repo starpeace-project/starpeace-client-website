@@ -94,7 +94,11 @@ export default {
           randomSeed: 0
         },
         physics: {
-          solver: 'repulsion'
+          solver: 'repulsion',
+          repulsion: {
+            centralGravity: 1,
+            damping: .5
+          }
         },
         nodes: {
           font: {

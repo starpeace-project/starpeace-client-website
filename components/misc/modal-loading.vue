@@ -1,5 +1,5 @@
 <template lang='pug'>
-#loading-modal(:class="{'is-grid': withinGrid, 'is-absolute': withinAbsolute}")
+#loading-modal(:class="{'is-sp-grid': withinGrid, 'is-sp-absolute': withinAbsolute}")
 </template>
 
 <script lang='ts'>
@@ -17,13 +17,13 @@ export default {
   opacity: .5
   z-index: 1900
 
-  &.is-grid
+  &.is-sp-grid
     grid-column-start: 1
     grid-column-end: 4
     grid-row-start: start-render
     grid-row-end: end-toolbar
 
-  &.is-absolute
+  &.is-sp-absolute
     position: absolute
     height: 100%
     width: 100%

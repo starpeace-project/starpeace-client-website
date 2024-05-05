@@ -25,6 +25,12 @@ export default class GalaxyManager {
     return await this.ajaxState.locked('galaxy_metadata', galaxyId, async () => {
       const galaxy = await this.api.galaxy_metadata(galaxyId);
       this.clientState.core.galaxy_cache.loadGalaxyMetadata(galaxy.id, galaxy);
+
+      if (galaxyId !== galaxy.id) {
+        this.clientState.options.galaxy.change_galaxy_id(galaxyId, galaxy.id);
+        this.clientState.core.galaxy_cache.change_galaxy_id(galaxyId, galaxy.id);
+      }
+
       return galaxy;
     });
   }
@@ -40,7 +46,7 @@ export default class GalaxyManager {
       }
 
       const tycoon = Tycoon.fromJson(tycoonJson);
-      this.clientState.options.authentication.setAuthorization(galaxyId, tycoonJson.accessToken, tycoonJson.refreshToken);
+      this.clientState.options.authentication.setAuthorization(galaxyId, tycoonJson.accessToken, !!tycoonJson.refreshToken ? username : undefined, tycoonJson.refreshToken);
       return tycoon;
     })
   }
@@ -56,12 +62,12 @@ export default class GalaxyManager {
       }
 
       const tycoon = Tycoon.fromJson(tycoonJson)
-      this.clientState.options.authentication.setAuthorization(galaxyId, tycoonJson.accessToken, tycoonJson.refreshToken);
+      this.clientState.options.authentication.setAuthorization(galaxyId, tycoonJson.accessToken, !!tycoonJson.refreshToken ? username : undefined, tycoonJson.refreshToken);
       return tycoon;
     });
   }
 
-  async loginToken (galaxyId: string, token: string): Promise<Tycoon> {
+  async loginToken (galaxyId: string, username: string, token: string): Promise<Tycoon> {
     if (!galaxyId || !token) {
       throw Error();
     }
@@ -72,7 +78,7 @@ export default class GalaxyManager {
       }
 
       const tycoon = Tycoon.fromJson(tycoonJson)
-      this.clientState.options.authentication.setAuthorization(galaxyId, tycoonJson.accessToken, tycoonJson.refreshToken);
+      this.clientState.options.authentication.setAuthorization(galaxyId, tycoonJson.accessToken, username, tycoonJson.refreshToken);
       return tycoon;
     });
   }

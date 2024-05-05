@@ -1,17 +1,15 @@
 import EventListener from '~/plugins/starpeace-client/state/event-listener';
 
-import CorporationIdentifier from '~/plugins/starpeace-client/corporation/corporation-identifier';
-
 import Tycoon from '~/plugins/starpeace-client/tycoon/tycoon';
 
 
 export default class IdentityState {
   event_listener: EventListener;
 
-  galaxy_id: string | null = null;
-  galaxy_visa_type: string | null = null;
-  galaxy_tycoon_id: string | null = null;
-  galaxy_tycoon_name: string | null = null;
+  galaxy_id: string | undefined = undefined;
+  galaxy_visa_type: string | undefined = undefined;
+  galaxy_tycoon_id: string | undefined = undefined;
+  galaxy_tycoon_name: string | undefined = undefined;
 
 
   constructor () {
@@ -19,10 +17,10 @@ export default class IdentityState {
   }
 
   reset_state (): void {
-    this.galaxy_id = null
-    this.galaxy_visa_type = null
-    this.galaxy_tycoon_id = null
-    this.galaxy_tycoon_name = null
+    this.galaxy_id = undefined;
+    this.galaxy_visa_type = undefined;
+    this.galaxy_tycoon_id = undefined;
+    this.galaxy_tycoon_name = undefined;
   }
 
   subscribe_visa_type_listener (listener_callback: Function): void {
@@ -32,11 +30,11 @@ export default class IdentityState {
     this.event_listener.notify_listeners('identity.visa_type');
   }
 
-  set_visa (galaxy_id: string, visa_type: string, tycoon: Tycoon): void {
+  set_visa (galaxy_id: string, visa_type: string, tycoon: Tycoon | undefined): void {
     this.galaxy_id = galaxy_id;
     this.galaxy_visa_type = visa_type;
-    this.galaxy_tycoon_id = tycoon.id;
-    this.galaxy_tycoon_name = tycoon.name;
+    this.galaxy_tycoon_id = tycoon?.id;
+    this.galaxy_tycoon_name = tycoon?.name;
     this.notify_visa_type_listeners();
   }
 

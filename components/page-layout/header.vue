@@ -1,5 +1,5 @@
 <template lang='pug'>
-#common-header(v-show='show_header', v-cloak=true)
+#common-header(v-show='show_header' v-cloak=true)
   .common-logo.not-mobile.is-hidden-mobile
     a.logo(href='/')
       h1 STAR
@@ -11,56 +11,76 @@
       img.starpeace-logo
       h1 PEACE
 
-  .welcome.is-hidden-mobile.is-hidden-tablet-only
-    span {{$translate('ui.page-layout.header.greeting')}}, {{tycoon_name}}!
-    a(v-if='is_authenticated' v-on:click.stop.prevent="logout_tycoon()") ({{$translate('ui.workflow.universe.signout.label')}})
+  .welcome.is-flex-grow-1.is-hidden-mobile.is-hidden-tablet-only.mt-1.ml-2
+    template(v-if='isAuthenticated')
+      span {{ $translate('ui.page-layout.header.greeting') }}, {{ authenticatedUsername }}!
+      a.ml-3(@click.stop.prevent='logoutTycoon') ({{ $translate('ui.workflow.universe.signout.label') }})
+    template(v-else)
+      span {{ $translate('ui.page-layout.header.greeting') }}, {{ $translate('identity.visitor') }}!
 
-  .development.is-hidden-mobile.is-hidden-tablet-only
-    a.header-item.documentation(href='https://docs.starpeace.io') {{$translate('ui.page-layout.header.documentation')}}
-    a.header-item.community(href='https://starpeace-project.com/', target='_blank') {{$translate('ui.page-layout.header.community')}}
-    misc-language-select(:language_code='language_code', @changed='change_language')
-    a.header-item.discord(href='https://discord.gg/TF9Bmsj', target='_blank')
+  .development.is-hidden-mobile.is-hidden-tablet-only.pt-1
+    a.header-item.documentation(href='https://docs.starpeace.io') {{ $translate('ui.page-layout.header.documentation') }}
+    a.header-item.community(href='https://docs.starpeace.io/reference/project' target='_blank') {{ $translate('ui.page-layout.header.community') }}
+    misc-language-select(:language_code='language_code' @changed='change_language')
+    a.header-item.discord(href='https://discord.gg/TF9Bmsj' target='_blank' rel='noreferer')
       font-awesome-icon(:icon="['fab', 'discord']")
-    a.header-item.github(href='https://github.com/starpeace-project/starpeace-client-website', target='_blank')
+    a.header-item.github(href='https://github.com/starpeace-project/starpeace-client-website' target='_blank' rel='noreferer')
       font-awesome-icon(:icon="['fab', 'github']")
 
 </template>
 
 <script lang='ts'>
+import type Galaxy from '~/plugins/starpeace-client/galaxy/galaxy';
+import ClientState from '~/plugins/starpeace-client/state/client-state';
+
 export default {
   props: {
-    client_state: { type: Object, required: true }
+    clientState: { type: ClientState, required: true }
   },
 
   data () {
     return {
-      show_header: this.client_state.options?.option('general.show_header') ?? true,
-      language_code: this.client_state.options?.language() ?? 'EN'
+      show_header: this.clientState.options?.option('general.show_header') ?? true,
+      language_code: this.clientState.options?.language() ?? 'EN'
     };
   },
 
   mounted () {
-    this.client_state.options?.subscribe_options_listener(() => {
-      this.show_header = this.client_state.options?.option('general.show_header') ?? true;
-      this.language_code = this.client_state.options?.language();
+    this.clientState.options?.subscribe_options_listener(() => {
+      this.show_header = this.clientState.options?.option('general.show_header') ?? true;
+      this.language_code = this.clientState.options?.language();
     });
   },
 
   computed: {
-    is_authenticated (): boolean { return !!this.client_state?.identity?.galaxy_tycoon_id; },
-    tycoon_name (): string { return this.is_authenticated ? this.client_state?.identity?.galaxy_tycoon_name : this.$translate('identity.visitor'); }
+    isAuthenticated (): boolean {
+      return !!this.clientState?.identity?.galaxy_tycoon_id || this.hasRefreshTokenTycoon;
+    },
+    hasRefreshTokenTycoon (): boolean {
+      return !!this.clientState.options.authentication.galaxyUsername && !!this.clientState.options.authentication.galaxyToken;
+    },
+
+    authenticatedUsername (): string | undefined {
+      return this.clientState?.identity?.galaxy_tycoon_name ?? this.clientState.options.authentication.galaxyUsername;
+    },
+    authenticatedGalaxyId (): string | undefined {
+      return this.clientState?.identity?.galaxy_id ?? this.clientState.options.authentication.galaxyId;
+    }
   },
 
   methods: {
     change_language (code: string): void {
-      this.client_state.options.setLanguage(code);
+      this.clientState.options.setLanguage(code);
     },
 
-    async logout_tycoon (): void {
-      if (!this.client_state?.identity?.galaxy_id || !this.managers?.galaxy_manager) return;
+    async logoutTycoon (): Promise<void> {
       try {
-        await this.managers.galaxy_manager.logout(this.client_state?.identity?.galaxy_id);
-        this.client_state.reset_full_state();
+        if (this.clientState?.identity?.galaxy_id) {
+          await this.$starpeaceClient.managers.galaxy_manager.logout(this.clientState.identity.galaxy_id);
+        }
+
+        this.clientState.reset_full_state();
+        this.clientState.options.authentication.clear_authorization_state();
       }
       catch (err) {
         console.error(err);
@@ -74,6 +94,7 @@ export default {
 <style lang='sass' scoped>
 #common-header
   color: #fff
+  display: flex
   font-size: 1.25rem
   grid-column-start: 1
   grid-column-end: 4
@@ -122,17 +143,7 @@ export default {
   a
     color: #fff
 
-  .welcome
-    float: left
-    margin: .25rem 0 0 .5rem
-
-    span
-      margin-right: 1rem
-
   .development
-    float: right
-    padding-top: .25rem
-
     .header-item
       display: inline-block
       line-height: 3rem

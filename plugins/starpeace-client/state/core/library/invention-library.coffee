@@ -1,9 +1,4 @@
-import _ from 'lodash'
-
-import Library from '~/plugins/starpeace-client/state/core/library/library.coffee'
-
-import Logger from '~/plugins/starpeace-client/logger'
-import Utils from '~/plugins/starpeace-client/utils/utils'
+import Library from '~/plugins/starpeace-client/state/core/library/library'
 
 export default class InventionLibrary extends Library
   constructor: () ->
@@ -25,8 +20,9 @@ export default class InventionLibrary extends Library
   initialize: (building_library, planet_library) ->
     return unless building_library.metadata_by_id?
 
+    sealIds = planet_library.all_seal_ids_non_ifel()
     @allowing_building_by_seal_id = {}
-    for seal_id in planet_library.seals_for_inventions()
+    for seal_id in sealIds
       invention_ids = {}
       for definition in building_library.definitions_for_seal(seal_id)
         for invention_id in (definition.allowedInventionIds || [])
@@ -36,7 +32,7 @@ export default class InventionLibrary extends Library
 
     @inventions_by_seal = {}
     for id,invention of @metadata_by_id
-      for seal_id in planet_library.seals_for_inventions()
+      for seal_id in sealIds
         if @allowing_building_by_seal_id[seal_id]?[id]?.size
           @inventions_by_seal[seal_id] = [] unless @inventions_by_seal[seal_id]?
           @inventions_by_seal[seal_id].push invention
@@ -79,6 +75,6 @@ export default class InventionLibrary extends Library
       @downstream_ids_by_id[invention_id] = Object.keys(downstream_ids)
     @downstream_ids_by_id[invention_id] || []
 
-  all_metadata: () -> _.values(@metadata_by_id)
+  all_metadata: () -> Object.values(@metadata_by_id || {})
   metadata_for_id: (invention_id) -> @metadata_by_id[invention_id]
   metadata_for_seal_id: (seal_id) -> if @inventions_by_seal[seal_id]? then @inventions_by_seal[seal_id] else []

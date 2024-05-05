@@ -18,7 +18,7 @@ export default class CompanyManager {
     }
     return await this.ajax_state.locked('company_create', corporation_id, async () => {
       const company = Company.from_json(await this.api.create_company(company_name, seal_id));
-      this.client_state.core.company_cache.load_companies_metadata(company);
+      this.client_state.core.company_cache.loadCompaniesMetadata(company);
       this.client_state.core.corporation_cache.add_corporation_company(corporation_id, company);
       this.client_state.corporation.add_company_id(company.id);
       return company;
@@ -29,13 +29,13 @@ export default class CompanyManager {
     if (!this.client_state.has_session() || !company_id) {
       throw Error();
     }
-    const company = this.client_state.core.company_cache.metadata_for_id(company_id);
+    const company = this.client_state.core.company_cache.metadataForId(company_id);
     if (!!company) {
       return company;
     }
     return await this.ajax_state.locked('company_metadata', company_id, async () => {
       const company = Company.from_json(await this.api.company_for_id(company_id));
-      this.client_state.core.company_cache.load_companies_metadata(company);
+      this.client_state.core.company_cache.loadCompaniesMetadata(company);
       return company;
     });
   }

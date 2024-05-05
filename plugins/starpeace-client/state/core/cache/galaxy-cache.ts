@@ -60,15 +60,15 @@ export default class GalaxyCache extends Cache {
 
   change_galaxy_id (fromGalaxyId: string, targetGalaxyId: string): void {
     if (this.galaxyConfigurationById[fromGalaxyId]) {
-      this.galaxyConfigurationById[fromGalaxyId].id = targetGalaxyId
-      this.galaxyConfigurationById[targetGalaxyId] = this.galaxyConfigurationById[fromGalaxyId]
-      delete this.galaxyConfigurationById[fromGalaxyId]
-      this.notify_configuration_listeners()
+      this.galaxyConfigurationById[targetGalaxyId] = this.galaxyConfigurationById[fromGalaxyId];
+      this.galaxyConfigurationById[targetGalaxyId].id = targetGalaxyId;
+      delete this.galaxyConfigurationById[fromGalaxyId];
+      this.notify_configuration_listeners();
     }
     if (this.galaxyMetadataById[fromGalaxyId]) {
-      this.galaxyMetadataById[targetGalaxyId] = this.galaxyMetadataById[fromGalaxyId]
-      delete this.galaxyMetadataById[fromGalaxyId]
-      this.notify_metadata_listeners()
+      this.galaxyMetadataById[targetGalaxyId] = this.galaxyMetadataById[fromGalaxyId];
+      delete this.galaxyMetadataById[fromGalaxyId];
+      this.notify_metadata_listeners();
     }
   }
 

@@ -15,15 +15,15 @@
       font-awesome-icon(:icon="['fas', 'undo-alt']")
 
   .action-overlays
-    button.button.is-fullwidth.is-fullheight.is-small.is-uppercase.is-starpeace.is-starpeace-light(:class="{ 'is-active': show_overlay }" @click.stop.prevent='toggle_overlay()')
+    button.button.is-fullwidth.is-fullheight.is-small.is-uppercase.is-light(:class="{ 'is-active': show_overlay }" @click.stop.prevent='toggle_overlay()')
       | {{$translate('footer.ribbon.overlay')}}
   .action-zones
-    button.button.is-fullwidth.is-fullheight.is-small.is-uppercase.is-starpeace.is-starpeace-light(:class="{ 'is-active': show_zones }" @click.stop.prevent='toggle_zones')
+    button.button.is-fullwidth.is-fullheight.is-small.is-uppercase.is-light(:class="{ 'is-active': show_zones }" @click.stop.prevent='toggle_zones')
       | {{$translate('footer.ribbon.city_zones')}}
 
   .action-inspect
-    button.button.is-fullwidth.is-fullheight.is-small.is-uppercase.is-starpeace.is-starpeace-light(:class="{ 'is-active': show_inspect }" :disabled='!can_inspect' @click.stop.prevent='toggle_inspect')
-      | {{$translate('footer.ribbon.inspect')}}
+    button.button.is-fullwidth.is-fullheight.is-small.is-uppercase.is-light.is-transitionless(:class="{ 'is-active': show_inspect }" :disabled='!can_inspect' @click.stop.prevent='toggle_inspect')
+      | {{ $translate('footer.ribbon.inspect') }}
 
   .details-ticker.primary
     | {{$translate('footer.ribbon.message.welcome')}}

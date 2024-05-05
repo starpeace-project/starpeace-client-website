@@ -1,26 +1,52 @@
 import { markRaw } from 'vue';
 
-import BuildingLibrary from '~/plugins/starpeace-client/state/core/library/building-library.coffee'
-import ConcreteLibrary from '~/plugins/starpeace-client/state/core/library/concrete-library.coffee'
-import EffectLibrary from '~/plugins/starpeace-client/state/core/library/effect-library.coffee'
-import InventionLibrary from '~/plugins/starpeace-client/state/core/library/invention-library.coffee'
-import LandLibrary from '~/plugins/starpeace-client/state/core/library/land-library.coffee'
-import MapLibrary from '~/plugins/starpeace-client/state/core/library/map-library.coffee'
-import NewsLibrary from '~/plugins/starpeace-client/state/core/library/news-library.coffee'
-import OverlayLibrary from '~/plugins/starpeace-client/state/core/library/overlay-library.coffee'
-import PlaneLibrary from '~/plugins/starpeace-client/state/core/library/plane-library.coffee'
-import PlanetLibrary from '~/plugins/starpeace-client/state/core/library/planet-library.coffee'
-import RoadLibrary from '~/plugins/starpeace-client/state/core/library/road-library.coffee'
-import SignLibrary from '~/plugins/starpeace-client/state/core/library/sign-library.coffee'
+import BuildingLibrary from '~/plugins/starpeace-client/state/core/library/building-library.coffee';
+import ConcreteLibrary from '~/plugins/starpeace-client/state/core/library/concrete-library.js';
+import EffectLibrary from '~/plugins/starpeace-client/state/core/library/effect-library.js';
+import InventionLibrary from '~/plugins/starpeace-client/state/core/library/invention-library.coffee';
+import LandLibrary from '~/plugins/starpeace-client/state/core/library/land-library.js';
+import MapLibrary from '~/plugins/starpeace-client/state/core/library/map-library.js';
+import NewsLibrary from '~/plugins/starpeace-client/state/core/library/news-library.js';
+import OverlayLibrary from '~/plugins/starpeace-client/state/core/library/overlay-library.js';
+import PlaneLibrary from '~/plugins/starpeace-client/state/core/library/plane-library.js';
+import PlanetLibrary from '~/plugins/starpeace-client/state/core/library/planet-library.js';
+import RoadLibrary from '~/plugins/starpeace-client/state/core/library/road-library.js';
+import SignLibrary from '~/plugins/starpeace-client/state/core/library/sign-library.js';
 
-import BuildingCache from '~/plugins/starpeace-client/state/core/cache/building-cache.js'
-import CompanyCache from '~/plugins/starpeace-client/state/core/cache/company-cache.coffee'
-import CorporationCache from '~/plugins/starpeace-client/state/core/cache/corporation-cache.js'
-import GalaxyCache from '~/plugins/starpeace-client/state/core/cache/galaxy-cache.js'
-import PlanetCache from '~/plugins/starpeace-client/state/core/cache/planet-cache.coffee'
-import TycoonCache from '~/plugins/starpeace-client/state/core/cache/tycoon-cache.coffee'
+import BuildingCache from '~/plugins/starpeace-client/state/core/cache/building-cache.js';
+import CompanyCache from '~/plugins/starpeace-client/state/core/cache/company-cache.js';
+import CorporationCache from '~/plugins/starpeace-client/state/core/cache/corporation-cache.js';
+import GalaxyCache from '~/plugins/starpeace-client/state/core/cache/galaxy-cache.js';
+import PlanetCache from '~/plugins/starpeace-client/state/core/cache/planet-cache.coffee';
+import TycoonCache from '~/plugins/starpeace-client/state/core/cache/tycoon-cache.coffee';
 
-import Options from '~/plugins/starpeace-client/state/options/options.js';
+
+export class CoreLoadingStatus {
+  statusByType: Record<string, boolean>;
+
+  constructor (statusByType: Record<string, boolean>) {
+    this.statusByType = statusByType;
+  }
+
+  get loadedCount (): number {
+    return Object.values(this.statusByType).filter(v => !!v).length;
+  }
+
+  get totalCount (): number {
+    return Object.keys(this.statusByType).length;
+  }
+
+  get loaded (): boolean {
+    if (this.loadedCount < this.totalCount) {
+      return false;
+    }
+    return this.loadedCount >= this.totalCount;
+  }
+
+  get pendingTypes (): Array<string> {
+    return Object.entries(this.statusByType).filter(([_type, status]) => !status).map(([type, _status]) => type).sort();
+  }
+}
 
 export default class CoreState {
   building_library: BuildingLibrary;
@@ -82,21 +108,43 @@ export default class CoreState {
   }
   reset_planet (): void {
     for (const library of this.libraries()) {
-      library.reset_planet();
+      if (library.reset_planet) {
+        library.reset_planet();
+      }
+      else if (library.resetPlanet) {
+        library.resetPlanet();
+      }
     }
-    for (const library of this.caches()) {
-      library.reset_planet();
+    for (const cache of this.caches()) {
+      if (cache.reset_planet) {
+        cache.reset_planet();
+      }
+      else if (cache.resetPlanet) {
+        cache.resetPlanet();
+      }
     }
   }
 
-  has_assets (languageCode: string, mapId: string, planetType: string): boolean {
-    return this.building_library.has_assets() && this.concrete_library.has_assets() && this.effect_library.has_assets() &&
-        this.land_library.has_assets(planetType) && this.map_library.has_assets(mapId) &&
-        this.news_library.has_metadata(languageCode) && this.overlay_library.has_assets() && this.plane_library.has_assets() &&
-        this.road_library.has_assets() && this.sign_library.has_assets();
+  has_assets (languageCode: string, mapId: string, planetType: string): CoreLoadingStatus {
+    return new CoreLoadingStatus({
+      building: this.building_library.has_assets(),
+      concrete: this.concrete_library.has_assets(),
+      effect: this.effect_library.has_assets(),
+      land: this.land_library.has_assets(planetType),
+      map: this.map_library.has_assets(mapId),
+      news: this.news_library.has_metadata(languageCode),
+      overlay: this.overlay_library.has_assets(),
+      plane: this.plane_library.has_assets(),
+      road: this.road_library.has_assets(),
+      sign: this.sign_library.has_assets()
+    });
   }
 
-  has_metadata (): boolean {
-    return this.building_library.has_metadata() && this.invention_library.has_metadata() && this.planet_library.has_metadata();
+  has_metadata (): CoreLoadingStatus {
+    return new CoreLoadingStatus({
+      building: this.building_library.has_metadata(),
+      invention: this.invention_library.has_metadata(),
+      planet: this.planet_library.has_metadata().loaded
+    });
   }
 }

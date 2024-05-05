@@ -1,7 +1,7 @@
 <template lang='pug'>
 client-only
   #application-container
-    page-layout-header(:client_state='clientState')
+    page-layout-header(:client-state='clientState')
 
     #application-body
       .columns
@@ -249,7 +249,7 @@ export default {
 </script>
 
 <style lang='sass' scoped>
-@import 'bulma/sass/utilities/_all'
+@import 'bulma/sass/utilities/mixins'
 @import '~/assets/stylesheets/starpeace-variables'
 
 #application-body

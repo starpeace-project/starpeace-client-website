@@ -1,0 +1,23 @@
+@import '~/assets/stylesheets/starpeace-variables'
+
+.navbar-link
+  --bulma-link: #fff
+
+  &:not(.is-arrowless)
+    &::after
+      border: 3px solid
+      border-right: 0
+      border-top: 0
+
+.navbar-dropdown
+  &.is-starpeace
+    background-color: $sp-dark-bg
+
+    .navbar-item
+      &:hover,
+      &.is-hover
+        background-color: lighten($sp-dark-bg, 10%)
+
+      &:active,
+      &.is-active
+        background-color: lighten($sp-dark-bg, 15%)

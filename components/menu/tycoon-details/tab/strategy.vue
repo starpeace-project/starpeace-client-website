@@ -26,9 +26,9 @@
                 td.column-action
                   .is-flex.is-justify-content-center(v-if='has_corporation && is_self')
                     template(v-if='strategy.isPrioritize')
-                      button.button.is-small.is-starpeace(disabled) {{$translate('misc.action.cancel')}}
+                      button.button.is-uppercase.is-small.is-starpeace(disabled) {{$translate('misc.action.cancel')}}
                     template(v-else)
-                      button.button.is-small.is-starpeace(disabled) {{$translate('ui.menu.tycoon_details.tab.action.prioritize')}}
+                      button.button.is-uppercase.is-small.is-starpeace(disabled) {{$translate('ui.menu.tycoon_details.tab.action.prioritize')}}
 
           tfoot(v-if='has_corporation && is_self')
             tr
@@ -44,7 +44,7 @@
                   .control
                     input.input.is-small(type='text' v-model='allyValue' disabled)
                   .control
-                    button.button.is-small.is-starpeace(@click.stop.prevent='make_ally' disabled) {{$translate('ui.menu.tycoon_details.tab.action.prioritize')}}
+                    button.button.is-uppercase.is-small.is-starpeace(@click.stop.prevent='make_ally' disabled) {{$translate('ui.menu.tycoon_details.tab.action.prioritize')}}
 
       .sp-scrollbar
         table.basic-table.sp-striped.sp-solid-header.sp-sticky-header.strategy
@@ -66,9 +66,9 @@
                 td.column-action
                   .is-flex.is-justify-content-center(v-if='has_corporation && is_self')
                     template(v-if='strategy.isEmbargo')
-                      button.button.is-small.is-starpeace(disabled) {{$translate('misc.action.cancel')}}
+                      button.button.is-uppercase.is-small.is-starpeace(disabled) {{$translate('misc.action.cancel')}}
                     template(v-else)
-                      button.button.is-small.is-starpeace(disabled) {{$translate('ui.menu.tycoon_details.tab.action.embargo')}}
+                      button.button.is-uppercase.is-small.is-starpeace(disabled) {{$translate('ui.menu.tycoon_details.tab.action.embargo')}}
 
           tfoot(v-if='has_corporation && is_self')
             tr
@@ -84,7 +84,7 @@
                   .control
                     input.input.is-small(type='text' v-model='embargoValue' disabled)
                   .control
-                    button.button.is-small.is-starpeace(@click.stop.prevent='make_embargo' disabled) {{$translate('ui.menu.tycoon_details.tab.action.embargo')}}
+                    button.button.is-uppercase.is-small.is-starpeace(@click.stop.prevent='make_embargo' disabled) {{$translate('ui.menu.tycoon_details.tab.action.embargo')}}
 
 </template>
 

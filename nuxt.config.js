@@ -18,9 +18,9 @@ var render_and_convert_markdown = function(markdown) {
   var release_notes_html = marked.marked.parse(markdown, { mangle: false, headerIds: false, headerPrefix: false });
   release_notes_html = release_notes_html.replace(new RegExp(/\<li\>/, 'g'), "<li class='columns is-mobile'>");
   release_notes_html = release_notes_html.replace(new RegExp(/\<\/li\>/, 'g'), "</span></li>");
-  release_notes_html = release_notes_html.replace(new RegExp(/\[done\]/, 'g'), "<span class='column is-2'><span class='tag is-link'>done</span></span><span class='column is-10'>");
-  release_notes_html = release_notes_html.replace(new RegExp(/\[in progress\]/, 'g'), "<span class='column is-2'><span class='tag is-success'>in progress</span></span><span class='column is-10'>");
-  release_notes_html = release_notes_html.replace(new RegExp(/\[pending\]/, 'g'), "<span class='column is-2'><span class='tag is-warning'>pending</span></span><span class='column is-10'>");
+  release_notes_html = release_notes_html.replace(new RegExp(/\[done\]/, 'g'), "<span class='column is-2'><span class='tag completed'>done</span></span><span class='column is-10'>");
+  release_notes_html = release_notes_html.replace(new RegExp(/\[in progress\]/, 'g'), "<span class='column is-2'><span class='tag in-progress'>in progress</span></span><span class='column is-10'>");
+  release_notes_html = release_notes_html.replace(new RegExp(/\[pending\]/, 'g'), "<span class='column is-2'><span class='tag pending'>pending</span></span><span class='column is-10'>");
   return release_notes_html;
 }
 
@@ -29,8 +29,7 @@ var release_notes_archive_html = render_and_convert_markdown(fs.readFileSync('./
 
 export default defineNuxtConfig({
   css: [
-    '@/assets/stylesheets/starpeace-tooltip.sass',
-    '@/assets/stylesheets/starpeace-bulma.sass',
+    '@/assets/stylesheets/bulma/starpeace.scss',
     '@/assets/stylesheets/starpeace-flags.sass',
     '@/assets/stylesheets/starpeace-vue.sass',
     '@/assets/stylesheets/starpeace.sass'

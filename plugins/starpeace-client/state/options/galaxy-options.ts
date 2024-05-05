@@ -93,6 +93,7 @@ export default class GalaxyOptions {
   change_galaxy_id (fromGalaxyId: string, targetGalaxyId: string): void {
     if (!this.configurationById[targetGalaxyId]) {
       this.configurationById[targetGalaxyId] = this.configurationById[fromGalaxyId];
+      this.configurationById[targetGalaxyId].id = targetGalaxyId;
       delete this.configurationById[fromGalaxyId];
     }
     this.save_galaxies_to_storage();

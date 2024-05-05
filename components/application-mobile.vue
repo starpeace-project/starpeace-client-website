@@ -1,6 +1,6 @@
 <template lang='pug'>
 #application-container(:class='application_css_class' v-cloak=true)
-  page-layout-header(:client_state='client_state')
+  page-layout-header(:client-state='client_state')
   misc-card-loading(:client_state='client_state' within-grid)
   misc-modal-loading(:client_state='client_state' within-grid)
   misc-card-webgl-warning(:client_state='client_state')
@@ -32,7 +32,7 @@ export default {
 </script>
 
 <style lang='sass' scoped>
-@import 'bulma/sass/utilities/_all'
+@import 'bulma/sass/utilities/mixins'
 
 #application-container
   display: grid

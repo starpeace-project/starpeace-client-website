@@ -1,11 +1,11 @@
 <template lang='pug'>
 .inspect-details
-  .inspect-tabs.tabs.is-small.is-marginless
+  .inspect-tabs.tabs.is-small.m-0
     ul
       li(v-for='tab in tabs' :class="{ 'is-active': tabId == tab.id }" @click.stop.prevent='tabId = tab.id')
         a {{$translate(tab.label)}}
 
-  .inspect-body.columns.is-marginless
+  .inspect-body.columns.m-0
     template(v-if="tabId == 'general'")
       .column.is-narrow.pr-5.general
         div
@@ -21,7 +21,7 @@
           span.sp-kv-value IFEL
 
     template(v-else-if="tabId == 'products'")
-      .column.is-paddingless.is-relative.is-clipped
+      .column.p-0.is-relative.is-clipped
         toolbar-inspect-shared-tab-products(
           :client-state='clientState'
           :products='products'
@@ -31,7 +31,7 @@
         )
 
     template(v-else-if="tabId == 'jobs'")
-      .column.is-paddingless.is-relative.is-clipped
+      .column.p-0.is-relative.is-clipped
         toolbar-inspect-shared-tab-jobs(
           :client-state='clientState'
           :jobs='jobs'

@@ -7,7 +7,7 @@ import AjaxState from '~/plugins/starpeace-client/state/ajax-state';
 
 export default class AssetManager {
   static CDN_URL: string = 'https://cdn.starpeace.io';
-  static CDN_VERSION: string = '1481373cba881bd76b347bf8e4f986d0';
+  static CDN_VERSION: string = '8ccb42b72cb616f6c5ae07223ef0619e';
 
   ajaxState: AjaxState;
   loading: boolean;

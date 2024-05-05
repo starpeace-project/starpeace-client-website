@@ -1,5 +1,5 @@
 <template lang='pug'>
-.columns.is-marginless.is-relative.is-clipped.general-tab
+.columns.m-0.is-relative.is-clipped.general-tab
   .column.is-narrow.pr-5.general
     .is-flex.is-flex-direction-row(:class="{'mb-1 is-align-items-center': isRenaming, 'is-align-items-baseline': !isRenaming}")
       span.sp-kv-key {{ $translate('toolbar.inspect.common.label.name') }}:
@@ -71,7 +71,7 @@
     button.button.is-fullwidth.is-starpeace.mb-1(:disabled='!canDemolish' @click.stop.prevent='demolishBuilding') {{ $translate('toolbar.inspect.common.action.demolish') }}
     button.button.is-fullwidth.is-starpeace(v-if='hasRents' :disabled='!canRepair') {{ $translate('toolbar.inspect.common.action.repair') }}
 
-  .column.is-paddingless.pl-5.pr-3(v-if='hasStoreProducts')
+  .column.py-0.pl-5.pr-3(v-if='hasStoreProducts')
     toolbar-inspect-shared-tab-store-products(
       :client-state='clientState'
       :building='building'

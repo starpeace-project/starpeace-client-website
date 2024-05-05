@@ -10,10 +10,10 @@
       form.columns
         .column
           .field.is-horizontal
-            .column.is-paddingless.is-9
+            .column.p-0.is-9
               .field-label
                 label.label.group-header {{$translate('ui.menu.options.header.general')}}
-            .column.is-paddingless.second-group-header
+            .column.p-0.second-group-header
               .field-label
                 label.label.group-header &nbsp;
           menu-options-menu-option(:label="$translate('ui.menu.options.option.general.header.label')", :value="options.option('general.show_header')", @toggle="options.toggle('general.show_header')")
@@ -21,20 +21,20 @@
           menu-options-menu-option(:label="$translate('ui.menu.options.option.general.mini_map.label')", :value="options.option('general.show_mini_map')", @toggle="options.toggle('general.show_mini_map')")
           menu-options-menu-option(:label="$translate('ui.menu.options.option.general.music.label')", :value="options.option('music.show_game_music')", @toggle="options.toggle('music.show_game_music')")
           .field.is-horizontal
-            .column.is-paddingless.is-9
+            .column.p-0.is-9
               .field-label
                 label.label {{$translate('ui.menu.options.option.general.language.label')}}:
-            .column.is-paddingless.field-body
+            .column.p-0.field-body
               .field.is-narrow
                 .control
                   misc-language-select(:language_code='language_code', @changed='change_language')
 
         .column
           .field.is-horizontal
-            .column.is-paddingless.is-9
+            .column.p-0.is-9
               .field-label
                 label.label.group-header {{$translate('ui.menu.options.header.graphics')}}
-            .column.is-paddingless.second-group-header
+            .column.p-0.second-group-header
               .field-label
                 label.label.group-header &nbsp;
           template(v-for='choice in optionsGraphics')
@@ -42,10 +42,10 @@
 
         .column
           .field.is-horizontal
-            .column.is-paddingless.is-9
+            .column.p-0.is-9
               .field-label
                 label.label.group-header {{$translate('ui.menu.options.header.locations')}}
-            .column.is-paddingless.second-group-header
+            .column.p-0.second-group-header
               .field-label
                 label.label.group-header &nbsp;
           menu-options-menu-option(:label="$translate('ui.menu.options.option.locations.poi.label')", :value="options.option('bookmarks.points_of_interest')", @toggle="options.toggle('bookmarks.points_of_interest')")

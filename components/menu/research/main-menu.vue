@@ -5,7 +5,7 @@
     .card-header-icon.card-close(@click.stop.prevent="clientState.menu.toggle_menu('research')")
       font-awesome-icon(:icon="['fas', 'times']")
 
-  .card-content.sp-menu-background.is-paddingless(v-if='menuVisible')
+  .card-content.sp-menu-background.p-0(v-if='menuVisible')
     menu-research-sections(:invention-definitions='inventionDefinitions' :client-state='clientState')
     menu-research-tree(:connected-invention-definitions='connectedInventionDefinitions' :company-inventions='companyInventions' :client-state='clientState')
     menu-research-details(

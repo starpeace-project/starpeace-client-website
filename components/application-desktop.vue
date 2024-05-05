@@ -1,7 +1,7 @@
 <template lang='pug'>
 client-only
   #application-container(v-cloak=true :style='application_css_style' v-if='$starpeaceClient && client_state')
-    page-layout-header(:client_state='client_state')
+    page-layout-header(:client-state='client_state')
 
     misc-card-loading(:client_state='client_state' within-grid)
     misc-modal-loading(v-show='is_loading_modal_visible' within-grid)
@@ -12,7 +12,7 @@ client-only
     workflow(:ajax_state='ajax_state' :client_state='client_state')
 
     menu-corporation-establish(v-if='is_corporation_establish_visible' :client_state='client_state')
-    menu-company-form(v-show="is_menu_visible('company_form')" :client_state='client_state')
+    menu-company-form(v-if='is_company_form_visible' :client_state='client_state')
 
     menu-construction-main-menu(v-show="is_menu_visible('construction')" :client_state='client_state')
     menu-chat-main-menu(v-show="is_menu_visible('chat')" :client_state='client_state')
@@ -33,17 +33,17 @@ client-only
 
     misc-system-message-panel(:client-state='client_state')
 
-    toolbar-overlay(:client_state='client_state')
+    toolbar-overlay(v-if='showToolbarOverlay' :client_state='client_state')
     toolbar-minimap(:client_state='client_state')
     toolbar-ribbon(:client_state='client_state')
-    toolbar-inspect(:client-state='client_state')
+    toolbar-inspect(v-if='showToolbarInspect' :client-state='client_state')
     toolbar-menubar(:ajax_state='ajax_state' :client_state='client_state')
-    toolbar-details(:ajax_state='ajax_state' :client_state='client_state')
+    toolbar-details-toolbar(v-if='is_ready' :client-state='client_state')
 
     misc-modal-loading(v-show='is_sub_menu_visible' within-grid)
-    workflow-sub-menu-remove-galaxy(v-show='is_sub_menu_remove_galaxy_visible' :client_state='client_state')
-    workflow-sub-menu-add-galaxy(v-show='is_sub_menu_add_galaxy_visible' :client_state='client_state')
-    workflow-sub-menu-create-tycoon(v-show='is_sub_menu_create_tycoon_visible' :client_state='client_state')
+    workflow-multiverse-sub-menu-remove-galaxy(v-if='is_sub_menu_remove_galaxy_visible' :client-state='client_state')
+    workflow-multiverse-sub-menu-add-galaxy(v-if='is_sub_menu_add_galaxy_visible' :client-state='client_state')
+    workflow-multiverse-sub-menu-create-tycoon(v-if='is_sub_menu_create_tycoon_visible' :client-state='client_state')
 </template>
 
 <script lang='ts'>
@@ -75,18 +75,29 @@ export default {
     is_ready () { return this.client_state.initialized && this.client_state?.workflow_status === 'ready'; },
     is_loading_modal_visible () { return this.client_state?.initialized && this.client_state?.loading; },
 
-    is_corporation_establish_visible () { return this.client_state.initialized && this.client_state.workflow_status == 'ready' && this.client_state.is_tycoon() && !this.client_state.player.corporation_id?.length; },
+    is_corporation_establish_visible (): boolean {
+      return this.client_state.initialized && this.client_state.workflow_status == 'ready' && this.client_state.is_tycoon() && !this.client_state.player.corporation_id?.length;
+    },
+    is_company_form_visible (): boolean {
+      return this.is_menu_visible('company_form') ?? false;
+    },
 
     is_sub_menu_visible (): boolean { return this.is_sub_menu_remove_galaxy_visible || this.is_sub_menu_add_galaxy_visible || this.is_sub_menu_create_tycoon_visible; },
     is_sub_menu_remove_galaxy_visible (): boolean { return this.client_state.interface.remove_galaxy_visible; },
     is_sub_menu_add_galaxy_visible (): boolean { return this.client_state.interface.add_galaxy_visible; },
-    is_sub_menu_create_tycoon_visible (): boolean { return this.client_state.interface.show_create_tycoon; },
+    is_sub_menu_create_tycoon_visible (): boolean {
+      return this.client_state.interface.show_create_tycoon && this.client_state.interface.create_tycoon_galaxy_id;
+    },
 
     is_toolbar_left_open (): boolean { return !!this.client_state?.menu?.toolbars.left?.length; },
     is_toolbar_right_open (): boolean { return !!this.client_state?.menu?.toolbars.right?.length; },
 
-    show_overlay (): boolean { return this.is_ready && this.client_state?.interface?.show_overlay; },
-    show_inspect (): boolean { return this.is_ready && this.client_state?.interface?.show_inspect; },
+    showToolbarInspect (): boolean {
+      return this.is_ready && (this.client_state.interface?.selected_building_id?.length ?? 0) > 0 && this.client_state.interface?.show_inspect;
+    },
+    showToolbarOverlay (): boolean {
+      return this.is_ready && (this.client_state.interface?.show_overlay ?? false);
+    },
 
     application_grid_columns_style (): string {
       return Utils.grid_style('grid-template-columns', [{
@@ -115,7 +126,7 @@ export default {
         end: 'end-render'
       }, {
         start: 'start-overlay',
-        size: this.show_overlay ? '3rem' : '0',
+        size: this.showToolbarOverlay ? '3rem' : '0',
         end: 'end-overlay'
       }, {
         start: 'start-ribbon',
@@ -123,7 +134,7 @@ export default {
         end: 'end-ribbon'
       }, {
         start: 'start-inspect',
-        size: this.show_inspect ? '16rem' : '0',
+        size: this.showToolbarInspect ? '16rem' : '0',
         end: 'end-inspect'
       }, {
         start: 'start-menu',
@@ -136,7 +147,9 @@ export default {
       }]);
     },
 
-    application_css_style (): string { return `${this.application_grid_columns_style}; ${this.application_grid_rows_style}`; }
+    application_css_style (): string {
+      return `${this.application_grid_columns_style}; ${this.application_grid_rows_style}`;
+    }
   },
 
   methods: {
@@ -148,7 +161,7 @@ export default {
 </script>
 
 <style lang='sass' scoped>
-@import 'bulma/sass/utilities/_all'
+@import 'bulma/sass/utilities'
 
 #application-container
   display: grid

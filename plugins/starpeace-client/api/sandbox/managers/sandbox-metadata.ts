@@ -12,6 +12,8 @@ import {
   SimulationDefinitionParser
 } from '@starpeace/starpeace-assets-types';
 
+import OverlayType from '~/plugins/starpeace-client/overlay/overlay-type';
+
 import METADATA_BUILDING from '~/plugins/starpeace-client/api/sandbox/data/metadata-building.json'
 import METADATA_CORE from '~/plugins/starpeace-client/api/sandbox/data/metadata-core.json'
 import METADATA_INVENTION from '~/plugins/starpeace-client/api/sandbox/data/metadata-invention.json'
@@ -27,6 +29,7 @@ export interface CoreMetadata {
   industryCategories: Array<IndustryCategory>;
   industryTypes: Array<IndustryType>;
   levels: Array<Level>;
+  overlayTypes: Array<OverlayType>;
   rankingTypes: Array<any>;
   resourceTypes: Array<ResourceType>;
   resourceUnits: Array<ResourceUnit>;
@@ -59,6 +62,7 @@ export default class SandboxMetadata {
         industryCategories: (METADATA_CORE?.industryCategories ?? []).map(IndustryCategory.fromJson),
         industryTypes: (METADATA_CORE?.industryTypes ?? []).map(IndustryType.fromJson),
         levels: (METADATA_CORE?.levels ?? []).map(Level.fromJson),
+        overlayTypes: (METADATA_CORE?.overlayTypes ?? []).map(OverlayType.fromJson),
         rankingTypes: (METADATA_CORE?.rankingTypes ?? []),
         resourceTypes: (METADATA_CORE?.resourceTypes ?? []).map(ResourceType.fromJson),
         resourceUnits: (METADATA_CORE?.resourceUnits ?? []).map(ResourceUnit.fromJson),

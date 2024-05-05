@@ -1,0 +1,39 @@
+@import '~/assets/stylesheets/starpeace-variables'
+
+.table
+  &.is-starpeace
+    background-color: transparent
+    border-color: $sp-dark-bg
+
+    tr
+      &:not(:last-child)
+        th,
+        td
+          border-bottom: 1px solid $sp-dark-bg
+
+    tr
+      &.nowrap
+        th
+          white-space: nowrap
+
+    th,
+    td
+      border-color: $sp-dark-bg
+      color: $sp-primary
+      vertical-align: middle
+
+    &.sp-striped
+      tr:nth-child(even)
+        td
+          background-color: darken($sp-dark-bg, 10%)
+
+    &.sp-solid-header
+      th
+        background-color: $sp-dark-bg
+        color: $sp-light
+        z-index: 500
+
+    &.sp-sticky-header
+      th
+        position: sticky
+        top: 0

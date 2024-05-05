@@ -1,17 +1,17 @@
 <template lang='pug'>
 .inspect-details
-  .inspect-tabs.tabs.is-small.is-marginless
+  .inspect-tabs.tabs.is-small.m-0
     ul
       li(v-for='tab in tabs' :class="{ 'is-active': tabId == tab.id }" @click.stop.prevent='tabId = tab.id')
         a {{ $translate(tab.label) }}
 
-  .inspect-body.columns.is-marginless
+  .inspect-body.columns.m-0
     template(v-if="tabId == 'general'")
-      .column.is-paddingless.is-relative.is-clipped.p-4
+      .column.is-relative.is-clipped.p-4
         span.is-italic {{ message }}
 
     template(v-else-if="tabId == 'jobs'")
-      .column.is-paddingless.is-relative.is-clipped
+      .column.is-relative.is-clipped.p-0
         toolbar-inspect-shared-tab-jobs(
           :client-state='clientState'
           :jobs='jobs'

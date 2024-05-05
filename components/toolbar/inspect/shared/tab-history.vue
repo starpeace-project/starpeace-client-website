@@ -1,6 +1,6 @@
 <template lang='pug'>
-.columns.is-marginless.history-tab
-  .column.is-narrow.is-paddingless.p-4
+.columns.m-0.history-tab
+  .column.is-narrow.p-4
     span.is-italic {{ $translate('toolbar.inspect.history.label.pending') }}
 
 </template>

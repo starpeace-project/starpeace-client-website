@@ -43,6 +43,7 @@ export default {
 <style lang='sass' scoped>
 @import '~/assets/stylesheets/starpeace-variables'
 @import '~/assets/stylesheets/starpeace-menus'
+@import '~/assets/stylesheets/starpeace-profile'
 
 .overall-container
   position: relative

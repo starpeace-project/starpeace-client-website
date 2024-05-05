@@ -47,14 +47,14 @@
                     misc-money-text(:value='supplier.price' no_styling)
                   td
                     .is-flex.is-justify-content-center(v-if='has_corporation && is_self')
-                      button.button.is-small.is-starpeace(disabled) {{$translate('misc.action.cancel')}}
+                      button.button.is-uppercase.is-small.is-starpeace(disabled) {{$translate('misc.action.cancel')}}
 
           tfoot(v-if='has_corporation && is_self')
             tr
               td.has-text-centered.py-4(colspan=4)
                 .is-flex.is-justify-content-center
-                  button.button.is-starpeace(@click.stop.prevent='' disabled) {{$translate('ui.menu.tycoon_details.tab.initial_suppliers.action.add_supplier')}}
-                  button.button.is-starpeace(@click.stop.prevent='' disabled) {{$translate('misc.action.manage')}}
+                  button.button.is-starpeace.is-uppercase(@click.stop.prevent='' disabled) {{$translate('ui.menu.tycoon_details.tab.initial_suppliers.action.add_supplier')}}
+                  button.button.is-starpeace.is-uppercase(@click.stop.prevent='' disabled) {{$translate('misc.action.manage')}}
 
 </template>
 

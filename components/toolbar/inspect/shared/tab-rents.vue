@@ -1,13 +1,13 @@
 <template lang='pug'>
-.columns.is-marginless.is-relative.is-clipped.rents-tab
-  .column.is-narrow.is-paddingless.sp-scrollbar.sp-sub-tabs
+.columns.m-0.is-relative.is-clipped.rents-tab
+  .column.is-narrow.p-0.sp-scrollbar.sp-sub-tabs
     .sp-tabs-menu
       ul
         template(v-for='rent,index in sortedRents')
           li(:class="{ 'is-active': rentIndex == index }" @click.stop.prevent='selectRent(index)')
             a.sp-kv-key.py-2.px-3 {{ $resourceTypeLabel(rent.resourceId) }}
 
-  .column.is-paddingless.px-3.py-1.sp-has-dark-background.price-settings
+  .column.px-3.py-1.sp-has-dark-background.price-settings
     .is-flex.is-flex-direction-column(v-if='rent')
 
       .is-inline-flex.is-flex-direction-row

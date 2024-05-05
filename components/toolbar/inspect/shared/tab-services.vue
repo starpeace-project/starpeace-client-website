@@ -1,13 +1,13 @@
 <template lang='pug'>
-.columns.is-marginless.is-relative.is-clipped.services-tab
-  .column.is-narrow.is-paddingless.sp-scrollbar.sp-sub-tabs
+.columns.m-0.is-relative.is-clipped.services-tab
+  .column.is-narrow.p-0.sp-scrollbar.sp-sub-tabs
     .sp-tabs-menu
       ul
         template(v-for='service,index in sortedServices')
           li(:class="{ 'is-active': serviceIndex == index }" @click.stop.prevent='selectService(index)')
             a.sp-kv-key.py-2.px-3 {{ $resourceTypeLabel(service.resourceId) }}
 
-  .column.is-paddingless.px-3.py-1.is-flex.is-flex-direction-column.sp-has-dark-background
+  .column.px-3.py-1.is-flex.is-flex-direction-column.sp-has-dark-background
     div.is-flex-grow-1(v-if='service')
       div.is-inline-flex.is-flex-direction-column
         div

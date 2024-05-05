@@ -22,6 +22,10 @@
     filter: $sp-filter-primary
     transform: rotate(360deg)
 
+
+html
+  overflow-y: hidden
+
 a
   font-weight: bold
   text-decoration: none
@@ -40,6 +44,9 @@ h3
   font-size: 1.5rem
   text-shadow: 0 0 .25rem rgba(0, 0, 0, .2)
 
+dialog
+  border: 0
+  padding: 0
 
 
 /* transform color with filters: https://codepen.io/sosuke/pen/Pjoqqp */
@@ -114,31 +121,6 @@ h3
     background-color: $sp-dark-bg
     color: $sp-primary
 
-
-.sp-profile
-  .profile-container
-    padding-bottom: 150%
-    position: relative
-    width: 100%
-
-  .profile-image
-    border: 1px solid $sp-primary-bg
-    position: absolute
-    width: 100%
-    height: 100%
-
-  .profile-mask
-    background: url('~/assets/images/profile-mask.png') center center/cover no-repeat
-    height: 100%
-    position: absolute
-    width: 100%
-
-  .profile-none
-    background: url('~/assets/images/profile-none.png') center center/cover no-repeat
-    height: 100%
-    position: absolute
-    width: 100%
-
 .sp-kv-key
   color: darken($sp-primary, 5%)
   font-size: .7rem
@@ -155,18 +137,25 @@ h3
   &.centered
     vertical-align: middle
 
-
 .sp-has-dark-background
   background-color: $sp-dark-bg
-
-
-.sp-notification
-  &.is-warning
-    background-color: $sp-light-bg
-    color: #FFF
-
 
 
 // remove border around research tree component
 .vis-network
   outline: none
+
+
+.release-notes
+  .tag
+    &.completed
+      background-color: #485fc7
+      color: #fff
+
+    &.in-progress
+      background-color: #48c78e
+      color: #fff
+
+    &.pending
+      background-color: #ffe08a
+      color: #000

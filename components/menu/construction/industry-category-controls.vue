@@ -1,19 +1,13 @@
 <template lang='pug'>
 aside.sp-menu-overall.sp-scrollbar
-  .tile.is-ancestor
-    .tile.is-6.is-vertical.is-parent
-      .tile.is-child(v-for='categoryId in lhsCategories')
+  .grid
+    .cell(v-for='categoryId in categories')
+      .box
         a.construction-toggle(@click.stop.prevent='selectCategoryId(categoryId)' :class="{'disabled': !companyBuildingsByCategoryId[categoryId]}")
           misc-industry-category-icon(:category='categoryId')
           span.toggle-label {{ $industryCategoryLabel(categoryId) }}
           .disabled-overlay
 
-    .tile.is-6.is-vertical.is-parent
-      .tile.is-child(v-for='categoryId in rhsCategories')
-        a.construction-toggle(@click.stop.prevent='selectCategoryId(categoryId)' :class="{'disabled': !companyBuildingsByCategoryId[categoryId]}")
-          misc-industry-category-icon(:category='categoryId')
-          span.toggle-label {{ $industryCategoryLabel(categoryId) }}
-          .disabled-overlay
 </template>
 
 <script lang='ts'>
@@ -29,11 +23,8 @@ export default {
   },
 
   computed: {
-    lhsCategories (): Array<string> {
-      return ['SERVICE', 'INDUSTRY', 'LOGISTICS'];
-    },
-    rhsCategories (): Array<string> {
-      return ['CIVIC', 'COMMERCE', 'REAL_ESTATE'];
+    categories (): Array<string> {
+      return ['SERVICE', 'CIVIC', 'INDUSTRY', 'COMMERCE', 'LOGISTICS', 'REAL_ESTATE', 'TRANSPORT'];
     }
   },
 
@@ -58,6 +49,10 @@ export default {
 
   li
     padding: 0 1.25rem
+
+  .box
+    --bulma-box-shadow: none
+    --bulma-box-padding: 0
 
 .construction-toggle
   border: 1px solid lighten($sp-primary-bg, 5%)

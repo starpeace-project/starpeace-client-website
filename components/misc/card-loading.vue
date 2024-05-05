@@ -1,5 +1,5 @@
 <template lang='pug'>
-#loading-container.level(v-show='is_visible' :class="{'is-grid':withinGrid, 'is-absolute':withinAbsolute}")
+#loading-container.level(v-show='is_visible' :class="{'is-sp-grid':withinGrid, 'is-sp-absolute':withinAbsolute}")
   .level-item
     .card.is-starpeace
       .card-content
@@ -30,13 +30,13 @@ export default {
   margin: 0
   position: relative
 
-  &.is-grid
+  &.is-sp-grid
     grid-column-start: 1
     grid-column-end: 4
     grid-row-start: start-render
     grid-row-end: end-render
 
-  &.is-absolute
+  &.is-sp-absolute
     position: absolute
     height: 100%
     width: 100%

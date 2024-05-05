@@ -23,6 +23,14 @@
     "IT": "Ciao",
     "PT": "Olá"
   },
+  "ui.page-layout.header.return_greeting": {
+    "DE": "Willkommen zurück",
+    "EN": "Welcome back",
+    "ES": "Bienvenido de nuevo",
+    "FR": "Bon retour",
+    "IT": "Bentornato",
+    "PT": "Bem-vindo de volta"
+  },
   "ui.page-layout.header.signin": {
     "DE": "Einloggen",
     "EN": "Sign In",

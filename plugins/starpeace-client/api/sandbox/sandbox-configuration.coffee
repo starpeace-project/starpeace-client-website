@@ -31,6 +31,7 @@ export default class SandboxConfiguration
       industryCategories: @sandbox.sandbox_data.metadata.core.industryCategories.map((s) -> s.toJson())
       industryTypes: @sandbox.sandbox_data.metadata.core.industryTypes.map((s) -> s.toJson())
       levels: @sandbox.sandbox_data.metadata.core.levels.map((s) -> s.toJson())
+      overlayTypes: @sandbox.sandbox_data.metadata.core.overlayTypes.map((s) -> s.toJson())
       rankingTypes: @sandbox.sandbox_data.metadata.core.rankingTypes
       resourceTypes: @sandbox.sandbox_data.metadata.core.resourceTypes.map((s) -> s.toJson())
       resourceUnits: @sandbox.sandbox_data.metadata.core.resourceUnits.map((s) -> s.toJson())

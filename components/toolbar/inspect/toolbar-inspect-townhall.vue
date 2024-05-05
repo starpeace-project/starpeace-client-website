@@ -4,12 +4,12 @@
     img.loading-image.starpeace-logo.logo-loading
 
   template(v-else)
-    .inspect-tabs.tabs.is-small.is-marginless
+    .inspect-tabs.tabs.is-small.m-0
       ul
         li(v-for='tab in tabs' :class="{ 'is-active': tabId == tab.id }" @click.stop.prevent='tabId = tab.id')
             a {{$translate(tab.label)}}
 
-    .inspect-body.columns.is-marginless.is-clipped
+    .inspect-body.columns.m-0.is-clipped
       template(v-if="tabId == 'general'")
         .column.is-narrow.sp-scrollbar.service-levels
           table.basic-table.condensed
@@ -156,7 +156,7 @@
                 td.has-text-right.sp-kv-value(v-for='housing in housings') {{ $formatPercent(housing.qualityIndex) }}
 
       template(v-else-if="tabId == 'jobs'")
-        .column.is-paddingless.is-relative.is-clipped
+        .column.p-0.is-relative.is-clipped
           toolbar-inspect-shared-tab-jobs(
             :client-state='clientState'
             :jobs='jobs'

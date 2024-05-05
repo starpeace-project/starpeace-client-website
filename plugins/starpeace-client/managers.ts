@@ -17,7 +17,7 @@ import InventionManager from '~/plugins/starpeace-client/invention/invention-man
 import LandManager from '~/plugins/starpeace-client/land/land-manager.coffee';
 import MapManager from '~/plugins/starpeace-client/land/map-manager.coffee';
 import MailManager from '~/plugins/starpeace-client/mail/mail-manager';
-import OverlayManager from '~/plugins/starpeace-client/overlay/overlay-manager.coffee';
+import OverlayManager from '~/plugins/starpeace-client/overlay/overlay-manager.js';
 import PlaneManager from '~/plugins/starpeace-client/plane/plane-manager.coffee';
 import PlanetsManager from '~/plugins/starpeace-client/planet/planets-manager';
 import RoadManager from '~/plugins/starpeace-client/road/road-manager.coffee';
@@ -113,11 +113,13 @@ export default class Managers {
 
   configureListeners (): void {
     this.clientState.identity.subscribe_visa_type_listener(() => {
-      if (!this.clientState.identity.galaxy_tycoon_id) {
-        return;
+      if (this.clientState.identity.galaxy_id) {
+        this.galaxy_manager.load_metadata(this.clientState.identity.galaxy_id);
       }
 
-      this.corporation_manager.load_identifiers_by_tycoon(this.clientState.identity.galaxy_tycoon_id);
+      if (this.clientState.identity.galaxy_tycoon_id) {
+        this.corporation_manager.load_identifiers_by_tycoon(this.clientState.identity.galaxy_tycoon_id);
+      }
     });
 
     this.clientState.player.subscribe_planet_visa_type_listener(async () => {
@@ -185,7 +187,7 @@ export default class Managers {
           return;
         }
 
-        this.clientState.core.company_cache.load_companies_metadata(corporation.companies);
+        this.clientState.core.company_cache.loadCompaniesMetadata(corporation.companies);
         this.clientState.corporation.set_company_ids((corporation.companies ?? []).map((company) => company.id));
         this.clientState.player.set_company_id(_.first(_.orderBy(corporation.companies, ['name'], ['asc']))?.id);
 
@@ -328,7 +330,7 @@ export default class Managers {
       }
 
       if (!building.isIfel) {
-        const company = this.clientState.core.company_cache.metadata_for_id(building.companyId);
+        const company = this.clientState.core.company_cache.metadataForId(building.companyId);
         if (!company) {
           promises.push(this.company_manager.load_by_company(building.companyId));
         }

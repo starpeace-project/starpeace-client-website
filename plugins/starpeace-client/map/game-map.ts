@@ -1,4 +1,4 @@
-import { type ExtractSystem, type Texture } from 'pixi.js';
+import { type Texture } from 'pixi.js';
 
 import Concrete from '~/plugins/starpeace-client/building/concrete.coffee'
 import BuildingManager from '~/plugins/starpeace-client/building/building-manager.js';
@@ -6,7 +6,7 @@ import BuildingManager from '~/plugins/starpeace-client/building/building-manage
 import BuildingMap from '~/plugins/starpeace-client/map/building-map.coffee'
 import ConcreteMap from '~/plugins/starpeace-client/map/concrete-map.coffee'
 import LandMap from '~/plugins/starpeace-client/map/land-map.coffee'
-import OverlayMap from '~/plugins/starpeace-client/map/overlay-map.coffee'
+import OverlayMap from '~/plugins/starpeace-client/map/overlay-map.js'
 import RoadMap from '~/plugins/starpeace-client/map/road-map.coffee'
 import TileInfo from '~/plugins/starpeace-client/map/tile-info'
 
@@ -72,14 +72,14 @@ export default class GameMap {
       this.building_map.chunk_road_update_at(x, y);
     }
 
-    const showOverlay = !context.showZones && context.showOverlay && context.currentOverlay;
+    const showOverlay = !context.showZones && context.showOverlay && context.selectedOverlayTypeId;
     const zone_chunk_info = context.showZones ? this.overlay_map.chunk_info_at('ZONES', x, y) : undefined;
-    const overlay_chunk_info = showOverlay ? this.overlay_map.chunk_info_at(context.currentOverlay.type, x, y) : undefined;
+    const overlay_chunk_info = showOverlay ? this.overlay_map.chunk_info_at(context.selectedOverlayTypeId, x, y) : undefined;
     if (context.showZones && (!zone_chunk_info || zone_chunk_info?.is_expired(context.now))) {
       this.overlay_map.chunk_update_at('ZONES', x, y);
     }
     if (showOverlay && (!overlay_chunk_info || overlay_chunk_info?.is_expired(context.now))) {
-      this.overlay_map.chunk_update_at(context.currentOverlay.type, x, y);
+      this.overlay_map.chunk_update_at(context.selectedOverlayTypeId, x, y);
     }
 
     let zone_info = undefined;
@@ -91,7 +91,7 @@ export default class GameMap {
     const chunk_loaded = building_chunk_info?.has_data() && road_chunk_info?.has_data()
     if (chunk_loaded) {
       zone_info = zone_chunk_info?.has_data() ? this.overlay_map.overlay_at('ZONES', x, y) : undefined;
-      overlay_info = context.currentOverlay && overlay_chunk_info?.has_data() ? this.overlay_map.overlay_at(context.currentOverlay.type, x, y) : undefined;
+      overlay_info = context.selectedOverlayTypeId && overlay_chunk_info?.has_data() ? this.overlay_map.overlay_at(context.selectedOverlayTypeId, x, y) : undefined;
 
       building_id = this.building_map.building_id_at(x, y)
       road_info = this.road_map.road_info_at(x, y)

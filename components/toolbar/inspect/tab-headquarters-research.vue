@@ -1,6 +1,6 @@
 <template lang='pug'>
-.jobs-tab.columns.is-marginless
-  .column.is-narrow.is-paddingless.p-4
+.jobs-tab.columns.m-0
+  .column.is-narrow.p-4
     button.button.is-starpeace(:disabled='!canManage' @click.stop.prevent='showResearch') Show Research
 
 </template>

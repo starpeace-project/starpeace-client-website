@@ -7,20 +7,20 @@ aside.sp-menu-category.sp-scrollbar
       .construction-disabled(v-if="!has_construction_requirements(info.id)")
 
     a.construct-action(@click.stop.prevent="selectBuilding(info.id)" :disabled='!has_construction_requirements(info.id)')
-      .tile.is-ancestor.is-item-details(v-show="selectedBuildingId == info.id")
-        .tile.is-parent.is-vertical
-          .tile.is-parent.is-item-details-top
-            article.tile.is-child.is-7(:ref="'previewItem.' + info.id")
-            article.tile.is-child
+      .grid.is-item-details(v-show="selectedBuildingId == info.id")
+        .cell.is-vertical
+          .cell.is-flex.is-flex-direction-row
+            article.p-3.is-flex.is-flex-grow-1.is-relative.is-justify-content-center(:ref="'previewItem.' + info.id")
+            article.p-3
               .building-cost
                 misc-money-text(:value='info.cost' no_styling as_thousands)
               .building-size {{ info.footprintArea }}m&sup2;
 
-          .tile.is-parent.is-item-details-bottom
-            article.tile.is-child
+          .cell
+            article.box.pt-0
               .building-description {{ info.description }}
-              .building-research(v-show="info.definition.requiredInventionIds.length")
-                span.research-label {{$translate('ui.menu.construction.requires')}}:
+              .building-research.mt-2(v-show="info.definition.requiredInventionIds.length")
+                span.research-label {{ $translate('ui.menu.construction.requires') }}:
                 template(v-for='id,index in info.definition.requiredInventionIds')
                   a(
                     :class="{'has-text-weight-bold': !completedInventionIds.has(id), 'is-italic': completedInventionIds.has(id)}"
@@ -28,7 +28,7 @@ aside.sp-menu-category.sp-scrollbar
                   ) {{ $inventionLabel(id) }}
                   span.research-separator(v-if="!(index >= info.definition.requiredInventionIds.length - 1)") {{separator_label_for_index(index, info.definition.requiredInventionIds.length)}}
 
-              button.button.is-fullwidth.is-starpeace.mb-3.construct-button(
+              button.button.is-fullwidth.is-starpeace.my-3.construct-button(
                 @click.stop.prevent="selectBuilding(info.id)"
                 :disabled='!has_construction_requirements(info.id)'
               ) {{ $translate('ui.menu.construction.construct_building') }}
@@ -188,6 +188,9 @@ export default {
   .is-building-label
     margin-left: .5rem
 
+.box
+  --bulma-box-shadow: none
+
 .is-item-details
   margin: 0
 
@@ -195,11 +198,6 @@ export default {
     &.is-parent
       padding: 0
 
-  .is-item-details-top
-    padding-bottom: .25rem
-
-  .is-item-details-bottom
-    padding-top: .25rem
 
 .construct-action
   cursor: pointer

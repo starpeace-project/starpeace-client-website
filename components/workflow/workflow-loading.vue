@@ -1,13 +1,15 @@
 <template lang='pug'>
 .logo-content
   img.starpeace-logo
-  .label-loading {{message}}
+  .label-loading(v-if='messageKey') {{ $translate(messageKey) }}
+  .label-loading(v-else-if='message') {{ message }}
 </template>
 
 <script lang='ts'>
 export default {
   props: {
-    message: { type: String, required: true }
+    messageKey: { type: String, required: false },
+    message: { type: String, required: false }
   }
 }
 </script>

@@ -47,7 +47,7 @@ export default class CorporationManager {
       const corporationJson: any = await this.apiClient.corporation_for_id(corporationId);
       const corporation: Corporation = Corporation.from_json(corporationJson);
       this.clientState.core.corporation_cache.load_corporation(corporation);
-      this.clientState.core.company_cache.load_companies_metadata(corporation.companies);
+      this.clientState.core.company_cache.loadCompaniesMetadata(corporation.companies);
       return corporation;
     });
   }
@@ -57,7 +57,7 @@ export default class CorporationManager {
     return await this.ajaxState.locked('corporation_create', 'ALL', async () => {
       const corporation: Corporation = Corporation.from_json(await this.apiClient.create_corporation(corporationName));
       this.clientState.core.corporation_cache.load_corporation(corporation);
-      this.clientState.core.company_cache.load_companies_metadata(corporation.companies);
+      this.clientState.core.company_cache.loadCompaniesMetadata(corporation.companies);
       return corporation;
     });
   }

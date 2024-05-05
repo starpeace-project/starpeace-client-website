@@ -1,5 +1,5 @@
 <template lang='pug'>
-.column.is-narrow.is-paddingless.is-clipped.is-flex.is-flex-direction-column.storages-tab
+.column.is-narrow.p-0.is-clipped.is-flex.is-flex-direction-column.storages-tab
   .is-flex-grow-0.sp-kv-key.mb-2 {{ $translate('Wares') }}:
 
   .is-flex-grow-1.is-relative.pr-2.sp-scrollbar.storage-options

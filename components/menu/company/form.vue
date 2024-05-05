@@ -1,5 +1,5 @@
 <template lang='pug'>
-#form-company-container(:oncontextmenu="'return ' + !$config.public.disableRightClick")
+dialog#form-company-container(:oncontextmenu="'return ' + !$config.public.disableRightClick")
   .card.is-starpeace.has-header
     .card-header
       .card-header-title {{$translate('ui.menu.company.form.header')}}
@@ -44,13 +44,15 @@
           span.has-text-danger {{$translate(error_code_key)}}
 
     footer.card-footer
-      .card-footer-item.level.is-mobile
-        .level-left
-          button.button.is-primary.is-medium.is-outlined(@click.stop.prevent='cancel') {{$translate('ui.menu.company.form.action.cancel')}}
-        .level-item.company-name
-          input.input.is-medium.is-primary(type='text' v-model='company_name' :disabled='saving' :placeholder="$translate('ui.menu.company.form.field.name')")
-        .level-right
-          button.button.is-primary.is-medium(@click.stop.prevent='establish' :disabled='!can_establish') {{$translate('ui.menu.company.form.action.form')}}
+      form.card-footer-item.is-flex(method='dialog' @submit.prevent='establish')
+        button.button.is-primary.is-medium.is-outlined(type='reset' @click.stop.prevent='cancel') {{ $translate('ui.menu.company.form.action.cancel') }}
+        input.input.is-medium.is-primary.is-flex-grow-1.mx-2(type='text' v-model='company_name' :disabled='saving' :placeholder="$translate('ui.menu.company.form.field.name')")
+        div.has-tooltip-arrow(:data-tooltip="canEstablish ? undefined : $translate('ui.menu.company.form.hint.name')")
+          button.button.is-primary.is-medium(
+            type='submit'
+            :disabled='!canEstablish'
+            @click.stop.prevent='establish'
+          ) {{ $translate('ui.menu.company.form.action.form') }}
 
 </template>
 
@@ -84,11 +86,13 @@ export default {
     is_visible (): boolean {
       return this.client_state.initialized && !this.client_state.session_expired_warning && this.client_state?.workflow_status === 'ready' && this.client_state?.menu?.is_visible('company_form');
     },
-    can_establish (): boolean {
+    canEstablish (): boolean {
       return this.is_visible && !this.saving && _.trim(this.company_name).length >= 3 && this.seal_id?.length > 0 && !!_.find(this.seals, (s) => s.id == this.seal_id);
     },
 
-    seals () { return this.is_visible ? _.filter(_.values(this.client_state.core.planet_library.company_seals_by_id), (c) => c.playable) : []; },
+    seals () {
+      return this.is_visible ? _.filter(_.values(this.client_state.core.planet_library.company_seals_by_id), (c) => c.playable) : [];
+    },
 
     error_code_key () {
       if (this.error_code === ERROR_CODE_GENERAL) return 'ui.menu.company.form.error.general';
@@ -101,21 +105,29 @@ export default {
   },
 
   watch: {
-    is_visible (new_value, old_value) {
-      if (this.is_visible) {
-        this.saving = false;
-        this.error_code = null;
-        this.company_name = '';
-        this.seal_id = _.first(this.seals)?.id;
+    is_visible: {
+      immediate: true,
+      handler (new_value, old_value) {
+        if (this.is_visible) {
+          this.saving = false;
+          this.error_code = null;
+          this.company_name = '';
+          this.seal_id = _.first(this.seals)?.id;
+        }
       }
     }
   },
 
   methods: {
-    cancel () { this.client_state.menu.toggle_menu('company_form'); },
+    cancel () {
+      this.client_state.menu.toggle_menu('company_form');
+    },
 
     async establish () {
-      if (!this.can_establish) return;
+      if (!this.canEstablish) {
+        return;
+      }
+
       this.saving = true;
       try {
         const company = await this.$starpeaceClient.managers.company_manager.create(_.trim(this.company_name), this.seal_id);

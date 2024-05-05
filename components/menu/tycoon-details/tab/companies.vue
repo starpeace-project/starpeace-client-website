@@ -17,13 +17,13 @@
             td.has-text-right {{company.building_count}}
             td.column-action
               .is-flex.is-justify-content-center
-                button.button.is-small.is-starpeace(disabled) {{$translate('ui.menu.tycoon_details.tab.companies.actions.rename')}}
-                button.button.is-small.is-starpeace(disabled) {{$translate('ui.menu.tycoon_details.tab.companies.actions.delete')}}
+                button.button.is-uppercase.is-small.is-starpeace(disabled) {{$translate('ui.menu.tycoon_details.tab.companies.actions.rename')}}
+                button.button.is-uppercase.is-small.is-starpeace(disabled) {{$translate('ui.menu.tycoon_details.tab.companies.actions.delete')}}
 
         tfoot(v-if='has_corporation && is_self')
           tr
             td.has-text-centered.py-4(colspan=4)
-              button.button.is-starpeace(@click.stop.prevent='toggle_form_company_menu') {{$translate('ui.menu.company.form.action.form')}}
+              button.button.is-uppercase.is-starpeace(@click.stop.prevent='toggle_form_company_menu') {{$translate('ui.menu.company.form.action.form')}}
 
     .is-flex.is-align-items-center.is-justify-content-center
       //- company P&L

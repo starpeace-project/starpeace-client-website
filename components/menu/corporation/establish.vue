@@ -1,22 +1,22 @@
 <template lang='pug'>
-#establish-corporation-container(:oncontextmenu="'return ' + !$config.public.disableRightClick")
+dialog#establish-corporation-container(:oncontextmenu="'return ' + !$config.public.disableRightClick")
   .modal-background
-  .card.is-starpeace.has-header(v-if='is_visible')
+  form.card.is-starpeace.has-header(method='dialog' @submit.prevent='establish')
     .card-header
-      .card-header-title {{$translate('ui.menu.corporation.establish.header')}}
+      .card-header-title {{ $translate('ui.menu.corporation.establish.header') }}
     .card-content.sp-menu-background
       .content
         p.intro
-          | {{$translate('ui.menu.corporation.establish.planet.welcome')}}
+          | {{ $translate('ui.menu.corporation.establish.planet.welcome') }}
           |
           span.planet-name {{planet_name}}
           | ,
           |
-          | {{$translate('identity.tycoon')}}!
+          | {{ $translate('identity.tycoon') }}!
         p.info
-          | {{$translate('ui.menu.corporation.establish.description')}}
+          | {{ $translate('ui.menu.corporation.establish.description') }}
 
-        form.corporation-form
+        .corporation-form
           .field.is-horizontal
             .field-body
               .field
@@ -27,14 +27,20 @@
             .field-body
               .field
                 .control.is-narrow
-                  span.has-text-danger {{$translate(error_code_key)}}
+                  span.has-text-danger {{ $translate(error_code_key) }}
 
     footer.card-footer
-      .card-footer-item.level.is-mobile
-        .level-left
-          button.button.is-primary.is-medium.is-outlined(@click.stop.prevent='cancel') {{$translate('ui.menu.corporation.establish.action.cancel')}}
-        .level-right
-          button.button.is-primary.is-medium(@click.stop.prevent='establish' :disabled='!can_establish') {{$translate('ui.menu.corporation.establish.action.establish')}}
+      .card-footer-item.is-flex.is-justify-content-space-between
+        button.button.is-primary.is-medium.is-outlined(
+          type='reset'
+          :disabled='saving'
+          @click.stop.prevent='cancel'
+        ) {{ $translate('ui.menu.corporation.establish.action.cancel') }}
+        button.button.is-primary.is-medium(
+          type='submit'
+          :disabled='!canEstablish'
+          @click.stop.prevent='establish'
+        ) {{ $translate('ui.menu.corporation.establish.action.establish') }}
 
 </template>
 
@@ -66,7 +72,9 @@ export default {
     is_visible (): boolean {
       return this.client_state.initialized && this.client_state.workflow_status === 'ready' && this.client_state.is_tycoon() && !(this.client_state.player.corporation_id?.length ?? 0);
     },
-    can_establish () { return this.is_visible && !this.saving && _.trim(this.corporation_name).length >= 3; },
+    canEstablish () {
+      return this.is_visible && !this.saving && _.trim(this.corporation_name).length >= 3;
+    },
 
     error_code_key (): string {
       if (this.error_code === ERROR_CODE_GENERAL) return 'ui.menu.corporation.establish.error.general';
@@ -93,13 +101,16 @@ export default {
     cancel () {
       this.client_state.reset_to_galaxy();
       if (window?.document) {
-        window.document.title = "STARPEACE";
+        window.document.title = 'STARPEACE';
       }
     },
 
-    async establish () {
-      if (!this.can_establish) return;
-      this.saving = true
+    async establish (): Promise<void> {
+      if (!this.canEstablish) {
+        return;
+      }
+
+      this.saving = true;
       try {
         const corporation = await this.$starpeaceClient.managers.corporation_manager.create(_.trim(this.corporation_name));
         this.client_state.player.set_planet_corporation_id(corporation.id);

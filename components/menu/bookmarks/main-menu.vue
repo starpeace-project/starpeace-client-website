@@ -5,7 +5,7 @@
     .card-header-icon.card-close(@click.stop.prevent="client_state.menu.toggle_menu('bookmarks')")
       font-awesome-icon(:icon="['fas', 'times']")
 
-  .card-content.is-paddingless.sp-menu-background.overall-container
+  .card-content.p-0.sp-menu-background.overall-container
 
     .field.filter-input-container
       .control.has-icons-left.is-expanded

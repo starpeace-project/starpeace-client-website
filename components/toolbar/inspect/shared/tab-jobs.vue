@@ -1,6 +1,6 @@
 <template lang='pug'>
-.jobs-tab.columns.is-marginless
-  .column.is-narrow.is-paddingless.p-3
+.jobs-tab.columns.m-0
+  .column.is-narrow.p-3
     table.basic-table
       thead
         tr

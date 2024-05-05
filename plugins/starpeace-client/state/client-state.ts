@@ -75,7 +75,6 @@ export default class ClientState {
 
   plane_sprites: Array<SpritePlane> = [];
 
-
   constructor (options: Options, ajaxState: AjaxState) {
     this.options = options;
     this.ajax_state = ajaxState;
@@ -187,7 +186,6 @@ export default class ClientState {
     this.update_state();
   }
 
-
   finish_initialization (): void {
     this.initialized = true;
     this.update_state();
@@ -214,13 +212,17 @@ export default class ClientState {
       if (!this.player.planet_visa_id) {
         return 'pending_visa';
       }
-      if (!this.planet.has_data() || !this.core.has_metadata()) {
+      if (!this.planet.has_data()) {
+        return 'pending_planet_details';
+      }
+
+      if (!this.core.has_metadata().loaded) {
         return 'pending_planet_details';
       }
       if (this.state_needs_player_data()) {
         return 'pending_player_data';
       }
-      if (!this.core.has_assets(this.options.language(), planet_metadata.map_id, planet_metadata.planet_type)) {
+      if (!this.core.has_assets(this.options.language(), planet_metadata.map_id, planet_metadata.planet_type).loaded) {
         return 'pending_assets';
       }
       return 'pending_initialization';
@@ -315,7 +317,6 @@ export default class ClientState {
     return this.is_galaxy_tycoon() && this.player.planet_visa_type === 'tycoon' && !!this.identity.galaxy_tycoon_id;
   }
 
-
   current_planet_metadata (): any | undefined | null {
     return !!this.player.planet_id ? this.core.galaxy_cache.planet_metadata_for_id(this.player.planet_id) : null;
   }
@@ -323,7 +324,7 @@ export default class ClientState {
     return !!this.player.corporation_id ? this.core.corporation_cache.metadata_for_id(this.player.corporation_id) : null;
   }
   current_company_metadata (): any | undefined | null {
-    return !!this.player.company_id ? this.core.company_cache.metadata_for_id(this.player.company_id) : null;
+    return !!this.player.company_id ? this.core.company_cache.metadataForId(this.player.company_id) : null;
   }
 
   current_location (): any | null {
@@ -345,10 +346,10 @@ export default class ClientState {
   }
 
   seal_for_company_id (companyId: string): string {
-    return this.core.company_cache.metadata_for_id(companyId)?.seal_id ?? 'NONE';
+    return this.core.company_cache.metadataForId(companyId)?.seal_id ?? 'NONE';
   }
   name_for_company_id (companyId: string): string {
-    return this.core.company_cache.metadata_for_id(companyId)?.name ?? '';
+    return this.core.company_cache.metadataForId(companyId)?.name ?? '';
   }
 
   town_for_location (): any | null {
@@ -377,7 +378,7 @@ export default class ClientState {
     if (this.is_tycoon() && this.player.company_id?.length) {
       return this.corporation.building_ids_for_company(this.player.company_id)
           .map((id: string) => this.core.building_cache.building_for_id(id))
-          .filter((b: Building) => b?.definition_id === definitionId)
+          .filter((b: Building | undefined) => b?.definitionId === definitionId)
           .length;
     }
     return 0;

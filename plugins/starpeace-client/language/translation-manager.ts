@@ -141,7 +141,7 @@ export default class TranslationManager {
     }
     else {
       const building_name = building?.name;
-      const company = building ? this.client_state.core.company_cache.metadata_for_id(building.company_id) : undefined;
+      const company = building ? this.client_state.core.company_cache.metadataForId(building.company_id) : undefined;
       const company_name = company?.name;
 
       const parts = [];

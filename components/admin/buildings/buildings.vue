@@ -2,9 +2,9 @@
 .card.is-starpeace
   .card-header
     .card-header-title Town Buildings
-  .card-content.sp-menu-background.columns.is-marginless.is-paddingless
-    .column.is-paddingless
-      .columns.columns.is-marginless.is-paddingless
+  .card-content.sp-menu-background.columns.m-0.p-0
+    .column.p-0
+      .columns.columns.m-0.p-0
         .column.is-narrow
           aside.menu.is-starpeace.planet-selection
             ul.menu-list

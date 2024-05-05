@@ -1,6 +1,6 @@
 <template lang='pug'>
-.columns.is-marginless.management-tab
-  .column.is-narrow.is-paddingless.p-3.mr-3.column-allow-clone(v-if='manageOptionsBuilding.length')
+.columns.m-0.management-tab
+  .column.is-narrow.p-3.mr-3.column-allow-clone(v-if='manageOptionsBuilding.length')
     .is-flex.is-flex-direction-row
       misc-toggle-option(:disabled='!canManage' :value='buildingDetails.allowIncomingSettings' @toggle='toggleAllowIncoming')
       span.ml-2.toggle-label(:class="{'selected-toggle': buildingDetails.allowIncomingSettings, 'is-clickable': canManage, 'is-disabled': !canManage}" @click.stop.prevent='toggleAllowIncoming') {{ $translate('toolbar.inspect.management.label.incoming') }}
@@ -10,7 +10,7 @@
       span(v-else) {{ $translate('toolbar.inspect.management.label.incoming.block') }}
 
 
-  .column.is-narrow.is-paddingless.is-flex.is-flex-direction-row.p-3.mr-5.column-clone(v-if='manageOptionsBuilding.length')
+  .column.is-narrow.is-flex.is-flex-direction-row.p-3.mr-5.column-clone(v-if='manageOptionsBuilding.length')
     .is-relative.is-flex.is-flex-direction-column.is-clipped
       .is-flex-grow-0.sp-kv-key.mb-2 {{ $translate('toolbar.inspect.management.label.clone') }}:
 
@@ -22,7 +22,7 @@
     div.ml-5.clone-action
       button.button.is-fullwidth.is-starpeace(:disabled='!canClone' @click.stop.prevent='cloneSettings') {{ $translate('toolbar.inspect.management.action.clone') }}
 
-  .column.is-narrow.is-paddingless.is-flex.is-flex-direction-column.p-3
+  .column.is-narrow.is-flex.is-flex-direction-column.p-3
     div
       span.sp-kv-key {{ $translate('toolbar.inspect.management.level') }}:
       span.has-text-right.sp-kv-value {{ currentLevelDescription }}

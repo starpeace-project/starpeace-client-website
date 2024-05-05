@@ -1,0 +1,144 @@
+@import '~/assets/stylesheets/starpeace-variables'
+
+.card
+  &.is-starpeace
+    background-color: #000
+    border-top: 1px solid $sp-card-border-top
+    border-bottom: 1px solid $sp-card-border-bottom
+    border-right: none
+    position: relative
+
+    &:before,
+    &:after
+      content: ''
+      position: absolute
+      background-image: -webkit-linear-gradient($sp-card-border-top, $sp-card-border-bottom)
+      background-image: -moz-linear-gradient($sp-card-border-top, $sp-card-border-bottom)
+      background-image: -o-linear-gradient($sp-card-border-top, $sp-card-border-bottom)
+      background-image: linear-gradient($sp-card-border-top, $sp-card-border-bottom)
+      bottom: -1px
+      width: 1px
+
+    &:before
+      left: -1px
+
+    &:after
+      right: -1px
+
+    &.has-header
+      &:before,
+      &:after
+        background-image: -webkit-linear-gradient($sp-card-border-top 3rem, $sp-card-border-top 20%, $sp-card-border-bottom)
+        background-image: -moz-linear-gradient($sp-card-border-top 3rem, $sp-card-border-top 20%, $sp-card-border-bottom)
+        background-image: -o-linear-gradient($sp-card-border-top 3rem, $sp-card-border-top 20%, $sp-card-border-bottom)
+        background-image: linear-gradient($sp-card-border-top 3rem, $sp-card-border-top 20%, $sp-card-border-bottom)
+
+    .card-header
+      background-color: darken($sp-primary-bg, 5%)
+      border: 0
+      border-bottom: 1px solid rgba(110, 161, 146, .2)
+
+      .card-header-title
+        color: #fff
+        font-size: 1.15rem
+        font-weight: 1000
+        letter-spacing: .25rem
+        padding: .5rem 1.25rem
+        text-transform: uppercase
+
+    .card-close
+      color: #fff
+      cursor: pointer
+      font-size: 1.75rem
+      float: right
+      line-height: 2rem
+      opacity: .6
+
+      &:hover
+        opacity: 1
+
+    > .card-content
+      padding: 1.25rem
+      background: linear-gradient(to bottom, $sp-primary-bg, #000)
+      color: $sp-primary
+
+      &.sp-dark-background
+        background: $sp-dark-bg
+
+      &.sp-menu-background
+        background: darken($sp-dark-bg, 12.5%)
+
+      a
+        &:not(.button)
+          color: #6ea192
+
+          &:not([disabled]):not(.disabled)
+            &:hover,
+            &.is-hover
+              color: #8bb3a7
+
+            &:active,
+            &.is-active
+              color: #fff
+
+      .tabs
+        a
+          background-color: transparent
+          border: 1px solid lighten($sp-primary-bg, 5%)
+          color: $sp-primary
+
+        li
+          &:not(.is-active):not([disabled])
+            a
+              &:hover
+                background-color: lighten($sp-primary-bg, 2.5%)
+                border: 1px solid $sp-primary-bg
+
+              &:active
+                background-color: lighten($sp-primary-bg, 10%)
+                border: 1px solid lighten($sp-primary-bg, 10%)
+
+          &.is-active
+            a
+              background-color: lighten($sp-primary-bg, 10%)
+              border: 1px solid lighten($sp-primary-bg, 10%)
+              color: #fff !important
+
+
+    .card-footer
+      border-top: 1px solid rgba(110, 161, 146, .6)
+
+      .card-footer-item
+        &:not(:last-child)
+          border-right: 1px solid rgba(110, 161, 146, .6)
+
+.inverse-card
+  border-top: 1px solid lighten($sp-card-border-bottom, 10%)
+  border-bottom: 1px solid darken($sp-card-border-top, 15%)
+  border-right: none
+  position: relative
+
+  &:before,
+  &:after
+    content: ''
+    position: absolute
+    bottom: 0
+    top: 0
+    width: 1px
+    z-index: 1200
+
+.dropdown
+  .dropdown-content
+    background-color: $sp-dark-bg
+
+  .dropdown-item
+    color: $sp-primary
+
+    &:hover
+      background-color: $sp-primary-bg
+      color: #fff
+
+    &:active,
+    &.is-active
+      background-color: $sp-button-light-bg
+      color: #000

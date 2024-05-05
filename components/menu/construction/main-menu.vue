@@ -1,13 +1,12 @@
 <template lang='pug'>
-#construction-container.card.is-starpeace.has-header(:oncontextmenu="'return ' + !$config.public.disableRightClick")
+#construction-container.card.is-starpeace.has-header.m-0(:oncontextmenu="'return ' + !$config.public.disableRightClick")
   .card-header
     .card-header-title {{$translate('ui.menu.construction.header')}}
     .card-header-icon.card-close(@click.stop.prevent="client_state.menu.toggle_menu('construction')")
       font-awesome-icon(:icon="['fas', 'times']")
 
-
   .card-content.sp-menu-background.overall-container
-    #construction-image-pending(ref="pendingContainer")
+    #construction-image-pending.is-relative(ref="pendingContainer")
       #construction-image-webgl-container(ref="previewContainer")
 
     template(v-if='isTycoon && companyId && !company || companyPromise')
@@ -55,8 +54,9 @@
           @select='selectCategoryId'
         )
 
-  #no-company-modal.modal-background(v-if='hasNoCompany')
-    .content
+  #no-company-modal.modal(v-if='hasNoCompany')
+    .modal-background
+    .modal-content
       span {{$translate('ui.menu.construction.company_required.label')}}
       a(@click.stop.prevent='toggleFormCompanyMenu') {{$translate('ui.menu.construction.company_required.action')}}
 
@@ -253,8 +253,10 @@ export default {
     display: none
 
   #construction-image-webgl-container
-    height: 6rem
-    width: 12rem
+    height: 100%
+    max-height: 8rem
+    max-width: 14rem
+    width: 100%
 
 #no-company-modal
   align-items: center
@@ -265,7 +267,7 @@ export default {
   top: 3.4rem
   z-index: 1000
 
-  .content
+  .modal-content
     color: $sp-primary
     font-size: 1.5rem
     font-style: italic
