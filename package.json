@@ -31,7 +31,7 @@
     "@types/luxon": "^3.4.2",
     "@types/uuid": "^9.0.8",
     "@vue/language-plugin-pug": "^2.0.16",
-    "axios": "^1.6.8",
+    "axios": "^1.7.7",
     "axios-mock-adapter": "^1.22.0",
     "bulma": "^1.0.0",
     "bulma-popover": "^1.1.1",
